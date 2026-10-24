@@ -10,7 +10,7 @@
 
 > 维护约定：每次更新会同步更新 README 最近更新、CHANGELOG.md 和网页内更新记录。
 
-![更新记录](assets/changelog.png)
+![更新记录](assets/v2/changelog.png)
 
 ### 最近更新 · 2026-10-24
 
@@ -32,7 +32,7 @@
 
 </details>
 
-![四科错题本首页](assets/notebook-home.png)
+![四科错题本首页](assets/v2/notebook-home.png)
 
 ## 这是什么
 
@@ -70,7 +70,7 @@
 - 条目支持编辑、删除、展开阅读，长解答不会撑坏版式。
 - 空状态提供「手动新增 / 智能录入」两个入口，按钮样式和功能与页面顶部一致。
 
-![空状态双按钮](assets/empty-actions.png)
+![空状态双按钮](assets/v2/empty-actions.png)
 
 ### 2. 解答模板与举一反三
 
@@ -81,7 +81,7 @@
 
 ### 3. Markdown 与数学排版
 
-![模板中的 LaTeX 公式](assets/latex-templates.png)
+![模板中的 LaTeX 公式](assets/v2/latex-templates.png)
 
 - 题目、模板标题、模板四段、内容块、变式均按 Markdown + LaTeX 渲染。
 - 模板库、题库和错题条目都提供「复制 Markdown」，可复制带标题层级的 Markdown 源码。
@@ -108,15 +108,13 @@
 - **同步页**：包含原题、考试标准解答过程、详细解析、标准答案、用户注记，标注错题时间与笔记时间；再次同步会更新原页。
 - **保存**：笔记只存在本机，和错题一起进入 JSON 备份；PDF 首次导入需要联网加载解析器。
 
-![笔记与 PDF 导入](assets/notes.png)
+![笔记与 PDF 导入](assets/v2/notes.png)
 
-![橡皮范围提示](assets/eraser.png)
+![橡皮范围提示](assets/v2/eraser.png)
 
-![错题注记笔锋](assets/thicker-pen.png)
+![错题注记笔锋](assets/v2/thicker-pen.png)
 
-![笔记插入文字与图片](assets/notes-text.png)
-
-![错题注记同步到笔记](assets/entry-note.png)
+![错题注记同步到笔记](assets/v2/entry-note.png)
 
 ### 5. AI 智能录入
 
@@ -136,13 +134,13 @@
 
 最多 3 张，支持多选、拖拽和粘贴；HEIC 图片若浏览器无法解码，会提示先在相册中导出为 JPG 再试。
 
-![微信内图片导入](assets/ai-image-wechat.png)
+![微信内图片导入](assets/v2/ai-image-wechat.png)
 
 生成完成后会自动入库。若缺少标准解答、详细解析、答案、模板四段或变式，会阻止自动入库并提示重新生成，避免留下半成品。自动入库后仍可编辑校对。
 
-![AI 模型设置](assets/ai-settings.png)
+![AI 模型设置](assets/v2/ai-settings.png)
 
-![手机端图片导入](assets/ai-image-mobile.png)
+![手机端图片导入](assets/v2/ai-image-mobile.png)
 
 #### 支持的模型服务
 
@@ -178,9 +176,9 @@
 - 「设置与同步 → 导出 / 导入」可把全部错题、模板、题库和偏好导出为 JSON，换电脑或清缓存前请先备份。
 - 导入时先显示文件名与各科条数，可手动选择「合并到现有数据」（追加新条目；编号冲突先比较内容，相同跳过，不同可重新编号）或「覆盖当前数据」；覆盖前建议先导出当前数据。
 
-![导入时选择合并或覆盖](assets/import-merge.png)
+![导入时选择合并或覆盖](assets/v2/import-merge.png)
 
-![编号冲突时按添加时间重新编号](assets/merge-conflict.png)
+![编号冲突时按添加时间重新编号](assets/v2/merge-conflict.png)
 - 纯静态 GitHub Pages 没有跨设备同步。
 - 需要跨设备同步时，可在本机运行项目里的 Node 后端 server.js，通过 /api/state 同步；页面会显示「本机服务已连接」。
 - 清除浏览器站点数据会丢失本地错题；这不是云笔记，请定期导出。
@@ -198,17 +196,17 @@
 - 长表格、长公式在自身容器内横向滑动，不会把整页撑出横向滚动。
 - 欢迎页、静态提示条、搜索占位文字会按屏幕宽度缩短。
 
-![手机端响应式](assets/responsive-mobile.png)
+![手机端响应式](assets/v2/responsive-mobile.png)
 
-![iPad mini 首页](assets/device-ipad-mini.png)
+![iPad mini 首页](assets/v2/device-ipad-mini.png)
 
-![HUAWEI Mate XT 展开首页](assets/device-matext.png)
+![HUAWEI Mate XT 展开首页](assets/v2/device-matext.png)
 
-![OPPO Pad Mini 阅读页](assets/device-oppo-pad-mini.png)
+![OPPO Pad Mini 阅读页](assets/v2/device-oppo-pad-mini.png)
 
-![Flip 外屏首页](assets/device-fold-cover.png)
+![Flip 外屏首页](assets/v2/device-fold-cover.png)
 
-![三折屏首页](assets/device-trifold.png)
+![三折屏首页](assets/v2/device-trifold.png)
 
 ## 使用方式
 
