@@ -249,6 +249,7 @@
 - 修复弹窗与页面的双滚动条：弹窗正文单独滚动，背景锁滚，页面始终只保留一个纵向滚动条。
 - 导入封面后可进入裁剪编辑器，选择裁切填满或完整显示，用缩放、横向、纵向和拖动调整取景。
 - 模板章节目录改为双列索引；移动端弹窗改为整屏布局，正文滚动、底部操作栏固定。
+- 西经路由迁移到 `#/xijing`，旧 `#/xifang` 链接自动替换；总览、错题、模板库、题库、规范五个页面全部跟随。
 
 ![封面裁剪](assets/v2/cover-crop-editor.png)
 
@@ -258,7 +259,7 @@
 
 ![页面交换](assets/v2/page-swap.png)
 
-<img src="assets/v2/changelog-20261025-v34.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/changelog-20261025-v35.png" alt="网页内更新记录" width="820">
 
 <details>
 <summary>展开最近更新</summary>
