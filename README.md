@@ -246,6 +246,9 @@
 - 页面数量不再设应用上限，智能扫描单次可加入超过 20 页；PDF 导出改为逐页生成并释放画布内存。
 - 自定义封面：可导入 JPG / PNG，自动裁成 3:4，支持预览、移除并恢复预设封面。
 - 修复弹窗与页面的双滚动条：弹窗正文单独滚动，背景锁滚，页面始终只保留一个纵向滚动条。
+- 导入封面后可进入裁剪编辑器，选择裁切填满或完整显示，用缩放、横向、纵向和拖动调整取景。
+
+![封面裁剪](assets/v2/cover-crop-editor.png)
 
 ![自定义封面](assets/v2/custom-cover.png)
 
@@ -253,7 +256,7 @@
 
 ![页面交换](assets/v2/page-swap.png)
 
-<img src="assets/v2/changelog-20261025-v32.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/changelog-20261025-v33.png" alt="网页内更新记录" width="820">
 
 <details>
 <summary>展开最近更新</summary>
