@@ -242,10 +242,13 @@
 - 笔记页码改为动态编号：插入、复制、移动、删除或插入智能扫描页后，页码会自动重排。
 - 新增任意两页交换：点「交换」后依次选择两页即可互换，不必相邻。
 - 欢迎页与四科总览的笔记入口默认进入笔记库，不恢复上次编辑页。
+- 笔记库每本笔记新增「封面」操作，编辑页也可直接修改当前笔记封面。
+
+![笔记封面](assets/v2/library-covers.png)
 
 ![页面交换](assets/v2/page-swap.png)
 
-<img src="assets/v2/changelog-20261025-v28.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/changelog-20261025-v29.png" alt="网页内更新记录" width="820">
 
 <details>
 <summary>展开最近更新</summary>
