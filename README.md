@@ -10,6 +10,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/STACK-single%20file-2F5D50?style=for-the-badge" alt="Single file"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge" alt="Local first"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/DEPLOY-GitHub%20Pages-8C2F24?style=for-the-badge" alt="GitHub Pages"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/github/v/release/lanzaihua/lanzaihua.github.io?style=for-the-badge&amp;label=RELEASE" alt="Latest release"></a>
 </p>
 
 <p><sub>118 张解答模板 · 92 道举一反三 · 2026-10-25 更新</sub></p>
@@ -247,6 +248,7 @@
 - 自定义封面：可导入 JPG / PNG，自动裁成 3:4，支持预览、移除并恢复预设封面。
 - 修复弹窗与页面的双滚动条：弹窗正文单独滚动，背景锁滚，页面始终只保留一个纵向滚动条。
 - 导入封面后可进入裁剪编辑器，选择裁切填满或完整显示，用缩放、横向、纵向和拖动调整取景。
+- 模板章节目录改为双列索引；移动端弹窗改为整屏布局，正文滚动、底部操作栏固定。
 
 ![封面裁剪](assets/v2/cover-crop-editor.png)
 
@@ -256,7 +258,7 @@
 
 ![页面交换](assets/v2/page-swap.png)
 
-<img src="assets/v2/changelog-20261025-v33.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/changelog-20261025-v34.png" alt="网页内更新记录" width="820">
 
 <details>
 <summary>展开最近更新</summary>
