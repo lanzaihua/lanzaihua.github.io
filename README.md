@@ -141,7 +141,7 @@
 <table>
 <tr>
 <td width="50%"><img src="assets/v2/templates-layout.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节目录与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/notes-library-crossnav.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 封面网格与四科快捷入口</sub></td>
+<td width="50%"><img src="assets/v2/notes-library-rename.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 封面网格 · 重命名 / 删除</sub></td>
 </tr>
 <tr>
 <td width="50%"><img src="assets/v2/note-rename-editor.png" alt="笔记编辑页" width="100%"><br><sub><b>笔记编辑</b> · 标题直接重命名</sub></td>
