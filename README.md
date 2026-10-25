@@ -6,10 +6,10 @@
 错题、模板、题库、AI 智能录入和手写笔记，放在一个单文件网页里。</p>
 
 <p>
-<a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/在线使用-lanzaihua.github.io-8C2F24?style=for-the-badge" alt="在线使用"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/单文件-静态站-2F5D50?style=for-the-badge" alt="单文件静态站"></a>
-<a href="#隐私与限制"><img src="https://img.shields.io/badge/数据-本机优先-8A6A2F?style=for-the-badge" alt="数据本机优先"></a>
-<a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/GitHub%20Pages-已上线-8C2F24?style=for-the-badge" alt="GitHub Pages"></a>
+<a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-lanzaihua.github.io-8C2F24?style=for-the-badge" alt="Live"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/STACK-single%20file-2F5D50?style=for-the-badge" alt="Single file"></a>
+<a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge" alt="Local first"></a>
+<a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/DEPLOY-GitHub%20Pages-8C2F24?style=for-the-badge" alt="GitHub Pages"></a>
 </p>
 
 <p><sub>118 张解答模板 · 92 道举一反三 · 2026-10-25 更新</sub></p>
