@@ -251,6 +251,7 @@
 - 模板章节目录改为双列索引；移动端弹窗改为整屏布局，正文滚动、底部操作栏固定。
 - 西经路由迁移到 `#/xijing`，旧 `#/xifang` 链接自动替换；总览、错题、模板库、题库、规范五个页面全部跟随。
 - 内部存储键改为 `xijing`：旧本地数据、备份 JSON、同步数据和笔记本书籍会自动迁移，后续只写 `xijing`。
+- 手机笔记编辑器改为更紧凑的双行工具栏和单行页头操作，画布更早进入首屏。
 
 ![封面裁剪](assets/v2/cover-crop-editor.png)
 
@@ -260,7 +261,7 @@
 
 ![页面交换](assets/v2/page-swap.png)
 
-<img src="assets/v2/changelog-20261025-v36.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/changelog-20261025-v37.png" alt="网页内更新记录" width="820">
 
 <details>
 <summary>展开最近更新</summary>
