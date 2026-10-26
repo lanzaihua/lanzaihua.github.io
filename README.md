@@ -13,7 +13,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/github/v/release/lanzaihua/lanzaihua.github.io?style=for-the-badge&amp;label=RELEASE" alt="Latest release"></a>
 </p>
 
-<p><sub>118 张解答模板 · 92 道举一反三 · 2026-10-25 更新</sub></p>
+<p><sub>118 张解答模板 · 92 道举一反三 · 2026-10-26 更新</sub></p>
 
 <img src="assets/v2/notebook-home-notes.png" alt="四科错题本首页" width="900">
 
@@ -229,7 +229,13 @@
 
 ## 更新记录
 
-**最近更新 · 2026-10-25**
+**最近更新 · 2026-10-26**
+
+- 新建页与智能扫描页默认追加到笔记末尾；编辑页新增批量删页。
+- 导出笔记弹窗重排为范围、页面、格式分区，页面选择改为网格。
+- 笔和橡皮加粗，颜色扩展到 16 种，纸张扩展到 10 种；新增白色笔和黑色纸。
+- 恢复初始数据会清空错题、笔记、AI 配置、同步口令和所有设置，只保留模板与题库。
+- 手机端撤销/重做保持工具栏位置，切换工具不再跳动；页头导出按钮首屏可见。
 
 - 模板库增加章节目录与双列卡片；顶栏去掉重复视图名；错题页筛选与新建分区。
 - 笔记编辑页标题可直接点击重命名，并保留页栏入口。
@@ -261,7 +267,7 @@
 
 ![页面交换](assets/v2/page-swap.png)
 
-<img src="assets/v2/changelog-20261025-v37.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/changelog-20261026-v38.png" alt="网页内更新记录" width="820">
 
 <details>
 <summary>展开最近更新</summary>
