@@ -17,11 +17,11 @@
 
 <img src="assets/v2/notebook-home-notes.png" alt="四科错题本首页" width="900">
 
+</div>
+
 > **最新版本 · 2026-10-26**  
 > 新建页跟随当前页、批量删页、16 色 / 10 种纸张、白笔黑纸，手机工具栏与导出入口修正。  
 > [查看 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/tag/v2026.10.26) · [更新记录](#更新记录)
-
-</div>
 
 ## 一眼看懂
 
