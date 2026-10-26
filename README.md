@@ -17,7 +17,7 @@
 
 <p><sub><a href="https://github.com/lanzaihua/lanzaihua.github.io/releases/tag/v2026.10.26"><b>10.26 更新</b></a> · 新建页跟随当前页 · 批量删页 · 15 色 / 10 纸 · 橡皮回笔</sub></p>
 
-<img src="assets/v2/notebook-home-notes.png" alt="四科错题本首页" width="760">
+<img src="assets/v2/20261026-home.png" alt="四科错题本首页" width="760">
 
 </div>
 
@@ -39,8 +39,6 @@
 [四科范围](#四科范围) · [核心功能](#核心功能) · [界面一览](#界面一览) · [使用方式](#使用方式) · [本地运行](#本地运行可选) · [隐私与限制](#隐私与限制) · [更新记录](#更新记录)
 
 ## 四科范围
-
-![四科统一的科目总览](assets/v2/unified-subject-overview.png)
 
 | 科目 | 主要内容 | 模板 | 题库 |
 |---|---|---:|---:|
@@ -84,7 +82,6 @@
 - **笔记库**：封面网格、名称搜索、单本删除、批量删除，删除前均需确认。
 - **智能扫描**：拍照或选择图片后进入智能扫描工作台，自动裁边、原图 / 自动 / 增强 / 灰度 / 黑白滤镜、旋转、裁边调节、连续扫描多页，保存后可直接导出 PDF。
 
-![智能扫描工作台](assets/v2/scan-a4-workflow.png)
 - **导入**：图片直接导入，PDF 逐页转成可标注页面。
 - **保存**：自动保存，也可点「保存」或 <kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>S</kbd>；显示「保存 / 已保存」状态。
 - **重命名**：编辑页标题可直接点击改名，页栏也保留重命名按钮。
@@ -92,17 +89,9 @@
 - **页面侧栏**：桌面端显示页面缩略图，可复制、上移、下移、删除页面；手机端保留底部页签。
 - **动态页码**：页面侧栏、底部页签、页栏和导出页选择会按当前顺序自动编号；插入智能扫描页也会插到当前页之后并重排页码。
 
-![动态页码](assets/v2/page-numbering.png)
 - **封面**：笔记库支持米白、朱砂、松绿、靛蓝、玄黑、牛皮 6 种封面。
 - **直线与套索复制**：新增直线工具；套索圈选后可整段复制或删除。
 - **互跳**：笔记页有四科快捷入口，科目页有笔记库入口。
-
-<table>
-<tr>
-<td width="50%"><img src="assets/v2/note-pages-panel.png" alt="笔记页面侧栏" width="100%"><br><sub><b>页面侧栏</b> · 缩略图、复制、上移下移</sub></td>
-<td width="50%"><img src="assets/v2/note-cover-library.png" alt="笔记封面" width="100%"><br><sub><b>封面</b> · 朱砂、松绿、靛蓝等 6 种</sub></td>
-</tr>
-</table>
 
 ### AI 智能录入
 
@@ -144,36 +133,22 @@
 
 ## 界面一览
 
-<table>
-<tr>
-<td width="50%"><img src="assets/v2/templates-layout.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节目录与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/notes-library-rename.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 封面网格 · 重命名 / 删除</sub></td>
-</tr>
-<tr>
-<td width="50%"><img src="assets/v2/note-rename-editor.png" alt="笔记编辑页" width="100%"><br><sub><b>笔记编辑</b> · 标题直接重命名</sub></td>
-<td width="50%"><img src="assets/v2/ai-wrong-input.png" alt="AI 错解诊断入口" width="100%"><br><sub><b>AI 智能录入</b> · 可选错解诊断</sub></td>
-</tr>
-<tr>
-<td width="50%"><img src="assets/v2/ai-settings.png" alt="AI 模型设置" width="100%"><br><sub><b>模型设置</b> · 多厂商与可搜索列表</sub></td>
-<td width="50%"><img src="assets/v2/responsive-mobile.png" alt="手机端" width="100%"><br><sub><b>手机端</b> · 单列、全屏弹窗与安全区适配</sub></td>
-</tr>
-</table>
-
-<details>
-<summary><b>更多截图</b>（导入、错题注记、设备适配）</summary>
+<p align="center"><sub>四科统一总览 · 模板与题库 · 笔记编辑 · 手机端 · 更新记录</sub></p>
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/import-merge.png" alt="导入合并" width="100%"><br><sub>导入时选择合并或覆盖</sub></td>
-<td width="50%"><img src="assets/v2/entry-note.png" alt="错题注记" width="100%"><br><sub>错题注记同步到笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261026-overview.png" alt="四科总览" width="100%"><br><sub><b>四科总览</b> · 掌握进度、错因分布、总索引</sub></td>
+<td width="50%"><img src="assets/v2/20261026-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节目录与双列卡片</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/notes.png" alt="笔记与 PDF 导入" width="100%"><br><sub>笔记与 PDF 导入</sub></td>
-<td width="50%"><img src="assets/v2/device-ipad-mini.png" alt="iPad mini" width="100%"><br><sub>iPad mini</sub></td>
+<td width="50%"><img src="assets/v2/20261026-notes.png" alt="笔记编辑" width="100%"><br><sub><b>笔记编辑</b> · 双行工具栏与紧凑色板</sub></td>
+<td width="50%"><img src="assets/v2/20261026-mobile-notes.png" alt="手机笔记" width="100%"><br><sub><b>手机笔记</b> · 单行页头与横向工具栏</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="assets/v2/20261026-bank.png" alt="题库" width="100%"><br><sub><b>题库</b> · 先做题，再展开答案</sub></td>
+<td width="50%"><img src="assets/v2/20261026-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 版本摘要与分类卡片</sub></td>
 </tr>
 </table>
-
-</details>
 
 ## 使用方式
 
@@ -265,9 +240,10 @@
 - 错题页支持章节正序 / 倒序，排序写入本机设置，刷新后保持。
 - JSON 备份包含模板库和题库；导入时完全相同的内容跳过，编号冲突按章节顺序重新编号。
 - 笔记库空状态改为「从第一本开始」双栏引导；空库不再显示导出与批量删除。
+- 四科总览总索引精简为编号、章节、题目、状态四列，桌面端不再横向滑动。
 - 更新记录改为版本摘要、重点标签和分类卡片；更早版本默认折叠，仓库 README 同步为表格加折叠历史。
 
-<img src="assets/v2/changelog-20261026-v45.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/20261026-changelog.png" alt="网页内更新记录" width="820">
 
 <details>
 <summary>2026-10-25 · 笔记与版式更新</summary>
