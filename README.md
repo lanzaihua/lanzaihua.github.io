@@ -6,7 +6,7 @@
 错题、模板、题库、AI 智能录入、手写笔记和 Markdown 知识笔记，放在一个单文件网页里。</p>
 
 <p>
-<a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-打开网页-8C2F24?style=for-the-badge" alt="Live"></a>
+<a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.27-8C2F24?style=for-the-badge" alt="Release"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-2F5D50?style=for-the-badge" alt="Local first"></a>
 </p>
