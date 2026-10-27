@@ -13,9 +13,9 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/github/v/release/lanzaihua/lanzaihua.github.io?style=for-the-badge&amp;label=RELEASE" alt="Latest release"></a>
 </p>
 
-<p><sub>118 张解答模板 · 92 道举一反三 · 2026-10-26 更新</sub></p>
+<p><sub>118 张解答模板 · 92 道举一反三 · 2026-10-27 更新</sub></p>
 
-<p><sub><a href="https://github.com/lanzaihua/lanzaihua.github.io/releases/tag/v2026.10.26"><b>10.26 更新</b></a> · 新建页跟随当前页 · 批量删页 · 15 色 / 10 纸 · 橡皮回笔</sub></p>
+<p><sub><a href="https://github.com/lanzaihua/lanzaihua.github.io/releases/tag/v2026.10.27"><b>10.27 更新</b></a> · 协议框统一 · 峰谷暂存 · 首页称呼</sub></p>
 
 <img src="assets/v2/20261026-home.png" alt="四科错题本首页" width="760">
 
@@ -146,7 +146,7 @@
 </tr>
 <tr>
 <td width="50%"><img src="assets/v2/20261026-bank.png" alt="题库" width="100%"><br><sub><b>题库</b> · 先做题，再展开答案</sub></td>
-<td width="50%"><img src="assets/v2/20261026-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 版本摘要与分类卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261027-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 版本摘要与分类卡片</sub></td>
 </tr>
 </table>
 
@@ -206,6 +206,14 @@
 
 ## 更新记录
 
+### 2026-10-27 · 10.27 更新
+
+| 类别 | 内容 |
+|---|---|
+| **协议** | 协议选择框与模型选择框同宽、同高、同圆角、同边框、同内边距和同款下拉箭头 |
+| **智能录入** | DeepSeek / DeepSeek Harness 峰谷计价提醒；谷时暂存箱保存文字、提示和图片，谷时再生成 |
+| **首页** | 设置可填「你的称呼」，问候语按有无称呼显示，留空时不带名字 |
+
 ### 2026-10-26 · 10.26 更新
 
 | 方向 | 这次改了什么 |
@@ -248,7 +256,7 @@
 - 四科规范页统一条目规范与复习法，四个科目展示同一套字段、编号、格式和 D1–D30 节奏。
 - 更新记录改为版本摘要、重点标签和分类卡片；更早版本默认折叠，仓库 README 同步为表格加折叠历史。
 
-<img src="assets/v2/20261026-changelog.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/20261027-changelog.png" alt="网页内更新记录" width="820">
 
 <details>
 <summary>2026-10-25 · 笔记与版式更新</summary>
