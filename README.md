@@ -10,7 +10,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/STACK-single%20file-2F5D50?style=for-the-badge" alt="Single file"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge" alt="Local first"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/DEPLOY-GitHub%20Pages-8C2F24?style=for-the-badge" alt="GitHub Pages"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/github/v/release/lanzaihua/lanzaihua.github.io?style=for-the-badge&amp;label=RELEASE" alt="Latest release"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.27-8C2F24?style=for-the-badge" alt="Latest release"></a>
 </p>
 
 <p><sub>118 张解答模板 · 92 道举一反三 · 2026-10-27 更新</sub></p>
@@ -213,6 +213,8 @@
 | **协议** | 协议选择框与模型选择框同宽、同高、同圆角、同边框、同内边距和同款下拉箭头 |
 | **智能录入** | DeepSeek / DeepSeek Harness 峰谷计价提醒；谷时暂存箱保存文字、提示和图片，谷时再生成 |
 | **首页** | 设置可填「你的称呼」，问候语按有无称呼显示，留空时不带名字 |
+| **设置** | 按「外观与称呼 / AI 与智能录入 / 同步与数据 / 关于与更新」四组重排，长页更易扫读 |
+| **规范** | 新增右侧速览卡：五件套、D1–D30 节奏、编号前缀；桌面并排，手机单列 |
 
 ### 2026-10-26 · 10.26 更新
 
