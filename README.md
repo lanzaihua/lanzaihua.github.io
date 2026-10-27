@@ -15,7 +15,7 @@
 
 <p><sub>118 张解答模板 · 92 道举一反三 · 2026-10-27 更新</sub></p>
 
-<p><sub><a href="https://github.com/lanzaihua/lanzaihua.github.io/releases/tag/v2026.10.27"><b>10.27 更新</b></a> · 协议框统一 · 峰谷暂存 · 首页称呼</sub></p>
+<p><sub><a href="https://github.com/lanzaihua/lanzaihua.github.io/releases/tag/v2026.10.27"><b>10.27 更新</b></a> · 协议框统一 · 峰谷暂存 · 首页称呼 · 设置分组</sub></p>
 
 <img src="assets/v2/20261026-home.png" alt="四科错题本首页" width="760">
 
