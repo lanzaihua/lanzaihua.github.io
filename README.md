@@ -6,11 +6,12 @@
 错题、模板、题库、AI 智能录入、手写笔记和 Markdown 知识笔记，放在一个单文件网页里。</p>
 
 <p>
-<a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.28-2F5D50?style=for-the-badge" alt="Release"></a>
-<a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge" alt="Local first"></a>
-<a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-3F5F7A?style=for-the-badge" alt="Single file"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B4C7A?style=for-the-badge" alt="GitHub Pages"></a>
+<a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge&labelColor=5F1F19" alt="Live"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.28-2F5D50?style=for-the-badge&labelColor=1F4036" alt="Release"></a>
+<a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge&labelColor=5F4820" alt="Local first"></a>
+<a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-3F5F7A?style=for-the-badge&labelColor=2C4358" alt="Single file"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B4C7A?style=for-the-badge&labelColor=4A3455" alt="GitHub Pages"></a>
+<a href="#功能"><img src="https://img.shields.io/badge/UI-10%20LANGUAGES-B5653A?style=for-the-badge&labelColor=7D4327" alt="10 languages"></a>
 </p>
 
 <p><b>118</b> 解答模板 · <b>92</b> 道题库 · <b>4</b> 科 · <b>10</b> 种语言 · <b>0</b> 注册</p>
@@ -129,7 +130,7 @@
 
 ### 2026-10-28 · 10.28 更新
 
-**7 项 · 4 组**
+**8 项 · 5 组**
 
 首次使用提醒、关闭后不再重复、错题日期时间统一、章节校验，以及高代章序固定。
 
@@ -140,8 +141,9 @@
 | **设置** | 恢复初始数据会清除已读标记，回到欢迎页时重新提示一次；其他时候不反复打扰。 |
 | **错题** | 日期统一为「YYYY-MM-DD HH:mm 星期X」，例如「2026-10-21 22:20 星期三」；列表、总览、编辑器、导出与备份使用同一格式。 |
 | **错题** | 打开旧数据、导入备份或同步云端时自动迁移；手改日期和新增错题也会自动补全星期，不需要逐条修改。 |
-| **教材** | 高等代数统一使用第 1–10 章作为章序；总览、错题筛选、模板库、题库和规范都按这套顺序渲染；用户已存的错题、模板库和题库也会在加载时按章序重排并写回本机。
-| **教材** | 智能录入只接受当前教材的规范章节；超出范围的章号会自动归一到对应章节，无法匹配的标记为未分章，历史错题同样迁移。 | |
+| **版式** | 全站页面头增加细分隔线；章节跳转增加顶部留白，标题和工具条形成同一条基线。 |
+| **教材** | 高等代数统一使用第 1–10 章作为章序；总览、错题筛选、模板库、题库和规范都按这套顺序渲染；用户已存的错题、模板库和题库也会在加载时按章序重排并写回本机。 |
+| **教材** | 智能录入只接受当前教材的规范章节；超出范围的章号会自动归一到对应章节，无法匹配的标记为未分章，历史错题同样迁移。 |
 
 <img src="assets/v2/20261028-changelog.png" alt="网页内更新记录" width="820">
 
