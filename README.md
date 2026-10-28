@@ -7,9 +7,13 @@
 
 <p>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.28-8C2F24?style=for-the-badge" alt="Release"></a>
-<a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-2F5D50?style=for-the-badge" alt="Local first"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.28-2F5D50?style=for-the-badge" alt="Release"></a>
+<a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge" alt="Local first"></a>
+<a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-3F5F7A?style=for-the-badge" alt="Single file"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B4C7A?style=for-the-badge" alt="GitHub Pages"></a>
 </p>
+
+<p><b>118</b> 解答模板 · <b>92</b> 道题库 · <b>4</b> 科 · <b>10</b> 种语言 · <b>0</b> 注册</p>
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
@@ -97,6 +101,8 @@
 <td width="50%"><img src="assets/v2/20261028-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 版本摘要与分类阅读</sub></td>
 </tr>
 </table>
+
+<p align="center"><img src="assets/v2/20261028-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
