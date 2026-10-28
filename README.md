@@ -7,7 +7,7 @@
 
 <p>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.27-8C2F24?style=for-the-badge" alt="Release"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.28-8C2F24?style=for-the-badge" alt="Release"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-2F5D50?style=for-the-badge" alt="Local first"></a>
 </p>
 
@@ -94,7 +94,7 @@
 </tr>
 <tr>
 <td width="50%"><img src="assets/v2/20261027-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261027-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 六组分类与两列阅读</sub></td>
+<td width="50%"><img src="assets/v2/20261028-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 版本摘要与分类阅读</sub></td>
 </tr>
 </table>
 
@@ -121,22 +121,38 @@
 
 ## 更新记录
 
-### 2026-10-27 · 10.27 更新
+### 2026-10-28 · 10.28 更新
 
-**14 项 · 6 组**
+**5 项 · 3 组**
 
-协议框、峰谷暂存、语言翻译、备份压缩，以及笔记库合并、设置与规范排版。
+首次使用提醒、关闭后不再重复，以及错题日期时间统一为「日期 时间 星期」。
 
 | 组 | 这版做了什么 |
 |---|---|
-| **界面** | 协议框统一；设置增加称呼；暂存箱改为峰谷时间轴、空队列插画与编号账页；弹窗去掉冗余「关闭」，底部说明缩小并左对齐。 |
-| **智能录入** | DeepSeek 按官方峰谷规则提示；新增暂存箱，峰时先放题目和图片，谷时再生成。 |
-| **版式** | 设置四组重排；空状态加入纸张标记；规范页增加速览卡；适配验证固定覆盖手机、平板横竖屏和电脑。 |
-| **笔记库** | 新增 Obsidian 风格知识笔记；笔记库与知识库合并，统一搜索、类型切换和 Markdown 卡片。 |
-| **语言** | 10 种语言菜单，按英文名 A–Z 排序；界面与内容 AI 翻译并缓存；修复串语言、弹窗不刷新、短字符与公式夹缝漏翻；可见界面优先、并行翻译、后台补齐长内容。 |
-| **备份** | AI 生成内容按当前语言写入；备份预翻译并输出 gzip 压缩的 <code>.json.gz</code>。 |
+| **欢迎页** | 首次进入且未配置 AI 时，出现一次温和提示：不配置也能用错题、模板、题库和笔记；AI 智能录入、翻译与自动补全需要时再配置。 |
+| **欢迎页** | 点「先逛逛」、右上角关闭或「去设置」后记录为已读，之后打开欢迎页不再自动出现。 |
+| **设置** | 恢复初始数据会清除已读标记，回到欢迎页时重新提示一次；其他时候不反复打扰。 |
+| **错题** | 日期统一为「YYYY-MM-DD HH:mm 星期X」，例如「2026-10-21 22:20 星期三」；列表、总览、编辑器、导出与备份使用同一格式。 |
+| **错题** | 打开旧数据、导入备份或同步云端时自动迁移；手改日期和新增错题也会自动补全星期，不需要逐条修改。 |
 
-<img src="assets/v2/20261027-changelog.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/20261028-changelog.png" alt="网页内更新记录" width="820">
+
+<details>
+<summary><b>2026-10-27 · 10.27 更新</b> · 14 项 · 6 组</summary>
+
+**界面**：协议框统一；设置增加称呼；暂存箱改为峰谷时间轴、空队列插画与编号账页；弹窗去掉冗余「关闭」。
+
+**智能录入**：DeepSeek 按官方峰谷规则提示；新增暂存箱，峰时先放题目和图片，谷时再生成。
+
+**版式**：设置四组重排；空状态加入纸张标记；规范页增加速览卡；适配验证固定覆盖手机、平板横竖屏和电脑。
+
+**笔记库**：新增 Obsidian 风格知识笔记；笔记库与知识库合并，统一搜索、类型切换和 Markdown 卡片。
+
+**语言**：10 种语言菜单，按英文名 A–Z 排序；界面与内容 AI 翻译并缓存；修复串语言、弹窗不刷新、短字符与公式夹缝漏翻；可见界面优先、并行翻译、后台补齐长内容。
+
+**备份**：AI 生成内容按当前语言写入；备份预翻译并输出 gzip 压缩的 <code>.json.gz</code>。
+
+</details>
 
 <details>
 <summary><b>2026-10-26 · 10.26 更新</b> · 25 项</summary>
