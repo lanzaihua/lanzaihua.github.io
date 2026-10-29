@@ -18,7 +18,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261027-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261029-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -94,12 +94,12 @@
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261027-home.png" alt="首页" width="100%"><br><sub><b>首页</b> · 按自己的节奏开始</sub></td>
-<td width="50%"><img src="assets/v2/20261027-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261029-home.png" alt="首页" width="100%"><br><sub><b>首页</b> · 按自己的节奏开始</sub></td>
+<td width="50%"><img src="assets/v2/20261029-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261027-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261028-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 版本摘要与分类阅读</sub></td>
+<td width="50%"><img src="assets/v2/20261029-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261029-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 版本摘要与分类阅读</sub></td>
 </tr>
 </table>
 
@@ -128,11 +128,11 @@
 
 ## 更新记录
 
-### 翻译续传与图标
+### 翻译、图标与版面
 
-2026-10-29 · **4 项 · 2 组**
+2026-10-29 · **5 项 · 2 组**
 
-翻译临时失败自动续传，顶栏图标统一，错题详情改为双列。
+翻译续传、图标统一、详情分栏，以及提示条与笔记空状态收口。
 
 | 组 | 这版做了什么 |
 |---|---|
@@ -140,6 +140,7 @@
 | **语言** | 翻译提示升级为学术出版级：按目标语言标准教材、期刊术语统一，保留公式、编号、引用与人名规则；新增公式、漏译与未翻译中文校验，缓存升级后旧译文自动重译。 |
 | **版式** | 顶栏历史、主题、语言、设置图标统一为 18×18、1.6 线宽；主题图标由字符改为同尺寸 SVG。 |
 | **版式** | 桌面端展开的错题详情按内容分栏：纯文字标准解答与详细解析并排；含公式时自动通栏，避免长公式挤进另一列。正文取消 70ch 上限，右侧不再空出一大片。 |
+| **版式** | 全站顶部提示压缩为一行，加「LOCAL FIRST」标签；笔记库空状态增加纸张预览，右侧不再空置。 |
 
 <img src="assets/v2/20261029-changelog.png" alt="网页内更新记录" width="820">
 
