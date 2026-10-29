@@ -7,7 +7,7 @@
 
 <p>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge&labelColor=5F1F19" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.28-2F5D50?style=for-the-badge&labelColor=1F4036" alt="Release"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.29-2F5D50?style=for-the-badge&labelColor=1F4036" alt="Release"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge&labelColor=5F4820" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-3F5F7A?style=for-the-badge&labelColor=2C4358" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B4C7A?style=for-the-badge&labelColor=4A3455" alt="GitHub Pages"></a>
@@ -128,25 +128,35 @@
 
 ## 更新记录
 
-### 首次提醒与校验
+### 翻译续传与图标
 
-2026-10-28 · **9 项 · 6 组**
+2026-10-29 · **2 项 · 2 组**
 
-首次使用提醒、关闭后不再重复、错题日期时间统一、章节校验，以及高代章序固定。
+翻译临时失败自动续传，直到全部完成；顶栏图标统一尺寸。
 
 | 组 | 这版做了什么 |
 |---|---|
-| **欢迎页** | 首次进入且未配置 AI 时，出现一次温和提示：不配置也能用错题、模板、题库和笔记；AI 智能录入、翻译与自动补全需要时再配置。 |
-| **欢迎页** | 点「先逛逛」、右上角关闭或「去设置」后记录为已读，之后打开欢迎页不再自动出现。 |
-| **设置** | 恢复初始数据会清除已读标记，回到欢迎页时重新提示一次；其他时候不反复打扰。 |
-| **错题** | 日期统一为「YYYY-MM-DD HH:mm 星期X」，例如「2026-10-21 22:20 星期三」；列表、总览、编辑器、导出与备份使用同一格式。 |
-| **错题** | 打开旧数据、导入备份或同步云端时自动迁移；手改日期和新增错题也会自动补全星期，不需要逐条修改。 |
-| **版式** | 全站页面头增加细分隔线；章节跳转增加顶部留白，标题和工具条形成同一条基线。 |
-| **语言** | 搜索框占位符与浏览器标签页标题在语言切换、窗口变化和页面重绘后重新翻译，不再被中文重置。 |
-| **教材** | 高等代数统一使用第 1–10 章作为章序；总览、错题筛选、模板库、题库和规范都按这套顺序渲染；用户已存的错题、模板库和题库也会在加载时按章序重排并写回本机。 |
-| **教材** | 智能录入只接受当前教材的规范章节；超出范围的章号会自动归一到对应章节，无法匹配的标记为未分章，历史错题同样迁移。 |
+| **语言** | 某个批次暂时翻译失败时不再丢弃；失败项进入后台重试队列，按 5–30 秒退避持续重试，直到全部翻译完成。 |
+| **版式** | 顶栏历史、主题、语言、设置图标统一为 18×18、1.6 线宽；主题图标由字符改为同尺寸 SVG。 |
 
-<img src="assets/v2/20261028-changelog.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/20261029-changelog.png" alt="网页内更新记录" width="820">
+
+<details>
+<summary><b>首次提醒与校验</b> · 2026-10-28 · 9 项 · 6 组</summary>
+
+**欢迎页**：首次进入且未配置 AI 时出现一次温和提示；关闭后不再重复，恢复初始数据后重新提示。
+
+**设置**：恢复初始数据会清除已读标记。
+
+**错题**：日期统一为「YYYY-MM-DD HH:mm 星期X」，旧数据、导入、同步、手改与新增自动补全星期。
+
+**版式**：全站页面头增加细分隔线；章节跳转增加顶部留白。
+
+**语言**：搜索框占位符与浏览器标签页标题在语言切换、窗口变化和页面重绘后重新翻译。
+
+**教材**：高等代数统一使用第 1–10 章作为章序；智能录入只接受规范章节，超出范围归一到对应章节，无法匹配标记为未分章。
+
+</details>
 
 <details>
 <summary><b>协议框、峰谷与语言</b> · 2026-10-27 · 14 项 · 6 组</summary>
