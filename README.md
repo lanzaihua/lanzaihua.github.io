@@ -99,7 +99,7 @@
 </tr>
 <tr>
 <td width="50%"><img src="assets/v2/20261030-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261030-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 版本摘要与分类阅读</sub></td>
+<td width="50%"><img src="assets/v2/20261030-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
