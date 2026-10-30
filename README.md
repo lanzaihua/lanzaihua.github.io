@@ -7,7 +7,7 @@
 
 <p>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge&labelColor=5F1F19" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.29-2F5D50?style=for-the-badge&labelColor=1F4036" alt="Release"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.30-2F5D50?style=for-the-badge&labelColor=1F4036" alt="Release"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge&labelColor=5F4820" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-3F5F7A?style=for-the-badge&labelColor=2C4358" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B4C7A?style=for-the-badge&labelColor=4A3455" alt="GitHub Pages"></a>
@@ -18,7 +18,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261029-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261030-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -94,12 +94,12 @@
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261029-home.png" alt="首页" width="100%"><br><sub><b>首页</b> · 按自己的节奏开始</sub></td>
-<td width="50%"><img src="assets/v2/20261029-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261030-home.png" alt="首页" width="100%"><br><sub><b>首页</b> · 按自己的节奏开始</sub></td>
+<td width="50%"><img src="assets/v2/20261030-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261029-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261029-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 版本摘要与分类阅读</sub></td>
+<td width="50%"><img src="assets/v2/20261030-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261030-changelog.png" alt="更新记录" width="100%"><br><sub><b>更新记录</b> · 版本摘要与分类阅读</sub></td>
 </tr>
 </table>
 
@@ -128,6 +128,19 @@
 
 ## 更新记录
 
+### 高代技能更名
+
+2026-10-30 · **2 项 · 1 组**
+
+高等代数技能由 /advanced-algebra 更名为 /advanced-algebra，题库、录入、历史来源与界面标识同步更新。
+
+| 组 | 这版做了什么 |
+|---|---|
+| **技能** | 高等代数技能名称由 /advanced-algebra 改为 /advanced-algebra；技能目录、题库数据、智能录入、自动补全、来源标识和界面提示统一使用新名称。 |
+| **技能** | 旧版本保存的 /advanced-algebra 技能标识与来源记录在加载时自动迁移为 /advanced-algebra；备份导入、同步和本机旧条目不需手动修改。 |
+
+<img src="assets/v2/20261030-changelog.png" alt="网页内更新记录" width="820">
+
 ### 翻译、图标与版面
 
 2026-10-29 · **18 项 · 4 组**
@@ -155,7 +168,7 @@
 | **字体** | 主要标题和正文统一收小一档：桌面端首页大标题 66px、页面标题 37px、正文 14.5px，手机端同步收紧；首页继续左对齐，右侧只保留自然留白。 |
 | **移动** | 手机端顶栏统一改为两行：品牌完整显示，搜索框独占一行并铺满可用宽度；搜索占位符与电脑端一致，恢复「搜索题目 / 知识点」，右侧图标不再挤压输入区。 |
 
-<img src="assets/v2/20261029-changelog.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/20261030-changelog.png" alt="网页内更新记录" width="820">
 
 <details>
 <summary><b>首次提醒与校验</b> · 2026-10-28 · 9 项 · 6 组</summary>
