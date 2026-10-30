@@ -7,7 +7,7 @@
 
 <p>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge&labelColor=5F1F19" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.30-2F5D50?style=for-the-badge&labelColor=1F4036" alt="Release"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.31-2F5D50?style=for-the-badge&labelColor=1F4036" alt="Release"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge&labelColor=5F4820" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-3F5F7A?style=for-the-badge&labelColor=2C4358" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B4C7A?style=for-the-badge&labelColor=4A3455" alt="GitHub Pages"></a>
@@ -18,7 +18,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261030-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261031-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -100,16 +100,16 @@
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261030-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
-<td width="50%"><img src="assets/v2/20261030-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261031-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
+<td width="50%"><img src="assets/v2/20261031-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261030-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261030-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
+<td width="50%"><img src="assets/v2/20261031-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261031-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
-<p align="center"><img src="assets/v2/20261028-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
+<p align="center"><img src="assets/v2/20261031-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
@@ -134,11 +134,26 @@
 
 ## 更新记录
 
+### 通知、复习与笔记
+
+2026-10-31 · **4 项 · 4 组**
+
+通知中心、按难度生成的复习计划与间隔解锁、笔记本左对齐、图标顺序和设置分组微调。
+
+| 组 | 这版做了什么 |
+|---|---|
+| **通知** | 除欢迎页外，各页右上角新增通知入口；欢迎页改为右下角，原顶部图标移除。图标顺序统一为语言 → 设置 → 通知；红点显示未读数量；面板显示预览，可展开完整消息，支持单条删除、勾选批量删除和一键清空；手机端为底部抽屉，平板和电脑为浮层。 |
+| **错题** | 复习节点按题目难度动态生成：1★ 11 起、2★ 16 起、3★ 20 起，同星级按错误类型、要点和变式数量再细分，最多 21 个节点，最远 D900；打卡按录入时间和上一节点时间解锁，间隔随节点变化；断签不能在同一天补齐，历史违规打卡自动回退。 |
+| **笔记** | 笔记库的笔记本区改为左对齐三列网格，固定 264px 卡片宽度和 20px 间距；新建卡标题、页数和操作行对齐，卡片等高；平板两列、手机单列。 |
+| **设置** | 暂存箱与思考模式位置互换，AI 与智能录入分组保持原有功能。 |
+
+<img src="assets/v2/20261031-changelog.png" alt="网页内更新记录" width="820">
+
 ### 技能、翻译与交互
 
-2026-10-30 · **10 项 · 8 组**
+2026-10-30 · **8 项 · 6 组**
 
-高代技能更名、九语言排版与文案分轨、设置入口、暂存预览、思考模式、复习记录联动、全站字号节奏、通知中心和笔记库对齐统一。
+高代技能更名、九语言排版与文案分轨、设置入口、暂存预览、思考模式、复习记录联动和全站字号节奏统一。
 
 | 组 | 这版做了什么 |
 |---|---|
@@ -146,14 +161,12 @@
 | **语言** | 翻译缓存升级到 v10：九种外文统一数学术语、Chapter N: 与 § N 格式，并修复词与词、词与符号、行内标签之间的粘连；日文、韩文、繁体中文与简体中文保持同一字号、间距和标题字体。 |
 | **语言** | 文案分轨：题目、证明、解答、解析、模板与知识要点使用正式学术书面语；欢迎、提醒、询问、空状态和确认使用温和亲切的第二人称；九语言翻译和 AI 生成提示都按这套规则执行。 |
 | **版式** | 手机端总览 hero 按钮可换行，错题来源独立一行；同步口令输入框收小；错题掌握提示统一为 13px；全站标题、正文、页面头和空白节奏统一；外文行内标签后的冒号、逗号、句号不再带多余前导空格，缺少的后置空格补回；总索引、最近动过、注记标题与要点统一走 Markdown + LaTeX 渲染；公式在翻译前先占位、译后原样还原；错题来源行不再重复日期时间；网站标题只保留品牌书名，四科简称在页头和首页标题第二行显示。 |
-| **设置** | 设置新增「语言与翻译」，显示当前语言并可直接打开语言选择；分区标题统一为「AI与智能录入」，去掉 AI 后的空格；思考模式开关与低 / 中 / 高 / 极高强度也可在设置中选择，并与智能录入同步；去掉开关旁重复的「默认开启」说明；暂存箱与思考模式位置互换。 |
+| **设置** | 设置新增「语言与翻译」，显示当前语言并可直接打开语言选择；分区标题统一为「AI与智能录入」，去掉 AI 后的空格；思考模式开关与低 / 中 / 高 / 极高强度也可在设置中选择，并与智能录入同步；去掉开关旁重复的「默认开启」说明。 |
 | **智能录入** | 暂存箱按内容生成预览：有图显示缩略图和多图计数，点击可看全图并左右翻页；有文字显示三行预览，点击可展开全文或收起；无文字不显示空白占位。 |
 | **智能录入** | 智能录入的题目图片和错解图片也可点击查看全图；所有协议与模型默认开启深度思考、强度 high，可在智能录入里关闭或调节低 / 中 / 高 / 极高；DeepSeek 输出预算提高到 64K，空响应自动提高到 128K 重试，仍为空时降级重试一次。 |
-| **通知** | 除欢迎页外，各页右上角新增通知入口；欢迎页改为右下角，原顶部图标移除。图标顺序统一为语言 → 设置 → 通知；红点显示未读数量；面板显示预览，可展开完整消息，支持单条删除、勾选批量删除和一键清空；手机端为底部抽屉，平板和电脑为浮层。 |
-| **笔记** | 笔记库的笔记本区改为左对齐三列网格，固定 264px 卡片宽度和 20px 间距；新建卡标题、页数和操作行对齐，卡片等高；平板两列、手机单列。 |
-| **错题** | 复习打卡会同步写入复习记录；已打卡后自动去掉「（待复习）」；复习节点按题目星级与艾宾浩斯曲线动态生成（1★ 11 起、2★ 16 起、3★ 20 起，同星级按错误类型、要点和变式数量再细分，最多 21 个节点，最远 D900）；打卡按录入时间和上一节点时间解锁，间隔随节点变化；断签不能在同一天补齐，历史违规打卡自动回退；取消打卡时自动删除对应记录，并即时提示；标记已掌握会写入掌握记录，切回未掌握会删除该记录；旧缓存里已标已掌握但缺少记录的条目会在加载时补齐，未掌握的旧掌握记录会清理。 |
+| **错题** | 复习打卡会同步写入复习记录；已打卡后自动去掉「（待复习）」；取消打卡时自动删除对应记录，并即时提示；标记已掌握会写入掌握记录，切回未掌握会删除该记录；旧缓存里已标已掌握但缺少记录的条目会在加载时补齐，未掌握的旧掌握记录会清理。 |
 
-<img src="assets/v2/20261030-changelog.png" alt="网页内更新记录" width="820">
+
 
 <details>
 <summary><b>翻译、图标与版面</b> · 2026-10-29 · 18 项 · 4 组</summary>
