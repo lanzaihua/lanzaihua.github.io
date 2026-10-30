@@ -90,7 +90,7 @@
 
 ## 界面
 
-<p align="center"><sub>统一首页 · 笔记库 · 模板库 · 更新记录</sub></p>
+<p align="center"><sub>总览 · 笔记库 · 模板库 · 规范</sub></p>
 
 <table>
 <tr>
