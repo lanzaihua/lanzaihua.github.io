@@ -3,7 +3,7 @@
 <h1>四科错题本</h1>
 
 <p><b>高等代数 · 数学分析 · 解析几何 · 西方经济学</b><br>
-错题、模板、题库、AI 智能录入、期末复习、手写笔记和 Markdown 知识笔记，放在一个单文件网页里。</p>
+错题、模板、题库、AI 智能录入、期末复习与单科模拟考、手写笔记和 Markdown 知识笔记，放在一个单文件网页里。</p>
 
 <p>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge&labelColor=5F1F19" alt="Live"></a>
