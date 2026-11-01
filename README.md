@@ -155,6 +155,8 @@
 
 <img src="assets/v2/20261101-final.png" alt="期末复习" width="860">
 
+<img src="assets/v2/20261101-paper.png" alt="模拟卷编辑" width="860">
+
 ### 通知、复习与笔记
 
 
