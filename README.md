@@ -3,11 +3,11 @@
 <h1>四科错题本</h1>
 
 <p><b>高等代数 · 数学分析 · 解析几何 · 西方经济学</b><br>
-错题、模板、题库、AI 智能录入、手写笔记和 Markdown 知识笔记，放在一个单文件网页里。</p>
+错题、模板、题库、AI 智能录入、期末复习、手写笔记和 Markdown 知识笔记，放在一个单文件网页里。</p>
 
 <p>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge&labelColor=5F1F19" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.10.31-2F5D50?style=for-the-badge&labelColor=1F4036" alt="Release"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.01-2F5D50?style=for-the-badge&labelColor=1F4036" alt="Release"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge&labelColor=5F4820" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-3F5F7A?style=for-the-badge&labelColor=2C4358" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B4C7A?style=for-the-badge&labelColor=4A3455" alt="GitHub Pages"></a>
@@ -18,7 +18,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261031-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261101-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -80,6 +80,13 @@
 - 峰时可先暂存题目和图片，谷时再送入生成；暂存只存在本机。
 - 新错题可自动进入补全队列；页面关闭后队列保留，下次打开继续。
 
+### 期末复习
+
+- 设定考试日期和时长，自动拆成基础回顾、强化训练、冲刺模拟三段，并排进每日任务。
+- 错题和题库题可加入期末材料；模拟卷按时长选题、自动分配 100 分。
+- 卷子可在线改题、改答案、改分值、调顺序、补题或删题。
+- 导出 DOCX，或打开打印窗口另存为 PDF。
+
 ### 文案原则
 
 - **学术与题目文本**：题目、证明、解答、解析、模板和知识要点使用正式、准确、克制的学术书面语；术语按目标语言教材与期刊惯例，不用网络口语、卖萌、感叹号或表情。
@@ -134,7 +141,22 @@
 
 ## 更新记录
 
+### 期末复习与模拟卷
+
+2026-11-01 · **3 项 · 3 组**
+
+按期末考试日期生成复习计划；从错题与题库加入材料，按时长智能组卷，在线编辑并导出 DOCX / PDF。
+
+| 组 | 这版做了什么 |
+|---|---|
+| **期末复习** | 设定期末考试日期与时长，按今天到考试日的可用天数拆分基础回顾、强化训练、冲刺模拟三个阶段，并把加入的错题与题库题排进每天任务；计划随日期与时长实时更新，可逐日勾选完成。 |
+| **模拟卷** | 错题卡和题库题新增「加入期末」；模拟卷按时长自动决定题量（60 分钟 6 题、120 分钟 12 题、180 分钟 18 题，材料不足时取全部），优先未掌握与高星题，兼顾科目分布，自动分配 100 分。 |
+| **导出** | 模拟卷支持在线编辑卷名、时长、题目、答案和分值，可上移、下移、补题、删题、重新生成；导出为可打开的 DOCX 文件，或通过打印窗口另存为 PDF。 |
+
+<img src="assets/v2/20261101-final.png" alt="期末复习" width="860">
+
 ### 通知、复习与笔记
+
 
 2026-10-31 · **4 项 · 4 组**
 
