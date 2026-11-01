@@ -6,12 +6,14 @@
 错题、模板、题库、AI 智能录入、期末复习与单科模拟考、手写笔记和 Markdown 知识笔记，放在一个单文件网页里。</p>
 
 <p>
-<a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-8C2F24?style=for-the-badge&labelColor=5F1F19" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.01-2F5D50?style=for-the-badge&labelColor=1F4036" alt="Release"></a>
-<a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6A2F?style=for-the-badge&labelColor=5F4820" alt="Local first"></a>
-<a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-3F5F7A?style=for-the-badge&labelColor=2C4358" alt="Single file"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B4C7A?style=for-the-badge&labelColor=4A3455" alt="GitHub Pages"></a>
-<a href="#功能"><img src="https://img.shields.io/badge/UI-10%20LANGUAGES-B5653A?style=for-the-badge&labelColor=7D4327" alt="10 languages"></a>
+<a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-9B2C1F?style=for-the-badge&labelColor=651C14" alt="Live"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.01-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.01-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
+<a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6520?style=for-the-badge&labelColor=5E4516" alt="Local first"></a>
+<a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-4B3F8F?style=for-the-badge&labelColor=322A66" alt="Single file"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B3E76?style=for-the-badge&labelColor=4C2A54" alt="GitHub Pages"></a>
+<a href="#功能"><img src="https://img.shields.io/badge/UI-10%20LANGUAGES-A6531F?style=for-the-badge&labelColor=713812" alt="10 languages"></a>
+<a href="#屏幕适配"><img src="https://img.shields.io/badge/DOCS-3%20SCREENS-3F625E?style=for-the-badge&labelColor=2B4744" alt="Three screens"></a>
 </p>
 
 <p><b>118</b> 解答模板 · <b>92</b> 道题库 · <b>4</b> 科 · <b>10</b> 种语言 · <b>0</b> 注册</p>
@@ -146,21 +148,21 @@
 
 **7 项 · 7 组**
 
-按期末考试日期生成复习计划；从错题与题库加入材料，按科目与章节智能组卷，按题型和难度分配分值，并在网页内自由编辑、导出 DOCX / PDF；新增考生守则、限时模拟考、手写识别与 AI 批改，所有含题目的页面统一用 Markdown + LaTeX 渲染，AI 录入、出题与组卷强制输出 $...$；旧题自动补全常见上下标、根式、方程、矩阵与行列式；统一公式渲染、错题归档、全站版式与仓库页。
+期末计划按考试日期自动排程；模拟卷与模拟考分开成两个界面，支持章节选择、AI 出题、自由编辑、智能分值与 DOCX/PDF 导出；模拟考覆盖考生守则、限时作答、手写批改与历史归档；同时重排全站标题、正文、页头、卡片与更新记录，补齐三端适配。
 
 | 组 | 本版做了什么 |
 |---|---|
-| **期末复习** | 设定考试日期与时长，按今天到考试日的可用天数拆分基础回顾、强化训练、冲刺模拟三个阶段，并把加入的错题与题库题排进每天任务；计划随日期与时长实时更新，可逐日勾选完成。 |
-| **模拟卷** | 错题卡和题库题新增「加入期末」；一张卷只使用当前科目，不混科目；可选科目与章节；按时长选题；客观题单题不超过 7 分，主观题按难度加权，总分 100，支持「智能分配」和手动改分；题目可拖动排序、导入错题/题库、插图、手写批注，AI 可按当前编辑和图片转写公式文字后重出整卷；可导出 DOCX / PDF。 |
-| **模拟考** | AI 出题时先选章节（单选、多选或全选），生成完成后先显示题目已生成页，点「开始模拟考」再弹考生守则；确认后才计时，开考前不展示题目；15–20 题；修复 AI 出题开考按钮在上一轮生成卡住时无响应的问题，超过 5 分钟的生成状态会自动清理，出题页也可手动取消本轮出题；出模拟卷 / 进行模拟考分栏展示，互不干扰；AI 半途失败时保留已生成题目并用标准题库补齐，AI 批改逐题保留部分结果；AI 未配置或请求失败时也能用本科标准题库开考；AI 出题先检索公开真题/教材题库资料并把来源交给模型，题目必须带标准答案与来源；AI 失败或返回不足时自动回退本科标准题库开考；四科章节列表统一从教材模板与题库推导，非高等代数科目不再提示「当前科目还没有可用章节」；考试进行中不提供答案导出，交卷后才开放 DOCX / PDF；按基础、常规、中档、难题、压轴五档分布，基础与压轴各控制在最少（基础约 2、压轴 1），常规、中档、难题更多，实际按题池补位，开考后所有客观题在前、所有主观题在后，客观题与主观题各自由易到难，分值只读。首句加粗放大提醒 AI 批改对手写清晰度的要求，勾选“已阅读并同意”后才能作答；客观题点选，主观题输入或手写；手写工具栏含笔、橡皮、粗细、撤销、重做、清空，画布可加高并自动扩展；中途离开或关闭网页均不暂停计时，进行中的记录只提供「继续考试」，不会用重做重新起算；开考 30 分钟后可提前交卷，到结束时间自动交卷，不受离开或关闭网页影响；考试条智能收缩并适配三端；所有模拟卷与模拟考试卷长期保留，可查看结果、重做、导出 DOCX / PDF，或通过单选、多选、全选删除；删除当前正在进行的考试需二次确认，并提示会终止作答与计时；DOCX 中的公式会转为 Word 可读的 Unicode 数学符号，PDF 使用网页公式渲染。 |
-| **AI 批改** | 手写图片以白底 PNG 随题发送并标注附图编号，要求 AI 先转写手写内容再批改；未返回转写时按本地标准保守复核，避免未识别却给满分；逐题给出分数、错误点、标准解答、详细解析、答案、要点和易错点；出题/批改半截失败会保留已完成内容并补全。 |
-| **错题归档** | 结果页可逐题加入错题；条目保留完整题干、全部选项、用户错选、文字/手写作答、具体错误点与卡点，以及标准解答、解析、答案、要点和易错点。 |
-| **版式与仓库** | 全站标题、正文、页头、卡片字号和间距统一，欢迎页、总览、错题、题库、模板库、规范、笔记库、更新记录与仓库页同步收紧；仓库徽章使用六种不同颜色，更新记录和截图同步本轮分值、考生守则、手写批改与错题归档；手机、平板、电脑三端复查；考生守则删除来源说明；未勾选同意时“开始作答”置灰禁用。 |
-| **语言与公式** | 学术书面语、 LaTeX 渲染和翻译缓存 v11 统一；错误点、要点、易错点、用户作答、模拟卷标题与仓库更新记录中的公式按 Markdown + LaTeX 渲染，不再出现原始 `$...$`。 |
+| **期末复习** | 按当前日期到考试日的可用天数拆分基础回顾、强化训练、冲刺模拟三阶段，并把错题与题库材料排进每日任务；计划随日期与时长实时更新。 |
+| **模拟卷** | 按考试时长与所选章节智能选题；可自由排序、改写、从错题/题库插入、插入图片、手写批注；AI 可依据当前编辑与图片重出整卷，只返回部分题目时保留已生成内容；客观题单题不高于 7 分，主观题按难度加权，总分 100；可导出 DOCX / PDF。 |
+| **模拟考** | 先选章节，AI 生成或标准题库组卷，生成完成后才显示题目已生成页；点击开始模拟考后弹出考生守则，首句加粗略放大；勾选同意后才计时，开考前不展示题目；15–20 题，客观题在前、主观题在后，组内由易到难，分值只读；支持输入与手写、画布加高、橡皮、撤销、重做；30 分钟后可提前交卷，结束自动收卷。 |
+| **AI 批改与归档** | 交卷后 AI 逐题批改，给出总分、错误点、标准解答、详细解析、答案、要点和易错点；手写先识别再批改，部分结果由本地标准答案补全；AI 新题自动入题库，结果页可逐题加入错题并保留选项、错选、作答与卡点。 |
+| **记录与导出** | 所有模拟卷和模拟考试卷长期保留，可查看、重做、继续考试、导出 DOCX/PDF，或单选、多选、全选删除；删除进行中的考试需二次确认。 |
+| **版式与仓库** | 重排全站标题、正文、页头、卡片与空白节奏；出模拟卷 / 进行模拟考拆成独立分栏；手机、平板、电脑分别收口；仓库徽章改为八种互不重复的颜色，更新记录与说明同步本轮内容。 |
+| **语言与公式** | 题目、证明、解答、解析、模板与知识要点统一使用正式学术书面语；所有含公式页面使用 Markdown + LaTeX 渲染，AI 生成强制输出 `$...$`。 |
 
-<p align="center"><img src="assets/v2/20261101-rules.png" alt="考生守则" width="390"><br><sub><b>考生守则</b> · 勾选已阅读后才能开始作答</sub></p>
+<p align="center"><img src="assets/v2/20261101-final.png" alt="出模拟卷" width="860"><br><sub><b>出模拟卷</b> · 复习计划、材料与模拟卷</sub></p>
 
-<p align="center"><img src="assets/v2/20261101-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 计划、材料与单科模拟卷</sub></p>
+<p align="center"><img src="assets/v2/20261101-exam.png" alt="进行模拟考" width="860"><br><sub><b>进行模拟考</b> · 科目、章节与 AI 出题入口</sub></p>
 
 ### 通知、复习与笔记
 
