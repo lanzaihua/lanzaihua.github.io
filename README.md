@@ -162,7 +162,7 @@
 
 <p align="center"><img src="assets/v2/20261101-final.png" alt="出模拟卷" width="860"><br><sub><b>出模拟卷</b> · 复习计划、材料与模拟卷</sub></p>
 
-<p align="center"><img src="assets/v2/20261101-exam.png" alt="进行模拟考" width="860"><br><sub><b>进行模拟考</b> · 科目、章节与 AI 出题入口</sub></p>
+<p align="center"><img src="assets/v2/20261101-exam.png" alt="进行模拟考" width="860"><br><sub><b>进行模拟考</b> · 专注模式、计时与客观题作答</sub></p>
 
 ### 2026-10-31 · 通知、复习与笔记
 
