@@ -21,7 +21,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261103-home-v3.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261104-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -111,18 +111,18 @@
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261102-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
-<td width="50%"><img src="assets/v2/20261102-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261104-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
+<td width="50%"><img src="assets/v2/20261104-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261102-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261102-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
+<td width="50%"><img src="assets/v2/20261104-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261104-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
-<p align="center"><img src="assets/v2/20261102-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
+<p align="center"><img src="assets/v2/20261104-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
 
-<p align="center"><img src="assets/v2/20261102-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
+<p align="center"><img src="assets/v2/20261104-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
@@ -147,11 +147,11 @@
 
 ## 更新记录
 
-### 2026-11-04 · 题库重建
+### 2026-11-04 · 题库与界面
 
-**4 项 · 4 组**
+**7 项 · 7 组**
 
-四科题库全部清空旧题并按章节、星级、题型、category 重新生成：8250 题、55 章；每章每星级 10 客观 + 10 填空 + 10 主观，10 类各 10%；全部题干唯一，与旧库 0 重复，每题含标准解答、详细解析、答案、要点、易错点；难度按题目实际复杂度重新校准。
+四科题库全部清空旧题并按章节、星级、题型、category 重新生成：8250 题、55 章；每章每星级 10 客观 + 10 填空 + 10 主观，10 类各 10%；全部题干唯一，与旧库 0 重复，每题含标准解答、详细解析、答案、要点、易错点；难度按题目实际复杂度重新校准。同时统一全站界面与仓库页文案、截图、徽章与更新日期。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -159,6 +159,9 @@
 | **难度校准** | 按题干复杂度、证明/讨论/反例/误差等任务类型和解答长度重新校准星级：1★ 基础直接套定义，5★ 综合证明/构造/参数讨论；每章每星每型仍 10 题。 |
 | **题库校验** | 新增 `tools/qa-bank-strict.js`：逐章、逐星级、逐分类、逐题型计数，全局题干唯一，分类/题型约束，字段/选项/填空/来源/$ 定界符/旧库重复检查；难度 warning 可加 `--strict-difficulty` 强制失败。 |
 | **构建门槛** | `build.js` 现在先运行 `qa-bank-strict.js --strict-difficulty`；任何结构问题或难度 warning 直接抛错，禁止生成 dist。 |
+| **界面一致性** | 统一首页、总览、错题、模板库、题库、规范、笔记库、期末复习的标题层级与页脚文案；规范编号改为 GA / MA / GE / WE；手机端规范表完整显示；平板首页减少顶部空白。 |
+| **仓库页** | README 九个徽章保持九色；更新记录与截图同步到 2026-11-04；仓库描述修正为 8250 题；Public + MIT 复核。 |
+| **日期与通知** | 逐条核对更新记录日期，全部不晚于 2026-11-04；本轮通知只发送本轮变化。 |
 
 ### 2026-11-03 · 考研同型题库
 
@@ -260,7 +263,7 @@
 | **笔记** | 笔记库的笔记本区改为左对齐三列网格，卡片缩小到 220px 宽、18px 间距；新建卡标题、页数和操作行对齐，卡片等高；平板两列、手机单列。 |
 | **设置** | 暂存箱与思考模式位置互换，AI 与智能录入分组保持原有功能；智能录入报错时检查 API Key、协议、Base URL 与模型是否匹配；导出的备份不包含任何 AI 设置。 |
 
-<img src="assets/v2/20261031-changelog.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/20261104-changelog.png" alt="网页内更新记录" width="820">
 
 ### 技能、翻译与交互
 
