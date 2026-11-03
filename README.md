@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-9B2C1F?style=for-the-badge&labelColor=651C14" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.02-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.02-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.03-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.03-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6520?style=for-the-badge&labelColor=5E4516" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-4B3F8F?style=for-the-badge&labelColor=322A66" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B3E76?style=for-the-badge&labelColor=4C2A54" alt="GitHub Pages"></a>
@@ -21,7 +21,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261102-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261103-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -62,8 +62,8 @@
 
 - 118 张模板按科目和章节组织，顶部章节目录可直接跳转。
 - 模板固定四段：识别特征 / 首选方法 / 步骤骨架 / 易错点。
-- 2751 道题库题可以展开查看标准解答、详细解析、答案、解题要点和易错点。
-- 模板、题库、错题条目都支持复制 Markdown 源码。
+- 8251 道考研原创同型题可以展开查看标准解答、详细解析、答案、解题要点和易错点。
+- 模板、题库、错题条目都支持复制 Markdown 源码；题库全部为考研原创同型题，按每章 1–5★ 的 10 客观 + 10 填空 + 10 主观配置。
 
 ### 统一笔记库
 
@@ -146,6 +146,19 @@
 </details>
 
 ## 更新记录
+
+### 2026-11-03 · 考研同型题库
+
+**4 项 · 3 组**
+
+四科题库统一为考研原创同型题：55 个章节的 1–5★ 均保持 10 道客观题、10 道填空题、10 道主观题，共 8251 题；期末复习完成日期排程、错题/题库加入、分科目分章节组卷、自由编辑、0.5 分智能分值、DOCX/PDF 导出、模拟考守则、限时作答、手写批改、结果题干与难度星级、历史归档与三端适配复查。
+
+| 组 | 本版做了什么 |
+|---|---|
+| **题库来源** | 8251 题全部标注「考研原创同型题」；按考研大纲与教材章节原创，覆盖每章 1–5★；每题保留难度星级，构建时拦截缺少来源标记的题目。 |
+| **题型与字段** | 删除模板编号、章节名称、题型名称、识别特征、标准步骤、核心公式、题型特征、适用条件、常见易错点、典型变式、完整步骤等元信息问法；客观题改为数学命题判断，填空题改为补全数学表述，主观题改为证明或说明。每题含标准解答、详细解析、答案、解题要点、易错点。 |
+| **期末复习复查** | 日期排程、错题/题库加入、分科目分章节组卷、排序与编辑、0.5 分智能分值、DOCX/PDF 导出、模拟考守则、章节选择与 AI 出题顺序、客观→填空→解答排序、组内由易到难、手写/输入答题、30 分钟提前交卷、到时收卷、结果题干与难度星级、历史归档与重做。 |
+| **通知与日期** | 更新记录新增 2026-11-03 当天条目，构建日期同步为 2026.11.03；通知中心新增「考研同型」「来源自查」「日期校对」三条本轮专属消息。 |
 
 ### 2026-11-02 · 知识搜索与全站一致性
 
