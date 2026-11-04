@@ -375,15 +375,18 @@
 
 </details>
 
-## 源码与构建
+## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。
 
-- 许可证：MIT，见 [LICENSE](LICENSE)。
-- 源码：下载 [`source.zip`](source.zip) 后解压；包含 `src/`、`build.js`、`server.js`、`skills.js` 与 `tools/`。
-- 构建：解压后运行 `node build.js` 生成 `dist/index.html`；`node build.js --pages` 生成 GitHub Pages 版本。
-- 运行：直接打开构建后的 HTML；需要同步与 AI 代理时运行 `node server.js`。
-- 题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管。
+- **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
+- **源码**：下载 [`source.zip`](source.zip) 后解压，包含 `src/`、`build.js`、`server.js`、`skills.js` 与 `tools/`。
+- **构建**：解压后运行 `node build.js` 生成 `dist/index.html`；`node build.js --pages` 生成 GitHub Pages 版本。
+- **本机运行**：需要同步、服务端 AI 代理或局域网访问时运行 `node server.js`，默认地址 <http://127.0.0.1:4173>；手机访问运行 `node server.js --lan`。未配置 AI 时，错题、模板、题库、笔记等普通功能不受影响。
+- **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
+- **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
+- **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
+- **联系**：<3554833568@qq.com>
 
 ## 隐私与限制
 
@@ -393,27 +396,6 @@
 - 纯静态页的 AI 直连依赖接口 CORS；被浏览器拦截时请改用本机 server。
 - 模型输出可能出错，请对照题干、课本和定理依据核对。
 - 页面是学习辅助工具，不保证 AI 解答正确，也不替代教材、老师和考试要求。
-
-## 本地运行
-
-需要跨设备同步、服务端 AI 代理或局域网访问时：
-
-    node server.js
-
-默认地址：<http://127.0.0.1:4173>。手机访问：
-
-    node server.js --lan
-
-未配置 AI 时，错题、模板、题库、笔记等普通功能不受影响。
-
-## 开源
-
-- **许可证**：MIT，允许学习、修改、分发与二次开发，保留版权与许可声明。
-- **源码**：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。
-- **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
-- **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
-- **数据**：网页默认只保存在本机浏览器，仓库不收集用户错题与笔记。
-- **联系**：<3554833568@qq.com>
 
 ## 技术说明
 
