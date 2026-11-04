@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-9B2C1F?style=for-the-badge&labelColor=651C14" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.04-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.04-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.05-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.05-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6520?style=for-the-badge&labelColor=5E4516" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-4B3F8F?style=for-the-badge&labelColor=322A66" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B3E76?style=for-the-badge&labelColor=4C2A54" alt="GitHub Pages"></a>
@@ -146,6 +146,17 @@
 </details>
 
 ## 更新记录
+
+### 2026-11-05 · 技能与搜索
+
+**2 项 · 2 组**
+
+五个 skill 已同步到网页：高等代数 10 章、数学分析 23 章、解析几何 6 章、西方经济学 17 章（含导论）。知识点搜索已修复“函数的连续”被误定位到第一章并误报未收录的问题。
+
+| 分组 | 本次更新 |
+|---|---|
+| **技能包同步** | 重新生成内置技能包：advanced-algebra 改为新版 ch01–ch10；mathematical-analysis 更新 ch01–ch23；analytic-geometry 更新六章；western-economics 新增第0章导论，共 17 章。 |
+| **知识点搜索** | 章节识别增加“去掉的/性后的标题包含”匹配：搜索“函数的连续”定位第四章；本地已命中直接讲解时，AI 不得用“没有检索到”覆盖；重新生成 skills.json。 |
 
 ### 2026-11-04 · 题库与界面
 
