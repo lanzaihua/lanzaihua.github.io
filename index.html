@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.05-16f6a3a3";</script>
+<script>window.__BUILD_ID__="2026.11.05-0b3f50f1";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -15939,7 +15939,7 @@ var UPDATE_LOG = [
     date: '2026-11-05',
     title: '技能、公式与开源',
     historyTitle: '技能、公式与开源',
-    summary: '同步四个学科 skill 的最新内容，修复知识点搜索、公式渲染与三端对齐；统一全站标题、正文、卡片与三端字号节奏；重写 150 道定理证明题的完整解答与 46 道公式变异反例题；清理 187 道客观题的重复选项；题库加入 575 道教材课后习题；收口标题与选项换行；新增页面一致性、解答质量、题型边界与原始公式校验。',
+    summary: '同步四个学科 skill 的最新内容，修复知识点搜索、公式渲染与三端对齐；统一全站标题、正文、卡片与三端字号节奏；重写 150 道定理证明题的完整解答与 46 道公式变异反例题；清理 187 道客观题的重复选项；题库加入 575 道教材课后习题；收口标题与选项换行；新增页面一致性、解答质量、题型边界与原始公式校验。本轮最后按四科独立流程逐题复算 8825 题，修正答案与解析矛盾、缺失答案、题干与答案不一致等 200 余处；数分 75 道仅分类标签与实际题型不符，数学内容已核对。',
     items: [
       { group: '技能包同步', text: '重新生成网页内置技能包：advanced-algebra 改为新版 ch01–ch10；mathematical-analysis 保留 ch01–ch23 并更新章节正文；analytic-geometry 更新六章；western-economics 新增第0章导论，共 17 章。' },
       { group: '知识点搜索', text: '章节识别增加“去掉的/性后的标题包含”匹配：搜索“函数的连续”定位第四章，不再落到第一章；本地已命中直接讲解时，AI 不得用“没有检索到”覆盖；重生成 skills.json。' }
@@ -22070,9 +22070,26 @@ function initNotifications() {
   var previousSummary = typeof state.notifUpdateSummary === 'string'
     ? state.notifUpdateSummary
     : (lastUpdate && typeof lastUpdate.updateSummary === 'string' ? lastUpdate.updateSummary : (lastUpdate ? notifParseUpdateSummary(lastUpdate.body) : ''));
+  var previousNotifyItems = Array.isArray(state.notifNotifyItems) ? state.notifNotifyItems : [];
+  var notifyDelta = latest && Array.isArray(latest.notifyItems) && latest.notifyItems.length
+    ? latest.notifyItems.filter(function (it) {
+        var group = it.group || '更新';
+        var text = String(it.text || '');
+        if (previousNotifyItems.length) {
+          return !previousNotifyItems.some(function (p) { return p && (p.group || '更新') === group && String(p.text || '') === text; });
+        }
+        return !previousItems.some(function (p) { return p && (p.group || '更新') === group; });
+      })
+    : [];
+  var hasPreviousEdition = !!(previousNotifyItems.length || previousItems.length);
   var delta = latest && Array.isArray(latest.notifyItems) && latest.notifyItems.length
-    ? { items: latest.notifyItems, summary: String(latest.summary || ''), summaryChanged: !!latest.summary && String(latest.summary || '') !== String(previousSummary || '') }
+    ? { items: (hasPreviousEdition ? notifyDelta : latest.notifyItems), summary: String(latest.summary || ''), summaryChanged: !!latest.summary && String(latest.summary || '') !== String(previousSummary || '') }
     : (latest ? notifUpdateDelta(latest, previousItems, previousSummary) : { items: [], summary: '', summaryChanged: false });
+  var previousSummaryText = String(previousSummary || '');
+  var deltaSummaryText = String(delta.summary || '');
+  if (delta.summaryChanged && previousSummaryText && deltaSummaryText.indexOf(previousSummaryText) === 0) {
+    delta.summary = deltaSummaryText.slice(previousSummaryText.length).replace(/^[\s；;，,。、:：\-—]+/, '');
+  }
   var hasNewContent = delta.items.length > 0 || (delta.summaryChanged && !!delta.summary);
   var sameEdition = !!(lastUpdate && latest && String(lastUpdate.title || '').indexOf(String(latest.date || '')) >= 0);
   if (latest && contentChanged && !alreadyNotified && hasNewContent) {
@@ -22100,6 +22117,7 @@ function initNotifications() {
     if (buildId) state.notifBuildId = buildId;
   }
   if (latest) {
+    state.notifNotifyItems = (latest.notifyItems || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; });
     state.notifUpdateItems = (latest.items || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; });
     state.notifUpdateSummary = String(latest.summary || '');
   }
