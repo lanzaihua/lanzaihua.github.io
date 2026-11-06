@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.07-2f4df1ce";</script>
+<script>window.__BUILD_ID__="2026.11.07-688d51e9";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -493,7 +493,7 @@ table.data .num-cell { font-family: var(--font-mono); font-size: 11px; color: va
 .tpl-body { padding: 2px 20px 18px; border-top: 1px solid var(--line); }
 .md-copy-row { display: flex; justify-content: flex-end; margin: 0 0 2px; }
 .tpl-sec { margin-top: 12px; }
-.tpl-sec h5 { margin: 0 0 4px; font-size: 10.5px; letter-spacing: .16em; color: var(--faint); font-weight: 600; }
+.tpl-sec h4 { margin: 0 0 4px; font-size: 10.5px; letter-spacing: .16em; color: var(--faint); font-weight: 600; }
 .tpl-sec .md { font-size: 12.5px; line-height: 1.75; }
 .tpl-entry-links { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
 
@@ -10039,6 +10039,8 @@ function wrapBareMathFragmentsLine(src) {
     if (!m) return chunk;
     var core = m[2];
     if (core.length < 2 || !markerRe.test(core)) return chunk;
+    // 星标、章节号这类标题元信息不是公式，尤其不能把“ · 2★”渲染成 ⋅ 2 ★。
+    if (/[★☆]/.test(core)) return chunk;
     if (core.indexOf('\uE000F') >= 0) return chunk;
     if (/^\s*#{1,6}\s/.test(core) || /^\s*[-*+]\s/.test(core) || /\d{4}-\d{2}-\d{2}/.test(core)) return chunk;
     if (/[#*\`>]/.test(core)) return chunk;
@@ -11376,7 +11378,7 @@ function viewEntries(subjectId) {
   } else {
     listHtml = '<div class="entry-list">' + list.map(renderEntryCard).join('') + '</div>';
   }
-  return head + (all.length ? toolbar + filterMeta : '') + listHtml;
+  return head + (all.length ? toolbar + filterMeta : '') + '<h2 class="sr-only">错题列表</h2>' + listHtml;
 }
 
 function segButton(value, label, active) {
@@ -12132,7 +12134,7 @@ function viewTemplates(subjectId) {
           '<div class="tpl-body">' +
             '<div class="md-copy-row"><button class="linkish" data-act="copy-template-md" data-template="' + attr(t.id) + '" type="button">复制 Markdown</button></div>' +
             (t.sections || []).map(function (s) {
-              return '<div class="tpl-sec"><h5>' + renderInline(s.label) + '</h5><div class="md">' + renderMarkdown(s.md) + '</div></div>';
+              return '<div class="tpl-sec"><h4>' + renderInline(s.label) + '</h4><div class="md">' + renderMarkdown(s.md) + '</div></div>';
             }).join('') +
             (rel.length ? '<div class="tpl-entry-links">' + rel.map(function (e) {
               return '<button class="chip" data-act="jump-entry" data-id="' + attr(e.id) + '" type="button">关联 ' + esc(e.code) + '</button>';
@@ -12149,7 +12151,7 @@ function viewTemplates(subjectId) {
     '</button>';
   }).join('') + '</nav>' : '';
 
-  return head + chapterNav + (q ? '<p class="form-note">搜索「' + esc(q) + '」的结果</p>' : '') +
+  return head + chapterNav + '<h2 class="sr-only">模板章节</h2>' + (q ? '<p class="form-note">搜索「' + esc(q) + '」的结果</p>' : '') +
     (tpls.length ? body : emptyState('没有匹配的模板', '换个关键词，或清空搜索。', ''));
 }
 
@@ -12179,8 +12181,8 @@ function viewBank(subjectId) {
 
   var bankBook = bookLabelFor(subjectId);
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bankBook ? ' · ' + esc(bankBook) : '') + ' / QUESTION BANK</p>' +
-    '<h1 class="page-title">题库 · 考研同型 + 教材课后</h1>' +
-    '<p class="page-sub">按考研大纲与教材章节整理的考研原创同型题及教材课后习题，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '第一章至第十章排序。' : '') + '</p></div>' +
+    '<h1 class="page-title">题库</h1>' +
+    '<p class="page-sub">考研同型 + 教材课后：按考研大纲与教材章节整理的考研原创同型题及教材课后习题，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '第一章至第十章排序。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="templates" type="button">看模板</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
@@ -12213,7 +12215,8 @@ function viewBank(subjectId) {
     list = '<div class="bank-list">' + shown.map(renderBankItem).join('') + '</div>' +
       (filtered.length > shown.length ? '<div class="bank-more"><button class="btn" data-act="bank-show-more" type="button">加载更多 · 已显示 ' + shown.length + ' / ' + filtered.length + '</button></div>' : '');
   }
-  return head + toolbar + list;
+  var listHead = '<h2 class="sr-only">题目列表</h2>';
+  return head + toolbar + listHead + list;
 }
 
 function renderBankItem(it) {
@@ -12225,7 +12228,7 @@ function renderBankItem(it) {
   return '<article class="bank-item' + (open ? ' is-open' : '') + '" id="bank-' + attr(it.id) + '">' +
     '<div class="bank-top">' +
       '<span class="bank-id">' + esc(it.id) + '</span>' +
-      '<h3 class="bank-title">' + renderInline(it.title) + '</h3>' +
+      '<h3 class="bank-title">' + esc(it.title) + '</h3>' +
       '<span class="bank-meta">' +
         (it.templateId ? '<span class="chip">' + esc(it.templateId) + '</span>' : '') +
         '<span class="chip chip-star">' + stars(it.difficulty) + '</span>' + '<span class="chip">' + esc(it.type === 'choice' ? '客观题' : it.type === 'fill' ? '填空题' : '主观题') + '</span>' + '<span class="chip chip-exam">' + (it.examOrigin === '教材课后习题' ? '教材课后' : '考研同型') + '</span>' +
@@ -16410,21 +16413,26 @@ var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_M
 var UPDATE_LOG = [
   {
     date: '2026-11-07',
-    title: '公式渲染与定界符',
-    historyTitle: '公式渲染与定界符',
-    summary: '修复错题与题库中落单美元符号导致的公式源码泄漏；长矩阵证明中的转置、上下标与长公式恢复公式排版；补全被截断的 23 条解题要点；构建与 QA 新增美元定界符成对校验，防止同类问题再次进入页面。',
+    title: '全站排版与仓库校准',
+    historyTitle: '全站排版与仓库校准',
+    summary: '修复题库标题把章节号与星级当公式的问题，补齐题库、模板库与错题列表的标题层级；逐块核对 16 个日期的更新记录，删去 11-05 里引用 11-06 的未来句；同步仓库 README、CHANGELOG 与截图引用，并复查手机、平板、电脑三端布局与公式滚动。',
     items: [
+      { group: '题库标题', text: '西方经济学题库标题里的“· 2★”不再被公式渲染器拆成三行；题库标题按纯文本输出，题库页主标题收为“题库”，副标题写明“考研同型 + 教材课后”。' },
+      { group: '标题层级', text: '题库页、模板库与错题列表补上隐藏的二级标题，模板章节小节由 h5 改为 h4；视觉字号不变，读屏与大纲顺序更连贯。' },
+      { group: '记录日期', text: '逐块核对 16 个日期的更新记录与构建日：删去 11-05 块里引用 11-06 的未来句，历史块只描述当天状态。' },
+      { group: '仓库文档', text: 'README、CHANGELOG 与 GitHub README 的 11-07 区块同步为本轮 9 项/9 组；九个徽章颜色逐项复核为两两不同，截图引用统一到 20261107。' },
+      { group: '三端复查', text: '390 / 820 / 1440 三档视口复查首页、四科总览/错题/模板库/题库/规范、笔记库、期末复习与更新记录：无横向溢出、无脚本错误，长公式仍按块横向滚动。' },
       { group: '公式定界', text: '错题正文里落单的美元符号不再把后半段 LaTeX 当普通文字显示；行内公式、独立公式与代码块里的 x 都按原样渲染。' },
       { group: '矩阵与转置', text: '修复矩阵证明中的转置符号、上下标和长公式排版：转置正确上标，长公式按块横向滚动，不再出现 LaTeX 源码与文字混排。' },
       { group: '题库要点', text: '补全 23 道题被截断的解题要点（高代 15 道、解几 8 道），把拆散的公式重新拼成完整表达式。' },
-      { group: '质量门禁', text: 'Markdown 回归测试新增落单美元符号、LaTeX 源码与公式数量的断言；QA 与构建新增美元符号成对检查，公式被截断或定界符不配对时直接失败。' },
-      { group: '本轮通知', text: '本版只新增这一条更新通知，内容仅列本轮公式与题库修复，不复用 11-06 的旧通知。' }
+      { group: '质量门禁', text: 'Markdown 回归测试新增落单美元符号、LaTeX 源码与公式数量的断言；QA 与构建新增美元符号成对检查，公式被截断或定界符不配对时直接失败。' }
     ],
     notifyItems: [
-      { group: '公式定界', text: '修复错题正文落单美元符号导致的公式源码泄漏；合法行内公式、独立公式与代码块内的 x 不受影响。' },
-      { group: '矩阵与转置', text: '矩阵证明里的转置、上下标和长公式恢复排版，长公式可横向滚动，不再出现 LaTeX 源码。' },
-      { group: '题库要点', text: '补全 23 道被截断的解题要点（高代 15、解几 8），公式重新拼完整。' },
-      { group: '质量门禁', text: 'QA 与构建新增美元符号成对校验，Markdown 回归测试覆盖落单美元符号，同类问题会被阻断。' }
+      { group: '题库标题', text: '西经题库标题里的“· 2★”不再被当成公式，标题按纯文本显示；题库页主标题收为“题库”，副标题说明考研同型与教材课后。' },
+      { group: '标题层级', text: '题库、模板库和错题列表补齐二级标题，模板小节改为四级标题，阅读顺序更清楚。' },
+      { group: '记录日期', text: '删掉 11-05 块里引用 11-06 的未来句，历史更新只描述当天状态。' },
+      { group: '仓库文档', text: 'README、CHANGELOG 与 GitHub README 同步本轮；九个徽章颜色与 20261107 截图引用逐项复核。' },
+      { group: '三端复查', text: '390 / 820 / 1440 全路由复查无横向溢出，长公式仍可横向滚动。' }
     ]
   },
   {
@@ -16447,7 +16455,7 @@ var UPDATE_LOG = [
     date: '2026-11-05',
     title: '数据安全、公式与开源',
     historyTitle: '数据安全、公式与开源',
-    summary: '同步四个学科 skill 的最新内容，修复知识点搜索、公式渲染与三端对齐；统一全站标题、正文、卡片与三端字号节奏；重写 150 道定理证明题的完整解答与 46 道公式变异反例题；清理 187 道客观题的重复选项；题库加入 575 道教材课后习题；收口标题与选项换行；新增页面一致性、解答质量、题型边界与原始公式校验。按四科独立流程逐题审计 8825 题的结构、标签与答案一致性，修正可定位的答案矛盾、缺失答案、题干不一致等 200 余处；数分 75 道仅分类标签与实际题型不符，已按实际题型归位。再按截图逐类排查：重写 40 道通用选项、修复 27 道逻辑符号损坏、收口 63 道比较型填空、对齐 11 道矛盾答案，并给 AI 出题与构建加上永久门禁。另修复高代二次型配方解答中 57 道题、154 处 +- 与负分母分式写法。' + ' 本轮再修复数据安全与渲染边界：保存失败不再提示成功、两个标签页的改动自动合并并为同题冲突保留副本、畸形/超版本/截断备份安全拒绝且保留当前数据；公式源码回退清零，代码块内 $x$ 与 LaTeX 原样保留；2027 年官方安排尚未接入本项目，先用固定日期兜底并明确提示，11-06 已换为官方表；修正高代模板反例与导数记号。',
+    summary: '同步四个学科 skill 的最新内容，修复知识点搜索、公式渲染与三端对齐；统一全站标题、正文、卡片与三端字号节奏；重写 150 道定理证明题的完整解答与 46 道公式变异反例题；清理 187 道客观题的重复选项；题库加入 575 道教材课后习题；收口标题与选项换行；新增页面一致性、解答质量、题型边界与原始公式校验。按四科独立流程逐题审计 8825 题的结构、标签与答案一致性，修正可定位的答案矛盾、缺失答案、题干不一致等 200 余处；数分 75 道仅分类标签与实际题型不符，已按实际题型归位。再按截图逐类排查：重写 40 道通用选项、修复 27 道逻辑符号损坏、收口 63 道比较型填空、对齐 11 道矛盾答案，并给 AI 出题与构建加上永久门禁。另修复高代二次型配方解答中 57 道题、154 处 +- 与负分母分式写法。' + ' 本轮再修复数据安全与渲染边界：保存失败不再提示成功、两个标签页的改动自动合并并为同题冲突保留副本、畸形/超版本/截断备份安全拒绝且保留当前数据；公式源码回退清零，代码块内 $x$ 与 LaTeX 原样保留；2027 年官方安排尚未接入本项目，先用固定日期兜底并明确提示；修正高代模板反例与导数记号。',
     items: [
       { group: '技能包同步', text: '重新生成网页内置技能包：advanced-algebra 改为新版 ch01–ch10；mathematical-analysis 保留 ch01–ch23 并更新章节正文；analytic-geometry 更新六章；western-economics 新增第0章导论，共 17 章。' }
       , { group: '知识点搜索', text: '章节识别增加“去掉的/性后的标题包含”匹配：搜索“函数的连续”定位第四章，不再落到第一章；本地已命中直接讲解时，AI 不得用“没有检索到”覆盖；重生成 skills.json。' }
@@ -16493,7 +16501,7 @@ var UPDATE_LOG = [
       , { group: '导入防护', text: '导入备份先校验结构与版本：超过 30MB、版本高于当前支持、字段类型错误、截断 gzip 一律拒绝并保留现有数据；合法备份会清除 null 笔记本/页面等畸形集合后再合并或覆盖。' }
       , { group: '公式回退', text: '修掉公式源码回退：Σ、lim/sup/max 等裸运算符、Unicode 负号、填空下划线 a_n=____、带区间 [a,b] 的公式都能正常渲染；全库 44,698 个题干/解答/选项/模板字段扫描为 0 处 math-raw。' }
       , { group: '代码保护', text: '代码块与行内代码不再被当成公式：`$x$`、`\\frac{1}{2}` 等按原文逐字显示；代码外的普通公式照常渲染。' }
-      , { group: '节假日日历', text: '2026 继续用官方节假日表；2027 年官方安排尚未接入，暂用元旦、清明、劳动、国庆固定日期兜底，2027-01-01 不再被当工作日；日历未内置的年份会明确提示“节假日判断可能不准”，不再静默按普通工作日处理。11-06 已接入官方 2027 放假与调休表。' }
+      , { group: '节假日日历', text: '2026 继续用官方节假日表；当时 2027 年官方安排尚未接入，暂用元旦、清明、劳动、国庆固定日期兜底，2027-01-01 不再被当工作日；日历未内置的年份会明确提示“节假日判断可能不准”，不再静默按普通工作日处理。' }
       , { group: '模板反例', text: '高代模板 T-01-03 的“Q 上不可约不代表 R 上不可约”反例由 x²+1 改为 x²−2；T-01-04 的重因式判据改用导数记号 f^(k−1)/f^(k)，避免把多项式幂当成导数。' }
       , { group: '回归测试', text: '新增 6 项行为测试，覆盖畸形集合清洗、损坏存储判定、并发标签合并与冲突副本、2027 假日兜底、模板反例与导数记号、代码内 LaTeX 与填空下划线；测试总数 24。' }
     ],
