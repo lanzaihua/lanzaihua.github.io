@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-9B2C1F?style=for-the-badge&labelColor=651C14" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.05-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.05-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.06-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.06-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6520?style=for-the-badge&labelColor=5E4516" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-4B3F8F?style=for-the-badge&labelColor=322A66" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B3E76?style=for-the-badge&labelColor=4C2A54" alt="GitHub Pages"></a>
@@ -146,6 +146,17 @@
 </details>
 
 ## 更新记录
+
+### 2026-11-06 · 日期与构建校验
+
+**2 项 · 2 组**
+
+构建号改为按本机实际日期生成，更新记录与仓库文档不再固定 2026-11-05；发布前统一核对构建号、三端页面与仓库文档。
+
+| 分组 | 本次更新 |
+|---|---|
+| **日期校准** | 构建号日期改为读取本机实际日期，不再硬编码 2026.11.05；本版构建号、更新记录与仓库文档统一为 2026-11-06。 |
+| **发布校验** | 发布前统一核对构建号、更新记录、README 与线上三端页面，避免版本日期与文档日期脱节。 |
 
 ### 2026-11-05 · 数据安全、公式与开源
 

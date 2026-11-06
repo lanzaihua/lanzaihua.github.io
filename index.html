@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.05-7ce25e78";</script>
+<script>window.__BUILD_ID__="2026.11.06-ba6322b6";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -16334,6 +16334,20 @@ function autoAiPendingCount() {
 var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_ID__) || '').match(/^(\d{4})\.(\d{2})\.(\d{2})/);
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [
+  {
+    date: '2026-11-06',
+    title: '日期与构建校验',
+    historyTitle: '日期与构建校验',
+    summary: '构建号改为按本机实际日期生成，更新记录与仓库文档不再固定 2026-11-05；发布前统一核对构建号、三端页面与仓库文档。',
+    items: [
+      { group: '日期校准', text: '构建号日期改为读取本机实际日期，不再硬编码 2026.11.05；本版构建号、更新记录与仓库文档统一为 2026-11-06。' },
+      { group: '发布校验', text: '发布前统一核对构建号、更新记录、README 与线上三端页面，避免版本日期与文档日期脱节。' }
+    ],
+    notifyItems: [
+      { group: '日期校准', text: '构建号日期改为读取本机实际日期，不再固定为 2026.11.05；本版构建号与更新记录统一为 2026-11-06。' },
+      { group: '发布校验', text: '发布前统一核对构建号、更新记录、README 与线上三端页面，避免版本日期与文档日期脱节。' }
+    ]
+  },
   {
     date: '2026-11-05',
     title: '数据安全、公式与开源',
