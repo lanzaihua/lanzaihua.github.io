@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-9B2C1F?style=for-the-badge&labelColor=651C14" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.06-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.06-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.07-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.07-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6520?style=for-the-badge&labelColor=5E4516" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-4B3F8F?style=for-the-badge&labelColor=322A66" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B3E76?style=for-the-badge&labelColor=4C2A54" alt="GitHub Pages"></a>
@@ -21,7 +21,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261106-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261107-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -88,7 +88,7 @@
 - 设定考试日期和时长，自动拆成基础回顾、强化训练、冲刺模拟三段，并排进每日任务。
 - 错题和题库题可加入期末材料；模拟卷按时长和章节选题，分值按题型和难度智能分配（客观题单题不超过 7 分，主观题按难度加权，总分 100），可手动修改。
 - 卷子可在线改题、改答案、改分值、调顺序、补题或删题。
-- AI 批改的错误点、要点、易错点和用户作答统一按 Markdown + LaTeX 渲染；加入错题时保留完整选项、用户错选、作答与卡点，不再出现原始 $...$。手写图片以白底 PNG 随题发送并要求 AI 先转写再批改，未识别时保守复核。
+- AI 批改的错误点、要点、易错点和用户作答统一按 Markdown + LaTeX 渲染；加入错题时保留完整选项、用户错选、作答与卡点，不再出现原始 $$...$$。手写图片以白底 PNG 随题发送并要求 AI 先转写再批改，未识别时保守复核。
 - 导出 DOCX，或打开打印窗口另存为 PDF。
 
 ### 文案原则
@@ -111,18 +111,18 @@
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261106-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
-<td width="50%"><img src="assets/v2/20261106-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261107-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
+<td width="50%"><img src="assets/v2/20261107-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261106-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261106-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
+<td width="50%"><img src="assets/v2/20261107-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261107-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
-<p align="center"><img src="assets/v2/20261106-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
+<p align="center"><img src="assets/v2/20261107-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
 
-<p align="center"><img src="assets/v2/20261106-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
+<p align="center"><img src="assets/v2/20261107-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
@@ -146,6 +146,20 @@
 </details>
 
 ## 更新记录
+
+### 2026-11-07 · 公式渲染与定界符
+
+**5 项 · 5 组**
+
+修复错题与题库中落单美元符号导致的公式源码泄漏；长矩阵证明中的转置、上下标与长公式恢复公式排版；补全被截断的 23 条解题要点；构建与 QA 新增美元定界符成对校验，防止同类问题再次进入页面。
+
+| 分组 | 本次更新 |
+|---|---|
+| **公式定界** | 错题正文里落单的美元符号不再把后半段 LaTeX 当普通文字显示；行内公式、独立公式与代码块里的 x 都按原样渲染。 |
+| **矩阵与转置** | 修复矩阵证明中的转置符号、上下标和长公式排版：转置正确上标，长公式按块横向滚动，不再出现 LaTeX 源码与文字混排。 |
+| **题库要点** | 补全 23 道题被截断的解题要点（高代 15 道、解几 8 道），把拆散的公式重新拼成完整表达式。 |
+| **质量门禁** | Markdown 回归测试新增落单美元符号、LaTeX 源码与公式数量的断言；QA 与构建新增美元符号成对检查，公式被截断或定界符不配对时直接失败。 |
+| **本轮通知** | 本版只新增这一条更新通知，内容仅列本轮公式与题库修复，不复用 11-06 的旧通知。 |
 
 ### 2026-11-06 · 日期、构建与节假日
 
@@ -205,7 +219,7 @@
 | **AI 出题** | AI 出题不再接受“只有题干、没有选项”的题：题干含选择括号但类型不是 choice、选项不足 4 个、选项为空或重复、填空没有 ____ 或答案为空，一律判无效并回退标准题库。 |
 | **界面校准** | 首页主标题恢复 58px 上限，内页标题收至 34px 上限；页头操作按钮桌面端底对齐、手机端顶对齐；静态版本地存储说明统一为“本机保存 · 可导出/导入备份”，不再提 server.js；期末复习重复的英文眉题改为“FINAL REVIEW / 复习与模拟卷”；规范页附录标题不再用“·”，避免被公式渲染；更新记录默认显示前 6 组，可一键展开全部。 |
 | **记号清理** | 逐条重写高代二次型配方题中被压平成 a+-b 的系数：57 道题、154 处 +-、负分母与嵌套分式全部按有理数精确化简，恢复为单个 + 或 - 与正常分式；题库四科再扫 +-、-+、负分母为 0。 |
-| **质检门禁** | 严格 QA 与 build 新增永久门禁：通用废话选项≥2、答案字母与正确项不一致、空选项或重复选项、填空空位数不为 1、损坏运算符、单反斜杠数字、负平方根式、$...$ 内换行，任一命中即阻止构建。 |
+| **质检门禁** | 严格 QA 与 build 新增永久门禁：通用废话选项≥2、答案字母与正确项不一致、空选项或重复选项、填空空位数不为 1、损坏运算符、单反斜杠数字、负平方根式、$$...$$ 内换行，任一命中即阻止构建。 |
 | **保存回执** | 保存失败不再显示“已保存”：编辑器与笔记只有在确实写入本机存储后才提示成功；配额耗尽、禁用存储或存储损坏时保留对话框与草稿，并提示先修复存储或导出备份。 |
 | **多标签合并** | 两个标签页同时编辑不再静默覆盖：写盘前读取并合并另一标签的改动，各自新增都保留；同一条目内容冲突时保留较新版本，并把另一版本存为带“副本”标记的独立条目，便于找回。 |
 | **导入防护** | 导入备份先校验结构与版本：超过 30MB、版本高于当前支持、字段类型错误、截断 gzip 一律拒绝并保留现有数据；合法备份会清除 null 笔记本/页面等畸形集合后再合并或覆盖。 |
@@ -318,7 +332,7 @@
 | **笔记** | 笔记库的笔记本区改为左对齐三列网格，卡片缩小到 220px 宽、18px 间距；新建卡标题、页数和操作行对齐，卡片等高；平板两列、手机单列。 |
 | **设置** | 暂存箱与思考模式位置互换，AI 与智能录入分组保持原有功能；智能录入报错时检查 API Key、协议、Base URL 与模型是否匹配；导出的备份不包含任何 AI 设置。 |
 
-<img src="assets/v2/20261106-changelog.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/20261107-changelog.png" alt="网页内更新记录" width="820">
 
 ### 技能、翻译与交互
 
