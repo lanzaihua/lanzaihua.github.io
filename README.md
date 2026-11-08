@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.08-4-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.08--5e5e6728-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.08--dfabb5e9-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -152,7 +152,7 @@
 
 **48 项 · 48 组**
 
-在 11-08 既有 39 项基础上，本轮补 9 项公式与排版修复：中文行文里的裸算术、Unicode 上下标与中文分式统一归一，全库 92837 个字段扫描 raw=0、公式 token=0；MathML 盒模型从行内文本盒改为 inline math，分式、矩阵与上下标不再压行；小题（1）（2）自动分段，错题保留 A–D 选项，题库标题去掉重复星级，移动端操作按钮改为两列。共 48 项 / 48 组，37 项测试、严格 QA 与站点一致性通过。
+在 11 月 8 日既有 39 项基础上，本轮补 9 项公式与排版修复：中文行文里的算式、Unicode 上下标与中文分式统一整理，全库逐字段复扫无残留公式源码；分式、矩阵与上下标不再压住相邻文字；小题自动分段，错题保留选项，题库标题去掉重复星级，手机端操作按钮改为两列。共 48 项 / 48 组，37 项测试、严格 QA 与站点一致性通过。
 
 | 分组 | 本次更新 |
 |---|---|
