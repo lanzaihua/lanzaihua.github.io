@@ -8,20 +8,20 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-9B2C1F?style=for-the-badge&labelColor=651C14" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.07-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.07-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.08-1F6B4A?style=for-the-badge&labelColor=144A32" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.08-24547A?style=for-the-badge&labelColor=173A58" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-8A6520?style=for-the-badge&labelColor=5E4516" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-4B3F8F?style=for-the-badge&labelColor=322A66" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-6B3E76?style=for-the-badge&labelColor=4C2A54" alt="GitHub Pages"></a>
-<a href="#功能"><img src="https://img.shields.io/badge/UI-10%20LANGUAGES-A6531F?style=for-the-badge&labelColor=713812" alt="10 languages"></a>
+<a href="#功能"><img src="https://img.shields.io/badge/UI-中文%2BAI-A6531F?style=for-the-badge&labelColor=713812" alt="Built-in Chinese, other languages with AI"></a>
 <a href="#屏幕适配"><img src="https://img.shields.io/badge/DOCS-3%20SCREENS-3F625E?style=for-the-badge&labelColor=2B4744" alt="Three screens"></a>
 </p>
 
-<p><b>联系</b> <a href="mailto:3554833568@qq.com">3554833568@qq.com</a> · <b>118</b> 解答模板 · <b>8825</b> 道题库 · <b>4</b> 科 · <b>10</b> 种语言 · <b>0</b> 注册</p>
+<p><b>联系</b> <a href="mailto:3554833568@qq.com">3554833568@qq.com</a> · <b>118</b> 解答模板 · <b>8825</b> 道题库 · <b>4</b> 科 · <b>内置中文</b> · <b>0</b> 注册</p>
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261107-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261108-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -95,15 +95,16 @@
 
 - **学术与题目文本**：题目、证明、解答、解析、模板和知识要点使用正式、准确、克制的学术书面语；术语按目标语言教材与期刊惯例，不用网络口语、卖萌、感叹号或表情。
 - **欢迎、提醒与询问**：欢迎、引导、提醒、确认和空状态使用温和、亲切、具体的第二人称；不命令、不责备、不夸张承诺。
-- **十语言一致**：界面翻译与 AI 生成使用同一套语气规则；翻译缓存升级到 v10 后重新生成。
+- **多语言语气一致**：界面翻译与 AI 生成使用同一套语气规则；翻译缓存升级到 v11 后重新生成。
 
 ### 数据、备份与语言
 
 - 数据默认只在本机浏览器；换设备或清缓存前请先导出备份。
-- JSON 备份包含错题、模板、题库、笔记和知识笔记；支持合并或覆盖导入。
+- JSON 备份默认只含用户错题、用户自建模板/题库、笔记和设置；内置 8825 道题库与 118 张模板由页面自带，不写入备份，导入也不会回滚内置题库。支持合并或覆盖导入。
 - 当前语言备份会预翻译内容并输出 gzip 压缩的 <code>.json.gz</code>，文件更小。
-- 10 种语言：简体中文、繁體中文、English、Français、Deutsch、日本語、한국어、Português、Русский、Español。
-- 语言选择持久化；界面、题库、规范、笔记和弹窗使用同一套翻译缓存。
+- 界面内置简体中文；繁體中文部分内置；English、Français、Deutsch、日本語、한국어、Português、Русский、Español 需要在设置里配置 AI 后生成并缓存，未配置时仍可正常使用简体中文。
+- 语言选择持久化；界面、题库、规范、笔记和弹窗使用同一套翻译缓存（v11）。
+- 单文件页面首次打开需要联网加载；首次成功打开后，浏览器会注册离线缓存，断网刷新可回到最近一次成功页面，数据仍只在本机。
 
 ## 界面
 
@@ -111,18 +112,18 @@
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261107-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
-<td width="50%"><img src="assets/v2/20261107-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261108-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
+<td width="50%"><img src="assets/v2/20261108-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261107-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261107-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
+<td width="50%"><img src="assets/v2/20261108-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261108-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
-<p align="center"><img src="assets/v2/20261107-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
+<p align="center"><img src="assets/v2/20261108-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
 
-<p align="center"><img src="assets/v2/20261107-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
+<p align="center"><img src="assets/v2/20261108-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
@@ -146,6 +147,31 @@
 </details>
 
 ## 更新记录
+
+### 2026-11-08 · 审计修复与离线
+
+**16 项 · 16 组**
+
+按 2026-11-08 审计报告修复可落地项：Markdown 白名单与表格、可访问性对比度、局域网口令与凭据隔离、PDF 导入重试、备份瘦身、构建自带 skills、QA 脚本、离线缓存、静态资源与未知路由提示；28 项测试通过，题库 8825 与三端布局保持。
+
+| 分组 | 本次更新 |
+|---|---|
+| **渲染白名单** | 修复 Markdown 渲染吞字与转义标签被拆成公式：保留粗体、斜体等行内标签与字面尖括号，未知标签解包保留文字，脚本、iframe 等危险标签整棵删除；新增回归测试。 |
+| **表格渲染** | 表格行不再被当裸公式包成 `$...$`；题库、错题和笔记里的 Markdown 表格现在渲染为表格，单元格内公式仍按行内公式处理。 |
+| **可访问性** | 科目页签补 `role="tablist"` 与 aria-label，品牌和首页入口的 aria-label 与可见文字一致；浅色 `--faint` 提到 `#687065`，暗色提到 `#9aa091`，对比度达标。 |
+| **PDF 重试** | PDF 库加载失败后不再缓存失败 Promise；一次网络失败后可直接重试，不必刷新页面。 |
+| **局域网口令** | `node server.js --lan` 未设 `NOTEBOOK_TOKEN` 时自动生成随机口令、打印口令并以失败关闭方式启动；无口令请求返回 401。 |
+| **凭据隔离** | 本机服务默认不读取 `~/.dsh` 中的凭据；只有显式设置 `ALLOW_DSH_CREDENTIAL_REUSE=1` 才复用，避免静默使用未授权配置。 |
+| **打印横幅** | 打印时不再把 LOCAL FIRST 提示印在纸上；服务启动日志里的“三科错题本”改为“四科错题本”。 |
+| **备份瘦身** | 备份默认只含用户错题、自建模板/题库、笔记和设置；内置 8825 题与 118 张模板不写入，导入不会回滚内置库；备份 schema 升到 v4。 |
+| **构建自带技能** | 四个学科 skill 优先从仓库 `skills/` 读取，`SKILLS_ROOT` 不可用也能构建；干净 clone 不再依赖作者家目录。 |
+| **离线缓存** | 新增 service worker：首次成功打开后缓存页面，断网刷新可回最近一次成功页面；静态托管仍保持网络优先。 |
+| **静态资源** | 补 `robots.txt`、`sitemap.xml`、`manifest.webmanifest`、`favicon.svg`、`404.html` 与 canonical/og/twitter 元数据；构建与发布同时复制这些文件。 |
+| **未知路由** | 不存在的 `#/` 链接不再静默停留：提示“链接指向的页面不存在”，并把地址纠正到首页或当前科目总览。 |
+| **模板计数** | 首页与总览的模板数改为与模板库一致，包含用户新建模板；西经入口不再写死 16 张。 |
+| **密钥提示** | 设置页 API Key 区域注明密钥只存本机 localStorage、导出备份会剔除、换设备需重新填写。 |
+| **语言口径** | README 不再写“10 种语言内置”：内置简体中文，繁體中文部分内置，其余 8 种需配置 AI 生成；徽章改为“中文 + AI”。 |
+| **QA 脚本** | 三个 QA 脚本改用动态端口和临时服务器，自动关闭欢迎弹窗并写入隔离种子；i18n 缓存键从源码读取，公式脚本不再依赖 Python。 |
 
 ### 2026-11-07 · 全站排版与仓库校准
 
@@ -336,7 +362,7 @@
 | **笔记** | 笔记库的笔记本区改为左对齐三列网格，卡片缩小到 220px 宽、18px 间距；新建卡标题、页数和操作行对齐，卡片等高；平板两列、手机单列。 |
 | **设置** | 暂存箱与思考模式位置互换，AI 与智能录入分组保持原有功能；智能录入报错时检查 API Key、协议、Base URL 与模型是否匹配；导出的备份不包含任何 AI 设置。 |
 
-<img src="assets/v2/20261107-changelog.png" alt="网页内更新记录" width="820">
+<img src="assets/v2/20261108-changelog.png" alt="网页内更新记录" width="820">
 
 ### 技能、翻译与交互
 
@@ -463,6 +489,8 @@
 - 错题默认只存在当前浏览器；换浏览器、换设备或清缓存不会自动迁移。
 - AI Key 只存在浏览器；使用本机 server 时，页面携带的配置会发到你自己的服务端。
 - 纯静态页的 AI 直连依赖接口 CORS；被浏览器拦截时请改用本机 server。
+- 题库不伪造缺失字段：当前 verification 与 relatedEntries 为空，数学分析的 templateId 也为空，页面不会显示空标签；需要完整字段时请以教材与标准解答为准。
+- 页面是约 14.6MB 的单文件，首次打开需下载整包；目前未做题库懒加载或 IndexedDB 分片。
 - 模型输出可能出错，请对照题干、课本和定理依据核对。
 - 页面是学习辅助工具，不保证 AI 解答正确，也不替代教材、老师和考试要求。
 

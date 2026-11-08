@@ -7,11 +7,22 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.07-688d51e9";</script>
+<script>window.__BUILD_ID__="2026.11.08-8e8bbf2a";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23b23a26'/%3E%3Ctext x='32' y='45' font-size='38' font-family='serif' text-anchor='middle' fill='%23fff8f2'%3E%E9%A2%98%3C/text%3E%3C/svg%3E">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://lanzaihua.github.io/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="四科错题本">
+<meta property="og:title" content="四科错题本 · 高代 / 数分 / 解几 / 西经">
+<meta property="og:description" content="四科错题、题型模板、考研同型题库、AI 智能录入、期末复习与手写笔记，数据默认只留在本机。">
+<meta property="og:url" content="https://lanzaihua.github.io/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="四科错题本">
+<meta name="twitter:description" content="四科错题、模板、题库与期末复习，数据默认只留在本机。">
 <style>
 
 /* =========================================================
@@ -28,7 +39,7 @@
   --ink: #1d211c;
   --ink-soft: #3d433a;
   --muted: #6b7167;
-  --faint: #8d9388;
+  --faint: #687065; /* 对比度：#fbf9f3 4.87:1 / #f4f1e9 4.54:1，11px 文本达标 */
   --line: #ddd7c9;
   --line-strong: #c7c0ae;
   --accent: #b23a26;
@@ -61,7 +72,7 @@ html[data-theme="dark"] {
   --ink: #eceadf;
   --ink-soft: #cfcdc0;
   --muted: #a4a89b;
-  --faint: #7d8276;
+  --faint: #9aa091;
   --line: #353a30;
   --line-strong: #4a5042;
   --accent: #df6a52;
@@ -81,7 +92,7 @@ html[data-theme="dark"] {
   html[data-theme="auto"] {
     color-scheme: dark;
     --paper: #161813; --paper-deep: #121410; --surface: #1d201a; --surface-2: #242820; --surface-3: #2c3027;
-    --ink: #eceadf; --ink-soft: #cfcdc0; --muted: #a4a89b; --faint: #7d8276; --line: #353a30; --line-strong: #4a5042;
+    --ink: #eceadf; --ink-soft: #cfcdc0; --muted: #a4a89b; --faint: #9aa091; --line: #353a30; --line-strong: #4a5042;
     --accent: #df6a52; --accent-ink: #1a120e; --accent-soft: #3a231c; --ok: #79b28f; --ok-soft: #1f3328;
     --warn: #d59a5d; --warn-soft: #33261a; --gaodai: #79b28f; --shufen: #8aa8d4; --jieji: #d59a5d; --xijing: #b9a3cd;
     --shadow-card: 0 1px 0 rgba(0, 0, 0, .2), 0 20px 40px -34px #000;
@@ -696,6 +707,8 @@ dialog::backdrop { background: color-mix(in srgb, var(--paper-deep) 62%, transpa
   .main { max-width: none; padding: 0; }
   .entry { break-inside: avoid; box-shadow: none; }
   .entry-body[hidden] { display: block !important; }
+  /* 打印时不要把这台机器的“LOCAL FIRST”横幅印进纸卷。 */
+  .pages-banner { display: none !important; }
 }
 
 /* table legibility: never squeeze columns, scroll inside the wrapper */
@@ -5400,13 +5413,13 @@ p, li, .md p, .md li { text-wrap: pretty; }
       </div>
       <div class="home-subjects" id="homeSubjects"></div>
 
-      <a class="home-notes-entry" href="#/notes" data-act="open-notes-library" aria-label="打开独立笔记库">
+      <a class="home-notes-entry" href="#/notes" data-act="open-notes-library" title="打开笔记库">
         <span class="hne-seal" aria-hidden="true">记</span>
         <span class="hne-main"><b>笔记库</b><small>多页笔记 · 手写标注 · 智能扫描 · 导出 PDF</small></span>
         <span class="hne-action">打开 <span aria-hidden="true">→</span></span>
       </a>
 
-      <a class="home-notes-entry home-final-entry" href="#/final" aria-label="打开期末复习">
+      <a class="home-notes-entry home-final-entry" href="#/final" title="打开期末复习">
         <span class="hne-seal" aria-hidden="true">末</span>
         <span class="hne-main"><b>期末复习</b><small>考试日期 · 智能计划 · 模拟卷 · DOCX / PDF</small></span>
         <span class="hne-action">打开 <span aria-hidden="true">→</span></span>
@@ -5459,7 +5472,7 @@ p, li, .md p, .md li { text-wrap: pretty; }
 
 <div class="app">
   <aside class="rail" aria-label="科目导航">
-    <a class="brand" href="#/home" aria-label="回到四科错题本首页">
+    <a class="brand" href="#/home" aria-label="四科错题本 高代 · 数分 · 解几 · 西经 · 回到首页">
       <span class="brand-seal" aria-hidden="true">题</span>
       <span>
         <span class="brand-name">四科错题本</span>
@@ -5479,7 +5492,7 @@ p, li, .md p, .md li { text-wrap: pretty; }
   <div class="stage">
     <header class="topbar">
       <div class="topbar-inner">
-        <a class="mobile-brand" href="#/home" aria-label="回到四科错题本首页">
+        <a class="mobile-brand" href="#/home" aria-label="四科错题本 · 回到首页">
           <span class="brand-seal" aria-hidden="true">题</span>
           <span class="brand-copy"><span class="brand-name">四科错题本</span><span class="brand-sub notes-brand-sub">多页 · 手写 · 智能扫描 · 导出</span></span>
         </a>
@@ -5489,7 +5502,7 @@ p, li, .md p, .md li { text-wrap: pretty; }
           <span class="view" id="crumbView">总览</span>
         </div>
         <div class="mobile-subjects" id="mobileSubjects" aria-label="切换科目"></div>
-        <nav class="tabs" id="tabs" aria-label="页面视图"></nav>
+        <nav class="tabs" id="tabs" role="tablist" aria-label="科目视图"></nav>
         <div class="cross-tabs" id="crossTabs" aria-label="期末复习与笔记库"></div>
         <div class="top-actions">
           <label class="search">
@@ -10027,7 +10040,7 @@ function wrapBareMathFragmentsLine(src) {
   var text = String(src || '');
   if (!text) return text;
   var store = [];
-  var protectedRe = /\$\$[\s\S]*?\$\$|\$[^$\n]*\$|\uE000C\d+\uE001|\`\`\`[\s\S]*?\`\`\`|\`[^\`]*\`|<\/?[^>]+>/g;
+  var protectedRe = /\$\$[\s\S]*?\$\$|\$[^$\n]*\$|\uE000C\d+\uE001|\`\`\`[\s\S]*?\`\`\`|\`[^\`]*\`|<\/?[^>]+>|&lt;[\s\S]*?&gt;/g;
   text = text.replace(protectedRe, function (m) {
     store.push(m);
     return '\uE000F' + (store.length - 1) + '\uE001';
@@ -10042,8 +10055,13 @@ function wrapBareMathFragmentsLine(src) {
     // 星标、章节号这类标题元信息不是公式，尤其不能把“ · 2★”渲染成 ⋅ 2 ★。
     if (/[★☆]/.test(core)) return chunk;
     if (core.indexOf('\uE000F') >= 0) return chunk;
+    // 已转义的 HTML 片段（&lt;...&gt;）不是公式，避免把标签属性逐字符排成斜体。
+    if (/&(?:[a-zA-Z][a-zA-Z0-9]{1,8}|#\d{1,6}|#x[0-9a-fA-F]{1,6});/.test(core)) return chunk;
     if (/^\s*#{1,6}\s/.test(core) || /^\s*[-*+]\s/.test(core) || /\d{4}-\d{2}-\d{2}/.test(core)) return chunk;
     if (/[#*\`>]/.test(core)) return chunk;
+    // Markdown 表格整行保留：管道符不是公式边界，表格交给 marked 渲染。
+    if (/^\s*\|.*\|\s*$/.test(core)) return chunk;
+    if (/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?\s*$/.test(core)) return chunk;
     if (/\[[^\]]*\]\([^)]*\)/.test(core)) return chunk;
     if (/^[\s\-−=+*\/×·|]+$/.test(core)) return chunk;
     if (/[=+\-*\/^_]\s*$/.test(core) || /^\s*[=+\-*\/^_]/.test(core)) return chunk;
@@ -10099,6 +10117,12 @@ function wrapBareLatex(src) {
 function mathifyPlainText(src) {
   var s = String(src || '');
   if (!s) return '';
+  // 先保护 HTML/转义标签，避免把 <img src=x ...> 里的 = 当成公式。
+  var guards = [];
+  s = s.replace(/&lt;[\s\S]*?&gt;|<\/?[^>]+>/g, function (m) {
+    guards.push(m);
+    return '\uE000G' + (guards.length - 1) + '\uE001';
+  });
   // Do not bail out on raw LaTeX: wrapBareLatex() wraps it after this pass.
   var parts = s.split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$|\uE000C\d+\uE001)/);
   for (var x = 0; x < parts.length; x += 2) {
@@ -10116,7 +10140,9 @@ function mathifyPlainText(src) {
     seg = seg.replace(/@@EQ(\d+)@@/g, function (_, n) { return eqs[+n] || ''; });
     parts[x] = seg;
   }
-  return parts.join('');
+  return parts.join('').replace(/\uE000G(\d+)\uE001/g, function (m, i) {
+    return guards[+i] == null ? m : guards[+i];
+  });
 }
 function canvasToWhiteDataUrl(canvas, type, quality) {
   if (!canvas || !canvas.width || !canvas.height) return canvas ? canvas.toDataURL(type || 'image/png') : '';
@@ -10213,7 +10239,9 @@ function stripTypePrefix(value) {
 function sanitizeMarkdownHtml(html) {
   var root = document.createElement('template');
   root.innerHTML = html;
-  var tags = new Set('P BR HR STRONG EM DEL S BLOCKQUOTE UL OL LI H1 H2 H3 H4 H5 H6 PRE CODE A IMG TABLE THEAD TBODY TFOOT TR TH TD DETAILS SUMMARY DIV SPAN INPUT'.split(' '));
+  var tags = new Set('P BR HR STRONG B I U EM MARK DEL S SUB SUP SMALL KBD ABBR CITE Q BLOCKQUOTE UL OL LI H1 H2 H3 H4 H5 H6 PRE CODE A IMG TABLE THEAD TBODY TFOOT TR TH TD DETAILS SUMMARY DIV SPAN INPUT'.split(' '));
+  // 这些元素连同内容一起删除；其他未知标签只解包，保留文字，避免“<b>粗体</b>”整词消失。
+  var dropTags = new Set('SCRIPT STYLE IFRAME OBJECT EMBED SVG FORM LINK META BASE TEMPLATE NOSCRIPT'.split(' '));
   function safeUrl(value, image) {
     var compact = String(value || '').replace(/[\u0000-\u0020\u007f-\u009f]/g, '');
     if (image && /^data:image\/(png|jpeg|gif|webp);base64,[a-z0-9+/=]+$/i.test(compact)) return true;
@@ -10224,7 +10252,15 @@ function sanitizeMarkdownHtml(html) {
     Array.from(parent.childNodes).forEach(function (node) {
       if (node.nodeType === 8) { node.remove(); return; }
       if (node.nodeType !== 1) return;
-      if (!tags.has(node.tagName)) { node.remove(); return; }
+      if (dropTags.has(node.tagName)) { node.remove(); return; }
+      if (!tags.has(node.tagName)) {
+        walk(node); // 先清掉未知容器里的危险子节点，再解包保留文字
+        var parentNode = node.parentNode;
+        if (!parentNode) return;
+        while (node.firstChild) parentNode.insertBefore(node.firstChild, node);
+        node.remove();
+        return;
+      }
       Array.from(node.attributes).forEach(function (a) {
         var name = a.name.toLowerCase();
         var allowed = name === 'title' || name === 'alt' ||
@@ -10399,7 +10435,8 @@ function renderMarkdown(src) {
   });
   html = html.replace(/<table>/g, '<div class="table-wrap"><table>').replace(/<\/table>/g, '</table></div>');
   html = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
-  html = html.replace(/\son\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '');
+  // 属性清洗已由 sanitizeMarkdownHtml 按 DOM 完成；这里不能再跑 on* 正则，
+  // 否则会把正文里的 &lt;img ... onerror=...&gt; 文字当成属性删掉。
   return html;
 }
 
@@ -10796,7 +10833,7 @@ function renderHome() {
       '<span class="hs-main"><span class="hs-name">' + esc(s.name) + '</span>' +
       '<span class="hs-desc">' + esc(homeSubjectNote(s.id)) + '</span></span>' +
       '<span class="hs-side"><span class="hs-count">' + esc(count) + '</span>' +
-      '<span class="hs-meta">' + s.templates.length + ' 模板 · ' + n + ' 题库</span></span>' +
+      '<span class="hs-meta">' + templatesOf(s.id).length + ' 模板 · ' + n + ' 题库</span></span>' +
       '<span class="hs-arrow" aria-hidden="true">→</span>' +
     '</a>';
   }).join('');
@@ -10943,6 +10980,7 @@ function renderTopbar() {
   var cv = qs('#crumbView'); if (cv) cv.textContent = (globalNotes || globalFinal) ? '' : view.label;
 
   var tabs = qs('#tabs');
+  if (tabs) { if (!tabs.getAttribute('role')) tabs.setAttribute('role', 'tablist'); if (!tabs.getAttribute('aria-label')) tabs.setAttribute('aria-label', '科目视图'); }
   var finalLabel = topbarLabel('期末复习', '期末复习');
   var notesLabel = topbarLabel('笔记库', '笔记库');
   if (tabs) tabs.classList.toggle('is-cross', !!(globalNotes || globalFinal));
@@ -11208,7 +11246,7 @@ function overviewXifang(entries, st) {
     '<div style="display:grid;gap:22px">' +
       '<section class="panel"><div class="panel-head"><h2 class="panel-title">高权重章节</h2><span class="panel-sub">按配套题库考点星级</span></div><div class="panel-body"><ul class="timeline" style="list-style:none;padding:0;margin:0">' +
         highWeight.map(function (h) { return '<li><time>' + esc(h[0].split(' ')[0]) + '</time><div><b>' + esc(h[0]) + '</b><div class="faint" style="font-size:11px">' + esc(h[1]) + '</div></div></li>'; }).join('') +
-      '</ul><p style="margin:14px 0 0"><button class="linkish" data-act="nav-view" data-view="templates">看 16 张模板</button></p></div></section>' +
+      '</ul><p style="margin:14px 0 0"><button class="linkish" data-act="nav-view" data-view="templates">看 ' + templatesOf('xijing').length + ' 张模板</button></p></div></section>' +
       '<section class="panel"><div class="panel-head"><h2 class="panel-title">错因分布</h2><span class="panel-sub">统计自条目</span></div><div class="panel-body">' + errorBars(st) + '</div></section>' +
     '</div>' +
   '</div>' +
@@ -12008,11 +12046,13 @@ function syncEntryToLibraries(e) {
 }
 
 function exportLibraryPayload() {
+  // 备份只导出用户自己新增的模板/题库题；内置 8825 题由页面代码随身携带，
+  // 写进备份会从数 MB 膨胀到十几 MB，导入时还会把旧内置题库回滚覆盖新版本。
   var templates = {};
   var bank = {};
   SUBJECTS.forEach(function (s) {
-    templates[s.id] = templatesOf(s.id);
-    bank[s.id] = bankOf(s.id);
+    templates[s.id] = (state.userTemplates && state.userTemplates[s.id]) || [];
+    bank[s.id] = (state.userBank && state.userBank[s.id]) || [];
   });
   return { templates: templates, bank: bank };
 }
@@ -12808,6 +12848,7 @@ languageRow +
         '</label>' +
         '<label class="field full"><span>API 地址（Base URL）</span><input id="aiBaseUrl" type="text" autocomplete="off" spellcheck="false" value="' + attr(aiCfg.baseUrl) + '" placeholder="https://api.openai.com/v1"></label>' +
         '<label class="field full"><span>API Key</span><input id="aiApiKey" type="password" autocomplete="off" spellcheck="false" value="" placeholder="' + (aiCfg.apiKey ? '已保存，留空表示不修改' : '粘贴 API Key') + '"></label>' +
+        '<p class="form-note" role="note">密钥只存本机 localStorage，导出备份会剔除；换设备需重新填写。</p>' +
       '</div>' +
       '<div class="ai-config-actions"><button class="btn btn-xs btn-primary" data-act="save-ai-config" type="button">保存 AI 设置</button>' +
         '<button class="btn btn-xs" data-act="clear-ai-config" type="button">清除</button>' +
@@ -12969,12 +13010,13 @@ async function exportState() {
   }
   var payload = {
     app: 'sanke-cuotiben',
-    version: 3,
+    version: 4,
     exportedAt: nowIso(),
     meta: {
       language: (state.prefs && state.prefs.lang) || 'zh-CN',
       languageName: languageName((state.prefs && state.prefs.lang) || 'zh-CN'),
       translation: 'AI 生成内容已按导出语言保存；题库与规范内容随语言包更新。',
+      builtinBankExcluded: true,
       final: backupFinalCount(state)
     },
     state: backupSafeState(),
@@ -12999,7 +13041,7 @@ async function exportState() {
   document.body.appendChild(a);
   a.click();
   setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 800);
-  toast('已导出 ' + (fileName.slice(-3) === '.gz' ? 'gzip 压缩' : '紧凑') + '备份 · ' + Math.round(blob.size / 1024) + ' KB');
+  toast('已导出 ' + (fileName.slice(-3) === '.gz' ? 'gzip 压缩' : '紧凑') + '备份 · ' + Math.round(blob.size / 1024) + ' KB · 内置题库不写入备份，打开页面会自动恢复');
 }
 
 var pendingImport = null;
@@ -16411,6 +16453,38 @@ function autoAiPendingCount() {
 var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_ID__) || '').match(/^(\d{4})\.(\d{2})\.(\d{2})/);
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [
+  {
+    date: '2026-11-08',
+    title: '审计修复与离线',
+    historyTitle: '审计修复与离线',
+    summary: '按 2026-11-08 审计报告修复可落地项：Markdown 白名单与表格、可访问性对比度、局域网口令与凭据隔离、PDF 导入重试、备份瘦身、构建自带 skills、QA 脚本、离线缓存、静态资源与未知路由提示；28 项测试通过，题库 8825 与三端布局保持。',
+    items: [
+      { group: '渲染白名单', text: '修复 Markdown 渲染吞字与转义标签被拆成公式：保留粗体、斜体等行内标签与字面尖括号，未知标签解包保留文字，脚本、iframe 等危险标签整棵删除；新增回归测试。' },
+      { group: '表格渲染', text: '表格行不再被当裸公式包成 $...$；题库、错题和笔记里的 Markdown 表格现在渲染为表格，单元格内公式仍按行内公式处理。' },
+      { group: '可访问性', text: '科目页签补 role="tablist" 与 aria-label，品牌和首页入口的 aria-label 与可见文字一致；浅色 --faint 提到 #687065，暗色提到 #9aa091，对比度达标。' },
+      { group: 'PDF 重试', text: 'PDF 库加载失败后不再缓存失败 Promise；一次网络失败后可直接重试，不必刷新页面。' },
+      { group: '局域网口令', text: 'node server.js --lan 未设 NOTEBOOK_TOKEN 时自动生成随机口令、打印口令并以失败关闭方式启动；无口令请求返回 401。' },
+      { group: '凭据隔离', text: '本机服务默认不读取 ~/.dsh 中的凭据；只有显式设置 ALLOW_DSH_CREDENTIAL_REUSE=1 才复用，避免静默使用未授权配置。' },
+      { group: '打印横幅', text: '打印时不再把 LOCAL FIRST 提示印在纸上；服务启动日志里的“三科错题本”改为“四科错题本”。' },
+      { group: '备份瘦身', text: '备份默认只含用户错题、自建模板/题库、笔记和设置；内置 8825 题与 118 张模板不写入，导入不会回滚内置库；备份 schema 升到 v4。' },
+      { group: '构建自带技能', text: '四个学科 skill 优先从仓库 skills/ 读取，SKILLS_ROOT 不可用也能构建；干净 clone 不再依赖作者家目录。' },
+      { group: '离线缓存', text: '新增 service worker：首次成功打开后缓存页面，断网刷新可回最近一次成功页面；静态托管仍保持网络优先。' },
+      { group: '静态资源', text: '补 robots.txt、sitemap.xml、manifest.webmanifest、favicon.svg、404.html 与 canonical/og/twitter 元数据；构建与发布同时复制这些文件。' },
+      { group: '未知路由', text: '不存在的 #/ 链接不再静默停留：提示“链接指向的页面不存在”，并把地址纠正到首页或当前科目总览。' },
+      { group: '模板计数', text: '首页与总览的模板数改为与模板库一致，包含用户新建模板；西经入口不再写死 16 张。' },
+      { group: '密钥提示', text: '设置页 API Key 区域注明密钥只存本机 localStorage、导出备份会剔除、换设备需重新填写。' },
+      { group: '语言口径', text: 'README 不再写“10 种语言内置”：内置简体中文，繁體中文部分内置，其余 8 种需配置 AI 生成；徽章改为“中文 + AI”。' },
+      { group: 'QA 脚本', text: '三个 QA 脚本改用动态端口和临时服务器，自动关闭欢迎弹窗并写入隔离种子；i18n 缓存键从源码读取，公式脚本不再依赖 Python。' }
+    ],
+    notifyItems: [
+      { group: '渲染与表格', text: 'Markdown 不再吞粗体或尖括号，表格正常渲染，脚本等危险标签会被删除。' },
+      { group: '局域网与密钥', text: '--lan 启动会自动生成访问口令；本机服务默认不读 DSH 凭据；设置页提示 API Key 只存本机。' },
+      { group: '备份与构建', text: '备份不再打包 8825 道内置题，导入不会回滚题库；构建自带四个学科 skill。' },
+      { group: '离线与静态', text: '首次打开后支持断网刷新；补齐 404、manifest、sitemap 与分享元数据。' },
+      { group: '路由与计数', text: '错误链接会提示并回到首页；首页模板计数与模板库一致。' },
+      { group: '质量门禁', text: '28 项测试通过；QA 脚本可独立运行，公式、排版与表格都有回归断言。' }
+    ]
+  },
   {
     date: '2026-11-07',
     title: '全站排版与仓库校准',
@@ -20083,7 +20157,7 @@ async function noteImportImage(file, subjectId) {
 function noteLoadPdfLib() {
   if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
   if (notePdfPromise) return notePdfPromise;
-  notePdfPromise = new Promise(function (resolve, reject) {
+  var p = new Promise(function (resolve, reject) {
     var src = NOTE_PDF_BASE + 'pdf.min.js';
     var s = document.createElement('script');
     s.src = src;
@@ -20101,6 +20175,11 @@ function noteLoadPdfLib() {
     };
     s.onerror = function () { reject(new Error('PDF 解析器需要联网加载，请检查网络后重试')); };
     document.head.appendChild(s);
+  });
+  // 失败的 promise 不能永久缓存：CDN 恢复或网络重连后应允许再次尝试。
+  notePdfPromise = p.catch(function (err) {
+    notePdfPromise = null;
+    throw err;
   });
   return notePdfPromise;
 }
@@ -26829,6 +26908,7 @@ function parseHash() {
   }
   var clean = h.split('?')[0].split('&')[0];
   var parts = clean.split('/').filter(Boolean);
+  if (parts[0] === 'home' || parts[0] === 'welcome') return;
   if (parts[0] === 'final') { state.activeView = 'final'; ui.noteKb = false; return; }
   if (parts[0] === 'notes') { state.activeView = 'notes'; ui.noteBatch = false; ui.noteKb = parts[1] === 'kb'; ui.noteLibrary = !ui.noteKb; return; }
   ui.noteKb = false;
@@ -26838,6 +26918,21 @@ function parseHash() {
   }
   if (parts[1] === 'notes') { state.activeView = 'notes'; ui.noteBatch = false; ui.noteKb = false; ui.noteLibrary = true; return; }
   if (parts[1] && VIEWS.some(function (v) { return v.id === parts[1]; })) state.activeView = parts[1];
+
+  var topKnown = !parts[0] || parts[0] === 'final' || parts[0] === 'notes' || !!SUBJ_BY_ID[parts[0]];
+  if (!topKnown) {
+    state.activeView = 'overview';
+    try { history.replaceState(null, '', location.pathname + location.search + '#/'); } catch (e) { /* keep current url */ }
+    toast('链接指向的页面不存在，已回到首页');
+    return;
+  }
+  if (parts[0] && parts[1] && !VIEWS.some(function (v) { return v.id === parts[1]; })) {
+    state.activeView = 'overview';
+    var subjectMeta = SUBJ_BY_ID[state.activeSubject] || SUBJECTS[0];
+    var targetHash = '#/' + subjectRouteId(state.activeSubject) + '/overview';
+    try { history.replaceState(null, '', location.pathname + location.search + targetHash); } catch (e) { /* keep current url */ }
+    toast('链接指向的页面不存在，已回到' + (subjectMeta.short || subjectMeta.name) + '总览');
+  }
 }
 
 function updateHash() {
@@ -27505,6 +27600,9 @@ function boot() {
   });
   updateHomeVisibility();
   bindEvents();
+  if ('serviceWorker' in navigator && window.isSecureContext) {
+    setTimeout(function () { navigator.serviceWorker.register('sw.js').catch(function () { /* 离线缓存不可用不影响主流程 */ }); }, 1200);
+  }
   var apiWelcomeDlg = qs('#apiWelcomeDialog');
   if (apiWelcomeDlg) apiWelcomeDlg.addEventListener('cancel', function (e) { e.preventDefault(); dismissApiWelcome(false); });
   if (typeof initI18n === 'function') initI18n();
