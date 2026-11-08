@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.08-9c2e59da";</script>
+<script>window.__BUILD_ID__="2026.11.08-3aca31fd";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -1288,7 +1288,7 @@ dialog { border-radius: var(--radius-card); }
 .home-features { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 15px; font-size: 10.5px; letter-spacing: .06em; color: var(--faint); }
 .home-features span { display: inline-flex; align-items: center; gap: 8px; }
 .home-features span:not(:last-child)::after { content: "·"; color: var(--line-strong); }
-.home-foot { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-top: 17px; border-top: 1px solid var(--line); font-size: 10.5px; line-height: 1.7; color: var(--faint); }
+.home-foot { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 10px 16px; padding-top: 17px; border-top: 1px solid var(--line); font-size: 10.5px; line-height: 1.7; color: var(--faint); }
 .home-foot span:last-child { text-align: right; }
 .home-foot-actions { display: inline-flex; align-items: center; justify-content: flex-end; gap: 10px; margin-left: auto; flex-wrap: wrap; text-align: right; }
 .home-foot-actions .btn { flex: none; }
@@ -1793,9 +1793,9 @@ dialog { border-radius: var(--radius-card); }
   .md th { font-size: 10.5px; }
 }
 
-/* home dock clearance on phones and tablets */
+/* home footer actions stay in flow on phones and tablets */
 @media (max-width: 900px) {
-  .home-inner { padding-bottom: calc(86px + env(safe-area-inset-bottom)); }
+  .home-inner { padding-bottom: calc(22px + env(safe-area-inset-bottom)); }
   .home-main { justify-content: flex-start; padding-top: 24px; }
 }
 
@@ -3430,20 +3430,17 @@ dialog.image-lightbox::backdrop { background: rgba(18, 17, 15, .82); backdrop-fi
 
 
 @media (max-width: 1024px) {
-  .home-foot { padding-right: 0; padding-bottom: 58px; }
+  .home-foot { padding-right: 0; padding-bottom: 0; }
   .home-icon-group {
-    position: fixed;
-    right: calc(14px + env(safe-area-inset-right));
-    bottom: calc(14px + env(safe-area-inset-bottom));
-    z-index: 35;
     display: inline-flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 6px;
-    padding: 5px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--surface);
-    box-shadow: 0 10px 28px rgba(50, 35, 22, .14);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
   }
   .home-icon-group .icon-btn,
   .home-icon-group .home-notif-btn {
@@ -3456,7 +3453,6 @@ dialog.image-lightbox::backdrop { background: rgba(18, 17, 15, .82); backdrop-fi
     box-shadow: none;
   }
   .home-icon-group .icon-btn svg { width: 17px; height: 17px; }
-  html.notif-open .home-icon-group { opacity: 0; pointer-events: none; }
 }
 
 @media (max-width: 420px) {
@@ -9840,20 +9836,27 @@ function mountToast() {
   if (wrap.parentNode !== target) target.appendChild(wrap);
 }
 
+var __activeToasts = {};
 function toast(msg, notifMeta) {
   var wrap = qs('#toastWrap');
   if (!wrap) return;
+  // 同一条提示仍在屏幕上时不再叠加，避免存储恢复提示在启动阶段刷屏。
+  if (__activeToasts[msg] && __activeToasts[msg].isConnected) return;
   var el = document.createElement('div');
   el.className = 'toast';
   el.textContent = msg;
-  if (typeof mirrorToastNotification === 'function') mirrorToastNotification(msg, notifMeta);
   mountToast();
   wrap.appendChild(el);
+  __activeToasts[msg] = el;
+  if (typeof mirrorToastNotification === 'function') mirrorToastNotification(msg, notifMeta);
   setTimeout(function () {
     el.style.transition = 'opacity .2s ease, transform .2s ease';
     el.style.opacity = '0';
     el.style.transform = 'translateY(6px)';
-    setTimeout(function () { el.remove(); }, 220);
+    setTimeout(function () {
+      el.remove();
+      if (__activeToasts[msg] === el) delete __activeToasts[msg];
+    }, 220);
   }, 2400);
 }
 
@@ -16528,78 +16531,205 @@ var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [
   {
-    date: '2026-11-08',
-    title: '修订版审计与校准',
-    historyTitle: '修订版审计与校准',
-    summary: '按修订版审计补齐本轮可落地项：通知打开不再清零已读，品牌可访问名与浅色对比度收口，题库标签按题干结构归位，源码包重建并附 SHA256。30 项测试、严格 QA 与干净 source.zip 构建通过。',
-    items: [
-      { group: '通知已读', text: '打开通知面板不再把所有通知标为已读；点开某条才标记该条，关闭面板不改变未读计数，角标只在真正阅读后减少。' },
-      { group: '可访问性', text: '移除品牌与移动端品牌链接与可见文字不一致的 aria-label，改用 title 提示；首页仓库入口与页脚浅色文字统一到 #5f665c，9–9.5px 的小字提到 10px，首页仓库入口 10.5px；期末复习选中分段的副标题改用 ink-soft。' },
-      { group: '题型归位', text: '高代 150 道只带「应用情境：结合实际问题中的数据」前缀、没有真实情境的应用题改为计算题；100 道没有诊断信号的误差分析题改为计算题；同步标题分类并保持 8825 / 55 / 825 与每桶 10 题。' },
-      { group: '质量门禁', text: 'QA、build 与 tests 新增：应用题不得保留伪情境前缀、高代误差分析题必须有误差/诊断信号、非教材题标题分类需与 category 一致；任一不满足构建或测试失败。' },
-      { group: '源码包', text: 'source.zip 从当前工作树重建（287 个源文件，排除 node_modules、dist、备份、debug 与生成产物），附 SHA256SUMS；解压后 npm ci、30 项测试、构建与严格 QA 全部通过。' },
-      { group: '记录边界', text: '14.9MB 单文件首屏解析、内置题 verification/relatedEntries 为空、部分 templateId 空值属于结构/数据边界，本轮不伪装成已修复，继续在 README 边界说明中保留。' }
+    "date": "2026-11-08",
+    "title": "全站界面与记录校准",
+    "historyTitle": "全站界面与记录校准",
+    "summary": "把 2026-11-08 的三块记录合并为一块，统一为最终状态；修复手机与平板首页工具栏遮挡，更新九个仓库徽章与 Release 版本，重建发布产物并补齐日期与记录门禁。390 / 820 / 1440 全路由复查无横向溢出，30 项既有内容与 9 项本轮修复共 39 项，32 项测试、严格 QA 与站点一致性通过。",
+    "items": [
+      {
+        "group": "首页工具栏",
+        "text": "手机与平板首页的更新记录、语言、设置、通知四个入口从悬浮停靠改回页脚内联：按钮随内容换行，不再压住「期末复习」卡片与副标题；触控尺寸保持 36px，键盘焦点不变。"
+      },
+      {
+        "group": "记录合并",
+        "text": "把 2026-11-08 的三块更新记录合并为一块：通知已读、界面统一、审计修复共 30 项统一展示，删除同日重复的「可访问性」组与中间计数（28/30 项测试、203/287 个文件），只保留最终状态；历史日期不再被构建日改写。"
+      },
+      {
+        "group": "日期门禁",
+        "text": "删除构建时把首块日期强制改成构建日的逻辑；QA 新增同一天只允许一块、日期不得晚于今天、README/CHANGELOG 逐块计数校验，同日拆块或未来日期会直接阻止构建。"
+      },
+      {
+        "group": "仓库徽章",
+        "text": "README 九个徽章换成九组彼此分离的颜色（橙 / 红 / 绿 / 蓝 / 琥珀 / 紫 / 品红 / 青 / 灰蓝），RELEASE 指向 v2026.11.08-3，VERSION 指向本版构建号，避免相邻徽章同色。"
+      },
+      {
+        "group": "三端复核",
+        "text": "390 / 820 / 1440 全路由复查首页、总览、错题、模板库、题库、规范、笔记库、期末复习与更新记录：首页工具栏不再遮挡内容，无横向溢出、无脚本错误，长公式仍按块横向滚动。"
+      },
+      {
+        "group": "发布产物",
+        "text": "重建 dist、dist-pages、四科错题本.html、静态站 zip、source.zip 与 SHA256SUMS；更新记录截图改用 20261108b 版本，README 与 Release 引用同步到同一构建。"
+      },
+      {
+        "group": "文档同步",
+        "text": "README、CHANGELOG 与 GitHub Releases 由同一份更新记录生成：最新块 39 项 / 39 组完整展开，旧块保留历史；仓库页计数、链接、截图与线上构建逐项核对。"
+      },
+      {
+        "group": "测试基线",
+        "text": "新增两项回归测试，覆盖更新记录日期、同日唯一、README 计数、手机首页工具栏不得固定悬浮与 toast 去重；测试总数 32，配合严格 QA 与站点一致性门禁防止同类问题回潮。"
+      },
+      {
+        "group": "渲染白名单",
+        "text": "修复 Markdown 渲染吞字与转义标签被拆成公式：保留粗体、斜体等行内标签与字面尖括号，未知标签解包保留文字，脚本、iframe 等危险标签整棵删除；新增回归测试。"
+      },
+      {
+        "group": "表格渲染",
+        "text": "表格行不再被当裸公式包成 $...$；题库、错题和笔记里的 Markdown 表格现在渲染为表格，单元格内公式仍按行内公式处理。"
+      },
+      {
+        "group": "可访问性",
+        "text": "科目页签补 role=\"tablist\" 与 aria-label，品牌和首页入口的 aria-label 与可见文字一致；浅色 --faint 提到 #5f665c，暗色提到 #9aa091，对比度达标。"
+      },
+      {
+        "group": "PDF 重试",
+        "text": "PDF 库加载失败后不再缓存失败 Promise；一次网络失败后可直接重试，不必刷新页面。"
+      },
+      {
+        "group": "局域网口令",
+        "text": "node server.js --lan 未设 NOTEBOOK_TOKEN 时自动生成随机口令、打印口令并以失败关闭方式启动；无口令请求返回 401。"
+      },
+      {
+        "group": "凭据隔离",
+        "text": "本机服务默认不读取 ~/.dsh 中的凭据；只有显式设置 ALLOW_DSH_CREDENTIAL_REUSE=1 才复用，避免静默使用未授权配置。"
+      },
+      {
+        "group": "打印横幅",
+        "text": "打印时不再把 LOCAL FIRST 提示印在纸上；服务启动日志里的“三科错题本”改为“四科错题本”。"
+      },
+      {
+        "group": "备份瘦身",
+        "text": "备份默认只含用户错题、自建模板/题库、笔记和设置；内置 8825 题与 118 张模板不写入，导入不会回滚内置库；备份 schema 升到 v4。"
+      },
+      {
+        "group": "构建自带技能",
+        "text": "四个学科 skill 优先从仓库 skills/ 读取，SKILLS_ROOT 不可用也能构建；干净 clone 不再依赖作者家目录。"
+      },
+      {
+        "group": "离线缓存",
+        "text": "新增 service worker：首次成功打开后缓存页面，断网刷新可回最近一次成功页面；静态托管仍保持网络优先。"
+      },
+      {
+        "group": "静态资源",
+        "text": "补 robots.txt、sitemap.xml、manifest.webmanifest、favicon.svg、404.html 与 canonical/og/twitter 元数据；构建与发布同时复制这些文件。"
+      },
+      {
+        "group": "未知路由",
+        "text": "不存在的 #/ 链接不再静默停留：提示“链接指向的页面不存在”，并把地址纠正到首页或当前科目总览。"
+      },
+      {
+        "group": "模板计数",
+        "text": "首页与总览的模板数改为与模板库一致，包含用户新建模板；西经入口不再写死 16 张。"
+      },
+      {
+        "group": "密钥提示",
+        "text": "设置页 API Key 区域注明密钥只存本机 localStorage、导出备份会剔除、换设备需重新填写。"
+      },
+      {
+        "group": "语言口径",
+        "text": "README 不再写“10 种语言内置”：内置简体中文，繁體中文部分内置，其余 8 种需配置 AI 生成；徽章改为“中文 + AI”。"
+      },
+      {
+        "group": "QA 脚本",
+        "text": "三个 QA 脚本改用动态端口和临时服务器，自动关闭欢迎弹窗并写入隔离种子；i18n 缓存键从源码读取，公式脚本不再依赖 Python。"
+      },
+      {
+        "group": "页头节奏",
+        "text": "统一首页、总览、错题、题库、模板库、规范、笔记库与期末复习的页头基线：标题、副标题和操作区在桌面底对齐，平板与手机改为纵向；副标题限宽，按钮换行时不再挤压标题，页头分隔线与正文起点对齐。"
+      },
+      {
+        "group": "笔记宽度",
+        "text": "笔记库在桌面收回到与其它页面一致的内容宽度，笔记本架与知识卡片不再横跨整屏；知识卡正文、标签和页脚重新分级字号，手机恢复单列。"
+      },
+      {
+        "group": "期末分段",
+        "text": "期末复习的「出模拟卷 / 进行模拟考」选中项增加左侧色条与浅色底，补上键盘焦点环；未选中项降低对比，手机上仍保持单列。"
+      },
+      {
+        "group": "记录粒度",
+        "text": "把 11-02 的 12 条合并长文拆成 26 个主题组：期末复习、模拟卷、模拟考、填空题、文档公式、满分校验、导出换行、删除保留、题库扩容、题库题型、题型清理、题库重制、评分排版、空白判分、结果难度、结果题干、客观答案、随机组卷、AI 批改、知识点搜索、公式与手写、科目与 skill、来源路径、源码开放、版式与三端、仓库一致性；11-08 同日三块合并为一块，不再保留同日重复记录。"
+      },
+      {
+        "group": "历史清理",
+        "text": "删除 11-01 表格后的重复说明段；统一 10-30 的标题顺序为「日期 · 主题」；11-08 同日记录合并为一块，历史日期只保留最终状态，不再由构建日改写。"
+      },
+      {
+        "group": "仓库版面",
+        "text": "README 的 20261108b 更新记录截图移到对应版本，不再挂在 10-31 历史块末尾；配额说明改为「基础 8250 按每章 1–5★ 各 10 客观/填空/主观，教材 575 为补充、不占配额」；平板与桌面设置宽度分别写明 780 / 860。"
+      },
+      {
+        "group": "记录门禁",
+        "text": "qa-site-consistency 读取更新记录，逐块比对 README 的日期、标题、项数、组数和表格行数，并检查最新截图引用位于对应更新块；任一不一致或截图文件缺失时构建失败。"
+      },
+      {
+        "group": "三端复查",
+        "text": "390 / 820 / 1440 复查首页、四科总览/错题/模板库/题库/规范、笔记库、期末复习与更新记录：无横向溢出、无脚本错误，长公式仍按块横向滚动。"
+      },
+      {
+        "group": "通知已读",
+        "text": "打开通知面板不再把所有通知标为已读；点开某条才标记该条，关闭面板不改变未读计数，角标只在真正阅读后减少。"
+      },
+      {
+        "group": "可见文字",
+        "text": "移除品牌与移动端品牌链接与可见文字不一致的 aria-label，改用 title 提示；首页仓库入口的浅色文字提到 10.5px，9–9.5px 的小字提到 10px。"
+      },
+      {
+        "group": "题型归位",
+        "text": "高代 150 道只带「应用情境：结合实际问题中的数据」前缀、没有真实情境的应用题改为计算题；100 道没有诊断信号的误差分析题改为计算题；同步标题分类并保持 8825 / 55 / 825 与每桶 10 题。"
+      },
+      {
+        "group": "质量门禁",
+        "text": "QA、build 与 tests 新增：应用题不得保留伪情境前缀、高代误差分析题必须有误差/诊断信号、非教材题标题分类需与 category 一致；任一不满足构建或测试失败。"
+      },
+      {
+        "group": "源码包",
+        "text": "source.zip 按当前工作树重建（排除 node_modules、dist、备份、debug 与生成产物），附 SHA256SUMS；解压后 npm ci、32 项测试、构建与严格 QA 全部通过。"
+      },
+      {
+        "group": "记录边界",
+        "text": "14.9MB 单文件首屏解析、内置题 verification/relatedEntries 为空、部分 templateId 空值属于结构/数据边界，本轮不伪装成已修复，继续在 README 边界说明中保留。"
+      },
+      {
+        "group": "提示去重",
+        "text": "同一条 toast 提示已经在屏幕上时不再重复叠加：存储损坏或恢复受阻时只保留一条提示，不再被连续写入触发的同文提示刷屏。"
+      }
     ],
-    notifyItems: [
-      { group: '通知与可读性', text: '通知打开后不再立刻清零，点开哪条才标记哪条；品牌入口改用 title 提示，浅色小字对比度与字号同步提高。' },
-      { group: '题库标签', text: '高代 150 道伪应用题与 100 道无诊断信号的误差分析题改回计算题，标题与分类对齐，题库总数不变。' },
-      { group: '质量门禁', text: '构建、QA 与测试新增标签结构检查，伪情境前缀、误差分析无信号或标题分类不一致时直接失败。' },
-      { group: '源码包', text: 'source.zip 按当前源码重建并附 SHA256，解压后安装、测试、构建与严格 QA 全部通过。' }
-    ]
-  },
-  {
-    date: '2026-11-08',
-    title: '界面统一与仓库校准',
-    historyTitle: '界面统一与仓库校准',
-    summary: '统一页头、正文与笔记库宽度，明确期末复习分段选中态；把 11-02 更新记录从 12 条合并长文拆成 26 个主题组，同步 README 的计数、截图位置与历史标题；QA 新增更新记录与仓库文档逐块核对，避免同一天两次更新和旧计数再次矛盾。390 / 820 / 1440 全路由复查，题库 8825 与现有测试保持通过。',
-    items: [
-      { group: '页头节奏', text: '统一首页、总览、错题、题库、模板库、规范、笔记库与期末复习的页头基线：标题、副标题和操作区在桌面底对齐，平板与手机改为纵向；副标题限宽，按钮换行时不再挤压标题，页头分隔线与正文起点对齐。' },
-      { group: '笔记宽度', text: '笔记库在桌面收回到与其它页面一致的内容宽度，笔记本架与知识卡片不再横跨整屏；知识卡正文、标签和页脚重新分级字号，手机恢复单列。' },
-      { group: '期末分段', text: '期末复习的「出模拟卷 / 进行模拟考」选中项增加左侧色条与浅色底，补上键盘焦点环；未选中项降低对比，手机上仍保持单列。' },
-      { group: '记录粒度', text: '把 11-02 的 12 条合并长文拆成 26 个主题组：期末复习、模拟卷、模拟考、填空题、文档公式、满分校验、导出换行、删除保留、题库扩容、题库题型、题型清理、题库重制、评分排版、空白判分、结果难度、结果题干、客观答案、随机组卷、AI 批改、知识点搜索、公式与手写、科目与 skill、来源路径、源码开放、版式与三端、仓库一致性。' },
-      { group: '历史清理', text: '删除 11-01 表格后的重复说明段；统一 10-30 的标题顺序为「日期 · 主题」；11-08 的两条记录按标题区分，新记录在前、旧记录保留为历史。' },
-      { group: '仓库版面', text: 'README 的 20261108 更新记录截图移到对应版本，不再挂在 10-31 历史块末尾；配额说明改为「基础 8250 按每章 1–5★ 各 10 客观/填空/主观，教材 575 为补充、不占配额」；平板与桌面设置宽度分别写明 780 / 860。' },
-      { group: '记录门禁', text: 'qa-site-consistency 读取更新记录，逐块比对 README 的日期、标题、项数、组数和表格行数，并检查最新截图引用位于对应更新块；任一不一致或截图文件缺失时构建失败。' },
-      { group: '三端复查', text: '390 / 820 / 1440 复查首页、四科总览/错题/模板库/题库/规范、笔记库、期末复习与更新记录：无横向溢出、无脚本错误，长公式仍按块横向滚动。' }
-    ],
-    notifyItems: [
-      { group: '版式与宽度', text: '页头在桌面、平板、手机统一基线，笔记库桌面宽度收齐，不再一页宽一页窄。' },
-      { group: '期末分段', text: '出模拟卷 / 进行模拟考的选中项加左侧色条与浅色底，键盘焦点可见，手机上仍单列。' },
-      { group: '更新记录', text: '11-02 记录拆成 26 个主题组，网页与 README 的项数、组数和行数一致；同一天两次更新分开显示。' },
-      { group: '仓库版面', text: 'README 的 11-08 截图移到对应版本，删 11-01 重复段，统一 10-30 标题顺序，写明 575 教材题是补充配额。' },
-      { group: '质量门禁', text: 'QA 逐块比对更新记录与 README 的日期、标题、项数、组数和截图引用，不一致时构建失败。' }
-    ]
-  },
-  {
-    date: '2026-11-08',
-    title: '审计修复与离线',
-    historyTitle: '审计修复与离线',
-    summary: '按 2026-11-08 审计报告修复可落地项：Markdown 白名单与表格、可访问性对比度、局域网口令与凭据隔离、PDF 导入重试、备份瘦身、构建自带 skills、QA 脚本、离线缓存、静态资源与未知路由提示；28 项测试通过，题库 8825 与三端布局保持。',
-    items: [
-      { group: '渲染白名单', text: '修复 Markdown 渲染吞字与转义标签被拆成公式：保留粗体、斜体等行内标签与字面尖括号，未知标签解包保留文字，脚本、iframe 等危险标签整棵删除；新增回归测试。' },
-      { group: '表格渲染', text: '表格行不再被当裸公式包成 $...$；题库、错题和笔记里的 Markdown 表格现在渲染为表格，单元格内公式仍按行内公式处理。' },
-      { group: '可访问性', text: '科目页签补 role="tablist" 与 aria-label，品牌和首页入口的 aria-label 与可见文字一致；浅色 --faint 提到 #687065，暗色提到 #9aa091，对比度达标。' },
-      { group: 'PDF 重试', text: 'PDF 库加载失败后不再缓存失败 Promise；一次网络失败后可直接重试，不必刷新页面。' },
-      { group: '局域网口令', text: 'node server.js --lan 未设 NOTEBOOK_TOKEN 时自动生成随机口令、打印口令并以失败关闭方式启动；无口令请求返回 401。' },
-      { group: '凭据隔离', text: '本机服务默认不读取 ~/.dsh 中的凭据；只有显式设置 ALLOW_DSH_CREDENTIAL_REUSE=1 才复用，避免静默使用未授权配置。' },
-      { group: '打印横幅', text: '打印时不再把 LOCAL FIRST 提示印在纸上；服务启动日志里的“三科错题本”改为“四科错题本”。' },
-      { group: '备份瘦身', text: '备份默认只含用户错题、自建模板/题库、笔记和设置；内置 8825 题与 118 张模板不写入，导入不会回滚内置库；备份 schema 升到 v4。' },
-      { group: '构建自带技能', text: '四个学科 skill 优先从仓库 skills/ 读取，SKILLS_ROOT 不可用也能构建；干净 clone 不再依赖作者家目录。' },
-      { group: '离线缓存', text: '新增 service worker：首次成功打开后缓存页面，断网刷新可回最近一次成功页面；静态托管仍保持网络优先。' },
-      { group: '静态资源', text: '补 robots.txt、sitemap.xml、manifest.webmanifest、favicon.svg、404.html 与 canonical/og/twitter 元数据；构建与发布同时复制这些文件。' },
-      { group: '未知路由', text: '不存在的 #/ 链接不再静默停留：提示“链接指向的页面不存在”，并把地址纠正到首页或当前科目总览。' },
-      { group: '模板计数', text: '首页与总览的模板数改为与模板库一致，包含用户新建模板；西经入口不再写死 16 张。' },
-      { group: '密钥提示', text: '设置页 API Key 区域注明密钥只存本机 localStorage、导出备份会剔除、换设备需重新填写。' },
-      { group: '语言口径', text: 'README 不再写“10 种语言内置”：内置简体中文，繁體中文部分内置，其余 8 种需配置 AI 生成；徽章改为“中文 + AI”。' },
-      { group: 'QA 脚本', text: '三个 QA 脚本改用动态端口和临时服务器，自动关闭欢迎弹窗并写入隔离种子；i18n 缓存键从源码读取，公式脚本不再依赖 Python。' }
-    ],
-    notifyItems: [
-      { group: '渲染与表格', text: 'Markdown 不再吞粗体或尖括号，表格正常渲染，脚本等危险标签会被删除。' },
-      { group: '局域网与密钥', text: '--lan 启动会自动生成访问口令；本机服务默认不读 DSH 凭据；设置页提示 API Key 只存本机。' },
-      { group: '备份与构建', text: '备份不再打包 8825 道内置题，导入不会回滚题库；构建自带四个学科 skill。' },
-      { group: '离线与静态', text: '首次打开后支持断网刷新；补齐 404、manifest、sitemap 与分享元数据。' },
-      { group: '路由与计数', text: '错误链接会提示并回到首页；首页模板计数与模板库一致。' },
-      { group: '质量门禁', text: '28 项测试通过；QA 脚本可独立运行，公式、排版与表格都有回归断言。' }
+    "notifyItems": [
+      {
+        "group": "首页工具栏",
+        "text": "手机与平板首页的更新记录、语言、设置、通知四个入口从悬浮停靠改回页脚内联：按钮随内容换行，不再压住「期末复习」卡片与副标题；触控尺寸保持 36px，键盘焦点不变。"
+      },
+      {
+        "group": "记录合并",
+        "text": "把 2026-11-08 的三块更新记录合并为一块：通知已读、界面统一、审计修复共 30 项统一展示，删除同日重复的「可访问性」组与中间计数（28/30 项测试、203/287 个文件），只保留最终状态；历史日期不再被构建日改写。"
+      },
+      {
+        "group": "日期门禁",
+        "text": "删除构建时把首块日期强制改成构建日的逻辑；QA 新增同一天只允许一块、日期不得晚于今天、README/CHANGELOG 逐块计数校验，同日拆块或未来日期会直接阻止构建。"
+      },
+      {
+        "group": "仓库徽章",
+        "text": "README 九个徽章换成九组彼此分离的颜色（橙 / 红 / 绿 / 蓝 / 琥珀 / 紫 / 品红 / 青 / 灰蓝），RELEASE 指向 v2026.11.08-3，VERSION 指向本版构建号，避免相邻徽章同色。"
+      },
+      {
+        "group": "三端复核",
+        "text": "390 / 820 / 1440 全路由复查首页、总览、错题、模板库、题库、规范、笔记库、期末复习与更新记录：首页工具栏不再遮挡内容，无横向溢出、无脚本错误，长公式仍按块横向滚动。"
+      },
+      {
+        "group": "发布产物",
+        "text": "重建 dist、dist-pages、四科错题本.html、静态站 zip、source.zip 与 SHA256SUMS；更新记录截图改用 20261108b 版本，README 与 Release 引用同步到同一构建。"
+      },
+      {
+        "group": "文档同步",
+        "text": "README、CHANGELOG 与 GitHub Releases 由同一份更新记录生成：最新块 38 项 / 38 组完整展开，旧块保留历史；仓库页计数、链接、截图与线上构建逐项核对。"
+      },
+      {
+        "group": "测试基线",
+        "text": "新增两项回归测试，覆盖更新记录日期、同日唯一、README 计数、手机首页工具栏不得固定悬浮与 toast 去重；测试总数 32，配合严格 QA 与站点一致性门禁防止同类问题回潮。"
+      },
+      {
+        "group": "提示去重",
+        "text": "同一条 toast 提示已经在屏幕上时不再重复叠加：存储损坏或恢复受阻时只保留一条提示，不再被连续写入触发的同文提示刷屏。"
+      }
     ]
   },
   {
@@ -17071,7 +17201,7 @@ var UPDATE_LOG = [
   }
 ];
 
-if (__BUILD_DAY && UPDATE_LOG[0]) UPDATE_LOG[0].date = __BUILD_DAY;
+/* 日期只写真实日期；构建日不得改写历史记录。 */
 
 /* 历史版本标题：只用内容摘要，最多 10 个字符；最新一版保留日期。 */
 function historyTitleFor(log) {
