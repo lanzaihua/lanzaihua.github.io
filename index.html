@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.08-5b1471fd";</script>
+<script>window.__BUILD_ID__="2026.11.08-00355273";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -23175,11 +23175,13 @@ function initNotifications() {
     ? state.notifUpdateSummary
     : (lastUpdate && typeof lastUpdate.updateSummary === 'string' ? lastUpdate.updateSummary : (lastUpdate ? notifParseUpdateSummary(lastUpdate.body) : ''));
   var previousNotifyItems = Array.isArray(state.notifNotifyItems) ? state.notifNotifyItems : [];
+  var sameEdition = !!(lastUpdate && latest && String(lastUpdate.title || '').indexOf(String(latest.date || '')) >= 0);
   var notifyDelta = latest && Array.isArray(latest.notifyItems) && latest.notifyItems.length
     ? latest.notifyItems.filter(function (it) {
         var group = it.group || '更新';
         var text = String(it.text || '');
         if (previousNotifyItems.length) {
+          if (sameEdition) return !previousNotifyItems.some(function (p) { return p && (p.group || '更新') === group; });
           return !previousNotifyItems.some(function (p) { return p && (p.group || '更新') === group && String(p.text || '') === text; });
         }
         return !previousItems.some(function (p) { return p && (p.group || '更新') === group; });
@@ -23194,8 +23196,7 @@ function initNotifications() {
   if (delta.summaryChanged && previousSummaryText && deltaSummaryText.indexOf(previousSummaryText) === 0) {
     delta.summary = deltaSummaryText.slice(previousSummaryText.length).replace(/^[\s；;，,。、:：\-—]+/, '');
   }
-  var hasNewContent = delta.items.length > 0 || (delta.summaryChanged && !!delta.summary);
-  var sameEdition = !!(lastUpdate && latest && String(lastUpdate.title || '').indexOf(String(latest.date || '')) >= 0);
+  var hasNewContent = delta.items.length > 0 || (!sameEdition && delta.summaryChanged && !!delta.summary);
   if (latest && contentChanged && !alreadyNotified && hasNewContent) {
     var upLines = ['版本：' + (latest.date || '') + ' · ' + (latest.title || '新版本')];
     if (delta.summaryChanged && delta.summary) upLines.push(delta.summary);
