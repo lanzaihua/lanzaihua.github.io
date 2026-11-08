@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.08-4-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.08--dfabb5e9-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.08--5b1471fd-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -203,7 +203,7 @@
 | **题库标题** | 西经 2400 条题库标题末尾重复的「· N★」统一剥离；星级只由徽标展示，标题不再被公式渲染器拆行。 |
 | **数学措辞** | 数分 6 处「Archimedes 性」改为「阿基米德性」，并修正 4 处「由 阿基米德性」的断句。 |
 | **三端操作** | 手机题库与错题操作按钮改为两列网格，复制 Markdown 不再落单；390 / 820 / 1440 复查题库、错题与模拟考的矩阵、分式和小问排版。 |
-| **公式门禁** | 新增回归测试：中文裸算术渲染、日期与题库编号不被误包、错题保留选项、MathML 盒模型与移动端两列；测试总数 37，全库公式扫描与严格 QA 纳入验收。 |
+| **公式门禁** | 新增回归测试：中文裸算术渲染、日期与题库编号不被误包、错题保留选项、MathML 盒模型与移动端两列；测试总数 37，配合严格 QA 与站点一致性防止同类问题回潮。 |
 
 <img src="assets/v2/20261108c-changelog.png" alt="网页内更新记录" width="820">
 
