@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.09-a0013398";</script>
+<script>window.__BUILD_ID__="2026.11.09-88a13ec2";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -17017,9 +17017,9 @@ var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_M
 var UPDATE_LOG = [
 {
   "date": "2026-11-09",
-  "title": "通知界面与角标",
-  "historyTitle": "通知界面与角标",
-  "summary": "本版只改通知面板与角标：工具栏的一键清空改为一键已读，只标记不删除；修复手机、平板和电脑右上角出现孤立数字的定位错误；更新内容改成分组卡片，日期、摘要与条目分层展示，标题保留分隔符两侧空格。新增 3 项回归测试，共 4 项 / 4 组，43 项测试、严格 QA 与站点一致性通过。",
+  "title": "模拟考与通知",
+  "historyTitle": "模拟考与通知",
+  "summary": "修复标准题库开考重复弹出考生守则：选完章节后直接进入题目准备页，只在点「开始模拟考」时阅读一次守则；同时把标准题库守则首句的「AI 智能批改」改成「本地标准答案批改」，并注明不识别手写。新增 2 项回归测试，本块共 6 项 / 6 组，45 项测试、严格 QA 与站点一致性通过。",
   "items": [
     {
       "group": "一键已读",
@@ -17035,7 +17035,25 @@ var UPDATE_LOG = [
     },
     {
       "group": "防复发",
-      "text": "新增通知解析、分组渲染、一键已读和窄屏角标定位的回归测试；测试总数 43，配合严格 QA、站点一致性与三端 390/820/1440 检查防止同类问题回潮。"
+      "text": "新增通知解析、分组渲染、一键已读和窄屏角标定位的回归测试；测试总数 45，配合严格 QA、站点一致性与三端 390/820/1440 检查防止同类问题回潮。"
+    },
+    {
+      "group": "守则重复",
+      "text": "标准题库选完章节后不再先弹考生守则，直接进入「题目已准备」页；点「开始模拟考」时只弹一次守则，勾选同意后才开考。"
+    },
+    {
+      "group": "守则文案",
+      "text": "标准题库考生守则首句改为本地标准答案批改，不再写「AI 智能批改」；注明不识别手写，手写答案可能按 0 分保守处理，结果页保留标准解答与要点。"
+    }
+  ],
+  "notifyItems": [
+    {
+      "group": "守则重复",
+      "text": "标准题库选完章节后不再先弹考生守则，直接进入「题目已准备」页；点「开始模拟考」时只弹一次守则，勾选同意后才开考。"
+    },
+    {
+      "group": "守则文案",
+      "text": "标准题库考生守则首句改为本地标准答案批改，不再写「AI 智能批改」；注明不识别手写，手写答案可能按 0 分保守处理，结果页保留标准解答与要点。"
     }
   ]
 },
@@ -25695,8 +25713,12 @@ function finalBuildMock(questions, title, subject, source) {
 
 function finalExamRulesHtml() {
   var isStandard = ui.finalAiPendingSource === 'standard' || ui.examRulesType === 'standard';
-  var lead = '本次考试为AI智能批改，手写答案时注意格式规范、字迹清晰，防止AI识别错误导致错改、漏改！';
-  var leadHtml = '<strong>' + lead + '</strong><span class="exam-rules-note">' + (isStandard ? '本次使用标准题库与本地标准答案批改，不调用 AI 生成；手写主观题请尽量改为输入作答。' : '本次考试由 AI 批改；手写作答会先识别为文字再评分。') + '</span>';
+  var lead = isStandard
+    ? '本次考试使用标准题库与本地标准答案批改，不调用 AI 生成，也不识别手写。'
+    : '本次考试为AI智能批改，手写答案时注意格式规范、字迹清晰，防止AI识别错误导致错改、漏改！';
+  var leadNote = isStandard
+    ? '主观题请尽量使用输入框作答；手写答案可能按 0 分保守处理，结果页保留标准解答与要点。'
+    : '本次考试由 AI 批改；手写作答会先识别为文字再评分。';
   var closeLine = isStandard
     ? '交卷后按标准答案批改；客观题与填空题按唯一答案，主观题按要点覆盖给分。结果仅用于个人复习，不具正式考试成绩效力。'
     : '交卷后由 AI 批改；未配置 AI 时按标准答案批改。结果仅用于个人复习，不具正式考试成绩效力。';
@@ -25704,7 +25726,7 @@ function finalExamRulesHtml() {
     '<section class="exam-rules-card" tabindex="-1">' +
       '<header class="exam-rules-head"><p class="eyebrow">FINAL MOCK EXAM · NOTICE</p><h2 id="examRulesTitle">考生守则</h2><span>开始作答前请完整阅读</span></header>' +
       '<div class="exam-rules-body">' +
-        '<p class="exam-rules-lead"><strong>' + lead + '</strong></p>' +
+        '<p class="exam-rules-lead"><strong>' + lead + '</strong><span class="exam-rules-note">' + leadNote + '</span></p>' +
         '<ol class="exam-rules-list">' +
           '<li>开考前确认考试科目、时长与分值；开考后不得更换科目，不得混入其他科目题目。</li>' +
           '<li>独立完成，不得查阅资料、使用通讯工具、请他人代答或传播试题。</li>' +
@@ -25801,7 +25823,7 @@ function finalExamChapterHtml() {
   var isStandard = ui.finalExamChapterMode === 'standard';
   return '<div class="exam-rules-overlay" data-exam-chapters role="dialog" aria-modal="true" aria-labelledby="examChaptersTitle">' +
     '<section class="exam-rules-card exam-chapter-card" tabindex="-1">' +
-      '<header class="exam-rules-head"><p class="eyebrow">' + (isStandard ? 'STANDARD EXAM · CHAPTERS' : 'AI EXAM · CHAPTERS') + '</p><h2 id="examChaptersTitle">' + (isStandard ? '选择标准题库章节' : '选择出题章节') + '</h2><span>' + (isStandard ? '先选章节，再从题库随机抽题；确认后阅读考生守则' : '先选章节，再让 AI 按范围命题；生成完成后阅读考生守则') + '</span></header>' +
+      '<header class="exam-rules-head"><p class="eyebrow">' + (isStandard ? 'STANDARD EXAM · CHAPTERS' : 'AI EXAM · CHAPTERS') + '</p><h2 id="examChaptersTitle">' + (isStandard ? '选择标准题库章节' : '选择出题章节') + '</h2><span>' + (isStandard ? '先选章节，再从题库随机抽题；确认后进入题目准备页' : '先选章节，再让 AI 按范围命题；生成完成后进入题目准备页') + '，点「开始模拟考」时阅读考生守则</span></header>' +
       '<div class="exam-rules-body">' +
         '<div class="exam-chapter-tools"><span>' + esc(subjectOf(subject).name) + ' · 可单选、多选或全选</span><button class="linkish" type="button" data-act="final-ai-chapters-all">全选</button><button class="linkish" type="button" data-act="final-ai-chapters-none">清空</button></div>' +
         '<div class="exam-chapter-grid">' + chapters.map(function (ch) {
@@ -25836,7 +25858,9 @@ function finalExamChapterConfirm() {
   if (ui.finalExamChapterMode === 'standard') {
     ui.finalExamChapterMode = '';
     ui.finalAiPendingSource = 'standard';
-    finalExamShowRules('standard');
+    // 标准题库不需要“出题前”再读一遍守则：先抽题进入“题目已准备”页，
+    // 点「开始模拟考」时只弹一次考生守则，确认后开考。
+    finalStartExamNow();
     return;
   }
   ui.finalExamChapterMode = '';
