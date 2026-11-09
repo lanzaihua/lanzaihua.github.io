@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.09-e7911ebd";</script>
+<script>window.__BUILD_ID__="2026.11.09-f85ce035";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -14183,15 +14183,18 @@ function aiProgressStopAll() {
 
 /* ---------- 右下角长任务进度（导入 / 导出 / 翻译 / 知识点补全等） ---------- */
 function longTaskDock() {
-  var dock = document.getElementById('longTaskDock');
+  var host = document.querySelector('dialog[open]') || document.body || document.documentElement;
+  var dockId = host.tagName === 'DIALOG' ? 'longTaskDockDialog' : 'longTaskDock';
+  var dock = document.getElementById(dockId);
   if (!dock) {
     dock = document.createElement('aside');
-    dock.id = 'longTaskDock';
+    dock.id = dockId;
     dock.className = 'long-task-dock';
     dock.setAttribute('data-no-i18n', '');
     dock.setAttribute('aria-label', '后台任务进度');
-    (document.body || document.documentElement).appendChild(dock);
   }
+  // 进度卡从弹窗里发起时必须留在弹窗的 top layer，否则会被 dialog 遮住。
+  if (dock.parentNode !== host) host.appendChild(dock);
   return dock;
 }
 
@@ -14277,10 +14280,10 @@ function longTaskRemove(key) {
   if (longTaskHideTimers[key]) { clearTimeout(longTaskHideTimers[key]); delete longTaskHideTimers[key]; }
   aiProgressStop(key);
   var card = document.getElementById('longTask-' + key);
+  var dock = card ? card.parentNode : document.getElementById('longTaskDock');
   if (card) card.remove();
   delete longTaskCancelHandlers[key];
-  var dock = document.getElementById('longTaskDock');
-  if (dock && !dock.children.length) dock.remove();
+  if (dock && dock.classList && dock.classList.contains('long-task-dock') && !dock.children.length) dock.remove();
 }
 
 if (typeof document !== 'undefined' && document.addEventListener) {
@@ -17303,7 +17306,7 @@ var UPDATE_LOG = [
   "date": "2026-11-09",
   "title": "长任务进度与模拟考",
   "historyTitle": "长任务进度与模拟考",
-  "summary": "在原有通知与模拟考修复基础上，本轮给所有长耗时界面加入统一真实进度：智能录入、AI 出题、AI 批改、笔记 PDF / 文件导入导出、AI 翻译、知识点 AI 搜索与自动补全；进度按真实阶段或已完成 / 总数推进，显示等待秒数，不编百分比；取消、失败与完成都有明确收尾。本块共 11 项 / 11 组，47 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。",
+  "summary": "在原有通知与模拟考修复基础上，本轮给所有长耗时界面加入统一真实进度：智能录入、AI 出题、AI 批改、笔记 PDF / 文件导入导出、扫描页文字识别、AI 翻译、知识点 AI 搜索与自动补全；进度按真实阶段或已完成 / 总数推进，显示等待秒数，不编百分比；取消、失败与完成都有明确收尾。本块共 12 项 / 12 组，48 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。",
   "items": [
     {
       "group": "一键已读",
@@ -17342,12 +17345,16 @@ var UPDATE_LOG = [
       "text": "笔记库 PDF 导入逐页、文件导入逐文件、批量导出逐页、扫描保存逐页显示已完成 / 总数；不知道总量时用活动条，不伪造百分比。"
     },
     {
+      "group": "扫描 OCR",
+      "text": "智能扫描的「识别当前页文字」接入长任务卡，按「准备图片 → 识别文字 → 写入结果」推进，显示真实等待秒数与识别字数；可取消，识别失败保留错误提示，进度卡留在扫描弹窗顶层不被遮挡。"
+    },
+    {
       "group": "翻译与补全",
       "text": "AI 翻译、知识点 AI 搜索与自动补全接入同一长任务卡：显示真实阶段、已完成 / 总数与等待秒数，完成、失败、取消都正确收尾。"
     },
     {
       "group": "取消与防复发",
-      "text": "取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消与三端布局回归测试，测试总数 47。"
+      "text": "取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 48。"
     }
   ],
   "notifyItems": [
@@ -17368,12 +17375,16 @@ var UPDATE_LOG = [
       "text": "笔记库 PDF 导入逐页、文件导入逐文件、批量导出逐页、扫描保存逐页显示已完成 / 总数；不知道总量时用活动条，不伪造百分比。"
     },
     {
+      "group": "扫描 OCR",
+      "text": "智能扫描的「识别当前页文字」接入长任务卡，按「准备图片 → 识别文字 → 写入结果」推进，显示真实等待秒数与识别字数；可取消，识别失败保留错误提示，进度卡留在扫描弹窗顶层不被遮挡。"
+    },
+    {
       "group": "翻译与补全",
       "text": "AI 翻译、知识点 AI 搜索与自动补全接入同一长任务卡：显示真实阶段、已完成 / 总数与等待秒数，完成、失败、取消都正确收尾。"
     },
     {
       "group": "取消与防复发",
-      "text": "取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消与三端布局回归测试，测试总数 47。"
+      "text": "取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 48。"
     }
   ]
 },
@@ -20012,10 +20023,12 @@ function noteScanOcrRender() {
   var cfg = directReady ? aiConfig() : null;
   var ocr = item && item.ocr;
   var busy = !!(item && item.ocrBusy);
-  btn.disabled = !ready || !item || busy;
+  var otherBusy = !!(noteScanState && noteScanState.items && noteScanState.items.some(function (x) { return !!(x && x.ocrBusy && x !== item); }));
+  btn.disabled = !ready || !item || busy || otherBusy;
   btn.textContent = busy ? '正在识别…' : '识别当前页文字';
   btn.setAttribute('aria-busy', busy ? 'true' : 'false');
   if (busy) stateEl.textContent = '识别中';
+  else if (otherBusy) stateEl.textContent = '另一页识别中';
   else if (ocr && ocr.text) stateEl.textContent = ocr.text.length + ' 字';
   else if (item && item.ocrError) stateEl.textContent = '识别失败';
   else if (ready) stateEl.textContent = '可用';
@@ -20049,9 +20062,23 @@ async function noteScanOcrCurrent() {
   var serverReady = typeof aiState !== 'undefined' && aiState.transport === 'server';
   if (!directReady && !serverReady) { toast('请先在「设置与同步」配置 AI 模型'); return; }
   if (item.ocrBusy) return;
+  if (noteScanState.items.some(function (x) { return !!(x && x.ocrBusy); })) {
+    toast('有一页正在识别文字，请等它完成');
+    return;
+  }
   item.ocrBusy = true;
   item.ocrError = '';
+  var ocrKey = 'notes-ocr';
+  var ocrController = typeof AbortController !== 'undefined' ? new AbortController() : null;
   noteScanOcrRender();
+  longTaskStart(ocrKey, {
+    label: '文字识别',
+    steps: ['准备图片', '识别文字', '写入结果'],
+    step: 0,
+    stage: '正在准备图片…',
+    detail: '先应用裁边、旋转和滤镜，再把当前页发送给视觉模型。',
+    onCancel: function () { if (ocrController) ocrController.abort(); }
+  });
   try {
     var canvas = noteScanRender(item);
     var data = canvas.toDataURL('image/jpeg', 0.9).split(',')[1];
@@ -20063,14 +20090,16 @@ async function noteScanOcrCurrent() {
       '表格用制表符分列。只输出识别出的文字，不要代码围栏或解释；没有文字时输出 [无文字]。'
     ].join('\n');
     var image = [{ mediaType: 'image/jpeg', data: data }];
+    longTaskUpdate(ocrKey, { step: 1, stage: '正在识别文字…', detail: '已发送给视觉模型，等待返回；这是真实网络等待时间。' });
     var out;
     if (directReady) {
-      out = await callConfiguredDirect(aiConfig(), systemPrompt, '请识别这张智能扫描页中的全部手写和印刷文字。', image, 150000);
+      out = await callConfiguredDirect(aiConfig(), systemPrompt, '请识别这张智能扫描页中的全部手写和印刷文字。', image, 150000, ocrController ? ocrController.signal : null);
     } else {
       var res = await fetch('/api/ocr', {
         method: 'POST',
         headers: apiHeaders({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ images: image, aiConfig: typeof aiConfigForRequest === 'function' ? aiConfigForRequest() : null })
+        body: JSON.stringify({ images: image, aiConfig: typeof aiConfigForRequest === 'function' ? aiConfigForRequest() : null }),
+        signal: ocrController ? ocrController.signal : undefined
       });
       var payload = null;
       try { payload = await res.json(); } catch (e) { payload = null; }
@@ -20087,14 +20116,22 @@ async function noteScanOcrCurrent() {
     if (text.slice(-fence.length) === fence) text = text.slice(0, -fence.length);
     text = text.trim();
     if (!text) throw new Error('模型没有识别出文字');
-    item.ocr = { text: text, at: nowIso(), model: out.model || aiConfig().model };
+    longTaskUpdate(ocrKey, { step: 2, stage: '正在写入结果…', detail: '识别已返回，正在整理并写入当前页。' });
+    item.ocr = { text: text, at: nowIso(), model: out.model || (directReady && aiConfig().model) || '' };
     item.ocrError = '';
+    longTaskFinish(ocrKey, { stage: '识别完成', detail: '已识别 ' + text.length + ' 字，可编辑后复制或下载。' });
     toast('已识别文字，可编辑后复制或下载');
   } catch (err) {
-    var msg = err && err.message ? err.message : 'OCR 识别失败';
-    if (err && err.code === 'NO_AI_KEY') msg = '还没有配置 AI 模型服务';
-    item.ocrError = msg;
-    toast(msg);
+    if (err && err.name === 'AbortError') {
+      longTaskFail(ocrKey, '已取消识别，当前页内容未改动。', { stage: '已取消', valueText: '已停止' });
+      toast('已取消识别');
+    } else {
+      var msg = err && err.message ? err.message : 'OCR 识别失败';
+      if (err && err.code === 'NO_AI_KEY') msg = '还没有配置 AI 模型服务';
+      item.ocrError = msg;
+      longTaskFail(ocrKey, msg, { stage: '识别失败', valueText: '未完成' });
+      toast(msg);
+    }
   } finally {
     item.ocrBusy = false;
     noteScanOcrRender();

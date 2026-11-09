@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09--4-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--e7911ebd-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09--5-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--f85ce035-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -150,9 +150,9 @@
 
 ### 2026-11-09 · 长任务进度与模拟考
 
-**11 项 · 11 组**
+**12 项 · 12 组**
 
-在原有通知与模拟考修复基础上，本轮给所有长耗时界面加入统一真实进度：智能录入、AI 出题、AI 批改、笔记 PDF / 文件导入导出、AI 翻译、知识点 AI 搜索与自动补全；进度按真实阶段或已完成 / 总数推进，显示等待秒数，不编百分比；取消、失败与完成都有明确收尾。本块共 11 项 / 11 组，47 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+在原有通知与模拟考修复基础上，本轮给所有长耗时界面加入统一真实进度：智能录入、AI 出题、AI 批改、笔记 PDF / 文件导入导出、扫描页文字识别、AI 翻译、知识点 AI 搜索与自动补全；进度按真实阶段或已完成 / 总数推进，显示等待秒数，不编百分比；取消、失败与完成都有明确收尾。本块共 12 项 / 12 组，48 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -165,8 +165,9 @@
 | **智能录入** | 错题智能录入按「整理题目 → 请求 AI → 写入条目 → 完成」4 阶段推进，显示阶段 N / 4 与真实等待时长，不再只显示一句笼统的正在生成。 |
 | **出题与批改** | AI 出题按已生成题数 / 总题数推进；AI 批改按「读取答卷 → AI 批改 → 逐题核对 → 生成结果」4 阶段推进，显示阶段 N / 4 与当前处理说明。 |
 | **笔记导入导出** | 笔记库 PDF 导入逐页、文件导入逐文件、批量导出逐页、扫描保存逐页显示已完成 / 总数；不知道总量时用活动条，不伪造百分比。 |
+| **扫描 OCR** | 智能扫描的「识别当前页文字」接入长任务卡，按「准备图片 → 识别文字 → 写入结果」推进，显示真实等待秒数与识别字数；可取消，识别失败保留错误提示，进度卡留在扫描弹窗顶层不被遮挡。 |
 | **翻译与补全** | AI 翻译、知识点 AI 搜索与自动补全接入同一长任务卡：显示真实阶段、已完成 / 总数与等待秒数，完成、失败、取消都正确收尾。 |
-| **取消与防复发** | 取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消与三端布局回归测试，测试总数 47。 |
+| **取消与防复发** | 取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 48。 |
 
 <p align="center"><img src="assets/v2/20261109b-changelog.png" alt="长任务进度与模拟考更新记录" width="820"></p>
 
