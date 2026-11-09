@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.09-381b4852";</script>
+<script>window.__BUILD_ID__="2026.11.09-e5e18c5c";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -10535,6 +10535,10 @@ function wrapBareMathFragmentsLine(src) {
     if (/[=+\-*\/^_]\s*$/.test(core) || /^\s*[=+\-*\/^_]/.test(core)) return chunk;
     if (!/[A-Za-z0-9λΛ]/.test(core)) return chunk;
     if (/^\d+(\.\d+)?$/.test(core)) return chunk;
+    // 纯英文词组用斜杠/连字符连接（如 points / pitfalls、state-of-the-art）不是公式。
+    if (/^[A-Za-z]+(?:\s*[/\-]\s*[A-Za-z]+)+$/.test(core) && !/[=^_0-9]/.test(core)) return chunk;
+    // 用空格分隔的数字宽度列表（390 / 820 / 1440）按正文排，不排成斜体公式。
+    if (/^\d+(?:\s+\/\s+\d+)+$/.test(core)) return chunk;
     return m[1] + label + '$' + core + '$' + m[3];
   }
   text = text.replace(/[^\u4e00-\u9fa5，。；：、！？（）《》“”‘’\n]+/g, function (chunk) {
