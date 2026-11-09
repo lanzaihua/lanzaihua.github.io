@@ -52,10 +52,10 @@ function viewEntries(subjectId) {
       '<option value="chapter-asc"' + (f.sort === 'chapter-asc' ? ' selected' : '') + '>章节 · 正序</option>' +
       '<option value="chapter-desc"' + (f.sort === 'chapter-desc' ? ' selected' : '') + '>章节 · 倒序</option>' +
     '</select>' +
+    '<button class="btn btn-xs filter-clear" data-act="clear-entry-filters" type="button" title="' + (filtersActive ? '清空错题筛选' : '当前没有可清空的筛选') + '"' + (filtersActive ? '' : ' disabled') + '>清空筛选</button>' +
   '</div>';
   var filterMeta = '<div class="filter-meta">' +
-    '<button class="linkish index-clear" data-act="clear-entry-filters" type="button" title="清空主筛选栏全部选择"' + (filtersActive ? '' : ' disabled') + '>清空</button>' +
-    '<span class="filter-count">显示 ' + list.length + ' / ' + all.length + ' 条</span>' +
+    '<span class="filter-count" role="status" aria-live="polite">显示 ' + list.length + ' / ' + all.length + ' 条</span>' +
   '</div>';
 
   var entryBook = bookLabelFor(subjectId);

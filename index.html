@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.09-e5e18c5c";</script>
+<script>window.__BUILD_ID__="2026.11.09-78bb3a69";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -390,6 +390,12 @@ table.data .num-cell { font-family: var(--font-mono); font-size: 11px; color: va
 .select:focus { border-color: var(--ink-soft); outline: none; }
 .toolbar .spacer { margin-left: auto; }
 .count-note { font-size: 11.5px; color: var(--faint); white-space: nowrap; }
+.filter-clear { flex: 0 0 auto; white-space: nowrap; color: var(--muted); }
+.filter-clear:hover:not([disabled]) { color: var(--accent-deep); border-color: color-mix(in srgb, var(--accent) 36%, var(--line)); }
+.filter-clear[disabled] { opacity: .4; cursor: default; }
+.bank-filters .seg.bank-origin { flex: 0 0 auto; }
+.bank-filters .seg.bank-origin button { font-size: 11px; padding: 6px 10px; }
+.template-filters .select { min-width: 190px; }
 
 /* ---------- entries ---------- */
 .entry-list { display: grid; gap: 14px; }
@@ -3479,7 +3485,7 @@ dialog.image-lightbox::backdrop { background: rgba(18, 17, 15, .82); backdrop-fi
 /* ---------- entries: compact single filter bar ---------- */
 .toolbar.entry-filters {
   display: grid;
-  grid-template-columns: auto minmax(160px, .8fr) minmax(180px, 1.2fr) minmax(160px, .9fr) minmax(118px, .65fr) minmax(138px, .8fr);
+  grid-template-columns: auto minmax(0, .8fr) minmax(0, 1.2fr) minmax(0, .9fr) minmax(0, .65fr) minmax(0, .8fr) auto;
   align-items: center;
   gap: 8px;
   padding: 0;
@@ -3503,7 +3509,7 @@ dialog.image-lightbox::backdrop { background: rgba(18, 17, 15, .82); backdrop-fi
 .filter-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 12px;
   margin: 0 2px 12px;
 }
@@ -3523,6 +3529,7 @@ dialog.image-lightbox::backdrop { background: rgba(18, 17, 15, .82); backdrop-fi
   .toolbar.entry-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .entry-filters .seg { grid-column: 1 / -1; justify-self: start; }
   .entry-filters .select[data-filter="template"] { grid-column: span 2; }
+  .entry-filters .filter-clear { grid-column: 1 / -1; justify-self: end; }
 }
 @media (max-width: 900px) {
   .toolbar.entry-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
@@ -9338,6 +9345,7 @@ var ui = {
   bankOpen: {},
   filters: {},
   bankFilters: {},
+  templateFilters: {},
   noteKb: false,
   kbId: '',
   kbQuery: '',
@@ -10596,11 +10604,11 @@ function wrapBareLatex(src) {
       if (!m) return label;
       var hasCommand = /\\[A-Za-z]+/.test(m);
       // 没有命令、但带上下标/等号的连续片段，也按公式处理（修复 AI 把公式中途断开的残留）。
-      if (!hasCommand && !(/[\^_]/.test(m) && /[0-9A-Za-z]/.test(m) && m.length >= 4)) return label + m;
+      if (!hasCommand && !(/[\^_]/.test(m) && /[0-9A-Za-z]/.test(m) && m.length >= 4)) return raw;
       var first = hasCommand ? m.search(/\\[A-Za-z]+/) : -1;
-      if (first > 0 && /[A-Za-z]{3,}/.test(m.slice(0, first))) return m;
+      if (first > 0 && /[A-Za-z]{3,}/.test(m.slice(0, first))) return raw;
       var plainChinese = m.replace(/\\frac\{[^{}]*\}\{[^{}]*\}/g, '').replace(/\\text\{[^{}]*\}/g, '');
-      if (/[\u4e00-\u9fa5]/.test(plainChinese)) return m;
+      if (/[\u4e00-\u9fa5]/.test(plainChinese)) return raw;
       // 公式末尾常紧跟句号/逗号：把标点留在公式外，避免 Temml 把末尾标点排进公式。
       var tail = '';
       var pm = m.match(/[.。，,;；:：!?！？]+$/);
@@ -11080,8 +11088,24 @@ function filterFor(subjectId) {
   return f;
 }
 function bankFilterFor(subjectId) {
-  if (!ui.bankFilters[subjectId]) ui.bankFilters[subjectId] = { chapter: 'all', category: 'all', type: 'all', template: 'all', diff: 'all' };
-  return ui.bankFilters[subjectId];
+  if (!ui.bankFilters[subjectId]) ui.bankFilters[subjectId] = { chapter: 'all', category: 'all', type: 'all', template: 'all', diff: 'all', origin: 'all' };
+  var f = ui.bankFilters[subjectId];
+  if (!f.origin) f.origin = 'all';
+  return f;
+}
+function bankOriginKey(item) {
+  return item && item.examOrigin === '教材课后习题' ? 'textbook' : 'exam';
+}
+function bankFiltersActive(f) {
+  return !!f && (f.chapter !== 'all' || f.category !== 'all' || f.type !== 'all' || f.template !== 'all' || f.diff !== 'all' || f.origin !== 'all');
+}
+function templateFilterFor(subjectId) {
+  if (!ui.templateFilters) ui.templateFilters = {};
+  if (!ui.templateFilters[subjectId]) ui.templateFilters[subjectId] = { chapter: 'all' };
+  return ui.templateFilters[subjectId];
+}
+function templateFiltersActive(f) {
+  return !!f && f.chapter !== 'all';
 }
 
 function sortEntries(list, subjectId) {
@@ -11969,10 +11993,10 @@ function viewEntries(subjectId) {
       '<option value="chapter-asc"' + (f.sort === 'chapter-asc' ? ' selected' : '') + '>章节 · 正序</option>' +
       '<option value="chapter-desc"' + (f.sort === 'chapter-desc' ? ' selected' : '') + '>章节 · 倒序</option>' +
     '</select>' +
+    '<button class="btn btn-xs filter-clear" data-act="clear-entry-filters" type="button" title="' + (filtersActive ? '清空错题筛选' : '当前没有可清空的筛选') + '"' + (filtersActive ? '' : ' disabled') + '>清空筛选</button>' +
   '</div>';
   var filterMeta = '<div class="filter-meta">' +
-    '<button class="linkish index-clear" data-act="clear-entry-filters" type="button" title="清空主筛选栏全部选择"' + (filtersActive ? '' : ' disabled') + '>清空</button>' +
-    '<span class="filter-count">显示 ' + list.length + ' / ' + all.length + ' 条</span>' +
+    '<span class="filter-count" role="status" aria-live="polite">显示 ' + list.length + ' / ' + all.length + ' 条</span>' +
   '</div>';
 
   var entryBook = bookLabelFor(subjectId);
@@ -12719,11 +12743,17 @@ function nextUserBankIdForList(subjectId, list) {
 }
 
 function viewTemplates(subjectId) {
-  var tpls = templatesOf(subjectId);
+  var allTpls = templatesOf(subjectId);
+  var tf = templateFilterFor(subjectId);
   var q = searchQuery();
-  if (q) tpls = tpls.filter(function (t) {
-    var hay = (t.id + ' ' + t.title + ' ' + (t.sections || []).map(function (s) { return s.md; }).join(' ')).toLowerCase();
-    return hay.indexOf(q.toLowerCase()) >= 0;
+  var tplChapters = sortChapters(subjectId, uniq((typeof chapterListFor === 'function' ? chapterListFor(subjectId) : []).concat(allTpls.map(function (t) { return t.chapter || '未分章'; }))));
+  var tpls = allTpls.filter(function (t) {
+    if (tf.chapter !== 'all' && (t.chapter || '未分章') !== tf.chapter) return false;
+    if (q) {
+      var hay = (t.id + ' ' + t.title + ' ' + (t.sections || []).map(function (s) { return s.md; }).join(' ')).toLowerCase();
+      if (hay.indexOf(q.toLowerCase()) < 0) return false;
+    }
+    return true;
   });
   var groups = {};
   var order = [];
@@ -12767,8 +12797,15 @@ function viewTemplates(subjectId) {
     '</button>';
   }).join('') + '</nav>' : '';
 
-  return head + chapterNav + '<h2 class="sr-only">模板章节</h2>' + (q ? '<p class="form-note">搜索「' + esc(q) + '」的结果</p>' : '') +
-    (tpls.length ? body : emptyState('没有匹配的模板', '换个关键词，或清空搜索。', ''));
+  var tplFiltersActive = templateFiltersActive(tf);
+  var tplToolbar = '<div class="toolbar template-filters">' +
+    '<select class="select" data-template-filter="chapter" aria-label="按章节筛选模板">' + optionList(['all'].concat(tplChapters), tf.chapter, '全部章节') + '</select>' +
+    '<button class="btn btn-xs filter-clear" data-act="clear-template-filters" type="button" title="' + (tplFiltersActive ? '清空模板筛选' : '当前没有可清空的筛选') + '"' + (tplFiltersActive ? '' : ' disabled') + '>清空筛选</button>' +
+    '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + tpls.length + ' / ' + allTpls.length + ' 张</span>' +
+  '</div>';
+
+  return head + tplToolbar + chapterNav + '<h2 class="sr-only">模板章节</h2>' + (q ? '<p class="form-note">搜索「' + esc(q) + '」的结果</p>' : '') +
+    (tpls.length ? body : emptyState('没有匹配的模板', '换个章节，或清空筛选。', ''));
 }
 
 function viewBank(subjectId) {
@@ -12783,6 +12820,7 @@ function viewBank(subjectId) {
     if (f.category !== 'all' && it.category !== f.category) return false;
     if (f.type !== 'all' && (it.type || 'subjective') !== f.type) return false;
     if (f.diff !== 'all' && String(it.difficulty) !== f.diff) return false;
+    if (f.origin !== 'all' && bankOriginKey(it) !== f.origin) return false;
     if (q) {
       var hay = [it.title, it.question, it.chapter, it.templateId, (it.tags || []).join(' '), (it.pointKeys || []).join(' ')].join(' ').toLowerCase();
       if (hay.indexOf(q.toLowerCase()) < 0) return false;
@@ -12802,7 +12840,14 @@ function viewBank(subjectId) {
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="templates" type="button">看模板</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
-  var toolbar = '<div class="toolbar">' +
+  function bankOriginBtn(value, label) {
+    return '<button data-act="bank-origin" data-value="' + value + '" aria-pressed="' + (f.origin === value) + '" type="button">' + esc(label) + '</button>';
+  }
+  var bankFiltersOn = bankFiltersActive(f);
+  var toolbar = '<div class="toolbar bank-filters">' +
+    '<div class="seg bank-origin" role="group" aria-label="按题目来源筛选题库">' +
+      bankOriginBtn('all', '全部来源') + bankOriginBtn('exam', '考研同型') + bankOriginBtn('textbook', '教材课后') +
+    '</div>' +
     '<select class="select" data-bank-filter="chapter" aria-label="按章节筛选题库">' + optionList(['all'].concat(chapters), f.chapter, '全部章节') + '</select>' +
         '<select class="select" data-bank-filter="category" aria-label="按题型分类筛选题库"><option value="all"' + (f.category === 'all' ? ' selected' : '') + '>全部题型</option>' + ["计算题","应用题","综合题","概念辨析题","证明题","公式填空题","反例与存在性题","分类讨论题","误差分析题","多解比较题"].map(function (c) { return '<option value="' + attr(c) + '"' + (f.category === c ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '</select>' +
     '<select class="select" data-bank-filter="type" aria-label="按作答形式筛选题库"><option value="all"' + (f.type === 'all' ? ' selected' : '') + '>全部形式</option><option value="choice"' + (f.type === 'choice' ? ' selected' : '') + '>客观题</option><option value="fill"' + (f.type === 'fill' ? ' selected' : '') + '>填空题</option><option value="subjective"' + (f.type === 'subjective' ? ' selected' : '') + '>主观题</option></select>' +
@@ -12817,14 +12862,15 @@ function viewBank(subjectId) {
         return '<option value="' + n + '"' + (f.diff === String(n) ? ' selected' : '') + '>' + stars(n) + ' ' + label + '</option>';
       }).join('') +
     '</select>' +
-    '<span class="spacer"></span><span class="count-note">' + filtered.length + ' / ' + items.length + ' 题</span>' +
+    '<button class="btn btn-xs filter-clear" data-act="clear-bank-filters" type="button" title="' + (bankFiltersOn ? '清空题库筛选' : '当前没有可清空的筛选') + '"' + (bankFiltersOn ? '' : ' disabled') + '>清空筛选</button>' +
+    '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + filtered.length + ' / ' + items.length + ' 题</span>' +
   '</div>';
 
   var list;
   if (!items.length) {
     list = emptyState('题库还没生成', '题库作者正在整理四科 skill 的题型与变式，稍后刷新即可；你仍然可以手动新增或智能录入。', '<div class="multi-actions">' + entryCreateButtons(subjectId) + '</div>');
   } else if (!filtered.length) {
-    list = emptyState('没有匹配的题', '换个章节、题型分类、作答形式、模板或难度，或清空搜索词。', '');
+    list = emptyState('没有匹配的题', '换个来源、章节、题型分类、作答形式、模板或难度，或清空筛选。', '');
   } else {
     var shownLimit = Math.max(120, Number(ui.bankShowLimit) || 120);
     var shown = filtered.slice(0, shownLimit);
@@ -12935,7 +12981,14 @@ function jumpToEntry(entryId) {
 }
 function gotoBank(templateId) {
   state.activeView = 'bank';
-  bankFilterFor(state.activeSubject).template = templateId || 'all';
+  var gf = bankFilterFor(state.activeSubject);
+  gf.chapter = 'all';
+  gf.category = 'all';
+  gf.type = 'all';
+  gf.template = templateId || 'all';
+  gf.diff = 'all';
+  gf.origin = 'all';
+  ui.bankShowLimit = 120;
   persistLocal();
   location.hash = '#/' + subjectRouteId(state.activeSubject) + '/bank';
   render();
@@ -12951,6 +13004,7 @@ function openBankItem(bankId) {
 }
 function gotoTemplate(templateId) {
   state.activeView = 'templates';
+  templateFilterFor(state.activeSubject).chapter = 'all';
   ui.tplOpen = templateId;
   persistLocal();
   location.hash = '#/' + subjectRouteId(state.activeSubject) + '/templates';
@@ -17330,9 +17384,9 @@ var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_M
 var UPDATE_LOG = [
   {
     date: '2026-11-09',
-    title: '长任务进度与公式排版',
-    historyTitle: '长任务进度与公式排版',
-    summary: '在原有通知、模拟考与长任务进度基础上，本轮修复公式与数字排版：句中的短公式不再被拆成独立行，Markdown 列表恢复逐条，AI 提示词禁止孤立符号；390 / 820 / 1440 复查错题、题库与模拟考无逐行断开。本块共 16 项 / 16 组，49 项测试、严格 QA、站点一致性与三端检查通过。',
+    title: '长任务、公式与筛选',
+    historyTitle: '长任务、公式与筛选',
+    summary: '在原有通知、模拟考与长任务进度基础上，本轮修复公式与数字排版，并补齐筛选工具栏：句中的短公式不再被拆成独立行，Markdown 列表恢复逐条，AI 提示词禁止孤立符号；错题、题库、模板库都有「清空筛选」，题库新增「全部来源 / 考研同型 / 教材课后」筛选。390 / 820 / 1440 复查错题、题库、模板库与模拟考无逐行断开、无横向溢出。本块共 20 项 / 20 组，50 项测试、严格 QA、站点一致性与三端检查通过。',
     items: [
       {
         group: '一键已读',
@@ -17380,7 +17434,7 @@ var UPDATE_LOG = [
       },
       {
         group: '取消与防复发',
-        text: '取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 49。',
+        text: '取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 50。',
       },
       {
         group: '公式行内',
@@ -17396,25 +17450,41 @@ var UPDATE_LOG = [
       },
       {
         group: '三端与防复发',
-        text: '390 / 820 / 1440 复查错题、题库与模拟考：公式均为行内、无横向溢出、无脚本错误；新增列表、短公式、矩阵与长公式回归测试，测试总数 49，防止同类问题再次出现。',
+        text: '390 / 820 / 1440 复查错题、题库与模拟考：公式均为行内、无横向溢出、无脚本错误；新增列表、短公式、矩阵与长公式回归测试，测试总数 50，防止同类问题再次出现。',
+      },
+      {
+        group: '空格保留',
+        text: '修复裸公式扫描器把普通文字两端的空格一起去掉的问题：中英文之间、数字与汉字之间、斜杠两侧的空格恢复保留；通知摘要、更新正文与题解不再出现「Markdown列表」「19项/ 19组」这样的粘连。',
+      },
+      {
+        group: '筛选清空',
+        text: '错题、题库、模板库的筛选工具栏都新增「清空筛选」：一次恢复全部章节、题型、形式、模板、难度、日期、星级、排序与来源；没有筛选时按钮自动禁用，筛选结果显示条数并同步朗读。',
+      },
+      {
+        group: '题库来源',
+        text: '题库新增「全部来源 / 考研同型 / 教材课后」三档来源筛选，与章节、题型等条件叠加，显示当前命中的题数；旧版本保存的筛选状态自动补为全部来源，从模板或知识点跳转时不会带着旧来源。',
+      },
+      {
+        group: '筛选防复发',
+        text: '新增清空、来源、模板章节与旧状态迁移回归测试，测试总数 50；390 / 820 / 1440 复查三个筛选工具栏同排不溢出、按钮禁用态正确、无脚本错误，防止同类问题再次出现。',
       }
     ],
     notifyItems: [
       {
-        group: '公式行内',
-        text: '修复句中的短公式被当成块级公式：普通单行 $$...$$ 自动回到行内，只有矩阵、分段、多行推导或超长公式才独立成块，公式前后不再各占一行。',
+        group: '空格保留',
+        text: '修复裸公式扫描器把普通文字两端的空格一起去掉的问题：中英文之间、数字与汉字之间、斜杠两侧的空格恢复保留；通知摘要、更新正文与题解不再出现「Markdown列表」「19项/ 19组」这样的粘连。',
       },
       {
-        group: '列表与要点',
-        text: '修复裸公式扫描器吞掉 Markdown 列表标记的问题：解题要点、易错点等以「-」「*」「1.」开头的条目恢复逐条列表，不再被拼成一整段，短公式与文字保持同一行基线。',
+        group: '筛选清空',
+        text: '错题、题库、模板库的筛选工具栏都新增「清空筛选」：一次恢复全部章节、题型、形式、模板、难度、日期、星级、排序与来源；没有筛选时按钮自动禁用，筛选结果显示条数并同步朗读。',
       },
       {
-        group: '提示词约束',
-        text: '智能录入与 AI 出题提示词改为：points / pitfalls 每条写完整句子，公式默认行内，禁止把单个符号或半个等式单独成行；已有内容不再改动。',
+        group: '题库来源',
+        text: '题库新增「全部来源 / 考研同型 / 教材课后」三档来源筛选，与章节、题型等条件叠加，显示当前命中的题数；旧版本保存的筛选状态自动补为全部来源，从模板或知识点跳转时不会带着旧来源。',
       },
       {
-        group: '三端与防复发',
-        text: '390 / 820 / 1440 复查错题、题库与模拟考：公式均为行内、无横向溢出、无脚本错误；新增列表、短公式、矩阵与长公式回归测试，测试总数 49，防止同类问题再次出现。',
+        group: '筛选防复发',
+        text: '新增清空、来源、模板章节与旧状态迁移回归测试，测试总数 50；390 / 820 / 1440 复查三个筛选工具栏同排不溢出、按钮禁用态正确、无脚本错误，防止同类问题再次出现。',
       }
     ],
   },
@@ -25680,7 +25750,7 @@ function knowledgeSearchOpenQuestion(kind, id) {
   }
   state.activeSubject = subject;
   state.activeView = 'bank';
-  ui.bankFilters[subject] = { chapter: 'all', category: 'all', type: 'all', template: 'all', diff: 'all' };
+  ui.bankFilters[subject] = { chapter: 'all', category: 'all', type: 'all', template: 'all', diff: 'all', origin: 'all' };
   ui.bankOpen[id] = true;
   ui.bankShowLimit = Math.max(120, Number(ui.bankShowLimit) || 120);
   location.hash = '#/' + subjectRouteId(subject) + '/bank';
@@ -30127,6 +30197,27 @@ function handleAction(act, el) {
     case 'delete-entry': deleteEntry(state.activeSubject, el.getAttribute('data-id')); break;
     case 'jump-entry': jumpToEntry(el.getAttribute('data-id')); break;
     case 'goto-template': gotoTemplate(el.getAttribute('data-template')); break;
+    case 'bank-origin':
+      bankFilterFor(state.activeSubject).origin = el.getAttribute('data-value') || 'all';
+      ui.bankShowLimit = 120;
+      render();
+      break;
+    case 'clear-bank-filters': {
+      var bf = bankFilterFor(state.activeSubject);
+      bf.chapter = 'all';
+      bf.category = 'all';
+      bf.type = 'all';
+      bf.template = 'all';
+      bf.diff = 'all';
+      bf.origin = 'all';
+      ui.bankShowLimit = 120;
+      render();
+      break;
+    }
+    case 'clear-template-filters':
+      templateFilterFor(state.activeSubject).chapter = 'all';
+      render();
+      break;
     case 'clear-entry-filters': {
       var ef = filterFor(state.activeSubject);
       ef.status = 'all';
@@ -30419,6 +30510,10 @@ function bindEvents() {
       var bk = t.getAttribute('data-bank-filter');
       bankFilterFor(state.activeSubject)[bk] = t.value;
       ui.bankShowLimit = 120;
+      render();
+    } else if (t.matches('[data-template-filter]')) {
+      var tk = t.getAttribute('data-template-filter');
+      templateFilterFor(state.activeSubject)[tk] = t.value;
       render();
     } else if (t.matches('#aiThinkingToggle') || t.matches('#settingsThinkingToggle')) {
       aiSaveThinking({ enabled: t.checked });

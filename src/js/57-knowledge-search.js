@@ -252,7 +252,7 @@ function knowledgeSearchOpenQuestion(kind, id) {
   }
   state.activeSubject = subject;
   state.activeView = 'bank';
-  ui.bankFilters[subject] = { chapter: 'all', category: 'all', type: 'all', template: 'all', diff: 'all' };
+  ui.bankFilters[subject] = { chapter: 'all', category: 'all', type: 'all', template: 'all', diff: 'all', origin: 'all' };
   ui.bankOpen[id] = true;
   ui.bankShowLimit = Math.max(120, Number(ui.bankShowLimit) || 120);
   location.hash = '#/' + subjectRouteId(subject) + '/bank';

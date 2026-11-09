@@ -409,6 +409,7 @@ var ui = {
   bankOpen: {},
   filters: {},
   bankFilters: {},
+  templateFilters: {},
   noteKb: false,
   kbId: '',
   kbQuery: '',

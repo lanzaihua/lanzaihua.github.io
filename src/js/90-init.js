@@ -282,6 +282,27 @@ function handleAction(act, el) {
     case 'delete-entry': deleteEntry(state.activeSubject, el.getAttribute('data-id')); break;
     case 'jump-entry': jumpToEntry(el.getAttribute('data-id')); break;
     case 'goto-template': gotoTemplate(el.getAttribute('data-template')); break;
+    case 'bank-origin':
+      bankFilterFor(state.activeSubject).origin = el.getAttribute('data-value') || 'all';
+      ui.bankShowLimit = 120;
+      render();
+      break;
+    case 'clear-bank-filters': {
+      var bf = bankFilterFor(state.activeSubject);
+      bf.chapter = 'all';
+      bf.category = 'all';
+      bf.type = 'all';
+      bf.template = 'all';
+      bf.diff = 'all';
+      bf.origin = 'all';
+      ui.bankShowLimit = 120;
+      render();
+      break;
+    }
+    case 'clear-template-filters':
+      templateFilterFor(state.activeSubject).chapter = 'all';
+      render();
+      break;
     case 'clear-entry-filters': {
       var ef = filterFor(state.activeSubject);
       ef.status = 'all';
@@ -574,6 +595,10 @@ function bindEvents() {
       var bk = t.getAttribute('data-bank-filter');
       bankFilterFor(state.activeSubject)[bk] = t.value;
       ui.bankShowLimit = 120;
+      render();
+    } else if (t.matches('[data-template-filter]')) {
+      var tk = t.getAttribute('data-template-filter');
+      templateFilterFor(state.activeSubject)[tk] = t.value;
       render();
     } else if (t.matches('#aiThinkingToggle') || t.matches('#settingsThinkingToggle')) {
       aiSaveThinking({ enabled: t.checked });

@@ -377,11 +377,17 @@ function nextUserBankIdForList(subjectId, list) {
 }
 
 function viewTemplates(subjectId) {
-  var tpls = templatesOf(subjectId);
+  var allTpls = templatesOf(subjectId);
+  var tf = templateFilterFor(subjectId);
   var q = searchQuery();
-  if (q) tpls = tpls.filter(function (t) {
-    var hay = (t.id + ' ' + t.title + ' ' + (t.sections || []).map(function (s) { return s.md; }).join(' ')).toLowerCase();
-    return hay.indexOf(q.toLowerCase()) >= 0;
+  var tplChapters = sortChapters(subjectId, uniq((typeof chapterListFor === 'function' ? chapterListFor(subjectId) : []).concat(allTpls.map(function (t) { return t.chapter || '未分章'; }))));
+  var tpls = allTpls.filter(function (t) {
+    if (tf.chapter !== 'all' && (t.chapter || '未分章') !== tf.chapter) return false;
+    if (q) {
+      var hay = (t.id + ' ' + t.title + ' ' + (t.sections || []).map(function (s) { return s.md; }).join(' ')).toLowerCase();
+      if (hay.indexOf(q.toLowerCase()) < 0) return false;
+    }
+    return true;
   });
   var groups = {};
   var order = [];
@@ -425,8 +431,15 @@ function viewTemplates(subjectId) {
     '</button>';
   }).join('') + '</nav>' : '';
 
-  return head + chapterNav + '<h2 class="sr-only">模板章节</h2>' + (q ? '<p class="form-note">搜索「' + esc(q) + '」的结果</p>' : '') +
-    (tpls.length ? body : emptyState('没有匹配的模板', '换个关键词，或清空搜索。', ''));
+  var tplFiltersActive = templateFiltersActive(tf);
+  var tplToolbar = '<div class="toolbar template-filters">' +
+    '<select class="select" data-template-filter="chapter" aria-label="按章节筛选模板">' + optionList(['all'].concat(tplChapters), tf.chapter, '全部章节') + '</select>' +
+    '<button class="btn btn-xs filter-clear" data-act="clear-template-filters" type="button" title="' + (tplFiltersActive ? '清空模板筛选' : '当前没有可清空的筛选') + '"' + (tplFiltersActive ? '' : ' disabled') + '>清空筛选</button>' +
+    '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + tpls.length + ' / ' + allTpls.length + ' 张</span>' +
+  '</div>';
+
+  return head + tplToolbar + chapterNav + '<h2 class="sr-only">模板章节</h2>' + (q ? '<p class="form-note">搜索「' + esc(q) + '」的结果</p>' : '') +
+    (tpls.length ? body : emptyState('没有匹配的模板', '换个章节，或清空筛选。', ''));
 }
 
 function viewBank(subjectId) {
@@ -441,6 +454,7 @@ function viewBank(subjectId) {
     if (f.category !== 'all' && it.category !== f.category) return false;
     if (f.type !== 'all' && (it.type || 'subjective') !== f.type) return false;
     if (f.diff !== 'all' && String(it.difficulty) !== f.diff) return false;
+    if (f.origin !== 'all' && bankOriginKey(it) !== f.origin) return false;
     if (q) {
       var hay = [it.title, it.question, it.chapter, it.templateId, (it.tags || []).join(' '), (it.pointKeys || []).join(' ')].join(' ').toLowerCase();
       if (hay.indexOf(q.toLowerCase()) < 0) return false;
@@ -460,7 +474,14 @@ function viewBank(subjectId) {
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="templates" type="button">看模板</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
-  var toolbar = '<div class="toolbar">' +
+  function bankOriginBtn(value, label) {
+    return '<button data-act="bank-origin" data-value="' + value + '" aria-pressed="' + (f.origin === value) + '" type="button">' + esc(label) + '</button>';
+  }
+  var bankFiltersOn = bankFiltersActive(f);
+  var toolbar = '<div class="toolbar bank-filters">' +
+    '<div class="seg bank-origin" role="group" aria-label="按题目来源筛选题库">' +
+      bankOriginBtn('all', '全部来源') + bankOriginBtn('exam', '考研同型') + bankOriginBtn('textbook', '教材课后') +
+    '</div>' +
     '<select class="select" data-bank-filter="chapter" aria-label="按章节筛选题库">' + optionList(['all'].concat(chapters), f.chapter, '全部章节') + '</select>' +
         '<select class="select" data-bank-filter="category" aria-label="按题型分类筛选题库"><option value="all"' + (f.category === 'all' ? ' selected' : '') + '>全部题型</option>' + ["计算题","应用题","综合题","概念辨析题","证明题","公式填空题","反例与存在性题","分类讨论题","误差分析题","多解比较题"].map(function (c) { return '<option value="' + attr(c) + '"' + (f.category === c ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '</select>' +
     '<select class="select" data-bank-filter="type" aria-label="按作答形式筛选题库"><option value="all"' + (f.type === 'all' ? ' selected' : '') + '>全部形式</option><option value="choice"' + (f.type === 'choice' ? ' selected' : '') + '>客观题</option><option value="fill"' + (f.type === 'fill' ? ' selected' : '') + '>填空题</option><option value="subjective"' + (f.type === 'subjective' ? ' selected' : '') + '>主观题</option></select>' +
@@ -475,14 +496,15 @@ function viewBank(subjectId) {
         return '<option value="' + n + '"' + (f.diff === String(n) ? ' selected' : '') + '>' + stars(n) + ' ' + label + '</option>';
       }).join('') +
     '</select>' +
-    '<span class="spacer"></span><span class="count-note">' + filtered.length + ' / ' + items.length + ' 题</span>' +
+    '<button class="btn btn-xs filter-clear" data-act="clear-bank-filters" type="button" title="' + (bankFiltersOn ? '清空题库筛选' : '当前没有可清空的筛选') + '"' + (bankFiltersOn ? '' : ' disabled') + '>清空筛选</button>' +
+    '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + filtered.length + ' / ' + items.length + ' 题</span>' +
   '</div>';
 
   var list;
   if (!items.length) {
     list = emptyState('题库还没生成', '题库作者正在整理四科 skill 的题型与变式，稍后刷新即可；你仍然可以手动新增或智能录入。', '<div class="multi-actions">' + entryCreateButtons(subjectId) + '</div>');
   } else if (!filtered.length) {
-    list = emptyState('没有匹配的题', '换个章节、题型分类、作答形式、模板或难度，或清空搜索词。', '');
+    list = emptyState('没有匹配的题', '换个来源、章节、题型分类、作答形式、模板或难度，或清空筛选。', '');
   } else {
     var shownLimit = Math.max(120, Number(ui.bankShowLimit) || 120);
     var shown = filtered.slice(0, shownLimit);
@@ -593,7 +615,14 @@ function jumpToEntry(entryId) {
 }
 function gotoBank(templateId) {
   state.activeView = 'bank';
-  bankFilterFor(state.activeSubject).template = templateId || 'all';
+  var gf = bankFilterFor(state.activeSubject);
+  gf.chapter = 'all';
+  gf.category = 'all';
+  gf.type = 'all';
+  gf.template = templateId || 'all';
+  gf.diff = 'all';
+  gf.origin = 'all';
+  ui.bankShowLimit = 120;
   persistLocal();
   location.hash = '#/' + subjectRouteId(state.activeSubject) + '/bank';
   render();
@@ -609,6 +638,7 @@ function openBankItem(bankId) {
 }
 function gotoTemplate(templateId) {
   state.activeView = 'templates';
+  templateFilterFor(state.activeSubject).chapter = 'all';
   ui.tplOpen = templateId;
   persistLocal();
   location.hash = '#/' + subjectRouteId(state.activeSubject) + '/templates';

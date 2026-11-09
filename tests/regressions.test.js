@@ -320,6 +320,12 @@ test('markdown lists survive bare-math wrapping and short display formulas stay 
   assert.equal(english.querySelectorAll('math').length,0,'英文词组与宽度列表不能排成公式：'+english.innerHTML);
   assert.match(english.textContent,/points \/ pitfalls/);
   assert.match(english.textContent,/390 \/ 820 \/ 1440/);
+  const prose=document.createElement('div');
+  prose.innerHTML=r.ctx.renderMarkdown('Markdown 列表恢复逐条，AI 提示词保留空格；全部来源 / 考研同型 / 教材课后。');
+  assert.equal(prose.textContent.trim(),'Markdown 列表恢复逐条，AI 提示词保留空格；全部来源 / 考研同型 / 教材课后。','裸公式扫描不能吞掉中英文之间的空格：'+prose.innerHTML);
+  const inline=document.createElement('div');
+  inline.innerHTML=r.ctx.renderInline('Markdown 列表与 390 / 820 / 1440 复查。');
+  assert.match(inline.textContent,/Markdown 列表与 390 \/ 820 \/ 1440 复查/);
   const oneMath=document.createElement('div');
   oneMath.innerHTML=r.ctx.renderMarkdown('设 $AB=E$，复查 390 / 820 / 1440 三端。');
   assert.equal(oneMath.querySelectorAll('math').length,1,oneMath.innerHTML);
@@ -491,4 +497,40 @@ test('every long loading flow reports real counts or stages and stays cancellabl
   assert.match(css,/\.note-busy-track/,'笔记进度条必须有稳定布局');
   assert.match(css,/prefers-reduced-motion:[\s\S]{0,180}\.note-busy/,'笔记进度必须尊重减少动态效果');
   assert.match(css,/prefers-reduced-motion:[\s\S]{0,180}\.long-task/,'后台进度必须尊重减少动态效果');
+});
+
+test('filters can be cleared from every toolbar and bank source can be filtered',()=>{
+  const r=runtime();
+  r.run('10-markdown.js');
+  assert.equal(r.ctx.bankOriginKey({examOrigin:'教材课后习题'}),'textbook');
+  assert.equal(r.ctx.bankOriginKey({examOrigin:'考研原创同型题'}),'exam');
+  assert.equal(r.ctx.bankOriginKey({}),'exam');
+  r.ctx.ui.bankFilters.gaodai={chapter:'all',category:'all',type:'all',template:'all',diff:'all'};
+  assert.equal(r.ctx.bankFilterFor('gaodai').origin,'all','旧本地状态缺少来源字段时必须补成全部来源');
+  assert.equal(r.ctx.bankFiltersActive(r.ctx.bankFilterFor('gaodai')),false);
+  r.ctx.bankFilterFor('gaodai').origin='textbook';
+  assert.equal(r.ctx.bankFiltersActive(r.ctx.bankFilterFor('gaodai')),true);
+  assert.equal(r.ctx.templateFilterFor('gaodai').chapter,'all');
+  assert.equal(r.ctx.templateFiltersActive(r.ctx.templateFilterFor('gaodai')),false);
+  r.ctx.templateFilterFor('gaodai').chapter='第二章 行列式';
+  assert.equal(r.ctx.templateFiltersActive(r.ctx.templateFilterFor('gaodai')),true);
+
+  const entries=read('src/js/20-entries.js');
+  const library=read('src/js/30-library.js');
+  const init=read('src/js/90-init.js');
+  assert.match(entries,/data-act="clear-entry-filters"[^>]*>清空筛选/);
+  assert.equal((entries.match(/data-act="clear-entry-filters"/g)||[]).length,1,'错题清空按钮只能有一个，避免工具栏和下方重复');
+  assert.match(library,/data-act="clear-bank-filters"[^>]*>清空筛选/);
+  assert.match(library,/data-act="bank-origin"/);
+  assert.match(library,/bankOriginBtn\('exam', '考研同型'\)/);
+  assert.match(library,/bankOriginBtn\('textbook', '教材课后'\)/);
+  assert.match(library,/bankOriginKey/);
+  assert.match(library,/data-template-filter="chapter"/);
+  assert.match(library,/data-act="clear-template-filters"[^>]*>清空筛选/);
+  assert.match(init,/case 'clear-bank-filters'/);
+  assert.match(init,/case 'clear-template-filters'/);
+  assert.match(init,/case 'bank-origin'/);
+  assert.match(init,/[\[\]]data-template-filter[\[\]]/);
+  assert.match(read('src/styles.css'),/\.filter-clear\s*\{[^}]*white-space:\s*nowrap/);
+  assert.match(read('src/styles.css'),/@media \(max-width: 1260px\)[\s\S]{0,300}\.entry-filters \.filter-clear/);
 });

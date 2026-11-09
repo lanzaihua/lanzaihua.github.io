@@ -161,11 +161,11 @@ function wrapBareLatex(src) {
       if (!m) return label;
       var hasCommand = /\\[A-Za-z]+/.test(m);
       // 没有命令、但带上下标/等号的连续片段，也按公式处理（修复 AI 把公式中途断开的残留）。
-      if (!hasCommand && !(/[\^_]/.test(m) && /[0-9A-Za-z]/.test(m) && m.length >= 4)) return label + m;
+      if (!hasCommand && !(/[\^_]/.test(m) && /[0-9A-Za-z]/.test(m) && m.length >= 4)) return raw;
       var first = hasCommand ? m.search(/\\[A-Za-z]+/) : -1;
-      if (first > 0 && /[A-Za-z]{3,}/.test(m.slice(0, first))) return m;
+      if (first > 0 && /[A-Za-z]{3,}/.test(m.slice(0, first))) return raw;
       var plainChinese = m.replace(/\\frac\{[^{}]*\}\{[^{}]*\}/g, '').replace(/\\text\{[^{}]*\}/g, '');
-      if (/[\u4e00-\u9fa5]/.test(plainChinese)) return m;
+      if (/[\u4e00-\u9fa5]/.test(plainChinese)) return raw;
       // 公式末尾常紧跟句号/逗号：把标点留在公式外，避免 Temml 把末尾标点排进公式。
       var tail = '';
       var pm = m.match(/[.。，,;；:：!?！？]+$/);
@@ -645,8 +645,24 @@ function filterFor(subjectId) {
   return f;
 }
 function bankFilterFor(subjectId) {
-  if (!ui.bankFilters[subjectId]) ui.bankFilters[subjectId] = { chapter: 'all', category: 'all', type: 'all', template: 'all', diff: 'all' };
-  return ui.bankFilters[subjectId];
+  if (!ui.bankFilters[subjectId]) ui.bankFilters[subjectId] = { chapter: 'all', category: 'all', type: 'all', template: 'all', diff: 'all', origin: 'all' };
+  var f = ui.bankFilters[subjectId];
+  if (!f.origin) f.origin = 'all';
+  return f;
+}
+function bankOriginKey(item) {
+  return item && item.examOrigin === '教材课后习题' ? 'textbook' : 'exam';
+}
+function bankFiltersActive(f) {
+  return !!f && (f.chapter !== 'all' || f.category !== 'all' || f.type !== 'all' || f.template !== 'all' || f.diff !== 'all' || f.origin !== 'all');
+}
+function templateFilterFor(subjectId) {
+  if (!ui.templateFilters) ui.templateFilters = {};
+  if (!ui.templateFilters[subjectId]) ui.templateFilters[subjectId] = { chapter: 'all' };
+  return ui.templateFilters[subjectId];
+}
+function templateFiltersActive(f) {
+  return !!f && f.chapter !== 'all';
 }
 
 function sortEntries(list, subjectId) {
