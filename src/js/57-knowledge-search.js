@@ -57,10 +57,10 @@ function knowledgeSearchExcerpt(text, query) {
     buf = [];
   }
   lines.forEach(function (line) {
-    if (/^##\s+/.test(line)) {
-      flush(); section = line.replace(/^##\s+/, '').trim(); return;
+    if (/^##\s*/.test(line)) {
+      flush(); section = line.replace(/^##\s*/, '').trim(); return;
     }
-    if (/^#{3,4}\s+/.test(line)) { flush(); buf.push(line); return; }
+    if (/^#{3,4}\s*/.test(line)) { flush(); buf.push(line); return; }
     if (/^\s*[-*]\s+/.test(line) || /^\s*\d+[.、]\s+/.test(line)) {
       flush(); buf.push(line); return;
     }
@@ -101,7 +101,7 @@ function knowledgeSearchExcerpt(text, query) {
   var inSection = false;
   for (var li = 0; li < lines.length; li++) {
     var line = lines[li];
-    var heading = line.match(/^##\s+(.+)$/);
+    var heading = line.match(/^##\s*(.+)$/);
     if (heading) {
       if (inSection) break;
       if (heading[1].trim() === parent) { inSection = true; sectionLines.push(line); }
@@ -113,7 +113,11 @@ function knowledgeSearchExcerpt(text, query) {
   if (sectionText.length < 80) sectionText = [best.unit.text].concat(units.slice(best.index + 1, best.index + 5).map(function (u) { return u.text; })).join('\n\n');
   // 1) 短小节补入同章后续 3 个知识小节。
   if (sectionText.length < 1600) {
-    var sectionStart = lines.indexOf('## ' + parent);
+    var sectionStart = -1;
+    for (var sx = 0; sx < lines.length; sx++) {
+      var sm = lines[sx].match(/^##\s*(.+)$/);
+      if (sm && sm[1].trim() === parent) { sectionStart = sx; break; }
+    }
     if (sectionStart >= 0) {
       var extraLines = [];
       var extraCount = 0;

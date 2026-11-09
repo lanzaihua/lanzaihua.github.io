@@ -246,6 +246,8 @@ if (it.type === 'choice' && Array.isArray(it.options)) {
       var fieldText = String(field || '');
       if (!fieldText) return;
       if (/(^|[^\\])\\[0-9]/.test(fieldText)) coverageErrors.push(it.id + ' 数学文本含单反斜杠数字');
+      if (/\\\\\\[A-Za-z](?![A-Za-z])/.test(fieldText)) coverageErrors.push(it.id + ' 数学文本含三反斜杠非法命令');
+      if (/(.{8,80})\s+\1$/.test(fieldText)) coverageErrors.push(it.id + ' 解答末尾整句重复');
       if (/\\nee/.test(fieldText)) coverageErrors.push(it.id + ' 数学文本含损坏的 \\nee');
       if (/=\\exists|=\\forall|\\Rightarrow-(?:\\exists|\\forall)|\\iff-(?:\\exists|\\forall)/.test(fieldText)) coverageErrors.push(it.id + ' 逻辑运算符损坏');
       if (/\\sqrt\{-[0-9]+\^2/.test(fieldText)) coverageErrors.push(it.id + ' 平方展开写成负数开方');

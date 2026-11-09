@@ -450,8 +450,11 @@ function repairStrayDollarSigns(src) {
     // 真正的坏 $ 会包进中文、或只有 \end 没有 \begin；pmatrix/cases 内部的 & 和 \\ 是合法公式。
     var innerNoText = inner.replace(/\\text\{[^{}]*\}/g, '').replace(/\\mathrm\{[^{}]*\}/g, '').replace(/\\operatorname\{[^{}]*\}/g, '').replace(/_\{[^{}]*\}/g, '').replace(/\^\{[^{}]*\}/g, '');
     var unsafeInner = /[\u4e00-\u9fff]/.test(innerNoText) || (inner.indexOf('\\end{') >= 0 && inner.indexOf('\\begin{') < 0);
-    if (inner.length > 500) unsafeInner = true;
-    if (close >= 0 && !unsafeInner && isLikelyInlineMath(innerNoText)) {
+    // 长证明题里的行内公式可能超过 500 字，但它仍是完整 LaTeX；不能按坏 $ 删掉，
+    // 否则后半段会退化成正文并逐段丢失括号/命令。
+    var longButMath = inner.length > 400 && !/[\u4e00-\u9fff]/.test(innerNoText) && /\\[A-Za-z]+|\^|_|=/.test(innerNoText);
+    if (inner.length > 4000) unsafeInner = true;
+    if (close >= 0 && !unsafeInner && (isLikelyInlineMath(innerNoText) || longButMath)) {
       out += text.slice(i, close + 1);
       i = close + 1;
       continue;
@@ -487,10 +490,35 @@ function formatSubquestionBreaks(src) {
   return text;
 }
 
+/*
+ * 技能包/笔记/AI 正文常写成 "##标题"、"**用途：…。**说明"。
+ * CommonMark 要求 ATX 标题 # 后有空格，右边界 ** 后紧跟中文时也不算粗体，
+ * 结果整段原样显示。这里只处理代码段之外的正文，先补标题空格，再把
+ * 中文相邻的成对 ** 归一为 <strong>，避免把公式里的 ** 改坏。
+ */
+function normalizeMarkdownHeadings(src) {
+  return String(src == null ? '' : src).replace(/(^|\n)([ \t]{0,3})(#{1,6})(?=[^\s#])/g, function (m, lead, indent, hashes) {
+    return lead + indent + hashes + ' ';
+  });
+}
+
+function normalizeCjkStrong(src) {
+  var text = String(src == null ? '' : src);
+  var parts = text.split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$)/);
+  for (var i = 0; i < parts.length; i += 2) {
+    parts[i] = parts[i].replace(/\*\*([^*\n]+?)\*\*(?=[\u3000-\u303f\u4e00-\u9fff])/g, function (m, inner) {
+      return inner ? '<strong>' + inner + '</strong>' : m;
+    });
+  }
+  return parts.join('');
+}
+
 function renderMarkdown(src) {
   if (!src) return '';
   var codeSeg = extractCodeSegments(src);
   src = codeSeg.text;
+  src = normalizeMarkdownHeadings(src);
+  src = normalizeCjkStrong(src);
   src = normalizeEscapedLineBreaks(src).replace(/\uFFFD+/g, '');
   src = repairStrayDollarSigns(src);
   src = normalizeInlineDisplayMath(src);

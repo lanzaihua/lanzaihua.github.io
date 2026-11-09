@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09--7-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--78bb3a69-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09--8-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--f57fed2b-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -164,9 +164,9 @@
 
 ### 2026-11-09 · 长任务、公式与筛选
 
-**20 项 · 20 组**
+**25 项 · 25 组**
 
-在原有通知、模拟考与长任务进度基础上，本轮修复公式与数字排版，并补齐筛选工具栏：句中的短公式不再被拆成独立行，Markdown 列表恢复逐条，AI 提示词禁止孤立符号；错题、题库、模板库都有「清空筛选」，题库新增「全部来源 / 考研同型 / 教材课后」筛选。390 / 820 / 1440 复查错题、题库、模板库与模拟考无逐行断开、无横向溢出。本块共 20 项 / 20 组，50 项测试、严格 QA、站点一致性与三端检查通过。
+在原有通知、模拟考、长任务与筛选基础上，本轮继续修复公式与数字排版：无空格标题、中文后紧接的粗体、长证明中的行内公式、题库 cases 选项与解答重复句都已修正；QA 与构建新增非法命令、整句重复门禁。390 / 820 / 1440 复查错题、题库与模拟考无公式泄漏、无逐行断开、无横向溢出。本块共 25 项 / 25 组，50 项测试、严格 QA、站点一致性与三端检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -190,8 +190,13 @@
 | **筛选清空** | 错题、题库、模板库的筛选工具栏都新增「清空筛选」：一次恢复全部章节、题型、形式、模板、难度、日期、星级、排序与来源；没有筛选时按钮自动禁用，筛选结果显示条数并同步朗读。 |
 | **题库来源** | 题库新增「全部来源 / 考研同型 / 教材课后」三档来源筛选，与章节、题型等条件叠加，显示当前命中的题数；旧版本保存的筛选状态自动补为全部来源，从模板或知识点跳转时不会带着旧来源。 |
 | **筛选防复发** | 新增清空、来源、模板章节与旧状态迁移回归测试，测试总数 50；390 / 820 / 1440 复查三个筛选工具栏同排不溢出、按钮禁用态正确、无脚本错误，防止同类问题再次出现。 |
+| **标题归一** | 修复没有空格的「##标题」「###标题」被原样显示的问题：渲染前自动补空格，知识库小节也能正确切分；标题层级、目录与正文顺序保持一致。 |
+| **中文粗体** | 修复「**用途1：…。**定义」这类中文后紧接的粗体不生效：闭合标记后是中文或中文标点时仍识别为粗体，公式里的 ** 不被误改。 |
+| **长公式保留** | 修复长证明里的行内公式被误判为坏美元符号而删除：保留整段公式，不再丢左括号、丢 λ 符号或把句号挤到单独一行；公式仍可横向滚动。 |
+| **题库选项** | 修复 GA-B0328、GA-B0388 的 A 选项把换行写成非法命令、显示成反斜杠加 y 的问题：改为标准 cases 两行，答案仍为 D，内容与其余选项一致。 |
+| **重复句与门禁** | 清理 60 处解答末尾整句重复，并给 QA 与构建新增三反斜杠非法命令、整句重复、无空格标题与中文粗体回归；42 项 Markdown 回归、全套 50 项测试通过。 |
 
-<p align="center"><img src="assets/v2/20261109d-changelog.png" alt="长任务、公式与筛选更新记录" width="820"></p>
+<p align="center"><img src="assets/v2/20261109e-changelog.png" alt="长任务、公式与筛选更新记录" width="820"></p>
 
 ### 2026-11-08 · 公式、答题页与进度
 
