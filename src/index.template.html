@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="zh-CN" data-lang-group="cjk" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>四科错题本</title>
+<script>window.__BUILD_ID__="__BUILD_HASH__";</script>
+  <meta name="application-name" content="四科错题本">
+<meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
+<meta name="theme-color" content="#f4f1e9">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://lanzaihua.github.io/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="四科错题本">
+<meta property="og:title" content="四科错题本 · 高代 / 数分 / 解几 / 西经">
+<meta property="og:description" content="四科错题、题型模板、考研同型题库、AI 智能录入、期末复习与手写笔记，数据默认只留在本机。">
+<meta property="og:url" content="https://lanzaihua.github.io/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="四科错题本">
+<meta name="twitter:description" content="四科错题、模板、题库与期末复习，数据默认只留在本机。">
+<style>
+__STYLES__
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+
+<section class="home-screen" id="homeScreen" aria-labelledby="homeTitle">
+  <div class="home-inner">
+    <header class="home-top">
+      <div class="home-brand">
+        <span class="brand-seal" aria-hidden="true">题</span>
+        <span>
+          <span class="home-brand-name">四科错题本</span>
+          <span class="home-brand-sub">高代 · 数分 · 解几 · 西经</span>
+        </span>
+      </div>
+      <div class="home-top-meta">
+        <span>四科 · 一套复习节奏</span>
+        <span id="homeDate"></span>
+      </div>
+      
+    </header>
+
+    <main class="home-main" id="homeMain">
+      <p class="home-kicker">不必一次做完 按自己的节奏来</p>
+      <h1 class="home-title" id="homeTitle"><span id="homeGreeting">你好</span><br><span id="homeWelcome">欢迎回来</span></h1>
+      <p class="home-welcome-note" id="homeWelcomeNote"></p>
+
+      <div class="home-subjects-head">
+        <span>今天想从哪一科开始？</span>
+        <span>不用全看 挑一科就好</span>
+      </div>
+      <div class="home-subjects" id="homeSubjects"></div>
+
+      <a class="home-notes-entry" href="#/notes" data-act="open-notes-library" title="打开笔记库">
+        <span class="hne-seal" aria-hidden="true">记</span>
+        <span class="hne-main"><b>笔记库</b><small>多页笔记 · 手写标注 · 智能扫描 · 导出 PDF</small></span>
+        <span class="hne-action">打开 <span aria-hidden="true">→</span></span>
+      </a>
+
+      <a class="home-notes-entry home-final-entry" href="#/final" title="打开期末复习">
+        <span class="hne-seal" aria-hidden="true">末</span>
+        <span class="hne-main"><b>期末复习</b><small>考试日期 · 智能计划 · 模拟卷 · DOCX / PDF</small></span>
+        <span class="hne-action">打开 <span aria-hidden="true">→</span></span>
+      </a>
+
+      <div class="home-features" aria-label="错题本功能">
+        <span>AI 补全解答</span>
+        <span>题型模板</span>
+        <span>考研同型</span>
+        <span>掌握标记</span>
+        <span>期末模拟卷 · DOCX / PDF</span><span>手机 / 平板 / 电脑</span>
+      </div>
+    </main>
+
+    <footer class="home-foot">
+      <span>模板和题库都在这儿 按你的节奏来</span>
+      <span class="home-foot-actions">
+        <span id="homeFootNote">数据保存在本机浏览器，可在设置里导出或连接同步</span>
+        <a class="home-repo-link" href="https://github.com/lanzaihua/lanzaihua.github.io/blob/main/README.md" target="_blank" rel="noopener noreferrer" title="在 GitHub 查看网页详细介绍">详细介绍 <span aria-hidden="true">↗</span></a>
+        <span class="home-icon-group">
+        <button class="icon-btn home-changelog-btn" data-act="open-changelog" type="button" title="更新记录" aria-label="更新记录">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3.2 12a8.8 8.8 0 1 0 2.4-6.1"></path>
+            <path d="M3.2 4.2v4.9h4.9"></path>
+            <path d="M12 7.4v4.9l3.3 1.9"></path>
+          </svg>
+        </button>
+        <button class="icon-btn home-language-btn" data-act="open-language" type="button" title="语言 / Language" aria-label="切换语言">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.7"></circle>
+            <path d="M3.4 12h17.2M12 3.3c2.4 2.5 3.6 5.4 3.6 8.7s-1.2 6.2-3.6 8.7M12 3.3C9.6 5.8 8.4 8.7 8.4 12s1.2 6.2 3.6 8.7"></path>
+          </svg>
+        </button>
+        <button class="icon-btn home-settings-btn" data-act="open-settings" type="button" title="设置与同步" aria-label="设置与同步">
+          <svg class="icon-gear" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button><button class="icon-btn notif-trigger home-notif-btn" data-act="open-notifications" type="button" title="通知" aria-label="打开通知" aria-expanded="false" aria-controls="notifPanel">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+          </svg>
+          <span class="notif-badge" data-notif-badge hidden></span>
+        </button></span>
+      </span>
+    </footer>
+  </div>
+</section>
+
+<div class="app">
+  <aside class="rail" aria-label="科目导航">
+    <a class="brand" href="#/home" title="四科错题本 · 回到首页">
+      <span class="brand-seal" aria-hidden="true">题</span>
+      <span>
+        <span class="brand-name">四科错题本</span>
+        <span class="brand-sub">高代 · 数分 · 解几 · 西经</span>
+      </span>
+    </a>
+    <div>
+      <p class="rail-label">科目 / SUBJECTS</p>
+      <nav class="subject-nav" id="subjectNav" aria-label="切换科目"></nav>
+    </div>
+    <div class="rail-progress" id="railProgress"></div>
+    <div class="rail-foot">
+      <p class="rail-note" id="railNote"></p>
+    </div>
+  </aside>
+
+  <div class="stage">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="mobile-brand" href="#/home" title="四科错题本 · 回到首页">
+          <span class="brand-seal" aria-hidden="true">题</span>
+          <span class="brand-copy"><span class="brand-name">四科错题本</span><span class="brand-sub notes-brand-sub">多页 · 手写 · 智能扫描 · 导出</span></span>
+        </a>
+        <div class="crumb">
+          <span class="subj" id="crumbSubj">高等代数</span>
+          <span class="sep">/</span>
+          <span class="view" id="crumbView">总览</span>
+        </div>
+        <div class="mobile-subjects" id="mobileSubjects" aria-label="切换科目"></div>
+        <nav class="tabs" id="tabs" role="tablist" aria-label="科目视图"></nav>
+        <div class="cross-tabs" id="crossTabs" aria-label="期末复习与笔记库"></div>
+        <div class="top-actions">
+          <label class="search">
+            <span class="sr-only">搜索错题与题库</span>
+            <input id="searchInput" type="search" placeholder="搜索题目 / 知识点" autocomplete="off">
+          </label>
+          <button class="icon-btn" data-act="cycle-theme" type="button" title="切换主题" aria-label="切换主题">
+            <svg class="icon-theme" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.7"></circle>
+              <path d="M12 3.3a8.7 8.7 0 0 0 0 17.4Z" fill="currentColor" stroke="none"></path>
+            </svg>
+          </button>
+          <button class="icon-btn" data-act="open-language" type="button" title="语言 / Language" aria-label="切换语言">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.7"></circle>
+            <path d="M3.4 12h17.2M12 3.3c2.4 2.5 3.6 5.4 3.6 8.7s-1.2 6.2-3.6 8.7M12 3.3C9.6 5.8 8.4 8.7 8.4 12s1.2 6.2 3.6 8.7"></path>
+          </svg>
+        </button>
+        
+        <button class="icon-btn" data-act="open-settings" type="button" title="设置与同步" aria-label="设置与同步">
+            <svg class="icon-gear" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          </button><button class="icon-btn notif-trigger" data-act="open-notifications" type="button" title="通知" aria-label="打开通知" aria-expanded="false" aria-controls="notifPanel">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+          </svg>
+          <span class="notif-badge" data-notif-badge hidden></span>
+        </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main" id="main" tabindex="-1"></main>
+
+    <footer class="foot">
+      <span id="footLeft">本机优先 · 可导出备份；自建同步可选</span>
+      <span id="footRight">来源：四册错题本 + 四科 skill 题库</span>
+    </footer>
+  </div>
+</div>
+
+<dialog id="editor" aria-labelledby="editorTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="editorTitle">编辑错题</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="editor" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body" id="editorBody"></div>
+  <div class="dlg-foot">
+    <button class="btn" data-act="close-dialog" data-dialog="editor" type="button">取消</button>
+    <button class="btn btn-primary" data-act="save-entry" type="button">保存</button>
+  </div>
+</dialog>
+
+<dialog id="entryNoteSyncDialog" aria-labelledby="entryNoteSyncTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="entryNoteSyncTitle">笔记已保存</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="entryNoteSyncDialog" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body" id="entryNoteSyncBody"></div>
+  <div class="dlg-foot">
+    <button class="btn" data-act="entry-note-no-sync" type="button">暂不同步</button>
+    <button class="btn btn-primary" data-act="entry-note-sync" type="button">同步到笔记</button>
+  </div>
+</dialog>
+
+<dialog id="changelogDialog" aria-labelledby="changelogTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="changelogTitle">更新记录</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="changelogDialog" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body changelog-body" id="changelogBody"></div>
+</dialog>
+
+<dialog id="noteTextDialog" aria-labelledby="noteTextTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="noteTextTitle">插入文字</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="noteTextDialog" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body">
+    <label class="field"><span>文字内容</span>
+      <textarea id="noteTextInput" rows="5" placeholder="写公式、推导或提醒；换行会保留"></textarea>
+    </label>
+    <div class="field-grid" style="margin-top:14px">
+      <label class="field"><span>字号</span>
+        <select id="noteTextSize">
+          <option value="22">小</option>
+          <option value="30" selected>中</option>
+          <option value="40">大</option>
+          <option value="52">标题</option>
+        </select>
+      </label>
+      <label class="field"><span>对齐</span>
+        <select id="noteTextAlign">
+          <option value="left">左对齐</option>
+          <option value="center">居中</option>
+        </select>
+      </label>
+    </div>
+    <p class="form-hint">插入后切到「浏览」模式可拖动位置；双击文字可再次修改。</p>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn" data-act="close-dialog" data-dialog="noteTextDialog" type="button">取消</button>
+    <button class="btn btn-primary" id="noteTextConfirmBtn" data-act="note-text-confirm" type="button">插入文字</button>
+  </div>
+</dialog>
+
+<dialog id="noteItemDialog" aria-labelledby="noteItemTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="noteItemTitle">编辑笔记内容</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="noteItemDialog" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body">
+    <div class="note-item-dialog-preview" id="noteItemPreview"></div>
+    <p class="form-hint" id="noteItemMeta"></p>
+  </div>
+  <div class="dlg-foot note-item-dialog-foot">
+    <button class="btn btn-danger" data-act="note-item-delete" type="button">删除</button>
+    <button class="btn" data-act="close-dialog" data-dialog="noteItemDialog" type="button">取消</button>
+    <button class="btn btn-primary" id="noteItemEditBtn" data-act="note-item-edit" type="button">修改</button>
+  </div>
+</dialog>
+
+<dialog id="noteExportDialog" aria-labelledby="noteExportTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="noteExportTitle">导出笔记</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="noteExportDialog" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body">
+    <fieldset class="field">
+      <legend>范围</legend>
+      <label class="check"><input type="radio" name="noteExportScope" id="noteExportScopeCurrent" value="current" checked> <span>当前笔记本</span></label>
+      <label class="check"><input type="radio" name="noteExportScope" id="noteExportScopeAll" value="all"> <span id="noteExportAllLabel">全部笔记</span></label>
+    </fieldset>
+    <fieldset class="field note-export-pages" id="noteExportPagesField">
+      <legend>页面 <span class="note-export-page-summary" id="noteExportPageSummary"></span></legend>
+      <div class="note-export-page-tools">
+        <button class="linkish" data-act="note-export-pages-all" type="button">全选</button>
+        <button class="linkish" data-act="note-export-pages-none" type="button">清空</button>
+      </div>
+      <div class="note-export-page-list" id="noteExportPages"></div>
+    </fieldset>
+    <fieldset class="field">
+      <legend>格式</legend>
+      <label class="check"><input type="checkbox" id="noteExportPng" checked> <span>PNG 图片</span></label>
+      <label class="check"><input type="checkbox" id="noteExportPdf" checked> <span>PDF</span></label>
+      <label class="field-row"><span>PDF 方式</span>
+        <select id="noteExportPdfMode">
+          <option value="merge">合订成一个 PDF</option>
+          <option value="split">每本笔记一个 PDF</option>
+          <option value="page">每页一个 PDF</option>
+        </select>
+      </label>
+    </fieldset>
+    <p class="form-hint" id="noteExportHint">选择全部笔记时，会导出多张 PNG，并按选择生成多页 PDF；只导出手写、图片、文字和页面背景。</p>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn" data-act="close-dialog" data-dialog="noteExportDialog" type="button">取消</button>
+    <button class="btn btn-primary" data-act="note-export-start" type="button">开始导出</button>
+  </div>
+</dialog>
+
+<dialog id="noteCoverCropDialog" aria-labelledby="noteCoverCropTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="noteCoverCropTitle">裁剪封面</h2>
+    <button class="icon-btn" data-act="note-cover-crop-cancel" type="button" aria-label="关闭裁剪">×</button>
+  </div>
+  <div class="dlg-body">
+    <div class="cover-crop-body">
+      <div class="cover-crop-stage">
+        <canvas id="noteCoverCropCanvas" width="600" height="800" aria-label="封面裁剪预览"></canvas>
+      </div>
+      <div class="cover-crop-controls">
+        <div class="cover-crop-modes" role="group" aria-label="封面显示方式">
+          <button class="note-seg-btn is-on" data-act="note-cover-crop-fit" data-fit="cover" type="button">裁切填满</button>
+          <button class="note-seg-btn" data-act="note-cover-crop-fit" data-fit="contain" type="button">完整显示</button>
+        </div>
+        <label class="cover-crop-range"><span>缩放</span><input id="noteCoverCropZoom" type="range" min="100" max="300" value="100"><b id="noteCoverCropZoomVal">100%</b></label>
+        <label class="cover-crop-range"><span>横向</span><input id="noteCoverCropX" type="range" min="0" max="100" value="50"></label>
+        <label class="cover-crop-range"><span>纵向</span><input id="noteCoverCropY" type="range" min="0" max="100" value="50"></label>
+        <p class="form-hint">拖动图片或滑杆调整位置。选「完整显示」会保留整张图片，选「裁切填满」可取图片的一部分。</p>
+      </div>
+    </div>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn" data-act="note-cover-crop-cancel" type="button">取消</button>
+    <button class="btn btn-primary" data-act="note-cover-crop-apply" type="button">应用封面</button>
+  </div>
+</dialog>
+
+<dialog id="noteRenameDialog" aria-labelledby="noteRenameTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="noteRenameTitle">重命名笔记</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="noteRenameDialog" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body">
+    <label class="field"><span>笔记名称</span>
+      <input id="noteRenameInput" type="text" maxlength="40" placeholder="例如：第一章 行列式">
+    </label>
+    <p class="form-hint">名称会显示在笔记目录和导出文件名里。</p>
+  </div>
+  <div class="dlg-foot">
+    <button class="btn" data-act="close-dialog" data-dialog="noteRenameDialog" type="button">取消</button>
+    <button class="btn btn-primary" data-act="note-rename-confirm" type="button">保存名称</button>
+  </div>
+</dialog>
+
+<dialog id="noteCoverDialog" aria-labelledby="noteCoverTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="noteCoverTitle">选择封面</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="noteCoverDialog" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body">
+    <div class="cover-grid" id="noteCoverGrid"></div>
+    <p class="form-hint">封面只改变笔记库里的外观，不影响页面内容。</p>
+  </div>
+  <div class="dlg-foot">
+    <div class="cover-import cover-import-foot">
+      <span class="cover-import-preview" id="noteCoverPreview" hidden></span>
+      <div class="cover-import-actions">
+        <input type="file" id="noteCoverFile" accept="image/jpeg,image/png,image/webp,image/*" hidden>
+        <button class="btn btn-xs" data-act="note-cover-import" type="button">导入图片</button>
+        <button class="linkish" id="noteCoverRemove" data-act="note-cover-remove" type="button" hidden>移除</button>
+      </div>
+    </div>
+    <span class="spacer"></span>
+    <button class="btn" data-act="close-dialog" data-dialog="noteCoverDialog" type="button">取消</button>
+    <button class="btn btn-primary" data-act="note-cover-confirm" type="button">使用这个封面</button>
+  </div>
+</dialog>
+
+<dialog id="noteScanDialog" aria-labelledby="noteScanTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="noteScanTitle">智能扫描</h2>
+    <button class="icon-btn" data-act="note-scan-close" type="button" aria-label="关闭智能扫描">×</button>
+  </div>
+  <div class="dlg-body scan-body">
+    <div class="scan-stage">
+      <canvas id="noteScanCanvas" aria-label="智能扫描预览"></canvas>
+      <div class="scan-stage-note">自动裁边 · 滤镜 · 旋转；可以连续扫描多页</div>
+    </div>
+    <aside class="scan-controls">
+      <div class="scan-control-group">
+        <div class="scan-control-label">滤镜</div>
+        <div class="scan-filters" id="noteScanFilters"></div>
+      </div>
+      <div class="scan-control-group">
+        <div class="scan-control-label">调整</div>
+        <div class="scan-tools">
+          <button class="btn btn-xs" data-act="note-scan-rotate" data-dir="-1" type="button">向左旋转</button>
+          <button class="btn btn-xs" data-act="note-scan-rotate" data-dir="1" type="button">向右旋转</button>
+          <button class="btn btn-xs" data-act="note-scan-auto" type="button">自动裁边</button>
+        </div>
+        <label class="scan-range"><span>裁边</span><input id="noteScanInset" type="range" min="0" max="18" step="1" value="0"><b id="noteScanInsetVal">0%</b></label>
+      </div>
+      <div class="scan-control-group">
+        <div class="scan-control-label">本次智能扫描 <span id="noteScanCount">0 页</span></div>
+        <div class="scan-queue" id="noteScanQueue"></div>
+      </div>
+      <label class="check scan-pdf"><input id="noteScanPdf" type="checkbox"> 保存后同时导出 PDF</label>
+      <div class="scan-ocr-group">
+        <div class="scan-ocr-head">
+          <span class="scan-control-label">文字识别</span>
+          <span class="scan-ocr-state" id="noteScanOcrState">检查 API…</span>
+        </div>
+        <button class="btn btn-xs scan-ocr-btn" data-act="note-scan-ocr" type="button">识别当前页文字</button>
+        <p class="scan-ocr-hint" id="noteScanOcrHint">配置 AI 后，可识别印刷体与手写体。</p>
+        <div class="scan-ocr-result" id="noteScanOcrResult" hidden>
+          <textarea id="noteScanOcrText" rows="7" spellcheck="false" aria-label="OCR 识别结果"></textarea>
+          <p class="scan-ocr-error" id="noteScanOcrError" hidden></p>
+          <div class="scan-ocr-actions">
+            <button class="btn btn-xs" data-act="note-scan-ocr-copy" type="button">复制文字</button>
+            <button class="btn btn-xs" data-act="note-scan-ocr-download" type="button">下载 TXT</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="dlg-foot scan-foot">
+    <button class="btn" data-act="note-scan-more" type="button">继续添加</button>
+    <span class="spacer"></span>
+    <button class="btn" data-act="note-scan-close" type="button">取消</button>
+    <button class="btn btn-primary" data-act="note-scan-save" type="button">保存到笔记</button>
+    <input type="file" id="noteScanMoreFile" accept="image/*" multiple capture="environment" hidden>
+  </div>
+</dialog>
+
+<dialog id="mergeConflictDialog" aria-labelledby="mergeConflictTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="mergeConflictTitle">编号冲突</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="mergeConflictDialog" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body" id="mergeConflictBody"></div>
+  <div class="dlg-foot merge-conflict-foot">
+    <button class="btn" data-act="close-dialog" data-dialog="mergeConflictDialog" type="button">取消合并</button>
+    <button class="btn" data-act="merge-conflict-skip" type="button">跳过冲突</button>
+    <button class="btn btn-primary" data-act="merge-conflict-renumber" type="button">重新编号并导入</button>
+  </div>
+</dialog>
+
+<dialog id="importDialog" aria-labelledby="importTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="importTitle">导入备份</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="importDialog" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body" id="importBody"></div>
+  <div class="dlg-foot">
+    <button class="btn" data-act="close-dialog" data-dialog="importDialog" type="button">取消</button>
+    <button class="btn btn-primary" data-act="confirm-import" type="button">确认导入</button>
+  </div>
+</dialog>
+
+<dialog id="apiWelcomeDialog" class="dlg-api-welcome" aria-labelledby="apiWelcomeTitle">
+  <div class="dlg-head">
+    <div class="dlg-head-copy">
+      <p class="dlg-kicker">WELCOME</p>
+      <h2 class="dlg-title" id="apiWelcomeTitle">先按自己的节奏来</h2>
+    </div>
+    <button class="icon-btn" data-act="dismiss-api-welcome" type="button" aria-label="关闭提示">×</button>
+  </div>
+  <div class="dlg-body">
+    <div class="apiwelcome-intro">
+      <span class="apiwelcome-mark" aria-hidden="true"><span></span></span>
+      <div>
+        <p class="apiwelcome-lead">欢迎回来。错题、模板、题库和笔记都可以直接使用，不需要先配置任何服务。</p>
+        <p class="apiwelcome-copy">如果你之后想用 AI 智能录入、题目翻译或自动补全，再到「设置与同步」里配置一个 API 服务就好。现在不配置也完全没关系。</p>
+      </div>
+    </div>
+    <div class="apiwelcome-list">
+      <div><b>AI 智能录入</b><span>把题目整理成解答、模板和变式</span></div>
+      <div><b>界面与内容翻译</b><span>切换语言时生成完整译文</span></div>
+      <div><b>暂存箱与自动补全</b><span>峰谷时段排队，后台慢慢补齐</span></div>
+    </div>
+    <p class="apiwelcome-note">这些是锦上添花的功能。先逛逛，等真正需要时再配置也来得及。</p>
+  </div>
+  <div class="dlg-foot api-welcome-foot">
+    <span class="faint">之后可在「设置与同步」里随时配置或修改</span>
+    <div class="api-welcome-actions">
+      <button class="btn" data-act="dismiss-api-welcome" type="button">先逛逛</button>
+      <button class="btn btn-primary" data-act="configure-api-welcome" type="button">去设置</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="settings" aria-labelledby="settingsTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="settingsTitle">设置与同步</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="settings" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body" id="settingsBody"></div>
+</dialog>
+
+<dialog id="languageDialog" aria-labelledby="languageTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="languageTitle">语言设置</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="languageDialog" type="button" aria-label="关闭语言设置">×</button>
+  </div>
+  <div class="dlg-body" id="languageBody"></div>
+  <div class="dlg-foot dlg-foot-note">
+    <span class="faint">界面语言与 AI 生成内容的目标语言。</span>
+  </div>
+</dialog>
+
+<dialog id="confirm" aria-labelledby="confirmTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="confirmTitle">确认操作</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="confirm" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body" id="confirmBody"></div>
+  <div class="dlg-foot">
+    <button class="btn" data-act="close-dialog" data-dialog="confirm" type="button">取消</button>
+    <button class="btn btn-primary" id="confirmOk" type="button">确认</button>
+  </div>
+</dialog>
+
+<dialog id="aiDialog" aria-labelledby="aiTitle">
+  <div class="dlg-head">
+    <h2 class="dlg-title" id="aiTitle">智能录入</h2>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="aiDialog" type="button" aria-label="关闭">×</button>
+  </div>
+  <div class="dlg-body" id="aiBody"></div>
+</dialog>
+
+<dialog id="aiDeferDialog" aria-labelledby="aiDeferTitle">
+  <div class="dlg-head">
+    <div class="dlg-head-copy"><h2 class="dlg-title" id="aiDeferTitle">暂存箱</h2><p class="dlg-sub">DeepSeek 峰谷 · 本机暂存</p></div>
+    <button class="icon-btn" data-act="close-dialog" data-dialog="aiDeferDialog" type="button" aria-label="关闭暂存箱">×</button>
+  </div>
+  <div class="dlg-body" id="aiDeferBody"></div>
+  <div class="dlg-foot dlg-foot-note">
+    <span class="faint">只保存在本机浏览器 · 谷时再送入生成</span>
+  </div>
+</dialog>
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
+<noscript><p style="padding:24px">这个页面需要 JavaScript 才能使用。请开启后刷新。</p></noscript>
+
+<script>window.__PAGES__ = __PAGES_FLAG__;</script>
+<script>window.__SEED__ = __SEED_JSON__; window.__BANKS__ = __BANKS_JSON__;</script>
+<script>window.__SKILLS_GZ__ = "__SKILLS_PACK_B64__";</script>
+<script>__MARKED__</script>
+<script>__TEMML__</script>
+<script>
+(function () {
+"use strict";
+__APP__
+})();
+</script>
+<div class="notif-layer" id="notifLayer" hidden>
+  <div class="notif-backdrop" data-act="close-notifications"></div>
+  <section class="notif-panel" id="notifPanel" role="dialog" aria-modal="true" aria-labelledby="notifTitle" tabindex="-1">
+    <header class="notif-head">
+      <div><p class="notif-kicker">MESSAGE CENTER</p><h2 class="notif-title" id="notifTitle">通知</h2></div>
+      <div class="notif-head-actions"><span class="notif-count" id="notifCount"></span><button class="notif-close" data-act="close-notifications" type="button" aria-label="关闭通知" title="关闭">×</button></div>
+    </header>
+    <div class="notif-toolbar">
+      <label class="notif-select-all"><input type="checkbox" id="notifSelectAll"> 全选</label>
+      <span class="notif-toolbar-spacer"></span>
+      <button class="notif-tool" data-act="notif-delete-selected" type="button">删除选中</button>
+      <button class="notif-tool" data-act="notif-mark-all-read" type="button" aria-label="把全部未读通知标为已读">一键已读</button>
+    </div>
+    <div class="notif-list" id="notifList"></div>
+  </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,494 @@
+'use strict';
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const path = require('node:path');
+const ROOT = path.join(__dirname, '..');
+const KEY = 'sanke-cuotiben-v1';
+const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+function runtime(raw, denied = false) {
+  const values = new Map(raw === undefined ? [] : [[KEY, raw]]);
+  const subjects = JSON.parse(read('src/data/seed.json')).subjects;
+  const ctx = { console, Date, Set, Map, Intl, URL, Blob, setTimeout: () => 0, clearTimeout() {},
+    location: {hostname: 'localhost', protocol: 'https:', hash: '', pathname: '/', search: ''},
+    localStorage: {getItem(k) {if(denied) throw Error('denied');return values.get(k) ?? null;},setItem(k,v) {if(denied) throw Error('denied'); values.set(k,v);}},
+    window: {addEventListener() {}, __SEED__: {subjects}, __BANKS__: {}, __PAGES__: true},
+    document: {addEventListener() {}, querySelector(){return null;},querySelectorAll(){return [];}} };
+  vm.createContext(ctx);
+  vm.runInContext(read('src/js/00-chapters.js') + '\n' + read('src/js/00-core.js'), ctx);
+  const realToast = ctx.toast;
+  ctx.toast = () => {};
+  return {ctx, values, toast: realToast, run(file) {vm.runInContext(read('src/js/'+file), ctx);}};
+}
+function savedEntry(id='keep') {return {id,code:'A-001',date:'2026-01-01',summary:'保留错题',stars:2,blocks:[],variants:[],points:[],errorTypes:[],status:'unmastered'};}
+function savedState() { return {entries: {gaodai:[savedEntry()],shufen:[],jieji:[],xijing:[]},prefs:{theme:'auto'}}; }
+test('legacy state without clearEpoch retains entries through migration and reload', () => {
+  const r = runtime(JSON.stringify(savedState()));
+  assert.equal(r.ctx.state.entries.gaodai[0].id,'keep');
+  assert.equal(r.ctx.persistLocal(),true);
+  assert.equal(runtime(r.values.get(KEY)).ctx.state.entries.gaodai[0].id,'keep');
+});
+test('corrupt and invalid-shaped state is preserved instead of overwritten', () => {
+  for(const raw of ['{broken',JSON.stringify({entries: []}),JSON.stringify({entries:{gaodai:[null]}})]) {
+    const r = runtime(raw); assert.equal(r.ctx.storageRecoveryBlocked,true);
+    assert.equal(r.ctx.persistLocal(),false); assert.equal(r.values.get(KEY),raw);
+  }
+});
+test('duplicate toast messages do not stack on screen', () => {
+  const r=runtime();
+  const {parseHTML}=require('linkedom');
+  const {document}=parseHTML('<!doctype html><html><body><div id="toastWrap"></div></body></html>');
+  r.ctx.document=document;
+  r.toast('同一提示'); r.toast('同一提示'); r.toast('另一条');
+  assert.equal(document.querySelectorAll('#toastWrap .toast').length,2);
+});
+test('blocked browser storage does not abort application boot', () => {
+  const r = runtime(undefined,true); assert.equal(r.ctx.sync.token,''); assert.equal(r.ctx.persistLocal(),false);
+});
+test('malformed entry hash does not abort route parsing', () => {
+  const r=runtime(); vm.runInContext(read('src/js/90-init.js').split('function updateHash()')[0],r.ctx);
+  r.ctx.location.hash='#/gaodai/entries?e=%E0%A4%A';
+  assert.doesNotThrow(()=>r.ctx.parseHash()); assert.equal(r.ctx.state.activeView,'entries');
+});
+test('AI choices require distinct A-D keys and a correct key present in options',()=>{
+  const r=runtime();r.run('59-exam.js');r.ctx.mathifyPlainText=s=>s;r.ctx.smartChapterFor=()=>'';
+  const base={question:'选择正确项',answer:'A',standardSolution:'解：A',type:'choice',correct:'A',options:['A','B','C','D'].map(key=>({key,text:key}))};
+  assert.ok(r.ctx.finalNormalizeAiQuestion(base,0,'gaodai'));
+  assert.equal(r.ctx.finalNormalizeAiQuestion({...base,correct:'Z'},0,'gaodai'),null);
+  assert.equal(r.ctx.finalNormalizeAiQuestion({...base,options:[base.options[0],base.options[0],...base.options.slice(2)]},0,'gaodai'),null);
+  r.run('60-paper-edit.js');r.ctx.finalSubject=()=>'gaodai';r.ctx.subjectOf=sid=>r.ctx.SUBJ_BY_ID[sid];
+  assert.equal(r.ctx.finalPaperNormalizeAiQuestions([{...base,correct:'Z'}],{}).length,0);
+  assert.equal(r.ctx.finalPaperNormalizeAiQuestions([base],{}).length,1);
+});
+test('Markdown strips executable tags, URL schemes and attributes; preserves Markdown and math',()=>{
+  const {parseHTML}=require('linkedom'); const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  for(const src of ['[danger](javascript:alert%281%29)','<a href="jav&#x61;script:alert(1)">danger</a>','<a href="java&#10;script:alert(1)">danger</a>','<img src=x onerror="alert(1)">','<svg><a href="javascript:alert(1)">x</a></svg>','<iframe srcdoc="<script>alert(1)</script>"></iframe>','<object data="data:text/html,bad"></object>','<img src="data:image/svg+xml;base64,AAAA">']) {
+    const html=r.ctx.renderMarkdown(src);const e=document.createElement('div');e.innerHTML=html;
+    assert.equal(e.querySelector('script,iframe,object,embed,svg,form,style'),null,html);
+    for(const el of e.querySelectorAll('*')) for(const a of el.attributes) {
+      assert.ok(!/^on/i.test(a.name),html);
+      if(['href','src'].includes(a.name)) assert.ok(!/^(javascript|vbscript|data:text|data:image\/svg)/i.test(a.value.replace(/\s/g,'')),html);
+    }
+  }
+  const normal=r.ctx.renderMarkdown('**粗体** [文档](https://example.com)\n\n$x^2+1$');
+  assert.match(normal,/<strong>/);assert.match(normal,/https:\/\/example.com/);assert.match(normal,/<math/);
+  assert.match(r.ctx.renderMarkdown('![手写](data:image/png;base64,AAAA)'),/data:image\/png;base64,AAAA/);
+  const malformed = '故 H 是对称阵。 （2）由 H^T = H 可得 HH^T = H^2。再由 X^T X = 1 及矩阵乘法的结合律，得 H^2=(E-2XX^{\\mathrm T})^2=E-4XX^{\\mathrm T}+4(XX^{\\mathrm T})(XX^{\\mathrm T})$ =E-4XX^{\\mathrm T}+4X(X^{\\mathrm T}X)X^{\\mathrm T} =E-4XX^{\\mathrm T}+4XX^{\\mathrm T}=E. 因此 HH^T = E。证毕。';
+  const malformedHtml = r.ctx.renderMarkdown(malformed);
+  const malformedDoc = document.createElement('div'); malformedDoc.innerHTML = malformedHtml;
+  assert.equal(malformedDoc.querySelectorAll('.math-raw').length, 0, malformedHtml);
+  assert.equal(malformedDoc.textContent.includes('$'), false, malformedHtml);
+  assert.equal(malformedDoc.textContent.includes('\\mathrm'), false, malformedHtml);
+  assert.ok(malformedDoc.querySelectorAll('math').length >= 4, malformedHtml);
+  assert.match(r.ctx.renderMarkdown('由 $H^T=H$ 与 $X^TX=1$ 得 $H^2=E$。'), /<math/);
+  const bankTitle = r.ctx.renderMarkdown('概念辨析题 · 需求、供给和均衡价格 · 2★');
+  assert.equal(bankTitle.includes('<math'), false, bankTitle);
+  assert.match(bankTitle, /2★/);
+});
+test('literal angle brackets and inline <b> text survive Markdown rendering',()=>{
+  const {parseHTML}=require('linkedom'); const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  function render(src){const e=document.createElement('div');e.innerHTML=r.ctx.renderMarkdown(src);return e;}
+  // 1) <b> 不再连同文字一起被删除
+  const bold=render('带 <b>粗体</b> 摘要');
+  assert.ok(bold.textContent.includes('粗体'), bold.innerHTML);
+  assert.equal(bold.querySelectorAll('math').length,0,bold.innerHTML);
+  // 2) 转义后的尖括号标签不再被当作裸公式逐字符排版
+  const escaped=render('标签 &lt;img src=x onerror=alert(1)&gt; 结尾');
+  assert.ok(escaped.textContent.includes('onerror=alert(1)'), escaped.innerHTML);
+  assert.equal(escaped.querySelectorAll('math').length,0,escaped.innerHTML);
+  // 3) 未知标签解包保留文字，危险标签仍然整棵删除
+  const unknown=render('<foo>保留文字</foo><script>alert(1)</script>');
+  assert.ok(unknown.textContent.includes('保留文字'), unknown.innerHTML);
+  assert.equal(unknown.querySelector('foo,script'),null,unknown.innerHTML);
+});
+test('sync conflict preserves local edits and revision',async()=>{
+  const r=runtime();r.run('05-sync.js');r.ctx.sync.available=true;r.ctx.renderSyncStatus=()=>{};
+  r.ctx.state.rev=7;r.ctx.state.updatedAt='2026-01-01T00:00:00Z';
+  r.ctx.fetch=async()=>({status:409,json:async()=>({rev:9,state:{...savedState(),updatedAt:'2026-12-01T00:00:00Z'}})});
+  await r.ctx.pushSync(false);assert.equal(r.ctx.state.rev,7);assert.equal(r.ctx.sync.mode,'conflict');
+});
+test('edits made while pushing retain their timestamp and schedule another push',async()=>{
+  const r=runtime();r.run('05-sync.js');r.ctx.sync.available=true;r.ctx.renderSyncStatus=()=>{};
+  r.ctx.state.updatedAt='2026-01-01T00:00:00Z';let scheduled=false;
+  r.ctx.schedulePush=()=>{scheduled=true;};
+  r.ctx.fetch=async()=>{r.ctx.state.updatedAt='2026-01-01T00:00:02Z';return {ok:true,status:200,json:async()=>({rev:8,updatedAt:'2026-01-01T00:00:01Z'})};};
+  await r.ctx.pushSync(false);assert.equal(r.ctx.state.updatedAt,'2026-01-01T00:00:02Z');assert.equal(scheduled,true);
+});
+test('all four complete skill packs are usable without author home directories',()=>{
+  const {buildSkillPacks}=require('../tools/build-skill-packs');const packs=buildSkillPacks();
+  const {loadSkillBundle}=require('../skills');
+  for(const sid of ['gaodai','shufen','jieji','xijing']) {assert.ok(packs.subjects[sid].chapters.every(c=>c.text));assert.ok(loadSkillBundle(sid,'极限', '').materials[0].text);}
+});
+test('filling blanks survive typography normalization and rendering',()=>{
+  const {document}=require('linkedom').parseHTML('<html></html>');const r=runtime();r.ctx.document=document;
+  r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');r.run('10-markdown.js');
+  assert.match(r.ctx.renderMarkdown('答案是____。'),/____/);
+});
+test('paper preview includes all choice options and material import preserves metadata',()=>{
+  const r=runtime(); r.ctx.document.addEventListener=()=>{}; r.run('58-final.js');r.run('60-paper-edit.js');
+  r.ctx.renderMarkdown=s=>s;r.ctx.stripTypePrefix=s=>s;
+  const html=r.ctx.finalPaperItemHtml({options:[{key:'A',text:'第一项'},{key:'B',text:'第二项'}]},0,{});
+  assert.match(html,/第一项/);assert.match(html,/第二项/);
+  const paper={items:[]};const m={key:'bank:q',id:'q',questionType:'choice',options:[{key:'A',text:'保留项'}],correct:'A',standardSolution:'完整解答',points:['要点']};
+  r.ctx.finalActivePaper=()=>paper;r.ctx.finalSubject=()=>'gaodai';r.ctx.document={querySelector:()=>({value:'bank:q'})};
+  r.ctx.finalMaterialsForChapters=()=>[m];r.ctx.markDirty=()=>{};r.ctx.render=()=>{};
+  r.ctx.finalPaperImportMaterial();assert.equal(paper.items[0].options[0].text,'保留项');assert.equal(paper.items[0].standardSolution,'完整解答');
+});
+test('local edit counter is independent from server optimistic-lock revision',async()=>{
+  const r=runtime();r.run('05-sync.js');r.ctx.sync.available=true;r.ctx.sync.baseRev=2;r.ctx.state.rev=17;r.ctx.renderSyncStatus=()=>{};let sent;
+  r.ctx.fetch=async(url,opts)=>{sent=JSON.parse(opts.body);return {ok:true,status:200,json:async()=>({rev:3})};};
+  await r.ctx.pushSync(false);assert.equal(sent.baseRev,2);assert.equal(r.ctx.state.syncBaseRev,3);
+});
+test('textbook analyses contain no accidentally appended chapter appendix',()=>{
+  for(const f of ['bank-algebra','bank-analysis','bank-geometry','bank-western']) for(const q of JSON.parse(read('src/data/'+f+'.json')).items) {
+    for(const field of ['detailedAnalysis','pitfalls']) assert.doesNotMatch(JSON.stringify(q[field]),/## (题型清单|Reference Tables|课堂重点|Key Takeaways)/,q.id);
+  }
+});
+test('all nonempty bank template references resolve in the same subject',()=>{
+  const subjects=JSON.parse(read('src/data/seed.json')).subjects;
+  const files={gaodai:'algebra',shufen:'analysis',jieji:'geometry',xijing:'western'};
+  for(const subject of subjects) {
+    const ids=new Set(subject.templates.map(t=>t.id));
+    for(const q of JSON.parse(read('src/data/bank-'+files[subject.id]+'.json')).items) if(q.templateId) assert.ok(ids.has(q.templateId),q.id+': '+q.templateId);
+  }
+});
+test('corrected textbook least-squares solution satisfies the unrounded normal equations',()=>{
+  const a=[.39,.61,.93,1.35],b=[-1.89,-1.80,-1.68,-1.50];
+  const u=a.reduce((s,v)=>s+v*v,0),v=a.reduce((s,x,i)=>s+x*b[i],0),w=b.reduce((s,y)=>s+y*y,0);
+  const c=a.reduce((s,x)=>s+x,0),d=b.reduce((s,y)=>s+y,0);const determinant=u*w-v*v;
+  assert.ok(Math.abs(determinant-8.76475395)<1e-10);
+  const x=(c*w-v*d)/determinant,y=(u*d-v*c)/determinant;
+  assert.ok(Math.abs(x-.19722002578292572)<1e-10);assert.ok(Math.abs(y+.48807896084749763)<1e-10);
+  const q=JSON.parse(read('src/data/bank-algebra.json')).items.find(q=>q.id==='GA-TX043');
+  assert.match(q.standardSolution,/8\.76475395/);assert.match(q.answer,/0\.197/);
+});
+test('startup sync never silently replaces unsynced local changes with newer remote data',async()=>{
+  const r=runtime(JSON.stringify(savedState()));r.run('05-sync.js');r.ctx.PAGES=false;
+  r.ctx.state.syncDirty=true;r.ctx.state.syncBaseRev=2;r.ctx.state.updatedAt='2026-01-01T00:00:00Z';
+  r.ctx.renderSyncStatus=()=>{};r.ctx.fetch=async url=>({ok:true,status:200,json:async()=>({rev:3,state:{...savedState(),updatedAt:'2026-12-01T00:00:00Z'}})});
+  await r.ctx.initSync();assert.equal(r.ctx.state.updatedAt,'2026-01-01T00:00:00Z');assert.equal(r.ctx.sync.mode,'conflict');
+});
+test('Markdown tables render as tables instead of bare formulas',()=>{
+  const {parseHTML}=require('linkedom'); const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  const e=document.createElement('div');e.innerHTML=r.ctx.renderMarkdown('| 方法 | 结果 |\n|---|---|\n| 展开 | 4 |\n| 配方 | 4 |');
+  assert.equal(e.querySelectorAll('table').length,1,e.innerHTML);
+  assert.equal(e.querySelectorAll('tbody tr').length,2,e.innerHTML);
+  assert.equal(e.querySelectorAll('math').length,0,e.innerHTML);
+  const withMath=document.createElement('div');withMath.innerHTML=r.ctx.renderMarkdown('| 方法 | 结果 |\n|---|---|\n| 展开 | $x^2$ |');
+  assert.equal(withMath.querySelectorAll('table').length,1,withMath.innerHTML);
+  assert.equal(withMath.querySelectorAll('math').length,1,withMath.innerHTML);
+});
+test('library backup excludes built-in banks and templates',()=>{
+  const r=runtime();r.run('30-library.js');
+  r.ctx.state.userTemplates.gaodai=[{id:'U-01',title:'用户模板'}];
+  r.ctx.state.userBank.gaodai=[{id:'UB-1',title:'用户题'}];
+  const payload=r.ctx.exportLibraryPayload();
+  assert.equal(payload.templates.gaodai.length,1);
+  assert.equal(payload.bank.gaodai.length,1);
+  assert.equal(payload.templates.shufen.length,0);
+  assert.equal(payload.bank.xijing.length,0);
+});
+test('unknown top-level route returns to overview instead of staying on missing page',()=>{
+  const r=runtime();vm.runInContext(read('src/js/90-init.js').split('function updateHash()')[0],r.ctx);
+  r.ctx.state.activeView='entries';r.ctx.toast=()=>{};let replaced='';r.ctx.history={replaceState(_a,_b,url){replaced=url;}};
+  r.ctx.location.hash='#/no-such-page';
+  assert.doesNotThrow(()=>r.ctx.parseHash());
+  assert.equal(r.ctx.state.activeView,'overview');
+  assert.match(replaced,/#\//);
+});
+test('opening notifications does not clear unread badges; expanding one marks only that item read',()=>{
+  const r=runtime();r.run('55-notifications.js');
+  r.ctx.state.notifications=[{id:'n1',title:'更新一',body:'正文一',kind:'update',read:false},{id:'n2',title:'更新二',body:'正文二',kind:'tip',read:false}];
+  const layer={hidden:true,classList:{toggle(){}}};
+  r.ctx.qs=q=>q==='#notifLayer'?layer:q==='#notifPanel'?{focus(){}}:null;
+  r.ctx.qsa=()=>[];r.ctx.document={documentElement:{classList:{add(){},remove(){}}}};
+  r.ctx.markDirty=()=>{};let rendered=0;r.ctx.renderNotifications=()=>{rendered++;};
+  r.ctx.openNotifications();
+  assert.deepEqual(r.ctx.state.notifications.map(n=>n.read),[false,false]);
+  assert.equal(r.ctx.notifUnreadCount(),2);
+  r.ctx.notifMarkRead('n1');
+  assert.deepEqual(r.ctx.state.notifications.map(n=>n.read),[true,false]);
+  assert.equal(r.ctx.notifUnreadCount(),1);
+  assert.ok(rendered>=2);
+});
+test('manual pull asks before replacing local changes; background pull preserves them',async()=>{
+  const r=runtime();r.run('05-sync.js');r.ctx.sync.available=true;r.ctx.state.syncDirty=true;
+  r.ctx.state.entries.gaodai=[savedEntry()];r.ctx.renderSyncStatus=()=>{};let confirm=false;
+  r.ctx.confirmDialog=()=>{confirm=true;};r.ctx.fetch=async()=>({ok:true,status:200,json:async()=>({rev:4,state:{...savedState(),updatedAt:'2026-12-01'}})});
+  await r.ctx.pullSync(false);assert.equal(confirm,false);assert.equal(r.ctx.sync.mode,'conflict');
+  await r.ctx.pullSync(true);assert.equal(confirm,true);assert.equal(r.ctx.state.entries.gaodai[0].id,'keep');
+});
+test('bank labels follow question structure instead of a single template',()=>{
+  const banks=['algebra','analysis','geometry','western'].map(k=>JSON.parse(read('src/data/bank-'+k+'.json')).items).flat();
+  const diagnosis=/误差|近似|某同学|错误|错解|指出|纠错|诊断|验算|检验/;
+  for(const q of banks){
+    if(q.examOrigin==='教材课后习题') continue;
+    assert.ok(String(q.title).startsWith(q.category+' ·'),q.id+' 标题分类与 category 不一致');
+    assert.ok(!(q.category==='应用题'&&/^应用情境：结合实际问题中的数据/.test(q.question)),q.id+' 应用题仍是伪情境前缀');
+    if(q.subject==='gaodai'&&q.category==='误差分析题') assert.match(q.question,diagnosis,q.id+' 高代误差分析题没有诊断信号');
+  }
+  assert.equal(banks.filter(q=>q.examOrigin!=='教材课后习题'&&q.subject==='gaodai'&&q.category==='应用题').length,0);
+});
+test('cases environments, Chinese subscripts and multi-part proofs render without raw LaTeX',()=>{
+  const {parseHTML}=require('linkedom'); const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  const src='证明：定义 F(x)=\\begin{cases} f(a+0), & x = a, \\\\ f(x), & a<x<b, \\\\\\\\$ f(b-0), & x=b. \\end{cases} 由 f 在 (a,b) 上连续以及单侧极限的定义，得 F 在 [a,b] 上连续。（1）因 F 在闭区间 [a,b] 上连续，故有界。（2）由最大最小值定理，F 取得最大值。（3）由一致连续性定理，f 在 (a,b) 上一致连续。证毕。';
+  const e=document.createElement('div');e.innerHTML=r.ctx.renderMarkdown(src);
+  assert.equal(e.querySelectorAll('.math-raw').length,0,e.innerHTML);
+  assert.equal(e.querySelectorAll('math').length>0,true,e.innerHTML);
+  assert.equal(e.textContent.includes('\\begin{cases}'),false,e.innerHTML);
+  assert.equal(e.textContent.includes('\\end{cases}'),false,e.innerHTML);
+  assert.equal(e.textContent.includes('\uE000'),false,e.innerHTML);
+  assert.ok(e.querySelectorAll('p').length>=4,e.innerHTML);
+  const chinese=document.createElement('div');chinese.innerHTML=r.ctx.renderMarkdown('答案：$P_{竞争}<P_{垄断}$；$Q_{市场}<Q^*$。');
+  assert.equal(chinese.querySelectorAll('.math-raw').length,0,chinese.innerHTML);
+  assert.equal(chinese.querySelectorAll('math').length,2,chinese.innerHTML);
+  const text=document.createElement('div');text.innerHTML=r.ctx.renderMarkdown('$f\\text{严格单调且连续}\\Rightarrow f^{-1}\\text{在}f(I)\\text{上连续}$。');
+  assert.equal(text.querySelectorAll('.math-raw').length,0,text.innerHTML);
+  assert.equal(text.textContent.includes('\\text'),false,text.innerHTML);
+});
+
+test('bare arithmetic in Chinese prose renders as math while dates and IDs stay text',()=>{
+  const {parseHTML}=require('linkedom'); const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  const proof=r.ctx.renderMarkdown('由阿基米德性，取充分大的正整数 n，使 1/n < b-a，则区间 (a,b) 内至少含一个分母为 n 的有理数。');
+  assert.match(proof,/<math/);
+  assert.equal(proof.includes('math-raw'),false,proof);
+  const dates=r.ctx.renderMarkdown('日期 2026-11-08 与 2026/11/08，版本 v1.2。');
+  assert.equal((dates.match(/<math/g)||[]).length,0,dates);
+  const ids=r.ctx.renderMarkdown('编号 GA-B0001，题号 MA-0001。');
+  assert.equal((ids.match(/<math/g)||[]).length,0,ids);
+});
+test('bank titles do not repeat the difficulty star inside the title',()=>{
+  const banks=['algebra','analysis','geometry','western'].map(k=>JSON.parse(read('src/data/bank-'+k+'.json')).items).flat();
+  const bad=banks.filter(q=>/[·•]\s*[1-5]\s*★\s*$/.test(String(q.title||'')));
+  assert.deepEqual(bad.map(q=>q.id).slice(0,5),[],'题库标题尾部重复星级');
+});
+test('bank objective options survive the move into an entry',()=>{
+  const r=runtime();
+  const md=r.ctx.bankQuestionMarkdown({question:'下列正确的是（ ）。',type:'choice',options:[{key:'A',text:'甲'},{key:'B',text:'乙'},{key:'C',text:'丙'},{key:'D',text:'丁'}]});
+  assert.match(md,/A．甲/);assert.match(md,/D．丁/);
+  assert.equal(md.split('\n\n').length,5,md);
+  assert.match(read('src/js/40-editor.js'),/md: bankQuestionMarkdown\(it\)/,'加入错题本必须复用选项格式化函数');
+});
+test('styles keep MathML layout boxes and balanced mobile action rows',()=>{
+  const css=read('src/styles.css');
+  assert.ok(css.includes('display: inline math !important'),'MathML 行内公式必须保留 math 盒模型');
+  assert.ok(css.includes('display: revert !important'),'MathML 子元素不能被强制成文本 display');
+  assert.ok(/\.math-inline-scroll\.is-wide[\s\S]{0,400}font-size: 1em !important/.test(css),'宽公式不能缩小字号');
+  assert.match(css,/\.bank-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端题库操作按钮应为两列');
+  assert.match(css,/\.entry-foot\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端错题操作按钮应为两列');
+});
+test('exam header stays sticky at a stable height with explicit expand and collapse rules',()=>{
+  const css=read('src/styles.css'), js=read('src/js/59-exam.js');
+  assert.match(css,/\.exam-sticky\s*\{[^}]*position:\s*sticky[^}]*height:\s*124px/,'答题页必须使用常高 sticky 外壳，避免收缩时内容跳动');
+  assert.match(css,/\.exam-sticky\s+\.exam-top\s*\{[^}]*position:\s*absolute/,'考试信息栏应浮在常高外壳内');
+  assert.match(css,/\.exam-top\s*\{[^}]*transition:\s*none/,'考试信息栏不能用 padding/gap 过渡制造闪烁');
+  assert.equal(/transition:\s*padding/.test(css),false,'考试信息栏不应过渡布局属性');
+  assert.match(css,/html,\s*body\s*\{[^}]*overflow-x:\s*clip/,'html/body 不能建立滚动容器，否则 sticky 失效');
+  assert.ok(css.includes('overflow-wrap: anywhere'),'长语言标题必须允许断行，不能横向溢出');
+  assert.ok(js.includes('finalExamSyncHeaderHeight'),'收缩/语言变化后必须重新同步外壳高度');
+  assert.match(js,/if\s*\(next\s*&&\s*finalExamAtTop\(\)\)\s*next\s*=\s*false/,'回到顶端前不得自动展开');
+  assert.match(js,/down\s*&&\s*y\s*>\s*64/,'只有向下滚动才收缩');
+  assert.match(js,/touchmove[\s\S]{0,700}finalExamExpandHeader/,'手机端应支持下拉查看考试信息');
+  assert.match(js,/pointerenter[\s\S]{0,700}finalExamSetCompact\(false\)/,'桌面端鼠标移入窄栏应恢复宽栏');
+});
+
+test('markdown lists survive bare-math wrapping and short display formulas stay inline',()=>{
+  const {parseHTML}=require('linkedom'); const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  const list=document.createElement('div');list.innerHTML=r.ctx.renderMarkdown('- 第一条\n- 第二条\n- 第三条');
+  assert.equal(list.querySelectorAll('ul > li').length,3,list.innerHTML);
+  assert.equal(list.textContent.includes('-第一条'),false,list.innerHTML);
+  const short=document.createElement('div');
+  short.innerHTML=r.ctx.renderMarkdown('将矩阵多项式等式变形为\n\n$$AB=E$$\n\n的形式');
+  assert.equal(short.querySelectorAll('.math-display').length,0,short.innerHTML);
+  assert.equal(short.querySelectorAll(':scope > p').length,1,short.innerHTML);
+  assert.equal(short.querySelectorAll('math').length,1,short.innerHTML);
+  const english=document.createElement('div');
+  english.innerHTML=r.ctx.renderMarkdown('提示词改为：points / pitfalls 每条写完整句子，复查 390 / 820 / 1440 三端。');
+  assert.equal(english.querySelectorAll('math').length,0,'英文词组与宽度列表不能排成公式：'+english.innerHTML);
+  assert.match(english.textContent,/points \/ pitfalls/);
+  assert.match(english.textContent,/390 \/ 820 \/ 1440/);
+  const oneMath=document.createElement('div');
+  oneMath.innerHTML=r.ctx.renderMarkdown('设 $AB=E$，复查 390 / 820 / 1440 三端。');
+  assert.equal(oneMath.querySelectorAll('math').length,1,oneMath.innerHTML);
+  const cases=document.createElement('div');
+  cases.innerHTML=r.ctx.renderMarkdown('$$\\begin{cases}x=1\\\\y=2\\end{cases}$$');
+  assert.equal(cases.querySelectorAll('.math-display').length,1,cases.innerHTML);
+  const long=document.createElement('div');
+  long.innerHTML=r.ctx.renderMarkdown('$$'+'a+b+c+d+e+f+g+h+i+j+k+l+m+n+o+p+q+r+s+t+u+v+w+x+y+z+1+2+3+4+5+6+7+8+9+0+'.repeat(3)+'$$');
+  assert.equal(long.querySelectorAll('.math-display').length,1,long.innerHTML);
+});
+test('real AI progress uses determinate values only when the total is known',()=>{
+  const {parseHTML}=require('linkedom');
+  const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime(); r.ctx.document=document;
+  vm.runInContext(read('src/js/43-ai-progress.js'), r.ctx);
+  document.body.innerHTML=r.ctx.aiProgressHtml('unit',{steps:['检索资料','分批命题','查重去重','组卷校验'],stage:'正在检索课程资料…'});
+  const track=document.querySelector('[data-progress-track]');
+  assert.equal(track.getAttribute('role'),'progressbar');
+  assert.equal(track.hasAttribute('aria-valuenow'),false,'未知总量时不能伪造百分比');
+  assert.ok(document.querySelector('.ai-progress').classList.contains('is-indeterminate'));
+  r.ctx.aiProgressSet('unit',{percent:40,stage:'已生成 4 / 10 题',step:1,detail:'真实完成量'});
+  assert.equal(track.getAttribute('aria-valuenow'),'40');
+  assert.equal(document.querySelector('[data-progress-value]').textContent,'40%');
+  assert.equal(document.querySelector('.ai-progress').classList.contains('is-indeterminate'),false);
+  assert.ok(document.querySelectorAll('[data-progress-step]')[0].classList.contains('is-done'));
+  assert.ok(document.querySelectorAll('[data-progress-step]')[1].classList.contains('is-active'));
+});
+test('AI entry, generation and grading are wired to real progress and cancellation',()=>{
+  const ai=read('src/js/45-ai.js'), exam=read('src/js/59-exam.js'), css=read('src/styles.css');
+  assert.equal(/AI_STAGES/.test(ai),false,'旧的假阶段表必须删除');
+  assert.match(ai,/aiProgressStart\('ai-entry'/,'智能录入必须启动真实进度');
+  assert.match(exam,/var total = count;/,'出题进度分母必须是真实目标题数，不能加虚数');
+  assert.match(exam,/finalExamReportAiProgress/,'出题函数必须回报真实阶段与已生成题数');
+  assert.match(exam,/AbortController/,'AI 批改必须可中断');
+  assert.match(exam,/final-ai-grading-cancel/,'批改界面必须有取消入口');
+  assert.match(exam,/finalExamClearGradeProgress/,'批改结束必须清理进度计时器');
+  assert.match(css,/\.ai-progress-track/,'进度条必须有稳定布局');
+  assert.match(css,/prefers-reduced-motion:[\s\S]{0,120}\.ai-progress/,'进度条必须尊重减少动态效果');
+  assert.match(exam,/finalExamStopGenerate/,'取消 AI 出题必须同时中止网络请求');
+  assert.match(exam,/if \(aiDone \|\| run !== finalExamGenerateRun/,'取消后异步结果不得再打开考生守则');
+  assert.match(exam,/ai && Array\.isArray\(ai\.errorPoints\)/,'AI 批改返回空对象时不能用 null 属性崩溃');
+  assert.equal(/TEMP debug hook/.test(exam),false,'发布源码不能保留调试钩子');
+});
+
+test('notification update digest groups items and gives each a stable card',()=>{
+  const r=runtime();r.run('55-notifications.js');
+  const body='版本：2026-11-09 · 通知界面修复\n\n本次更新只改通知面板。\n\n本次更新内容：\n1. 【一键已读】把一键清空换成把全部未读标为已读。\n2. 【角标】修复手机端右上角孤立数字。\n3. 【版式】把更新内容拆成日期、摘要和分组卡片。';
+  assert.equal(JSON.stringify(r.ctx.notifParseUpdateItems(body).map(x=>x.group)),JSON.stringify(['一键已读','角标','版式']));
+  assert.equal(r.ctx.notifParseUpdateSummary(body),'本次更新只改通知面板。');
+  assert.equal(r.ctx.notifParseUpdateMeta(body).date,'2026-11-09');
+  r.ctx.ui.notifOpen={u1:true};
+  const html=r.ctx.notificationItemHtml({id:'u1',title:'网页已更新 · 2026-11-09 · 通知界面与角标',body,kind:'update',read:false,time:'2026-11-09T10:00:00+08:00'});
+  assert.equal((html.match(/notif-update-item/g)||[]).length,3,html);
+  assert.equal(/notif-update-head/.test(html),false,'标题已含日期时不再重复日期头');
+  assert.match(html,/notif-update-group/);
+  assert.match(html,/3 项/);
+  assert.equal((html.match(/notif-preview md/g)||[]).length,1,'预览只应渲染一次');
+  assert.ok(html.includes('网页已更新 · 2026-11-09 · 通知界面与角标'),'通知标题必须保留分隔符两侧空格，不能被行内公式渲染吞掉');
+});
+test('one-click read marks every notification read and template no longer clears them',()=>{
+  const tpl=read('src/index.template.html');
+  assert.match(tpl,/data-act="notif-mark-all-read"/);
+  assert.match(tpl,/一键已读/);
+  assert.equal(tpl.includes('notif-clear'),false);
+  const r=runtime();r.run('55-notifications.js');
+  r.ctx.state.notifications=[{id:'n1',title:'一',body:'正文',kind:'tip',read:false},{id:'n2',title:'二',body:'正文',kind:'tip',read:false},{id:'n3',title:'三',body:'正文',kind:'tip',read:true}];
+  r.ctx.markDirty=()=>{};let rendered=0;r.ctx.renderNotifications=()=>{rendered++;};
+  r.ctx.notifMarkAllRead();
+  assert.equal(JSON.stringify(r.ctx.state.notifications.map(n=>n.read)),JSON.stringify([true,true,true]));
+  assert.equal(r.ctx.notifUnreadCount(),0);
+  assert.equal(rendered,1);
+});
+test('home notification badge stays anchored to its button on narrow screens',()=>{
+  const css=read('src/styles.css');
+  assert.match(css,/\.home-icon-group \.notif-trigger \{ position: relative; \}/);
+  assert.equal(/\.home-icon-group \.icon-btn,[\s\S]{0,60}position: static/.test(css),false);
+  assert.match(css,/@media \(max-width: 1024px\)[\s\S]*\.home-icon-group \.notif-trigger \{ position: relative; \}/);
+});
+
+test('standard bank chapter confirmation opens the ready page without an extra rules modal',()=>{
+  const r=runtime(); r.run('59-exam.js');
+  r.ctx.ui.finalExamChapterMode='standard';
+  r.ctx.finalAiChapterSel=['第一章 多项式'];
+  r.ctx.finalSubject=()=> 'gaodai';
+  r.ctx.document={querySelectorAll(){return [{value:'第一章 多项式',checked:true}];}};
+  let rules=0, prepared=0;
+  r.ctx.finalExamShowRules=()=>{rules++;};
+  r.ctx.finalStartExamNow=()=>{prepared++;};
+  r.ctx.finalExamChapterConfirm();
+  assert.equal(rules,0,'标准题库选完章节后不得先弹考生守则');
+  assert.equal(prepared,1,'标准题库选完章节后应直接进入题目已准备页');
+});
+
+test('standard exam rules describe standard grading instead of AI grading',()=>{
+  const r=runtime(); r.run('59-exam.js');
+  r.ctx.ui.finalAiPendingSource='standard';
+  const html=r.ctx.finalExamRulesHtml();
+  assert.match(html,/标准题库/);
+  assert.equal(html.includes('本次考试为AI智能批改'),false,'标准题库考试不得声称 AI 智能批改');
+  assert.equal(html.includes('本次考试使用标准题库与本地标准答案批改'),true);
+});
+
+
+test('long task dock exposes real value text, failure state and removal',()=>{
+  const {parseHTML}=require('linkedom');
+  const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime(); r.ctx.document=document;
+  r.ctx.setInterval=setInterval; r.ctx.clearInterval=clearInterval; r.ctx.setTimeout=setTimeout; r.ctx.clearTimeout=clearTimeout;
+  vm.runInContext(read('src/js/43-ai-progress.js'), r.ctx);
+  r.ctx.longTaskStart('i18n-backup', {
+    steps:['收集条目','分批翻译','写入缓存'], label:'翻译进度', step:0, percent:0,
+    valueText:'0 / 24', stage:'正在准备翻译…', detail:'共 24 条待翻译。'
+  });
+  const card=document.getElementById('longTask-i18n-backup');
+  assert.ok(card,'长任务必须创建独立进度卡');
+  assert.equal(document.querySelector('[data-progress-value]').textContent,'0 / 24');
+  assert.equal(document.querySelector('[data-progress-track]').getAttribute('aria-valuenow'),'0');
+  r.ctx.longTaskUpdate('i18n-backup',{step:1,percent:50,valueText:'12 / 24',stage:'正在分批翻译…'});
+  assert.equal(document.querySelector('[data-progress-value]').textContent,'12 / 24');
+  assert.equal(document.querySelector('[data-progress-fill]').style.width,'50%');
+  r.ctx.longTaskFail('i18n-backup','网络中断，未完成条目保留原文。');
+  assert.ok(card.classList.contains('is-error'));
+  assert.equal(card.querySelector('[data-progress-track]').hasAttribute('aria-valuenow'),false);
+  assert.match(card.textContent,/关闭/);
+  r.ctx.longTaskRemove('i18n-backup');
+  assert.equal(document.getElementById('longTask-i18n-backup'),null);
+});
+
+test('long task started from an open dialog stays in the dialog top layer',()=>{
+  const {parseHTML}=require('linkedom');
+  const {document}=parseHTML('<!doctype html><html><body><dialog id="scan" open></dialog></body></html>');
+  const r=runtime(); r.ctx.document=document;
+  r.ctx.setInterval=setInterval; r.ctx.clearInterval=clearInterval; r.ctx.setTimeout=setTimeout; r.ctx.clearTimeout=clearTimeout;
+  vm.runInContext(read('src/js/43-ai-progress.js'), r.ctx);
+  r.ctx.longTaskStart('notes-ocr', {label:'文字识别', steps:['准备图片','识别文字','写入结果'], step:0, stage:'正在准备图片…'});
+  const dialog=document.querySelector('dialog');
+  const dock=dialog.querySelector('#longTaskDockDialog');
+  assert.ok(dock,'弹窗内发起的任务必须使用弹窗内的进度卡容器，否则会被 top layer 遮住');
+  assert.equal(dialog.querySelector('#longTask-notes-ocr').parentNode,dock);
+  r.ctx.longTaskRemove('notes-ocr');
+  assert.equal(document.getElementById('longTaskDockDialog'),null);
+});
+
+test('every long loading flow reports real counts or stages and stays cancellable',()=>{
+  const notes=read('src/js/49-notes.js');
+  const i18n=read('src/js/52-i18n.js');
+  const kb=read('src/js/57-knowledge-search.js');
+  const auto=read('src/js/47-auto-ai.js');
+  const css=read('src/styles.css');
+  assert.match(notes,/noteBusyProgress\(i - 1, count/,'PDF 导入必须按真实页数推进');
+  assert.match(notes,/noteBusyProgress\(i, files.length/,'多文件导入必须按真实文件数推进');
+  assert.match(notes,/noteBusyProgress\(i, units.length/,'导出必须按真实页数推进');
+  assert.match(notes,/noteBusyProgress\(si, scanItems.length/,'扫描保存必须按真实页数推进');
+  assert.match(notes,/async function noteScanSave/);
+  assert.match(notes,/async function noteImportPdf/);
+  assert.ok(notes.includes('noteBusyElapsedText'),'长任务必须显示真实等待时长');
+  assert.match(notes,/id="noteBusyTrack"[^>]*role="progressbar"/,'笔记进度必须有 progressbar 语义');
+  assert.match(notes,/var ocrKey = 'notes-ocr'/);
+  assert.match(notes,/longTaskStart\(ocrKey/,'扫描 OCR 必须显示长任务进度');
+  assert.match(notes,/ocrController\.abort\(\)/,'扫描 OCR 必须可取消');
+  assert.match(notes,/signal: ocrController \? ocrController\.signal : undefined/,'扫描 OCR 服务端请求必须携带取消信号');
+  assert.match(i18n,/longTaskStart\('i18n-backup'/,'翻译必须显示长任务进度');
+  assert.match(i18n,/done \/ missing\.length/,'翻译百分比必须来自真实完成条数');
+  assert.match(kb,/longTaskStart\('kb-ai'/,'知识点 AI 补充必须显示进度');
+  assert.match(auto,/longTaskStart\('auto-ai'/,'自动补全必须显示进度');
+  assert.match(auto,/onCancel: function \(\) \{ autoAiCancel/,'自动补全必须可取消');
+  assert.match(css,/\.long-task-dock\s*\{[^}]*position:\s*fixed/);
+  assert.match(css,/@media \(max-width: 1024px\)[\s\S]{0,300}\.long-task-dock[\s\S]{0,160}bottom:/,'手机/平板进度卡不能压住底部操作');
+  assert.match(css,/\.note-busy-track/,'笔记进度条必须有稳定布局');
+  assert.match(css,/prefers-reduced-motion:[\s\S]{0,180}\.note-busy/,'笔记进度必须尊重减少动态效果');
+  assert.match(css,/prefers-reduced-motion:[\s\S]{0,180}\.long-task/,'后台进度必须尊重减少动态效果');
+});

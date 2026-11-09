@@ -1,0 +1,23 @@
+{
+  "name": "sanke-cuotiben",
+  "version": "1.0.0",
+  "private": true,
+  "description": "四科错题本 · 高等代数 / 数学分析 / 解析几何 / 西方经济学的在线复习台",
+  "scripts": {
+    "build": "node build.js",
+    "build:pages": "node build.js --pages",
+    "build:skills": "node tools/build-skill-packs.js",
+    "start": "node server.js",
+    "start:lan": "node server.js --lan",
+    "qa": "node tools/qa2.js",
+    "shots": "node tools/shots2.js",
+    "test": "node --test tests/*.test.js",
+    "check": "npm test && node tools/qa-bank-strict.js --strict-difficulty && node tools/qa-site-consistency.js",
+    "prepare:pages": "node tools/publish-pages.js",
+    "verify:pages": "node tools/publish-pages.js --check"
+  },
+  "devDependencies": {
+    "linkedom": "^0.18.15",
+    "playwright-core": "^1.49.1"
+  }
+}
