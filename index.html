@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.09-88a13ec2";</script>
+<script>window.__BUILD_ID__="2026.11.09-e7911ebd";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -5674,6 +5674,130 @@ p, li, .md p, .md li { text-wrap: pretty; }
 @media (prefers-reduced-motion: reduce) {
   .ai-progress-fill { transition: none; }
   .ai-progress.is-indeterminate .ai-progress-fill { width: 100%; min-width: 0; animation: none; opacity: .42; }
+}
+
+
+/* =========================================================
+   2026-11-09: 长任务真实进度（右下角可取消 dock）
+   导入 / 导出 / 翻译 / 知识点补全 / 自动补全共用。
+   ========================================================= */
+.long-task-dock {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(360px, calc(100vw - 24px));
+  pointer-events: none;
+}
+.long-task-card {
+  pointer-events: auto;
+  padding: 12px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 12px 36px rgba(48, 36, 24, .18);
+  text-align: left;
+}
+.long-task-card .ai-progress {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.long-task-card .ai-progress-track { height: 6px; margin: 9px 0 7px; }
+.long-task-card .ai-progress-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.long-task-card .ai-progress-step { font-size: 10.5px; }
+.long-task-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 9px;
+}
+.long-task-actions .btn { min-height: 30px; }
+.long-task-card.is-error { border-color: color-mix(in srgb, var(--danger, #a4402f) 55%, var(--line)); }
+.long-task-card.is-error .ai-progress-fill { background: var(--danger, #a4402f); }
+.long-task-card.is-done { border-color: color-mix(in srgb, var(--ok) 45%, var(--line)); }
+.long-task-card.is-done .ai-progress-fill { background: var(--ok); }
+@media (max-width: 1024px) {
+  .long-task-dock {
+    right: 12px;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    width: min(360px, calc(100vw - 24px));
+  }
+  .long-task-card { padding: 11px 12px; }
+  .long-task-card .ai-progress-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .long-task-card { transition: none; }
+}
+
+/* 笔记导入 / 导出 / 扫描保存的真实进度 */
+.note-busy { grid-template-rows: auto auto; }
+.note-busy-main {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: min(320px, calc(100% - 20px));
+  text-align: left;
+}
+.note-busy-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.note-busy-count {
+  flex: none;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.note-busy-track {
+  position: relative;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-3);
+}
+.note-busy-track[hidden] { display: none; }
+.note-busy-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 62%, var(--warn)));
+  transition: width .3s ease;
+}
+.note-busy-track.is-indeterminate .note-busy-fill {
+  width: 36%;
+  min-width: 64px;
+  animation: note-busy-slide 1.4s ease-in-out infinite;
+}
+.note-busy-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--faint);
+  font-size: 10px;
+  line-height: 1.5;
+}
+@keyframes note-busy-slide {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(320%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .note-busy-fill { transition: none; }
+  .note-busy-track.is-indeterminate .note-busy-fill { width: 100%; min-width: 0; animation: none; opacity: .42; }
 }
 
 </style>
@@ -13925,13 +14049,23 @@ function applyImportMode(mode) {
    43-ai-progress — 真实进度组件
    只呈现真实阶段、真实等待时长与真实已完成数量；
    不知道总量时不伪造百分比，只显示当前阶段与活动条。
+   同时提供右下角后台任务进度，供导入、导出、翻译、
+   知识点补全等长任务复用。
    ========================================================= */
 var aiProgressRegistry = {};
+var longTaskCancelHandlers = {};
+var longTaskHideTimers = {};
 
 function aiProgressEsc(text) {
   return String(text == null ? '' : text)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function aiProgressStepPercent(step, total) {
+  var n = Math.max(1, Number(total) || 1);
+  var i = Math.max(0, Math.min(n - 1, Number(step) || 0));
+  return Math.round(i / n * 100);
 }
 
 function aiProgressHtml(key, opts) {
@@ -13944,6 +14078,7 @@ function aiProgressHtml(key, opts) {
   var step = Math.max(0, Number(opts.step) || 0);
   var percent = opts.percent == null ? null : Math.max(0, Math.min(100, Number(opts.percent) || 0));
   var indeterminate = opts.indeterminate !== false && percent == null;
+  var valueText = opts.valueText || (percent == null ? (steps.length ? '第 ' + (step + 1) + ' / ' + steps.length + ' 步' : '处理中') : Math.round(percent) + '%');
   var stepHtml = steps.map(function (s, i) {
     return '<li class="ai-progress-step' + (i < step ? ' is-done' : i === step ? ' is-active' : '') + '" data-progress-step="' + i + '">' +
       '<span class="ai-progress-step-dot" aria-hidden="true"></span>' +
@@ -13952,7 +14087,7 @@ function aiProgressHtml(key, opts) {
   }).join('');
   return '<section class="ai-progress' + (indeterminate ? ' is-indeterminate' : '') + '" data-ai-progress="' + aiProgressEsc(key) + '" data-progress-mode="' + aiProgressEsc(mode) + '" aria-label="' + aiProgressEsc(label) + '">' +
     '<div class="ai-progress-head"><span class="ai-progress-kicker">' + aiProgressEsc(label) + '</span>' +
-      '<span class="ai-progress-value" data-progress-value>' + (percent == null ? (steps.length ? '第 ' + (step + 1) + ' / ' + steps.length + ' 步' : '处理中') : Math.round(percent) + '%') + '</span></div>' +
+      '<span class="ai-progress-value" data-progress-value>' + aiProgressEsc(valueText) + '</span></div>' +
     '<div class="ai-progress-track" data-progress-track role="progressbar" aria-label="' + aiProgressEsc(label) + '" aria-valuemin="0" aria-valuemax="100"' +
       (percent == null ? '' : ' aria-valuenow="' + Math.round(percent) + '"') + ' aria-valuetext="' + aiProgressEsc(stage) + '">' +
       '<i class="ai-progress-fill" data-progress-fill' + (percent == null ? '' : ' style="width:' + Math.round(percent) + '%"') + '></i>' +
@@ -13991,12 +14126,15 @@ function aiProgressSet(key, state) {
     root.classList.add('is-indeterminate');
     if (fill) fill.style.width = '';
     if (track) track.removeAttribute('aria-valuenow');
-    if (value) value.textContent = state.valueText || '处理中';
   } else {
     root.classList.remove('is-indeterminate');
     if (fill) fill.style.width = percent + '%';
     if (track) track.setAttribute('aria-valuenow', String(Math.round(percent)));
-    if (value) value.textContent = Math.round(percent) + '%';
+  }
+  if (value) {
+    if (state.valueText) value.textContent = state.valueText;
+    else if (percent != null) value.textContent = Math.round(percent) + '%';
+    else if (state.step == null) value.textContent = '处理中';
   }
   if (state.step != null) {
     var steps = root.querySelectorAll('[data-progress-step]');
@@ -14004,7 +14142,7 @@ function aiProgressSet(key, state) {
       steps[i].classList.toggle('is-done', i < state.step);
       steps[i].classList.toggle('is-active', i === state.step);
     }
-    if (value && percent == null && steps.length) value.textContent = '第 ' + Math.min(steps.length, state.step + 1) + ' / ' + steps.length + ' 步';
+    if (value && percent == null && !state.valueText && steps.length) value.textContent = '第 ' + Math.min(steps.length, state.step + 1) + ' / ' + steps.length + ' 步';
   }
   if (state.elapsed != null && root.querySelector('[data-progress-elapsed]')) {
     root.querySelector('[data-progress-elapsed]').textContent = state.elapsed;
@@ -14035,12 +14173,126 @@ function aiProgressStop(key) {
 
 function aiProgressFinish(key, opts) {
   aiProgressStop(key);
-  var next = Object.assign({}, opts || {}, { percent: 100, step: 999 });
+  var next = Object.assign({}, opts || {}, { percent: 100, step: 999, valueText: (opts && opts.valueText) || '100%' });
   aiProgressSet(key, next);
 }
 
 function aiProgressStopAll() {
   Object.keys(aiProgressRegistry).forEach(function (key) { aiProgressStop(key); });
+}
+
+/* ---------- 右下角长任务进度（导入 / 导出 / 翻译 / 知识点补全等） ---------- */
+function longTaskDock() {
+  var dock = document.getElementById('longTaskDock');
+  if (!dock) {
+    dock = document.createElement('aside');
+    dock.id = 'longTaskDock';
+    dock.className = 'long-task-dock';
+    dock.setAttribute('data-no-i18n', '');
+    dock.setAttribute('aria-label', '后台任务进度');
+    (document.body || document.documentElement).appendChild(dock);
+  }
+  return dock;
+}
+
+function longTaskStart(key, opts) {
+  opts = opts || {};
+  if (longTaskHideTimers[key]) { clearTimeout(longTaskHideTimers[key]); delete longTaskHideTimers[key]; }
+  var dock = longTaskDock();
+  var card = document.getElementById('longTask-' + key);
+  if (!card) {
+    card = document.createElement('div');
+    card.id = 'longTask-' + key;
+    card.className = 'long-task-card';
+    dock.appendChild(card);
+  }
+  card.classList.remove('is-error', 'is-done');
+  card.innerHTML = aiProgressHtml(key, opts) +
+    '<div class="long-task-actions"><button class="btn btn-xs" data-long-task-cancel="' + aiProgressEsc(key) + '" type="button">' + aiProgressEsc(opts.cancelLabel || '取消') + '</button></div>';
+  longTaskCancelHandlers[key] = typeof opts.onCancel === 'function' ? opts.onCancel : null;
+  aiProgressStart(key, opts);
+  return card;
+}
+
+function longTaskUpdate(key, state) {
+  return aiProgressSet(key, state || {});
+}
+
+function longTaskFinish(key, opts) {
+  opts = opts || {};
+  aiProgressFinish(key, {
+    stage: opts.stage || '已完成',
+    detail: opts.detail || '',
+    ariaText: opts.stage || '已完成'
+  });
+  var card = document.getElementById('longTask-' + key);
+  if (card) {
+    card.classList.add('is-done');
+    var btn = card.querySelector('[data-long-task-cancel]');
+    if (btn) btn.disabled = true;
+  }
+  delete longTaskCancelHandlers[key];
+  if (longTaskHideTimers[key]) clearTimeout(longTaskHideTimers[key]);
+  longTaskHideTimers[key] = setTimeout(function () { longTaskRemove(key); }, 1400);
+}
+
+function longTaskFail(key, message, opts) {
+  opts = opts || {};
+  aiProgressStop(key);
+  var text = String(message || '任务失败，请重试');
+  aiProgressSet(key, {
+    stage: opts.stage || '任务失败',
+    detail: text,
+    valueText: opts.valueText || '已停止',
+    ariaText: text
+  });
+  var card = document.getElementById('longTask-' + key);
+  if (card) {
+    card.classList.add('is-error');
+    var track = card.querySelector('[data-progress-track]');
+    if (track) track.removeAttribute('aria-valuenow');
+    var btn = card.querySelector('[data-long-task-cancel]');
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '关闭';
+      btn.setAttribute('data-long-task-dismiss', key);
+      btn.removeAttribute('data-long-task-cancel');
+    }
+  }
+  delete longTaskCancelHandlers[key];
+}
+
+function longTaskCancel(key) {
+  var fn = longTaskCancelHandlers[key];
+  if (typeof fn === 'function') fn();
+  var card = document.getElementById('longTask-' + key);
+  if (card) {
+    var btn = card.querySelector('[data-long-task-cancel]');
+    if (btn) btn.disabled = true;
+    longTaskUpdate(key, { stage: '正在取消…', ariaText: '正在取消' });
+  }
+}
+
+function longTaskRemove(key) {
+  if (longTaskHideTimers[key]) { clearTimeout(longTaskHideTimers[key]); delete longTaskHideTimers[key]; }
+  aiProgressStop(key);
+  var card = document.getElementById('longTask-' + key);
+  if (card) card.remove();
+  delete longTaskCancelHandlers[key];
+  var dock = document.getElementById('longTaskDock');
+  if (dock && !dock.children.length) dock.remove();
+}
+
+if (typeof document !== 'undefined' && document.addEventListener) {
+  document.addEventListener('click', function (e) {
+    var el = e.target && e.target.closest ? e.target.closest('[data-long-task-cancel], [data-long-task-dismiss]') : null;
+    if (!el) return;
+    e.preventDefault();
+    var key = el.getAttribute('data-long-task-cancel') || el.getAttribute('data-long-task-dismiss');
+    if (!key) return;
+    if (el.hasAttribute('data-long-task-dismiss')) longTaskRemove(key);
+    else longTaskCancel(key);
+  });
 }
 
 
@@ -15535,9 +15787,20 @@ function compressAiImage(file) {
 
 var AI_ENTRY_STEPS = ['准备题目', '请求模型', '解析结果', '写入错题本'];
 
+function aiEntryPercent(step) {
+  if (typeof aiProgressStepPercent === 'function') return aiProgressStepPercent(step, AI_ENTRY_STEPS.length);
+  return Math.round(Math.max(0, Math.min(AI_ENTRY_STEPS.length - 1, Number(step) || 0)) / AI_ENTRY_STEPS.length * 100);
+}
+
 function setAiEntryProgress(step, stage, detail) {
   if (typeof aiProgressSet !== 'function') return;
-  aiProgressSet('ai-entry', { step: step, stage: stage, detail: detail });
+  aiProgressSet('ai-entry', {
+    step: step,
+    percent: aiEntryPercent(step),
+    valueText: '阶段 ' + (Math.min(AI_ENTRY_STEPS.length, (Number(step) || 0) + 1)) + ' / ' + AI_ENTRY_STEPS.length,
+    stage: stage,
+    detail: detail
+  });
 }
 
 function renderAiLoading() {
@@ -15549,6 +15812,8 @@ function renderAiLoading() {
         steps: AI_ENTRY_STEPS,
         label: '智能录入进度',
         step: 0,
+        percent: 0,
+        valueText: '阶段 1 / 4',
         stage: '正在准备题目与图片…',
         detail: '先在本机压缩图片、整理题干，再发送给模型。'
       }) +
@@ -15561,6 +15826,8 @@ function renderAiLoading() {
       steps: AI_ENTRY_STEPS,
       label: '智能录入进度',
       step: 0,
+      percent: 0,
+      valueText: '阶段 1 / 4',
       stage: '正在准备题目与图片…',
       detail: '先在本机压缩图片、整理题干，再发送给模型。'
     });
@@ -16904,14 +17171,27 @@ function runAutoAi(e, transport) {
   render();
   var controller = new AbortController();
   autoAiAbort = controller;
+  var taskOn = typeof longTaskStart === 'function';
+  if (taskOn) longTaskStart('auto-ai', {
+    steps: ['整理题目', '请求 AI', '写入条目'],
+    label: 'AI 自动补全',
+    step: 0,
+    percent: 0,
+    valueText: '阶段 1 / 3',
+    stage: '正在整理 ' + e.code + ' 的题目与要点…',
+    detail: '整理完成后会请求模型补全标准解答、详细解析与易错点。',
+    onCancel: function () { autoAiCancel(e.id); }
+  });
   var timer = setTimeout(function () { controller.abort(); }, 150000);
   autoAiCall(e, text, hint, controller.signal).then(function (data) {
     clearTimeout(timer);
     autoAiAbort = null;
+    if (taskOn) longTaskUpdate('auto-ai', { step: 2, percent: 100, valueText: '100%', stage: '正在写入条目…', detail: '模型已返回，正在保存标准解答与模板。' });
     applyAutoAiToEntry(e, data);
     autoAiBusy = false;
     markDirty();
     render();
+    if (taskOn) longTaskFinish('auto-ai', { stage: '补全完成', detail: '已写入 ' + e.code + ' 的标准解答、解析与易错点。' });
     toast('AI 已补全 · ' + e.code + ' · /' + (data.skill && data.skill.id || ''));
     scheduleAutoAiScan();
   }).catch(function (err) {
@@ -16939,6 +17219,10 @@ function runAutoAi(e, transport) {
     touchEntry(e);
     markDirty();
     render();
+    if (taskOn) {
+      if (err && err.name === 'AbortError') longTaskRemove('auto-ai');
+      else longTaskFail('auto-ai', (err && err.message) || '自动补全没有完成，条目已保留并在队列中等待重试。');
+    }
     scheduleAutoAiScan();
   });
 }
@@ -17017,9 +17301,9 @@ var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_M
 var UPDATE_LOG = [
 {
   "date": "2026-11-09",
-  "title": "模拟考与通知",
-  "historyTitle": "模拟考与通知",
-  "summary": "修复标准题库开考重复弹出考生守则：选完章节后直接进入题目准备页，只在点「开始模拟考」时阅读一次守则；同时把标准题库守则首句的「AI 智能批改」改成「本地标准答案批改」，并注明不识别手写。新增 2 项回归测试，本块共 6 项 / 6 组，45 项测试、严格 QA 与站点一致性通过。",
+  "title": "长任务进度与模拟考",
+  "historyTitle": "长任务进度与模拟考",
+  "summary": "在原有通知与模拟考修复基础上，本轮给所有长耗时界面加入统一真实进度：智能录入、AI 出题、AI 批改、笔记 PDF / 文件导入导出、AI 翻译、知识点 AI 搜索与自动补全；进度按真实阶段或已完成 / 总数推进，显示等待秒数，不编百分比；取消、失败与完成都有明确收尾。本块共 11 项 / 11 组，47 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。",
   "items": [
     {
       "group": "一键已读",
@@ -17034,26 +17318,62 @@ var UPDATE_LOG = [
       "text": "更新通知展开后改为日期/标题、摘要、分组卡片三层：每条更新有编号、分组名和正文，长文不再挤成一整段；列表只显示摘要或首条，展开才看全文；标题不再经公式渲染，保留「·」两侧空格。"
     },
     {
-      "group": "防复发",
-      "text": "新增通知解析、分组渲染、一键已读和窄屏角标定位的回归测试；测试总数 45，配合严格 QA、站点一致性与三端 390/820/1440 检查防止同类问题回潮。"
-    },
-    {
       "group": "守则重复",
       "text": "标准题库选完章节后不再先弹考生守则，直接进入「题目已准备」页；点「开始模拟考」时只弹一次守则，勾选同意后才开考。"
     },
     {
       "group": "守则文案",
       "text": "标准题库考生守则首句改为本地标准答案批改，不再写「AI 智能批改」；注明不识别手写，手写答案可能按 0 分保守处理，结果页保留标准解答与要点。"
+    },
+    {
+      "group": "长任务进度",
+      "text": "新增统一的右下角长任务进度卡：标题、已等待秒数、阶段列表、真实进度与计数；完成、失败、取消都会切换按钮与状态，不确定总量时只显示活动条，不编百分比。"
+    },
+    {
+      "group": "智能录入",
+      "text": "错题智能录入按「整理题目 → 请求 AI → 写入条目 → 完成」4 阶段推进，显示阶段 N / 4 与真实等待时长，不再只显示一句笼统的正在生成。"
+    },
+    {
+      "group": "出题与批改",
+      "text": "AI 出题按已生成题数 / 总题数推进；AI 批改按「读取答卷 → AI 批改 → 逐题核对 → 生成结果」4 阶段推进，显示阶段 N / 4 与当前处理说明。"
+    },
+    {
+      "group": "笔记导入导出",
+      "text": "笔记库 PDF 导入逐页、文件导入逐文件、批量导出逐页、扫描保存逐页显示已完成 / 总数；不知道总量时用活动条，不伪造百分比。"
+    },
+    {
+      "group": "翻译与补全",
+      "text": "AI 翻译、知识点 AI 搜索与自动补全接入同一长任务卡：显示真实阶段、已完成 / 总数与等待秒数，完成、失败、取消都正确收尾。"
+    },
+    {
+      "group": "取消与防复发",
+      "text": "取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消与三端布局回归测试，测试总数 47。"
     }
   ],
   "notifyItems": [
     {
-      "group": "守则重复",
-      "text": "标准题库选完章节后不再先弹考生守则，直接进入「题目已准备」页；点「开始模拟考」时只弹一次守则，勾选同意后才开考。"
+      "group": "长任务进度",
+      "text": "新增统一的右下角长任务进度卡：标题、已等待秒数、阶段列表、真实进度与计数；完成、失败、取消都会切换按钮与状态，不确定总量时只显示活动条，不编百分比。"
     },
     {
-      "group": "守则文案",
-      "text": "标准题库考生守则首句改为本地标准答案批改，不再写「AI 智能批改」；注明不识别手写，手写答案可能按 0 分保守处理，结果页保留标准解答与要点。"
+      "group": "智能录入",
+      "text": "错题智能录入按「整理题目 → 请求 AI → 写入条目 → 完成」4 阶段推进，显示阶段 N / 4 与真实等待时长，不再只显示一句笼统的正在生成。"
+    },
+    {
+      "group": "出题与批改",
+      "text": "AI 出题按已生成题数 / 总题数推进；AI 批改按「读取答卷 → AI 批改 → 逐题核对 → 生成结果」4 阶段推进，显示阶段 N / 4 与当前处理说明。"
+    },
+    {
+      "group": "笔记导入导出",
+      "text": "笔记库 PDF 导入逐页、文件导入逐文件、批量导出逐页、扫描保存逐页显示已完成 / 总数；不知道总量时用活动条，不伪造百分比。"
+    },
+    {
+      "group": "翻译与补全",
+      "text": "AI 翻译、知识点 AI 搜索与自动补全接入同一长任务卡：显示真实阶段、已完成 / 总数与等待秒数，完成、失败、取消都正确收尾。"
+    },
+    {
+      "group": "取消与防复发",
+      "text": "取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消与三端布局回归测试，测试总数 47。"
     }
   ]
 },
@@ -17937,6 +18257,8 @@ var noteDraft = null;
 var noteLasso = null;
 var noteHighlighterFrame = 0;
 var noteSaveTimer = null;
+var noteBusyTimer = null;
+var noteBusyStarted = 0;
 var noteScanState = null;
 
 function noteNotebookId() {
@@ -18143,12 +18465,63 @@ function noteSaveNow() {
   return ok;
 }
 
+function noteBusyElapsedText(ms) {
+  var sec = Math.max(0, Math.floor(ms / 1000));
+  if (sec < 60) return '已等待 ' + sec + ' 秒';
+  return '已等待 ' + Math.floor(sec / 60) + ' 分 ' + (sec % 60) + ' 秒';
+}
+
+function noteBusyTick() {
+  var el = qs('#noteBusyElapsed');
+  if (el && noteBusyStarted) el.textContent = noteBusyElapsedText(Date.now() - noteBusyStarted);
+}
+
 function noteBusy(show, text) {
   var el = qs('#noteBusy');
   if (!el) return;
   el.hidden = !show;
+  if (noteBusyTimer) { clearInterval(noteBusyTimer); noteBusyTimer = null; }
+  if (show) {
+    if (!noteBusyStarted) noteBusyStarted = Date.now();
+    noteBusyTick();
+    noteBusyTimer = setInterval(noteBusyTick, 1000);
+  } else {
+    noteBusyStarted = 0;
+    var track = qs('#noteBusyTrack');
+    if (track) { track.hidden = true; track.removeAttribute('aria-valuenow'); }
+    var count = qs('#noteBusyCount');
+    if (count) count.textContent = '';
+  }
   var t = qs('#noteBusyText');
   if (t && text) t.textContent = text;
+}
+
+/* 有真实总数时显示确定进度；不知道总数时只显示活动条，不伪造百分比。 */
+function noteBusyProgress(done, total, text) {
+  var el = qs('#noteBusy');
+  if (!el || el.hidden) noteBusy(true, text || '正在处理…');
+  if (text) noteBusyText(text);
+  var track = qs('#noteBusyTrack');
+  var fill = qs('#noteBusyFill');
+  var count = qs('#noteBusyCount');
+  if (!track || !fill) return;
+  var totalNum = Number(total) || 0;
+  var doneNum = Math.max(0, Number(done) || 0);
+  track.hidden = false;
+  if (totalNum > 0) {
+    var pct = Math.max(0, Math.min(100, Math.round(doneNum / totalNum * 100)));
+    track.classList.remove('is-indeterminate');
+    track.setAttribute('aria-valuenow', String(pct));
+    track.setAttribute('aria-valuetext', text || ('已完成 ' + doneNum + ' / ' + totalNum));
+    fill.style.width = pct + '%';
+    if (count) count.textContent = doneNum + ' / ' + totalNum;
+  } else {
+    track.classList.add('is-indeterminate');
+    track.removeAttribute('aria-valuenow');
+    track.setAttribute('aria-valuetext', text || '处理中');
+    fill.style.width = '';
+    if (count) count.textContent = '';
+  }
 }
 
 function noteToolbarHtml(subjectId) {
@@ -18609,7 +18982,7 @@ function viewNotes() {
         '<canvas id="noteCanvas" class="note-canvas" aria-label="笔记画布"></canvas>' +
         '<div class="note-items" id="noteItems">' + noteItemsHtml(active) + '</div>' +
         '<div class="note-eraser-halo" id="noteEraserHalo" hidden></div>' +
-        '<div class="note-busy" id="noteBusy" hidden><span class="note-spinner" aria-hidden="true"></span><span id="noteBusyText">正在载入…</span></div>' +
+        '<div class="note-busy" id="noteBusy" hidden role="status" aria-live="polite"><span class="note-spinner" aria-hidden="true"></span><div class="note-busy-main"><div class="note-busy-line"><span id="noteBusyText">正在载入…</span><span class="note-busy-count" id="noteBusyCount"></span></div><div class="note-busy-track" id="noteBusyTrack" role="progressbar" aria-label="处理进度" aria-valuemin="0" aria-valuemax="100" hidden><i class="note-busy-fill" id="noteBusyFill"></i></div><div class="note-busy-meta"><span id="noteBusyElapsed">已等待 0 秒</span><span>请保持页面打开</span></div></div></div>' +
       '</div>' +
       '<div class="note-foot"><span>插入后自动切到浏览模式，可拖动或缩放；点手写即可在图片或文字上书写，双击可修改或删除。</span><span class="note-batch-actions"><button class="linkish" data-act="note-page-batch-start" type="button">批量删页</button><button class="linkish" data-act="note-delete-page" type="button">删除本页</button></span></div>' +
       '<div class="note-batch-bar' + (ui.notePageBatch ? ' is-on' : '') + '"><span>已选 ' + Object.keys(ui.notePageBatchSelected || {}).filter(function (k) { return ui.notePageBatchSelected[k]; }).length + ' 页</span><span class="note-batch-actions"><button class="linkish" data-act="note-page-batch-all" type="button">全选</button><button class="linkish note-danger-link" data-act="note-page-batch-delete" type="button">删除选中</button><button class="linkish" data-act="note-page-batch-cancel" type="button">取消</button></span></div>' +
@@ -19784,9 +20157,13 @@ async function noteScanSave() {
     var insertAt = targetBook && !ui.noteLibrary ? Math.min(targetPages.length, noteIndex(subjectId) + 1) : targetPages.length;
     var firstIndex = insertAt;
     var created = [];
-    noteScanState.items.forEach(function (item, i) {
+    var scanItems = noteScanState.items.slice();
+    for (var si = 0; si < scanItems.length; si++) {
+      noteBusyProgress(si, scanItems.length, '正在保存第 ' + (si + 1) + ' / ' + scanItems.length + ' 页…');
+      await new Promise(function (r) { setTimeout(r, 0); });
+      var item = scanItems[si];
       var canvas = noteScanRender(item);
-      var page = noteNewPage('智能扫描 ' + (i + 1));
+      var page = noteNewPage('智能扫描 ' + (si + 1));
       page.width = NOTE_SCAN_W;
       page.height = NOTE_SCAN_H;
       page.paper = 'white';
@@ -19794,7 +20171,8 @@ async function noteScanSave() {
       page.thumb = noteMakeThumb(canvas);
       page.updatedAt = nowIso();
       created.push(page);
-    });
+      noteBusyProgress(si + 1, scanItems.length, '已保存 ' + (si + 1) + ' / ' + scanItems.length + ' 页');
+    }
     if (!targetBook) {
       targetBook = noteCreateNotebook(subjectId, '智能扫描笔记 ' + formatDate(nowIso()).slice(0, 16), created);
       firstIndex = 0;
@@ -20262,7 +20640,7 @@ async function noteExportBatch(units, wantPng, wantPdf, pdfMode) {
   try {
     var pdfItems = [];
     for (var i = 0; i < units.length; i++) {
-      noteBusyText('正在导出 ' + (i + 1) + ' / ' + units.length + '…');
+      noteBusyProgress(i, units.length, '正在导出第 ' + (i + 1) + ' / ' + units.length + ' 页…');
       var canvas = await noteBuildExportCanvas(units[i].page);
       if (wantPng) {
         var blob = await noteCanvasBlob(canvas);
@@ -20282,6 +20660,7 @@ async function noteExportBatch(units, wantPng, wantPdf, pdfMode) {
       canvas.width = 0;
       canvas.height = 0;
       canvas = null;
+      noteBusyProgress(i + 1, units.length, '已导出 ' + (i + 1) + ' / ' + units.length + ' 页');
       await new Promise(function (r) { setTimeout(r, 0); });
     }
     if (wantPdf) {
@@ -20409,6 +20788,7 @@ async function noteExportPagePdf() {
   var page = noteCurrent(state.activeSubject);
   if (!page || page.kind === 'entry') return;
   noteBusy(true, '正在导出 PDF…');
+  noteBusyProgress(0, 0, '正在生成单页 PDF…');
   try {
     var canvas = await noteBuildExportCanvas(page);
     var data = canvas.toDataURL('image/jpeg', 0.92).split(',')[1];
@@ -21021,6 +21401,7 @@ function noteLoadPdfLib() {
 }
 
 async function noteImportPdf(file, subjectId) {
+  noteBusyProgress(0, 0, '正在加载 PDF 解析器…');
   var lib = await noteLoadPdfLib();
   var buf = await file.arrayBuffer();
   var pdf = await lib.getDocument({ data: new Uint8Array(buf) }).promise;
@@ -21028,7 +21409,7 @@ async function noteImportPdf(file, subjectId) {
   var count = Math.min(total, 12);
   var added = [];
   for (var i = 1; i <= count; i++) {
-    noteBusyText('正在转换 PDF 第 ' + i + ' / ' + count + ' 页…');
+    noteBusyProgress(i - 1, count, '正在转换 PDF 第 ' + i + ' / ' + count + ' 页…');
     var p = await pdf.getPage(i);
     var base = p.getViewport({ scale: 1 });
     var scale = Math.min(1.7, 1200 / base.width);
@@ -21045,6 +21426,7 @@ async function noteImportPdf(file, subjectId) {
     page.background = c.toDataURL('image/jpeg', 0.84);
     page.thumb = noteMakeThumb(c);
     added.push(page);
+    noteBusyProgress(i, count, '已转换 PDF 第 ' + i + ' / ' + count + ' 页');
   }
   if (total > count) toast('PDF 共 ' + total + ' 页，已导入前 ' + count + ' 页');
   return added;
@@ -21063,6 +21445,7 @@ async function noteImportFiles(files, subjectId) {
   try {
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
+      noteBusyProgress(i, files.length, '正在导入第 ' + (i + 1) + ' / ' + files.length + ' 个文件…');
       try {
         if (/\.pdf$/i.test(file.name) || file.type === 'application/pdf') {
           noteBusyText('正在读取 ' + file.name + '…');
@@ -21107,6 +21490,7 @@ async function noteImportFiles(files, subjectId) {
       } catch (e) {
         errors.push(file.name + '：' + (e.message || '导入失败'));
       }
+      noteBusyProgress(i + 1, files.length, '已处理 ' + (i + 1) + ' / ' + files.length + ' 个文件');
     }
   } finally {
     noteBusy(false);
@@ -23163,6 +23547,16 @@ async function i18nTranslateMany(strings) {
   if (!missing.length) return 0;
   var lang = languageName((state.prefs && state.prefs.lang) || 'zh-CN');
   var done = 0;
+  var taskOn = typeof longTaskStart === 'function';
+  if (taskOn) longTaskStart('i18n-backup', {
+    steps: ['收集条目', '分批翻译', '写入缓存'],
+    label: '翻译进度',
+    step: 0,
+    percent: 0,
+    valueText: '0 / ' + missing.length,
+    stage: '正在准备翻译备份内容…',
+    detail: '共 ' + missing.length + ' 条待翻译，按每批 12 条并发处理。'
+  });
   var system = [
     '你是学术出版级本地化译者，长期翻译数学、统计、经济学教材与期刊论文。把输入 JSON 数组中的每一条中文翻译成' + lang + '。',
     '题目、证明、解答、解析、规范与知识要点必须使用正式学术书面语，禁止口语、网络用语、聊天语气、缩略口语、感叹句、反问句、比喻和表情；术语按目标语言教材与期刊惯例统一。',
@@ -23184,6 +23578,16 @@ async function i18nTranslateMany(strings) {
           if (typeof arr[i] === 'string' && arr[i].trim()) { cache[batch[i]] = arr[i]; done++; }
         }
         i18nSave();
+        if (taskOn) {
+          var pct = missing.length ? Math.round(done / missing.length * 100) : 0;
+          longTaskUpdate('i18n-backup', {
+            step: 1,
+            percent: pct,
+            valueText: done + ' / ' + missing.length,
+            stage: '正在分批翻译…',
+            detail: '已翻译 ' + done + ' 条，剩余 ' + Math.max(0, missing.length - done) + ' 条。'
+          });
+        }
       } catch (e) {
         if (Date.now() - i18nConfigNoticeAt > 15000 && e && (e.code === 'NO_AI_KEY' || e.code === 'NO_AI_MODEL' || e.code === 'BAD_BASE_URL' || e.code === 'UPSTREAM_AUTH' || e.status === 401 || e.status === 403 || e.status === 404 || /api key|model|auth|unauthorized|not found/i.test(String(e.message || '')))) {
           i18nConfigNoticeAt = Date.now();
@@ -23193,6 +23597,15 @@ async function i18nTranslateMany(strings) {
     }
   }
   await Promise.all([backupWorker(), backupWorker(), backupWorker(), backupWorker()]);
+  if (taskOn) {
+    if (done >= missing.length) {
+      longTaskFinish('i18n-backup', { stage: '翻译完成', detail: '已翻译 ' + done + ' 条，并写入本机缓存。' });
+    } else if (done > 0) {
+      longTaskFinish('i18n-backup', { stage: '翻译结束', detail: '已翻译 ' + done + ' / ' + missing.length + ' 条，未完成部分保留原文。' });
+    } else {
+      longTaskFail('i18n-backup', '翻译没有完成，未完成的条目会保留原文；请检查 AI 配置或网络后重试。');
+    }
+  }
   return done;
 }
 
@@ -24026,20 +24439,39 @@ async function knowledgeSearchRun(query) {
 }
 
 async function knowledgeSearchAi(query, subject, token) {
+  var taskOn = typeof longTaskStart === 'function';
+  function kbTask(state) {
+    if (!taskOn) return;
+    if (typeof longTaskUpdate === 'function') longTaskUpdate('kb-ai', state);
+  }
+  if (taskOn) longTaskStart('kb-ai', {
+    steps: ['整理材料', '请求 AI', '写入讲解'],
+    label: 'AI 补充讲解',
+    step: 0,
+    percent: 0,
+    valueText: '阶段 1 / 3',
+    stage: '正在整理教材材料…',
+    detail: '教材定位已经显示；AI 正在补全定义、例题与易错点。'
+  });
   try {
     var bundle = await buildClientBundle(subject, query, query);
-    if (ui.kbAnswerToken !== token) return;
+    if (ui.kbAnswerToken !== token) { if (taskOn) longTaskRemove('kb-ai'); return; }
+    kbTask({ step: 1, percent: 33, valueText: '阶段 2 / 3', stage: '正在请求 AI 补充讲解…', detail: '已整理好技能材料，等待模型返回；这是真实网络等待时间。' });
     var sys = '你是「四科错题本」的课程助教。只能使用提供的 /' + bundle.id + ' skill 材料与教材知识回答。只输出 JSON，不要代码围栏。';
     var ask = '请只详细回答知识点：' + query + '。如果材料没有直接讲解该知识点，content 必须写“教材技能包中没有检索到该知识点的直接讲解”，不得改用相邻概念或无关章节。\n' +
       '输出 JSON：{"title":"知识点标题","content":"详细正文，Markdown，尽量完整：定义、定理/公式、推导或方法、至少 2 个例题、易错点、考研用法","book":"教材名","chapter":"第X章 章名","section":"第X节 小节名","page":"第X页","tags":["标签"]}。' +
       '必须给出教材章节、小节与页码；页码应以教材纸书为准，不能确定时写“以纸书该节页码为准”，不要编造不存在的页码。\n\n' +
       '【技能材料】\n' + bundle.materials.map(function (m) { return '### ' + m.label + '\n' + m.text; }).join('\n\n');
     var out = await finalAiJsonCall(sys, ask, [], 70000);
-    if (ui.kbAnswerToken !== token) return;
+    if (ui.kbAnswerToken !== token) { if (taskOn) longTaskRemove('kb-ai'); return; }
+    kbTask({ step: 2, percent: 67, valueText: '阶段 3 / 3', stage: '正在写入补充讲解…', detail: '模型已返回，正在整理标题、章节与例题。' });
     var p = out.parsed || (out.objects && out.objects[0]) || null;
     if (p && p.content) {
       // 本地已经命中直接讲解时，AI 不得用“没有收录”覆盖它；AI 只做补充讲解。
-      if (/没有检索到|没有直接讲解|未收录/.test(String(p.content)) && ui.kbAnswer && !/未找到直接讲解/.test(String(ui.kbAnswer.content || ''))) return;
+      if (/没有检索到|没有直接讲解|未收录/.test(String(p.content)) && ui.kbAnswer && !/未找到直接讲解/.test(String(ui.kbAnswer.content || ''))) {
+        if (taskOn) longTaskFinish('kb-ai', { stage: '已保留本地讲解', detail: 'AI 没有给出更具体的补充，本地教材定位保持不变。' });
+        return;
+      }
       var priorQuestions = ui.kbAnswer && ui.kbAnswer.questions;
       ui.kbAnswer = {
         query: query, subject: subject, title: String(p.title || query),
@@ -24056,7 +24488,11 @@ async function knowledgeSearchAi(query, subject, token) {
       };
       render();
     }
-  } catch (e) { /* 本地技能内容已经显示，不覆盖 */ }
+    if (taskOn) longTaskFinish('kb-ai', { stage: '补充讲解完成', detail: 'AI 补充内容已写入知识点面板。' });
+  } catch (e) {
+    /* 本地技能内容已经显示，不覆盖；只提示 AI 补充没有完成。 */
+    if (taskOn) longTaskFail('kb-ai', 'AI 补充没有完成，已保留教材定位与本地讲解；可稍后重试。');
+  }
 }
 
 function knowledgeSearchAdd() {
@@ -25961,12 +26397,20 @@ function finalExamStartAiTicker() {
   });
 }
 
+function finalExamGradePercent(step) {
+  if (typeof aiProgressStepPercent === 'function') return aiProgressStepPercent(step, FINAL_AI_GRADE_STEPS.length);
+  return Math.round(Math.max(0, Math.min(FINAL_AI_GRADE_STEPS.length - 1, Number(step) || 0)) / FINAL_AI_GRADE_STEPS.length * 100);
+}
+
 function finalExamStartGradeTicker() {
   if (!finalExamGradeProgress || typeof aiProgressStart !== 'function') return;
+  var step = finalExamGradeProgress.step || 0;
   aiProgressStart('finalExamGradingProgress', {
     steps: FINAL_AI_GRADE_STEPS,
     label: 'AI 批改进度',
-    step: finalExamGradeProgress.step || 0,
+    step: step,
+    percent: finalExamGradePercent(step),
+    valueText: '阶段 ' + (Math.min(FINAL_AI_GRADE_STEPS.length, step + 1)) + ' / ' + FINAL_AI_GRADE_STEPS.length,
     stage: finalExamGradeProgress.stage,
     detail: finalExamGradeProgress.detail,
     startedAt: finalExamGradeProgress.startedAt || Date.now()
@@ -25987,7 +26431,16 @@ function finalExamReportGradeProgress(step, stage, detail) {
   if (step != null) finalExamGradeProgress.step = step;
   if (stage) finalExamGradeProgress.stage = stage;
   if (detail != null) finalExamGradeProgress.detail = detail;
-  if (typeof aiProgressSet === 'function') aiProgressSet('finalExamGradingProgress', { step: finalExamGradeProgress.step, stage: finalExamGradeProgress.stage, detail: finalExamGradeProgress.detail });
+  if (typeof aiProgressSet === 'function') {
+    var stepNow = finalExamGradeProgress.step || 0;
+    aiProgressSet('finalExamGradingProgress', {
+      step: stepNow,
+      percent: finalExamGradePercent(stepNow),
+      valueText: '阶段 ' + (Math.min(FINAL_AI_GRADE_STEPS.length, stepNow + 1)) + ' / ' + FINAL_AI_GRADE_STEPS.length,
+      stage: finalExamGradeProgress.stage,
+      detail: finalExamGradeProgress.detail
+    });
+  }
 }
 
 function finalExamGeneratingHtml() {
@@ -26010,10 +26463,13 @@ function finalExamGeneratingHtml() {
 
 function finalExamGradingHtml() {
   var p = finalExamGradeProgress || { step: 0, stage: '正在读取答卷…', detail: '正在收集选择题、填空题与手写作答。' };
+  var gStep = p.step || 0;
   var bar = typeof aiProgressHtml === 'function' ? aiProgressHtml('finalExamGradingProgress', {
     steps: FINAL_AI_GRADE_STEPS,
     label: 'AI 批改进度',
-    step: p.step || 0,
+    step: gStep,
+    percent: finalExamGradePercent(gStep),
+    valueText: '阶段 ' + (Math.min(FINAL_AI_GRADE_STEPS.length, gStep + 1)) + ' / ' + FINAL_AI_GRADE_STEPS.length,
     stage: p.stage,
     detail: p.detail
   }) : '';
