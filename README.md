@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09--5-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--f85ce035-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09--6-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--381b4852-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -148,11 +148,11 @@
 
 ## 更新记录
 
-### 2026-11-09 · 长任务进度与模拟考
+### 2026-11-09 · 长任务进度与公式排版
 
-**12 项 · 12 组**
+**16 项 · 16 组**
 
-在原有通知与模拟考修复基础上，本轮给所有长耗时界面加入统一真实进度：智能录入、AI 出题、AI 批改、笔记 PDF / 文件导入导出、扫描页文字识别、AI 翻译、知识点 AI 搜索与自动补全；进度按真实阶段或已完成 / 总数推进，显示等待秒数，不编百分比；取消、失败与完成都有明确收尾。本块共 12 项 / 12 组，48 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+在原有通知、模拟考与长任务进度基础上，本轮修复公式与数字排版：句中的短公式不再被拆成独立行，Markdown 列表恢复逐条，AI 提示词禁止孤立符号；390 / 820 / 1440 复查错题、题库与模拟考无逐行断开。本块共 16 项 / 16 组，49 项测试、严格 QA、站点一致性与三端检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -167,9 +167,13 @@
 | **笔记导入导出** | 笔记库 PDF 导入逐页、文件导入逐文件、批量导出逐页、扫描保存逐页显示已完成 / 总数；不知道总量时用活动条，不伪造百分比。 |
 | **扫描 OCR** | 智能扫描的「识别当前页文字」接入长任务卡，按「准备图片 → 识别文字 → 写入结果」推进，显示真实等待秒数与识别字数；可取消，识别失败保留错误提示，进度卡留在扫描弹窗顶层不被遮挡。 |
 | **翻译与补全** | AI 翻译、知识点 AI 搜索与自动补全接入同一长任务卡：显示真实阶段、已完成 / 总数与等待秒数，完成、失败、取消都正确收尾。 |
-| **取消与防复发** | 取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 48。 |
+| **取消与防复发** | 取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 49。 |
+| **公式行内** | 修复句中的短公式被当成块级公式：普通单行 $...$ 自动回到行内，只有矩阵、分段、多行推导或超长公式才独立成块，公式前后不再各占一行。 |
+| **列表与要点** | 修复裸公式扫描器吞掉 Markdown 列表标记的问题：解题要点、易错点等以「-」「*」「1.」开头的条目恢复逐条列表，不再被拼成一整段，短公式与文字保持同一行基线。 |
+| **提示词约束** | 智能录入与 AI 出题提示词改为：points / pitfalls 每条写完整句子，公式默认行内，禁止把单个符号或半个等式单独成行；已有内容不再改动。 |
+| **三端与防复发** | 390 / 820 / 1440 复查错题、题库与模拟考：公式均为行内、无横向溢出、无脚本错误；新增列表、短公式、矩阵与长公式回归测试，测试总数 49，防止同类问题再次出现。 |
 
-<p align="center"><img src="assets/v2/20261109b-changelog.png" alt="长任务进度与模拟考更新记录" width="820"></p>
+<p align="center"><img src="assets/v2/20261109c-changelog.png" alt="长任务进度与公式排版更新记录" width="820"></p>
 
 ### 2026-11-08 · 公式、答题页与进度
 
