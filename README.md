@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--6dd5dfa4-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09--2-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--a0013398-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -147,6 +147,21 @@
 </details>
 
 ## 更新记录
+
+### 2026-11-09 · 通知界面与角标
+
+**4 项 · 4 组**
+
+本版只改通知面板与角标：工具栏的一键清空改为一键已读，只标记不删除；修复手机、平板和电脑右上角出现孤立数字的定位错误；更新内容改成分组卡片，日期、摘要与条目分层展示，标题保留分隔符两侧空格。新增 3 项回归测试，共 4 项 / 4 组，43 项测试、严格 QA 与站点一致性通过。
+
+| 分组 | 本次更新 |
+|---|---|
+| **一键已读** | 通知面板工具栏把「一键清空」换成「一键已读」：只把所有未读标为已读，不删除任何通知；全部已读后按钮自动禁用，显示“没有未读通知”。 |
+| **角标定位** | 修复手机、平板与电脑首页右上角出现孤立红色数字：通知按钮重新作为角标定位基准，角标回到铃铛右上角，不再相对整页定位。 |
+| **更新排版** | 更新通知展开后改为日期/标题、摘要、分组卡片三层：每条更新有编号、分组名和正文，长文不再挤成一整段；列表只显示摘要或首条，展开才看全文；标题不再经公式渲染，保留「·」两侧空格。 |
+| **防复发** | 新增通知解析、分组渲染、一键已读和窄屏角标定位的回归测试；测试总数 43，配合严格 QA、站点一致性与三端 390/820/1440 检查防止同类问题回潮。 |
+
+<p align="center"><img src="assets/v2/20261109-changelog.png" alt="通知界面与角标更新记录" width="820"></p>
 
 ### 2026-11-08 · 公式、答题页与进度
 

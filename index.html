@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.09-6dd5dfa4";</script>
+<script>window.__BUILD_ID__="2026.11.09-a0013398";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -3405,6 +3405,20 @@ dialog.image-lightbox::backdrop { background: rgba(18, 17, 15, .82); backdrop-fi
 .notif-read-more:hover { text-decoration: underline; text-underline-offset: 3px; }
 .notif-delete { width: 22px; height: 22px; border: 0; border-radius: 50%; background: transparent; color: var(--faint); font: 400 16px/1 var(--font-sans); cursor: pointer; align-self: start; }
 .notif-delete:hover { color: #a84a38; background: color-mix(in srgb, #a84a38 9%, transparent); }
+.notif-update { display: grid; gap: 10px; }
+.notif-update-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; padding-bottom: 7px; border-bottom: 1px solid var(--line); }
+.notif-update-date { font: 400 10px/1.4 var(--font-mono); letter-spacing: .06em; color: var(--accent); }
+.notif-update-label { font-family: var(--font-serif); font-size: 14px; font-weight: 600; line-height: 1.45; color: var(--ink); }
+.notif-update-summary { margin: 0; font-size: 12px; line-height: 1.75; color: var(--muted); }
+.notif-update-list { display: flex; flex-direction: column; gap: 8px; }
+.notif-update-item { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 9px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); }
+.notif-update-index { font: 400 10px/1.7 var(--font-mono); letter-spacing: .04em; color: var(--accent); }
+.notif-update-body { min-width: 0; }
+.notif-update-group { margin: 0 0 3px; font-size: 10.5px; font-weight: 600; letter-spacing: .02em; color: var(--ink); }
+.notif-update-text { margin: 0; font-size: 11.5px; line-height: 1.68; color: var(--ink-soft); }
+.notif-update-text p, .notif-update-summary p { margin: 0; }
+.notif-update-text p + p { margin-top: 4px; }
+.notif-update-count { margin-left: auto; font: 400 9.5px/1.4 var(--font-mono); letter-spacing: .03em; color: var(--faint); }
 .notif-empty { padding: 46px 22px 56px; text-align: center; }
 .notif-empty-mark { display: inline-flex; width: 34px; height: 34px; align-items: center; justify-content: center; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--faint); font: 400 17px/1 var(--font-mono); }
 .notif-empty-title { margin: 14px 0 4px; font: 600 14px/1.3 var(--font-sans); }
@@ -3442,8 +3456,7 @@ dialog.image-lightbox::backdrop { background: rgba(18, 17, 15, .82); backdrop-fi
     background: transparent;
     box-shadow: none;
   }
-  .home-icon-group .icon-btn,
-  .home-icon-group .home-notif-btn {
+  .home-icon-group .icon-btn {
     position: static;
     width: 36px;
     height: 36px;
@@ -3453,6 +3466,7 @@ dialog.image-lightbox::backdrop { background: rgba(18, 17, 15, .82); backdrop-fi
     box-shadow: none;
   }
   .home-icon-group .icon-btn svg { width: 17px; height: 17px; }
+  .home-icon-group .notif-trigger { position: relative; }
 }
 
 @media (max-width: 420px) {
@@ -17001,6 +17015,30 @@ function autoAiPendingCount() {
 var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_ID__) || '').match(/^(\d{4})\.(\d{2})\.(\d{2})/);
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [
+{
+  "date": "2026-11-09",
+  "title": "通知界面与角标",
+  "historyTitle": "通知界面与角标",
+  "summary": "本版只改通知面板与角标：工具栏的一键清空改为一键已读，只标记不删除；修复手机、平板和电脑右上角出现孤立数字的定位错误；更新内容改成分组卡片，日期、摘要与条目分层展示，标题保留分隔符两侧空格。新增 3 项回归测试，共 4 项 / 4 组，43 项测试、严格 QA 与站点一致性通过。",
+  "items": [
+    {
+      "group": "一键已读",
+      "text": "通知面板工具栏把「一键清空」换成「一键已读」：只把所有未读标为已读，不删除任何通知；全部已读后按钮自动禁用，显示“没有未读通知”。"
+    },
+    {
+      "group": "角标定位",
+      "text": "修复手机、平板与电脑首页右上角出现孤立红色数字：通知按钮重新作为角标定位基准，角标回到铃铛右上角，不再相对整页定位。"
+    },
+    {
+      "group": "更新排版",
+      "text": "更新通知展开后改为日期/标题、摘要、分组卡片三层：每条更新有编号、分组名和正文，长文不再挤成一整段；列表只显示摘要或首条，展开才看全文；标题不再经公式渲染，保留「·」两侧空格。"
+    },
+    {
+      "group": "防复发",
+      "text": "新增通知解析、分组渲染、一键已读和窄屏角标定位的回归测试；测试总数 43，配合严格 QA、站点一致性与三端 390/820/1440 检查防止同类问题回潮。"
+    }
+  ]
+},
   {
     "date": "2026-11-08",
     "title": "公式、答题页与进度",
@@ -23278,19 +23316,55 @@ function renderNotificationBadge() {
   });
 }
 
+function notifParseUpdateMeta(body) {
+  var first = String(body || '').split('\n')[0] || '';
+  var m = first.match(/^版本[：:]\s*(\d{4}-\d{2}-\d{2})\s*[·・]\s*(.+)$/);
+  if (!m) return { date: '', label: first.replace(/^版本[：:]\s*/, '') };
+  return { date: m[1], label: m[2] };
+}
+
+function notifUpdateDigestHtml(meta, summary, items) {
+  var html = '<div class="notif-update">';
+  if (meta.date || meta.label) {
+    html += '<div class="notif-update-head">';
+    if (meta.date) html += '<span class="notif-update-date">' + esc(meta.date) + '</span>';
+    if (meta.label) html += '<span class="notif-update-label">' + notifRenderInline(meta.label) + '</span>';
+    html += '</div>';
+  }
+  if (summary) html += '<p class="notif-update-summary">' + notifRenderInline(summary) + '</p>';
+  if (items.length) {
+    html += '<div class="notif-update-list">';
+    items.forEach(function (it, i) {
+      html += '<div class="notif-update-item">' +
+        '<span class="notif-update-index">' + pad(i + 1, 2) + '</span>' +
+        '<div class="notif-update-body"><p class="notif-update-group">' + esc(it.group) + '</p>' +
+        '<p class="notif-update-text">' + notifRenderInline(it.text) + '</p></div>' +
+        '</div>';
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+  return html;
+}
 function notificationItemHtml(n) {
   var expanded = !!(ui.notifOpen && ui.notifOpen[n.id]);
   var selected = !!(ui.notifSelected && ui.notifSelected[n.id]);
   var kind = NOTIF_KIND_LABEL[n.kind] || '提示';
   var body = String(n.body || '');
+  var update = n.kind === 'update';
+  var updateItems = update ? notifParseUpdateItems(body) : [];
+  var updateSummary = update ? notifParseUpdateSummary(body) : '';
+  var updateMeta = update ? notifParseUpdateMeta(body) : { date: '', label: '' };
+  var showDigestHead = update && !/^网页已更新\s*·\s*\d{4}-\d{2}-\d{2}/.test(String(n.title || ''));
+  var previewText = update ? (updateSummary || (updateItems[0] && updateItems[0].text) || body) : body;
+  var updateCount = update && updateItems.length ? '<span class="notif-update-count">' + updateItems.length + ' 项</span>' : '';
   return '<article class="notif-item' + (n.read ? '' : ' is-unread') + (expanded ? ' is-expanded' : '') + '" data-notif-id="' + attr(n.id) + '">' +
     '<label class="notif-check"><input type="checkbox" data-notif-check data-id="' + attr(n.id) + '"' + (selected ? ' checked' : '') + ' aria-label="选择这条通知"><span></span></label>' +
     '<div class="notif-main">' +
-      '<div class="notif-meta"><span class="notif-kind">' + esc(kind) + '</span><time datetime="' + attr(n.time) + '">' + esc(notifTime(n.time)) + '</time></div>' +
-      '<button class="notif-item-title md" data-act="notif-expand" data-id="' + attr(n.id) + '" type="button" aria-expanded="' + expanded + '">' + notifRenderInline(n.title) + '</button>' +
-      '<div class="notif-preview md">' + notifRenderInline(body) + '</div>' +
-      (expanded ? '<div class="notif-full md">' + notifRenderMarkdown(body) + '</div>' : '') +
-      '<button class="notif-read-more" data-act="notif-expand" data-id="' + attr(n.id) + '" type="button">' + (expanded ? '收起' : '查看完整') + '</button>' +
+      '<div class="notif-meta"><span class="notif-kind">' + esc(kind) + '</span><time datetime="' + attr(n.time) + '">' + esc(notifTime(n.time)) + '</time>' + updateCount + '</div>' +
+      '<button class="notif-item-title md" data-act="notif-expand" data-id="' + attr(n.id) + '" type="button" aria-expanded="' + expanded + '">' + esc(n.title) + '</button>' +
+      '<div class="notif-preview md">' + notifRenderInline(previewText) + '</div>' +
+      (expanded ? '<div class="notif-full md">' + (update && (updateItems.length || updateSummary) ? notifUpdateDigestHtml(showDigestHead ? updateMeta : { date: '', label: '' }, updateSummary, updateItems) : notifRenderMarkdown(body)) + '</div>' : '') +
     '</div>' +
     '<button class="notif-delete" data-act="notif-delete" data-id="' + attr(n.id) + '" type="button" aria-label="删除这条通知" title="删除">×</button>' +
   '</article>';
@@ -23313,6 +23387,11 @@ function renderNotifications() {
     btn.disabled = items.length === 0;
   });
   var del = qs('[data-act="notif-delete-selected"]');
+  var markAll = qs('[data-act="notif-mark-all-read"]');
+  if (markAll) {
+    markAll.disabled = notifUnreadCount() === 0;
+    markAll.title = markAll.disabled ? '没有未读通知' : '把全部未读通知标为已读';
+  }
   if (del) del.disabled = selectedCount === 0;
   if (!items.length) {
     list.innerHTML = '<div class="notif-empty"><span class="notif-empty-mark" aria-hidden="true">○</span><p class="notif-empty-title">还没有通知</p><p class="notif-empty-text">网页更新、复习提醒和提示会出现在这里。</p></div>';
@@ -23370,12 +23449,14 @@ function notifDeleteSelected() {
   renderNotifications();
 }
 
-function notifClear() {
-  if (!(state.notifications || []).length) return;
-  if (typeof confirm === 'function' && !confirm('清空所有通知？')) return;
-  state.notifications = [];
-  ui.notifSelected = {};
-  ui.notifOpen = {};
+function notifMarkAllRead() {
+  var changed = false;
+  (state.notifications || []).forEach(function (n) {
+    if (!n || n.read) return;
+    n.read = true;
+    changed = true;
+  });
+  if (!changed) return;
   markDirty();
   renderNotifications();
 }
@@ -23394,7 +23475,7 @@ function notifParseUpdateSummary(body) {
   if (!lines.length || !/^版本：/.test(lines[0])) return '';
   for (var i = 1; i < lines.length; i++) {
     var line = String(lines[i] || '').trim();
-    if (!line) break;
+    if (!line) continue;
     if (/^本次更新内容/.test(line)) break;
     return line;
   }
@@ -28460,7 +28541,7 @@ function handleAction(act, el) {
     }
     case 'notif-delete': if (typeof notifDelete === 'function') notifDelete(el.getAttribute('data-id')); break;
     case 'notif-delete-selected': if (typeof notifDeleteSelected === 'function') notifDeleteSelected(); break;
-    case 'notif-clear': if (typeof notifClear === 'function') notifClear(); break;
+    case 'notif-mark-all-read': if (typeof notifMarkAllRead === 'function') notifMarkAllRead(); break;
     default: break;
   }
 }
@@ -28702,7 +28783,7 @@ boot();
       <label class="notif-select-all"><input type="checkbox" id="notifSelectAll"> 全选</label>
       <span class="notif-toolbar-spacer"></span>
       <button class="notif-tool" data-act="notif-delete-selected" type="button">删除选中</button>
-      <button class="notif-tool notif-tool-danger" data-act="notif-clear" type="button">一键清空</button>
+      <button class="notif-tool" data-act="notif-mark-all-read" type="button" aria-label="把全部未读通知标为已读">一键已读</button>
     </div>
     <div class="notif-list" id="notifList"></div>
   </section>
