@@ -345,6 +345,10 @@ test('markdown lists survive bare-math wrapping and short display formulas stay 
   assert.equal(longProof.querySelectorAll('math').length,1,'长行内公式不能被当成坏 $ 删掉：'+longProof.innerHTML.slice(0,300));
   assert.equal(longProof.textContent.includes('$'),false,longProof.innerHTML.slice(0,300));
   assert.equal(longProof.textContent.includes('\\lambda'),false,'长公式不能把 LaTeX 命令漏成正文：'+longProof.textContent.slice(0,200));
+  const badCmd=document.createElement('div');
+  badCmd.innerHTML=r.ctx.renderMarkdown('证明：$\\1 a_1+\\lambda_2 a_2$。');
+  assert.equal(badCmd.querySelectorAll('math').length,1,'反斜杠数字不是合法命令，不能让整条公式回退：'+badCmd.innerHTML.slice(0,300));
+  assert.equal(badCmd.textContent.includes('\\'),false,'反斜杠数字应被清理，不能漏进正文：'+badCmd.textContent.slice(0,200));
   const cases=document.createElement('div');
   cases.innerHTML=r.ctx.renderMarkdown('$$\\begin{cases}x=1\\\\y=2\\end{cases}$$');
   assert.equal(cases.querySelectorAll('.math-display').length,1,cases.innerHTML);

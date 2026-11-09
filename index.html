@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.09-f57fed2b";</script>
+<script>window.__BUILD_ID__="2026.11.09-46bce47a";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -10450,6 +10450,8 @@ var MATH_END = '\uE001';
 
 function cleanMathSource(tex) {
   var t = String(tex || '').replace(/\uE000M\d+\uE001/g, '').trim();
+  // AI/OCR 偶尔把 \lambda 之类写坏成 \1：LaTeX 没有 \1 这类命令，去掉多余反斜杠，避免整条公式回退成源码。
+  t = t.replace(/(^|[^\\])\\(?=[0-9])/g, '$1');
   t = t.replace(/\\begin\{([a-zA-Z*]+)\}([\s\S]*?)\\end\{\1\}/g, function (m, env, body) {
     return '\\begin{' + env + '}' + body.replace(/(?<!\\)\$/g, '') + '\\end{' + env + '}';
   });

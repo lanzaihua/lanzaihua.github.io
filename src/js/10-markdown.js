@@ -7,6 +7,8 @@ var MATH_END = '\uE001';
 
 function cleanMathSource(tex) {
   var t = String(tex || '').replace(/\uE000M\d+\uE001/g, '').trim();
+  // AI/OCR 偶尔把 \lambda 之类写坏成 \1：LaTeX 没有 \1 这类命令，去掉多余反斜杠，避免整条公式回退成源码。
+  t = t.replace(/(^|[^\\])\\(?=[0-9])/g, '$1');
   t = t.replace(/\\begin\{([a-zA-Z*]+)\}([\s\S]*?)\\end\{\1\}/g, function (m, env, body) {
     return '\\begin{' + env + '}' + body.replace(/(?<!\\)\$/g, '') + '\\end{' + env + '}';
   });
