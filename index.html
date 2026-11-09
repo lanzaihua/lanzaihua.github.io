@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.09-46bce47a";</script>
+<script>window.__BUILD_ID__="2026.11.09-6c543289";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -17414,9 +17414,9 @@ var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_M
 var UPDATE_LOG = [
   {
     date: '2026-11-09',
-    title: '长任务、公式与筛选',
-    historyTitle: '长任务、公式与筛选',
-    summary: '在原有通知、模拟考、长任务与筛选基础上，本轮继续修复公式与数字排版：无空格标题、中文后紧接的粗体、长证明中的行内公式、题库 cases 选项与解答重复句都已修正；QA 与构建新增非法命令、整句重复门禁。390 / 820 / 1440 复查错题、题库与模拟考无公式泄漏、无逐行断开、无横向溢出。本块共 25 项 / 25 组，50 项测试、严格 QA、站点一致性与三端检查通过。',
+    title: '长任务、公式与语言',
+    historyTitle: '长任务、公式与语言',
+    summary: '在原有通知、模拟考、长任务与筛选基础上，本轮继续修复公式与数字排版，并把仓库语言统计从单一生成文件恢复到源码：把 15MB 单文件标记为 linguist-generated，新增可运行的 Python 审计/打包、Shell 全量检查、Makefile 入口与语言门禁。本块共 28 项 / 28 组，51 项测试、严格 QA、站点一致性与三端检查通过。',
     items: [
       {
         group: '一键已读',
@@ -17464,7 +17464,7 @@ var UPDATE_LOG = [
       },
       {
         group: '取消与防复发',
-        text: '取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 50。',
+        text: '取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 51。',
       },
       {
         group: '公式行内',
@@ -17480,7 +17480,7 @@ var UPDATE_LOG = [
       },
       {
         group: '三端与防复发',
-        text: '390 / 820 / 1440 复查错题、题库与模拟考：公式均为行内、无横向溢出、无脚本错误；新增列表、短公式、矩阵与长公式回归测试，测试总数 50，防止同类问题再次出现。',
+        text: '390 / 820 / 1440 复查错题、题库与模拟考：公式均为行内、无横向溢出、无脚本错误；新增列表、短公式、矩阵与长公式回归测试，测试总数 51，防止同类问题再次出现。',
       },
       {
         group: '空格保留',
@@ -17496,7 +17496,7 @@ var UPDATE_LOG = [
       },
       {
         group: '筛选防复发',
-        text: '新增清空、来源、模板章节与旧状态迁移回归测试，测试总数 50；390 / 820 / 1440 复查三个筛选工具栏同排不溢出、按钮禁用态正确、无脚本错误，防止同类问题再次出现。',
+        text: '新增清空、来源、模板章节与旧状态迁移回归测试，测试总数 51；390 / 820 / 1440 复查三个筛选工具栏同排不溢出、按钮禁用态正确、无脚本错误，防止同类问题再次出现。',
       },
       {
         group: '标题归一',
@@ -17516,29 +17516,33 @@ var UPDATE_LOG = [
       },
       {
         group: '重复句与门禁',
-        text: '清理 60 处解答末尾整句重复，并给 QA 与构建新增三反斜杠非法命令、整句重复、无空格标题与中文粗体回归；42 项 Markdown 回归、全套 50 项测试通过。',
+        text: '清理 60 处解答末尾整句重复，并给 QA 与构建新增三反斜杠非法命令、整句重复、无空格标题与中文粗体回归；42 项 Markdown 回归、全套 51 项测试通过。',
+      },
+      {
+        group: '仓库语言',
+        text: '把生成的 15MB 单文件 index.html 标记为 linguist-generated，GitHub Languages 改为统计 32KB 页面模板、JS、CSS、Python、Shell 与 Makefile 源码；仓库不再只显示 HTML / JavaScript / CSS 三种语言。',
+      },
+      {
+        group: '工具链',
+        text: '新增可运行的 Python 题库审计与发布打包脚本、Shell 全量检查脚本和 Makefile 入口：python tools/audit_bank.py --strict-difficulty、python tools/package-source.py --all、bash tools/check.sh、make check 均可直接执行，不再依赖作者本机目录。',
+      },
+      {
+        group: '语言门禁',
+        text: '新增仓库语言检查与回归测试：要求 HTML、CSS、JavaScript、Python、Shell、Makefile 六类源码齐全，Python 不少于 12KB，并校验单文件已标记为生成文件；npm run check 与 CI 同时执行，防止语言统计再次退化成单一 HTML。',
       }
     ],
     notifyItems: [
       {
-        group: '标题归一',
-        text: '修复没有空格的「##标题」「###标题」被原样显示的问题：渲染前自动补空格，知识库小节也能正确切分；标题层级、目录与正文顺序保持一致。',
+        group: '仓库语言',
+        text: '把生成的 15MB 单文件 index.html 标记为 linguist-generated，GitHub Languages 改为统计 32KB 页面模板、JS、CSS、Python、Shell 与 Makefile 源码；仓库不再只显示 HTML / JavaScript / CSS 三种语言。',
       },
       {
-        group: '中文粗体',
-        text: '修复「**用途1：…。**定义」这类中文后紧接的粗体不生效：闭合标记后是中文或中文标点时仍识别为粗体，公式里的 ** 不被误改。',
+        group: '工具链',
+        text: '新增可运行的 Python 题库审计与发布打包脚本、Shell 全量检查脚本和 Makefile 入口：python tools/audit_bank.py --strict-difficulty、python tools/package-source.py --all、bash tools/check.sh、make check 均可直接执行，不再依赖作者本机目录。',
       },
       {
-        group: '长公式保留',
-        text: '修复长证明里的行内公式被误判为坏美元符号而删除：保留整段公式，不再丢左括号、丢 λ 符号或把句号挤到单独一行；公式仍可横向滚动。',
-      },
-      {
-        group: '题库选项',
-        text: '修复 GA-B0328、GA-B0388 的 A 选项把换行写成非法命令、显示成反斜杠加 y 的问题：改为标准 cases 两行，答案仍为 D，内容与其余选项一致。',
-      },
-      {
-        group: '重复句与门禁',
-        text: '清理 60 处解答末尾整句重复，并给 QA 与构建新增三反斜杠非法命令、整句重复、无空格标题与中文粗体回归；42 项 Markdown 回归、全套 50 项测试通过。',
+        group: '语言门禁',
+        text: '新增仓库语言检查与回归测试：要求 HTML、CSS、JavaScript、Python、Shell、Makefile 六类源码齐全，Python 不少于 12KB，并校验单文件已标记为生成文件；npm run check 与 CI 同时执行，防止语言统计再次退化成单一 HTML。',
       }
     ],
   },

@@ -1,0 +1,8 @@
+# The built single-file app is a generated artifact. Keep it out of GitHub
+# language statistics so the bar reflects the actual source tree.
+index.html linguist-generated=true
+
+# Binary release artifacts
+source.zip binary
+skills/skills-full.zip binary
+assets/**/*.png binary

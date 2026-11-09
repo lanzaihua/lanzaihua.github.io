@@ -12,9 +12,11 @@
     "qa": "node tools/qa2.js",
     "shots": "node tools/shots2.js",
     "test": "node --test tests/*.test.js",
-    "check": "npm test && node tools/qa-bank-strict.js --strict-difficulty && node tools/qa-site-consistency.js",
+    "check": "npm test && node tools/qa-bank-strict.js --strict-difficulty && node tools/qa-site-consistency.js && node tools/check_repo_languages.js && python tools/audit_bank.py --strict-difficulty",
     "prepare:pages": "node tools/publish-pages.js",
-    "verify:pages": "node tools/publish-pages.js --check"
+    "verify:pages": "node tools/publish-pages.js --check",
+    "qa:py": "python tools/audit_bank.py --strict-difficulty",
+    "languages": "node tools/check_repo_languages.js && python tools/audit_bank.py --strict-difficulty"
   },
   "devDependencies": {
     "linkedom": "^0.18.15",

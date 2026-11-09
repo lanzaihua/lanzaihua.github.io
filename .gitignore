@@ -1,7 +1,6 @@
 node_modules/
-dist/
-dist-pages/
-导出/
-备份/
-截图仓库/
-*.log
+data/state.json
+*.tmp
+__pycache__/
+*.pyc
+.pytest_cache/

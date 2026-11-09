@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09--9-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--46bce47a-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09--10-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--6c543289-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -47,9 +47,25 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、发布与源码打包脚本 |
-| `tests/` | 49 项回归测试，覆盖数据保护、公式渲染、通知、进度与模拟考 |
+| `tests/` | 51 项回归测试，覆盖数据保护、公式渲染、通知、进度与模拟考 |
 
 完整构建方式：解压 `source.zip` 后执行 `npm ci && node build.js`。仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页。
+
+## 仓库语言与工具链
+
+GitHub 的语言统计按源码计算，不把构建出来的单文件当成主要语言：
+
+- `index.html` 是生成产物，已在 `.gitattributes` 标记 `linguist-generated=true`；`src/index.template.html`、`src/js/`、`src/styles.css` 仍计入 HTML / JavaScript / CSS。
+- `tools/audit_bank.py` 是独立的 Python 题库审计，`tools/package-source.py` 负责发布打包；`tools/check.sh` 与 `Makefile` 提供同一套本地检查入口。
+- `tools/check_repo_languages.js` 校验六类源码是否齐全，语言统计退化成单一 HTML 时直接失败。
+
+```bash
+python tools/audit_bank.py --strict-difficulty   # 题库独立审计
+node tools/check_repo_languages.js              # 语言门禁
+python tools/package-source.py --all            # source.zip + 静态站 zip + SHA256SUMS
+bash tools/check.sh                             # 全套检查
+make check                                      # 同上，Makefile 入口
+```
 
 ## 四个科目
 
@@ -162,11 +178,11 @@
 
 ## 更新记录
 
-### 2026-11-09 · 长任务、公式与筛选
+### 2026-11-09 · 长任务、公式与语言
 
-**25 项 · 25 组**
+**28 项 · 28 组**
 
-在原有通知、模拟考、长任务与筛选基础上，本轮继续修复公式与数字排版：无空格标题、中文后紧接的粗体、长证明中的行内公式、题库 cases 选项与解答重复句都已修正；QA 与构建新增非法命令、整句重复门禁。390 / 820 / 1440 复查错题、题库与模拟考无公式泄漏、无逐行断开、无横向溢出。本块共 25 项 / 25 组，50 项测试、严格 QA、站点一致性与三端检查通过。
+在原有通知、模拟考、长任务与筛选基础上，本轮继续修复公式与数字排版，并把仓库语言统计从单一生成文件恢复到源码：把 15MB 单文件标记为 linguist-generated，新增可运行的 Python 审计/打包、Shell 全量检查、Makefile 入口与语言门禁。本块共 28 项 / 28 组，51 项测试、严格 QA、站点一致性与三端检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -181,22 +197,25 @@
 | **笔记导入导出** | 笔记库 PDF 导入逐页、文件导入逐文件、批量导出逐页、扫描保存逐页显示已完成 / 总数；不知道总量时用活动条，不伪造百分比。 |
 | **扫描 OCR** | 智能扫描的「识别当前页文字」接入长任务卡，按「准备图片 → 识别文字 → 写入结果」推进，显示真实等待秒数与识别字数；可取消，识别失败保留错误提示，进度卡留在扫描弹窗顶层不被遮挡。 |
 | **翻译与补全** | AI 翻译、知识点 AI 搜索与自动补全接入同一长任务卡：显示真实阶段、已完成 / 总数与等待秒数，完成、失败、取消都正确收尾。 |
-| **取消与防复发** | 取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 50。 |
-| **公式行内** | 修复句中的短公式被当成块级公式：普通单行 $...$ 自动回到行内，只有矩阵、分段、多行推导或超长公式才独立成块，公式前后不再各占一行。 |
+| **取消与防复发** | 取消按钮会中止对应请求；失败保留错误提示与关闭按钮；新增进度接线、确定/不确定状态、取消、弹窗内进度卡与三端布局回归测试，测试总数 51。 |
+| **公式行内** | 修复句中的短公式被当成块级公式：普通单行 $$...$$ 自动回到行内，只有矩阵、分段、多行推导或超长公式才独立成块，公式前后不再各占一行。 |
 | **列表与要点** | 修复裸公式扫描器吞掉 Markdown 列表标记的问题：解题要点、易错点等以「-」「*」「1.」开头的条目恢复逐条列表，不再被拼成一整段，短公式与文字保持同一行基线。 |
 | **提示词约束** | 智能录入与 AI 出题提示词改为：points / pitfalls 每条写完整句子，公式默认行内，禁止把单个符号或半个等式单独成行；已有内容不再改动。 |
-| **三端与防复发** | 390 / 820 / 1440 复查错题、题库与模拟考：公式均为行内、无横向溢出、无脚本错误；新增列表、短公式、矩阵与长公式回归测试，测试总数 50，防止同类问题再次出现。 |
+| **三端与防复发** | 390 / 820 / 1440 复查错题、题库与模拟考：公式均为行内、无横向溢出、无脚本错误；新增列表、短公式、矩阵与长公式回归测试，测试总数 51，防止同类问题再次出现。 |
 | **空格保留** | 修复裸公式扫描器把普通文字两端的空格一起去掉的问题：中英文之间、数字与汉字之间、斜杠两侧的空格恢复保留；通知摘要、更新正文与题解不再出现「Markdown列表」「19项/ 19组」这样的粘连。 |
 | **筛选清空** | 错题、题库、模板库的筛选工具栏都新增「清空筛选」：一次恢复全部章节、题型、形式、模板、难度、日期、星级、排序与来源；没有筛选时按钮自动禁用，筛选结果显示条数并同步朗读。 |
 | **题库来源** | 题库新增「全部来源 / 考研同型 / 教材课后」三档来源筛选，与章节、题型等条件叠加，显示当前命中的题数；旧版本保存的筛选状态自动补为全部来源，从模板或知识点跳转时不会带着旧来源。 |
-| **筛选防复发** | 新增清空、来源、模板章节与旧状态迁移回归测试，测试总数 50；390 / 820 / 1440 复查三个筛选工具栏同排不溢出、按钮禁用态正确、无脚本错误，防止同类问题再次出现。 |
+| **筛选防复发** | 新增清空、来源、模板章节与旧状态迁移回归测试，测试总数 51；390 / 820 / 1440 复查三个筛选工具栏同排不溢出、按钮禁用态正确、无脚本错误，防止同类问题再次出现。 |
 | **标题归一** | 修复没有空格的「##标题」「###标题」被原样显示的问题：渲染前自动补空格，知识库小节也能正确切分；标题层级、目录与正文顺序保持一致。 |
 | **中文粗体** | 修复「**用途1：…。**定义」这类中文后紧接的粗体不生效：闭合标记后是中文或中文标点时仍识别为粗体，公式里的 ** 不被误改。 |
 | **长公式保留** | 修复长证明里的行内公式被误判为坏美元符号而删除：保留整段公式，不再丢左括号、丢 λ 符号或把句号挤到单独一行；公式仍可横向滚动。 |
 | **题库选项** | 修复 GA-B0328、GA-B0388 的 A 选项把换行写成非法命令、显示成反斜杠加 y 的问题：改为标准 cases 两行，答案仍为 D，内容与其余选项一致。 |
-| **重复句与门禁** | 清理 60 处解答末尾整句重复，并给 QA 与构建新增三反斜杠非法命令、整句重复、无空格标题与中文粗体回归；42 项 Markdown 回归、全套 50 项测试通过。 |
+| **重复句与门禁** | 清理 60 处解答末尾整句重复，并给 QA 与构建新增三反斜杠非法命令、整句重复、无空格标题与中文粗体回归；42 项 Markdown 回归、全套 51 项测试通过。 |
+| **仓库语言** | 把生成的 15MB 单文件 index.html 标记为 linguist-generated，GitHub Languages 改为统计 32KB 页面模板、JS、CSS、Python、Shell 与 Makefile 源码；仓库不再只显示 HTML / JavaScript / CSS 三种语言。 |
+| **工具链** | 新增可运行的 Python 题库审计与发布打包脚本、Shell 全量检查脚本和 Makefile 入口：python tools/audit_bank.py --strict-difficulty、python tools/package-source.py --all、bash tools/check.sh、make check 均可直接执行，不再依赖作者本机目录。 |
+| **语言门禁** | 新增仓库语言检查与回归测试：要求 HTML、CSS、JavaScript、Python、Shell、Makefile 六类源码齐全，Python 不少于 12KB，并校验单文件已标记为生成文件；npm run check 与 CI 同时执行，防止语言统计再次退化成单一 HTML。 |
 
-<p align="center"><img src="assets/v2/20261109e-changelog.png" alt="长任务、公式与筛选更新记录" width="820"></p>
+<img src="assets/v2/20261109e-changelog.png" alt="网页内更新记录" width="820">
 
 ### 2026-11-08 · 公式、答题页与进度
 
