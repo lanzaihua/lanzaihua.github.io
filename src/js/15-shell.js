@@ -43,7 +43,28 @@ function isHomeRoute() {
   return !h || h === '#' || h === '#/' || h === '#/home' || h === '#/welcome';
 }
 
+function homeWelcome(hour) {
+  if (hour < 5) return { greet: '夜深了', line: '这个点还没睡', note: '辛苦了。今天已经很努力了，剩下的明天再说，先去休息吧。' };
+  if (hour < 8) return { greet: '早上好', line: '慢慢醒过来就好', note: '不用一睁眼就进入状态 先喝口水 今天按自己的节奏来' };
+  if (hour < 11) return { greet: '上午好', line: '先做一点点', note: '不用一下子把所有事做完 挑一件最想做的 开始就好' };
+  if (hour < 13) return { greet: '中午好', line: '先好好吃饭', note: '题可以晚一点再看 饭要趁热吃 休息也是复习的一部分' };
+  if (hour < 17) return { greet: '下午好', line: '别急着赶路', note: '看累了就停一停 你今天已经走了很远 不必每一步都很快' };
+  if (hour < 19) return { greet: '傍晚好', line: '今天辛苦了', note: '想学就学一点 想歇就安心歇一会儿 都没关系' };
+  if (hour < 23) return { greet: '晚上好', line: '今天也辛苦了', note: '做过的事都算数 没做完的也不用责怪自己 先照顾好自己 再决定今晚学多少' };
+  return { greet: '夜深了', line: '该休息了', note: '今天到这里就很好 没解决的题不会跑 明天再慢慢来' };
+}
+
 function renderHomeClock() {
+  var info = homeWelcome(new Date().getHours());
+  var greet = qs('#homeGreeting');
+  if (greet) {
+    var userName = state.prefs && String(state.prefs.userName || '').trim();
+    greet.textContent = info.greet + (userName ? ' ' + userName : '');
+  }
+  var welcome = qs('#homeWelcome');
+  if (welcome) welcome.textContent = info.line;
+  var note = qs('#homeWelcomeNote');
+  if (note) note.textContent = info.note;
   var date = qs('#homeDate');
   if (date) {
     var d = new Date();
@@ -78,18 +99,6 @@ function renderHome() {
       ? '数据只保存在本机浏览器，可在设置里导出/导入备份'
       : '数据保存在本机浏览器，可在设置里导出或连接同步';
   }
-  var totalEntries = 0, totalTemplates = 0, totalBank = 0;
-  SUBJECTS.forEach(function (s) {
-    totalEntries += statsFor(s.id).total;
-    totalTemplates += templatesOf(s.id).length;
-    totalBank += bankOf(s.id).length;
-  });
-  var statEntries = qs('#homeStatEntries');
-  if (statEntries) statEntries.textContent = String(totalEntries);
-  var statTemplates = qs('#homeStatTemplates');
-  if (statTemplates) statTemplates.textContent = String(totalTemplates);
-  var statBank = qs('#homeStatBank');
-  if (statBank) statBank.textContent = String(totalBank);
   var wrap = qs('#homeSubjects');
   if (!wrap) return;
   wrap.innerHTML = SUBJECTS.map(function (s, i) {
@@ -411,7 +420,7 @@ function viewOverview(subjectId) {
   var hero =
     '<section class="hero">' +
       '<div>' +
-        '<div class="hero-kicker"><span class="dot" style="background:var(--' + s.id + ')"></span> 第 ' + pad(SUBJECTS.indexOf(s) + 1, 2) + ' 科' + (bookShortFor(s.id) ? ' · ' + esc(bookShortFor(s.id)) : '') + '</div>' +
+        '<div class="hero-kicker"><span class="dot" style="background:var(--' + s.id + ')"></span> 第 ' + pad(SUBJECTS.indexOf(s) + 1, 2) + ' 科 / ' + esc(s.skill) + (bookShortFor(s.id) ? ' · ' + esc(bookShortFor(s.id)) : '') + '</div>' +
         '<h1 class="hero-title">' + esc(s.name) + '</h1>' +
         '<p class="hero-desc">' + esc(s.tagline) + '。错题条目、模板库与考研同型/教材课后题库都在这里，手机和电脑同一套交互。</p>' +
         '<div class="hero-meta" style="margin-top:16px">' +

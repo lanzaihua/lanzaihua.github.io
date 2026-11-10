@@ -291,16 +291,15 @@ test('styles keep MathML layout boxes and balanced mobile action rows',()=>{
   assert.match(css,/\.bank-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端题库操作按钮应为两列');
   assert.match(css,/\.entry-foot\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端错题操作按钮应为两列');
 });
-test('site shell uses the paper-and-ink layout without duplicate home copy',()=>{
+test('site shell restores warm home greeting and paper layout',()=>{
   const tpl=read('src/index.template.html'), css=read('src/styles.css');
-  assert.ok(tpl.includes('今天从哪一科开始'),'首页应有固定主标题，而不是按时段问候');
-  assert.equal(tpl.includes('homeFootNote'),false,'页脚不应再保留重复的本机存储说明');
-  assert.equal(/夜深了|这个点还没睡/.test(tpl),false,'首页模板不应残留时段问候文案');
-  assert.match(css,/--paper:\s*#f2f2ed/,'全站应使用冷纸色令牌');
-  assert.match(css,/\.eyebrow,[^{}]*\.note-section-kicker[^{}]*\.page-kicker[^{}]*\.notif-kicker[^{}]*\{\s*display:\s*none\s*!important/,'英文小标签必须隐藏');
-  assert.match(css,/\.home-title\s*\{[^}]*font-family:\s*var\(--font-sans\)/,'首页主标题必须使用无衬线层级');
+  assert.match(tpl,/id="homeGreeting"/,'首页必须有问候主标题');
+  assert.match(tpl,/id="homeWelcome"/,'首页必须有每日问候副标题');
+  assert.equal(tpl.includes('今天从哪一科开始'),false,'首页不能退回固定主标题');
+  assert.match(css,/--paper:\s*#f4f1e9/,'全站必须回到暖米色纸面');
+  assert.match(css,/--accent:\s*#b23a26/,'强调色必须回到砖红');
+  assert.equal(/--paper:\s*#f2f2ed/.test(css),false,'不能重新引入冷纸色');
 });
-
 test('exam header stays sticky at a stable height with explicit expand and collapse rules',()=>{
   const css=read('src/styles.css'), js=read('src/js/59-exam.js');
   assert.match(css,/\.exam-sticky\s*\{[^}]*position:\s*sticky[^}]*height:\s*124px/,'答题页必须使用常高 sticky 外壳，避免收缩时内容跳动');
@@ -627,4 +626,23 @@ test('notification signature covers notify items and final page avoids duplicate
   assert.equal(/final-empty-actions/.test(finalJs),false,'复习材料空态不能重复期末页顶部入口');
   assert.match(finalJs,/final-countdown is-empty/,'未设定日期时不能留下孤立的破折号');
   assert.match(read('src/styles.css'),/@media \(max-width: 900px\)[\s\S]{0,200}\.topbar \{ position: static; \}/,'手机与平板顶栏不再吸顶遮挡内容');
+});
+
+
+test('home restores warm 2ea palette, daily greeting and welcome dialog',()=>{
+  const css=read('src/styles.css');
+  const tpl=read('src/index.template.html');
+  const shell=read('src/js/15-shell.js');
+  assert.match(css,/--paper:\s*#f4f1e9/,'首页必须回到暖米色纸面');
+  assert.match(css,/--accent:\s*#b23a26/,'强调色必须回到砖红');
+  assert.equal(/--paper:\s*#f2f2ed/.test(css),false,'不能重新引入冷纸色');
+  assert.equal(/--accent:\s*#2f5d54/.test(css),false,'不能重新引入深墨绿强调色');
+  assert.match(tpl,/id="homeGreeting"/,'首页必须有问候标题');
+  assert.match(tpl,/id="homeWelcome"/,'首页必须有每日问候副标题');
+  assert.match(tpl,/id="homeWelcomeNote"/,'首页必须有问候提示');
+  assert.match(shell,/function homeWelcome\(hour\)/,'问候必须随小时变化');
+  assert.match(shell,/state\.prefs\.userName/,'问候必须带上用户称呼');
+  assert.match(tpl,/class="dlg-api-welcome"/,'欢迎弹窗必须保留原有结构');
+  assert.match(tpl,/apiwelcome-mark/,'欢迎弹窗必须保留原有图标');
+  assert.match(tpl,/apiwelcome-list/,'欢迎弹窗必须保留原有卡片');
 });
