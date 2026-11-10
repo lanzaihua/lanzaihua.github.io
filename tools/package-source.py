@@ -37,7 +37,7 @@ SKIP_DIR_NAMES = {
     "node_modules", "__pycache__", ".git", "dist", "dist-pages", "debug",
     "备份", "导出", "截图仓库", "screenshots", "data",
 }
-SKIP_SUFFIXES = {".pyc", ".pyo", ".tmp"}
+SKIP_SUFFIXES = {".pyc", ".pyo", ".tmp", ".broken"}
 SKIP_NAMES = {"source.zip", "四科错题本-静态站.zip", "state.json", ".DS_Store"}
 
 
