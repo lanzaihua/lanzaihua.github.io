@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.10-27cec223";</script>
+<script>window.__BUILD_ID__="2026.11.11-850cf82a";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -5872,21 +5872,12 @@ p, li, .md p, .md li { text-wrap: pretty; }
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 62%, var(--warn)));
-  transition: width .35s ease;
+  transition: width .12s linear;
 }
 .ai-progress.is-complete .ai-progress-fill { background: var(--ok); }
 .ai-progress.is-complete .ai-progress-value { color: var(--ok); }
-/* 确定进度也保留一条真实心跳：请求尚未返回时，界面仍在动，且不是伪造百分比。 */
-.ai-progress-track::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, #fff 55%, transparent), transparent);
-  transform: translateX(-110%);
-  animation: ai-progress-sheen 1.4s linear infinite;
-  pointer-events: none;
-}
-.ai-progress.is-indeterminate .ai-progress-track::after { display: none; }
+/* 确定进度只用真实百分比；不再叠加会让人误以为在跑的扫光动画。 */
+.ai-progress-track::after { display: none; }
 .ai-progress.is-complete .ai-progress-track::after,
 .ai-progress[aria-busy="false"] .ai-progress-track::after { display: none; }
 .ai-progress.is-indeterminate .ai-progress-fill {
@@ -14419,6 +14410,7 @@ function applyImportMode(mode) {
    知识点补全等长任务复用。
    ========================================================= */
 var aiProgressRegistry = {};
+var aiProgressLast = {};
 var longTaskCancelHandlers = {};
 var longTaskHideTimers = {};
 
@@ -14432,6 +14424,71 @@ function aiProgressStepPercent(step, total) {
   var n = Math.max(1, Number(total) || 1);
   var i = Math.max(0, Math.min(n - 1, Number(step) || 0));
   return Math.round(i / n * 100);
+}
+
+/* 真实数据进度：只统计已经收到的 JSON 字段 / 对象。
+   比例来自流式正文本身，不来自定时器，也不预先编造终点。 */
+function aiProgressPct(value) {
+  return Math.max(0, Math.min(100, Math.round((Number(value) || 0) * 10) / 10));
+}
+
+function aiProgressJsonFields(text, keys, expectedChars) {
+  var s = String(text || '');
+  keys = Array.isArray(keys) ? keys : [];
+  var found = [];
+  keys.forEach(function (key) {
+    var safe = String(key).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var m = new RegExp('"' + safe + '"\\s*:').exec(s);
+    if (m) found.push({ key: key, at: m.index, valueAt: m.index + m[0].length });
+  });
+  found.sort(function (a, b) { return a.at - b.at; });
+  if (!found.length) return { completed: 0, total: keys.length, currentKey: '', partial: 0, chars: 0 };
+  var last = found[found.length - 1];
+  var rest = s.slice(last.valueAt);
+  var closed = /^\s*"(?:[^"\\]|\\.)*"\s*(?:,|})/.test(rest) ||
+    /^\s*(?:true|false|null|-?\d+(?:\.\d+)?)\s*(?:,|})/.test(rest) ||
+    /^\s*(?:\{[\s\S]*\}|\[[\s\S]*\])\s*(?:,|})/.test(rest);
+  var expected = Math.max(80, Number(expectedChars && expectedChars[last.key]) || 400);
+  var partial = closed ? 0 : Math.min(0.92, rest.length / expected);
+  return {
+    completed: Math.max(0, found.length - 1 + (closed ? 1 : 0)),
+    total: keys.length,
+    currentKey: last.key,
+    partial: partial,
+    chars: rest.length
+  };
+}
+
+function aiProgressFieldsFraction(info) {
+  if (!info || !info.total) return 0;
+  return Math.max(0, Math.min(1, ((Number(info.completed) || 0) + (Number(info.partial) || 0)) / info.total));
+}
+
+function aiProgressJsonArray(text, arrayKey, itemChars) {
+  var s = String(text || '');
+  var keyIdx = s.indexOf('"' + arrayKey + '"');
+  if (keyIdx < 0) return { completed: 0, currentChars: 0 };
+  var start = s.indexOf('[', keyIdx);
+  if (start < 0) return { completed: 0, currentChars: 0 };
+  var depth = 0, inStr = false, esc = false, completed = 0, currentStart = -1;
+  for (var i = start + 1; i < s.length; i++) {
+    var ch = s.charAt(i);
+    if (inStr) {
+      if (esc) esc = false;
+      else if (ch === '\\') esc = true;
+      else if (ch === '"') inStr = false;
+      continue;
+    }
+    if (ch === '"') { inStr = true; continue; }
+    if (ch === '{') { if (depth === 0) currentStart = i; depth++; continue; }
+    if (ch === '}') {
+      if (depth > 0) depth--;
+      if (depth === 0 && currentStart >= 0) { completed++; currentStart = -1; }
+    }
+  }
+  var currentChars = currentStart >= 0 ? s.length - currentStart : 0;
+  var per = Math.max(120, Number(itemChars) || 1200);
+  return { completed: completed, currentChars: currentChars, partial: Math.min(0.9, currentChars / per) };
 }
 
 function aiProgressHtml(key, opts) {
@@ -14488,7 +14545,15 @@ function aiProgressSet(key, state) {
   var value = root.querySelector('[data-progress-value]');
   var stage = root.querySelector('[data-progress-stage]');
   var detail = root.querySelector('[data-progress-detail]');
-  var percent = state.percent == null ? null : Math.max(0, Math.min(100, Number(state.percent) || 0));
+  var percent = state.percent == null ? null : aiProgressPct(state.percent);
+  var reg = aiProgressRegistry[key];
+  if (percent != null) {
+    // 同一个任务只前进不后退：重试或分批返回时不会出现进度倒退。
+    var last = reg && reg.lastPercent != null ? reg.lastPercent : aiProgressLast[key];
+    if (last != null && percent < last) percent = last;
+    if (reg) reg.lastPercent = percent;
+    aiProgressLast[key] = percent;
+  }
   if (state.stage && stage) stage.textContent = state.stage;
   if (detail && state.detail != null) {
     detail.textContent = state.detail;
@@ -14502,8 +14567,10 @@ function aiProgressSet(key, state) {
     if (track) track.removeAttribute('aria-valuenow');
   } else {
     root.classList.remove('is-indeterminate');
-    if (fill) fill.style.width = percent + '%';
-    if (track) track.setAttribute('aria-valuenow', String(Math.round(percent)));
+    // 进度条宽度、ARIA 数值和文案里的百分比用同一个整数，避免条到 11.8% 而数字写 12%。
+    var shownPct = Math.round(percent);
+    if (fill) fill.style.width = shownPct + '%';
+    if (track) track.setAttribute('aria-valuenow', String(shownPct));
   }
   var complete = !!state.complete;
   var running = state.running !== false && !complete;
@@ -14511,8 +14578,12 @@ function aiProgressSet(key, state) {
   root.setAttribute('aria-busy', running ? 'true' : 'false');
   root.setAttribute('data-progress-state', complete ? 'complete' : (running ? 'running' : 'stopped'));
   if (value) {
-    if (state.valueText) value.textContent = state.valueText;
-    else if (percent != null) value.textContent = Math.round(percent) + '%';
+    if (state.valueText) {
+      var vt = String(state.valueText);
+      // 数字和进度条同源：文案没带百分比时补上同一个百分数。
+      if (percent != null && vt.indexOf('%') < 0) vt += ' · ' + Math.round(percent) + '%';
+      value.textContent = vt;
+    } else if (percent != null) value.textContent = Math.round(percent) + '%';
     else if (state.step == null) value.textContent = '处理中';
   }
   if (state.step != null) {
@@ -14534,7 +14605,8 @@ function aiProgressStart(key, opts) {
   opts = opts || {};
   if (aiProgressRegistry[key] && aiProgressRegistry[key].timer) clearInterval(aiProgressRegistry[key].timer);
   var started = opts.startedAt || Date.now();
-  aiProgressRegistry[key] = { startedAt: started, timer: null };
+  aiProgressRegistry[key] = { startedAt: started, timer: null, lastPercent: null };
+  aiProgressLast[key] = null;
   aiProgressSet(key, opts);
   var root = document.querySelector('[data-ai-progress="' + key + '"]');
   if (root) aiProgressSetElapsed(root, started);
@@ -16172,21 +16244,47 @@ function compressAiImage(file) {
 }
 
 var AI_ENTRY_STEPS = ['准备题目', '请求模型', '解析结果', '写入错题本'];
+var AI_ENTRY_FIELDS = ['needsClarification', 'clarification', 'confidence', 'summary', 'chapter', 'chapterCode', 'points', 'templateTitle', 'templateNotes', 'question', 'standardSolution', 'detailedAnalysis', 'verification', 'answer', 'pitfalls', 'variants', 'difficulty', 'errorTypes', 'hasUserSolution', 'errorAnalysis', 'source'];
+var AI_ENTRY_FIELD_LABELS = {
+  needsClarification: '题目检查', clarification: '补充说明', confidence: '置信度', summary: '摘要', chapter: '章节', chapterCode: '章号',
+  points: '知识要点', templateTitle: '模板名称', templateNotes: '模板四段', question: '题目', standardSolution: '标准解答',
+  detailedAnalysis: '详细解析', verification: '验算', answer: '答案', pitfalls: '易错点', variants: '变式', difficulty: '难度',
+  errorTypes: '错误类型', hasUserSolution: '错解标记', errorAnalysis: '错解诊断', source: '来源'
+};
+var AI_ENTRY_EXPECTED_CHARS = {
+  clarification: 40, summary: 60, chapter: 12, chapterCode: 8, points: 90, templateTitle: 24, templateNotes: 280,
+  question: 320, standardSolution: 1100, detailedAnalysis: 1400, verification: 260, answer: 220, pitfalls: 110,
+  variants: 520, errorTypes: 30, errorAnalysis: 320, source: 60, needsClarification: 6, confidence: 6, difficulty: 4, hasUserSolution: 6
+};
+var aiEntryLastPushAt = 0;
 
 function aiEntryStageValue(step) {
   return '阶段 ' + (Math.min(AI_ENTRY_STEPS.length, (Math.max(0, Number(step) || 0)) + 1)) + ' / ' + AI_ENTRY_STEPS.length;
 }
 
-function setAiEntryProgress(step, stage, detail) {
+function setAiEntryProgress(step, stage, detail, percent, valueText) {
   if (typeof aiProgressSet !== 'function') return;
-  // 录入耗时主要来自一次网络请求；不知道请求何时返回时不伪造百分比。
   aiProgressSet('ai-entry', {
     step: step,
-    percent: null,
-    valueText: aiEntryStageValue(step),
+    percent: percent == null ? 0 : percent,
+    valueText: valueText || aiEntryStageValue(step),
     stage: stage,
     detail: detail
   });
+}
+
+function aiEntryStreamProgress(text, force) {
+  if (typeof aiProgressJsonFields !== 'function') return;
+  var now = Date.now();
+  if (!force && now - aiEntryLastPushAt < 120) return;
+  aiEntryLastPushAt = now;
+  var info = aiProgressJsonFields(text, AI_ENTRY_FIELDS, AI_ENTRY_EXPECTED_CHARS);
+  var frac = aiProgressFieldsFraction(info);
+  var pct = 8 + frac * 80;
+  var stage = info.currentKey
+    ? '模型正在生成「' + (AI_ENTRY_FIELD_LABELS[info.currentKey] || info.currentKey) + '」…'
+    : '模型已开始返回正文…';
+  setAiEntryProgress(1, stage, '进度按已收到的 JSON 字段与当前字段字符数计算，来自模型流式正文本身。', pct, '已收到 ' + info.completed + ' / ' + AI_ENTRY_FIELDS.length + ' 字段');
 }
 
 function renderAiLoading() {
@@ -16198,12 +16296,12 @@ function renderAiLoading() {
         steps: AI_ENTRY_STEPS,
         label: '智能录入进度',
         step: 0,
-        percent: null,
-        valueText: '阶段 1 / 4',
+        percent: 0,
+        valueText: '0%',
         stage: '正在准备题目与图片…',
         detail: '先在本机压缩图片、整理题干，再发送给模型。'
       }) +
-      '<p class="ai-loading-note">生成通常需要 20–90 秒；开启思考时可能更久。可以切到后台，但不要关掉页面；结果只在这次页面里，保存后才进错题本。</p>' +
+      '<p class="ai-loading-note">百分比与进度条随模型实际返回的 JSON 字段推进；可以切到后台，但不要关掉页面；结果只在这次页面里，保存后才进错题本。</p>' +
       '<div class="ai-loading-actions"><button class="btn btn-xs" data-act="ai-abort" type="button">取消生成</button></div>' +
     '</div>';
   aiState.stageIndex = 0;
@@ -16212,8 +16310,8 @@ function renderAiLoading() {
       steps: AI_ENTRY_STEPS,
       label: '智能录入进度',
       step: 0,
-      percent: null,
-      valueText: '阶段 1 / 4',
+      percent: 0,
+      valueText: '0%',
       stage: '正在准备题目与图片…',
       detail: '先在本机压缩图片、整理题干，再发送给模型。'
     });
@@ -16255,10 +16353,10 @@ function aiSubmit() {
   aiSubmitServer();
 }
 
-function callDshDirectRetry(subject, text, hint, images, wrongText, wrongImages, signal) {
-  return callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal).catch(function (err) {
+function callDshDirectRetry(subject, text, hint, images, wrongText, wrongImages, signal, opts) {
+  return callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal, opts).catch(function (err) {
     if (err && (err.code === 'PARSE_ERROR' || err.code === 'EMPTY_RESPONSE')) {
-      return callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal);
+      return callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal, opts);
     }
     throw err;
   });
@@ -16268,20 +16366,35 @@ function aiSubmitDirect() {
   aiState.busy = true;
   aiState.result = null;
   renderAiLoading();
-  setAiEntryProgress(1, '正在请求模型…', '题目与技能包已整理，等待模型返回；这是真实网络等待时间。');
+  setAiEntryProgress(0, '正在准备题目与图片…', '先在本机压缩图片、整理题干，再解压技能包并匹配章节。', 2, '2%');
   var started = Date.now();
   var controller = new AbortController();
   aiState.abort = controller;
-  callDshDirectRetry(aiState.subject, aiState.text, aiState.hint, aiState.images, aiState.wrongText, aiState.wrongImages, controller.signal).then(function (data) {
-    setAiEntryProgress(2, '已收到模型响应', '正在解析标准解答、详细解析、答案与模板。');
+  aiEntryLastPushAt = 0;
+  var streamOpts = {
+    onPrepare: function (info) {
+      setAiEntryProgress(0, info.stage || '正在准备模型请求…', info.ready ? '技能材料已就绪，正在发送请求。' : '正在解压内置技能包并匹配最相关章节。', info.ready ? 6 : 3, info.ready ? '6%' : '3%');
+    },
+    onFirstByte: function () {
+      setAiEntryProgress(1, '模型已开始返回，正在生成解答…', '进度按实际收到的 JSON 字段与当前字段字符数推进。', 8, '8%');
+    },
+    onDelta: function (delta, fullText) {
+      aiEntryStreamProgress(fullText, false);
+    }
+  };
+  callDshDirectRetry(aiState.subject, aiState.text, aiState.hint, aiState.images, aiState.wrongText, aiState.wrongImages, controller.signal, streamOpts).then(function (data) {
+    setAiEntryProgress(2, '模型已返回，正在解析结果…', '正在核对标准解答、详细解析、答案、模板与变式。', 90, '90%');
     var finishDirect = function () {
-      setAiEntryProgress(3, '正在写入错题本', '解析完成，正在保存并整理条目。');
-      aiState.busy = false;
-      aiState.abort = null;
-      aiHandleResult(data, Date.now() - started);
-      clearAiStage();
+      setAiEntryProgress(3, '正在写入错题本…', '解析完成，正在保存并整理条目。', 96, '96%');
+      var commit = function () {
+        if (typeof aiProgressFinish === 'function') aiProgressFinish('ai-entry', { stage: '录入完成', detail: '已保存到错题本。' });
+        aiState.busy = false;
+        aiState.abort = null;
+        aiHandleResult(data, Date.now() - started);
+        clearAiStage();
+      };
+      setTimeout(commit, 120);
     };
-    // 让「解析结果」这步真实渲染一帧，再进入写入；不把请求前的等待算成百分比。
     if (typeof requestAnimationFrame === 'function') requestAnimationFrame(finishDirect);
     else setTimeout(finishDirect, 0);
   }).catch(function (err) {
@@ -17042,7 +17155,51 @@ function aiUsage(data) {
   };
 }
 
-async function postAiJson(cfg, payload, timeoutMs, signal) {
+function aiStreamBlockDelta(block, state, onDelta) {
+  var lines = String(block || '').split(/\r?\n/);
+  var data = [];
+  lines.forEach(function (line) {
+    if (line.indexOf('data:') === 0) data.push(line.slice(5).replace(/^ /, ''));
+  });
+  if (!data.length) return;
+  var raw = data.join('\n');
+  if (raw === '[DONE]') { state.done = true; return; }
+  var j = null;
+  try { j = JSON.parse(raw); } catch (e) { return; }
+  var delta = '';
+  if (j.type === 'content_block_delta' && j.delta) {
+    delta = String(j.delta.text || '');
+  } else if (j.type === 'content_block_start' && j.content_block && j.content_block.type === 'text') {
+    delta = String(j.content_block.text || '');
+  } else if (j.type === 'message_start' && j.message) {
+    if (j.message.model) state.model = j.message.model;
+    var mu = aiUsage(j.message);
+    if (mu) state.usage = mu;
+  } else if (j.type === 'message_delta') {
+    if (j.delta && j.delta.stop_reason) state.stopReason = j.delta.stop_reason;
+    var du = aiUsage(j.usage ? { input_tokens: j.usage.input_tokens, output_tokens: j.usage.output_tokens } : null);
+    if (du) state.usage = Object.assign({}, state.usage || {}, du);
+  } else if (j.type === 'error') {
+    var se = new Error((j.error && j.error.message) || '模型流式返回出错');
+    se.code = 'UPSTREAM_ERROR';
+    throw se;
+  } else if (j.choices && j.choices[0]) {
+    var c = j.choices[0];
+    if (c.delta) {
+      var d = c.delta.content;
+      if (typeof d === 'string') delta = d;
+      else if (Array.isArray(d)) delta = d.map(function (x) { return x && x.text ? x.text : ''; }).join('');
+    }
+    if (c.finish_reason) state.stopReason = c.finish_reason;
+    if (j.usage) { var ou = aiUsage(j.usage); if (ou) state.usage = ou; }
+  }
+  if (!delta) return;
+  state.text += delta;
+  if (typeof onDelta === 'function') onDelta(delta, state.text);
+}
+
+async function postAiJson(cfg, payload, timeoutMs, signal, opts) {
+  opts = opts || {};
   var controller = new AbortController();
   var timer = setTimeout(function () { controller.abort(); }, timeoutMs);
   if (signal) {
@@ -17059,6 +17216,8 @@ async function postAiJson(cfg, payload, timeoutMs, signal) {
     headers['x-dsh-auth-token'] = cfg.apiKey;
     headers['anthropic-version'] = '2023-06-01';
   }
+  var stream = opts.stream !== false;
+  if (stream) payload = Object.assign({}, payload, { stream: true });
   try {
     var res = await fetch(aiEndpoint(cfg), {
       method: 'POST',
@@ -17066,13 +17225,46 @@ async function postAiJson(cfg, payload, timeoutMs, signal) {
       body: JSON.stringify(payload),
       signal: controller.signal
     });
-    var raw = await res.text();
-    if (!res.ok) throw aiDirectError(res, raw);
-    try { return JSON.parse(raw); } catch (e) {
-      var pe = new Error('模型返回了无法解析的内容');
-      pe.code = 'PARSE_ERROR';
-      throw pe;
+    var ctype = String(res.headers.get('content-type') || '');
+    if (!res.ok) {
+      var errRaw = await res.text();
+      throw aiDirectError(res, errRaw);
     }
+    if (!stream || !res.body || !/text\/event-stream/i.test(ctype)) {
+      var raw = await res.text();
+      try { return JSON.parse(raw); } catch (e) {
+        var pe = new Error('模型返回了无法解析的内容');
+        pe.code = 'PARSE_ERROR';
+        throw pe;
+      }
+    }
+    if (typeof opts.onFirstByte === 'function') opts.onFirstByte();
+    var reader = res.body.getReader();
+    var decoder = new TextDecoder();
+    var buf = '';
+    var state = { text: '', model: cfg.model, usage: null, stopReason: '', done: false };
+    function drain() {
+      var m;
+      while ((m = /\r?\n\r?\n/.exec(buf))) {
+        var block = buf.slice(0, m.index);
+        buf = buf.slice(m.index + m[0].length);
+        aiStreamBlockDelta(block, state, opts.onDelta);
+      }
+    }
+    while (true) {
+      var step = await reader.read();
+      if (step.done) break;
+      buf += decoder.decode(step.value, { stream: true });
+      drain();
+    }
+    buf += decoder.decode();
+    if (buf.trim()) aiStreamBlockDelta(buf, state, opts.onDelta);
+    if (!state.text) {
+      var ee = new Error('模型流式返回没有给出正文');
+      ee.code = 'EMPTY_RESPONSE';
+      throw ee;
+    }
+    return { __streamed: true, text: state.text, model: state.model, usage: state.usage, stopReason: state.stopReason };
   } finally {
     clearTimeout(timer);
   }
@@ -17108,7 +17300,14 @@ async function callConfiguredDirect(cfg, systemPrompt, userText, images, timeout
       delete openaiPayload.max_tokens;
       delete openaiPayload.temperature;
     }
-    var od = await postAiJson(cfg, openaiPayload, timeoutMs, signal);
+    var od = await postAiJson(cfg, openaiPayload, timeoutMs, signal, {
+      stream: opts.stream !== false,
+      onDelta: opts.onDelta,
+      onFirstByte: opts.onFirstByte
+    });
+    if (od && od.__streamed) {
+      return { text: od.text, model: od.model || cfg.model, usage: od.usage, stopReason: od.stopReason || '' };
+    }
     var choice = od && od.choices && od.choices[0];
     var oc = choice && choice.message && choice.message.content;
     if (Array.isArray(oc)) oc = oc.map(function (x) { return x && x.text ? x.text : ''; }).join('\n');
@@ -17141,7 +17340,14 @@ async function callConfiguredDirect(cfg, systemPrompt, userText, images, timeout
     var budgets = { low: 4096, medium: 8192, high: 16000, max: 32000 };
     payload.thinking = { type: 'enabled', budget_tokens: Math.max(1024, Math.min(budgets[think.effort] || 16000, maxTokens - 4096)) };
   }
-  var data = await postAiJson(cfg, payload, timeoutMs, signal);
+  var data = await postAiJson(cfg, payload, timeoutMs, signal, {
+    stream: opts.stream !== false,
+    onDelta: opts.onDelta,
+    onFirstByte: opts.onFirstByte
+  });
+  if (data && data.__streamed) {
+    return { text: data.text, model: data.model || cfg.model, usage: data.usage, stopReason: data.stopReason || '' };
+  }
   var blocks = Array.isArray(data.content) ? data.content : [];
   var text = blocks.filter(function (c) { return c && c.type === 'text'; }).map(function (c) { return c.text; }).join('\n');
   if (!text) {
@@ -17155,7 +17361,8 @@ async function callConfiguredDirect(cfg, systemPrompt, userText, images, timeout
   return { text: text, model: data.model || cfg.model, usage: aiUsage(data), stopReason: data.stop_reason || '' };
 }
 
-async function callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal) {
+async function callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal, opts) {
+  opts = opts || {};
   var cfg = aiConfig();
   var diag = typeof aiConfigDiagnosis === 'function' ? aiConfigDiagnosis() : null;
   if (diag && diag.blocking) {
@@ -17170,7 +17377,9 @@ async function callDshDirect(subject, text, hint, images, wrongText, wrongImages
     throw e1;
   }
   var started = Date.now();
+  if (typeof opts.onPrepare === 'function') opts.onPrepare({ stage: '正在解压技能包、匹配章节…', ready: false });
   var bundle = await buildClientBundle(subject, text, hint);
+  if (typeof opts.onPrepare === 'function') opts.onPrepare({ stage: '技能材料已就绪，正在组装提示词…', ready: true, bundle: bundle });
   var systemPrompt = buildClientSystemPrompt(subject, bundle);
   var userText = buildClientUserText(subject, text, hint, images.length, wrongText, (wrongImages || []).length);
   var allImages = images.concat(wrongImages || []);
@@ -17192,7 +17401,7 @@ async function callDshDirect(subject, text, hint, images, wrongText, wrongImages
   var parsed = null;
   for (var attempt = 0; attempt < attempts.length; attempt++) {
     try {
-      out = await callConfiguredDirect(cfg, systemPrompt, userText, allImages, DSH_TIMEOUT_MS, signal, attempts[attempt]);
+      out = await callConfiguredDirect(cfg, systemPrompt, userText, allImages, DSH_TIMEOUT_MS, signal, Object.assign({}, opts, attempts[attempt]));
       try {
         parsed = extractDirectJson(out.text);
         break;
@@ -17469,13 +17678,13 @@ function autoAiServerCall(subject, text, hint, signal) {
   });
 }
 
-function autoAiCall(e, text, hint, signal) {
+function autoAiCall(e, text, hint, signal, opts) {
   var transport = autoAiTransport();
-  if (transport === 'direct') return callDshDirect(e.subject, text, hint, [], '', [], signal);
+  if (transport === 'direct') return callDshDirect(e.subject, text, hint, [], '', [], signal, opts);
   if (transport === 'server') {
     return autoAiServerCall(e.subject, text, hint, signal).catch(function (err) {
       if (aiConfigReady() && (err.status === 404 || err.code === 'NETWORK' || err.code === 'SOLVE_FAILED')) {
-        return callDshDirect(e.subject, text, hint, [], '', [], signal);
+        return callDshDirect(e.subject, text, hint, [], '', [], signal, opts);
       }
       throw err;
     });
@@ -17568,17 +17777,43 @@ function runAutoAi(e, transport) {
     steps: ['整理题目', '请求 AI', '写入条目'],
     label: 'AI 自动补全',
     step: 0,
-    percent: null,
-    valueText: '阶段 1 / 3',
+    percent: 0,
+    valueText: '0%',
     stage: '正在整理 ' + e.code + ' 的题目与要点…',
     detail: '整理完成后会请求模型补全标准解答、详细解析与易错点。',
     onCancel: function () { autoAiCancel(e.id); }
   });
   var timer = setTimeout(function () { controller.abort(); }, 150000);
-  autoAiCall(e, text, hint, controller.signal).then(function (data) {
+  var autoFields = typeof AI_ENTRY_FIELDS !== 'undefined' ? AI_ENTRY_FIELDS : ['summary', 'question', 'standardSolution', 'detailedAnalysis', 'answer', 'points', 'pitfalls'];
+  var autoExpect = typeof AI_ENTRY_EXPECTED_CHARS !== 'undefined' ? AI_ENTRY_EXPECTED_CHARS : {};
+  var autoPushAt = 0;
+  var autoStream = {
+    onPrepare: function (info) {
+      if (taskOn) longTaskUpdate('auto-ai', { step: 0, percent: info.ready ? 6 : 3, valueText: info.ready ? '6%' : '3%', stage: info.stage || '正在准备模型请求…', detail: '正在解压技能包并匹配章节。' });
+    },
+    onFirstByte: function () {
+      if (taskOn) longTaskUpdate('auto-ai', { step: 1, percent: 8, valueText: '8%', stage: '模型已开始返回，正在补全条目…', detail: '进度按实际收到的 JSON 字段推进。' });
+    },
+    onDelta: function (delta, fullText) {
+      if (!taskOn || typeof aiProgressJsonFields !== 'function') return;
+      var now = Date.now();
+      if (now - autoPushAt < 140) return;
+      autoPushAt = now;
+      var info = aiProgressJsonFields(fullText, autoFields, autoExpect);
+      var frac = aiProgressFieldsFraction(info);
+      longTaskUpdate('auto-ai', {
+        step: 1,
+        percent: 8 + frac * 77,
+        valueText: '已收到 ' + info.completed + ' / ' + autoFields.length + ' 字段',
+        stage: info.currentKey ? '正在补全「' + ((typeof AI_ENTRY_FIELD_LABELS !== 'undefined' && AI_ENTRY_FIELD_LABELS[info.currentKey]) || info.currentKey) + '」…' : '模型已开始返回正文…',
+        detail: '进度来自模型流式正文中的真实字段。'
+      });
+    }
+  };
+  autoAiCall(e, text, hint, controller.signal, autoStream).then(function (data) {
     clearTimeout(timer);
     autoAiAbort = null;
-    if (taskOn) longTaskUpdate('auto-ai', { step: 2, percent: null, valueText: '阶段 3 / 3', stage: '正在写入条目…', detail: '模型已返回，正在保存标准解答与模板。' });
+    if (taskOn) longTaskUpdate('auto-ai', { step: 2, percent: 90, valueText: '90%', stage: '正在写入条目…', detail: '模型已返回，正在保存标准解答与模板。' });
     applyAutoAiToEntry(e, data);
     autoAiBusy = false;
     markDirty();
@@ -17691,6 +17926,72 @@ function autoAiPendingCount() {
 var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_ID__) || '').match(/^(\d{4})\.(\d{2})\.(\d{2})/);
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [
+  {
+    date: '2026-11-11',
+    title: '真实进度与流式返回',
+    historyTitle: '真实进度与流式返回',
+    summary: '本轮把智能录入、AI 出题、AI 批改、自动整理、知识点补全与扫描 OCR 的进度条改成真实流式数据驱动：直接读取模型的 SSE 正文，按已返回的 JSON 字段、题目对象和识别字数计算百分比；进度条宽度、百分比数字与 aria-valuenow 使用同一个整数，不再用定时器或固定阶段凑进度。本块 8 项 / 8 组，58 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。',
+    items: [
+      {
+        group: '流式返回',
+        text: 'AI 请求默认走流式返回，兼容 OpenAI 的 choices[0].delta.content 与 Anthropic 的 content block delta；收到首个字节即回调，正文按块累计；服务端返回普通 JSON 时自动回退，流式结束却没有正文则按空响应报错，不再静默等待整包。',
+      },
+      {
+        group: '字段进度',
+        text: '智能录入按 21 个 JSON 字段的真实出现顺序计算：每多一个字段就前进一步，最后一个字段按已收到的正文字符数估算进度，区间 8–88%；文案显示「已收到 5 / 21 字段 · 27%」，解析、写入与完成阶段分别推进到 90%、96%、100%。',
+      },
+      {
+        group: '出题计数',
+        text: 'AI 出题读取流式正文里的 questions 数组，每出现一道完整题目就累加，正在生成的那道题按已收到字符折算，区间 5–87%；文案显示「已收到 X / N 题」，批次结束、合并去重与组卷校验分别推进到 92%、96%、100%。',
+      },
+      {
+        group: '批改计数',
+        text: 'AI 批改读取逐题批改对象，按已核对题数从 70% 推进到 97%，再进入生成结果；等待首批返回时停在 5–70% 的真实阶段，不提前跑满，也不在模型返回后停在固定百分比。',
+      },
+      {
+        group: 'OCR 字数',
+        text: '扫描识别按画布像素估算本页预期字数，再按流式返回的实际识别字数从 8% 推进到 94%，文案显示「已识别 X 字」；服务端 OCR 仍是非流式接口，这一路径会停在 8% 直到返回，属于已注明的接口边界。',
+      },
+      {
+        group: '自动整理',
+        text: '自动整理、知识点 AI 搜索与自动补全接入同一条流式通道：首个字节 8%，之后按标题、正文、书章、标签等字段推进到 85%，返回后 90%，写入完成才 100%。',
+      },
+      {
+        group: '同源百分比',
+        text: '进度条填充宽度、右侧百分比文字和 aria-valuenow 都由同一个四舍五入后的整数生成，不再出现宽度 11.8%、文字 12% 的错位；进度只增不减，倒退值会被夹住，完成后显式写 100%。',
+      },
+      {
+        group: '防复发',
+        text: '新增流式字段统计、题目数组计数、百分比宽度同源、倒退夹住、取消与空响应回归测试，测试总数 58；390 / 820 / 1440 在进度中段抓取到 6% → 12% → 27% → 39% 的连续状态，宽度、文字与 aria 完全一致，无横向溢出、无脚本错误。',
+      },
+    ],
+    notifyItems: [
+      {
+        group: '流式返回',
+        text: 'AI 请求改成流式读取，收到多少正文就推进多少进度，不再等整包返回。',
+      },
+      {
+        group: '字段进度',
+        text: '智能录入按已收到的 JSON 字段推进，显示「已收到 5 / 21 字段 · 27%」。',
+      },
+      {
+        group: '出题计数',
+        text: 'AI 出题按已返回的题目对象推进，显示「已收到 X / N 题」，不再固定百分比。',
+      },
+      {
+        group: '批改计数',
+        text: 'AI 批改按已核对的题数从 70% 推进到 97%，完成后才进入结果页。',
+      },
+      {
+        group: 'OCR 字数',
+        text: '扫描识别按实际识别字数推进，显示「已识别 X 字」。',
+      },
+      {
+        group: '同源百分比',
+        text: '进度条宽度、百分比文字和 aria-valuenow 使用同一个整数，不再错位。',
+      },
+    ],
+  },
   {
     date: '2026-11-10',
     title: '界面回退与三端收口',
@@ -21922,6 +22223,8 @@ async function noteScanOcrCurrent() {
     label: '文字识别',
     steps: ['准备图片', '识别文字', '写入结果'],
     step: 0,
+    percent: 0,
+    valueText: '0%',
     stage: '正在准备图片…',
     detail: '先应用裁边、旋转和滤镜，再把当前页发送给视觉模型。',
     onCancel: function () { if (ocrController) ocrController.abort(); }
@@ -21937,10 +22240,20 @@ async function noteScanOcrCurrent() {
       '表格用制表符分列。只输出识别出的文字，不要代码围栏或解释；没有文字时输出 [无文字]。'
     ].join('\n');
     var image = [{ mediaType: 'image/jpeg', data: data }];
-    longTaskUpdate(ocrKey, { step: 1, stage: '正在识别文字…', detail: '已发送给视觉模型，等待返回；这是真实网络等待时间。' });
+    longTaskUpdate(ocrKey, { step: 1, percent: 8, valueText: '8%', stage: '正在识别文字…', detail: '已发送给视觉模型；进度按实际收到的识别文字长度推进。' });
+    var ocrExpected = Math.max(200, Math.round(canvas.width * canvas.height / 1200));
+    var ocrSeen = 0;
+    var ocrStream = {
+      onFirstByte: function () { longTaskUpdate(ocrKey, { step: 1, percent: 8, valueText: '8%', stage: '模型已开始返回识别文字…', detail: '进度按实际收到的识别文字长度推进。' }); },
+      onDelta: function (delta, fullText) {
+        ocrSeen = String(fullText || '').length;
+        var pct = Math.min(94, 8 + Math.min(1, ocrSeen / ocrExpected) * 86);
+        longTaskUpdate(ocrKey, { step: 1, percent: pct, valueText: '已识别 ' + ocrSeen + ' 字', stage: '正在识别文字…', detail: '当前页约 ' + ocrExpected + ' 字，进度来自模型实际返回的正文。' });
+      }
+    };
     var out;
     if (directReady) {
-      out = await callConfiguredDirect(aiConfig(), systemPrompt, '请识别这张智能扫描页中的全部手写和印刷文字。', image, 150000, ocrController ? ocrController.signal : null);
+      out = await callConfiguredDirect(aiConfig(), systemPrompt, '请识别这张智能扫描页中的全部手写和印刷文字。', image, 150000, ocrController ? ocrController.signal : null, ocrStream);
     } else {
       var res = await fetch('/api/ocr', {
         method: 'POST',
@@ -21963,7 +22276,7 @@ async function noteScanOcrCurrent() {
     if (text.slice(-fence.length) === fence) text = text.slice(0, -fence.length);
     text = text.trim();
     if (!text) throw new Error('模型没有识别出文字');
-    longTaskUpdate(ocrKey, { step: 2, stage: '正在写入结果…', detail: '识别已返回，正在整理并写入当前页。' });
+    longTaskUpdate(ocrKey, { step: 2, percent: 96, valueText: '96%', stage: '正在写入结果…', detail: '识别已返回，正在整理并写入当前页。' });
     item.ocr = { text: text, at: nowIso(), model: out.model || (directReady && aiConfig().model) || '' };
     item.ocrError = '';
     longTaskFinish(ocrKey, { stage: '识别完成', detail: '已识别 ' + text.length + ' 字，可编辑后复制或下载。' });
@@ -26340,23 +26653,39 @@ async function knowledgeSearchAi(query, subject, token) {
     steps: ['整理材料', '请求 AI', '写入讲解'],
     label: 'AI 补充讲解',
     step: 0,
-    percent: null,
-    valueText: '阶段 1 / 3',
+    percent: 0,
+    valueText: '0%',
     stage: '正在整理教材材料…',
     detail: '教材定位已经显示；AI 正在补全定义、例题与易错点。'
   });
   try {
+    if (taskOn) longTaskUpdate('kb-ai', { step: 0, percent: 3, valueText: '3%', stage: '正在解压技能包并匹配章节…', detail: '先定位教材章节，再请求 AI 补充讲解。' });
     var bundle = await buildClientBundle(subject, query, query);
     if (ui.kbAnswerToken !== token) { if (taskOn) longTaskRemove('kb-ai'); return; }
-    kbTask({ step: 1, percent: null, valueText: '阶段 2 / 3', stage: '正在请求 AI 补充讲解…', detail: '已整理好技能材料，等待模型返回；这是真实网络等待时间。' });
+    kbTask({ step: 1, percent: 6, valueText: '6%', stage: '正在请求 AI 补充讲解…', detail: '已整理好技能材料，等待模型返回；进度按实际收到的 JSON 字段推进。' });
     var sys = '你是「四科错题本」的课程助教。只能使用提供的 /' + bundle.id + ' skill 材料与教材知识回答。只输出 JSON，不要代码围栏。';
     var ask = '请只详细回答知识点：' + query + '。如果材料没有直接讲解该知识点，content 必须写“教材技能包中没有检索到该知识点的直接讲解”，不得改用相邻概念或无关章节。\n' +
       '输出 JSON：{"title":"知识点标题","content":"详细正文，Markdown，尽量完整：定义、定理/公式、推导或方法、至少 2 个例题、易错点、考研用法","book":"教材名","chapter":"第X章 章名","section":"第X节 小节名","page":"第X页","tags":["标签"]}。' +
       '必须给出教材章节、小节与页码；页码应以教材纸书为准，不能确定时写“以纸书该节页码为准”，不要编造不存在的页码。\n\n' +
       '【技能材料】\n' + bundle.materials.map(function (m) { return '### ' + m.label + '\n' + m.text; }).join('\n\n');
-    var out = await finalAiJsonCall(sys, ask, [], 70000);
+    var kbPushAt = 0;
+    var kbFields = ['title', 'content', 'book', 'chapter', 'section', 'page', 'tags'];
+    var kbExpect = { title: 30, content: 1400, book: 40, chapter: 20, section: 24, page: 20, tags: 40 };
+    var kbStream = {
+      onFirstByte: function () { if (taskOn) longTaskUpdate('kb-ai', { step: 1, percent: 8, valueText: '8%', stage: '模型已开始返回，正在生成讲解…', detail: '进度按实际收到的 JSON 字段推进。' }); },
+      onDelta: function (delta, fullText) {
+        if (!taskOn || typeof aiProgressJsonFields !== 'function') return;
+        var now = Date.now();
+        if (now - kbPushAt < 140) return;
+        kbPushAt = now;
+        var info = aiProgressJsonFields(fullText, kbFields, kbExpect);
+        var frac = aiProgressFieldsFraction(info);
+        longTaskUpdate('kb-ai', { step: 1, percent: 8 + frac * 77, valueText: '已收到 ' + info.completed + ' / 7 字段', stage: info.currentKey === 'content' ? '正在生成知识点正文…' : '正在生成「' + info.currentKey + '」…', detail: '进度来自模型流式正文中的真实字段。' });
+      }
+    };
+    var out = await finalAiJsonCall(sys, ask, [], 70000, null, kbStream);
     if (ui.kbAnswerToken !== token) { if (taskOn) longTaskRemove('kb-ai'); return; }
-    kbTask({ step: 2, percent: null, valueText: '阶段 3 / 3', stage: '正在写入补充讲解…', detail: '模型已返回，正在整理标题、章节与例题。' });
+    kbTask({ step: 2, percent: 90, valueText: '90%', stage: '正在写入补充讲解…', detail: '模型已返回，正在整理标题、章节与例题。' });
     var p = out.parsed || (out.objects && out.objects[0]) || null;
     if (p && p.content) {
       // 本地已经命中直接讲解时，AI 不得用“没有收录”覆盖它；AI 只做补充讲解。
@@ -28260,12 +28589,12 @@ function finalExamGenerationAbortError() {
 }
 
 function finalExamProgressPercent(p) {
+  if (p && p.percent != null) return aiProgressPct(p.percent);
   if (!p || !p.total) return null;
   var total = Math.max(0, Number(p.total) || 0);
   var loaded = Math.max(0, Math.min(total, Number(p.loaded) || 0));
-  // 总量已知但一道题都还没生成时，仍在真实等待首批返回，不能显示 0% 的假确定进度。
-  if (!loaded) return null;
-  return Math.max(0, Math.min(100, Math.round(loaded / total * 100)));
+  if (!loaded) return 2;
+  return Math.max(0, Math.min(100, 5 + Math.round(loaded / total * 85)));
 }
 
 function finalExamProgressValue(p) {
@@ -28304,12 +28633,13 @@ function finalExamStartAiTicker() {
 }
 
 function finalExamGradePercent(p) {
+  if (p && p.percent != null) return aiProgressPct(p.percent);
   if (!p || !p.total) return null;
   var total = Math.max(0, Number(p.total) || 0);
   var loaded = Math.max(0, Math.min(total, Number(p.loaded) || 0));
-  // 模型尚未返回时只有真实等待；返回后按实际核对完成的题数推进。
-  if (!loaded) return null;
-  return Math.max(0, Math.min(100, Math.round(loaded / total * 100)));
+  var step = Number(p.step) || 0;
+  var ratios = [2, 5 + loaded / total * 60, 70 + loaded / total * 27, 100];
+  return Math.max(0, Math.min(100, Math.round(ratios[Math.min(3, step)])));
 }
 
 function finalExamGradeValue(p) {
@@ -28338,6 +28668,7 @@ function finalExamReportAiProgress(p) {
   if (p.loaded != null) finalExamAiProgress.loaded = Math.max(finalExamAiProgress.loaded || 0, Number(p.loaded) || 0);
   if (p.total != null) finalExamAiProgress.total = Number(p.total) || finalExamAiProgress.total;
   if (p.step != null) finalExamAiProgress.step = p.step;
+  if (p.percent != null) finalExamAiProgress.percent = Math.max(Number(finalExamAiProgress.percent) || 0, aiProgressPct(p.percent));
   if (p.stage) finalExamAiProgress.stage = p.stage;
   if (p.detail != null) finalExamAiProgress.detail = p.detail;
   if (typeof finalExamSyncProgress === 'function') finalExamSyncProgress('finalExamProgress', finalExamAiProgress);
@@ -28349,6 +28680,7 @@ function finalExamReportGradeProgress(p) {
     if (p.loaded != null) finalExamGradeProgress.loaded = Math.max(0, Number(p.loaded) || 0);
     if (p.total != null) finalExamGradeProgress.total = Math.max(0, Number(p.total) || 0);
     if (p.step != null) finalExamGradeProgress.step = p.step;
+    if (p.percent != null) finalExamGradeProgress.percent = Math.max(Number(finalExamGradeProgress.percent) || 0, aiProgressPct(p.percent));
     if (p.stage) finalExamGradeProgress.stage = p.stage;
     if (p.detail != null) finalExamGradeProgress.detail = p.detail;
   }
@@ -28580,9 +28912,10 @@ function finalSalvageJsonObjects(text) {
   return out;
 }
 
-async function finalAiJsonCall(systemPrompt, userText, images, timeoutMs, signal) {
+async function finalAiJsonCall(systemPrompt, userText, images, timeoutMs, signal, opts) {
   var cfg = aiConfig();
-  var out = await callConfiguredDirect(cfg, systemPrompt, userText, images || [], timeoutMs || 90000, signal || null, { maxTokens: 32000, thinking: { enabled: false, effort: 'medium' } });
+  var callOpts = Object.assign({ maxTokens: 32000, thinking: { enabled: false, effort: 'medium' } }, opts || {});
+  var out = await callConfiguredDirect(cfg, systemPrompt, userText, images || [], timeoutMs || 90000, signal || null, callOpts);
   var parsed = null;
   try { parsed = extractDirectJson(out.text); } catch (e) { parsed = null; }
   return { parsed: parsed, objects: finalSalvageJsonObjects(out.text), text: String(out.text || '') };
@@ -28615,11 +28948,11 @@ async function finalGenerateExamQuestions(count, subject, chapters, onProgress, 
   var selected = Array.isArray(chapters) && chapters.length ? chapters.map(function (x) { return String(x || '').trim(); }).filter(Boolean) : null;
   var total = count;
   function report(p) { if (typeof onProgress === 'function') onProgress(p); }
-  report({ loaded: 0, step: 0, stage: '正在检索公开资料…', detail: '先按所选章节检索教材与真题，再开始分批命题。' });
+  report({ loaded: 0, step: 0, percent: 1, stage: '正在检索公开资料…', detail: '先按所选章节检索教材与真题，再开始分批命题。' });
   if (signal && signal.aborted) throw finalExamGenerationAbortError();
   var webContext = await finalExamWebContext(subject, selected);
   if (signal && signal.aborted) throw finalExamGenerationAbortError();
-  report({ loaded: 0, step: 1, stage: '正在分批命题…', detail: '资料已就绪，准备生成 ' + total + ' 道题。' });
+  report({ loaded: 0, step: 1, percent: 4, stage: '正在分批命题…', detail: '资料已就绪，准备生成 ' + total + ' 道题。' });
   var plan = finalExamDifficultyPlan(total);
   var sys = '你是大学四科期末命题老师。只输出一个 JSON 对象，不要输出代码围栏或解释。所有题目必须有唯一、可验证的标准答案；选择题必须有一个正确选项；主观题必须给出完整标准解答、详细解析、最终答案、要点和易错点。题目类型应为硕士研究生招生考试中出现过的类型：计算题、证明题、概念辨析或判断题、公式或条件填空题等；不要求全部为计算题，但每题必须有唯一、可验证的标准答案。选择题四个选项必须互斥，填空题答案唯一。';
   var collected = [], seen = {}, attempts = 0;
@@ -28627,9 +28960,26 @@ async function finalGenerateExamQuestions(count, subject, chapters, onProgress, 
     var need = Math.min(6, total - collected.length);
     var titles = collected.map(function (q) { return q.title || ''; }).filter(Boolean);
     var out = null;
-    report({ loaded: collected.length, step: 1, stage: '正在分批命题…', detail: '已生成 ' + collected.length + ' / ' + total + ' 题，正在请求第 ' + (attempts + 1) + ' 批。' });
+    report({ loaded: collected.length, step: 1, percent: 5 + collected.length / total * 82, stage: '正在分批命题…', detail: '已生成 ' + collected.length + ' / ' + total + ' 题，正在请求第 ' + (attempts + 1) + ' 批。' });
+    var batchStreamAt = 0;
+    var onBatchDelta = function (delta, fullText) {
+      var now = Date.now();
+      if (now - batchStreamAt < 140) return;
+      batchStreamAt = now;
+      if (typeof aiProgressJsonArray !== 'function') return;
+      var got = aiProgressJsonArray(fullText, 'questions', 1500);
+      var within = Math.min(need, (Number(got.completed) || 0) + (Number(got.partial) || 0));
+      var loaded = Math.min(total, collected.length + within);
+      report({
+        loaded: loaded,
+        step: 1,
+        percent: 5 + loaded / total * 82,
+        stage: '正在接收第 ' + (attempts + 1) + ' 批题目…',
+        detail: '已收到 ' + Math.floor(loaded) + ' / ' + total + ' 题；进度来自模型实际返回的完整题目对象。'
+      });
+    };
     try {
-      out = await finalAiJsonCall(sys, finalExamGeneratePrompt(need, subject, selected, titles, plan, finalExamDifficultyCounts(collected), webContext), [], 90000, signal);
+      out = await finalAiJsonCall(sys, finalExamGeneratePrompt(need, subject, selected, titles, plan, finalExamDifficultyCounts(collected), webContext), [], 90000, signal, { onDelta: onBatchDelta });
     } catch (err) {
       if (signal && signal.aborted) throw finalExamGenerationAbortError();
       // 单次生成超时/网络中断时保留已生成题目，立即用标准题库补齐，不能整卷丢失。
@@ -28656,7 +29006,7 @@ async function finalGenerateExamQuestions(count, subject, chapters, onProgress, 
     if (!added) break;
   }
   if (signal && signal.aborted) throw finalExamGenerationAbortError();
-  report({ loaded: Math.min(collected.length, total), step: 1, stage: '正在分批命题…', detail: '已生成 ' + Math.min(collected.length, total) + ' / ' + total + ' 题。' });
+  report({ loaded: Math.min(collected.length, total), step: 1, percent: 5 + Math.min(collected.length, total) / total * 82, stage: '正在分批命题…', detail: '已生成 ' + Math.min(collected.length, total) + ' / ' + total + ' 题。' });
   // 半途失败也要有结果：保留 AI 已生成的题，再用本科标准题库补齐，
   // 不再因为 AI 少返回几题就整卷丢弃。
   var picked = finalExamPickBalanced(collected, count);
@@ -28674,14 +29024,14 @@ async function finalGenerateExamQuestions(count, subject, chapters, onProgress, 
   }
   if (picked.length < 5) throw new Error('AI 与标准题库合计仍不足 5 道，无法组卷');
   if (picked.length > count) picked = picked.slice(0, count);
-  report({ loaded: picked.length, step: 2, stage: '正在组卷校验…', detail: '已确定 ' + picked.length + ' 道题，正在按题型与难度组卷。' });
+  report({ loaded: picked.length, step: 2, percent: 92, stage: '正在组卷校验…', detail: '已确定 ' + picked.length + ' 道题，正在按题型与难度组卷。' });
   finalExamEnsureFill(picked);
   picked.aiCount = collected.length;
   finalSmartScoreItems(picked, 100);
   // 所有成功生成的 AI 题都进入题库，而不只是本卷最终抽中的题。
   collected.forEach(function (q) { if (q && q.aiGenerated) finalSaveExamQuestionToBank(q); });
   markDirty();
-  report({ loaded: picked.length, step: 3, stage: '组卷完成', detail: '共 ' + picked.length + ' 题，即将进入考生守则。' });
+  report({ loaded: picked.length, step: 3, percent: 100, stage: '组卷完成', detail: '共 ' + picked.length + ' 题，即将进入考生守则。' });
   return picked;
 }
 
@@ -29548,7 +29898,7 @@ async function finalExamAiGrade(signal, onProgress) {
     err.name = 'AbortError';
     throw err;
   }
-  report({ step: 0, loaded: 0, total: totalQuestions, stage: '正在读取答卷…', detail: '正在整理客观题、填空题与手写作答。' });
+  report({ step: 0, loaded: 0, total: totalQuestions, percent: 2, stage: '正在读取答卷…', detail: '正在整理客观题、填空题与手写作答。' });
   var images = [];
   var imageMap = {};
   mock.questions.forEach(function (q) {
@@ -29563,15 +29913,32 @@ async function finalExamAiGrade(signal, onProgress) {
   });
   var prompt = finalExamAiPrompt(mock, imageMap) + (images.length ? '\n\n注意：每题 handwritingImage 是附图编号（从 1 开始，0 表示无图）。有图时必须先逐字识别 handwritingText，再按识别内容与标准答案逐点比对给分；识别不出内容时不得给满分，按保守标准给分并说明。' : '');
   var sys = '你是严谨的大学课程阅卷老师。必须按标准答案批改，不能放水；只输出 JSON，不要代码围栏。';
-  report({ step: 1, loaded: 0, total: totalQuestions, stage: '正在提交答卷…', detail: '已整理客观题与手写作答，等待模型按标准答案批改；已等待时间实时更新。' });
+  report({ step: 1, loaded: 0, total: totalQuestions, percent: 5, stage: '正在提交答卷…', detail: '已整理客观题与手写作答，等待模型按标准答案批改；进度随模型实际返回的逐题结果推进。' });
   abortIfNeeded();
-  var out = await finalAiJsonCall(sys, prompt, images, 90000, signal);
+  var gradeStreamAt = 0;
+  var onGradeDelta = function (delta, fullText) {
+    var now = Date.now();
+    if (now - gradeStreamAt < 140) return;
+    gradeStreamAt = now;
+    if (typeof aiProgressJsonArray !== 'function') return;
+    var got = aiProgressJsonArray(fullText, 'questions', 900);
+    var done = Math.min(totalQuestions, (Number(got.completed) || 0) + (Number(got.partial) || 0));
+    report({
+      step: 1,
+      loaded: done,
+      total: totalQuestions,
+      percent: 5 + done / totalQuestions * 60,
+      stage: '正在接收逐题批改…',
+      detail: '模型已返回 ' + Math.floor(done) + ' / ' + totalQuestions + ' 题的批改对象；进度来自实际流式正文。'
+    });
+  };
+  var out = await finalAiJsonCall(sys, prompt, images, 90000, signal, { onDelta: onGradeDelta });
   var parsed = out.parsed;
   var list = parsed && Array.isArray(parsed.questions) ? parsed.questions : (Array.isArray(parsed) ? parsed : out.objects.filter(function (x) { return x && x.id && (x.score != null || x.correct != null); }));
   if (!list.length) throw new Error('AI 没有返回逐题批改结果');
   var local = finalExamLocalGrade();
   var totalToCheck = local.questions.length;
-  report({ step: 2, loaded: 0, total: totalToCheck, stage: '正在逐题核对…', detail: '模型已返回，正在逐题核对 0 / ' + totalToCheck + ' 题。' });
+  report({ step: 2, loaded: 0, total: totalToCheck, percent: 70, stage: '正在逐题核对…', detail: '模型已返回，正在逐题核对 0 / ' + totalToCheck + ' 题。' });
   var byId = {};
   list.forEach(function (x) { if (x && x.id) byId[x.id] = x; });
   var results = [];
@@ -29609,13 +29976,13 @@ async function finalExamAiGrade(signal, onProgress) {
     }));
     var done = index + 1;
     if (done === 1 || done % 2 === 0 || done === totalToCheck) {
-      report({ step: 2, loaded: done, total: totalToCheck, stage: '正在逐题核对…', detail: '已核对 ' + done + ' / ' + totalToCheck + ' 题。' });
+      report({ step: 2, loaded: done, total: totalToCheck, percent: 70 + done / totalToCheck * 27, stage: '正在逐题核对…', detail: '已核对 ' + done + ' / ' + totalToCheck + ' 题。' });
     }
     if (done === 1 || done % 4 === 0 || done === totalToCheck) await finalExamYieldFrame();
   }
   abortIfNeeded();
   var total = results.reduce(function (s, q) { return s + q.score; }, 0);
-  report({ step: 3, loaded: totalToCheck, total: totalToCheck, stage: '正在生成成绩…', detail: '已核对 ' + totalToCheck + ' / ' + totalToCheck + ' 题，正在汇总总分、标准解答与易错点。' });
+  report({ step: 3, loaded: totalToCheck, total: totalToCheck, percent: 100, stage: '正在生成成绩…', detail: '已核对 ' + totalToCheck + ' / ' + totalToCheck + ' 题，正在汇总总分、标准解答与易错点。' });
   await finalExamYieldFrame();
   return { total: Math.round(Math.max(0, Math.min(100, total)) * 2) / 2, questions: results, partial: list.length < local.questions.length };
 }

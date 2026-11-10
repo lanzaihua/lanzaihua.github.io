@@ -338,7 +338,51 @@ function aiUsage(data) {
   };
 }
 
-async function postAiJson(cfg, payload, timeoutMs, signal) {
+function aiStreamBlockDelta(block, state, onDelta) {
+  var lines = String(block || '').split(/\r?\n/);
+  var data = [];
+  lines.forEach(function (line) {
+    if (line.indexOf('data:') === 0) data.push(line.slice(5).replace(/^ /, ''));
+  });
+  if (!data.length) return;
+  var raw = data.join('\n');
+  if (raw === '[DONE]') { state.done = true; return; }
+  var j = null;
+  try { j = JSON.parse(raw); } catch (e) { return; }
+  var delta = '';
+  if (j.type === 'content_block_delta' && j.delta) {
+    delta = String(j.delta.text || '');
+  } else if (j.type === 'content_block_start' && j.content_block && j.content_block.type === 'text') {
+    delta = String(j.content_block.text || '');
+  } else if (j.type === 'message_start' && j.message) {
+    if (j.message.model) state.model = j.message.model;
+    var mu = aiUsage(j.message);
+    if (mu) state.usage = mu;
+  } else if (j.type === 'message_delta') {
+    if (j.delta && j.delta.stop_reason) state.stopReason = j.delta.stop_reason;
+    var du = aiUsage(j.usage ? { input_tokens: j.usage.input_tokens, output_tokens: j.usage.output_tokens } : null);
+    if (du) state.usage = Object.assign({}, state.usage || {}, du);
+  } else if (j.type === 'error') {
+    var se = new Error((j.error && j.error.message) || '模型流式返回出错');
+    se.code = 'UPSTREAM_ERROR';
+    throw se;
+  } else if (j.choices && j.choices[0]) {
+    var c = j.choices[0];
+    if (c.delta) {
+      var d = c.delta.content;
+      if (typeof d === 'string') delta = d;
+      else if (Array.isArray(d)) delta = d.map(function (x) { return x && x.text ? x.text : ''; }).join('');
+    }
+    if (c.finish_reason) state.stopReason = c.finish_reason;
+    if (j.usage) { var ou = aiUsage(j.usage); if (ou) state.usage = ou; }
+  }
+  if (!delta) return;
+  state.text += delta;
+  if (typeof onDelta === 'function') onDelta(delta, state.text);
+}
+
+async function postAiJson(cfg, payload, timeoutMs, signal, opts) {
+  opts = opts || {};
   var controller = new AbortController();
   var timer = setTimeout(function () { controller.abort(); }, timeoutMs);
   if (signal) {
@@ -355,6 +399,8 @@ async function postAiJson(cfg, payload, timeoutMs, signal) {
     headers['x-dsh-auth-token'] = cfg.apiKey;
     headers['anthropic-version'] = '2023-06-01';
   }
+  var stream = opts.stream !== false;
+  if (stream) payload = Object.assign({}, payload, { stream: true });
   try {
     var res = await fetch(aiEndpoint(cfg), {
       method: 'POST',
@@ -362,13 +408,46 @@ async function postAiJson(cfg, payload, timeoutMs, signal) {
       body: JSON.stringify(payload),
       signal: controller.signal
     });
-    var raw = await res.text();
-    if (!res.ok) throw aiDirectError(res, raw);
-    try { return JSON.parse(raw); } catch (e) {
-      var pe = new Error('模型返回了无法解析的内容');
-      pe.code = 'PARSE_ERROR';
-      throw pe;
+    var ctype = String(res.headers.get('content-type') || '');
+    if (!res.ok) {
+      var errRaw = await res.text();
+      throw aiDirectError(res, errRaw);
     }
+    if (!stream || !res.body || !/text\/event-stream/i.test(ctype)) {
+      var raw = await res.text();
+      try { return JSON.parse(raw); } catch (e) {
+        var pe = new Error('模型返回了无法解析的内容');
+        pe.code = 'PARSE_ERROR';
+        throw pe;
+      }
+    }
+    if (typeof opts.onFirstByte === 'function') opts.onFirstByte();
+    var reader = res.body.getReader();
+    var decoder = new TextDecoder();
+    var buf = '';
+    var state = { text: '', model: cfg.model, usage: null, stopReason: '', done: false };
+    function drain() {
+      var m;
+      while ((m = /\r?\n\r?\n/.exec(buf))) {
+        var block = buf.slice(0, m.index);
+        buf = buf.slice(m.index + m[0].length);
+        aiStreamBlockDelta(block, state, opts.onDelta);
+      }
+    }
+    while (true) {
+      var step = await reader.read();
+      if (step.done) break;
+      buf += decoder.decode(step.value, { stream: true });
+      drain();
+    }
+    buf += decoder.decode();
+    if (buf.trim()) aiStreamBlockDelta(buf, state, opts.onDelta);
+    if (!state.text) {
+      var ee = new Error('模型流式返回没有给出正文');
+      ee.code = 'EMPTY_RESPONSE';
+      throw ee;
+    }
+    return { __streamed: true, text: state.text, model: state.model, usage: state.usage, stopReason: state.stopReason };
   } finally {
     clearTimeout(timer);
   }
@@ -404,7 +483,14 @@ async function callConfiguredDirect(cfg, systemPrompt, userText, images, timeout
       delete openaiPayload.max_tokens;
       delete openaiPayload.temperature;
     }
-    var od = await postAiJson(cfg, openaiPayload, timeoutMs, signal);
+    var od = await postAiJson(cfg, openaiPayload, timeoutMs, signal, {
+      stream: opts.stream !== false,
+      onDelta: opts.onDelta,
+      onFirstByte: opts.onFirstByte
+    });
+    if (od && od.__streamed) {
+      return { text: od.text, model: od.model || cfg.model, usage: od.usage, stopReason: od.stopReason || '' };
+    }
     var choice = od && od.choices && od.choices[0];
     var oc = choice && choice.message && choice.message.content;
     if (Array.isArray(oc)) oc = oc.map(function (x) { return x && x.text ? x.text : ''; }).join('\n');
@@ -437,7 +523,14 @@ async function callConfiguredDirect(cfg, systemPrompt, userText, images, timeout
     var budgets = { low: 4096, medium: 8192, high: 16000, max: 32000 };
     payload.thinking = { type: 'enabled', budget_tokens: Math.max(1024, Math.min(budgets[think.effort] || 16000, maxTokens - 4096)) };
   }
-  var data = await postAiJson(cfg, payload, timeoutMs, signal);
+  var data = await postAiJson(cfg, payload, timeoutMs, signal, {
+    stream: opts.stream !== false,
+    onDelta: opts.onDelta,
+    onFirstByte: opts.onFirstByte
+  });
+  if (data && data.__streamed) {
+    return { text: data.text, model: data.model || cfg.model, usage: data.usage, stopReason: data.stopReason || '' };
+  }
   var blocks = Array.isArray(data.content) ? data.content : [];
   var text = blocks.filter(function (c) { return c && c.type === 'text'; }).map(function (c) { return c.text; }).join('\n');
   if (!text) {
@@ -451,7 +544,8 @@ async function callConfiguredDirect(cfg, systemPrompt, userText, images, timeout
   return { text: text, model: data.model || cfg.model, usage: aiUsage(data), stopReason: data.stop_reason || '' };
 }
 
-async function callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal) {
+async function callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal, opts) {
+  opts = opts || {};
   var cfg = aiConfig();
   var diag = typeof aiConfigDiagnosis === 'function' ? aiConfigDiagnosis() : null;
   if (diag && diag.blocking) {
@@ -466,7 +560,9 @@ async function callDshDirect(subject, text, hint, images, wrongText, wrongImages
     throw e1;
   }
   var started = Date.now();
+  if (typeof opts.onPrepare === 'function') opts.onPrepare({ stage: '正在解压技能包、匹配章节…', ready: false });
   var bundle = await buildClientBundle(subject, text, hint);
+  if (typeof opts.onPrepare === 'function') opts.onPrepare({ stage: '技能材料已就绪，正在组装提示词…', ready: true, bundle: bundle });
   var systemPrompt = buildClientSystemPrompt(subject, bundle);
   var userText = buildClientUserText(subject, text, hint, images.length, wrongText, (wrongImages || []).length);
   var allImages = images.concat(wrongImages || []);
@@ -488,7 +584,7 @@ async function callDshDirect(subject, text, hint, images, wrongText, wrongImages
   var parsed = null;
   for (var attempt = 0; attempt < attempts.length; attempt++) {
     try {
-      out = await callConfiguredDirect(cfg, systemPrompt, userText, allImages, DSH_TIMEOUT_MS, signal, attempts[attempt]);
+      out = await callConfiguredDirect(cfg, systemPrompt, userText, allImages, DSH_TIMEOUT_MS, signal, Object.assign({}, opts, attempts[attempt]));
       try {
         parsed = extractDirectJson(out.text);
         break;

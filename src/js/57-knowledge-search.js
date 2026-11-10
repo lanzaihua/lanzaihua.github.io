@@ -385,23 +385,39 @@ async function knowledgeSearchAi(query, subject, token) {
     steps: ['整理材料', '请求 AI', '写入讲解'],
     label: 'AI 补充讲解',
     step: 0,
-    percent: null,
-    valueText: '阶段 1 / 3',
+    percent: 0,
+    valueText: '0%',
     stage: '正在整理教材材料…',
     detail: '教材定位已经显示；AI 正在补全定义、例题与易错点。'
   });
   try {
+    if (taskOn) longTaskUpdate('kb-ai', { step: 0, percent: 3, valueText: '3%', stage: '正在解压技能包并匹配章节…', detail: '先定位教材章节，再请求 AI 补充讲解。' });
     var bundle = await buildClientBundle(subject, query, query);
     if (ui.kbAnswerToken !== token) { if (taskOn) longTaskRemove('kb-ai'); return; }
-    kbTask({ step: 1, percent: null, valueText: '阶段 2 / 3', stage: '正在请求 AI 补充讲解…', detail: '已整理好技能材料，等待模型返回；这是真实网络等待时间。' });
+    kbTask({ step: 1, percent: 6, valueText: '6%', stage: '正在请求 AI 补充讲解…', detail: '已整理好技能材料，等待模型返回；进度按实际收到的 JSON 字段推进。' });
     var sys = '你是「四科错题本」的课程助教。只能使用提供的 /' + bundle.id + ' skill 材料与教材知识回答。只输出 JSON，不要代码围栏。';
     var ask = '请只详细回答知识点：' + query + '。如果材料没有直接讲解该知识点，content 必须写“教材技能包中没有检索到该知识点的直接讲解”，不得改用相邻概念或无关章节。\n' +
       '输出 JSON：{"title":"知识点标题","content":"详细正文，Markdown，尽量完整：定义、定理/公式、推导或方法、至少 2 个例题、易错点、考研用法","book":"教材名","chapter":"第X章 章名","section":"第X节 小节名","page":"第X页","tags":["标签"]}。' +
       '必须给出教材章节、小节与页码；页码应以教材纸书为准，不能确定时写“以纸书该节页码为准”，不要编造不存在的页码。\n\n' +
       '【技能材料】\n' + bundle.materials.map(function (m) { return '### ' + m.label + '\n' + m.text; }).join('\n\n');
-    var out = await finalAiJsonCall(sys, ask, [], 70000);
+    var kbPushAt = 0;
+    var kbFields = ['title', 'content', 'book', 'chapter', 'section', 'page', 'tags'];
+    var kbExpect = { title: 30, content: 1400, book: 40, chapter: 20, section: 24, page: 20, tags: 40 };
+    var kbStream = {
+      onFirstByte: function () { if (taskOn) longTaskUpdate('kb-ai', { step: 1, percent: 8, valueText: '8%', stage: '模型已开始返回，正在生成讲解…', detail: '进度按实际收到的 JSON 字段推进。' }); },
+      onDelta: function (delta, fullText) {
+        if (!taskOn || typeof aiProgressJsonFields !== 'function') return;
+        var now = Date.now();
+        if (now - kbPushAt < 140) return;
+        kbPushAt = now;
+        var info = aiProgressJsonFields(fullText, kbFields, kbExpect);
+        var frac = aiProgressFieldsFraction(info);
+        longTaskUpdate('kb-ai', { step: 1, percent: 8 + frac * 77, valueText: '已收到 ' + info.completed + ' / 7 字段', stage: info.currentKey === 'content' ? '正在生成知识点正文…' : '正在生成「' + info.currentKey + '」…', detail: '进度来自模型流式正文中的真实字段。' });
+      }
+    };
+    var out = await finalAiJsonCall(sys, ask, [], 70000, null, kbStream);
     if (ui.kbAnswerToken !== token) { if (taskOn) longTaskRemove('kb-ai'); return; }
-    kbTask({ step: 2, percent: null, valueText: '阶段 3 / 3', stage: '正在写入补充讲解…', detail: '模型已返回，正在整理标题、章节与例题。' });
+    kbTask({ step: 2, percent: 90, valueText: '90%', stage: '正在写入补充讲解…', detail: '模型已返回，正在整理标题、章节与例题。' });
     var p = out.parsed || (out.objects && out.objects[0]) || null;
     if (p && p.content) {
       // 本地已经命中直接讲解时，AI 不得用“没有收录”覆盖它；AI 只做补充讲解。

@@ -892,12 +892,12 @@ function finalExamGenerationAbortError() {
 }
 
 function finalExamProgressPercent(p) {
+  if (p && p.percent != null) return aiProgressPct(p.percent);
   if (!p || !p.total) return null;
   var total = Math.max(0, Number(p.total) || 0);
   var loaded = Math.max(0, Math.min(total, Number(p.loaded) || 0));
-  // 总量已知但一道题都还没生成时，仍在真实等待首批返回，不能显示 0% 的假确定进度。
-  if (!loaded) return null;
-  return Math.max(0, Math.min(100, Math.round(loaded / total * 100)));
+  if (!loaded) return 2;
+  return Math.max(0, Math.min(100, 5 + Math.round(loaded / total * 85)));
 }
 
 function finalExamProgressValue(p) {
@@ -936,12 +936,13 @@ function finalExamStartAiTicker() {
 }
 
 function finalExamGradePercent(p) {
+  if (p && p.percent != null) return aiProgressPct(p.percent);
   if (!p || !p.total) return null;
   var total = Math.max(0, Number(p.total) || 0);
   var loaded = Math.max(0, Math.min(total, Number(p.loaded) || 0));
-  // 模型尚未返回时只有真实等待；返回后按实际核对完成的题数推进。
-  if (!loaded) return null;
-  return Math.max(0, Math.min(100, Math.round(loaded / total * 100)));
+  var step = Number(p.step) || 0;
+  var ratios = [2, 5 + loaded / total * 60, 70 + loaded / total * 27, 100];
+  return Math.max(0, Math.min(100, Math.round(ratios[Math.min(3, step)])));
 }
 
 function finalExamGradeValue(p) {
@@ -970,6 +971,7 @@ function finalExamReportAiProgress(p) {
   if (p.loaded != null) finalExamAiProgress.loaded = Math.max(finalExamAiProgress.loaded || 0, Number(p.loaded) || 0);
   if (p.total != null) finalExamAiProgress.total = Number(p.total) || finalExamAiProgress.total;
   if (p.step != null) finalExamAiProgress.step = p.step;
+  if (p.percent != null) finalExamAiProgress.percent = Math.max(Number(finalExamAiProgress.percent) || 0, aiProgressPct(p.percent));
   if (p.stage) finalExamAiProgress.stage = p.stage;
   if (p.detail != null) finalExamAiProgress.detail = p.detail;
   if (typeof finalExamSyncProgress === 'function') finalExamSyncProgress('finalExamProgress', finalExamAiProgress);
@@ -981,6 +983,7 @@ function finalExamReportGradeProgress(p) {
     if (p.loaded != null) finalExamGradeProgress.loaded = Math.max(0, Number(p.loaded) || 0);
     if (p.total != null) finalExamGradeProgress.total = Math.max(0, Number(p.total) || 0);
     if (p.step != null) finalExamGradeProgress.step = p.step;
+    if (p.percent != null) finalExamGradeProgress.percent = Math.max(Number(finalExamGradeProgress.percent) || 0, aiProgressPct(p.percent));
     if (p.stage) finalExamGradeProgress.stage = p.stage;
     if (p.detail != null) finalExamGradeProgress.detail = p.detail;
   }
@@ -1212,9 +1215,10 @@ function finalSalvageJsonObjects(text) {
   return out;
 }
 
-async function finalAiJsonCall(systemPrompt, userText, images, timeoutMs, signal) {
+async function finalAiJsonCall(systemPrompt, userText, images, timeoutMs, signal, opts) {
   var cfg = aiConfig();
-  var out = await callConfiguredDirect(cfg, systemPrompt, userText, images || [], timeoutMs || 90000, signal || null, { maxTokens: 32000, thinking: { enabled: false, effort: 'medium' } });
+  var callOpts = Object.assign({ maxTokens: 32000, thinking: { enabled: false, effort: 'medium' } }, opts || {});
+  var out = await callConfiguredDirect(cfg, systemPrompt, userText, images || [], timeoutMs || 90000, signal || null, callOpts);
   var parsed = null;
   try { parsed = extractDirectJson(out.text); } catch (e) { parsed = null; }
   return { parsed: parsed, objects: finalSalvageJsonObjects(out.text), text: String(out.text || '') };
@@ -1247,11 +1251,11 @@ async function finalGenerateExamQuestions(count, subject, chapters, onProgress, 
   var selected = Array.isArray(chapters) && chapters.length ? chapters.map(function (x) { return String(x || '').trim(); }).filter(Boolean) : null;
   var total = count;
   function report(p) { if (typeof onProgress === 'function') onProgress(p); }
-  report({ loaded: 0, step: 0, stage: '正在检索公开资料…', detail: '先按所选章节检索教材与真题，再开始分批命题。' });
+  report({ loaded: 0, step: 0, percent: 1, stage: '正在检索公开资料…', detail: '先按所选章节检索教材与真题，再开始分批命题。' });
   if (signal && signal.aborted) throw finalExamGenerationAbortError();
   var webContext = await finalExamWebContext(subject, selected);
   if (signal && signal.aborted) throw finalExamGenerationAbortError();
-  report({ loaded: 0, step: 1, stage: '正在分批命题…', detail: '资料已就绪，准备生成 ' + total + ' 道题。' });
+  report({ loaded: 0, step: 1, percent: 4, stage: '正在分批命题…', detail: '资料已就绪，准备生成 ' + total + ' 道题。' });
   var plan = finalExamDifficultyPlan(total);
   var sys = '你是大学四科期末命题老师。只输出一个 JSON 对象，不要输出代码围栏或解释。所有题目必须有唯一、可验证的标准答案；选择题必须有一个正确选项；主观题必须给出完整标准解答、详细解析、最终答案、要点和易错点。题目类型应为硕士研究生招生考试中出现过的类型：计算题、证明题、概念辨析或判断题、公式或条件填空题等；不要求全部为计算题，但每题必须有唯一、可验证的标准答案。选择题四个选项必须互斥，填空题答案唯一。';
   var collected = [], seen = {}, attempts = 0;
@@ -1259,9 +1263,26 @@ async function finalGenerateExamQuestions(count, subject, chapters, onProgress, 
     var need = Math.min(6, total - collected.length);
     var titles = collected.map(function (q) { return q.title || ''; }).filter(Boolean);
     var out = null;
-    report({ loaded: collected.length, step: 1, stage: '正在分批命题…', detail: '已生成 ' + collected.length + ' / ' + total + ' 题，正在请求第 ' + (attempts + 1) + ' 批。' });
+    report({ loaded: collected.length, step: 1, percent: 5 + collected.length / total * 82, stage: '正在分批命题…', detail: '已生成 ' + collected.length + ' / ' + total + ' 题，正在请求第 ' + (attempts + 1) + ' 批。' });
+    var batchStreamAt = 0;
+    var onBatchDelta = function (delta, fullText) {
+      var now = Date.now();
+      if (now - batchStreamAt < 140) return;
+      batchStreamAt = now;
+      if (typeof aiProgressJsonArray !== 'function') return;
+      var got = aiProgressJsonArray(fullText, 'questions', 1500);
+      var within = Math.min(need, (Number(got.completed) || 0) + (Number(got.partial) || 0));
+      var loaded = Math.min(total, collected.length + within);
+      report({
+        loaded: loaded,
+        step: 1,
+        percent: 5 + loaded / total * 82,
+        stage: '正在接收第 ' + (attempts + 1) + ' 批题目…',
+        detail: '已收到 ' + Math.floor(loaded) + ' / ' + total + ' 题；进度来自模型实际返回的完整题目对象。'
+      });
+    };
     try {
-      out = await finalAiJsonCall(sys, finalExamGeneratePrompt(need, subject, selected, titles, plan, finalExamDifficultyCounts(collected), webContext), [], 90000, signal);
+      out = await finalAiJsonCall(sys, finalExamGeneratePrompt(need, subject, selected, titles, plan, finalExamDifficultyCounts(collected), webContext), [], 90000, signal, { onDelta: onBatchDelta });
     } catch (err) {
       if (signal && signal.aborted) throw finalExamGenerationAbortError();
       // 单次生成超时/网络中断时保留已生成题目，立即用标准题库补齐，不能整卷丢失。
@@ -1288,7 +1309,7 @@ async function finalGenerateExamQuestions(count, subject, chapters, onProgress, 
     if (!added) break;
   }
   if (signal && signal.aborted) throw finalExamGenerationAbortError();
-  report({ loaded: Math.min(collected.length, total), step: 1, stage: '正在分批命题…', detail: '已生成 ' + Math.min(collected.length, total) + ' / ' + total + ' 题。' });
+  report({ loaded: Math.min(collected.length, total), step: 1, percent: 5 + Math.min(collected.length, total) / total * 82, stage: '正在分批命题…', detail: '已生成 ' + Math.min(collected.length, total) + ' / ' + total + ' 题。' });
   // 半途失败也要有结果：保留 AI 已生成的题，再用本科标准题库补齐，
   // 不再因为 AI 少返回几题就整卷丢弃。
   var picked = finalExamPickBalanced(collected, count);
@@ -1306,14 +1327,14 @@ async function finalGenerateExamQuestions(count, subject, chapters, onProgress, 
   }
   if (picked.length < 5) throw new Error('AI 与标准题库合计仍不足 5 道，无法组卷');
   if (picked.length > count) picked = picked.slice(0, count);
-  report({ loaded: picked.length, step: 2, stage: '正在组卷校验…', detail: '已确定 ' + picked.length + ' 道题，正在按题型与难度组卷。' });
+  report({ loaded: picked.length, step: 2, percent: 92, stage: '正在组卷校验…', detail: '已确定 ' + picked.length + ' 道题，正在按题型与难度组卷。' });
   finalExamEnsureFill(picked);
   picked.aiCount = collected.length;
   finalSmartScoreItems(picked, 100);
   // 所有成功生成的 AI 题都进入题库，而不只是本卷最终抽中的题。
   collected.forEach(function (q) { if (q && q.aiGenerated) finalSaveExamQuestionToBank(q); });
   markDirty();
-  report({ loaded: picked.length, step: 3, stage: '组卷完成', detail: '共 ' + picked.length + ' 题，即将进入考生守则。' });
+  report({ loaded: picked.length, step: 3, percent: 100, stage: '组卷完成', detail: '共 ' + picked.length + ' 题，即将进入考生守则。' });
   return picked;
 }
 
@@ -2180,7 +2201,7 @@ async function finalExamAiGrade(signal, onProgress) {
     err.name = 'AbortError';
     throw err;
   }
-  report({ step: 0, loaded: 0, total: totalQuestions, stage: '正在读取答卷…', detail: '正在整理客观题、填空题与手写作答。' });
+  report({ step: 0, loaded: 0, total: totalQuestions, percent: 2, stage: '正在读取答卷…', detail: '正在整理客观题、填空题与手写作答。' });
   var images = [];
   var imageMap = {};
   mock.questions.forEach(function (q) {
@@ -2195,15 +2216,32 @@ async function finalExamAiGrade(signal, onProgress) {
   });
   var prompt = finalExamAiPrompt(mock, imageMap) + (images.length ? '\n\n注意：每题 handwritingImage 是附图编号（从 1 开始，0 表示无图）。有图时必须先逐字识别 handwritingText，再按识别内容与标准答案逐点比对给分；识别不出内容时不得给满分，按保守标准给分并说明。' : '');
   var sys = '你是严谨的大学课程阅卷老师。必须按标准答案批改，不能放水；只输出 JSON，不要代码围栏。';
-  report({ step: 1, loaded: 0, total: totalQuestions, stage: '正在提交答卷…', detail: '已整理客观题与手写作答，等待模型按标准答案批改；已等待时间实时更新。' });
+  report({ step: 1, loaded: 0, total: totalQuestions, percent: 5, stage: '正在提交答卷…', detail: '已整理客观题与手写作答，等待模型按标准答案批改；进度随模型实际返回的逐题结果推进。' });
   abortIfNeeded();
-  var out = await finalAiJsonCall(sys, prompt, images, 90000, signal);
+  var gradeStreamAt = 0;
+  var onGradeDelta = function (delta, fullText) {
+    var now = Date.now();
+    if (now - gradeStreamAt < 140) return;
+    gradeStreamAt = now;
+    if (typeof aiProgressJsonArray !== 'function') return;
+    var got = aiProgressJsonArray(fullText, 'questions', 900);
+    var done = Math.min(totalQuestions, (Number(got.completed) || 0) + (Number(got.partial) || 0));
+    report({
+      step: 1,
+      loaded: done,
+      total: totalQuestions,
+      percent: 5 + done / totalQuestions * 60,
+      stage: '正在接收逐题批改…',
+      detail: '模型已返回 ' + Math.floor(done) + ' / ' + totalQuestions + ' 题的批改对象；进度来自实际流式正文。'
+    });
+  };
+  var out = await finalAiJsonCall(sys, prompt, images, 90000, signal, { onDelta: onGradeDelta });
   var parsed = out.parsed;
   var list = parsed && Array.isArray(parsed.questions) ? parsed.questions : (Array.isArray(parsed) ? parsed : out.objects.filter(function (x) { return x && x.id && (x.score != null || x.correct != null); }));
   if (!list.length) throw new Error('AI 没有返回逐题批改结果');
   var local = finalExamLocalGrade();
   var totalToCheck = local.questions.length;
-  report({ step: 2, loaded: 0, total: totalToCheck, stage: '正在逐题核对…', detail: '模型已返回，正在逐题核对 0 / ' + totalToCheck + ' 题。' });
+  report({ step: 2, loaded: 0, total: totalToCheck, percent: 70, stage: '正在逐题核对…', detail: '模型已返回，正在逐题核对 0 / ' + totalToCheck + ' 题。' });
   var byId = {};
   list.forEach(function (x) { if (x && x.id) byId[x.id] = x; });
   var results = [];
@@ -2241,13 +2279,13 @@ async function finalExamAiGrade(signal, onProgress) {
     }));
     var done = index + 1;
     if (done === 1 || done % 2 === 0 || done === totalToCheck) {
-      report({ step: 2, loaded: done, total: totalToCheck, stage: '正在逐题核对…', detail: '已核对 ' + done + ' / ' + totalToCheck + ' 题。' });
+      report({ step: 2, loaded: done, total: totalToCheck, percent: 70 + done / totalToCheck * 27, stage: '正在逐题核对…', detail: '已核对 ' + done + ' / ' + totalToCheck + ' 题。' });
     }
     if (done === 1 || done % 4 === 0 || done === totalToCheck) await finalExamYieldFrame();
   }
   abortIfNeeded();
   var total = results.reduce(function (s, q) { return s + q.score; }, 0);
-  report({ step: 3, loaded: totalToCheck, total: totalToCheck, stage: '正在生成成绩…', detail: '已核对 ' + totalToCheck + ' / ' + totalToCheck + ' 题，正在汇总总分、标准解答与易错点。' });
+  report({ step: 3, loaded: totalToCheck, total: totalToCheck, percent: 100, stage: '正在生成成绩…', detail: '已核对 ' + totalToCheck + ' / ' + totalToCheck + ' 题，正在汇总总分、标准解答与易错点。' });
   await finalExamYieldFrame();
   return { total: Math.round(Math.max(0, Math.min(100, total)) * 2) / 2, questions: results, partial: list.length < local.questions.length };
 }

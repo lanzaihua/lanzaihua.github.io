@@ -1871,6 +1871,8 @@ async function noteScanOcrCurrent() {
     label: '文字识别',
     steps: ['准备图片', '识别文字', '写入结果'],
     step: 0,
+    percent: 0,
+    valueText: '0%',
     stage: '正在准备图片…',
     detail: '先应用裁边、旋转和滤镜，再把当前页发送给视觉模型。',
     onCancel: function () { if (ocrController) ocrController.abort(); }
@@ -1886,10 +1888,20 @@ async function noteScanOcrCurrent() {
       '表格用制表符分列。只输出识别出的文字，不要代码围栏或解释；没有文字时输出 [无文字]。'
     ].join('\n');
     var image = [{ mediaType: 'image/jpeg', data: data }];
-    longTaskUpdate(ocrKey, { step: 1, stage: '正在识别文字…', detail: '已发送给视觉模型，等待返回；这是真实网络等待时间。' });
+    longTaskUpdate(ocrKey, { step: 1, percent: 8, valueText: '8%', stage: '正在识别文字…', detail: '已发送给视觉模型；进度按实际收到的识别文字长度推进。' });
+    var ocrExpected = Math.max(200, Math.round(canvas.width * canvas.height / 1200));
+    var ocrSeen = 0;
+    var ocrStream = {
+      onFirstByte: function () { longTaskUpdate(ocrKey, { step: 1, percent: 8, valueText: '8%', stage: '模型已开始返回识别文字…', detail: '进度按实际收到的识别文字长度推进。' }); },
+      onDelta: function (delta, fullText) {
+        ocrSeen = String(fullText || '').length;
+        var pct = Math.min(94, 8 + Math.min(1, ocrSeen / ocrExpected) * 86);
+        longTaskUpdate(ocrKey, { step: 1, percent: pct, valueText: '已识别 ' + ocrSeen + ' 字', stage: '正在识别文字…', detail: '当前页约 ' + ocrExpected + ' 字，进度来自模型实际返回的正文。' });
+      }
+    };
     var out;
     if (directReady) {
-      out = await callConfiguredDirect(aiConfig(), systemPrompt, '请识别这张智能扫描页中的全部手写和印刷文字。', image, 150000, ocrController ? ocrController.signal : null);
+      out = await callConfiguredDirect(aiConfig(), systemPrompt, '请识别这张智能扫描页中的全部手写和印刷文字。', image, 150000, ocrController ? ocrController.signal : null, ocrStream);
     } else {
       var res = await fetch('/api/ocr', {
         method: 'POST',
@@ -1912,7 +1924,7 @@ async function noteScanOcrCurrent() {
     if (text.slice(-fence.length) === fence) text = text.slice(0, -fence.length);
     text = text.trim();
     if (!text) throw new Error('模型没有识别出文字');
-    longTaskUpdate(ocrKey, { step: 2, stage: '正在写入结果…', detail: '识别已返回，正在整理并写入当前页。' });
+    longTaskUpdate(ocrKey, { step: 2, percent: 96, valueText: '96%', stage: '正在写入结果…', detail: '识别已返回，正在整理并写入当前页。' });
     item.ocr = { text: text, at: nowIso(), model: out.model || (directReady && aiConfig().model) || '' };
     item.ocrError = '';
     longTaskFinish(ocrKey, { stage: '识别完成', detail: '已识别 ' + text.length + ' 字，可编辑后复制或下载。' });

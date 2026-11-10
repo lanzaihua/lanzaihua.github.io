@@ -887,21 +887,47 @@ function compressAiImage(file) {
 }
 
 var AI_ENTRY_STEPS = ['准备题目', '请求模型', '解析结果', '写入错题本'];
+var AI_ENTRY_FIELDS = ['needsClarification', 'clarification', 'confidence', 'summary', 'chapter', 'chapterCode', 'points', 'templateTitle', 'templateNotes', 'question', 'standardSolution', 'detailedAnalysis', 'verification', 'answer', 'pitfalls', 'variants', 'difficulty', 'errorTypes', 'hasUserSolution', 'errorAnalysis', 'source'];
+var AI_ENTRY_FIELD_LABELS = {
+  needsClarification: '题目检查', clarification: '补充说明', confidence: '置信度', summary: '摘要', chapter: '章节', chapterCode: '章号',
+  points: '知识要点', templateTitle: '模板名称', templateNotes: '模板四段', question: '题目', standardSolution: '标准解答',
+  detailedAnalysis: '详细解析', verification: '验算', answer: '答案', pitfalls: '易错点', variants: '变式', difficulty: '难度',
+  errorTypes: '错误类型', hasUserSolution: '错解标记', errorAnalysis: '错解诊断', source: '来源'
+};
+var AI_ENTRY_EXPECTED_CHARS = {
+  clarification: 40, summary: 60, chapter: 12, chapterCode: 8, points: 90, templateTitle: 24, templateNotes: 280,
+  question: 320, standardSolution: 1100, detailedAnalysis: 1400, verification: 260, answer: 220, pitfalls: 110,
+  variants: 520, errorTypes: 30, errorAnalysis: 320, source: 60, needsClarification: 6, confidence: 6, difficulty: 4, hasUserSolution: 6
+};
+var aiEntryLastPushAt = 0;
 
 function aiEntryStageValue(step) {
   return '阶段 ' + (Math.min(AI_ENTRY_STEPS.length, (Math.max(0, Number(step) || 0)) + 1)) + ' / ' + AI_ENTRY_STEPS.length;
 }
 
-function setAiEntryProgress(step, stage, detail) {
+function setAiEntryProgress(step, stage, detail, percent, valueText) {
   if (typeof aiProgressSet !== 'function') return;
-  // 录入耗时主要来自一次网络请求；不知道请求何时返回时不伪造百分比。
   aiProgressSet('ai-entry', {
     step: step,
-    percent: null,
-    valueText: aiEntryStageValue(step),
+    percent: percent == null ? 0 : percent,
+    valueText: valueText || aiEntryStageValue(step),
     stage: stage,
     detail: detail
   });
+}
+
+function aiEntryStreamProgress(text, force) {
+  if (typeof aiProgressJsonFields !== 'function') return;
+  var now = Date.now();
+  if (!force && now - aiEntryLastPushAt < 120) return;
+  aiEntryLastPushAt = now;
+  var info = aiProgressJsonFields(text, AI_ENTRY_FIELDS, AI_ENTRY_EXPECTED_CHARS);
+  var frac = aiProgressFieldsFraction(info);
+  var pct = 8 + frac * 80;
+  var stage = info.currentKey
+    ? '模型正在生成「' + (AI_ENTRY_FIELD_LABELS[info.currentKey] || info.currentKey) + '」…'
+    : '模型已开始返回正文…';
+  setAiEntryProgress(1, stage, '进度按已收到的 JSON 字段与当前字段字符数计算，来自模型流式正文本身。', pct, '已收到 ' + info.completed + ' / ' + AI_ENTRY_FIELDS.length + ' 字段');
 }
 
 function renderAiLoading() {
@@ -913,12 +939,12 @@ function renderAiLoading() {
         steps: AI_ENTRY_STEPS,
         label: '智能录入进度',
         step: 0,
-        percent: null,
-        valueText: '阶段 1 / 4',
+        percent: 0,
+        valueText: '0%',
         stage: '正在准备题目与图片…',
         detail: '先在本机压缩图片、整理题干，再发送给模型。'
       }) +
-      '<p class="ai-loading-note">生成通常需要 20–90 秒；开启思考时可能更久。可以切到后台，但不要关掉页面；结果只在这次页面里，保存后才进错题本。</p>' +
+      '<p class="ai-loading-note">百分比与进度条随模型实际返回的 JSON 字段推进；可以切到后台，但不要关掉页面；结果只在这次页面里，保存后才进错题本。</p>' +
       '<div class="ai-loading-actions"><button class="btn btn-xs" data-act="ai-abort" type="button">取消生成</button></div>' +
     '</div>';
   aiState.stageIndex = 0;
@@ -927,8 +953,8 @@ function renderAiLoading() {
       steps: AI_ENTRY_STEPS,
       label: '智能录入进度',
       step: 0,
-      percent: null,
-      valueText: '阶段 1 / 4',
+      percent: 0,
+      valueText: '0%',
       stage: '正在准备题目与图片…',
       detail: '先在本机压缩图片、整理题干，再发送给模型。'
     });
@@ -970,10 +996,10 @@ function aiSubmit() {
   aiSubmitServer();
 }
 
-function callDshDirectRetry(subject, text, hint, images, wrongText, wrongImages, signal) {
-  return callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal).catch(function (err) {
+function callDshDirectRetry(subject, text, hint, images, wrongText, wrongImages, signal, opts) {
+  return callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal, opts).catch(function (err) {
     if (err && (err.code === 'PARSE_ERROR' || err.code === 'EMPTY_RESPONSE')) {
-      return callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal);
+      return callDshDirect(subject, text, hint, images, wrongText, wrongImages, signal, opts);
     }
     throw err;
   });
@@ -983,20 +1009,35 @@ function aiSubmitDirect() {
   aiState.busy = true;
   aiState.result = null;
   renderAiLoading();
-  setAiEntryProgress(1, '正在请求模型…', '题目与技能包已整理，等待模型返回；这是真实网络等待时间。');
+  setAiEntryProgress(0, '正在准备题目与图片…', '先在本机压缩图片、整理题干，再解压技能包并匹配章节。', 2, '2%');
   var started = Date.now();
   var controller = new AbortController();
   aiState.abort = controller;
-  callDshDirectRetry(aiState.subject, aiState.text, aiState.hint, aiState.images, aiState.wrongText, aiState.wrongImages, controller.signal).then(function (data) {
-    setAiEntryProgress(2, '已收到模型响应', '正在解析标准解答、详细解析、答案与模板。');
+  aiEntryLastPushAt = 0;
+  var streamOpts = {
+    onPrepare: function (info) {
+      setAiEntryProgress(0, info.stage || '正在准备模型请求…', info.ready ? '技能材料已就绪，正在发送请求。' : '正在解压内置技能包并匹配最相关章节。', info.ready ? 6 : 3, info.ready ? '6%' : '3%');
+    },
+    onFirstByte: function () {
+      setAiEntryProgress(1, '模型已开始返回，正在生成解答…', '进度按实际收到的 JSON 字段与当前字段字符数推进。', 8, '8%');
+    },
+    onDelta: function (delta, fullText) {
+      aiEntryStreamProgress(fullText, false);
+    }
+  };
+  callDshDirectRetry(aiState.subject, aiState.text, aiState.hint, aiState.images, aiState.wrongText, aiState.wrongImages, controller.signal, streamOpts).then(function (data) {
+    setAiEntryProgress(2, '模型已返回，正在解析结果…', '正在核对标准解答、详细解析、答案、模板与变式。', 90, '90%');
     var finishDirect = function () {
-      setAiEntryProgress(3, '正在写入错题本', '解析完成，正在保存并整理条目。');
-      aiState.busy = false;
-      aiState.abort = null;
-      aiHandleResult(data, Date.now() - started);
-      clearAiStage();
+      setAiEntryProgress(3, '正在写入错题本…', '解析完成，正在保存并整理条目。', 96, '96%');
+      var commit = function () {
+        if (typeof aiProgressFinish === 'function') aiProgressFinish('ai-entry', { stage: '录入完成', detail: '已保存到错题本。' });
+        aiState.busy = false;
+        aiState.abort = null;
+        aiHandleResult(data, Date.now() - started);
+        clearAiStage();
+      };
+      setTimeout(commit, 120);
     };
-    // 让「解析结果」这步真实渲染一帧，再进入写入；不把请求前的等待算成百分比。
     if (typeof requestAnimationFrame === 'function') requestAnimationFrame(finishDirect);
     else setTimeout(finishDirect, 0);
   }).catch(function (err) {

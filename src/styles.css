@@ -5846,21 +5846,12 @@ p, li, .md p, .md li { text-wrap: pretty; }
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 62%, var(--warn)));
-  transition: width .35s ease;
+  transition: width .12s linear;
 }
 .ai-progress.is-complete .ai-progress-fill { background: var(--ok); }
 .ai-progress.is-complete .ai-progress-value { color: var(--ok); }
-/* 确定进度也保留一条真实心跳：请求尚未返回时，界面仍在动，且不是伪造百分比。 */
-.ai-progress-track::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, #fff 55%, transparent), transparent);
-  transform: translateX(-110%);
-  animation: ai-progress-sheen 1.4s linear infinite;
-  pointer-events: none;
-}
-.ai-progress.is-indeterminate .ai-progress-track::after { display: none; }
+/* 确定进度只用真实百分比；不再叠加会让人误以为在跑的扫光动画。 */
+.ai-progress-track::after { display: none; }
 .ai-progress.is-complete .ai-progress-track::after,
 .ai-progress[aria-busy="false"] .ai-progress-track::after { display: none; }
 .ai-progress.is-indeterminate .ai-progress-fill {

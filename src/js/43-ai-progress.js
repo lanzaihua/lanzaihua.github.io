@@ -6,6 +6,7 @@
    知识点补全等长任务复用。
    ========================================================= */
 var aiProgressRegistry = {};
+var aiProgressLast = {};
 var longTaskCancelHandlers = {};
 var longTaskHideTimers = {};
 
@@ -19,6 +20,71 @@ function aiProgressStepPercent(step, total) {
   var n = Math.max(1, Number(total) || 1);
   var i = Math.max(0, Math.min(n - 1, Number(step) || 0));
   return Math.round(i / n * 100);
+}
+
+/* 真实数据进度：只统计已经收到的 JSON 字段 / 对象。
+   比例来自流式正文本身，不来自定时器，也不预先编造终点。 */
+function aiProgressPct(value) {
+  return Math.max(0, Math.min(100, Math.round((Number(value) || 0) * 10) / 10));
+}
+
+function aiProgressJsonFields(text, keys, expectedChars) {
+  var s = String(text || '');
+  keys = Array.isArray(keys) ? keys : [];
+  var found = [];
+  keys.forEach(function (key) {
+    var safe = String(key).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var m = new RegExp('"' + safe + '"\\s*:').exec(s);
+    if (m) found.push({ key: key, at: m.index, valueAt: m.index + m[0].length });
+  });
+  found.sort(function (a, b) { return a.at - b.at; });
+  if (!found.length) return { completed: 0, total: keys.length, currentKey: '', partial: 0, chars: 0 };
+  var last = found[found.length - 1];
+  var rest = s.slice(last.valueAt);
+  var closed = /^\s*"(?:[^"\\]|\\.)*"\s*(?:,|})/.test(rest) ||
+    /^\s*(?:true|false|null|-?\d+(?:\.\d+)?)\s*(?:,|})/.test(rest) ||
+    /^\s*(?:\{[\s\S]*\}|\[[\s\S]*\])\s*(?:,|})/.test(rest);
+  var expected = Math.max(80, Number(expectedChars && expectedChars[last.key]) || 400);
+  var partial = closed ? 0 : Math.min(0.92, rest.length / expected);
+  return {
+    completed: Math.max(0, found.length - 1 + (closed ? 1 : 0)),
+    total: keys.length,
+    currentKey: last.key,
+    partial: partial,
+    chars: rest.length
+  };
+}
+
+function aiProgressFieldsFraction(info) {
+  if (!info || !info.total) return 0;
+  return Math.max(0, Math.min(1, ((Number(info.completed) || 0) + (Number(info.partial) || 0)) / info.total));
+}
+
+function aiProgressJsonArray(text, arrayKey, itemChars) {
+  var s = String(text || '');
+  var keyIdx = s.indexOf('"' + arrayKey + '"');
+  if (keyIdx < 0) return { completed: 0, currentChars: 0 };
+  var start = s.indexOf('[', keyIdx);
+  if (start < 0) return { completed: 0, currentChars: 0 };
+  var depth = 0, inStr = false, esc = false, completed = 0, currentStart = -1;
+  for (var i = start + 1; i < s.length; i++) {
+    var ch = s.charAt(i);
+    if (inStr) {
+      if (esc) esc = false;
+      else if (ch === '\\') esc = true;
+      else if (ch === '"') inStr = false;
+      continue;
+    }
+    if (ch === '"') { inStr = true; continue; }
+    if (ch === '{') { if (depth === 0) currentStart = i; depth++; continue; }
+    if (ch === '}') {
+      if (depth > 0) depth--;
+      if (depth === 0 && currentStart >= 0) { completed++; currentStart = -1; }
+    }
+  }
+  var currentChars = currentStart >= 0 ? s.length - currentStart : 0;
+  var per = Math.max(120, Number(itemChars) || 1200);
+  return { completed: completed, currentChars: currentChars, partial: Math.min(0.9, currentChars / per) };
 }
 
 function aiProgressHtml(key, opts) {
@@ -75,7 +141,15 @@ function aiProgressSet(key, state) {
   var value = root.querySelector('[data-progress-value]');
   var stage = root.querySelector('[data-progress-stage]');
   var detail = root.querySelector('[data-progress-detail]');
-  var percent = state.percent == null ? null : Math.max(0, Math.min(100, Number(state.percent) || 0));
+  var percent = state.percent == null ? null : aiProgressPct(state.percent);
+  var reg = aiProgressRegistry[key];
+  if (percent != null) {
+    // 同一个任务只前进不后退：重试或分批返回时不会出现进度倒退。
+    var last = reg && reg.lastPercent != null ? reg.lastPercent : aiProgressLast[key];
+    if (last != null && percent < last) percent = last;
+    if (reg) reg.lastPercent = percent;
+    aiProgressLast[key] = percent;
+  }
   if (state.stage && stage) stage.textContent = state.stage;
   if (detail && state.detail != null) {
     detail.textContent = state.detail;
@@ -89,8 +163,10 @@ function aiProgressSet(key, state) {
     if (track) track.removeAttribute('aria-valuenow');
   } else {
     root.classList.remove('is-indeterminate');
-    if (fill) fill.style.width = percent + '%';
-    if (track) track.setAttribute('aria-valuenow', String(Math.round(percent)));
+    // 进度条宽度、ARIA 数值和文案里的百分比用同一个整数，避免条到 11.8% 而数字写 12%。
+    var shownPct = Math.round(percent);
+    if (fill) fill.style.width = shownPct + '%';
+    if (track) track.setAttribute('aria-valuenow', String(shownPct));
   }
   var complete = !!state.complete;
   var running = state.running !== false && !complete;
@@ -98,8 +174,12 @@ function aiProgressSet(key, state) {
   root.setAttribute('aria-busy', running ? 'true' : 'false');
   root.setAttribute('data-progress-state', complete ? 'complete' : (running ? 'running' : 'stopped'));
   if (value) {
-    if (state.valueText) value.textContent = state.valueText;
-    else if (percent != null) value.textContent = Math.round(percent) + '%';
+    if (state.valueText) {
+      var vt = String(state.valueText);
+      // 数字和进度条同源：文案没带百分比时补上同一个百分数。
+      if (percent != null && vt.indexOf('%') < 0) vt += ' · ' + Math.round(percent) + '%';
+      value.textContent = vt;
+    } else if (percent != null) value.textContent = Math.round(percent) + '%';
     else if (state.step == null) value.textContent = '处理中';
   }
   if (state.step != null) {
@@ -121,7 +201,8 @@ function aiProgressStart(key, opts) {
   opts = opts || {};
   if (aiProgressRegistry[key] && aiProgressRegistry[key].timer) clearInterval(aiProgressRegistry[key].timer);
   var started = opts.startedAt || Date.now();
-  aiProgressRegistry[key] = { startedAt: started, timer: null };
+  aiProgressRegistry[key] = { startedAt: started, timer: null, lastPercent: null };
+  aiProgressLast[key] = null;
   aiProgressSet(key, opts);
   var root = document.querySelector('[data-ai-progress="' + key + '"]');
   if (root) aiProgressSetElapsed(root, started);

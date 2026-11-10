@@ -237,13 +237,13 @@ function autoAiServerCall(subject, text, hint, signal) {
   });
 }
 
-function autoAiCall(e, text, hint, signal) {
+function autoAiCall(e, text, hint, signal, opts) {
   var transport = autoAiTransport();
-  if (transport === 'direct') return callDshDirect(e.subject, text, hint, [], '', [], signal);
+  if (transport === 'direct') return callDshDirect(e.subject, text, hint, [], '', [], signal, opts);
   if (transport === 'server') {
     return autoAiServerCall(e.subject, text, hint, signal).catch(function (err) {
       if (aiConfigReady() && (err.status === 404 || err.code === 'NETWORK' || err.code === 'SOLVE_FAILED')) {
-        return callDshDirect(e.subject, text, hint, [], '', [], signal);
+        return callDshDirect(e.subject, text, hint, [], '', [], signal, opts);
       }
       throw err;
     });
@@ -336,17 +336,43 @@ function runAutoAi(e, transport) {
     steps: ['整理题目', '请求 AI', '写入条目'],
     label: 'AI 自动补全',
     step: 0,
-    percent: null,
-    valueText: '阶段 1 / 3',
+    percent: 0,
+    valueText: '0%',
     stage: '正在整理 ' + e.code + ' 的题目与要点…',
     detail: '整理完成后会请求模型补全标准解答、详细解析与易错点。',
     onCancel: function () { autoAiCancel(e.id); }
   });
   var timer = setTimeout(function () { controller.abort(); }, 150000);
-  autoAiCall(e, text, hint, controller.signal).then(function (data) {
+  var autoFields = typeof AI_ENTRY_FIELDS !== 'undefined' ? AI_ENTRY_FIELDS : ['summary', 'question', 'standardSolution', 'detailedAnalysis', 'answer', 'points', 'pitfalls'];
+  var autoExpect = typeof AI_ENTRY_EXPECTED_CHARS !== 'undefined' ? AI_ENTRY_EXPECTED_CHARS : {};
+  var autoPushAt = 0;
+  var autoStream = {
+    onPrepare: function (info) {
+      if (taskOn) longTaskUpdate('auto-ai', { step: 0, percent: info.ready ? 6 : 3, valueText: info.ready ? '6%' : '3%', stage: info.stage || '正在准备模型请求…', detail: '正在解压技能包并匹配章节。' });
+    },
+    onFirstByte: function () {
+      if (taskOn) longTaskUpdate('auto-ai', { step: 1, percent: 8, valueText: '8%', stage: '模型已开始返回，正在补全条目…', detail: '进度按实际收到的 JSON 字段推进。' });
+    },
+    onDelta: function (delta, fullText) {
+      if (!taskOn || typeof aiProgressJsonFields !== 'function') return;
+      var now = Date.now();
+      if (now - autoPushAt < 140) return;
+      autoPushAt = now;
+      var info = aiProgressJsonFields(fullText, autoFields, autoExpect);
+      var frac = aiProgressFieldsFraction(info);
+      longTaskUpdate('auto-ai', {
+        step: 1,
+        percent: 8 + frac * 77,
+        valueText: '已收到 ' + info.completed + ' / ' + autoFields.length + ' 字段',
+        stage: info.currentKey ? '正在补全「' + ((typeof AI_ENTRY_FIELD_LABELS !== 'undefined' && AI_ENTRY_FIELD_LABELS[info.currentKey]) || info.currentKey) + '」…' : '模型已开始返回正文…',
+        detail: '进度来自模型流式正文中的真实字段。'
+      });
+    }
+  };
+  autoAiCall(e, text, hint, controller.signal, autoStream).then(function (data) {
     clearTimeout(timer);
     autoAiAbort = null;
-    if (taskOn) longTaskUpdate('auto-ai', { step: 2, percent: null, valueText: '阶段 3 / 3', stage: '正在写入条目…', detail: '模型已返回，正在保存标准解答与模板。' });
+    if (taskOn) longTaskUpdate('auto-ai', { step: 2, percent: 90, valueText: '90%', stage: '正在写入条目…', detail: '模型已返回，正在保存标准解答与模板。' });
     applyAutoAiToEntry(e, data);
     autoAiBusy = false;
     markDirty();
