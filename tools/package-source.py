@@ -28,14 +28,14 @@ STATIC_FILES = [
 ]
 ROOT_FILES = [
     ".gitattributes", ".gitignore", ".nojekyll", "404.html", "CHANGELOG.md",
-    "LICENSE", "README.md", "build.js", "favicon.svg", "manifest.webmanifest",
+    "LICENSE", "Makefile", "README.md", "build.js", "favicon.svg", "manifest.webmanifest",
     "package-lock.json", "package.json", "robots.txt", "server.js",
     "sitemap.xml", "skills.js", "sw.js",
 ]
 SOURCE_DIRS = [".github", "assets", "skills", "src", "tests", "tools"]
 SKIP_DIR_NAMES = {
     "node_modules", "__pycache__", ".git", "dist", "dist-pages", "debug",
-    "备份", "导出", "截图仓库", "screenshots", "data",
+    "备份", "导出", "截图仓库", "screenshots",
 }
 SKIP_SUFFIXES = {".pyc", ".pyo", ".tmp", ".broken"}
 SKIP_NAMES = {"source.zip", "四科错题本-静态站.zip", "state.json", ".DS_Store"}

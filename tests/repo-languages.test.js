@@ -25,4 +25,11 @@ test('repository ships real Python, Shell and Makefile sources and a language ga
   assert.match(pkg.scripts.check, /check_repo_languages\.js/);
   assert.match(pkg.scripts.check, /audit_bank\.py/);
   assert.ok(fs.statSync(path.join(ROOT, 'Makefile')).size > 500);
+  const pack = fs.readFileSync(path.join(ROOT, 'tools/package-source.py'), 'utf8');
+  const skip = pack.match(/SKIP_DIR_NAMES\s*=\s*\{([\s\S]*?)\}/);
+  assert.ok(skip, '找不到 SKIP_DIR_NAMES');
+  assert.equal(/["']data["']/.test(skip[1]), false, 'source.zip 不能排除 src/data，否则解压后无法构建');
+  assert.ok(pack.includes('"Makefile"'), 'source.zip 必须带上 Makefile 与本地检查入口');
+  assert.ok(pack.includes('".bak" in path.name'), '只跳过备份文件，不跳过整个数据目录');
+  assert.ok(fs.statSync(path.join(ROOT, 'src/data/bank-algebra.json')).size > 1000000, '题库数据必须留在源码树中');
 });
