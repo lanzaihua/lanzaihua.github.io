@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.10-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.10--f4eb00d8-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.10--2ea474da-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -37,9 +37,20 @@
 |---|---|---|
 | 大学高代、数分、解几、西经的错题整理与考前复习 | **118** 张解答模板 · **8250** 道考研同型题 + **575** 道教材课后习题 · 统一笔记库 | 默认 localStorage；可导出 / 导入 JSON 备份 |
 
-## 源码结构
+## 源码、构建与开源
 
-运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码仍见 `source.zip`。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码见 [`source.zip`](source.zip)。
+
+### 仓库与许可证
+
+- **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
+- **源码包**：下载 [`source.zip`](source.zip) 后解压，包含 `src/`、`build.js`、`server.js`、`skills.js` 与 `tools/`；[`SHA256SUMS`](SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
+- **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
+- **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
+- **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
+- **联系**：<3554833568@qq.com>
+
+### 源码结构
 
 | 路径 | 内容 |
 |---|---|
@@ -49,9 +60,21 @@
 | `tools/` | 题库 QA、站点一致性、发布与源码打包脚本 |
 | `tests/` | 52 项回归测试，覆盖数据保护、公式渲染、通知、进度与模拟考 |
 
-完整构建方式：解压 `source.zip` 后执行 `npm ci && node build.js`。仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页。
+仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 
-## 仓库语言与工具链
+### 构建与本机运行
+
+```bash
+npm ci && npm test        # 安装依赖并跑回归测试
+node build.js             # 生成 dist/index.html
+node build.js --pages     # 生成 GitHub Pages 版本
+node server.js            # 本机同步 / AI 代理，默认 http://127.0.0.1:4173
+node server.js --lan      # 手机同一局域网访问
+```
+
+未配置 AI 时，错题、模板、题库、笔记等普通功能不受影响。
+
+### 仓库语言与工具链
 
 GitHub 的语言统计按源码计算，不把构建出来的单文件当成主要语言：
 
@@ -182,7 +205,7 @@ make check                                      # 同上，Makefile 入口
 
 **10 项 · 10 组**
 
-在 11-09 的长任务、公式、筛选与仓库语言基础上，本轮逐页核对三端界面与更新记录：修好规范页表格管道符被当公式、手机顶栏吸顶过高、期末复习重复摘要、通知要点计数与同日文字编辑漏发，并统一设置与首页文案、触控尺寸和辅助字号。本块共 10 项 / 10 组，52 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+在 11-09 的长任务、公式、筛选与仓库语言基础上，本轮逐页核对三端界面与更新记录：修好规范页表格管道符被当公式、手机顶栏吸顶过高、期末复习重复摘要、通知要点计数与同日文字编辑漏发，并统一设置与首页文案、触控尺寸和辅助字号；同时把仓库 README 的三个源码板块合并为一节，把 Releases 标签统一为纯日期。本块共 10 项 / 10 组，52 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -193,8 +216,8 @@ make check                                      # 同上，Makefile 入口
 | **设置文案** | 设置里的「当前规模」改为「当前科目规模」，避免被当成全站总量，并移除容易被误读为产品版本的 v1 标签；首页科目标题改为全天候「想从哪一科开始？」，首次欢迎语从「欢迎回来」改为「欢迎使用四科错题本」。 |
 | **触控可读** | 补充手机与平板的触控尺寸：页签、题库来源、期末科目与跳转按钮至少 40–44px；笔记库辅助标签、设置分区标记统一到 10px；品牌副标题改用更深的辅助色，提升小字对比度。 |
 | **题库卡片** | 题库卡片标题已含「客观题 / 填空题 / 主观题」时，右侧不再重复同一枚题型标签；标题缺少题型时仍保留标签，筛选与题目类型不受影响。 |
-| **记录校准** | 修正 11-02 更新记录中的退格损坏字符，把解析几何的旧计数改为 900、「2751 题」改为 2750 题，与同块 8250 = 1500 + 3450 + 900 + 2400 对齐；改写 README 的 11-08 说明，删去「57 项块只展示 30 项、删除可访问性组」的矛盾表述。 |
-| **Release 归并** | GitHub Releases 同一日期只保留一整块：11-09 保留 v2026.11.09-10，11-08 保留 v2026.11.08-4，10-25 保留 v2026.10.25.1；同日重复的 13 个 release 已备份正文后删除，标签仍留在仓库历史中，不再在 Releases 页并列展示。 |
+| **记录校准** | 修正 11-02 更新记录中的退格损坏字符，把解析几何的旧计数改为 900、「2751 题」改为 2750 题，与同块 8250 = 1500 + 3450 + 900 + 2400 对齐；改写 README 的 11-08 说明，删去「57 项块只展示 30 项、删除可访问性组」的矛盾表述。 README 的「源码结构」「仓库语言与工具链」「源码、构建与开源」三块合并为一节「源码、构建与开源」，去掉重复的许可证、构建与本机运行说明。 |
+| **Release 归并** | GitHub Releases 同一日期只保留一整块，标签统一为纯日期：11-09 为 v2026.11.09、11-08 为 v2026.11.08、10-25 为 v2026.10.25；带 -2…-10 等后缀的 release 与标签已清理，不再出现在 Releases 页。 |
 | **防复发** | 新增表格管道符、通知签名与文字编辑、期末重复摘要、手机顶栏与三端布局回归测试；测试总数 52，严格 QA、站点一致性与 390 / 820 / 1440 检查同时执行，防止同类问题再次出现。 |
 
 <img src="assets/v2/20261110-changelog.png" alt="网页内更新记录" width="820">
@@ -721,19 +744,6 @@ make check                                      # 同上，Makefile 入口
 | **AI** | 智能录入与录入后自动补全队列；页面关闭后队列顺延。 |
 
 完整记录见 [CHANGELOG.md](CHANGELOG.md)。
-
-## 源码、构建与开源
-
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。
-
-- **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
-- **源码**：下载 [`source.zip`](source.zip) 后解压，包含 `src/`、`build.js`、`server.js`、`skills.js` 与 `tools/`；[`SHA256SUMS`](SHA256SUMS) 给出校验值，下载后可用 `sha256sum -c SHA256SUMS` 核对。
-- **构建**：解压后运行 `npm ci && npm test`，再运行 `node build.js` 生成 `dist/index.html`；`node build.js --pages` 生成 GitHub Pages 版本。
-- **本机运行**：需要同步、服务端 AI 代理或局域网访问时运行 `node server.js`，默认地址 <http://127.0.0.1:4173>；手机访问运行 `node server.js --lan`。未配置 AI 时，错题、模板、题库、笔记等普通功能不受影响。
-- **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
-- **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
-- **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
-- **联系**：<3554833568@qq.com>
 
 ## 隐私与限制
 
