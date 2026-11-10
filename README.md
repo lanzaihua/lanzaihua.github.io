@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.10-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.10--9db1d38b-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.10--5a7f8795-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -58,7 +58,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、发布与源码打包脚本 |
-| `tests/` | 53 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面与模拟考 |
+| `tests/` | 55 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面与模拟考 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 
@@ -203,9 +203,9 @@ make check                                      # 同上，Makefile 入口
 
 ### 2026-11-10 · 界面重做与记录校准
 
-**16 项 · 16 组**
+**20 项 · 20 组**
 
-在 11-10 已完成的界面与记录校准基础上，本轮把全站版式整体重做：换成冷纸色与深墨绿强调色，首页改用无衬线大标题、三项统计、科目索引和两条工具入口，内页标题、正文、按钮、标签与弹窗共用一套层级；去掉英文小标签、时段问候、装饰阴影和重复页脚说明。保留原有错题、题库、模板、规范、笔记、期末与更新记录功能。本块累计 16 项 / 16 组，53 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+在 11-10 已完成的界面与记录校准基础上，本轮把全站版式整体重做：换成冷纸色与深墨绿强调色，首页改用无衬线大标题、三项统计、科目索引和两条工具入口，内页标题、正文、按钮、标签与弹窗共用一套层级；去掉英文小标签、时段问候、装饰阴影和重复页脚说明。同时把错题智能录入、AI 出题、AI 批改、笔记导入导出、扫描 OCR 等长任务改为真实阶段、真实计数与真实已等待时间驱动：不确定总量时不编百分比，等待时秒数与活动条逐帧更新，出题按已生成题数推进，批改逐题核对。本块累计 20 项 / 20 组，55 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -225,6 +225,10 @@ make check                                      # 同上，Makefile 入口
 | **组件收口** | 主按钮改为黑底纸色字，次按钮保留纸底细线；标签改为方角透明底，输入框、下拉框、通知面板和更新记录卡片统一细边框，选中态只靠底色与左侧色条。 |
 | **装饰清理** | 隐藏内页英文小标签与笔记分区英文标题，删除首页重复的「数据保存在本机」页脚说明，欢迎弹窗去掉 WELCOME 标签并改成直接说明需要配置什么。 |
 | **三端复查** | 390 / 820 / 1440 共 21 次页面加载复查首页、总览、错题、题库、模板、规范、笔记、期末与更新记录：无横向溢出、无脚本错误；手机与平板顶栏随页面滚走，桌面保留吸顶导航。 |
+| **真实进度** | 错题智能录入、AI 出题、AI 批改、笔记导入导出与扫描 OCR 的长任务卡改为真实数据驱动：有总量时显示已完成 / 总数，没有总量时只显示活动条，不再按固定阶段编造 33%、67% 等假百分比。 |
+| **实时等待** | 等待时间从请求发出开始累计，每 250 毫秒刷新到十分之一秒（如「已等待 5.2 秒」）；活动圆点持续呼吸，阶段名与当前说明随真实回调切换，界面不会停在静止的加载文案上。同一天补充通知的标题时间也改按本机时区显示，不再出现 UTC 时间。 |
+| **逐题推进** | AI 出题按每批返回的题目数累加，显示「已生成 6 / 27 题」并继续请求下一批；AI 批改在模型返回后按题逐条核对并让出渲染帧，进度条与阶段文字随真实核对进度更新，完成后才切到结果页。 |
+| **进度门禁** | 新增长任务进度回归测试：禁止固定百分比、要求秒数精确到 0.1 秒、完成必须显式标记、取消后浮层消失；三端 390 / 820 / 1440 复查进度面板不溢出、不遮挡取消按钮，测试总数增至 55。 |
 
 <img src="assets/v2/20261110-changelog.png" alt="网页内更新记录" width="820">
 

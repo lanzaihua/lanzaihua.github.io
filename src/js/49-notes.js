@@ -271,7 +271,9 @@ function noteSaveNow() {
 }
 
 function noteBusyElapsedText(ms) {
-  var sec = Math.max(0, Math.floor(ms / 1000));
+  var safe = Math.max(0, Number(ms) || 0);
+  if (safe < 10000) return '已等待 ' + (Math.floor(safe / 100) / 10).toFixed(1) + ' 秒';
+  var sec = Math.floor(safe / 1000);
   if (sec < 60) return '已等待 ' + sec + ' 秒';
   return '已等待 ' + Math.floor(sec / 60) + ' 分 ' + (sec % 60) + ' 秒';
 }
@@ -289,7 +291,7 @@ function noteBusy(show, text) {
   if (show) {
     if (!noteBusyStarted) noteBusyStarted = Date.now();
     noteBusyTick();
-    noteBusyTimer = setInterval(noteBusyTick, 1000);
+    noteBusyTimer = setInterval(noteBusyTick, 250);
   } else {
     noteBusyStarted = 0;
     var track = qs('#noteBusyTrack');

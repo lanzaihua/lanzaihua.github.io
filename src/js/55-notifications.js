@@ -112,6 +112,12 @@ function notifTime(iso) {
   return formatDate(iso) + ':' + pad(d.getSeconds(), 2);
 }
 
+function notifClock(date) {
+  var d = date instanceof Date ? date : new Date();
+  if (isNaN(d.getTime())) d = new Date();
+  return pad(d.getHours(), 2) + ':' + pad(d.getMinutes(), 2) + ':' + pad(d.getSeconds(), 2);
+}
+
 function renderNotificationBadge() {
   var count = notifUnreadCount();
   qsa('[data-notif-badge]').forEach(function (badge) {
@@ -380,7 +386,7 @@ function initNotifications() {
       });
     }
     var updateTitle = '网页已更新 · ' + (latest.date || '') + ' · ' + (latest.title || '新版本');
-    if (sameEdition && previousItems.length) updateTitle += ' · 补充 ' + String(nowIso()).slice(11, 19);
+    if (sameEdition && previousItems.length) updateTitle += ' · 补充 ' + notifClock();
     notifAdd(updateTitle, upLines.join('\n'), 'update', {
       updateSignature: versionKey,
       buildId: buildId,

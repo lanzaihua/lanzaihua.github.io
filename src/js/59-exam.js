@@ -893,7 +893,18 @@ function finalExamGenerationAbortError() {
 
 function finalExamProgressPercent(p) {
   if (!p || !p.total) return null;
-  return Math.max(0, Math.min(100, Math.round((Number(p.loaded) || 0) / Number(p.total) * 100)));
+  var total = Math.max(0, Number(p.total) || 0);
+  var loaded = Math.max(0, Math.min(total, Number(p.loaded) || 0));
+  // 总量已知但一道题都还没生成时，仍在真实等待首批返回，不能显示 0% 的假确定进度。
+  if (!loaded) return null;
+  return Math.max(0, Math.min(100, Math.round(loaded / total * 100)));
+}
+
+function finalExamProgressValue(p) {
+  if (!p) return '';
+  if (p.valueText) return p.valueText;
+  if (p.total != null) return (Math.max(0, Number(p.loaded) || 0)) + ' / ' + p.total + ' 题';
+  return p.stage || '';
 }
 
 function finalExamSyncProgress(key, p) {
@@ -903,7 +914,7 @@ function finalExamSyncProgress(key, p) {
     step: p.step,
     stage: p.stage,
     detail: p.detail,
-    valueText: p.valueText
+    valueText: finalExamProgressValue(p)
   });
 }
 
@@ -917,15 +928,26 @@ function finalExamStartAiTicker() {
     label: 'AI 出题进度',
     step: finalExamAiProgress.step || 0,
     percent: finalExamProgressPercent(finalExamAiProgress),
+    valueText: finalExamProgressValue(finalExamAiProgress),
     stage: finalExamAiProgress.stage,
     detail: finalExamAiProgress.detail,
     startedAt: finalExamAiProgress.startedAt || Date.now()
   });
 }
 
-function finalExamGradePercent(step) {
-  if (typeof aiProgressStepPercent === 'function') return aiProgressStepPercent(step, FINAL_AI_GRADE_STEPS.length);
-  return Math.round(Math.max(0, Math.min(FINAL_AI_GRADE_STEPS.length - 1, Number(step) || 0)) / FINAL_AI_GRADE_STEPS.length * 100);
+function finalExamGradePercent(p) {
+  if (!p || !p.total) return null;
+  var total = Math.max(0, Number(p.total) || 0);
+  var loaded = Math.max(0, Math.min(total, Number(p.loaded) || 0));
+  // 模型尚未返回时只有真实等待；返回后按实际核对完成的题数推进。
+  if (!loaded) return null;
+  return Math.max(0, Math.min(100, Math.round(loaded / total * 100)));
+}
+
+function finalExamGradeValue(p) {
+  if (!p) return '';
+  if (p.total != null) return (Math.max(0, Number(p.loaded) || 0)) + ' / ' + p.total + ' 题';
+  return '阶段 ' + (Math.min(FINAL_AI_GRADE_STEPS.length, (p.step || 0) + 1)) + ' / ' + FINAL_AI_GRADE_STEPS.length;
 }
 
 function finalExamStartGradeTicker() {
@@ -935,8 +957,8 @@ function finalExamStartGradeTicker() {
     steps: FINAL_AI_GRADE_STEPS,
     label: 'AI 批改进度',
     step: step,
-    percent: finalExamGradePercent(step),
-    valueText: '阶段 ' + (Math.min(FINAL_AI_GRADE_STEPS.length, step + 1)) + ' / ' + FINAL_AI_GRADE_STEPS.length,
+    percent: finalExamGradePercent(finalExamGradeProgress),
+    valueText: finalExamGradeValue(finalExamGradeProgress),
     stage: finalExamGradeProgress.stage,
     detail: finalExamGradeProgress.detail,
     startedAt: finalExamGradeProgress.startedAt || Date.now()
@@ -946,23 +968,27 @@ function finalExamStartGradeTicker() {
 function finalExamReportAiProgress(p) {
   if (!finalExamAiProgress || !p) return;
   if (p.loaded != null) finalExamAiProgress.loaded = Math.max(finalExamAiProgress.loaded || 0, Number(p.loaded) || 0);
+  if (p.total != null) finalExamAiProgress.total = Number(p.total) || finalExamAiProgress.total;
   if (p.step != null) finalExamAiProgress.step = p.step;
   if (p.stage) finalExamAiProgress.stage = p.stage;
   if (p.detail != null) finalExamAiProgress.detail = p.detail;
   if (typeof finalExamSyncProgress === 'function') finalExamSyncProgress('finalExamProgress', finalExamAiProgress);
 }
 
-function finalExamReportGradeProgress(step, stage, detail) {
+function finalExamReportGradeProgress(p) {
   if (!finalExamGradeProgress) return;
-  if (step != null) finalExamGradeProgress.step = step;
-  if (stage) finalExamGradeProgress.stage = stage;
-  if (detail != null) finalExamGradeProgress.detail = detail;
+  if (p && typeof p === 'object') {
+    if (p.loaded != null) finalExamGradeProgress.loaded = Math.max(0, Number(p.loaded) || 0);
+    if (p.total != null) finalExamGradeProgress.total = Math.max(0, Number(p.total) || 0);
+    if (p.step != null) finalExamGradeProgress.step = p.step;
+    if (p.stage) finalExamGradeProgress.stage = p.stage;
+    if (p.detail != null) finalExamGradeProgress.detail = p.detail;
+  }
   if (typeof aiProgressSet === 'function') {
-    var stepNow = finalExamGradeProgress.step || 0;
     aiProgressSet('finalExamGradingProgress', {
-      step: stepNow,
-      percent: finalExamGradePercent(stepNow),
-      valueText: '阶段 ' + (Math.min(FINAL_AI_GRADE_STEPS.length, stepNow + 1)) + ' / ' + FINAL_AI_GRADE_STEPS.length,
+      step: finalExamGradeProgress.step || 0,
+      percent: finalExamGradePercent(finalExamGradeProgress),
+      valueText: finalExamGradeValue(finalExamGradeProgress),
       stage: finalExamGradeProgress.stage,
       detail: finalExamGradeProgress.detail
     });
@@ -976,6 +1002,7 @@ function finalExamGeneratingHtml() {
     label: 'AI 出题进度',
     step: p.step || 0,
     percent: finalExamProgressPercent(p),
+    valueText: finalExamProgressValue(p),
     stage: p.stage,
     detail: p.detail
   }) : '';
@@ -994,8 +1021,8 @@ function finalExamGradingHtml() {
     steps: FINAL_AI_GRADE_STEPS,
     label: 'AI 批改进度',
     step: gStep,
-    percent: finalExamGradePercent(gStep),
-    valueText: '阶段 ' + (Math.min(FINAL_AI_GRADE_STEPS.length, gStep + 1)) + ' / ' + FINAL_AI_GRADE_STEPS.length,
+    percent: finalExamGradePercent(p),
+    valueText: finalExamGradeValue(p),
     stage: p.stage,
     detail: p.detail
   }) : '';
@@ -2137,12 +2164,23 @@ function finalExamAiPrompt(mock, imageMap) {
     '{"total":0,"questions":[{"id":"","score":0,"correct":false,"handwritingText":"识别出的手写内容；无手写则留空","errorPoints":["具体错误点"],"standardSolution":"","detailedAnalysis":"","answer":"","points":[""],"pitfalls":[""]}]}。\n\n' + JSON.stringify(data);
 }
 
+function finalExamYieldFrame() {
+  // 让出一帧给浏览器重绘；不用 rAF，避免后台标签页被降频后把逐题核对拖成几十秒。
+  return new Promise(function (resolve) { setTimeout(resolve, 0); });
+}
+
 async function finalExamAiGrade(signal, onProgress) {
   var mock = finalExamMock();
   if (typeof aiConfigReady !== 'function' || !aiConfigReady()) throw new Error('未配置 AI');
-  function report(step, stage, detail) { if (typeof onProgress === 'function') onProgress({ step: step, stage: stage, detail: detail }); }
-  report(1, '正在提交答卷…', '已整理客观题与手写作答，等待模型按标准答案批改。');
-  var cfg = aiConfig();
+  var totalQuestions = mock.questions.length;
+  function report(p) { if (typeof onProgress === 'function') onProgress(p); }
+  function abortIfNeeded() {
+    if (!signal || !signal.aborted) return;
+    var err = new Error('已取消 AI 批改');
+    err.name = 'AbortError';
+    throw err;
+  }
+  report({ step: 0, loaded: 0, total: totalQuestions, stage: '正在读取答卷…', detail: '正在整理客观题、填空题与手写作答。' });
   var images = [];
   var imageMap = {};
   mock.questions.forEach(function (q) {
@@ -2157,15 +2195,21 @@ async function finalExamAiGrade(signal, onProgress) {
   });
   var prompt = finalExamAiPrompt(mock, imageMap) + (images.length ? '\n\n注意：每题 handwritingImage 是附图编号（从 1 开始，0 表示无图）。有图时必须先逐字识别 handwritingText，再按识别内容与标准答案逐点比对给分；识别不出内容时不得给满分，按保守标准给分并说明。' : '');
   var sys = '你是严谨的大学课程阅卷老师。必须按标准答案批改，不能放水；只输出 JSON，不要代码围栏。';
+  report({ step: 1, loaded: 0, total: totalQuestions, stage: '正在提交答卷…', detail: '已整理客观题与手写作答，等待模型按标准答案批改；已等待时间实时更新。' });
+  abortIfNeeded();
   var out = await finalAiJsonCall(sys, prompt, images, 90000, signal);
   var parsed = out.parsed;
   var list = parsed && Array.isArray(parsed.questions) ? parsed.questions : (Array.isArray(parsed) ? parsed : out.objects.filter(function (x) { return x && x.id && (x.score != null || x.correct != null); }));
-  report(2, '正在逐题核对…', '模型已返回，正在按标准答案核对每题得分与易错点。');
   if (!list.length) throw new Error('AI 没有返回逐题批改结果');
   var local = finalExamLocalGrade();
+  var totalToCheck = local.questions.length;
+  report({ step: 2, loaded: 0, total: totalToCheck, stage: '正在逐题核对…', detail: '模型已返回，正在逐题核对 0 / ' + totalToCheck + ' 题。' });
   var byId = {};
   list.forEach(function (x) { if (x && x.id) byId[x.id] = x; });
-  var results = local.questions.map(function (base, index) {
+  var results = [];
+  for (var index = 0; index < totalToCheck; index++) {
+    abortIfNeeded();
+    var base = local.questions[index];
     var q = mock.questions.filter(function (x) { return x.id === base.id; })[0] || {};
     var ai = byId[base.id] || list[index] || null;
     var max = Number(base.max) || 0;
@@ -2184,7 +2228,7 @@ async function finalExamAiGrade(signal, onProgress) {
       score = Math.min(score, Math.max(0, Number(base.score) || 0));
       errs = (errs || []).concat(['AI 没有返回手写识别文本，已按本地标准保守复核，避免未识别却给满分']);
     }
-    return Object.assign({}, base, {
+    results.push(Object.assign({}, base, {
       score: score,
       aiHandwritingText: aiHandwritingText,
       correct: answered && max > 0 && score >= max * 0.6,
@@ -2194,10 +2238,17 @@ async function finalExamAiGrade(signal, onProgress) {
       answer: (ai && ai.answer) || q.answer || base.answer,
       points: ai && Array.isArray(ai.points) && ai.points.length ? ai.points.map(String) : base.points,
       pitfalls: ai && Array.isArray(ai.pitfalls) && ai.pitfalls.length ? ai.pitfalls.map(String) : base.pitfalls
-    });
-  });
+    }));
+    var done = index + 1;
+    if (done === 1 || done % 2 === 0 || done === totalToCheck) {
+      report({ step: 2, loaded: done, total: totalToCheck, stage: '正在逐题核对…', detail: '已核对 ' + done + ' / ' + totalToCheck + ' 题。' });
+    }
+    if (done === 1 || done % 4 === 0 || done === totalToCheck) await finalExamYieldFrame();
+  }
+  abortIfNeeded();
   var total = results.reduce(function (s, q) { return s + q.score; }, 0);
-  report(3, '正在生成成绩…', '正在汇总总分、标准解答与易错点。');
+  report({ step: 3, loaded: totalToCheck, total: totalToCheck, stage: '正在生成成绩…', detail: '已核对 ' + totalToCheck + ' / ' + totalToCheck + ' 题，正在汇总总分、标准解答与易错点。' });
+  await finalExamYieldFrame();
   return { total: Math.round(Math.max(0, Math.min(100, total)) * 2) / 2, questions: results, partial: list.length < local.questions.length };
 }
 
@@ -2231,7 +2282,7 @@ function finalSubmitExam(auto, skipMissing) {
   finalExamClearDeadline();
   var aiExam = mock.examSource !== 'standard';
   if (aiExam) {
-    finalExamGradeProgress = { step: 0, stage: '正在读取答卷…', detail: '正在收集选择题、填空题与手写作答。', startedAt: Date.now() };
+    finalExamGradeProgress = { step: 0, loaded: 0, total: mock.questions.length, stage: '正在读取答卷…', detail: '正在收集选择题、填空题与手写作答。', startedAt: Date.now() };
     finalExamGradeAbort = (typeof AbortController === 'function') ? new AbortController() : null;
   }
   mock.status = 'grading';
@@ -2270,7 +2321,7 @@ function finalSubmitExam(auto, skipMissing) {
     finish(local, '标准答案批改', 'AI 批改超时，已用标准答案完成批改');
   }, 100000);
   finalExamAiGrade(finalExamGradeAbort ? finalExamGradeAbort.signal : null, function (p) {
-    finalExamReportGradeProgress(p.step, p.stage, p.detail);
+    finalExamReportGradeProgress(p);
   }).then(function (r) { finish(r, r.partial ? 'AI 批改 + 本地补全' : 'AI 批改'); }).catch(function (err) {
     var local = finalExamLocalGrade();
     if (err && err.name === 'AbortError') { finish(local, '标准答案批改', '已取消 AI 批改，已按标准答案完成批改'); return; }

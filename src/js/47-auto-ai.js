@@ -336,7 +336,7 @@ function runAutoAi(e, transport) {
     steps: ['整理题目', '请求 AI', '写入条目'],
     label: 'AI 自动补全',
     step: 0,
-    percent: 0,
+    percent: null,
     valueText: '阶段 1 / 3',
     stage: '正在整理 ' + e.code + ' 的题目与要点…',
     detail: '整理完成后会请求模型补全标准解答、详细解析与易错点。',
@@ -346,7 +346,7 @@ function runAutoAi(e, transport) {
   autoAiCall(e, text, hint, controller.signal).then(function (data) {
     clearTimeout(timer);
     autoAiAbort = null;
-    if (taskOn) longTaskUpdate('auto-ai', { step: 2, percent: 100, valueText: '100%', stage: '正在写入条目…', detail: '模型已返回，正在保存标准解答与模板。' });
+    if (taskOn) longTaskUpdate('auto-ai', { step: 2, percent: null, valueText: '阶段 3 / 3', stage: '正在写入条目…', detail: '模型已返回，正在保存标准解答与模板。' });
     applyAutoAiToEntry(e, data);
     autoAiBusy = false;
     markDirty();

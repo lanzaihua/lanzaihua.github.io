@@ -38,24 +38,32 @@ function aiProgressHtml(key, opts) {
       '<span class="ai-progress-step-text">' + aiProgressEsc(s) + '</span>' +
     '</li>';
   }).join('');
-  return '<section class="ai-progress' + (indeterminate ? ' is-indeterminate' : '') + '" data-ai-progress="' + aiProgressEsc(key) + '" data-progress-mode="' + aiProgressEsc(mode) + '" aria-label="' + aiProgressEsc(label) + '">' +
+  return '<section class="ai-progress' + (indeterminate ? ' is-indeterminate' : '') + '" data-ai-progress="' + aiProgressEsc(key) + '" data-progress-mode="' + aiProgressEsc(mode) + '" data-progress-state="running" aria-busy="true" aria-label="' + aiProgressEsc(label) + '">' +
     '<div class="ai-progress-head"><span class="ai-progress-kicker">' + aiProgressEsc(label) + '</span>' +
       '<span class="ai-progress-value" data-progress-value>' + aiProgressEsc(valueText) + '</span></div>' +
     '<div class="ai-progress-track" data-progress-track role="progressbar" aria-label="' + aiProgressEsc(label) + '" aria-valuemin="0" aria-valuemax="100"' +
       (percent == null ? '' : ' aria-valuenow="' + Math.round(percent) + '"') + ' aria-valuetext="' + aiProgressEsc(stage) + '">' +
       '<i class="ai-progress-fill" data-progress-fill' + (percent == null ? '' : ' style="width:' + Math.round(percent) + '%"') + '></i>' +
     '</div>' +
-    '<div class="ai-progress-meta"><span data-progress-stage aria-live="polite">' + aiProgressEsc(stage) + '</span><span data-progress-elapsed aria-hidden="true">已等待 0 秒</span></div>' +
+    '<div class="ai-progress-meta"><span data-progress-stage aria-live="polite">' + aiProgressEsc(stage) + '</span><span data-progress-elapsed aria-hidden="true"><i class="ai-progress-live-dot" aria-hidden="true"></i><span data-progress-elapsed-text>已等待 0.0 秒</span></span></div>' +
     (detail ? '<p class="ai-progress-detail" data-progress-detail>' + aiProgressEsc(detail) + '</p>' : '<p class="ai-progress-detail" data-progress-detail hidden></p>') +
     (steps.length ? '<ol class="ai-progress-steps">' + stepHtml + '</ol>' : '') +
   '</section>';
 }
 
 function aiProgressElapsedText(ms) {
-  var sec = Math.max(0, Math.floor(ms / 1000));
+  var safe = Math.max(0, Number(ms) || 0);
+  if (safe < 10000) return '已等待 ' + (Math.floor(safe / 100) / 10).toFixed(1) + ' 秒';
+  var sec = Math.floor(safe / 1000);
   if (sec < 60) return '已等待 ' + sec + ' 秒';
   var min = Math.floor(sec / 60);
   return '已等待 ' + min + ' 分 ' + (sec % 60) + ' 秒';
+}
+
+function aiProgressSetElapsed(root, startedAt) {
+  if (!root) return;
+  var text = root.querySelector('[data-progress-elapsed-text]') || root.querySelector('[data-progress-elapsed]');
+  if (text) text.textContent = aiProgressElapsedText(Date.now() - startedAt);
 }
 
 function aiProgressSet(key, state) {
@@ -84,6 +92,11 @@ function aiProgressSet(key, state) {
     if (fill) fill.style.width = percent + '%';
     if (track) track.setAttribute('aria-valuenow', String(Math.round(percent)));
   }
+  var complete = !!state.complete;
+  var running = state.running !== false && !complete;
+  root.classList.toggle('is-complete', complete);
+  root.setAttribute('aria-busy', running ? 'true' : 'false');
+  root.setAttribute('data-progress-state', complete ? 'complete' : (running ? 'running' : 'stopped'));
   if (value) {
     if (state.valueText) value.textContent = state.valueText;
     else if (percent != null) value.textContent = Math.round(percent) + '%';
@@ -97,8 +110,9 @@ function aiProgressSet(key, state) {
     }
     if (value && percent == null && !state.valueText && steps.length) value.textContent = '第 ' + Math.min(steps.length, state.step + 1) + ' / ' + steps.length + ' 步';
   }
-  if (state.elapsed != null && root.querySelector('[data-progress-elapsed]')) {
-    root.querySelector('[data-progress-elapsed]').textContent = state.elapsed;
+  if (state.elapsed != null) {
+    var elapsedText = root.querySelector('[data-progress-elapsed-text]') || root.querySelector('[data-progress-elapsed]');
+    if (elapsedText) elapsedText.textContent = state.elapsed;
   }
   return true;
 }
@@ -109,12 +123,13 @@ function aiProgressStart(key, opts) {
   var started = opts.startedAt || Date.now();
   aiProgressRegistry[key] = { startedAt: started, timer: null };
   aiProgressSet(key, opts);
+  var root = document.querySelector('[data-ai-progress="' + key + '"]');
+  if (root) aiProgressSetElapsed(root, started);
   aiProgressRegistry[key].timer = setInterval(function () {
-    var root = document.querySelector('[data-ai-progress="' + key + '"]');
-    if (!root) { aiProgressStop(key); return; }
-    var el = root.querySelector('[data-progress-elapsed]');
-    if (el) el.textContent = aiProgressElapsedText(Date.now() - started);
-  }, 1000);
+    var node = document.querySelector('[data-ai-progress="' + key + '"]');
+    if (!node) { aiProgressStop(key); return; }
+    aiProgressSetElapsed(node, started);
+  }, 250);
   return aiProgressRegistry[key];
 }
 
@@ -126,7 +141,7 @@ function aiProgressStop(key) {
 
 function aiProgressFinish(key, opts) {
   aiProgressStop(key);
-  var next = Object.assign({}, opts || {}, { percent: 100, step: 999, valueText: (opts && opts.valueText) || '100%' });
+  var next = Object.assign({}, opts || {}, { percent: 100, step: 999, valueText: (opts && opts.valueText) || '100%', complete: true, running: false });
   aiProgressSet(key, next);
 }
 
@@ -200,7 +215,8 @@ function longTaskFail(key, message, opts) {
     stage: opts.stage || '任务失败',
     detail: text,
     valueText: opts.valueText || '已停止',
-    ariaText: text
+    ariaText: text,
+    running: false
   });
   var card = document.getElementById('longTask-' + key);
   if (card) {
@@ -221,11 +237,12 @@ function longTaskFail(key, message, opts) {
 function longTaskCancel(key) {
   var fn = longTaskCancelHandlers[key];
   if (typeof fn === 'function') fn();
+  aiProgressStop(key);
   var card = document.getElementById('longTask-' + key);
   if (card) {
     var btn = card.querySelector('[data-long-task-cancel]');
     if (btn) btn.disabled = true;
-    longTaskUpdate(key, { stage: '正在取消…', ariaText: '正在取消' });
+    longTaskUpdate(key, { stage: '正在取消…', ariaText: '正在取消', running: false });
   }
 }
 

@@ -408,6 +408,44 @@ test('AI entry, generation and grading are wired to real progress and cancellati
   assert.match(exam,/ai && Array\.isArray\(ai\.errorPoints\)/,'AI 批改返回空对象时不能用 null 属性崩溃');
   assert.equal(/TEMP debug hook/.test(exam),false,'发布源码不能保留调试钩子');
 });
+test('long AI waits show real elapsed time, live heartbeat and no fake stage percentages',()=>{
+  const ai=read('src/js/45-ai.js'), exam=read('src/js/59-exam.js');
+  const auto=read('src/js/47-auto-ai.js'), kb=read('src/js/57-knowledge-search.js');
+  const comp=read('src/js/43-ai-progress.js'), css=read('src/styles.css');
+  assert.equal(/aiEntryPercent/.test(ai),false,'智能录入不得再用阶段序号伪造百分比');
+  assert.match(ai,/setAiEntryProgress[\s\S]{0,420}percent:\s*null/,'网络等待期间必须使用不确定进度条');
+  assert.match(ai,/aiProgressStart\('ai-entry',\s*\{[\s\S]{0,260}percent:\s*null/,'智能录入启动时不得预填假百分比');
+  assert.match(comp,/data-progress-state="running" aria-busy="true"/,'进度条必须声明运行状态');
+  assert.match(comp,/ai-progress-live-dot/,'必须有心跳活动标记');
+  assert.match(comp,/setInterval\([\s\S]{0,260}250\)/,'等待秒数必须高频实时刷新');
+  assert.match(comp,/function aiProgressSetElapsed/,'必须单独更新等待时间，不能重绘整块');
+  assert.match(css,/ai-progress-sheen/,'确定进度条也要有持续活动高光，不能停住');
+  assert.match(css,/@keyframes ai-progress-dot/,'运行状态必须有可感知的活动标记');
+  assert.match(exam,/function finalExamProgressPercent[\s\S]{0,260}return null/,'出题总数为 0 时必须是活动条');
+  assert.match(exam,/for \(var index = 0; index < totalToCheck; index\+\+\)/,'批改必须逐题推进，不能一次性跳到结果');
+  assert.match(exam,/report\(\{ step: 2, loaded: done, total: totalToCheck/,'批改进度必须来自真实已核对题数');
+  assert.match(exam,/await finalExamYieldFrame\(\)/,'逐题批改必须让出动画帧，进度才能实时显示');
+  assert.equal(/percent:\s*(33|67|100)\b/.test(auto+kb),false,'未知网络时长不得用阶段百分比冒充进度');
+});
+test('elapsed text is live to a tenth of a second and completion needs an explicit flag',()=>{
+  const {parseHTML}=require('linkedom');
+  const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime(); r.ctx.document=document;
+  r.ctx.setInterval=setInterval; r.ctx.clearInterval=clearInterval;
+  vm.runInContext(read('src/js/43-ai-progress.js'), r.ctx);
+  assert.equal(r.ctx.aiProgressElapsedText(5200),'已等待 5.2 秒');
+  assert.equal(r.ctx.aiProgressElapsedText(12345),'已等待 12 秒');
+  document.body.innerHTML=r.ctx.aiProgressHtml('unit',{steps:['请求','解析','写入'],stage:'正在请求…'});
+  const root=document.querySelector('.ai-progress');
+  const track=document.querySelector('[data-progress-track]');
+  assert.equal(root.getAttribute('aria-busy'),'true');
+  r.ctx.aiProgressSet('unit',{percent:100,running:false,stage:'已写入'});
+  assert.equal(root.classList.contains('is-complete'),false,'只有显式完成才能标记完成');
+  assert.equal(root.getAttribute('aria-busy'),'false');
+  r.ctx.aiProgressSet('unit',{percent:100,complete:true,stage:'完成'});
+  assert.ok(root.classList.contains('is-complete'));
+  assert.equal(root.getAttribute('data-progress-state'),'complete');
+});
 
 test('notification update digest groups items and gives each a stable card',()=>{
   const r=runtime();r.run('55-notifications.js');
@@ -581,6 +619,9 @@ test('notification signature covers notify items and final page avoids duplicate
   assert.notEqual(r.ctx.notifUpdateSignature(base),r.ctx.notifUpdateSignature(edited),'同一天只改通知要点文字也必须触发新签名');
   const js=read('src/js/55-notifications.js');
   assert.match(js,/state\.notifNotifyItems = \(latest\.notifyItems \|\| \[\]\)/,'通知快照必须在发送成功后保存');
+  assert.match(js,/function notifClock\(date\)/,'补充通知的时间要按本机时区显示');
+  assert.equal(/String\(nowIso\(\)\)\.slice\(11, 19\)/.test(js),false,'补充通知标题不能直接截 UTC 时间');
+  assert.match(js,/updateTitle \+= ' · 补充 ' \+ notifClock\(\)/,'补充通知标题必须用本地时分秒');
   const finalJs=read('src/js/58-final.js');
   assert.equal(/final-head-facts/.test(finalJs),false,'期末首屏不能重复展示日期、时长和材料数');
   assert.equal(/final-empty-actions/.test(finalJs),false,'复习材料空态不能重复期末页顶部入口');

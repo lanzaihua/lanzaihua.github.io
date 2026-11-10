@@ -5586,10 +5586,30 @@ p, li, .md p, .md li { text-wrap: pretty; }
   background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 62%, var(--warn)));
   transition: width .35s ease;
 }
+.ai-progress.is-complete .ai-progress-fill { background: var(--ok); }
+.ai-progress.is-complete .ai-progress-value { color: var(--ok); }
+/* 确定进度也保留一条真实心跳：请求尚未返回时，界面仍在动，且不是伪造百分比。 */
+.ai-progress-track::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, #fff 55%, transparent), transparent);
+  transform: translateX(-110%);
+  animation: ai-progress-sheen 1.4s linear infinite;
+  pointer-events: none;
+}
+.ai-progress.is-indeterminate .ai-progress-track::after { display: none; }
+.ai-progress.is-complete .ai-progress-track::after,
+.ai-progress[aria-busy="false"] .ai-progress-track::after { display: none; }
 .ai-progress.is-indeterminate .ai-progress-fill {
   width: 38%;
   min-width: 72px;
   animation: ai-progress-slide 1.5s ease-in-out infinite;
+}
+.ai-progress[aria-busy="false"]:not(.is-complete) .ai-progress-fill {
+  width: 100%;
+  animation: none;
+  opacity: .26;
 }
 .ai-progress-meta {
   display: flex;
@@ -5600,6 +5620,24 @@ p, li, .md p, .md li { text-wrap: pretty; }
   line-height: 1.6;
 }
 .ai-progress-meta [data-progress-stage] { color: var(--ink-soft); }
+.ai-progress-meta [data-progress-elapsed] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.ai-progress-live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: ai-progress-dot 1.1s ease-in-out infinite;
+}
+.ai-progress.is-complete .ai-progress-live-dot,
+.ai-progress[aria-busy="false"] .ai-progress-live-dot { background: var(--ok); animation: none; }
 .ai-progress-detail {
   margin: 6px 0 0;
   color: var(--muted);
@@ -5652,6 +5690,14 @@ p, li, .md p, .md li { text-wrap: pretty; }
   from { transform: translateX(-110%); }
   to { transform: translateX(310%); }
 }
+@keyframes ai-progress-sheen {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(110%); }
+}
+@keyframes ai-progress-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .45; transform: scale(.72); }
+}
 @media (max-width: 640px) {
   .ai-progress { padding: 12px; border-radius: 12px; }
   .ai-progress-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -5661,6 +5707,9 @@ p, li, .md p, .md li { text-wrap: pretty; }
 @media (prefers-reduced-motion: reduce) {
   .ai-progress-fill { transition: none; }
   .ai-progress.is-indeterminate .ai-progress-fill { width: 100%; min-width: 0; animation: none; opacity: .42; }
+  .ai-progress-track::after,
+  .ai-progress-live-dot { animation: none; }
+  .ai-progress-track::after { display: none; }
 }
 
 

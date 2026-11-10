@@ -888,17 +888,17 @@ function compressAiImage(file) {
 
 var AI_ENTRY_STEPS = ['准备题目', '请求模型', '解析结果', '写入错题本'];
 
-function aiEntryPercent(step) {
-  if (typeof aiProgressStepPercent === 'function') return aiProgressStepPercent(step, AI_ENTRY_STEPS.length);
-  return Math.round(Math.max(0, Math.min(AI_ENTRY_STEPS.length - 1, Number(step) || 0)) / AI_ENTRY_STEPS.length * 100);
+function aiEntryStageValue(step) {
+  return '阶段 ' + (Math.min(AI_ENTRY_STEPS.length, (Math.max(0, Number(step) || 0)) + 1)) + ' / ' + AI_ENTRY_STEPS.length;
 }
 
 function setAiEntryProgress(step, stage, detail) {
   if (typeof aiProgressSet !== 'function') return;
+  // 录入耗时主要来自一次网络请求；不知道请求何时返回时不伪造百分比。
   aiProgressSet('ai-entry', {
     step: step,
-    percent: aiEntryPercent(step),
-    valueText: '阶段 ' + (Math.min(AI_ENTRY_STEPS.length, (Number(step) || 0) + 1)) + ' / ' + AI_ENTRY_STEPS.length,
+    percent: null,
+    valueText: aiEntryStageValue(step),
     stage: stage,
     detail: detail
   });
@@ -913,7 +913,7 @@ function renderAiLoading() {
         steps: AI_ENTRY_STEPS,
         label: '智能录入进度',
         step: 0,
-        percent: 0,
+        percent: null,
         valueText: '阶段 1 / 4',
         stage: '正在准备题目与图片…',
         detail: '先在本机压缩图片、整理题干，再发送给模型。'
@@ -927,7 +927,7 @@ function renderAiLoading() {
       steps: AI_ENTRY_STEPS,
       label: '智能录入进度',
       step: 0,
-      percent: 0,
+      percent: null,
       valueText: '阶段 1 / 4',
       stage: '正在准备题目与图片…',
       detail: '先在本机压缩图片、整理题干，再发送给模型。'
@@ -988,11 +988,17 @@ function aiSubmitDirect() {
   var controller = new AbortController();
   aiState.abort = controller;
   callDshDirectRetry(aiState.subject, aiState.text, aiState.hint, aiState.images, aiState.wrongText, aiState.wrongImages, controller.signal).then(function (data) {
-    setAiEntryProgress(3, '正在解析并写入错题本', '已收到模型响应，正在解析标准解答并保存条目。');
-    aiState.busy = false;
-    aiState.abort = null;
-    aiHandleResult(data, Date.now() - started);
-    clearAiStage();
+    setAiEntryProgress(2, '已收到模型响应', '正在解析标准解答、详细解析、答案与模板。');
+    var finishDirect = function () {
+      setAiEntryProgress(3, '正在写入错题本', '解析完成，正在保存并整理条目。');
+      aiState.busy = false;
+      aiState.abort = null;
+      aiHandleResult(data, Date.now() - started);
+      clearAiStage();
+    };
+    // 让「解析结果」这步真实渲染一帧，再进入写入；不把请求前的等待算成百分比。
+    if (typeof requestAnimationFrame === 'function') requestAnimationFrame(finishDirect);
+    else setTimeout(finishDirect, 0);
   }).catch(function (err) {
     clearAiStage();
     aiState.busy = false;
