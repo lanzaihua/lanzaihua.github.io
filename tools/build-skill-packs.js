@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const zlib = require('zlib');
 
 function candidateRoots() {
   return [
@@ -60,7 +61,12 @@ module.exports = { buildSkillPacks };
 
 if (require.main === module) {
   const packs = buildSkillPacks();
-  const outFile = path.join(__dirname, '..', 'src', 'data', 'skills.json');
-  fs.writeFileSync(outFile, JSON.stringify(packs), 'utf8');
+  const raw = JSON.stringify(packs);
+  const dataDir = path.join(__dirname, '..', 'src', 'data');
+  const outFile = path.join(dataDir, 'skills.json');
+  const gzFile = path.join(dataDir, 'skills-pack.json.gz');
+  fs.writeFileSync(outFile, raw, 'utf8');
+  fs.writeFileSync(gzFile, zlib.gzipSync(Buffer.from(raw, 'utf8'), { level: 9 }));
   console.log('wrote ' + outFile + ' (' + (fs.statSync(outFile).size / 1024).toFixed(1) + ' KB)');
+  console.log('wrote ' + gzFile + ' (' + (fs.statSync(gzFile).size / 1024).toFixed(1) + ' KB)');
 }

@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
+const zlib = require('node:zlib');
 const ROOT = path.join(__dirname, '..');
 const KEY = 'sanke-cuotiben-v1';
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -123,6 +124,8 @@ test('all four complete skill packs are usable without author home directories',
   const {buildSkillPacks}=require('../tools/build-skill-packs');const packs=buildSkillPacks();
   const {loadSkillBundle}=require('../skills');
   for(const sid of ['gaodai','shufen','jieji','xijing']) {assert.ok(packs.subjects[sid].chapters.every(c=>c.text));assert.ok(loadSkillBundle(sid,'极限', '').materials[0].text);}
+  const packed=zlib.gunzipSync(fs.readFileSync(path.join(ROOT,'src/data/skills-pack.json.gz'))).toString('utf8');
+  assert.equal(packed,JSON.stringify(packs),'committed skills-pack.json.gz must match the current skill sources');
 });
 test('filling blanks survive typography normalization and rendering',()=>{
   const {document}=require('linkedom').parseHTML('<html></html>');const r=runtime();r.ctx.document=document;

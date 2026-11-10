@@ -309,7 +309,18 @@ if (siteQA.status !== 0) throw new Error('页面一致性校验失败，禁止�
 const strictQA = require('child_process').spawnSync(process.execPath, [path.join(ROOT, 'tools', 'qa-bank-strict.js'), '--strict-difficulty'], { cwd: ROOT, encoding: 'utf8' });
 if (strictQA.status !== 0) throw new Error('严格题库校验失败，禁止构建：\n' + (strictQA.stdout || '') + (strictQA.stderr || ''));
 const skillPacks = buildSkillPacks();
-const skillPacksGz = zlib.gzipSync(Buffer.from(JSON.stringify(skillPacks), 'utf8'), { level: 9 }).toString('base64');
+const skillPacksRaw = JSON.stringify(skillPacks);
+const skillPackGzFile = path.join(SRC, 'data', 'skills-pack.json.gz');
+let skillPacksGz;
+if (fs.existsSync(skillPackGzFile)) {
+  const packed = fs.readFileSync(skillPackGzFile);
+  if (zlib.gunzipSync(packed).toString('utf8') !== skillPacksRaw) {
+    throw new Error('skills-pack.json.gz 与当前技能包不一致，先运行 npm run build:skills');
+  }
+  skillPacksGz = packed.toString('base64');
+} else {
+  skillPacksGz = zlib.gzipSync(Buffer.from(skillPacksRaw, 'utf8'), { level: 9 }).toString('base64');
+}
 const seedJson = escScript(JSON.stringify(seed));
 const banksJson = escScript(JSON.stringify(banks));
 
