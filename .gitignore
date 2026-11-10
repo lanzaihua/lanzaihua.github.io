@@ -1,4 +1,5 @@
 node_modules/
+/source.zip
 data/state.json
 *.tmp
 __pycache__/

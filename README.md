@@ -39,12 +39,12 @@
 
 ## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码见 [`source.zip`](source.zip)。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.10 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.10/source.zip) 提供。
 
 ### 仓库与许可证
 
 - **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
-- **源码包**：下载 [`source.zip`](source.zip) 后解压，包含 `src/`、`build.js`、`server.js`、`skills.js` 与 `tools/`；[`SHA256SUMS`](SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
+- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.10/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.10/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
 - **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
 - **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
 - **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
