@@ -355,6 +355,12 @@ test('markdown lists survive bare-math wrapping and short display formulas stay 
   const long=document.createElement('div');
   long.innerHTML=r.ctx.renderMarkdown('$$'+'a+b+c+d+e+f+g+h+i+j+k+l+m+n+o+p+q+r+s+t+u+v+w+x+y+z+1+2+3+4+5+6+7+8+9+0+'.repeat(3)+'$$');
   assert.equal(long.querySelectorAll('.math-display').length,1,long.innerHTML);
+  const table=document.createElement('div');
+  table.innerHTML=r.ctx.renderMarkdown('| 字段 | 要求 | 页面位置 |\n|---|---|---|\n| 知识要点 | 2–4 个可搜索短语，含定理 / 方法 / 公式名 | 条目信息 |');
+  assert.equal(table.querySelectorAll('table').length,1,'表格行必须保持表格：'+table.innerHTML);
+  assert.equal(table.querySelectorAll('td').length,3,'单元格间的管道符不能被吞成公式：'+table.innerHTML);
+  assert.equal(table.textContent.includes('2–4 个可搜索短语'),true,table.textContent);
+  assert.equal(table.textContent.includes('|'),false,'表格管道符不能漏进正文：'+table.textContent);
 });
 test('real AI progress uses determinate values only when the total is known',()=>{
   const {parseHTML}=require('linkedom');
@@ -401,7 +407,7 @@ test('notification update digest groups items and gives each a stable card',()=>
   assert.equal((html.match(/notif-update-item/g)||[]).length,3,html);
   assert.equal(/notif-update-head/.test(html),false,'标题已含日期时不再重复日期头');
   assert.match(html,/notif-update-group/);
-  assert.match(html,/3 项/);
+  assert.match(html,/3 条要点/);
   assert.equal((html.match(/notif-preview md/g)||[]).length,1,'预览只应渲染一次');
   assert.ok(html.includes('网页已更新 · 2026-11-09 · 通知界面与角标'),'通知标题必须保留分隔符两侧空格，不能被行内公式渲染吞掉');
 });
@@ -553,4 +559,18 @@ test('filters can be cleared from every toolbar and bank source can be filtered'
   assert.match(init,/[\[\]]data-template-filter[\[\]]/);
   assert.match(read('src/styles.css'),/\.filter-clear\s*\{[^}]*white-space:\s*nowrap/);
   assert.match(read('src/styles.css'),/@media \(max-width: 1260px\)[\s\S]{0,300}\.entry-filters \.filter-clear/);
+});
+
+test('notification signature covers notify items and final page avoids duplicate summaries',()=>{
+  const r=runtime();r.run('55-notifications.js');
+  const base={date:'2026-11-10',title:'测试',summary:'摘要',items:[{group:'A',text:'正文'}],notifyItems:[{group:'A',text:'通知一'}]};
+  const edited={date:'2026-11-10',title:'测试',summary:'摘要',items:[{group:'A',text:'正文'}],notifyItems:[{group:'A',text:'通知二'}]};
+  assert.notEqual(r.ctx.notifUpdateSignature(base),r.ctx.notifUpdateSignature(edited),'同一天只改通知要点文字也必须触发新签名');
+  const js=read('src/js/55-notifications.js');
+  assert.match(js,/state\.notifNotifyItems = \(latest\.notifyItems \|\| \[\]\)/,'通知快照必须在发送成功后保存');
+  const finalJs=read('src/js/58-final.js');
+  assert.equal(/final-head-facts/.test(finalJs),false,'期末首屏不能重复展示日期、时长和材料数');
+  assert.equal(/final-empty-actions/.test(finalJs),false,'复习材料空态不能重复期末页顶部入口');
+  assert.match(finalJs,/final-countdown is-empty/,'未设定日期时不能留下孤立的破折号');
+  assert.match(read('src/styles.css'),/@media \(max-width: 900px\)[\s\S]{0,200}\.topbar \{ position: static; \}/,'手机与平板顶栏不再吸顶遮挡内容');
 });

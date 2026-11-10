@@ -69,6 +69,8 @@ function renderMath(tex, display) {
 function wrapBareMathFragmentsLine(src) {
   var text = String(src || '');
   if (!text) return text;
+  // Markdown 表格行交给 marked 处理；管道符不是公式边界，不能把单元格间的 | 2–4 包成公式。
+  if (/^\s*\|/.test(text)) return text;
   var store = [];
   var protectedRe = /\$\$[\s\S]*?\$\$|\$[^$\n]*\$|\uE000C\d+\uE001|\`\`\`[\s\S]*?\`\`\`|\`[^\`]*\`|<\/?[^>]+>|&lt;[\s\S]*?&gt;/g;
   text = text.replace(protectedRe, function (m) {

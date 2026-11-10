@@ -213,7 +213,7 @@ function finalSubjectTabsHtml(showNote) {
 function finalMaterialsHtml() {
   var list = finalMaterials();
   if (!list.length) {
-    return '<div class="final-empty"><b>还没有加入题目</b><p>到错题页或题库页，点「加入期末」；也可以从下面的入口去挑题。</p><div class="final-empty-actions"><a class="btn btn-xs" href="#/' + attr(state.activeSubject) + '/entries">去错题页</a><a class="btn btn-xs" href="#/' + attr(state.activeSubject) + '/bank">去题库页</a></div></div>';
+    return '<div class="final-empty"><b>还没有加入题目</b><p>用页面右上方的「挑错题 / 挑题库题」入口，把题目加入期末材料。</p></div>';
   }
   return '<div class="final-material-list">' + list.map(function (m) {
     return '<div class="final-material">' +
@@ -630,7 +630,9 @@ function viewFinal() {
       '<div class="final-setup-fields"><label class="field"><span>期末考试日期</span><input class="input" type="date" data-final-field="date" value="' + attr(fe.date) + '"></label>' +
       '<label class="field"><span>考试时长（分钟）</span><input class="input" type="number" min="30" max="300" step="5" data-final-field="duration" value="' + attr(fe.duration) + '"></label>' +
       '<span class="final-setup-hint">改日期或时长后，计划和组卷题数会同步更新。</span></div>' +
-      '<div class="final-countdown' + (plan.empty || plan.past ? ' is-empty' : '') + '"><span>' + esc(countLabel) + '</span><b>' + esc(count) + '</b><em>' + (plan.empty || plan.past ? '' : '天') + '</em></div>' +
+      (plan.empty || plan.past
+        ? '<div class="final-countdown is-empty"><span>' + esc(countLabel) + '</span></div>'
+        : '<div class="final-countdown"><span>' + esc(countLabel) + '</span><b>' + esc(count) + '</b><em>天</em></div>') +
     '</section>';
   var body = section === 'exam' ? finalExamStartPanelHtml() :
     '<div class="final-grid">' +
@@ -639,7 +641,7 @@ function viewFinal() {
     '</div>' +
     '<section class="final-panel final-papers card">' + finalPapersHtml() + '</section>';
   return '<div class="final-page">' +
-    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">先定考试日期和时长，再安排复习节奏；把错题和题库题加入材料，生成可编辑、可导出的模拟卷，或进入限时模拟考。</p></div><div class="final-head-side"><div class="final-head-facts"><span><em>考试日期</em><b>' + esc(fe.date ? fe.date.replace(/-/g, '/') : '待设定') + '</b></span><span><em>考试时长</em><b>' + esc(String(fe.duration || 120)) + ' 分钟</b></span><span><em>复习材料</em><b>' + esc(String(fe.items.length)) + ' 题</b></span></div><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
+    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">先定考试日期和时长，再安排复习节奏；把错题和题库题加入材料，生成可编辑、可导出的模拟卷，或进入限时模拟考。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
     subjectJumpHtml('final') + finalSectionTabsHtml() + setup + body +
     (ui.finalAiChaptersOpen && typeof finalExamChapterHtml === 'function' ? finalExamChapterHtml() : '') +
     (ui.examRulesOpen && typeof finalExamRulesHtml === 'function' ? finalExamRulesHtml() : '') +

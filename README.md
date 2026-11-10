@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.09--10-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.09--6c543289-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.10-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.10--f4eb00d8-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -21,7 +21,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261108b-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261110-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -47,7 +47,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、发布与源码打包脚本 |
-| `tests/` | 51 项回归测试，覆盖数据保护、公式渲染、通知、进度与模拟考 |
+| `tests/` | 52 项回归测试，覆盖数据保护、公式渲染、通知、进度与模拟考 |
 
 完整构建方式：解压 `source.zip` 后执行 `npm ci && node build.js`。仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页。
 
@@ -142,18 +142,18 @@ make check                                      # 同上，Makefile 入口
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261108b-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
-<td width="50%"><img src="assets/v2/20261108b-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261110-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
+<td width="50%"><img src="assets/v2/20261110-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261108b-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261108b-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
+<td width="50%"><img src="assets/v2/20261110-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261110-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
-<p align="center"><img src="assets/v2/20261108b-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
+<p align="center"><img src="assets/v2/20261110-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
 
-<p align="center"><img src="assets/v2/20261108b-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
+<p align="center"><img src="assets/v2/20261110-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
@@ -177,6 +177,27 @@ make check                                      # 同上，Makefile 入口
 </details>
 
 ## 更新记录
+
+### 2026-11-10 · 全站收口与记录校准
+
+**10 项 · 10 组**
+
+在 11-09 的长任务、公式、筛选与仓库语言基础上，本轮逐页核对三端界面与更新记录：修好规范页表格管道符被当公式、手机顶栏吸顶过高、期末复习重复摘要、通知要点计数与同日文字编辑漏发，并统一设置与首页文案、触控尺寸和辅助字号。本块共 10 项 / 10 组，52 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+
+| 分组 | 本次更新 |
+|---|---|
+| **规范表格** | 修复规范页表格被拆错行：裸公式扫描器把单元格之间的管道符和「2–4」当成公式，导致「条目信息」挤进要求列、页面位置列空白；表格行现在完整交给 Markdown 表格渲染，三列对齐，单元格内公式仍按行内公式处理。 |
+| **手机顶栏** | 手机与平板上的科目顶栏不再整块吸顶：品牌、搜索、科目切换、页签和期末/笔记库入口随页面滚走，阅读题目时不再被 150–234px 高的顶栏挡住；桌面端仍保留吸顶导航。 |
+| **通知要点** | 更新通知的计数从「3 项」改为「3 条要点」，与正文的 28 项 / 28 组区分开；通知签名纳入 notifyItems，同一天只改某组文字也会补发一条新通知，旧组不会重复；快照只在通知真正发出后保存，刷新页面不会重发旧内容。 |
+| **期末收口** | 期末复习首屏不再重复显示考试日期、时长和复习材料数，这些信息只留在设置表单与复习材料面板；复习材料空态不再重复顶部「挑错题 / 挑题库题」入口；未设日期时不再留下孤立的破折号。 |
+| **设置文案** | 设置里的「当前规模」改为「当前科目规模」，避免被当成全站总量，并移除容易被误读为产品版本的 v1 标签；首页科目标题改为全天候「想从哪一科开始？」，首次欢迎语从「欢迎回来」改为「欢迎使用四科错题本」。 |
+| **触控可读** | 补充手机与平板的触控尺寸：页签、题库来源、期末科目与跳转按钮至少 40–44px；笔记库辅助标签、设置分区标记统一到 10px；品牌副标题改用更深的辅助色，提升小字对比度。 |
+| **题库卡片** | 题库卡片标题已含「客观题 / 填空题 / 主观题」时，右侧不再重复同一枚题型标签；标题缺少题型时仍保留标签，筛选与题目类型不受影响。 |
+| **记录校准** | 修正 11-02 更新记录中的退格损坏字符，把解析几何的旧计数改为 900、「2751 题」改为 2750 题，与同块 8250 = 1500 + 3450 + 900 + 2400 对齐；改写 README 的 11-08 说明，删去「57 项块只展示 30 项、删除可访问性组」的矛盾表述。 |
+| **Release 归并** | GitHub Releases 同一日期只保留一整块：11-09 保留 v2026.11.09-10，11-08 保留 v2026.11.08-4，10-25 保留 v2026.10.25.1；同日重复的 13 个 release 已备份正文后删除，标签仍留在仓库历史中，不再在 Releases 页并列展示。 |
+| **防复发** | 新增表格管道符、通知签名与文字编辑、期末重复摘要、手机顶栏与三端布局回归测试；测试总数 52，严格 QA、站点一致性与 390 / 820 / 1440 检查同时执行，防止同类问题再次出现。 |
+
+<img src="assets/v2/20261110-changelog.png" alt="网页内更新记录" width="820">
 
 ### 2026-11-09 · 长任务、公式与语言
 
@@ -229,12 +250,12 @@ make check                                      # 同上，Makefile 入口
 | **取消与异常** | 取消 AI 出题会同时中止网络请求，迟到的结果不会再打开考生守则；取消 AI 批改会回退标准答案完成批改；AI 返回空对象或缺字段时不再因 null 属性崩溃。 |
 | **进度门禁** | 新增进度组件、三条流程接线、生成取消与空批改结果的回归测试；发布源码不含调试钩子，测试总数 40，配合严格 QA 与站点一致性防止同类问题回潮。 |
 | **首页工具栏** | 手机与平板首页的更新记录、语言、设置、通知四个入口从悬浮停靠改回页脚内联：按钮随内容换行，不再压住「期末复习」卡片与副标题；触控尺寸保持 36px，键盘焦点不变。 |
-| **记录合并** | 把 2026-11-08 的三块更新记录合并为一块：通知已读、界面统一、审计修复共 30 项统一展示，删除同日重复的「可访问性」组与中间计数（28/30 项测试、203/287 个文件），只保留最终状态；历史日期不再被构建日改写。 |
+| **记录合并** | 把 2026-11-08 的三块更新记录合并为一块：通知已读、界面统一、审计修复共 57 项统一展示，保留「可访问性」等有效分组，删除同日重复的组与中间计数（28/30 项测试、203/287 个文件），只保留最终状态；历史日期不再被构建日改写。 |
 | **日期门禁** | 删除构建时把首块日期强制改成构建日的逻辑；QA 新增同一天只允许一块、日期不得晚于今天、README/CHANGELOG 逐块计数校验，同日拆块或未来日期会直接阻止构建。 |
 | **仓库徽章** | README 九个徽章换成九组彼此分离的颜色（橙 / 红 / 绿 / 蓝 / 琥珀 / 紫 / 品红 / 青 / 灰蓝），RELEASE 指向本版发布标签，VERSION 指向本版构建号，避免相邻徽章同色。 |
 | **三端复核** | 390 / 820 / 1440 全路由复查首页、总览、错题、模板库、题库、规范、笔记库、期末复习与更新记录：首页工具栏不再遮挡内容，无横向溢出、无脚本错误，长公式仍按块横向滚动。 |
 | **发布产物** | 重建 dist、dist-pages、四科错题本.html、静态站 zip、source.zip 与 SHA256SUMS；更新记录截图改用 20261108e 版本，README 与 Release 引用同步到同一构建。 |
-| **文档同步** | README、CHANGELOG 与 GitHub Releases 由同一份更新记录生成：最新块 57 项 / 57 组完整展开，旧块保留历史；仓库页计数、链接、截图与线上构建逐项核对。 |
+| **文档同步** | README、CHANGELOG 与网页更新记录由同一份记录生成：最新块 57 项 / 57 组完整展开，旧块保留历史；Release 正文按对应版本摘要归档，仓库页计数、链接、截图与线上构建逐项核对。 |
 | **测试基线** | 新增进度组件与取消逻辑回归测试，覆盖确定/不确定进度、三条流程接线、生成中止与空批改结果；测试总数 40，配合严格 QA 与站点一致性门禁防止同类问题回潮。 |
 | **渲染白名单** | 修复 Markdown 渲染吞字与转义标签被拆成公式：保留粗体、斜体等行内标签与字面尖括号，未知标签解包保留文字，脚本、iframe 等危险标签整棵删除；新增回归测试。 |
 | **表格渲染** | 表格行不再被当裸公式包成 $...$；题库、错题和笔记里的 Markdown 表格现在渲染为表格，单元格内公式仍按行内公式处理。 |

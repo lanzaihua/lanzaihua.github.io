@@ -30,7 +30,8 @@ function notifAdd(title, body, kind, extra) {
 
 function notifUpdateSignature(latest) {
   var raw = [latest.date || '', latest.title || '', latest.summary || ''].join('|') + '||' +
-    (latest.items || []).map(function (it) { return (it.group || '') + ':' + (it.text || ''); }).join('||');
+    (latest.items || []).map(function (it) { return (it.group || '') + ':' + (it.text || ''); }).join('||') + '||notify||' +
+    (latest.notifyItems || []).map(function (it) { return (it.group || '') + ':' + (it.text || ''); }).join('||');
   var h = 2166136261;
   for (var i = 0; i < raw.length; i++) h = Math.imul(h ^ raw.charCodeAt(i), 16777619) >>> 0;
   return String(latest.date || '') + '|' + (h >>> 0).toString(36);
@@ -163,7 +164,7 @@ function notificationItemHtml(n) {
   var updateMeta = update ? notifParseUpdateMeta(body) : { date: '', label: '' };
   var showDigestHead = update && !/^网页已更新\s*·\s*\d{4}-\d{2}-\d{2}/.test(String(n.title || ''));
   var previewText = update ? (updateSummary || (updateItems[0] && updateItems[0].text) || body) : body;
-  var updateCount = update && updateItems.length ? '<span class="notif-update-count">' + updateItems.length + ' 项</span>' : '';
+  var updateCount = update && updateItems.length ? '<span class="notif-update-count">' + updateItems.length + ' 条要点</span>' : '';
   return '<article class="notif-item' + (n.read ? '' : ' is-unread') + (expanded ? ' is-expanded' : '') + '" data-notif-id="' + attr(n.id) + '">' +
     '<label class="notif-check"><input type="checkbox" data-notif-check data-id="' + attr(n.id) + '"' + (selected ? ' checked' : '') + ' aria-label="选择这条通知"><span></span></label>' +
     '<div class="notif-main">' +
@@ -353,7 +354,6 @@ function initNotifications() {
         var group = it.group || '更新';
         var text = String(it.text || '');
         if (previousNotifyItems.length) {
-          if (sameEdition) return !previousNotifyItems.some(function (p) { return p && (p.group || '更新') === group; });
           return !previousNotifyItems.some(function (p) { return p && (p.group || '更新') === group && String(p.text || '') === text; });
         }
         return !previousItems.some(function (p) { return p && (p.group || '更新') === group; });
@@ -389,14 +389,12 @@ function initNotifications() {
     });
     state.notifVersion = versionKey;
     state.notifBuildId = buildId;
-  } else if (latest) {
-    state.notifVersion = versionKey;
-    if (buildId) state.notifBuildId = buildId;
-  }
-  if (latest) {
     state.notifNotifyItems = (latest.notifyItems || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; });
     state.notifUpdateItems = (latest.items || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; });
     state.notifUpdateSummary = String(latest.summary || '');
+  } else if (latest) {
+    state.notifVersion = versionKey;
+    if (buildId) state.notifBuildId = buildId;
   }
   var today = formatDate(nowIso()).slice(0, 10);
   if (state.notifReviewDate !== today) {

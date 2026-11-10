@@ -489,8 +489,7 @@ languageRow +
 '<div class="settings-section"><div class="settings-section-head"><span class="settings-section-title">关于与更新</span><span class="settings-section-note">ABOUT</span></div>' +
     '<div class="setting-row"><div><div class="st">更新记录</div><div class="sd">最近更新默认展开，历史更新默认折叠；不会自动弹出</div></div>' +
       '<button class="btn btn-xs" data-act="open-changelog" type="button">查看更新</button></div>' +
-    '<div class="setting-row"><div><div class="st">当前规模</div><div class="sd">' + st.total + ' 条错题 · ' + st.templates + ' 张模板 · ' + st.bank + ' 道题库题</div></div>' +
-      '<span class="chip">v1</span></div>' +
+    '<div class="setting-row"><div><div class="st">当前科目规模</div><div class="sd">' + st.total + ' 道错题 · ' + st.templates + ' 张模板 · ' + st.bank + ' 道题库题</div></div></div>' +
     '</div>' +
     '<p class="form-note">数据默认只保存在这个浏览器。手机上访问同一台电脑的地址（node server.js --lan 启动后看终端里的 LAN 地址）即可共享同一份 data/state.json；公网访问时请设置 NOTEBOOK_TOKEN 并走 HTTPS 隧道。</p>';
   qs('#settingsBody').innerHTML = body;

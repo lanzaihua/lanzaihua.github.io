@@ -5780,3 +5780,21 @@ p, li, .md p, .md li { text-wrap: pretty; }
   .note-busy-fill { transition: none; }
   .note-busy-track.is-indeterminate .note-busy-fill { width: 100%; min-width: 0; animation: none; opacity: .42; }
 }
+/* ---------- 2026-11-10: 三端层级、触控与可读性收口 ---------- */
+.brand-sub { color: var(--faint); }
+@media (max-width: 900px) {
+  /* 手机上整块顶栏太高，滚动后不再吸顶；内容优先。 */
+  .topbar { position: static; }
+  .tab { display: inline-flex; align-items: center; min-height: 44px; }
+  .bank-filters .seg.bank-origin button,
+  .final-subject-tab,
+  .subject-jump-btn { min-height: 40px; }
+}
+@media (max-width: 600px) {
+  .guide-panel .md th,
+  .guide-panel .md td { padding: 7px 6px; font-size: 12px; line-height: 1.65; }
+  .note-book-badge, .note-title-edit, .note-section-kicker, .note-section-meta,
+  .note-kb-mark, .note-kb-type, .note-kb-foot, .note-type-tab span,
+  .note-books-preview em, .kb-tag b, .settings-section-note { font-size: 10px; }
+}
+

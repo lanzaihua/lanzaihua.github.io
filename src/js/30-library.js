@@ -517,6 +517,7 @@ function viewBank(subjectId) {
 
 function renderBankItem(it) {
   var open = !!ui.bankOpen[it.id];
+  var typeLabel = it.type === 'choice' ? '客观题' : it.type === 'fill' ? '填空题' : '主观题';
   var rel = (it.relatedEntries || []).map(function (code) {
     var e = entriesOf(state.activeSubject).filter(function (x) { return x.code === code; })[0];
     return e ? '<button class="chip" data-act="jump-entry" data-id="' + attr(e.id) + '" type="button">关联 ' + esc(e.code) + '</button>' : '';
@@ -527,7 +528,7 @@ function renderBankItem(it) {
       '<h3 class="bank-title">' + esc(it.title) + '</h3>' +
       '<span class="bank-meta">' +
         (it.templateId ? '<span class="chip">' + esc(it.templateId) + '</span>' : '') +
-        '<span class="chip chip-star">' + stars(it.difficulty) + '</span>' + '<span class="chip">' + esc(it.type === 'choice' ? '客观题' : it.type === 'fill' ? '填空题' : '主观题') + '</span>' + '<span class="chip chip-exam">' + (it.examOrigin === '教材课后习题' ? '教材课后' : '考研同型') + '</span>' +
+        '<span class="chip chip-star">' + stars(it.difficulty) + '</span>' + (String(it.title || '').indexOf(typeLabel) >= 0 ? '' : '<span class="chip">' + esc(typeLabel) + '</span>') + '<span class="chip chip-exam">' + (it.examOrigin === '教材课后习题' ? '教材课后' : '考研同型') + '</span>' +
         (it.chapter ? '<span class="chip">' + esc(it.chapter) + '</span>' : '') +
       '</span>' +
     '</div>' +

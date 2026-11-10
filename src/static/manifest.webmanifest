@@ -1,0 +1,14 @@
+{
+  "name": "四科错题本",
+  "short_name": "四科错题本",
+  "description": "高等代数、数学分析、解析几何、西方经济学四科错题、模板与题库。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f1e9",
+  "theme_color": "#f4f1e9",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
