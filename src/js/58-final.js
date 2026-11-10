@@ -213,7 +213,7 @@ function finalSubjectTabsHtml(showNote) {
 function finalMaterialsHtml() {
   var list = finalMaterials();
   if (!list.length) {
-    return '<div class="final-empty"><b>还没有加入题目</b><p>用页面右上方的「挑错题 / 挑题库题」入口，把题目加入期末材料。</p></div>';
+    return '<div class="final-empty"><b>还没有加入题目</b><p>用页面顶部的「挑错题 / 挑题库题」入口，把题目加入期末材料。</p></div>';
   }
   return '<div class="final-material-list">' + list.map(function (m) {
     return '<div class="final-material">' +

@@ -5973,3 +5973,59 @@ p, li, .md p, .md li { text-wrap: pretty; }
   .ai-progress-live-dot { animation: none; }
   .ai-progress-track::after { display: none; }
 }
+
+/* 2026-11-10: 三端可读性与触控收口 */
+.brand-sub,
+.home-brand-sub { font-size: 10.5px; }
+.eyebrow { font-size: 10.8px; }
+.home-kicker,
+.hs-count,
+.filter-count,
+.subject-jump-label { font-size: 11px; }
+.notif-badge { font-size: 10px; }
+.note-section-kicker,
+.note-section-meta { font-size: 10px; }
+.final-subject-tab {
+  min-height: 36px;
+  padding: 6px 12px;
+  font-size: 11px;
+}
+.subject-jump-btn,
+.note-section-add { min-height: 36px; }
+.filter-clear {
+  min-height: 36px;
+  padding-inline: 12px;
+}
+.tpl-body .linkish {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+}
+@media (max-width: 900px) {
+  .final-subject-tab,
+  .subject-jump-btn,
+  .note-section-add,
+  .filter-clear,
+  .tpl-body .linkish { min-height: 40px; }
+}
+@media (max-width: 640px) {
+  html.is-notes-module .mobile-brand .brand-sub { font-size: 10.5px; }
+}
+@media (max-width: 420px) {
+  .icon-btn,
+  .home-icon-group .icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+  #tabs .tab { font-size: 11px; }
+}
+
+/* 2026-11-10: 次级按钮与状态分段统一到可点高度 */
+.btn-xs {
+  min-height: 34px;
+  padding: 6px 10px;
+}
+.entry-filters .seg button { min-height: 36px; }
+@media (max-width: 900px) {
+  .btn-xs { min-height: 36px; }
+}

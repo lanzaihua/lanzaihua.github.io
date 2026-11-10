@@ -625,6 +625,8 @@ test('notification signature covers notify items and final page avoids duplicate
   assert.equal(/final-head-facts/.test(finalJs),false,'期末首屏不能重复展示日期、时长和材料数');
   assert.equal(/final-empty-actions/.test(finalJs),false,'复习材料空态不能重复期末页顶部入口');
   assert.match(finalJs,/final-countdown is-empty/,'未设定日期时不能留下孤立的破折号');
+  assert.match(finalJs,/页面顶部的「挑错题 \/ 挑题库题」/,'空态指引必须与手机端顶部入口一致');
+  assert.equal(/页面右上方/.test(finalJs),false,'不能再用桌面端的右上方向指引手机用户');
   assert.match(read('src/styles.css'),/@media \(max-width: 900px\)[\s\S]{0,200}\.topbar \{ position: static; \}/,'手机与平板顶栏不再吸顶遮挡内容');
 });
 
@@ -640,9 +642,20 @@ test('home restores warm 2ea palette, daily greeting and welcome dialog',()=>{
   assert.match(tpl,/id="homeGreeting"/,'首页必须有问候标题');
   assert.match(tpl,/id="homeWelcome"/,'首页必须有每日问候副标题');
   assert.match(tpl,/id="homeWelcomeNote"/,'首页必须有问候提示');
+  assert.match(tpl,/id="homeSubjectsTitle"/,'科目入口标题必须可随时段更新');
   assert.match(shell,/function homeWelcome\(hour\)/,'问候必须随小时变化');
+  assert.match(shell,/明天想从哪一科继续/, '深夜问候必须把科目标题改成明天继续');
   assert.match(shell,/state\.prefs\.userName/,'问候必须带上用户称呼');
   assert.match(tpl,/class="dlg-api-welcome"/,'欢迎弹窗必须保留原有结构');
   assert.match(tpl,/apiwelcome-mark/,'欢迎弹窗必须保留原有图标');
   assert.match(tpl,/apiwelcome-list/,'欢迎弹窗必须保留原有卡片');
+});
+
+test('mobile and tablet controls meet touch target and helper text sizes',()=>{
+  const css=read('src/styles.css');
+  assert.match(css,/@media \(max-width: 420px\)[\s\S]{0,180}\.icon-btn,[\s\S]{0,80}\.home-icon-group \.icon-btn \{[\s\S]{0,80}width: 40px;[\s\S]{0,40}height: 40px;/, '手机顶栏与页脚图标必须至少 40px');
+  assert.match(css,/\.filter-clear \{[\s\S]{0,80}min-height: 36px;/, '清空筛选必须有可点高度');
+  assert.match(css,/\.final-subject-tab \{[\s\S]{0,100}min-height: 36px;/, '期末科目按钮必须有可点高度');
+  assert.match(css,/\.tpl-body \.linkish \{[\s\S]{0,120}min-height: 36px;/, '模板复制按钮必须有可点高度');
+  assert.match(css,/\.brand-sub,[\s\S]{0,60}\.home-brand-sub \{ font-size: 10.5px; \}/, '品牌副标题不能低于 10.5px');
 });

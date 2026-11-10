@@ -65,6 +65,11 @@ function renderHomeClock() {
   if (welcome) welcome.textContent = info.line;
   var note = qs('#homeWelcomeNote');
   if (note) note.textContent = info.note;
+  var subjectsTitle = qs('#homeSubjectsTitle');
+  if (subjectsTitle) {
+    var h = new Date().getHours();
+    subjectsTitle.textContent = (h < 5 || h >= 23) ? '明天想从哪一科继续？' : '想从哪一科开始？';
+  }
   var date = qs('#homeDate');
   if (date) {
     var d = new Date();
