@@ -41,48 +41,50 @@ __STYLES__
         </span>
       </div>
       <div class="home-top-meta">
-        <span>四科 · 一套复习节奏</span>
+        <span>四科 · 错题整理</span>
         <span id="homeDate"></span>
       </div>
       
     </header>
 
     <main class="home-main" id="homeMain">
-      <p class="home-kicker">不必一次做完 按自己的节奏来</p>
-      <h1 class="home-title" id="homeTitle"><span id="homeGreeting">你好</span><br><span id="homeWelcome">欢迎回来</span></h1>
-      <p class="home-welcome-note" id="homeWelcomeNote"></p>
-
-      <div class="home-subjects-head">
-        <span>想从哪一科开始？</span>
-        <span>不用全看 挑一科就好</span>
+      <div class="home-hero">
+        <div class="home-hero-main">
+          <h1 class="home-title" id="homeTitle">今天从哪一科开始</h1>
+          <p class="home-welcome-note" id="homeWelcomeNote">打开一科继续整理错题；题库、模板和笔记都在这里。</p>
+        </div>
+        <dl class="home-summary" aria-label="错题本概况">
+          <div><dt>错题</dt><dd id="homeStatEntries">0</dd></div>
+          <div><dt>模板</dt><dd id="homeStatTemplates">0</dd></div>
+          <div><dt>题库</dt><dd id="homeStatBank">0</dd></div>
+        </dl>
       </div>
-      <div class="home-subjects" id="homeSubjects"></div>
 
-      <a class="home-notes-entry" href="#/notes" data-act="open-notes-library" title="打开笔记库">
-        <span class="hne-seal" aria-hidden="true">记</span>
-        <span class="hne-main"><b>笔记库</b><small>多页笔记 · 手写标注 · 智能扫描 · 导出 PDF</small></span>
-        <span class="hne-action">打开 <span aria-hidden="true">→</span></span>
-      </a>
+      <section class="home-section" aria-labelledby="homeSubjectsTitle">
+        <div class="home-subjects-head">
+          <h2 id="homeSubjectsTitle">科目</h2>
+          <span>按科目进入总览</span>
+        </div>
+        <div class="home-subjects" id="homeSubjects"></div>
+      </section>
 
-      <a class="home-notes-entry home-final-entry" href="#/final" title="打开期末复习">
-        <span class="hne-seal" aria-hidden="true">末</span>
-        <span class="hne-main"><b>期末复习</b><small>考试日期 · 智能计划 · 模拟卷 · DOCX / PDF</small></span>
-        <span class="hne-action">打开 <span aria-hidden="true">→</span></span>
-      </a>
-
-      <div class="home-features" aria-label="错题本功能">
-        <span>AI 补全解答</span>
-        <span>题型模板</span>
-        <span>考研同型</span>
-        <span>掌握标记</span>
-        <span>期末模拟卷 · DOCX / PDF</span><span>手机 / 平板 / 电脑</span>
-      </div>
+      <section class="home-tools" aria-label="更多入口">
+        <a class="home-tool" href="#/notes" data-act="open-notes-library" title="打开笔记库">
+          <span class="home-tool-seal" aria-hidden="true">记</span>
+          <span class="home-tool-main"><b>笔记库</b><small>手写、扫描、导出 PDF</small></span>
+          <span class="home-tool-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="home-tool" href="#/final" title="打开期末复习">
+          <span class="home-tool-seal" aria-hidden="true">末</span>
+          <span class="home-tool-main"><b>期末复习</b><small>考试日期、模拟卷、DOCX / PDF</small></span>
+          <span class="home-tool-arrow" aria-hidden="true">→</span>
+        </a>
+      </section>
     </main>
 
     <footer class="home-foot">
-      <span>模板和题库都在这儿 按你的节奏来</span>
+      <span>错题、模板、题库与笔记，数据都留在本机</span>
       <span class="home-foot-actions">
-        <span id="homeFootNote">数据保存在本机浏览器，可在设置里导出或连接同步</span>
         <a class="home-repo-link" href="https://github.com/lanzaihua/lanzaihua.github.io/blob/main/README.md" target="_blank" rel="noopener noreferrer" title="在 GitHub 查看网页详细介绍">详细介绍 <span aria-hidden="true">↗</span></a>
         <span class="home-icon-group">
         <button class="icon-btn home-changelog-btn" data-act="open-changelog" type="button" title="更新记录" aria-label="更新记录">
@@ -465,8 +467,8 @@ __STYLES__
 <dialog id="apiWelcomeDialog" class="dlg-api-welcome" aria-labelledby="apiWelcomeTitle">
   <div class="dlg-head">
     <div class="dlg-head-copy">
-      <p class="dlg-kicker">WELCOME</p>
-      <h2 class="dlg-title" id="apiWelcomeTitle">先按自己的节奏来</h2>
+      
+      <h2 class="dlg-title" id="apiWelcomeTitle">开始使用</h2>
     </div>
     <button class="icon-btn" data-act="dismiss-api-welcome" type="button" aria-label="关闭提示">×</button>
   </div>
@@ -474,8 +476,8 @@ __STYLES__
     <div class="apiwelcome-intro">
       <span class="apiwelcome-mark" aria-hidden="true"><span></span></span>
       <div>
-        <p class="apiwelcome-lead">欢迎使用四科错题本。错题、模板、题库和笔记都可以直接使用，不需要先配置任何服务。</p>
-        <p class="apiwelcome-copy">如果你之后想用 AI 智能录入、题目翻译或自动补全，再到「设置与同步」里配置一个 API 服务就好。现在不配置也完全没关系。</p>
+        <p class="apiwelcome-lead">错题、模板、题库和笔记都在本机，打开就能用。</p>
+        <p class="apiwelcome-copy">AI 智能录入、翻译和自动补全需要配置 API。没有配置时，其他功能不受影响。</p>
       </div>
     </div>
     <div class="apiwelcome-list">
@@ -483,12 +485,12 @@ __STYLES__
       <div><b>界面与内容翻译</b><span>切换语言时生成完整译文</span></div>
       <div><b>暂存箱与自动补全</b><span>峰谷时段排队，后台慢慢补齐</span></div>
     </div>
-    <p class="apiwelcome-note">这些是锦上添花的功能。先逛逛，等真正需要时再配置也来得及。</p>
+    <p class="apiwelcome-note">配置入口在「设置与同步」，之后随时可以修改或删除。</p>
   </div>
   <div class="dlg-foot api-welcome-foot">
-    <span class="faint">之后可在「设置与同步」里随时配置或修改</span>
+    <span class="faint">AI 功能是可选项，不影响错题与题库</span>
     <div class="api-welcome-actions">
-      <button class="btn" data-act="dismiss-api-welcome" type="button">先逛逛</button>
+      <button class="btn" data-act="dismiss-api-welcome" type="button">以后再说</button>
       <button class="btn btn-primary" data-act="configure-api-welcome" type="button">去设置</button>
     </div>
   </div>

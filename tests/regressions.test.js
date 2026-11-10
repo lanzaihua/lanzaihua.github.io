@@ -291,6 +291,16 @@ test('styles keep MathML layout boxes and balanced mobile action rows',()=>{
   assert.match(css,/\.bank-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端题库操作按钮应为两列');
   assert.match(css,/\.entry-foot\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端错题操作按钮应为两列');
 });
+test('site shell uses the paper-and-ink layout without duplicate home copy',()=>{
+  const tpl=read('src/index.template.html'), css=read('src/styles.css');
+  assert.ok(tpl.includes('今天从哪一科开始'),'首页应有固定主标题，而不是按时段问候');
+  assert.equal(tpl.includes('homeFootNote'),false,'页脚不应再保留重复的本机存储说明');
+  assert.equal(/夜深了|这个点还没睡/.test(tpl),false,'首页模板不应残留时段问候文案');
+  assert.match(css,/--paper:\s*#f2f2ed/,'全站应使用冷纸色令牌');
+  assert.match(css,/\.eyebrow,[^{}]*\.note-section-kicker[^{}]*\.page-kicker[^{}]*\.notif-kicker[^{}]*\{\s*display:\s*none\s*!important/,'英文小标签必须隐藏');
+  assert.match(css,/\.home-title\s*\{[^}]*font-family:\s*var\(--font-sans\)/,'首页主标题必须使用无衬线层级');
+});
+
 test('exam header stays sticky at a stable height with explicit expand and collapse rules',()=>{
   const css=read('src/styles.css'), js=read('src/js/59-exam.js');
   assert.match(css,/\.exam-sticky\s*\{[^}]*position:\s*sticky[^}]*height:\s*124px/,'答题页必须使用常高 sticky 外壳，避免收缩时内容跳动');

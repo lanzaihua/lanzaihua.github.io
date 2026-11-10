@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.10-2ea474da";</script>
+<script>window.__BUILD_ID__="2026.11.10-9db1d38b";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -31,71 +31,77 @@
    ========================================================= */
 :root {
   color-scheme: light;
-  --paper: #f4f1e9;
-  --paper-deep: #ece7db;
-  --surface: #fbf9f3;
-  --surface-2: #efebe1;
-  --surface-3: #e7e1d3;
-  --ink: #1d211c;
-  --ink-soft: #3d433a;
-  --muted: #6b7167;
-  --faint: #5f665c; /* 对比度：#fbf9f3 5.63:1 / #f4f1e9 5.25:1 / #efebe1 4.98:1，小字达标 */
-  --line: #ddd7c9;
-  --line-strong: #c7c0ae;
-  --accent: #b23a26;
-  --accent-ink: #fff8f2;
-  --accent-soft: #f3ded6;
-  --ok: #2f6b4f;
+  --paper: #f2f2ed;
+  --paper-deep: #e7e8e1;
+  --surface: #fbfbf7;
+  --surface-2: #eceee7;
+  --surface-3: #e0e3da;
+  --ink: #1f241f;
+  --ink-soft: #384039;
+  --muted: #646c62;
+  --faint: #5c645a; /* 对比度：#fbfbf7 5.9:1 / #f2f2ed 5.4:1，小字达标 */
+  --line: #d7dbd1;
+  --line-strong: #b9c1b3;
+  --accent: #2f5d54;
+  --accent-deep: #21443d;
+  --accent-ink: #f7faf6;
+  --accent-soft: #dce7e1;
+  --paper-2: #f7f7f2;
+  --ok: #356b4e;
   --ok-soft: #dfeae2;
-  --warn: #9a5b2d;
-  --warn-soft: #f2e4d3;
-  --gaodai: #2f6b4f;
-  --shufen: #33557f;
-  --jieji: #9a5b2d;
-  --xijing: #5c4b6b;
-  --radius-card: 14px;
-  --radius-ctl: 10px;
-  --shadow-card: 0 1px 0 rgba(29, 33, 28, .03), 0 14px 36px -30px rgba(29, 33, 28, .55);
+  --warn: #875a2d;
+  --warn-soft: #f0e4d5;
+  --gaodai: #3f6b55;
+  --shufen: #3d5f80;
+  --jieji: #895b34;
+  --xijing: #5f526d;
+  --radius-card: 8px;
+  --radius-ctl: 6px;
+  --shadow-card: none;
   --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
   --font-sans: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "DengXian", system-ui, -apple-system, sans-serif;
+  --font-display: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "DengXian", system-ui, -apple-system, sans-serif;
   --font-mono: "Cascadia Code", "JetBrains Mono", Consolas, "Courier New", monospace;
   --maxw: 1120px;
   --rail-w: 268px;
 }
 html[data-theme="dark"] {
   color-scheme: dark;
-  --paper: #161813;
-  --paper-deep: #121410;
-  --surface: #1d201a;
-  --surface-2: #242820;
-  --surface-3: #2c3027;
-  --ink: #eceadf;
-  --ink-soft: #cfcdc0;
-  --muted: #a4a89b;
-  --faint: #9aa091;
-  --line: #353a30;
-  --line-strong: #4a5042;
-  --accent: #df6a52;
-  --accent-ink: #1a120e;
-  --accent-soft: #3a231c;
-  --ok: #79b28f;
+  --paper: #151814;
+  --paper-deep: #111410;
+  --surface: #1c211b;
+  --surface-2: #232a22;
+  --surface-3: #2b332a;
+  --ink: #e8ece4;
+  --ink-soft: #c8d0c5;
+  --muted: #9ba69a;
+  --faint: #97a294;
+  --line: #343d33;
+  --line-strong: #4b574b;
+  --accent: #86b8a7;
+  --accent-deep: #a7d0c1;
+  --accent-ink: #0f1a16;
+  --accent-soft: #223a31;
+  --paper-2: #20261f;
+  --ok: #86c0a1;
   --ok-soft: #1f3328;
-  --warn: #d59a5d;
+  --warn: #d3a06a;
   --warn-soft: #33261a;
-  --gaodai: #79b28f;
-  --shufen: #8aa8d4;
-  --jieji: #d59a5d;
-  --xijing: #b9a3cd;
-  --shadow-card: 0 1px 0 rgba(0, 0, 0, .2), 0 20px 40px -34px #000;
+  --gaodai: #86c0a1;
+  --shufen: #91b3d8;
+  --jieji: #d3a06a;
+  --xijing: #b9a7c9;
+  --shadow-card: none;
 }
 @media (prefers-color-scheme: dark) {
   html[data-theme="auto"] {
     color-scheme: dark;
-    --paper: #161813; --paper-deep: #121410; --surface: #1d201a; --surface-2: #242820; --surface-3: #2c3027;
-    --ink: #eceadf; --ink-soft: #cfcdc0; --muted: #a4a89b; --faint: #9aa091; --line: #353a30; --line-strong: #4a5042;
-    --accent: #df6a52; --accent-ink: #1a120e; --accent-soft: #3a231c; --ok: #79b28f; --ok-soft: #1f3328;
-    --warn: #d59a5d; --warn-soft: #33261a; --gaodai: #79b28f; --shufen: #8aa8d4; --jieji: #d59a5d; --xijing: #b9a3cd;
-    --shadow-card: 0 1px 0 rgba(0, 0, 0, .2), 0 20px 40px -34px #000;
+    --paper: #151814; --paper-deep: #111410; --surface: #1c211b; --surface-2: #232a22; --surface-3: #2b332a;
+    --ink: #e8ece4; --ink-soft: #c8d0c5; --muted: #9ba69a; --faint: #97a294; --line: #343d33; --line-strong: #4b574b;
+    --accent: #86b8a7; --accent-deep: #a7d0c1; --accent-ink: #0f1a16; --accent-soft: #223a31; --paper-2: #20261f;
+    --ok: #86c0a1; --ok-soft: #1f3328;
+    --warn: #d3a06a; --warn-soft: #33261a; --gaodai: #86c0a1; --shufen: #91b3d8; --jieji: #d3a06a; --xijing: #b9a7c9;
+    --shadow-card: none;
   }
 }
 
@@ -5824,6 +5830,165 @@ p, li, .md p, .md li { text-wrap: pretty; }
   .note-books-preview em, .kb-tag b, .settings-section-note { font-size: 10px; }
 }
 
+/* ---------- 2026-11-11: 去装饰化排版，回到纸与墨 ---------- */
+body { background: var(--paper); }
+.home-screen { background: var(--paper); }
+.topbar { background: color-mix(in srgb, var(--paper) 92%, transparent); }
+
+.home-main { justify-content: center; padding: 54px 0 36px; }
+.home-hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end;
+  gap: 36px; padding-bottom: 26px; border-bottom: 1px solid var(--line);
+}
+.home-hero-main { min-width: 0; }
+.home-title {
+  margin: 0 0 10px; max-width: 18em;
+  font-family: var(--font-sans); font-size: clamp(30px, 3.4vw, 40px) !important;
+  font-weight: 650; line-height: 1.18; letter-spacing: -.015em; text-wrap: balance;
+}
+.home-welcome-note { margin: 0; max-width: 36em; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.home-summary { display: grid; grid-template-columns: repeat(3, auto); margin: 0; padding: 0; }
+.home-summary > div { min-width: 82px; padding: 0 20px; border-left: 1px solid var(--line); }
+.home-summary > div:first-child { padding-left: 0; border-left: 0; }
+.home-summary > div:last-child { padding-right: 0; }
+.home-summary dt { margin: 0; color: var(--faint); font-size: 11px; letter-spacing: .06em; white-space: nowrap; }
+.home-summary dd {
+  margin: 5px 0 0; color: var(--ink);
+  font-family: var(--font-mono); font-size: 23px; font-weight: 500; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.home-section { margin-top: 34px; }
+.home-subjects-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  margin: 0; padding: 0 0 10px; border: 0;
+}
+.home-subjects-head h2 { margin: 0; font-family: var(--font-sans); font-size: 14px; font-weight: 650; letter-spacing: .01em; }
+.home-subjects-head span { color: var(--faint); font-size: 11px; }
+.home-subjects {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0;
+  border-top: 1px solid var(--line); border-left: 1px solid var(--line);
+}
+.home-subject {
+  grid-template-columns: 26px minmax(0, 1fr) auto 14px; gap: 10px;
+  padding: 14px 14px; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  border-radius: 0; background: transparent; box-shadow: none;
+  transition: background .15s ease;
+}
+.home-subject:hover { transform: none; border-color: var(--line); background: var(--surface-2); }
+.home-subject:active { transform: none; }
+.hs-index { padding-top: 2px; font-size: 10px; color: var(--faint); }
+.hs-name { font-family: var(--font-sans); font-size: 16px; font-weight: 650; line-height: 1.3; letter-spacing: 0; }
+.hs-desc { font-size: 11.5px; line-height: 1.6; color: var(--muted); }
+.hs-count { font-size: 10.5px; color: var(--muted); }
+.hs-meta { font-size: 9.5px; color: var(--faint); }
+.hs-arrow { font-size: 13px; color: var(--faint); }
+.home-subject:hover .hs-arrow { transform: translateX(2px); }
+
+.home-tools {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0;
+  margin-top: 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.home-tool {
+  display: flex; align-items: center; gap: 12px; min-width: 0;
+  padding: 15px 14px; border: 0; border-radius: 0; background: transparent;
+  transition: background .15s ease;
+}
+.home-tool + .home-tool { border-left: 1px solid var(--line); }
+.home-tool:hover { background: var(--surface-2); }
+.home-tool-seal {
+  display: grid; place-items: center; flex: 0 0 auto; width: 28px; height: 28px;
+  border-radius: 4px; background: var(--ink); color: var(--paper);
+  font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+}
+.home-tool-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.home-tool-main b { font-family: var(--font-sans); font-size: 14px; font-weight: 650; line-height: 1.35; }
+.home-tool-main small { color: var(--muted); font-size: 11px; line-height: 1.5; }
+.home-tool-arrow { margin-left: auto; color: var(--faint); font-size: 13px; }
+.home-foot { padding-top: 16px; border-top: 1px solid var(--line); color: var(--faint); font-size: 10.5px; }
+.home-repo-link { border-bottom-color: var(--line); }
+
+/* 页面标题与正文：统一无衬线层级，去掉英文小标签 */
+.page-title, .hero-title, .panel-title, .entry-title, .block-title, .dlg-title,
+.tpl-chapter h3, .tpl-name, .bank-title, .empty-state .es-title, .ai-summary,
+.ai-sec h4, .final-panel-head h2, .final-paper-head h2, .exam-title, .exam-generating h1,
+.exam-result-hero h1, .exam-rules-head h2, .exam-ready h1, .kb-answer h2,
+.kb-question-head h3, .changelog-hero h3, .guide-card h3, .note-library-empty-copy h2,
+.note-section-head h2, .note-books-copy b, .h-serif, .subject-item .nm, .crumb .subj, .hs-name {
+  font-family: var(--font-sans); letter-spacing: -.01em;
+}
+.eyebrow, .note-section-kicker, .page-kicker, .entry-note-kicker, .note-sheet-kicker, .notif-kicker, .rail-label { display: none !important; }
+.page-head { align-items: flex-end; margin-bottom: 22px; padding-bottom: 14px; }
+.page-title { font-size: clamp(25px, 2.6vw, 31px); font-weight: 650; line-height: 1.2; }
+.page-sub { margin-top: 7px; max-width: 78ch; color: var(--muted); font-size: 13px; line-height: 1.75; }
+.hero { gap: 26px; padding: 26px 28px; border-radius: var(--radius-card); background: var(--surface); box-shadow: none; margin-bottom: 22px; }
+.hero-title { margin: 0 0 9px; font-size: clamp(24px, 3vw, 32px); font-weight: 650; line-height: 1.22; }
+.hero-kicker { margin-bottom: 9px; font-size: 10.5px; letter-spacing: .1em; }
+.hero-desc { font-size: 13px; line-height: 1.75; }
+.hero-side { gap: 12px; padding-left: 26px; }
+.progress-num { font-family: var(--font-mono); font-size: 38px; font-weight: 500; }
+.progress-label { letter-spacing: .1em; }
+.stat .num { font-family: var(--font-mono); font-size: 26px; font-weight: 500; }
+.stats { margin-bottom: 22px; box-shadow: none; }
+
+.panel { border-radius: var(--radius-card); box-shadow: none; }
+.panel-head { padding: 13px 16px; }
+.panel-title { font-size: 15px; font-weight: 650; }
+.panel-hint, .panel-meta { font-size: 10.5px; }
+.entry { border-radius: var(--radius-card); }
+.entry.is-open { box-shadow: none; }
+.entry-title { font-size: 15px; font-weight: 650; }
+
+.btn { min-height: 34px; padding: 8px 14px; border-radius: var(--radius-ctl); font-size: 12.5px; letter-spacing: .01em; }
+.btn:hover { transform: none; box-shadow: none; }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.btn-primary:hover { background: var(--ink-soft); border-color: var(--ink-soft); color: var(--paper); }
+.btn-xs { border-radius: 5px; }
+.chip { border-radius: 4px; background: transparent; font-size: 10.5px; line-height: 1.6; }
+.chip-subj, .chip-ok, .chip-warn { background: transparent; }
+.seg { border-radius: var(--radius-ctl); background: var(--surface-2); }
+.seg button { border-radius: 4px; }
+.select, .search input, .icon-btn { border-radius: var(--radius-ctl); }
+.icon-btn { background: transparent; }
+.toolbar { border-radius: var(--radius-card); box-shadow: none; }
+
+.bank-item { border-radius: var(--radius-card); }
+.bank-answer { border-radius: var(--radius-card); }
+.bank-actions .btn { border-radius: 5px; }
+.changelog-recent { border-top: 1px solid var(--line); border-radius: var(--radius-card); background: var(--surface); }
+.changelog-group { border-radius: 6px; }
+.changelog-highlights span { border-radius: 4px; background: transparent; }
+.changelog-hero h3 { font-weight: 650; }
+.changelog-badge { border-radius: 3px; }
+.notif-panel { border-radius: var(--radius-card); }
+.notif-update-item { border-radius: 6px; }
+dialog, .dlg { border-radius: 10px; }
+.exam-card, .exam-q, .final-card, .final-panel { border-radius: var(--radius-card); }
+
+@media (max-width: 900px) {
+  .home-main { justify-content: flex-start; padding: 28px 0 22px; }
+  .home-hero { grid-template-columns: 1fr; align-items: start; gap: 18px; padding-bottom: 20px; }
+  .home-title { margin-bottom: 8px; font-size: 27px; line-height: 1.28; }
+  .home-welcome-note { font-size: 13.5px; line-height: 1.75; }
+  .home-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .home-summary > div { min-width: 0; padding: 0 0 0 14px; }
+  .home-summary dt { font-size: 10.5px; }
+  .home-summary dd { font-size: 20px; }
+  .home-section { margin-top: 26px; }
+  .home-subjects { grid-template-columns: 1fr; }
+  .home-subject { border-right: 0; padding: 13px 4px; }
+  .home-tools { grid-template-columns: 1fr; margin-top: 18px; }
+  .home-tool { padding: 13px 4px; }
+  .home-tool + .home-tool { border-left: 0; border-top: 1px solid var(--line); }
+  .home-subjects-head h2 { font-size: 13.5px; }
+  .page-title { font-size: 25px; }
+  .page-sub { font-size: 12.5px; line-height: 1.72; }
+  .hero { padding: 20px 18px; gap: 18px; }
+  .hero-side { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); padding-top: 14px; }
+  .panel-body { padding: 14px 14px 18px; }
+}
+
+
 
 </style>
 </head>
@@ -5841,48 +6006,50 @@ p, li, .md p, .md li { text-wrap: pretty; }
         </span>
       </div>
       <div class="home-top-meta">
-        <span>四科 · 一套复习节奏</span>
+        <span>四科 · 错题整理</span>
         <span id="homeDate"></span>
       </div>
       
     </header>
 
     <main class="home-main" id="homeMain">
-      <p class="home-kicker">不必一次做完 按自己的节奏来</p>
-      <h1 class="home-title" id="homeTitle"><span id="homeGreeting">你好</span><br><span id="homeWelcome">欢迎回来</span></h1>
-      <p class="home-welcome-note" id="homeWelcomeNote"></p>
-
-      <div class="home-subjects-head">
-        <span>想从哪一科开始？</span>
-        <span>不用全看 挑一科就好</span>
+      <div class="home-hero">
+        <div class="home-hero-main">
+          <h1 class="home-title" id="homeTitle">今天从哪一科开始</h1>
+          <p class="home-welcome-note" id="homeWelcomeNote">打开一科继续整理错题；题库、模板和笔记都在这里。</p>
+        </div>
+        <dl class="home-summary" aria-label="错题本概况">
+          <div><dt>错题</dt><dd id="homeStatEntries">0</dd></div>
+          <div><dt>模板</dt><dd id="homeStatTemplates">0</dd></div>
+          <div><dt>题库</dt><dd id="homeStatBank">0</dd></div>
+        </dl>
       </div>
-      <div class="home-subjects" id="homeSubjects"></div>
 
-      <a class="home-notes-entry" href="#/notes" data-act="open-notes-library" title="打开笔记库">
-        <span class="hne-seal" aria-hidden="true">记</span>
-        <span class="hne-main"><b>笔记库</b><small>多页笔记 · 手写标注 · 智能扫描 · 导出 PDF</small></span>
-        <span class="hne-action">打开 <span aria-hidden="true">→</span></span>
-      </a>
+      <section class="home-section" aria-labelledby="homeSubjectsTitle">
+        <div class="home-subjects-head">
+          <h2 id="homeSubjectsTitle">科目</h2>
+          <span>按科目进入总览</span>
+        </div>
+        <div class="home-subjects" id="homeSubjects"></div>
+      </section>
 
-      <a class="home-notes-entry home-final-entry" href="#/final" title="打开期末复习">
-        <span class="hne-seal" aria-hidden="true">末</span>
-        <span class="hne-main"><b>期末复习</b><small>考试日期 · 智能计划 · 模拟卷 · DOCX / PDF</small></span>
-        <span class="hne-action">打开 <span aria-hidden="true">→</span></span>
-      </a>
-
-      <div class="home-features" aria-label="错题本功能">
-        <span>AI 补全解答</span>
-        <span>题型模板</span>
-        <span>考研同型</span>
-        <span>掌握标记</span>
-        <span>期末模拟卷 · DOCX / PDF</span><span>手机 / 平板 / 电脑</span>
-      </div>
+      <section class="home-tools" aria-label="更多入口">
+        <a class="home-tool" href="#/notes" data-act="open-notes-library" title="打开笔记库">
+          <span class="home-tool-seal" aria-hidden="true">记</span>
+          <span class="home-tool-main"><b>笔记库</b><small>手写、扫描、导出 PDF</small></span>
+          <span class="home-tool-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="home-tool" href="#/final" title="打开期末复习">
+          <span class="home-tool-seal" aria-hidden="true">末</span>
+          <span class="home-tool-main"><b>期末复习</b><small>考试日期、模拟卷、DOCX / PDF</small></span>
+          <span class="home-tool-arrow" aria-hidden="true">→</span>
+        </a>
+      </section>
     </main>
 
     <footer class="home-foot">
-      <span>模板和题库都在这儿 按你的节奏来</span>
+      <span>错题、模板、题库与笔记，数据都留在本机</span>
       <span class="home-foot-actions">
-        <span id="homeFootNote">数据保存在本机浏览器，可在设置里导出或连接同步</span>
         <a class="home-repo-link" href="https://github.com/lanzaihua/lanzaihua.github.io/blob/main/README.md" target="_blank" rel="noopener noreferrer" title="在 GitHub 查看网页详细介绍">详细介绍 <span aria-hidden="true">↗</span></a>
         <span class="home-icon-group">
         <button class="icon-btn home-changelog-btn" data-act="open-changelog" type="button" title="更新记录" aria-label="更新记录">
@@ -6265,8 +6432,8 @@ p, li, .md p, .md li { text-wrap: pretty; }
 <dialog id="apiWelcomeDialog" class="dlg-api-welcome" aria-labelledby="apiWelcomeTitle">
   <div class="dlg-head">
     <div class="dlg-head-copy">
-      <p class="dlg-kicker">WELCOME</p>
-      <h2 class="dlg-title" id="apiWelcomeTitle">先按自己的节奏来</h2>
+      
+      <h2 class="dlg-title" id="apiWelcomeTitle">开始使用</h2>
     </div>
     <button class="icon-btn" data-act="dismiss-api-welcome" type="button" aria-label="关闭提示">×</button>
   </div>
@@ -6274,8 +6441,8 @@ p, li, .md p, .md li { text-wrap: pretty; }
     <div class="apiwelcome-intro">
       <span class="apiwelcome-mark" aria-hidden="true"><span></span></span>
       <div>
-        <p class="apiwelcome-lead">欢迎使用四科错题本。错题、模板、题库和笔记都可以直接使用，不需要先配置任何服务。</p>
-        <p class="apiwelcome-copy">如果你之后想用 AI 智能录入、题目翻译或自动补全，再到「设置与同步」里配置一个 API 服务就好。现在不配置也完全没关系。</p>
+        <p class="apiwelcome-lead">错题、模板、题库和笔记都在本机，打开就能用。</p>
+        <p class="apiwelcome-copy">AI 智能录入、翻译和自动补全需要配置 API。没有配置时，其他功能不受影响。</p>
       </div>
     </div>
     <div class="apiwelcome-list">
@@ -6283,12 +6450,12 @@ p, li, .md p, .md li { text-wrap: pretty; }
       <div><b>界面与内容翻译</b><span>切换语言时生成完整译文</span></div>
       <div><b>暂存箱与自动补全</b><span>峰谷时段排队，后台慢慢补齐</span></div>
     </div>
-    <p class="apiwelcome-note">这些是锦上添花的功能。先逛逛，等真正需要时再配置也来得及。</p>
+    <p class="apiwelcome-note">配置入口在「设置与同步」，之后随时可以修改或删除。</p>
   </div>
   <div class="dlg-foot api-welcome-foot">
-    <span class="faint">之后可在「设置与同步」里随时配置或修改</span>
+    <span class="faint">AI 功能是可选项，不影响错题与题库</span>
     <div class="api-welcome-actions">
-      <button class="btn" data-act="dismiss-api-welcome" type="button">先逛逛</button>
+      <button class="btn" data-act="dismiss-api-welcome" type="button">以后再说</button>
       <button class="btn btn-primary" data-act="configure-api-welcome" type="button">去设置</button>
     </div>
   </div>
@@ -11416,28 +11583,7 @@ function isHomeRoute() {
   return !h || h === '#' || h === '#/' || h === '#/home' || h === '#/welcome';
 }
 
-function homeWelcome(hour) {
-  if (hour < 5) return { greet: '夜深了', line: '这个点还没睡', note: '辛苦了。今天已经很努力了，剩下的明天再说，先去休息吧。' };
-  if (hour < 8) return { greet: '早上好', line: '慢慢醒过来就好', note: '不用一睁眼就进入状态 先喝口水 今天按自己的节奏来' };
-  if (hour < 11) return { greet: '上午好', line: '先做一点点', note: '不用一下子把所有事做完 挑一件最想做的 开始就好' };
-  if (hour < 13) return { greet: '中午好', line: '先好好吃饭', note: '题可以晚一点再看 饭要趁热吃 休息也是复习的一部分' };
-  if (hour < 17) return { greet: '下午好', line: '别急着赶路', note: '看累了就停一停 你今天已经走了很远 不必每一步都很快' };
-  if (hour < 19) return { greet: '傍晚好', line: '今天辛苦了', note: '想学就学一点 想歇就安心歇一会儿 都没关系' };
-  if (hour < 23) return { greet: '晚上好', line: '今天也辛苦了', note: '做过的事都算数 没做完的也不用责怪自己 先照顾好自己 再决定今晚学多少' };
-  return { greet: '夜深了', line: '该休息了', note: '今天到这里就很好 没解决的题不会跑 明天再慢慢来' };
-}
-
 function renderHomeClock() {
-  var info = homeWelcome(new Date().getHours());
-  var greet = qs('#homeGreeting');
-  if (greet) {
-    var userName = state.prefs && String(state.prefs.userName || '').trim();
-    greet.textContent = info.greet + (userName ? ' ' + userName : '');
-  }
-  var welcome = qs('#homeWelcome');
-  if (welcome) welcome.textContent = info.line;
-  var note = qs('#homeWelcomeNote');
-  if (note) note.textContent = info.note;
   var date = qs('#homeDate');
   if (date) {
     var d = new Date();
@@ -11472,6 +11618,18 @@ function renderHome() {
       ? '数据只保存在本机浏览器，可在设置里导出/导入备份'
       : '数据保存在本机浏览器，可在设置里导出或连接同步';
   }
+  var totalEntries = 0, totalTemplates = 0, totalBank = 0;
+  SUBJECTS.forEach(function (s) {
+    totalEntries += statsFor(s.id).total;
+    totalTemplates += templatesOf(s.id).length;
+    totalBank += bankOf(s.id).length;
+  });
+  var statEntries = qs('#homeStatEntries');
+  if (statEntries) statEntries.textContent = String(totalEntries);
+  var statTemplates = qs('#homeStatTemplates');
+  if (statTemplates) statTemplates.textContent = String(totalTemplates);
+  var statBank = qs('#homeStatBank');
+  if (statBank) statBank.textContent = String(totalBank);
   var wrap = qs('#homeSubjects');
   if (!wrap) return;
   wrap.innerHTML = SUBJECTS.map(function (s, i) {
@@ -11793,7 +11951,7 @@ function viewOverview(subjectId) {
   var hero =
     '<section class="hero">' +
       '<div>' +
-        '<div class="hero-kicker"><span class="dot" style="background:var(--' + s.id + ')"></span> 第 ' + pad(SUBJECTS.indexOf(s) + 1, 2) + ' 科 / ' + esc(s.skill) + (bookShortFor(s.id) ? ' · ' + esc(bookShortFor(s.id)) : '') + '</div>' +
+        '<div class="hero-kicker"><span class="dot" style="background:var(--' + s.id + ')"></span> 第 ' + pad(SUBJECTS.indexOf(s) + 1, 2) + ' 科' + (bookShortFor(s.id) ? ' · ' + esc(bookShortFor(s.id)) : '') + '</div>' +
         '<h1 class="hero-title">' + esc(s.name) + '</h1>' +
         '<p class="hero-desc">' + esc(s.tagline) + '。错题条目、模板库与考研同型/教材课后题库都在这里，手机和电脑同一套交互。</p>' +
         '<div class="hero-meta" style="margin-top:16px">' +
@@ -17434,9 +17592,9 @@ var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_M
 var UPDATE_LOG = [
   {
     date: '2026-11-10',
-    title: '全站收口与记录校准',
-    historyTitle: '全站收口与记录校准',
-    summary: '在 11-09 的长任务、公式、筛选与仓库语言基础上，本轮逐页核对三端界面与更新记录：修好规范页表格管道符被当公式、手机顶栏吸顶过高、期末复习重复摘要、通知要点计数与同日文字编辑漏发，并统一设置与首页文案、触控尺寸和辅助字号；同时把仓库 README 的三个源码板块合并为一节，把 Releases 标签统一为纯日期。本块共 10 项 / 10 组，52 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。',
+    title: '界面重做与记录校准',
+    historyTitle: '界面重做与记录校准',
+    summary: '在 11-10 已完成的界面与记录校准基础上，本轮把全站版式整体重做：换成冷纸色与深墨绿强调色，首页改用无衬线大标题、三项统计、科目索引和两条工具入口，内页标题、正文、按钮、标签与弹窗共用一套层级；去掉英文小标签、时段问候、装饰阴影和重复页脚说明。保留原有错题、题库、模板、规范、笔记、期末与更新记录功能。本块累计 16 项 / 16 组，53 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。',
     items: [
       {
         group: '规范表格',
@@ -17456,7 +17614,7 @@ var UPDATE_LOG = [
       },
       {
         group: '设置文案',
-        text: '设置里的「当前规模」改为「当前科目规模」，避免被当成全站总量，并移除容易被误读为产品版本的 v1 标签；首页科目标题改为全天候「想从哪一科开始？」，首次欢迎语从「欢迎回来」改为「欢迎使用四科错题本」。',
+        text: '设置里的「当前规模」改为「当前科目规模」，避免被当成全站总量，并移除容易被误读为产品版本的 v1 标签；首次欢迎语改为「欢迎使用四科错题本」。',
       },
       {
         group: '触控可读',
@@ -17476,49 +17634,57 @@ var UPDATE_LOG = [
       },
       {
         group: '防复发',
-        text: '新增表格管道符、通知签名与文字编辑、期末重复摘要、手机顶栏与三端布局回归测试；测试总数 52，严格 QA、站点一致性与 390 / 820 / 1440 检查同时执行，防止同类问题再次出现。',
+        text: '新增表格管道符、通知签名与文字编辑、期末重复摘要、手机顶栏与三端布局回归测试；严格 QA、站点一致性与 390 / 820 / 1440 检查同时执行，防止同类问题再次出现。',
+      },
+      {
+        group: '版式重构',
+        text: '全站改用冷纸色与深墨绿强调色，标题改为无衬线，卡片阴影取消、圆角收到 8px，按钮、标签、弹窗和更新记录共用同一套粗细与间距。',
+      },
+      {
+        group: '首页重写',
+        text: '首页去掉按时段变化的问候、英文小标签与卡片堆叠：改成「今天从哪一科开始」、错题 / 模板 / 题库三项统计、四科索引，以及笔记库与期末复习两条入口。',
+      },
+      {
+        group: '标题层级',
+        text: '统一标题层级：首页 40px、内页 31px、手机内页 25px，正文 13px，按钮控件 34px；页头、分区标题和卡片标题按同一节奏递减，不再出现 58px 巨型标题压住内容。',
+      },
+      {
+        group: '组件收口',
+        text: '主按钮改为黑底纸色字，次按钮保留纸底细线；标签改为方角透明底，输入框、下拉框、通知面板和更新记录卡片统一细边框，选中态只靠底色与左侧色条。',
+      },
+      {
+        group: '装饰清理',
+        text: '隐藏内页英文小标签与笔记分区英文标题，删除首页重复的「数据保存在本机」页脚说明，欢迎弹窗去掉 WELCOME 标签并改成直接说明需要配置什么。',
+      },
+      {
+        group: '三端复查',
+        text: '390 / 820 / 1440 共 21 次页面加载复查首页、总览、错题、题库、模板、规范、笔记、期末与更新记录：无横向溢出、无脚本错误；手机与平板顶栏随页面滚走，桌面保留吸顶导航。',
       },
     ],
     notifyItems: [
       {
-        group: '规范表格',
-        text: '规范页表格不再被管道符拆错行，「知识要点」等行恢复三列对齐。',
+        group: '版式重构',
+        text: '全站换成冷纸色与深墨绿强调色，标题改无衬线，卡片阴影取消、圆角收到 8px，按钮和标签共用一套粗细。',
       },
       {
-        group: '手机顶栏',
-        text: '手机与平板顶栏不再整块吸顶，阅读题目时不再被高顶栏挡住。',
+        group: '首页重写',
+        text: '首页去掉时段问候、英文小标签与卡片堆叠，改成「今天从哪一科开始」、三项统计、四科索引和笔记 / 期末两条入口。',
       },
       {
-        group: '通知要点',
-        text: '通知计数改为「N 条要点」；同一天改某组文字也会补发，刷新不会重发旧通知。',
+        group: '标题层级',
+        text: '首页标题 40px、内页 31px、手机内页 25px，正文 13px，按钮 34px；不再出现 58px 巨型标题压住内容。',
       },
       {
-        group: '期末收口',
-        text: '期末复习不再重复日期、时长与材料数，空态入口也不再重复。',
+        group: '组件收口',
+        text: '主按钮改为黑底纸色字，次按钮纸底细线；标签方角透明，通知面板与更新记录统一细边框和选中态。',
       },
       {
-        group: '设置文案',
-        text: '设置改为「当前科目规模」并移除 v1 误读；首页与首次欢迎语按实际场景改写。',
+        group: '装饰清理',
+        text: '隐藏内页与笔记分区的英文小标签，删除重复页脚说明，欢迎弹窗不再显示 WELCOME。',
       },
       {
-        group: '触控可读',
-        text: '手机与平板的页签、来源、科目与跳转按钮加大到 40–44px，辅助小字提升到 10px。',
-      },
-      {
-        group: '题库卡片',
-        text: '题库卡片标题已有题型时，右侧不再重复同一枚题型标签。',
-      },
-      {
-        group: '记录校准',
-        text: '修正 11-02 的损坏字符与旧计数，并把 README 的三个源码板块合并为一节。',
-      },
-      {
-        group: 'Release 归并',
-        text: '11-09、11-08、10-25 各只保留一整块 Release，标签统一为纯日期，不再带 -4、-10 等后缀。',
-      },
-      {
-        group: '防复发',
-        text: '新增表格、通知、期末与三端布局回归，测试总数 52。',
+        group: '三端复查',
+        text: '390 / 820 / 1440 复查首页、总览、错题、题库、模板、规范、笔记、期末与更新记录，无横向溢出、无脚本错误。',
       },
     ],
   },
