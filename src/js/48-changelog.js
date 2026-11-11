@@ -5,6 +5,19 @@ var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [
   {
+    date: '2026-11-12',
+    title: '错题小节筛选',
+    historyTitle: '错题小节筛选',
+    summary: '补上错题页的章下小节筛选：错题列表在选定大章后出现小节下拉，只列出当前章确实有题的小节；换大章自动清空小节，清空筛选一并恢复。本块 1 项 / 1 组，66 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。',
+    notifySummary: '错题页也补上大章下的小节筛选；本块 1 条要点。',
+    items: [
+      {
+        group: '错题小节',
+        text: '错题筛选工具栏在章选择后增加小节下拉：选定大章才出现，只列出当前章确实有题的小节；换章自动回到全部小节，清空筛选时一并恢复；筛选计数、空态与手机、平板、桌面布局同步更新。',
+      },
+    ],
+  },
+  {
     date: '2026-11-11',
     title: '题库扩充与小节筛选',
     historyTitle: '题库扩充与小节筛选',

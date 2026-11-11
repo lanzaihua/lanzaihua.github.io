@@ -710,10 +710,12 @@ function statsFor(subjectId) {
 
 function filterFor(subjectId) {
   var saved = state.prefs && state.prefs.entrySorts && state.prefs.entrySorts[subjectId];
-  if (!ui.filters[subjectId]) ui.filters[subjectId] = { status: 'all', chapter: 'all', template: 'all', date: 'all', stars: 'all', sort: saved || 'date-desc' };
+  if (!ui.filters[subjectId]) ui.filters[subjectId] = { status: 'all', chapter: 'all', section: 'all', template: 'all', date: 'all', stars: 'all', sort: saved || 'date-desc' };
   var f = ui.filters[subjectId];
   if (!f.date) f.date = 'all';
   if (!f.stars) f.stars = 'all';
+  if (!f.section) f.section = 'all';
+  if (f.chapter === 'all') f.section = 'all';
   return f;
 }
 function bankFilterFor(subjectId) {
@@ -787,6 +789,7 @@ function baseFilteredEntries(subjectId) {
   return entriesOf(subjectId).filter(function (e) {
     if (f.status !== 'all' && e.status !== f.status) return false;
     if (f.chapter !== 'all' && e.chapter !== f.chapter) return false;
+    if (f.section !== 'all' && sectionForItem(subjectId, e) !== f.section) return false;
     if (f.template !== 'all' && e.templateId !== f.template) return false;
     return entryMatches(e, q);
   });

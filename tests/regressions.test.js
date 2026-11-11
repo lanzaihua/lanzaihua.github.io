@@ -781,7 +781,11 @@ test('every chapter exposes a section list and items map into it',()=>{
   assert.equal(r.ctx.sectionForItem('gaodai',{chapter:'第二章 行列式',title:'排列的奇偶性',question:'求排列的逆序数'}),'排列');
   assert.equal(r.ctx.sectionForItem('gaodai',{chapter:'第二章 行列式',title:'克拉默法则',question:'用克拉默法则解方程组'}),'克拉默法则');
 });
-test('bank, template, exam and final chapter filters cascade into sections',()=>{
+test('entries, bank, template, exam and final chapter filters cascade into sections',()=>{
+  const entries=read('src/js/20-entries.js');
+  assert.match(entries,/data-filter="section"/);
+  assert.match(entries,/sectionOptions/);
+  assert.match(read('src/js/10-markdown.js'),/sectionForItem\(subjectId, e\)/);
   const bank=read('src/js/30-library.js');
   assert.match(bank,/data-bank-filter="section"/);
   assert.match(bank,/data-template-filter="section"/);

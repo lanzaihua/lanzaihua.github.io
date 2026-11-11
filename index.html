@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.11-becca0dc";</script>
+<script>window.__BUILD_ID__="2026.11.12-bacbd737";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -12084,10 +12084,12 @@ function statsFor(subjectId) {
 
 function filterFor(subjectId) {
   var saved = state.prefs && state.prefs.entrySorts && state.prefs.entrySorts[subjectId];
-  if (!ui.filters[subjectId]) ui.filters[subjectId] = { status: 'all', chapter: 'all', template: 'all', date: 'all', stars: 'all', sort: saved || 'date-desc' };
+  if (!ui.filters[subjectId]) ui.filters[subjectId] = { status: 'all', chapter: 'all', section: 'all', template: 'all', date: 'all', stars: 'all', sort: saved || 'date-desc' };
   var f = ui.filters[subjectId];
   if (!f.date) f.date = 'all';
   if (!f.stars) f.stars = 'all';
+  if (!f.section) f.section = 'all';
+  if (f.chapter === 'all') f.section = 'all';
   return f;
 }
 function bankFilterFor(subjectId) {
@@ -12161,6 +12163,7 @@ function baseFilteredEntries(subjectId) {
   return entriesOf(subjectId).filter(function (e) {
     if (f.status !== 'all' && e.status !== f.status) return false;
     if (f.chapter !== 'all' && e.chapter !== f.chapter) return false;
+    if (f.section !== 'all' && sectionForItem(subjectId, e) !== f.section) return false;
     if (f.template !== 'all' && e.templateId !== f.template) return false;
     return entryMatches(e, q);
   });
@@ -12981,7 +12984,9 @@ function viewEntries(subjectId) {
     var count = starPool.filter(function (e) { return normalizeStars(e.stars) === n; }).length;
     return '<option value="' + n + '"' + (String(f.stars) === String(n) ? ' selected' : '') + '>' + stars(n) + ' · ' + count + ' 题</option>';
   }).join('');
-  var filtersActive = f.status !== 'all' || f.chapter !== 'all' || f.template !== 'all' || f.date !== 'all' || f.stars !== 'all' || f.sort !== 'date-desc';
+  var chapterSecs = f.chapter !== 'all' ? chapterSectionsFor(subjectId, f.chapter) : [];
+  var sectionOptions = chapterSecs.length ? optionList(['all'].concat(chapterSecs), f.section, '全部小节') : '';
+  var filtersActive = f.status !== 'all' || f.chapter !== 'all' || f.section !== 'all' || f.template !== 'all' || f.date !== 'all' || f.stars !== 'all' || f.sort !== 'date-desc';
 
   var toolbar = '<div class="toolbar entry-filters">' +
     '<div class="seg" role="group" aria-label="按掌握状态筛选">' +
@@ -12990,6 +12995,7 @@ function viewEntries(subjectId) {
       segButton('mastered', '已掌握', f.status === 'mastered') +
     '</div>' +
     '<select class="select" data-filter="chapter" aria-label="按章节筛选">' + optionList(['all'].concat(chapters), f.chapter, '全部章节') + '</select>' +
+    (sectionOptions ? '<select class="select" data-filter="section" aria-label="按小节筛选">' + sectionOptions + '</select>' : '') +
     '<select class="select" data-filter="template" aria-label="按模板筛选">' + optionList2(tpls, f.template) + '</select>' +
     '<select class="select" data-filter="date" aria-label="按日期索引题目">' + dateOptions + '</select>' +
     '<select class="select" data-filter="stars" aria-label="按星级索引题目">' + starOptions + '</select>' +
@@ -18674,6 +18680,19 @@ function autoAiPendingCount() {
 var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_ID__) || '').match(/^(\d{4})\.(\d{2})\.(\d{2})/);
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [
+  {
+    date: '2026-11-12',
+    title: '错题小节筛选',
+    historyTitle: '错题小节筛选',
+    summary: '补上错题页的章下小节筛选：错题列表在选定大章后出现小节下拉，只列出当前章确实有题的小节；换大章自动清空小节，清空筛选一并恢复。本块 1 项 / 1 组，66 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。',
+    notifySummary: '错题页也补上大章下的小节筛选；本块 1 条要点。',
+    items: [
+      {
+        group: '错题小节',
+        text: '错题筛选工具栏在章选择后增加小节下拉：选定大章才出现，只列出当前章确实有题的小节；换章自动回到全部小节，清空筛选时一并恢复；筛选计数、空态与手机、平板、桌面布局同步更新。',
+      },
+    ],
+  },
   {
     date: '2026-11-11',
     title: '题库扩充与小节筛选',
@@ -32025,6 +32044,7 @@ function handleAction(act, el) {
       var ef = filterFor(state.activeSubject);
       ef.status = 'all';
       ef.chapter = 'all';
+      ef.section = 'all';
       ef.template = 'all';
       ef.date = 'all';
       ef.stars = 'all';
@@ -32303,6 +32323,7 @@ function bindEvents() {
     } else if (t.matches('[data-filter]')) {
       var key = t.getAttribute('data-filter');
       filterFor(state.activeSubject)[key] = t.value;
+      if (key === 'chapter') filterFor(state.activeSubject).section = 'all';
       if (key === 'sort') {
         state.prefs.entrySorts = state.prefs.entrySorts || {};
         state.prefs.entrySorts[state.activeSubject] = t.value;

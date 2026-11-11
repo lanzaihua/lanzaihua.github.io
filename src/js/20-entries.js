@@ -30,7 +30,9 @@ function viewEntries(subjectId) {
     var count = starPool.filter(function (e) { return normalizeStars(e.stars) === n; }).length;
     return '<option value="' + n + '"' + (String(f.stars) === String(n) ? ' selected' : '') + '>' + stars(n) + ' · ' + count + ' 题</option>';
   }).join('');
-  var filtersActive = f.status !== 'all' || f.chapter !== 'all' || f.template !== 'all' || f.date !== 'all' || f.stars !== 'all' || f.sort !== 'date-desc';
+  var chapterSecs = f.chapter !== 'all' ? chapterSectionsFor(subjectId, f.chapter) : [];
+  var sectionOptions = chapterSecs.length ? optionList(['all'].concat(chapterSecs), f.section, '全部小节') : '';
+  var filtersActive = f.status !== 'all' || f.chapter !== 'all' || f.section !== 'all' || f.template !== 'all' || f.date !== 'all' || f.stars !== 'all' || f.sort !== 'date-desc';
 
   var toolbar = '<div class="toolbar entry-filters">' +
     '<div class="seg" role="group" aria-label="按掌握状态筛选">' +
@@ -39,6 +41,7 @@ function viewEntries(subjectId) {
       segButton('mastered', '已掌握', f.status === 'mastered') +
     '</div>' +
     '<select class="select" data-filter="chapter" aria-label="按章节筛选">' + optionList(['all'].concat(chapters), f.chapter, '全部章节') + '</select>' +
+    (sectionOptions ? '<select class="select" data-filter="section" aria-label="按小节筛选">' + sectionOptions + '</select>' : '') +
     '<select class="select" data-filter="template" aria-label="按模板筛选">' + optionList2(tpls, f.template) + '</select>' +
     '<select class="select" data-filter="date" aria-label="按日期索引题目">' + dateOptions + '</select>' +
     '<select class="select" data-filter="stars" aria-label="按星级索引题目">' + starOptions + '</select>' +

@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.11-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.11--becca0dc-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.12-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.12--bacbd737-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -147,6 +147,18 @@
 </details>
 
 ## 更新记录
+
+### 2026-11-12 · 错题小节筛选
+
+**1 项 · 1 组**
+
+补上错题页的章下小节筛选：错题列表在选定大章后出现小节下拉，只列出当前章确实有题的小节；换大章自动清空小节，清空筛选一并恢复。本块 1 项 / 1 组，66 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+
+| 分组 | 本次更新 |
+|---|---|
+| **错题小节** | 错题筛选工具栏在章选择后增加小节下拉：选定大章才出现，只列出当前章确实有题的小节；换章自动回到全部小节，清空筛选时一并恢复；筛选计数、空态与手机、平板、桌面布局同步更新。 |
+
+<img src="assets/v2/20261112-changelog.png" alt="网页内更新记录" width="820">
 
 ### 2026-11-11 · 题库扩充与小节筛选
 

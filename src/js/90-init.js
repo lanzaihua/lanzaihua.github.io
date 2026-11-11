@@ -312,6 +312,7 @@ function handleAction(act, el) {
       var ef = filterFor(state.activeSubject);
       ef.status = 'all';
       ef.chapter = 'all';
+      ef.section = 'all';
       ef.template = 'all';
       ef.date = 'all';
       ef.stars = 'all';
@@ -590,6 +591,7 @@ function bindEvents() {
     } else if (t.matches('[data-filter]')) {
       var key = t.getAttribute('data-filter');
       filterFor(state.activeSubject)[key] = t.value;
+      if (key === 'chapter') filterFor(state.activeSubject).section = 'all';
       if (key === 'sort') {
         state.prefs.entrySorts = state.prefs.entrySorts || {};
         state.prefs.entrySorts[state.activeSubject] = t.value;
