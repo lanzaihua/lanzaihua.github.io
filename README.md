@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.11-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.11--850cf82a-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.11--5b8ff360-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -58,7 +58,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、发布与源码打包脚本 |
-| `tests/` | 57 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面与模拟考 |
+| `tests/` | 60 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面与模拟考 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 
@@ -201,11 +201,11 @@ make check                                      # 同上，Makefile 入口
 
 ## 更新记录
 
-### 2026-11-11 · 真实进度与流式返回
+### 2026-11-11 · 真实进度与公式收尾
 
-**8 项 · 8 组**
+**13 项 · 13 组**
 
-本轮把智能录入、AI 出题、AI 批改、自动整理、知识点补全与扫描 OCR 的进度条改成真实流式数据驱动：直接读取模型的 SSE 正文，按已返回的 JSON 字段、题目对象和识别字数计算百分比；进度条宽度、百分比数字与 aria-valuenow 使用同一个整数，不再用定时器或固定阶段凑进度。本块 8 项 / 8 组，58 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+本轮先把智能录入、AI 出题、AI 批改、自动整理、知识点补全与扫描 OCR 的进度条改成真实流式数据驱动：直接读取模型的 SSE 正文，按已返回的 JSON 字段、题目对象和识别字数计算百分比；进度条宽度、百分比数字与 aria-valuenow 使用同一个整数。随后修复公式与数字在三端的显示：MathML 行内公式改用 inline math 基线、转义美元符还原成公式、题库缺失反斜杠的 LaTeX 命令补齐，并把纯英文词组排除出公式扫描。本块 13 项 / 13 组，60 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -216,7 +216,12 @@ make check                                      # 同上，Makefile 入口
 | **OCR 字数** | 扫描识别按画布像素估算本页预期字数，再按流式返回的实际识别字数从 8% 推进到 94%，文案显示「已识别 X 字」；服务端 OCR 仍是非流式接口，这一路径会停在 8% 直到返回，属于已注明的接口边界。 |
 | **自动整理** | 自动整理、知识点 AI 搜索与自动补全接入同一条流式通道：首个字节 8%，之后按标题、正文、书章、标签等字段推进到 85%，返回后 90%，写入完成才 100%。 |
 | **同源百分比** | 进度条填充宽度、右侧百分比文字和 aria-valuenow 都由同一个四舍五入后的整数生成，不再出现宽度 11.8%、文字 12% 的错位；进度只增不减，倒退值会被夹住，完成后显式写 100%。 |
-| **防复发** | 新增流式字段统计、题目数组计数、百分比宽度同源、倒退夹住、取消与空响应回归测试，测试总数 58；390 / 820 / 1440 在进度中段抓取到 6% → 12% → 27% → 39% 的连续状态，宽度、文字与 aria 完全一致，无横向溢出、无脚本错误。 |
+| **防复发** | 新增流式字段统计、题目数组计数、百分比宽度同源、倒退夹住、取消与空响应回归测试，测试总数 60；390 / 820 / 1440 在进度中段抓取到 6% → 12% → 27% → 39% 的连续状态，宽度、文字与 aria 完全一致，无横向溢出、无脚本错误。 |
+| **公式基线** | 修复 MathML 行内公式被按整块宽度布局的问题：数学元素的显示值改为 inline math，普通公式共用正文行高与基线，矩阵、分式、上下标不再把标点挤到单独一行；只有超宽公式保留横向滚动。 |
+| **转义美元** | 模型写成反斜杠美元符的成对公式现在还原为普通公式；cases、pmatrix 等环境内部的误加美元符先清理；真正的货币写法仍按字面美元显示，不再出现 $ 泄漏或整段 LaTeX 原样输出。 |
+| **题库反斜杠** | 修复高代第六章 GA-B0868 / GA-B0869 / GA-B0870 中缺失反斜杠的 LaTeX 命令（U\subset V、v\in V、V=\mathbb{R}^2），题库、模拟考与错题页不再显示 Usubset、mathbb 等裸命令。 |
+| **英文词组** | 知识点解析里的英文术语（如 one-sided derivative）不再被裸公式扫描器包成公式，连字符不会被排成减号、单词也不会变成斜体。 |
+| **数据门禁** | QA 与构建新增缺失反斜杠命令检查，纯英文词组、数学定界符、公式宽度与基线继续由回归测试覆盖，测试总数 60，防止同类问题再次进入页面。 |
 
 <img src="assets/v2/20261111-changelog.png" alt="网页内更新记录" width="820">
 

@@ -6020,3 +6020,105 @@ p, li, .md p, .md li { text-wrap: pretty; }
 @media (max-width: 900px) {
   .btn-xs { min-height: 36px; }
 }
+
+/* 2026-11-11: 三端行内公式统一基线
+   行内公式与中文正文共用 baseline；只有真正超出段落宽度的公式才变成
+   可横向滚动的 inline-block。此前 900px/600px 把全部行内公式改成
+   inline-block + vertical-align:middle，导致手机/平板的分数、根号、
+   上下标与文字不在同一条基线上。 */
+.md math:not([display="block"]),
+.block .md math:not([display="block"]),
+.entry-body .md math:not([display="block"]),
+.bank-q math:not([display="block"]),
+.bank-answer math:not([display="block"]),
+.exam-qbody math:not([display="block"]),
+.exam-result-q .md math:not([display="block"]),
+.exam-opt math:not([display="block"]),
+.exam-option-text math:not([display="block"]),
+.exam-rubric math:not([display="block"]),
+.kb-answer math:not([display="block"]) {
+  display: inline !important;
+  font-size: 1em !important;
+  line-height: normal !important;
+  vertical-align: baseline !important;
+  margin: 0 .08em;
+  max-width: none;
+}
+
+.math-inline-scroll:not(.is-wide) {
+  display: inline !important;
+  max-width: none !important;
+  overflow: visible !important;
+  vertical-align: baseline !important;
+  line-height: inherit !important;
+}
+
+.math-inline-scroll.is-wide {
+  display: inline-block !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  vertical-align: baseline !important;
+  line-height: inherit !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.math-inline-scroll.is-wide math {
+  display: inline !important;
+  vertical-align: baseline !important;
+  line-height: normal !important;
+  max-width: none !important;
+}
+
+.md .math-display,
+.md math[display="block"],
+.md .tml-display {
+  display: block !important;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 900px) {
+  .math-inline-scroll:not(.is-wide) {
+    display: inline !important;
+    overflow: visible !important;
+    vertical-align: baseline !important;
+  }
+}
+
+/* 2026-11-11: MathML 的 inline 级显示值是 "inline math"，不是 CSS 的
+   "inline"。写成 display:inline 会让浏览器按整块宽度布局 <math>，每个
+   行内公式因此独占一行。这里用后置规则覆盖所有页面上下文；不支持
+   "inline math" 的浏览器会忽略该声明，退回上一条 display:inline。 */
+math:not([display="block"]) {
+  display: inline math !important;
+}
+math[display="block"] {
+  display: block math !important;
+}
+.md math:not([display="block"]),
+.block .md math:not([display="block"]),
+.entry-body .md math:not([display="block"]),
+.bank-q math:not([display="block"]),
+.bank-answer math:not([display="block"]),
+.exam-qbody math:not([display="block"]),
+.exam-result-q .md math:not([display="block"]),
+.exam-opt math:not([display="block"]),
+.exam-option-text math:not([display="block"]),
+.exam-rubric math:not([display="block"]),
+.kb-answer math:not([display="block"]) {
+  display: inline math !important;
+}
+
+.math-inline-scroll.is-wide math {
+  display: inline math !important;
+}
+
+.md .math-display,
+.md math[display="block"],
+.md .tml-display {
+  display: block math !important;
+}
+

@@ -249,6 +249,7 @@ if (it.type === 'choice' && Array.isArray(it.options)) {
       if (/\\\\\\[A-Za-z](?![A-Za-z])/.test(fieldText)) coverageErrors.push(it.id + ' 数学文本含三反斜杠非法命令');
       if (/(.{8,80})\s+\1$/.test(fieldText)) coverageErrors.push(it.id + ' 解答末尾整句重复');
       if (/\\nee/.test(fieldText)) coverageErrors.push(it.id + ' 数学文本含损坏的 \\nee');
+      if (/(?:[A-Za-z](?:subset|subseteq)|=(?:mathbb|mathcal|mathrm|frac|sqrt|infty|cdot|times|partial|nabla)|\bvin\s+[A-Z])/.test(fieldText)) coverageErrors.push(it.id + ' 数学命令缺反斜杠');
       if (/=\\exists|=\\forall|\\Rightarrow-(?:\\exists|\\forall)|\\iff-(?:\\exists|\\forall)/.test(fieldText)) coverageErrors.push(it.id + ' 逻辑运算符损坏');
       if (/\\sqrt\{-[0-9]+\^2/.test(fieldText)) coverageErrors.push(it.id + ' 平方展开写成负数开方');
       var segments = fieldText.split('$');

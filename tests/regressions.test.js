@@ -152,6 +152,13 @@ test('textbook analyses contain no accidentally appended chapter appendix',()=>{
     for(const field of ['detailedAnalysis','pitfalls']) assert.doesNotMatch(JSON.stringify(q[field]),/## (题型清单|Reference Tables|课堂重点|Key Takeaways)/,q.id);
   }
 });
+test('bank math never loses command backslashes',()=>{
+  const corrupt=/(?:[A-Za-z](?:subset|subseteq)|=(?:mathbb|mathcal|mathrm|frac|sqrt|infty|cdot|times|partial|nabla)|\bvin\s+[A-Z])/;
+  for(const f of ['bank-algebra','bank-analysis','bank-geometry','bank-western']) for(const q of JSON.parse(read('src/data/'+f+'.json')).items) {
+    const fields=[q.question,q.answer,q.standardSolution,q.detailedAnalysis].concat((q.options||[]).map(o=>o.text||''),q.solution||[]);
+    for(const field of fields) assert.doesNotMatch(String(field||''),corrupt,q.id+' · '+field);
+  }
+});
 test('all nonempty bank template references resolve in the same subject',()=>{
   const subjects=JSON.parse(read('src/data/seed.json')).subjects;
   const files={gaodai:'algebra',shufen:'analysis',jieji:'geometry',xijing:'western'};
@@ -688,4 +695,36 @@ test('mobile and tablet controls meet touch target and helper text sizes',()=>{
   assert.match(css,/\.final-subject-tab \{[\s\S]{0,100}min-height: 36px;/, '期末科目按钮必须有可点高度');
   assert.match(css,/\.tpl-body \.linkish \{[\s\S]{0,120}min-height: 36px;/, '模板复制按钮必须有可点高度');
   assert.match(css,/\.brand-sub,[\s\S]{0,60}\.home-brand-sub \{ font-size: 10.5px; \}/, '品牌副标题不能低于 10.5px');
+});
+
+test('escaped dollar formulas render as math on entry, bank, exam and knowledge surfaces',()=>{
+  const {parseHTML}=require('linkedom');
+  const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  const bs='\\', d=bs+'$', lim=bs+'lim_{n'+bs+'to'+bs+'infty}';
+  const proof='设 '+d+' '+lim+'{f(r_n)}='+lim+'{r_n}=x_0,'+bs+'qquad'+d+' '+d+lim+'{f(s_n)}='+lim+'{(-s_n)}=-x_0.'+d+' 故极限不存在。';
+  const cases='定义 F(x)='+bs+'begin{cases} f(a+0), & x=a, '+bs+bs+' f(x), & a<x<b, '+bs+d+' f(b-0), & x=b. '+bs+'end{cases} 由连续性得证。';
+  for(const src of [proof,cases]) {
+    const e=document.createElement('div');e.innerHTML=r.ctx.renderMarkdown(src);
+    assert.equal(e.querySelectorAll('.math-raw').length,0,e.innerHTML);
+    assert.ok(e.querySelectorAll('math').length>0,e.innerHTML);
+    assert.equal(e.textContent.includes(bs+'lim'),false,e.innerHTML);
+    assert.equal(e.textContent.includes(bs+'qquad'),false,e.innerHTML);
+    assert.equal(e.textContent.includes(d),false,e.innerHTML);
+  }
+  const money=document.createElement('div');
+  money.innerHTML=r.ctx.renderMarkdown('价格是 '+d+'5 与 '+d+'7，公式 '+d+'x^2+1'+d+'。');
+  assert.equal(money.querySelectorAll('.math-raw').length,0,money.innerHTML);
+  assert.equal(money.querySelectorAll('math').length,1,money.innerHTML);
+  assert.ok(money.textContent.includes('$5')&&money.textContent.includes('$7'),money.innerHTML);
+  const english=document.createElement('div');
+  english.innerHTML=r.ctx.renderMarkdown('单侧导数（one-sided derivative）：'+d+'f\'_+(x_0)'+d+'，讨论端点。');
+  assert.equal(english.querySelectorAll('.math-raw').length,0,english.innerHTML);
+  assert.equal(english.querySelectorAll('math').length,1,english.innerHTML);
+  assert.ok(english.textContent.includes('one-sided derivative'),english.innerHTML);
+  const css=read('src/styles.css');
+  assert.match(css,/2026-11-11: 三端行内公式统一基线[\s\S]{0,1200}\.math-inline-scroll:not\(\.is-wide\)[\s\S]{0,260}vertical-align: baseline !important/,'普通行内公式必须与正文共用 baseline');
+  assert.match(css,/\.math-inline-scroll\.is-wide[\s\S]{0,220}display: inline-block !important[\s\S]{0,220}overflow-x: auto !important/,'超宽公式才允许横向滚动');
+  assert.match(css,/\.math-inline-scroll\.is-wide[\s\S]{0,260}vertical-align: baseline !important/,'滚动容器不能把公式抬离基线');
 });

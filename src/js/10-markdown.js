@@ -104,8 +104,9 @@ function wrapBareMathFragmentsLine(src) {
     if (/[=+\-*\/^_]\s*$/.test(core) || /^\s*[=+\-*\/^_]/.test(core)) return chunk;
     if (!/[A-Za-z0-9λΛ]/.test(core)) return chunk;
     if (/^\d+(\.\d+)?$/.test(core)) return chunk;
-    // 纯英文词组用斜杠/连字符连接（如 points / pitfalls、state-of-the-art）不是公式。
-    if (/^[A-Za-z]+(?:\s*[/\-]\s*[A-Za-z]+)+$/.test(core) && !/[=^_0-9]/.test(core)) return chunk;
+    // 纯英文词组（空格/斜杠/连字符连接，如 one-sided derivative、points / pitfalls、
+    // state-of-the-art）不是公式；否则连字符会被排成减号、单词被排成斜体。
+    if (/^[A-Za-z][A-Za-z'’]*(?:[\s/\-]+[A-Za-z][A-Za-z'’]*)+$/.test(core) && !/[=^_0-9]/.test(core)) return chunk;
     // 用空格分隔的数字宽度列表（390 / 820 / 1440）按正文排，不排成斜体公式。
     if (/^\d+(?:\s+\/\s+\d+)+$/.test(core)) return chunk;
     return m[1] + label + '$' + core + '$' + m[3];
@@ -420,6 +421,44 @@ function isLikelyInlineMath(inner) {
 }
 
 /*
+ * 模型写 Markdown 时经常把公式写成 \$...\$（反斜杠转义美元符）。
+ * 这在普通 Markdown 里是“字面美元符”，但模型本意是公式；如果直接交给
+ * repairStrayDollarSigns，开头的反斜杠会留在公式外，结尾的反斜杠会跑进
+ * 公式里，Temml 解析失败后整段 LaTeX 原样显示（截图里的 \lim 与结尾 $）。
+ * 这里只把成对、且内容确实是 LaTeX 的转义美元符还原成公式定界符；
+ * 真正的货币写法（\$5）和普通文本里的转义美元符仍按字面美元符显示。
+ */
+function normalizeEscapedMathDollars(src) {
+  var text = String(src == null ? '' : src);
+  if (!text || text.indexOf('\\$') < 0) return text;
+  // cases/pmatrix 等环境本身就是公式，内部的 $ 是模型误加的定界符，直接清掉，
+  // 不能转成 &#36;，否则 Temml 会看到实体字符而解析失败。
+  var envs = [];
+  text = text.replace(/\\begin\{([a-zA-Z*]+)\}[\s\S]*?\\end\{\1\}/g, function (m) {
+    envs.push(m.replace(/\\+\$/g, '').replace(/(?<!\\)\$/g, ''));
+    return '\uE000E' + (envs.length - 1) + '\uE001';
+  });
+  text = text.replace(/(^|[^\\])(\\\\\$|\\\$)([^$\n]*?)(\\\\\$|\\\$)/g, function (m, lead, open, inner, close) {
+    if (!inner || !isLikelyInlineMath(inner)) return m;
+    return lead + '$' + inner + '$';
+  });
+  // 只有一侧被转义：\$...$ 或 $...\$
+  text = text.replace(/(^|[^\\])\\\$([^$\n]*?)(?<!\\)\$/g, function (m, lead, inner) {
+    if (!inner || !isLikelyInlineMath(inner)) return m;
+    return lead + '$' + inner + '$';
+  });
+  text = text.replace(/(^|[^\\])\$([^$\n]*?)\\\$/g, function (m, lead, inner) {
+    if (!inner || !isLikelyInlineMath(inner)) return m;
+    return lead + '$' + inner + '$';
+  });
+  // 剩下的转义美元符是字面量（货币、普通文本），不要让反斜杠泄漏到页面。
+  text = text.replace(/\\\\?\$/g, '&#36;');
+  return text.replace(/\uE000E(\d+)\uE001/g, function (m, i) {
+    return envs[+i] == null ? m : envs[+i];
+  });
+}
+
+/*
  * AI/OCR 偶尔把公式包成半截 $...$：一个落单的 $ 会让后面的整段 LaTeX
  * 被当成正文，并让内部占位符泄漏到页面（截图里的 $ 与 ^{\mathrm T}）。
  * 这里按行只保留能配对的合理行内公式，落单或明显包住中文的 $ 直接去掉，
@@ -524,6 +563,7 @@ function renderMarkdown(src) {
   src = normalizeMarkdownHeadings(src);
   src = normalizeCjkStrong(src);
   src = normalizeEscapedLineBreaks(src).replace(/\uFFFD+/g, '');
+  src = normalizeEscapedMathDollars(src);
   src = repairStrayDollarSigns(src);
   src = normalizeInlineDisplayMath(src);
   src = inlineShortDisplayMath(src);

@@ -127,6 +127,7 @@ if (q.type === 'subjective' && !/^(解|证明|答)[：:]/.test(String(q.standard
     if (/\\\\\\[A-Za-z](?![A-Za-z])/.test(fieldText)) fail(q.id, '数学文本含三反斜杠非法命令');
     if (/(.{8,80})\s+\1$/.test(fieldText)) fail(q.id, '解答末尾整句重复');
     if (/\\nee/.test(fieldText)) fail(q.id, '数学文本含损坏的 \\nee');
+    if (/(?:[A-Za-z](?:subset|subseteq)|=(?:mathbb|mathcal|mathrm|frac|sqrt|infty|cdot|times|partial|nabla)|\bvin\s+[A-Z])/.test(fieldText)) fail(q.id, '数学命令缺反斜杠');
     if (/=\\exists|=\\forall|\\Rightarrow-(?:\\exists|\\forall)|\\iff-(?:\\exists|\\forall)/.test(fieldText)) fail(q.id, '逻辑运算符损坏');
     if (/\\sqrt\{-[0-9]+\^2/.test(fieldText)) fail(q.id, '平方展开写成负数开方');
     const segments = fieldText.split('$');
