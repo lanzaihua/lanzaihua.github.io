@@ -381,8 +381,15 @@ function viewTemplates(subjectId) {
   var tf = templateFilterFor(subjectId);
   var q = searchQuery();
   var tplChapters = sortChapters(subjectId, uniq((typeof chapterListFor === 'function' ? chapterListFor(subjectId) : []).concat(allTpls.map(function (t) { return t.chapter || '未分章'; }))));
+  function templateSectionOf(t) { return sectionForItem(subjectId, { chapter: t.chapter, title: t.title, templateId: t.id, templateTitle: t.title }); }
+  var tplSectionCounts = {};
+  allTpls.forEach(function (t) { if (t.chapter === tf.chapter) { var sk = templateSectionOf(t); tplSectionCounts[sk] = (tplSectionCounts[sk] || 0) + 1; } });
+  var tplSections = tf.chapter !== 'all' ? chapterSectionsFor(subjectId, tf.chapter).filter(function (sec) { return tplSectionCounts[sec] > 0; }) : [];
+  if (tplSectionCounts['综合与其他'] > 0) tplSections.push('综合与其他');
+  if (tf.chapter === 'all' || tplSections.indexOf(tf.section) < 0) tf.section = 'all';
   var tpls = allTpls.filter(function (t) {
     if (tf.chapter !== 'all' && (t.chapter || '未分章') !== tf.chapter) return false;
+    if (tf.section !== 'all' && templateSectionOf(t) !== tf.section) return false;
     if (q) {
       var hay = (t.id + ' ' + t.title + ' ' + (t.sections || []).map(function (s) { return s.md; }).join(' ')).toLowerCase();
       if (hay.indexOf(q.toLowerCase()) < 0) return false;
@@ -434,6 +441,7 @@ function viewTemplates(subjectId) {
   var tplFiltersActive = templateFiltersActive(tf);
   var tplToolbar = '<div class="toolbar template-filters">' +
     '<select class="select" data-template-filter="chapter" aria-label="按章节筛选模板">' + optionList(['all'].concat(tplChapters), tf.chapter, '全部章节') + '</select>' +
+    (tf.chapter !== 'all' ? '<select class="select" data-template-filter="section" aria-label="按小节筛选模板">' + optionList(['all'].concat(tplSections), tf.section, '全部小节') + '</select>' : '') +
     '<button class="btn btn-xs filter-clear" data-act="clear-template-filters" type="button" title="' + (tplFiltersActive ? '清空模板筛选' : '当前没有可清空的筛选') + '"' + (tplFiltersActive ? '' : ' disabled') + '>清空筛选</button>' +
     '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + tpls.length + ' / ' + allTpls.length + ' 张</span>' +
   '</div>';
@@ -448,8 +456,14 @@ function viewBank(subjectId) {
   var f = bankFilterFor(subjectId);
   var chapters = sortChapters(subjectId, uniq((typeof chapterListFor === 'function' ? chapterListFor(subjectId) : []).concat(items.map(function (i) { return i.chapter || '未分章'; }))));
   var tplIds = uniq(items.map(function (i) { return i.templateId; }).filter(Boolean));
+  var bankSectionCounts = {};
+  if (f.chapter !== 'all') items.forEach(function (it) { if (it.chapter === f.chapter) { var sk = sectionForItem(subjectId, it); bankSectionCounts[sk] = (bankSectionCounts[sk] || 0) + 1; } });
+  var bankSections = f.chapter !== 'all' ? chapterSectionsFor(subjectId, f.chapter).filter(function (sec) { return bankSectionCounts[sec] > 0; }) : [];
+  if (f.chapter !== 'all' && bankSectionCounts['综合与其他'] > 0) bankSections.push('综合与其他');
+  if (f.chapter === 'all' || bankSections.indexOf(f.section) < 0) f.section = 'all';
   var filtered = items.filter(function (it) {
     if (f.chapter !== 'all' && it.chapter !== f.chapter) return false;
+    if (f.section !== 'all' && sectionForItem(subjectId, it) !== f.section) return false;
     if (f.template !== 'all' && it.templateId !== f.template) return false;
     if (f.category !== 'all' && it.category !== f.category) return false;
     if (f.type !== 'all' && (it.type || 'subjective') !== f.type) return false;
@@ -483,6 +497,7 @@ function viewBank(subjectId) {
       bankOriginBtn('all', '全部来源') + bankOriginBtn('exam', '考研同型') + bankOriginBtn('textbook', '教材课后') +
     '</div>' +
     '<select class="select" data-bank-filter="chapter" aria-label="按章节筛选题库">' + optionList(['all'].concat(chapters), f.chapter, '全部章节') + '</select>' +
+    (f.chapter !== 'all' ? '<select class="select" data-bank-filter="section" aria-label="按小节筛选题库">' + optionList(['all'].concat(bankSections), f.section, '全部小节') + '</select>' : '') +
         '<select class="select" data-bank-filter="category" aria-label="按题型分类筛选题库"><option value="all"' + (f.category === 'all' ? ' selected' : '') + '>全部题型</option>' + ["计算题","应用题","综合题","概念辨析题","证明题","公式填空题","反例与存在性题","分类讨论题","误差分析题","多解比较题"].map(function (c) { return '<option value="' + attr(c) + '"' + (f.category === c ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '</select>' +
     '<select class="select" data-bank-filter="type" aria-label="按作答形式筛选题库"><option value="all"' + (f.type === 'all' ? ' selected' : '') + '>全部形式</option><option value="choice"' + (f.type === 'choice' ? ' selected' : '') + '>客观题</option><option value="fill"' + (f.type === 'fill' ? ' selected' : '') + '>填空题</option><option value="subjective"' + (f.type === 'subjective' ? ' selected' : '') + '>主观题</option></select>' +
     '<select class="select" data-bank-filter="template" aria-label="按模板筛选题库">' +

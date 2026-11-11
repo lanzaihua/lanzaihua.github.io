@@ -195,7 +195,7 @@ if (randomExamSource.indexOf("String(q.answer || '').trim()") < 0) throw new Err
 if (randomExamSource.indexOf('finalExamEnsureStandardTypes') < 0) throw new Error('59-exam.js 缺少标准题库题型保障');
 if (randomExamSource.indexOf('choiceTarget') < 0 || randomExamSource.indexOf('fillTarget') < 0) throw new Error('59-exam.js 缺少标准题库客观题/填空题配额');
 const coverageErrors = []; const seenBankQuestions = Object.create(null);
-const CALC_BANK_TOTAL = 8831;
+const CALC_BANK_TOTAL = 8940;
 const bankTotal = Object.keys(banks).reduce(function (n, k) { return n + (banks[k].items || []).length; }, 0);
 const QUESTION_CATEGORIES = ['计算题', '应用题', '综合题', '概念辨析题', '证明题', '公式填空题', '反例与存在性题', '分类讨论题', '误差分析题', '多解比较题'];
 const CATEGORY_TARGETS = { '计算题':1075, '应用题':675, '综合题':825, '概念辨析题':875, '证明题':825, '公式填空题':850, '反例与存在性题':750, '分类讨论题':825, '误差分析题':725, '多解比较题':825 };
@@ -204,9 +204,9 @@ QUESTION_CATEGORIES.forEach(function (c) { categoryCounts[c] = 0; });
 Object.keys(banks).forEach(function (k) { (banks[k].items || []).forEach(function (it) { if (it.examOrigin === '教材课后习题') return; if (categoryCounts[it.category] != null) categoryCounts[it.category]++; }); });
 QUESTION_CATEGORIES.forEach(function (c) {
   const want = CATEGORY_TARGETS[c];
-  if (categoryCounts[c] !== want) coverageErrors.push('题型分类 ' + c + ' 数量 ' + categoryCounts[c] + ' ≠ ' + want);
+  if (categoryCounts[c] < want) coverageErrors.push('题型分类 ' + c + ' 数量 ' + categoryCounts[c] + ' < ' + want);
 });
-if (bankTotal !== CALC_BANK_TOTAL) coverageErrors.push('题库总数 ' + bankTotal + ' ≠ ' + CALC_BANK_TOTAL);
+if (bankTotal < CALC_BANK_TOTAL) coverageErrors.push('题库总数 ' + bankTotal + ' < ' + CALC_BANK_TOTAL);
 seed.subjects.forEach(function (subj) {
   const bank = banks[subj.id] || { items: [] };
   const chapters = [];

@@ -717,24 +717,27 @@ function filterFor(subjectId) {
   return f;
 }
 function bankFilterFor(subjectId) {
-  if (!ui.bankFilters[subjectId]) ui.bankFilters[subjectId] = { chapter: 'all', category: 'all', type: 'all', template: 'all', diff: 'all', origin: 'all' };
+  if (!ui.bankFilters[subjectId]) ui.bankFilters[subjectId] = { chapter: 'all', section: 'all', category: 'all', type: 'all', template: 'all', diff: 'all', origin: 'all' };
   var f = ui.bankFilters[subjectId];
   if (!f.origin) f.origin = 'all';
+  if (!f.section) f.section = 'all';
   return f;
 }
 function bankOriginKey(item) {
   return item && item.examOrigin === '教材课后习题' ? 'textbook' : 'exam';
 }
 function bankFiltersActive(f) {
-  return !!f && (f.chapter !== 'all' || f.category !== 'all' || f.type !== 'all' || f.template !== 'all' || f.diff !== 'all' || f.origin !== 'all');
+  return !!f && (f.chapter !== 'all' || f.section !== 'all' || f.category !== 'all' || f.type !== 'all' || f.template !== 'all' || f.diff !== 'all' || f.origin !== 'all');
 }
 function templateFilterFor(subjectId) {
   if (!ui.templateFilters) ui.templateFilters = {};
-  if (!ui.templateFilters[subjectId]) ui.templateFilters[subjectId] = { chapter: 'all' };
-  return ui.templateFilters[subjectId];
+  if (!ui.templateFilters[subjectId]) ui.templateFilters[subjectId] = { chapter: 'all', section: 'all' };
+  var tf = ui.templateFilters[subjectId];
+  if (!tf.section) tf.section = 'all';
+  return tf;
 }
 function templateFiltersActive(f) {
-  return !!f && f.chapter !== 'all';
+  return !!f && (f.chapter !== 'all' || f.section !== 'all');
 }
 
 function sortEntries(list, subjectId) {

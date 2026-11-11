@@ -16,6 +16,7 @@ function finalData() {
   if (!Array.isArray(fe.papers)) fe.papers = [];
   if (!Array.isArray(fe.examHistory)) fe.examHistory = [];
   if (!fe.done || typeof fe.done !== 'object') fe.done = {};
+  if (!fe.sectionSel || typeof fe.sectionSel !== 'object') fe.sectionSel = {};
   if (!(Number(fe.duration) > 0)) fe.duration = 120;
   if (!SUBJ_BY_ID[fe.subject]) fe.subject = SUBJ_BY_ID[state.activeSubject] ? state.activeSubject : 'gaodai';
   return fe;
@@ -105,11 +106,23 @@ function finalSelectedChapters(subject) {
   var arr = fe.chapterSel && fe.chapterSel[subject];
   return Array.isArray(arr) ? arr.filter(Boolean) : [];
 }
+function finalSelectedSections(subject) {
+  var fe = finalData();
+  var arr = fe.sectionSel && fe.sectionSel[subject];
+  arr = Array.isArray(arr) ? arr.filter(Boolean) : [];
+  var chs = finalSelectedChapters(subject);
+  if (chs.length !== 1) return [];
+  var secs = chapterSectionsFor(subject, chs[0]);
+  return arr.filter(function (x) { return secs.indexOf(x) >= 0; });
+}
 function finalMaterialsForChapters(subject) {
   var all = finalMaterialsForSubject(subject);
   var sel = finalSelectedChapters(subject);
   if (!sel.length) return all;
-  return all.filter(function (m) { return sel.indexOf(m.chapter) >= 0; });
+  var out = all.filter(function (m) { return sel.indexOf(m.chapter) >= 0; });
+  var secs = finalSelectedSections(subject);
+  if (secs.length) out = out.filter(function (m) { return secs.indexOf(sectionForItem(subject, m)) >= 0; });
+  return out;
 }
 function finalChapterFilterHtml(subject) {
   var all = finalMaterialsForSubject(subject);
@@ -117,8 +130,14 @@ function finalChapterFilterHtml(subject) {
   var chapters = [];
   all.forEach(function (m) { if (m.chapter && chapters.indexOf(m.chapter) < 0) chapters.push(m.chapter); });
   var sel = finalSelectedChapters(subject);
-  return '<div class="final-chapter-filter"><span class="fcf-label">章节</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
+  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
     chapters.map(function (c) { return '<button class="fcf-chip' + (sel.indexOf(c) >= 0 ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="' + attr(c) + '" type="button">' + esc(c) + '</button>'; }).join('') + '</div>';
+  if (sel.length !== 1) return main;
+  var secs = chapterSectionsFor(subject, sel[0]);
+  if (!secs.length) return main;
+  var chosen = finalSelectedSections(subject);
+  return main + '<div class="final-chapter-filter final-section-filter"><span class="fcf-label">小节</span><button class="fcf-chip' + (!chosen.length ? ' is-on' : '') + '" data-act="final-section" data-section="" type="button">全部小节</button>' +
+    secs.map(function (sec) { return '<button class="fcf-chip' + (chosen.indexOf(sec) >= 0 ? ' is-on' : '') + '" data-act="final-section" data-section="' + attr(sec) + '" type="button">' + esc(sec) + '</button>'; }).join('') + '</div>';
 }
 
 function finalItemKey(subject, type, id) {
@@ -366,7 +385,8 @@ function finalGeneratePaper() {
   var materials = finalMaterialsForChapters(subject);
   if (!materials.length) {
     var sel = finalSelectedChapters(subject);
-    materials = bankOf(subject).filter(function (b) { return !sel.length || sel.indexOf(b.chapter) >= 0; }).map(function (b) {
+    var fsecs = finalSelectedSections(subject);
+    materials = bankOf(subject).filter(function (b) { return (!sel.length || sel.indexOf(b.chapter) >= 0) && (!fsecs.length || fsecs.indexOf(sectionForItem(subject, b)) >= 0); }).map(function (b) {
       return finalResolveItem({ type: 'bank', subject: subject, id: b.id, key: finalItemKey(subject, 'bank', b.id) });
     }).filter(Boolean);
     if (materials.length) toast('当前未加入期末材料，已直接从本科题库抽题组卷');

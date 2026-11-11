@@ -742,11 +742,11 @@ test('matrix stems name the matrix and read as complete sentences',()=>{
     assert.doesNotMatch(q.question,/\$。\s/,id);
   }
 });
-test('bank totals include six reviewed textbook exercise items',()=>{
+test('bank totals include reviewed textbook and question-bank additions',()=>{
   const files={algebra:'bank-algebra',analysis:'bank-analysis',geometry:'bank-geometry',western:'bank-western'};
   const totals={};
   for(const [k,f] of Object.entries(files)){const d=JSON.parse(read('src/data/'+f+'.json'));totals[k]=d.items.length;}
-  assert.deepEqual(totals,{algebra:1550,analysis:3522,geometry:1199,western:2560});
+  assert.deepEqual(totals,{algebra:1559,analysis:3522,geometry:1199,western:2660});
   for(const f of ['bank-algebra','bank-analysis']){
     const d=JSON.parse(read('src/data/'+f+'.json'));
     for(const q of d.items.filter(x=>['GA-TX048','GA-TX049','GA-TX050','MA-TX070','MA-TX071','MA-TX072'].includes(x.id))){
@@ -756,13 +756,55 @@ test('bank totals include six reviewed textbook exercise items',()=>{
   }
 });
 
+test('every chapter exposes a section list and items map into it',()=>{
+  const r=runtime(); const SECTIONS=r.ctx.CHAPTER_SECTIONS;
+  assert.deepEqual(Object.fromEntries(Object.entries(SECTIONS).map(([k,v])=>[k,Object.keys(v).length])),{gaodai:10,shufen:23,jieji:6,xijing:16});
+  const banks={gaodai:'bank-algebra',shufen:'bank-analysis',jieji:'bank-geometry',xijing:'bank-western'};
+  for(const [sid,f] of Object.entries(banks)){
+    const d=JSON.parse(read('src/data/'+f+'.json'));
+    const chapters=[...new Set(d.items.map(x=>x.chapter))];
+    assert.equal(chapters.length,Object.keys(SECTIONS[sid]).length,sid+' chapter count');
+    for(const ch of chapters){
+      const sections=SECTIONS[sid][ch];
+      assert.ok(Array.isArray(sections)&&sections.length>=2,sid+' '+ch);
+      for(const item of d.items.filter(x=>x.chapter===ch)){
+        const sec=r.ctx.sectionForItem(sid,item);
+        assert.ok(sections.includes(sec)||sec==='综合与其他',sid+' '+ch+' '+item.id+' -> '+sec);
+      }
+    }
+    const firstChapter=chapters[0];
+    const copy=r.ctx.chapterSectionsFor(sid,firstChapter);
+    assert.notEqual(copy,SECTIONS[sid][firstChapter],'returns a copy');
+    copy.pop();
+    assert.equal(r.ctx.chapterSectionsFor(sid,firstChapter).length,SECTIONS[sid][firstChapter].length,'catalog stays intact');
+  }
+  assert.equal(r.ctx.sectionForItem('gaodai',{chapter:'第二章 行列式',title:'排列的奇偶性',question:'求排列的逆序数'}),'排列');
+  assert.equal(r.ctx.sectionForItem('gaodai',{chapter:'第二章 行列式',title:'克拉默法则',question:'用克拉默法则解方程组'}),'克拉默法则');
+});
+test('bank, template, exam and final chapter filters cascade into sections',()=>{
+  const bank=read('src/js/30-library.js');
+  assert.match(bank,/data-bank-filter="section"/);
+  assert.match(bank,/data-template-filter="section"/);
+  assert.match(bank,/f\.chapter !== 'all'/);
+  assert.match(bank,/templateSectionOf/);
+  const exam=read('src/js/59-exam.js');
+  assert.match(exam,/data-final-ai-section/);
+  assert.match(exam,/finalExamChapterSections/);
+  assert.match(exam,/exam-section-grid/);
+  const fin=read('src/js/58-final.js');
+  assert.match(fin,/finalSelectedSections/);
+  assert.match(fin,/data-act="final-section"/);
+  assert.match(fin,/finalMaterialsForChapters/);
+  assert.ok(!read('src/js/30-library.js').includes("chapter !== 'all' && f.section"));
+});
 test('README puts source details after technical notes and before feedback, with current counts',()=>{
   const md=read('README.md');
   const at=['## 技术说明','## 源码、构建与开源','## 反馈'].map(h=>md.indexOf(h));
   assert.ok(at[0]>=0&&at[0]<at[1]&&at[1]<at[2],'README section order');
-  assert.ok(md.includes('581 道教材课后'),'教材课后 current count');
-  assert.ok(md.includes('64 项回归测试'),'current test count');
-  assert.ok(!md.includes('62 项回归测试'),'stale test count');
+  assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
+  assert.ok(md.includes('8940'),'bank total');
+  assert.ok(md.includes('66 项回归测试'),'current test count');
+  assert.ok(!md.includes('64 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.11 Release'),'current release link');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });

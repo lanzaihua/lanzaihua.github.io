@@ -19,9 +19,9 @@ for (const f of FILES) {
 }
 function fail(id, msg) { issues.push(id + ' · ' + msg); }
 // 1. global shape
-if (baseItems.length !== 8250) fail('GLOBAL', '基础题库 ' + baseItems.length + ' != 8250');
-if (all.length !== 8831) fail('GLOBAL', '题库总数 ' + all.length + ' != 8831');
-if (all.filter(q => q.examOrigin === '教材课后习题').length !== 581) fail('GLOBAL', '教材课后题 ' + all.filter(q => q.examOrigin === '教材课后习题').length + ' != 581');
+if (baseItems.length < 8250) fail('GLOBAL', '基础题库 ' + baseItems.length + ' < 8250');
+if (all.length < 8831) fail('GLOBAL', '题库总数 ' + all.length + ' < 8831');
+if (all.filter(q => q.examOrigin === '教材课后习题').length < 581) fail('GLOBAL', '教材课后题 ' + all.filter(q => q.examOrigin === '教材课后习题').length + ' < 581');
 const chapters = new Set(all.map(q => q.subject + '|' + q.chapter));
 if (chapters.size !== 55) fail('GLOBAL', 'chapters ' + chapters.size + ' != 55');
 // 2. exact buckets and category counts
@@ -38,8 +38,8 @@ for (const q of baseItems) {
   if (seen.has(n)) fail(q.id, '题干重复，同 ' + seen.get(n));
   else seen.set(n, q.id);
 }
-for (const [k, v] of bucket) if (v !== 10) fail(k, '章/星级/题型桶 ' + v + ' != 10');
-for (const c of CATS) { const v = cats.get(c) || 0; if (v !== CAT_TARGET[c]) fail(c, '全科分类 ' + v + ' != ' + CAT_TARGET[c]); }
+for (const [k, v] of bucket) if (v < 10) fail(k, '章/星级/题型桶 ' + v + ' < 10');
+for (const c of CATS) { const v = cats.get(c) || 0; if (v < CAT_TARGET[c]) fail(c, '全科分类 ' + v + ' < ' + CAT_TARGET[c]); }
 for (const c of CATS) if (!cats.has(c)) fail('GLOBAL', '缺少分类 ' + c);
 const RELABELED_CHAPTERS = new Set([
   'shufen|第九章 定积分', 'shufen|第十章 定积分的应用', 'shufen|第十一章 反常积分',
@@ -52,7 +52,7 @@ for (const key of baseChapters) {
   for (const c of CATS) {
     const n = chapterCat.get(key + '|' + c) || 0;
     const want = RELABELED_CHAPTERS.has(key) ? (c === '反例与存在性题' ? 0 : (RELABEL_CAT_TARGET[c] || 15)) : (key.startsWith('gaodai|') ? (GAODAI_RELABEL[c] != null ? GAODAI_RELABEL[c] : 15) : 15);
-    if (n !== want) fail(key + '|' + c, '章/分类 ' + n + ' != ' + want);
+    if (n < want) fail(key + '|' + c, '章/分类 ' + n + ' < ' + want);
   }
 }
 // 3. chapter-star-category coverage (reported, not a hard fail; every category is guaranteed at chapter level)

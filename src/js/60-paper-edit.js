@@ -265,6 +265,24 @@ function finalPaperToggleChapter(chapter) {
   else if (arr.indexOf(chapter) >= 0) arr = arr.filter(function (x) { return x !== chapter; });
   else arr = arr.concat([chapter]);
   fe.chapterSel[subject] = arr;
+  fe.sectionSel = fe.sectionSel || {};
+  fe.sectionSel[subject] = [];
+  ui.finalPaperId = '';
+  markDirty(); render();
+}
+
+function finalPaperToggleSection(section) {
+  var subject = finalSubject();
+  var fe = finalData();
+  var chs = finalSelectedChapters(subject);
+  if (chs.length !== 1) return;
+  var all = chapterSectionsFor(subject, chs[0]);
+  var arr = finalSelectedSections(subject);
+  if (!section) arr = [];
+  else if (arr.indexOf(section) >= 0) arr = arr.filter(function (x) { return x !== section; });
+  else arr = arr.concat([section]);
+  fe.sectionSel = fe.sectionSel || {};
+  fe.sectionSel[subject] = arr.filter(function (x) { return all.indexOf(x) >= 0; });
   ui.finalPaperId = '';
   markDirty(); render();
 }
@@ -555,6 +573,7 @@ document.addEventListener('click', function (e) {
   if (act === 'final-ai-paper') { e.preventDefault(); finalPaperAiGenerate(); }
   else if (act === 'final-insert-material') { e.preventDefault(); finalPaperImportMaterial(); }
   else if (act === 'final-chapter') { e.preventDefault(); finalPaperToggleChapter(el.getAttribute('data-chapter')); }
+  else if (act === 'final-section') { e.preventDefault(); finalPaperToggleSection(el.getAttribute('data-section')); }
   else if (act === 'final-smart-scores') { e.preventDefault(); finalPaperSmartScores(); }
   else if (act === 'final-paper-draw-toggle') { e.preventDefault(); var f = finalPaperFindItem(Number(el.getAttribute('data-index'))); if (f) { f.item.drawMode = !f.item.drawMode; render(); } }
   else if (act === 'final-paper-draw-clear') { e.preventDefault(); var c = finalPaperFindItem(Number(el.getAttribute('data-index'))); if (c) { c.item.draw = ''; c.paper.updatedAt = nowIso(); markDirty(); render(); } }

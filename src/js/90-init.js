@@ -290,6 +290,7 @@ function handleAction(act, el) {
     case 'clear-bank-filters': {
       var bf = bankFilterFor(state.activeSubject);
       bf.chapter = 'all';
+      bf.section = 'all';
       bf.category = 'all';
       bf.type = 'all';
       bf.template = 'all';
@@ -299,9 +300,13 @@ function handleAction(act, el) {
       render();
       break;
     }
-    case 'clear-template-filters':
-      templateFilterFor(state.activeSubject).chapter = 'all';
+    case 'clear-template-filters': {
+      var tf0 = templateFilterFor(state.activeSubject);
+      tf0.chapter = 'all';
+      tf0.section = 'all';
       render();
+      break;
+    }
       break;
     case 'clear-entry-filters': {
       var ef = filterFor(state.activeSubject);
@@ -593,12 +598,16 @@ function bindEvents() {
       render();
     } else if (t.matches('[data-bank-filter]')) {
       var bk = t.getAttribute('data-bank-filter');
-      bankFilterFor(state.activeSubject)[bk] = t.value;
+      var bff = bankFilterFor(state.activeSubject);
+      bff[bk] = t.value;
+      if (bk === 'chapter') bff.section = 'all';
       ui.bankShowLimit = 120;
       render();
     } else if (t.matches('[data-template-filter]')) {
       var tk = t.getAttribute('data-template-filter');
-      templateFilterFor(state.activeSubject)[tk] = t.value;
+      var tff = templateFilterFor(state.activeSubject);
+      tff[tk] = t.value;
+      if (tk === 'chapter') tff.section = 'all';
       render();
     } else if (t.matches('#aiThinkingToggle') || t.matches('#settingsThinkingToggle')) {
       aiSaveThinking({ enabled: t.checked });

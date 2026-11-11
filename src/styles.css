@@ -6183,3 +6183,19 @@ math[display="block"] {
   .banner-close { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
   .pages-banner .banner-close { width: 40px; height: 40px; }
 }
+
+
+/* 2026-11-11: 章下小节级联筛选 */
+.exam-chapter-block { display: grid; gap: 6px; }
+.exam-section-block { margin: 0 0 4px 22px; padding: 8px 10px; border-left: 2px solid color-mix(in srgb, var(--accent) 32%, var(--line)); background: var(--surface); border-radius: 0 8px 8px 0; }
+.exam-section-label { display: block; margin-bottom: 6px; color: var(--faint); font-size: 10.5px; letter-spacing: .04em; }
+.exam-section-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.exam-section-option { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-2); color: var(--ink-soft); font-size: 11px; line-height: 1.4; cursor: pointer; }
+.exam-section-option:has(input:checked) { border-color: color-mix(in srgb, var(--accent) 38%, var(--line)); background: var(--accent-soft); color: var(--ink); }
+.exam-section-option input { width: 13px; height: 13px; margin: 0; accent-color: var(--accent); }
+.final-section-filter { margin-top: 8px; }
+@media (max-width: 640px) {
+  .exam-section-block { margin-left: 10px; padding: 7px 8px; }
+  .exam-section-grid { gap: 5px; }
+  .exam-section-option { padding: 6px 7px; min-height: 34px; }
+}
