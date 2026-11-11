@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.11-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.11--cba8bbff-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.11--7b07ccf0-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -21,7 +21,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261110-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261111-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -35,60 +35,7 @@
 
 | 适合 | 现在包含 | 数据方式 |
 |---|---|---|
-| 大学高代、数分、解几、西经的错题整理与考前复习 | **118** 张解答模板 · **8250** 道考研同型题 + **575** 道教材课后习题 · 统一笔记库 | 默认 localStorage；可导出 / 导入 JSON 备份 |
-
-## 源码、构建与开源
-
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.10 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.10/source.zip) 提供。
-
-### 仓库与许可证
-
-- **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
-- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.10/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.10/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
-- **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
-- **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
-- **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
-- **联系**：<3554833568@qq.com>
-
-### 源码结构
-
-| 路径 | 内容 |
-|---|---|
-| `src/js/` | 24 个运行模块：题库、错题、模板、Markdown 与公式渲染、AI、笔记、模拟考、通知、更新记录 |
-| `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
-| `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
-| `tools/` | 题库 QA、站点一致性、发布与源码打包脚本 |
-| `tests/` | 60 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面与模拟考 |
-
-仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
-
-### 构建与本机运行
-
-```bash
-npm ci && npm test        # 安装依赖并跑回归测试
-node build.js             # 生成 dist/index.html
-node build.js --pages     # 生成 GitHub Pages 版本
-node server.js            # 本机同步 / AI 代理，默认 http://127.0.0.1:4173
-node server.js --lan      # 手机同一局域网访问
-```
-
-未配置 AI 时，错题、模板、题库、笔记等普通功能不受影响。
-
-### 仓库语言与工具链
-
-GitHub 的语言统计按源码计算，不把构建出来的单文件当成主要语言：
-
-- `index.html` 是生成产物，已在 `.gitattributes` 标记 `linguist-generated=true`；`src/index.template.html`、`src/js/`、`src/styles.css` 仍计入 HTML / JavaScript / CSS。
-- `tools/audit_bank.py` 是独立的 Python 题库审计，`tools/package-source.py` 负责发布打包；`tools/check.sh` 与 `Makefile` 提供同一套本地检查入口。
-- `tools/check_repo_languages.js` 校验六类源码是否齐全，语言统计退化成单一 HTML 时直接失败。
-
-```bash
-python tools/audit_bank.py --strict-difficulty   # 题库独立审计
-node tools/check_repo_languages.js              # 语言门禁
-python tools/package-source.py --all            # source.zip + 静态站 zip + SHA256SUMS
-bash tools/check.sh                             # 全套检查
-make check                                      # 同上，Makefile 入口
-```
+| 大学高代、数分、解几、西经的错题整理与考前复习 | **118** 张解答模板 · **8250** 道考研同型题 + **581** 道教材课后习题 · 统一笔记库 | 默认 localStorage；可导出 / 导入 JSON 备份 |
 
 ## 四个科目
 
@@ -115,8 +62,8 @@ make check                                      # 同上，Makefile 入口
 
 - 118 张模板按科目和章节组织，顶部章节目录可直接跳转。
 - 模板固定四段：识别特征 / 首选方法 / 步骤骨架 / 易错点。
-- 8250 道考研同型题 + 575 道教材课后习题，可以展开查看标准解答、详细解析、答案、解题要点和易错点。
-- 模板、题库、错题条目都支持复制 Markdown 源码；题库由 8250 道考研同型题与 575 道教材课后题组成。基础 8250 道按每章 1–5★ 各 10 客观 + 10 填空 + 10 主观配置，教材 575 道为补充、不占该配额。
+- 8250 道考研同型题 + 581 道教材课后习题，可以展开查看标准解答、详细解析、答案、解题要点和易错点。
+- 模板、题库、错题条目都支持复制 Markdown 源码；题库由 8250 道考研同型题与 581 道教材课后题组成。基础 8250 道按每章 1–5★ 各 10 客观 + 10 填空 + 10 主观配置，教材 581 道为补充、不占该配额。
 
 ### 统一笔记库
 
@@ -165,18 +112,18 @@ make check                                      # 同上，Makefile 入口
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261110-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
-<td width="50%"><img src="assets/v2/20261110-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261111-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
+<td width="50%"><img src="assets/v2/20261111-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261110-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261110-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
+<td width="50%"><img src="assets/v2/20261111-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261111-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
-<p align="center"><img src="assets/v2/20261110-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
+<p align="center"><img src="assets/v2/20261111-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
 
-<p align="center"><img src="assets/v2/20261110-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
+<p align="center"><img src="assets/v2/20261111-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
@@ -203,9 +150,9 @@ make check                                      # 同上，Makefile 入口
 
 ### 2026-11-11 · 真实进度、公式与习题
 
-**16 项 · 16 组**
+**20 项 · 20 组**
 
-本轮先把智能录入、AI 出题、AI 批改、自动整理、知识点补全与扫描 OCR 的进度条改成真实流式数据驱动：直接读取模型的 SSE 正文，按已返回的 JSON 字段、题目对象和识别字数计算百分比；进度条宽度、百分比数字与 aria-valuenow 使用同一个整数。随后修复公式与数字在三端的显示：MathML 行内公式改用 inline math 基线、转义美元符还原成公式、题库缺失反斜杠的 LaTeX 命令补齐，并把纯英文词组排除出公式扫描。最后修复题库矩阵题干缺少矩阵名的问题，把《高等代数习题精选精解》和吉米多维奇 6 卷的章节/题型地图并入两个学科 skill，并加入 6 道可复核的习题集精选题目。本块 16 项 / 16 组，62 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+本轮先把智能录入、AI 出题、AI 批改、自动整理、知识点补全与扫描 OCR 的进度条改成真实流式数据驱动：直接读取模型的 SSE 正文，按已返回的 JSON 字段、题目对象和识别字数计算百分比；进度条宽度、百分比数字与 aria-valuenow 使用同一个整数。随后修复公式与数字在三端的显示：MathML 行内公式改用 inline math 基线、转义美元符还原成公式、题库缺失反斜杠的 LaTeX 命令补齐，并把纯英文词组排除出公式扫描。最后修复题库矩阵题干缺少矩阵名的问题，把《高等代数习题精选精解》和吉米多维奇 6 卷的章节/题型地图并入两个学科 skill，并加入 6 道可复核的习题集精选题目。随后重排仓库 README：把「源码、构建与开源」移到「技术说明」之后、「反馈」之前，修正 581 道教材课后、8831 总数、v2026.11.11 链接与 20261111 截图；收口导航交叉入口、规范跳转、弹窗关闭键的触控高度与装饰小标签字号。本块 20 项 / 20 组，64 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -216,15 +163,19 @@ make check                                      # 同上，Makefile 入口
 | **OCR 字数** | 扫描识别按画布像素估算本页预期字数，再按流式返回的实际识别字数从 8% 推进到 94%，文案显示「已识别 X 字」；服务端 OCR 仍是非流式接口，这一路径会停在 8% 直到返回，属于已注明的接口边界。 |
 | **自动整理** | 自动整理、知识点 AI 搜索与自动补全接入同一条流式通道：首个字节 8%，之后按标题、正文、书章、标签等字段推进到 85%，返回后 90%，写入完成才 100%。 |
 | **同源百分比** | 进度条填充宽度、右侧百分比文字和 aria-valuenow 都由同一个四舍五入后的整数生成，不再出现宽度 11.8%、文字 12% 的错位；进度只增不减，倒退值会被夹住，完成后显式写 100%。 |
-| **防复发** | 新增流式字段统计、题目数组计数、百分比宽度同源、倒退夹住、取消与空响应回归测试，测试总数 62；390 / 820 / 1440 在进度中段抓取到 6% → 12% → 27% → 39% 的连续状态，宽度、文字与 aria 完全一致，无横向溢出、无脚本错误。 |
+| **防复发** | 新增流式字段统计、题目数组计数、百分比宽度同源、倒退夹住、取消与空响应回归测试，测试总数 64；390 / 820 / 1440 在进度中段抓取到 6% → 12% → 27% → 39% 的连续状态，宽度、文字与 aria 完全一致，无横向溢出、无脚本错误。 |
 | **公式基线** | 修复 MathML 行内公式被按整块宽度布局的问题：数学元素的显示值改为 inline math，普通公式共用正文行高与基线，矩阵、分式、上下标不再把标点挤到单独一行；只有超宽公式保留横向滚动。 |
 | **转义美元** | 模型写成反斜杠美元符的成对公式现在还原为普通公式；cases、pmatrix 等环境内部的误加美元符先清理；真正的货币写法仍按字面美元显示，不再出现 $ 泄漏或整段 LaTeX 原样输出。 |
 | **题库反斜杠** | 修复高代第六章 GA-B0868 / GA-B0869 / GA-B0870 中缺失反斜杠的 LaTeX 命令（U\subset V、v\in V、V=\mathbb{R}^2），题库、模拟考与错题页不再显示 Usubset、mathbb 等裸命令。 |
 | **英文词组** | 知识点解析里的英文术语（如 one-sided derivative）不再被裸公式扫描器包成公式，连字符不会被排成减号、单词也不会变成斜体。 |
-| **数据门禁** | QA 与构建新增缺失反斜杠命令检查，纯英文词组、数学定界符、公式宽度与基线继续由回归测试覆盖，测试总数 62，防止同类问题再次进入页面。 |
+| **数据门禁** | QA 与构建新增缺失反斜杠命令检查，纯英文词组、数学定界符、公式宽度与基线继续由回归测试覆盖，测试总数 64，防止同类问题再次进入页面。 |
 | **矩阵语言** | 题库中 599 处矩阵题干补上矩阵名：设$...$ 改为 设$A=...$，其中$...$ 改为 其中系数矩阵$A=...$，句号后的「矩阵的秩 / 特征值 / 行列式 / 余式」改为逗号加「求…」，不再出现「设 [矩阵]。矩阵的秩…」这种断句。QA 与构建新增永久门禁，缺少矩阵名或句号接问句直接失败。 |
 | **习题集索引** | 两个学科 skill 增加习题集来源：advanced-algebra 增加《高等代数习题精选精解》的章/节地图与题型方法索引，mathematical-analysis 增加吉米多维奇 6 卷 1,401 页的卷/页地图与题型索引；两处都注明原书是图片扫描，OCR 只用于定位，不声称收录全部原题。 |
 | **习题入库** | 题库新增 6 道可复核的习题集精选：高代 GA-TX048 带余除法、GA-TX049 三阶行列式、GA-TX050 二阶矩阵求逆，数分 MA-TX070 重要极限、MA-TX071 x^x 求导、MA-TX072 分部积分；总数 8831（1550 / 3522 / 1199 / 2560），教材课后 581，新题字段、解答开头与分类都过严格 QA。 |
+| **仓库重排** | README 把「源码、构建与开源」整段移到「技术说明」之后、「反馈」之前；当前计数改为 581 道教材课后与 8831 总数，源码包与 SHA256SUMS 链接改到 v2026.11.11，首页与界面截图统一到 20261111，回归测试数改为 64。 |
+| **触控尺寸** | 导航交叉入口「期末复习 / 笔记库」在桌面至少 34px、平板 38px、手机 40px；「查看本科规范与示范」链接操作 34 / 40px；弹窗标题栏关闭键与通知关闭键 34 / 40px。 |
+| **辅助字号** | LOCAL FIRST 提示标签、模板章节序号与计数、规范页 D1/3/7/15/30 标签统一到 10px；MathML 上下标仍由公式排版决定，不按正文小字放大。 |
+| **记录核对** | 逐块核对 20 个日期的更新记录与构建日：11-11 只保留一块，不新增同日第二块；11-10 及更早历史块保持当天状态，不改写为今天的计数；GitHub Releases 每日期仍只有一条。 |
 
 <img src="assets/v2/20261111-changelog.png" alt="网页内更新记录" width="820">
 
@@ -802,6 +753,60 @@ make check                                      # 同上，Makefile 入口
 - 无前端框架运行时依赖，打开 HTML 即可使用。
 - 可选 Node 后端负责静态服务、状态同步和 AI 代理。
 - 数据格式为浏览器 localStorage 中的 JSON，可通过页面导出 / 导入迁移。
+
+
+## 源码、构建与开源
+
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.11 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.11/source.zip) 提供。
+
+### 仓库与许可证
+
+- **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
+- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.11/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.11/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
+- **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
+- **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
+- **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
+- **联系**：<3554833568@qq.com>
+
+### 源码结构
+
+| 路径 | 内容 |
+|---|---|
+| `src/js/` | 24 个运行模块：题库、错题、模板、Markdown 与公式渲染、AI、笔记、模拟考、通知、更新记录 |
+| `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
+| `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
+| `tools/` | 题库 QA、站点一致性、发布与源码打包脚本 |
+| `tests/` | 62 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面与模拟考 |
+
+仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
+
+### 构建与本机运行
+
+```bash
+npm ci && npm test        # 安装依赖并跑回归测试
+node build.js             # 生成 dist/index.html
+node build.js --pages     # 生成 GitHub Pages 版本
+node server.js            # 本机同步 / AI 代理，默认 http://127.0.0.1:4173
+node server.js --lan      # 手机同一局域网访问
+```
+
+未配置 AI 时，错题、模板、题库、笔记等普通功能不受影响。
+
+### 仓库语言与工具链
+
+GitHub 的语言统计按源码计算，不把构建出来的单文件当成主要语言：
+
+- `index.html` 是生成产物，已在 `.gitattributes` 标记 `linguist-generated=true`；`src/index.template.html`、`src/js/`、`src/styles.css` 仍计入 HTML / JavaScript / CSS。
+- `tools/audit_bank.py` 是独立的 Python 题库审计，`tools/package-source.py` 负责发布打包；`tools/check.sh` 与 `Makefile` 提供同一套本地检查入口。
+- `tools/check_repo_languages.js` 校验六类源码是否齐全，语言统计退化成单一 HTML 时直接失败。
+
+```bash
+python tools/audit_bank.py --strict-difficulty   # 题库独立审计
+node tools/check_repo_languages.js              # 语言门禁
+python tools/package-source.py --all            # source.zip + 静态站 zip + SHA256SUMS
+bash tools/check.sh                             # 全套检查
+make check                                      # 同上，Makefile 入口
+```
 
 ## 反馈
 

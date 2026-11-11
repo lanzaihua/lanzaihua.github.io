@@ -482,9 +482,9 @@ function sideInfoPanel(s, st) {
   return '<section class="panel"><div class="panel-head"><h2 class="panel-title">复习法</h2><span class="panel-sub">四科通用节奏</span></div>' +
     '<div class="panel-body"><ul class="timeline" style="list-style:none;padding:0;margin:0">' +
     '<li><time>当天</time><div>只看「考试标准解答」与「同类型模板」，确认现在会做。</div></li>' +
-    '<li><time>D1/3/7/15/30</time><div>按复习行打卡；合上答案能独立写步骤，再做对变式，才算已掌握。</div></li>' +
+    '<li><time class="review-day">D1/3/7/15/30</time><div>按复习行打卡；合上答案能独立写步骤，再做对变式，才算已掌握。</div></li>' +
     '<li><time>考前</time><div>走「按章索引」，按知识要点刷，不按时间刷。</div></li>' +
-    '</ul><p style="margin:14px 0 0"><button class="linkish" data-act="nav-view" data-view="guide">查看本科规范与示范</button></p></div></section>';
+    '</ul><p style="margin:14px 0 0"><button class="linkish linkish-action" data-act="nav-view" data-view="guide">查看本科规范与示范</button></p></div></section>';
 }
 
 function chapterTable(s, st) {

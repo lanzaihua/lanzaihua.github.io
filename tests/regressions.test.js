@@ -755,3 +755,21 @@ test('bank totals include six reviewed textbook exercise items',()=>{
     }
   }
 });
+
+test('README puts source details after technical notes and before feedback, with current counts',()=>{
+  const md=read('README.md');
+  const at=['## 技术说明','## 源码、构建与开源','## 反馈'].map(h=>md.indexOf(h));
+  assert.ok(at[0]>=0&&at[0]<at[1]&&at[1]<at[2],'README section order');
+  assert.ok(md.includes('581 道教材课后'),'教材课后 current count');
+  assert.ok(md.includes('62 项回归测试'),'current test count');
+  assert.ok(md.includes('v2026.11.11 Release'),'current release link');
+  assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
+});
+test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
+  const css=read('src/styles.css');
+  assert.match(css,/\.cross-tabs \.tab-cross\s*\{[^}]*min-height:\s*34px/,'tab-cross 34px');
+  assert.match(css,/\.linkish-action\s*\{[^}]*min-height:\s*34px/,'linkish action 34px');
+  assert.match(css,/\.dlg-head \.icon-btn,[\s\S]{0,120}\.notif-close\s*\{[^}]*width:\s*34px/,'dialog close 34px');
+  assert.match(css,/@media \(max-width: 900px\)[\s\S]{0,500}\.cross-tabs \.tab-cross\s*\{[^}]*min-height:\s*38px/,'tablet tab-cross 38px');
+  assert.match(css,/\.pages-banner-badge,[\s\S]{0,160}font-size:\s*10px/,'decorative labels 10px');
+});
