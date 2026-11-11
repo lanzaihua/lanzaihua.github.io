@@ -20,7 +20,7 @@ from pathlib import Path
 
 SUBJECTS = {
     "gaodai": ("bank-algebra.json", 1547),
-    "shufen": ("bank-analysis.json", 3519),
+    "shufen": ("bank-analysis.json", 3522),
     "jieji": ("bank-geometry.json", 1199),
     "xijing": ("bank-western.json", 2560),
 }
@@ -105,8 +105,8 @@ def audit(data_dir: Path, strict_difficulty: bool):
 
     if len(base_items) != 8250:
         problems.append(("GLOBAL", f"基础题库 {len(base_items)} != 8250"))
-    if len(all_items) != 8825:
-        problems.append(("GLOBAL", f"题库总数 {len(all_items)} != 8825"))
+    if len(all_items) != 8831:
+        problems.append(("GLOBAL", f"题库总数 {len(all_items)} != 8831"))
     textbook = [item for item in all_items if item.get("examOrigin") == "教材课后习题"]
     if len(textbook) != 575:
         problems.append(("GLOBAL", f"教材课后题 {len(textbook)} != 575"))

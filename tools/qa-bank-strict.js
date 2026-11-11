@@ -20,8 +20,8 @@ for (const f of FILES) {
 function fail(id, msg) { issues.push(id + ' · ' + msg); }
 // 1. global shape
 if (baseItems.length !== 8250) fail('GLOBAL', '基础题库 ' + baseItems.length + ' != 8250');
-if (all.length !== 8825) fail('GLOBAL', '题库总数 ' + all.length + ' != 8825');
-if (all.filter(q => q.examOrigin === '教材课后习题').length !== 575) fail('GLOBAL', '教材课后题 ' + all.filter(q => q.examOrigin === '教材课后习题').length + ' != 575');
+if (all.length !== 8831) fail('GLOBAL', '题库总数 ' + all.length + ' != 8831');
+if (all.filter(q => q.examOrigin === '教材课后习题').length !== 581) fail('GLOBAL', '教材课后题 ' + all.filter(q => q.examOrigin === '教材课后习题').length + ' != 581');
 const chapters = new Set(all.map(q => q.subject + '|' + q.chapter));
 if (chapters.size !== 55) fail('GLOBAL', 'chapters ' + chapters.size + ' != 55');
 // 2. exact buckets and category counts
@@ -130,6 +130,9 @@ if (q.type === 'subjective' && !/^(解|证明|答)[：:]/.test(String(q.standard
     if (/(?:[A-Za-z](?:subset|subseteq)|=(?:mathbb|mathcal|mathrm|frac|sqrt|infty|cdot|times|partial|nabla)|\bvin\s+[A-Z])/.test(fieldText)) fail(q.id, '数学命令缺反斜杠');
     if (/=\\exists|=\\forall|\\Rightarrow-(?:\\exists|\\forall)|\\iff-(?:\\exists|\\forall)/.test(fieldText)) fail(q.id, '逻辑运算符损坏');
     if (/\\sqrt\{-[0-9]+\^2/.test(fieldText)) fail(q.id, '平方展开写成负数开方');
+    if (/设\$\s*\\begin\{(?:pmatrix|bmatrix|vmatrix)\}/.test(fieldText)) fail(q.id, '矩阵题干缺少矩阵名（应写成 设$A=…）');
+    if (/其中\$\s*\\begin\{(?:pmatrix|bmatrix|vmatrix)\}/.test(fieldText)) fail(q.id, '矩阵题干缺少矩阵名（应写成 其中系数矩阵$A=…）');
+    if (/\$。\s*\$[^$]+\$的结果是/.test(fieldText)) fail(q.id, '公式后句号再问“结果是”，数学语言不连贯');
     const segments = fieldText.split('$');
     for (let i = 1; i < segments.length; i += 2) if (segments[i].indexOf(String.fromCharCode(10)) >= 0) fail(q.id, '$...$ 内含换行');
   }

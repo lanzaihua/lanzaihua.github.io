@@ -14,8 +14,9 @@ description: "Two-volume mathematical analysis knowledge base from 《数学分�
 | **上** | 第六版 上册 | ch01–ch11 | 329 |
 | **下** | 第六版 下册 | ch12–ch23 | 358 |
 | **作业** | 数学分析上作业集 | 上册 ch01–ch08 · 69 题 / 26 次作业 | 30 |
+| **习题集** | 吉米多维奇《数学分析习题集题解》1–6 | 六卷 1,401 页 · 卷/页地图 + 题型索引 | 1,401 |
 
-**Generated**: 2026-10-09 ｜ **作业题库并入**：2026-11-04 ｜ **检索协议加固**：2026-11-04
+**Generated**: 2026-10-09 ｜ **作业题库并入**：2026-11-04 ｜ **吉米多维奇索引并入**：2026-11-11
 
 ## 检索协议（强制 · 回答前先读完）
 
@@ -28,6 +29,7 @@ description: "Two-volume mathematical analysis knowledge base from 《数学分�
 3. 只问某一节 → 先用 [sections.md](sections.md) 定位节号，再打开对应章节文件读那一节。
 4. 只问一道作业题 → 打开 `problems/pNN-*.md` 取「题目 / 考点 / 解 / 答案 / 易错」。
 5. 上面这些文件**都真的打开过**、确认内容确实不在里面，才可以回答「本技能没有收录」，并且必须列出你查过哪些文件路径。
+6. 只问吉米多维奇某卷某页 → 先读 [sources/jimiduoweiqi-map.md](sources/jimiduoweiqi-map.md) 定位卷/章，再回对应章节文件取方法；扫描件原题不直接引用。
 
 **绝对禁止**
 
@@ -283,6 +285,7 @@ description: "Two-volume mathematical analysis knowledge base from 《数学分�
 | [chapters/](chapters/) | **23 个章节正文**，每章含 Core Idea、定义与定理的完整陈述 + 证明思路、核心概念、思维模型、常见错误、速查表、工作示例、关键结论、章节联系 | 3.2k–9.6k tok/章，合计约 145k |
 | [sections.md](sections.md) | **节次总表**：上下册每个 § 的标题、书页、对应章节文件、对应作业题；末尾有「作业编号 ↔ 教材节次」换算 | 2.7k tok |
 | [problems/](problems/) | **作业题库**：上册 ch01–ch08 的 69 道作业题（题目 / 考点 / 考场解 / 答案 / 易错 / 教材对应） | 8 个文件，约 25k tok |
+| [sources/jimiduoweiqi-map.md](sources/jimiduoweiqi-map.md) | 吉米多维奇六卷地图 + 题型方法索引 + 扫描件使用边界 | 约 1.5k tok |
 | [glossary.md](glossary.md) | 术语表，中英对照 + 章节引用 | 5.6k tok |
 | [patterns.md](patterns.md) | 方法库：ε-N/ε-δ 证明、判敛流程、积分策略、三大公式用法、求导与作图套路 | 4.7k tok |
 | [cheatsheet.md](cheatsheet.md) | 决策速查：方法选择树、对照表、常见错误、Tells & smells | 3.1k tok |
@@ -305,5 +308,7 @@ description: "Two-volume mathematical analysis knowledge base from 《数学分�
 **体量说明。** 章节文件约 3,200–9,600 tokens（ch06 因覆盖 7 节、17 条定理而为最大）；作业题库每个文件 1,700–4,000 tokens；sections.md 约 2,700。全部按需加载，不读的不消耗预算。
 
 **作业题库的可信度。** `problems/` 里的题面是从作业集扫描件的文字层还原的（原文有清晰文字层，但分式、根式、指数被压平），每道歧义题都对照了 170 dpi 页面图像判读；计算题（导数、积分、极限、泰勒展开、极值拐点）逐题用 sympy 复核；结果再与教材书末「部分习题答案与提示」（上册书页 289–310）逐条比对过。仍然建议：**交作业前对一下教材上的习题编号与答案**——每题都标了 `教材对应 习题X.Y 第M题`，能查的都查得到。
+
+**吉米多维奇扫描件。** 六卷 1,401 页全部是纯图片扫描，无文本层；OCR 只能确认卷/页与部分标题，公式、上下标、分式损坏严重。`sources/jimiduoweiqi-map.md` 只保留卷/页地图与题型方法，不誊抄原题；错题本网页里标注「教材课后 · 吉米多维奇习题集」的题是按题型重写并独立复核的题。
 
 **版权。** 源书为第三方版权教材（高等教育出版社）。此处内容是**综合整理的学习材料**，不是教材原文，仅供**个人学习**——请勿转发或公开。

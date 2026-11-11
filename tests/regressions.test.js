@@ -728,3 +728,30 @@ test('escaped dollar formulas render as math on entry, bank, exam and knowledge 
   assert.match(css,/\.math-inline-scroll\.is-wide[\s\S]{0,220}display: inline-block !important[\s\S]{0,220}overflow-x: auto !important/,'超宽公式才允许横向滚动');
   assert.match(css,/\.math-inline-scroll\.is-wide[\s\S]{0,260}vertical-align: baseline !important/,'滚动容器不能把公式抬离基线');
 });
+
+test('matrix stems name the matrix and read as complete sentences',()=>{
+  const items=JSON.parse(read('src/data/bank-algebra.json')).items;
+  for(const q of items){
+    assert.doesNotMatch(q.question,/设\$\\begin\{pmatrix\}/,q.id);
+    assert.doesNotMatch(q.question,/其中\$\\begin\{pmatrix\}/,q.id);
+    assert.doesNotMatch(q.question,/\$。\$[^$]+\$的结果是/,q.id);
+  }
+  for(const id of ['GA-B0157','GA-B0158','GA-B0307']){
+    const q=items.find(x=>x.id===id);assert.ok(q,id);
+    assert.match(q.question,/(设|其中系数矩阵)\$A=/,id);
+    assert.doesNotMatch(q.question,/\$。\s/,id);
+  }
+});
+test('bank totals include six reviewed textbook exercise items',()=>{
+  const files={algebra:'bank-algebra',analysis:'bank-analysis',geometry:'bank-geometry',western:'bank-western'};
+  const totals={};
+  for(const [k,f] of Object.entries(files)){const d=JSON.parse(read('src/data/'+f+'.json'));totals[k]=d.items.length;}
+  assert.deepEqual(totals,{algebra:1550,analysis:3522,geometry:1199,western:2560});
+  for(const f of ['bank-algebra','bank-analysis']){
+    const d=JSON.parse(read('src/data/'+f+'.json'));
+    for(const q of d.items.filter(x=>['GA-TX048','GA-TX049','GA-TX050','MA-TX070','MA-TX071','MA-TX072'].includes(x.id))){
+      assert.equal(q.examOrigin,'教材课后习题',q.id);
+      assert.equal(q.category,'计算题',q.id);
+    }
+  }
+});

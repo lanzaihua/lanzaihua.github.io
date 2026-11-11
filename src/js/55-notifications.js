@@ -29,7 +29,7 @@ function notifAdd(title, body, kind, extra) {
 }
 
 function notifUpdateSignature(latest) {
-  var raw = [latest.date || '', latest.title || '', latest.summary || ''].join('|') + '||' +
+  var raw = [latest.date || '', latest.title || '', latest.notifySummary || latest.summary || ''].join('|') + '||' +
     (latest.items || []).map(function (it) { return (it.group || '') + ':' + (it.text || ''); }).join('||') + '||notify||' +
     (latest.notifyItems || []).map(function (it) { return (it.group || '') + ':' + (it.text || ''); }).join('||');
   var h = 2166136261;
@@ -318,7 +318,7 @@ function notifUpdateDelta(latest, previousItems, previousSummary) {
     part = part.replace(/^[\s；;，,。、:：\-—]+/, '').trim();
     if (part) deltas.push({ group: group, text: part });
   });
-  var summary = String((latest && latest.summary) || '');
+  var summary = String((latest && (latest.notifySummary || latest.summary)) || '');
   return { items: deltas, summary: summary, summaryChanged: !!summary && summary !== String(previousSummary || '') };
 }
 
@@ -367,7 +367,7 @@ function initNotifications() {
     : [];
   var hasPreviousEdition = !!(previousNotifyItems.length || previousItems.length);
   var delta = latest && Array.isArray(latest.notifyItems) && latest.notifyItems.length
-    ? { items: (hasPreviousEdition ? notifyDelta : latest.notifyItems), summary: String(latest.summary || ''), summaryChanged: !!latest.summary && String(latest.summary || '') !== String(previousSummary || '') }
+    ? { items: (hasPreviousEdition ? notifyDelta : latest.notifyItems), summary: String(latest.notifySummary || latest.summary || ''), summaryChanged: !!(latest.notifySummary || latest.summary) && String(latest.notifySummary || latest.summary || '') !== String(previousSummary || '') }
     : (latest ? notifUpdateDelta(latest, previousItems, previousSummary) : { items: [], summary: '', summaryChanged: false });
   var previousSummaryText = String(previousSummary || '');
   var deltaSummaryText = String(delta.summary || '');
@@ -391,13 +391,13 @@ function initNotifications() {
       updateSignature: versionKey,
       buildId: buildId,
       updateItems: (latest.items || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; }),
-      updateSummary: String(latest.summary || '')
+      updateSummary: String(latest.notifySummary || latest.summary || '')
     });
     state.notifVersion = versionKey;
     state.notifBuildId = buildId;
     state.notifNotifyItems = (latest.notifyItems || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; });
     state.notifUpdateItems = (latest.items || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; });
-    state.notifUpdateSummary = String(latest.summary || '');
+    state.notifUpdateSummary = String(latest.notifySummary || latest.summary || '');
   } else if (latest) {
     state.notifVersion = versionKey;
     if (buildId) state.notifBuildId = buildId;

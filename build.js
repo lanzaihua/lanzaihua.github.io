@@ -195,7 +195,7 @@ if (randomExamSource.indexOf("String(q.answer || '').trim()") < 0) throw new Err
 if (randomExamSource.indexOf('finalExamEnsureStandardTypes') < 0) throw new Error('59-exam.js 缺少标准题库题型保障');
 if (randomExamSource.indexOf('choiceTarget') < 0 || randomExamSource.indexOf('fillTarget') < 0) throw new Error('59-exam.js 缺少标准题库客观题/填空题配额');
 const coverageErrors = []; const seenBankQuestions = Object.create(null);
-const CALC_BANK_TOTAL = 8825;
+const CALC_BANK_TOTAL = 8831;
 const bankTotal = Object.keys(banks).reduce(function (n, k) { return n + (banks[k].items || []).length; }, 0);
 const QUESTION_CATEGORIES = ['计算题', '应用题', '综合题', '概念辨析题', '证明题', '公式填空题', '反例与存在性题', '分类讨论题', '误差分析题', '多解比较题'];
 const CATEGORY_TARGETS = { '计算题':1075, '应用题':675, '综合题':825, '概念辨析题':875, '证明题':825, '公式填空题':850, '反例与存在性题':750, '分类讨论题':825, '误差分析题':725, '多解比较题':825 };
@@ -252,6 +252,9 @@ if (it.type === 'choice' && Array.isArray(it.options)) {
       if (/(?:[A-Za-z](?:subset|subseteq)|=(?:mathbb|mathcal|mathrm|frac|sqrt|infty|cdot|times|partial|nabla)|\bvin\s+[A-Z])/.test(fieldText)) coverageErrors.push(it.id + ' 数学命令缺反斜杠');
       if (/=\\exists|=\\forall|\\Rightarrow-(?:\\exists|\\forall)|\\iff-(?:\\exists|\\forall)/.test(fieldText)) coverageErrors.push(it.id + ' 逻辑运算符损坏');
       if (/\\sqrt\{-[0-9]+\^2/.test(fieldText)) coverageErrors.push(it.id + ' 平方展开写成负数开方');
+      if (/设\$\s*\\begin\{(?:pmatrix|bmatrix|vmatrix)\}/.test(fieldText)) coverageErrors.push(it.id + ' 矩阵题干缺少矩阵名（应写成 设$A=…）');
+      if (/其中\$\s*\\begin\{(?:pmatrix|bmatrix|vmatrix)\}/.test(fieldText)) coverageErrors.push(it.id + ' 矩阵题干缺少矩阵名（应写成 其中系数矩阵$A=…）');
+      if (/\$。\s*\$[^$]+\$的结果是/.test(fieldText)) coverageErrors.push(it.id + ' 公式后句号再问“结果是”，数学语言不连贯');
       var segments = fieldText.split('$');
       for (var si = 1; si < segments.length; si += 2) if (segments[si].indexOf(String.fromCharCode(10)) >= 0) coverageErrors.push(it.id + ' $...$ 内含换行');
     });
