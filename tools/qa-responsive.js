@@ -250,7 +250,7 @@ async function visibleBox(page, selector) {
     // 数据备份：真实下载 JSON/GZIP，再通过导入入口合并回来。
     if (device.name === 'desktop') {
       const downloadPromise = page.waitForEvent('download', { timeout: 15000 });
-      await page.locator('[data-act="export-state"]').first().click();
+      await page.locator('[data-act="export-state"]:visible').first().click();
       const download = await downloadPromise;
       const savedName = download.suggestedFilename() || ('qa-backup-' + Date.now() + '.json');
       const debugDir = path.join(__dirname, '..', 'debug');
