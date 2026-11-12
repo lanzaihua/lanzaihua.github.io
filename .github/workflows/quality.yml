@@ -45,4 +45,4 @@ jobs:
         run: npm run qa:formulas
 
       - name: Performance regression
-        run: PAGE_URL=http://127.0.0.1:4173 npm run qa:perf
+        run: npm run qa:perf

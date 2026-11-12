@@ -4,10 +4,13 @@
  * 用法：PAGE_URL=http://127.0.0.1:4173 node tools/qa-performance.js
  */
 const { launchChromium } = require('./browser');
-const URL_BASE = process.env.PAGE_URL || 'https://lanzaihua.github.io/';
+const { startServer } = require('./qa-server');
+let URL_BASE = process.env.PAGE_URL || '';
+let qaServer = null;
 const LIMITS = { fcp: 8000, dcl: 12000, load: 16000, bankSwitch: 6000, heapMB: 700 };
 
 (async function () {
+  if (!URL_BASE) { qaServer = await startServer(); URL_BASE = qaServer.base; }
   const browser = await launchChromium();
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   const errors = [];
@@ -39,6 +42,7 @@ const LIMITS = { fcp: 8000, dcl: 12000, load: 16000, bankSwitch: 6000, heapMB: 7
   if (cards < 1) problems.push('bank cards not rendered');
   if (errors.length) problems.push('pageerror: ' + errors[0]);
   await browser.close();
+  if (qaServer) await qaServer.stop();
   const report = { url: URL_BASE, metrics: { ...timing, bankSwitch, cards, heapMB }, limits: LIMITS, problems };
   console.log(JSON.stringify(report, null, 2));
   if (problems.length) process.exitCode = 1;
