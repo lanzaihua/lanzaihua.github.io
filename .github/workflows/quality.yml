@@ -5,6 +5,7 @@ permissions:
 jobs:
   regression:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,5 +16,27 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci --ignore-scripts
-      - run: npm run check
-      - run: npm run verify:pages
+      - name: Unit, data, QA and repo-language gates
+        run: npm run check
+      - name: Install browser for real interaction tests
+        run: npx playwright-core install --with-deps chromium
+      - name: Build single-file and static-site artifacts
+        run: npm run build && npm run prepare:pages
+      - name: Verify published files match source build
+        run: npm run verify:pages && npm run verify:build && npm run verify:skills
+      - name: Real browser core flows on six viewports
+        run: |
+          node server.js > /tmp/notebook-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:4173/api/health >/dev/null; then break; fi
+            sleep 0.5
+          done
+          curl -fsS http://127.0.0.1:4173/api/health >/dev/null
+          PAGE_URL=http://127.0.0.1:4173 npm run qa:responsive
+      - name: Formula rendering regression
+        run: npm run qa:formulas
+
+      - name: Performance regression
+        run: PAGE_URL=http://127.0.0.1:4173 npm run qa:perf

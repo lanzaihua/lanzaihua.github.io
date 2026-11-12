@@ -17,7 +17,9 @@ self.addEventListener('activate', function (event) {
 
 self.addEventListener('fetch', function (event) {
   const req = event.request;
-  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
+  var url = new URL(req.url);
+  if (req.method !== 'GET' || url.origin !== self.location.origin) return;
+  if (url.pathname.indexOf('/api/') === 0) return;
   event.respondWith(fetch(req).then(function (res) {
     if (res && res.ok) {
       const copy = res.clone();

@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.12-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.12--b195ed9b-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.12--311ecf4b-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -139,32 +139,37 @@
 <details>
 <summary><b>适配验证命令</b></summary>
 
-    npm i -D playwright-core
-    node tools/qa-responsive.js
+    npm ci
+    npx playwright-core install --with-deps chromium
+    npm run qa:responsive
 
-检查范围：首页、总览、错题、模板库、题库、规范、笔记、设置、更新记录，以及横向溢出、弹窗高度和分栏。
+检查范围：六种视口下的首页、总览、错题、模板库、题库、规范、笔记、期末、设置与更新记录，并真实点击科目入口、来源筛选、章节小节、模拟考章节弹窗、笔记新建与备份导入导出。
 
 </details>
 
 ## 更新记录
 
-### 2026-11-12 · 习题集与章节弹窗
+### 2026-11-12 · 全站审计与质量门禁
 
-**9 项 · 9 组**
+**13 项 · 13 组**
 
-本轮把西经配套章节题库的 223 道可复核题录入题库，新增「习题集」来源筛选与卡片标签；四科总数 9163（1559 / 3522 / 1199 / 2883），来源分布 8350 考研同型、590 教材课后、223 习题集。同时修复模拟考结果页、题库、错题与知识点搜索的公式排版：选项改为字母与正文/公式同一基线，MathML 子元素不再块级独占整行，四处章名去掉未渲染的美元符号。模拟考选择章节弹窗改为单列大章卡片 + 手风琴小节，勾选不再整页重绘与滚动回顶。本块 9 项 / 9 组，68 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+本轮对全站做一次系统审计：修复“确认导入”后导入弹窗未关闭的真实 Bug，补齐静态服务的 404 与 MIME、统一 API 鉴权与非回环口令、拦截 AI 上游 SSRF、限制请求体大小并让 Service Worker 跳过 /api；同时新增构建一致性、技能包逐字节校验、六视口真实交互、备份往返与性能门禁，并全部接入 GitHub Actions。四科题库 1559 / 3522 / 1199 / 2883 = 9163，旧基线差额来自新增 223 道西经习题集。本块 13 项 / 13 组，71 项回归测试、严格 QA、站点一致性、六视口、备份往返与性能检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
-| **错题小节** | 错题筛选工具栏在章选择后保留小节下拉：选定大章才出现，只列出当前章确实有题的小节；换章自动回到全部小节，清空筛选时一并恢复；筛选计数、空态与手机、平板、桌面布局同步更新。 |
-| **习题集入库** | 西经配套章节题库新增 223 道可复核题：131 道选择（概念辨析题）与 92 道判断填空（综合题），编号 WE-9101–WE-9323，覆盖 16 章，答案与解析来自原书；题干、标准解答、详细解析、答案、要点、易错点与小节字段均已补齐。 |
-| **来源筛选** | 题库来源栏新增「习题集」，与「全部来源 / 考研同型 / 教材课后」并列；卡片标签同步显示习题集，来源键分为 exam / textbook / exercise 三类，筛选仍按章→小节级联。 |
-| **计数同步** | 四科 1559 / 3522 / 1199 / 2883，总数 9163（8350 考研同型 + 590 教材课后 + 223 习题集）；build、严格 QA、Python 审计、站点一致性、回归测试与 README 计数同步更新。 |
-| **质量门禁** | 来源白名单与来源正则加入「习题集」，只有考研同型题才强制要求「真题」来源标记；新增题继续通过 55 章、825 桶每桶 ≥10、十类题型、四选项唯一与主观题解答开头检查；回归新增公式排版与章名纯文本断言。 |
-| **公式排版** | 模拟考结果页与题库选项改为 flex 布局，字母、正文与行内公式共用基线；MathML 子元素恢复 inline math，不再让 mrow、mstyle 独占整行；长选项在右侧自然换行，不再把公式或连接词单独挤成一行。 |
-| **数学记号** | 章节选择弹窗的「n 级行列式」「n 维向量空间」「二次型 f = XᵀAX」「对偶空间 V*」四个名称去掉未渲染的 $...$，改按纯文本与 Unicode 显示；题库、模拟考与错题结果页的公式排版同步回归。 |
-| **章节弹窗** | 模拟考选择章节弹窗改为单列大章卡片：顶部实时显示已选章节与小节，每章一行并排章名、小节数与「调整小节」入口；点开只在原位展开该章小节，同一时间只展开一章，小节使用自适应网格而非参差胶囊，选中章节有浅底与统一勾选框。 |
-| **选择体验** | 勾选章节或小节改为界面原地更新，不再整页重绘与滚动回顶；全选/清空、单章小节全选/清空即时生效，顶部统计、底部摘要与开考按钮同步更新；手机、平板、桌面与深色主题均已检查。 |
+| **静态服务** | 缺失的静态资源改为返回 404.html 与 404 状态，不再用首页冒充 JS/CSS/图片；补齐 webmanifest、txt、xml、json 等 MIME 类型，并为静态响应与 JSON 响应加上 nosniff、no-referrer、DENY 与权限策略头。 |
+| **接口安全** | 所有 /api 路径统一鉴权，health 也不再匿名开放；非回环绑定即使未设置 NOTEBOOK_TOKEN 也会自动生成随机口令。AI 上游地址先做 DNS 与私网校验，拒绝 localhost、内网段与云元数据地址；请求体超过 6MB / 26MB 时返回 413 并断开连接。 |
+| **缓存隔离** | Service Worker 跳过 /api 请求，避免私有状态与 AI 响应被写入 Cache Storage；离线缓存仍只保留静态页面与公开资源。 |
+| **数据保护** | 修复“确认导入”后导入弹窗未关闭、挡住设置页的真实 Bug：合并完成后同时关闭冲突弹窗与导入弹窗；导入前后条目数不减少，现有数据不被覆盖。 |
+| **备份往返** | 浏览器自动化完成一次真实往返：题库加入错题 → 编辑器保存 → 设置导出 gzip → 解压校验 app / version / entries → 重新导入 → 条目数保持并确认弹窗关闭。 |
+| **构建一致** | 新增发布一致性检查：root、dist、dist-pages 的构建号必须一致，root 与 dist-pages 字节一致，静态资源与 src/static 一致，导出 HTML 与当前构建同步；任一不一致直接失败。 |
+| **技能包一致** | 新增技能包校验：从 skills/ 源文件重新生成 skills.json 与 gzip，逐字节比对现有包，并检查四个学科 SKILL.md 与全部章节文件存在且非空；不再只信任缓存产物。 |
+| **浏览器交互** | 响应式测试扩到 390×844、360×800、430×932、834×1112、1112×834、1440×1000 六种视口，并真实点击首页科目、题库来源与章节小节、模拟考章节弹窗全选/清空、笔记新建、设置与更新记录，而不是只看截图。 |
+| **性能门禁** | 新增性能回归：首屏 FCP 528ms、DOMContentLoaded 605ms、load 610ms、题库切换 583ms、JS 堆 27MB；阈值写入脚本，CI 超标即失败。 |
+| **CI 门禁** | GitHub Actions 依次执行回归测试、安装 Chromium、构建、发布一致性、技能包校验、六视口浏览器交互、公式检查与性能检查；任一必需步骤失败都禁止进入发布流程。 |
+| **数据核验** | 逐项核对审计清单：当前题库 1559 / 3522 / 1199 / 2883 = 9163，旧基线 8940 的差额来自 11-12 新增的 223 道西经习题集，并非 115 题丢失；GA-B0868 选项已含 U\subset V，GA-B0157 已含系数矩阵 A、向量 b 与求 x1。 |
+| **安全回归** | 新增服务端回归覆盖：缺失静态文件 404、manifest MIME、非回环无口令 401、私网 AI 地址 400 且不发起上游请求、7MB 请求体 413 后服务仍可健康响应。 |
+| **防复发** | 回归测试增至 71 项，站点一致性脚本新增服务器安全与 SW 缓存门禁，构建与技能包检查进入 npm run check；后续修改代码、题库、技能或构建配置都必须重新跑同一套门禁。 |
 
 <img src="assets/v2/20261112-changelog.png" alt="网页内更新记录" width="820">
 
@@ -766,7 +771,7 @@
 - AI Key 只存在浏览器；使用本机 server 时，页面携带的配置会发到你自己的服务端。
 - 纯静态页的 AI 直连依赖接口 CORS；被浏览器拦截时请改用本机 server。
 - 题库不伪造缺失字段：当前 verification 与 relatedEntries 为空，数学分析的 templateId 也为空，页面不会显示空标签；需要完整字段时请以教材与标准解答为准。
-- 页面是约 15.4MB 的单文件，首次打开需下载整包；目前未做题库懒加载或 IndexedDB 分片。
+- 页面是约 15.8MB 的单文件，首次打开需下载整包；目前未做题库懒加载或 IndexedDB 分片。
 - 模型输出可能出错，请对照题干、课本和定理依据核对。
 - 页面是学习辅助工具，不保证 AI 解答正确，也不替代教材、老师和考试要求。
 
@@ -799,8 +804,8 @@
 | `src/js/` | 24 个运行模块：题库、错题、模板、Markdown 与公式渲染、AI、笔记、模拟考、通知、更新记录 |
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
-| `tools/` | 题库 QA、站点一致性、发布与源码打包脚本 |
-| `tests/` | 68 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面与模拟考 |
+| `tools/` | 题库 QA、站点一致性、构建/技能包校验、六视口交互与性能测试、发布与源码打包脚本 |
+| `tests/` | 71 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、静态服务与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 

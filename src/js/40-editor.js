@@ -1047,6 +1047,8 @@ function finishMerge(plan, resolution) {
   pendingImport = null;
   var cdlg = qs('#mergeConflictDialog');
   if (cdlg && cdlg.open) cdlg.close();
+  var idlg = qs('#importDialog');
+  if (idlg && idlg.open) idlg.close();
   persistLocal();
   markDirty();
   applyTheme();
