@@ -4033,19 +4033,86 @@ body.is-paper-dragging { cursor: grabbing; user-select: none; }
   box-shadow: none;
 }
 
-/* AI exam chapter chooser */
-.exam-chapter-card { width: min(760px, 100%); }
-.exam-chapter-tools { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; color: var(--muted); font-size: 11.5px; flex-wrap: wrap; }
-.exam-chapter-tools > span { margin-right: auto; }
-.exam-chapter-tools .linkish { font-size: 11px; }
-.exam-chapter-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-height: 330px; overflow: auto; padding: 2px; }
-.exam-chapter-option { display: flex; align-items: flex-start; gap: 8px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--ink-soft); font-size: 11.5px; line-height: 1.5; cursor: pointer; }
-.exam-chapter-option:has(input:checked) { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); background: var(--accent-soft); }
-.exam-chapter-option input { flex: 0 0 auto; width: 15px; height: 15px; margin-top: 1px; accent-color: var(--accent); }
-.exam-rules-source { margin: 10px 0 0; color: var(--faint); font-size: 9.5px; line-height: 1.6; }
+/* AI exam chapter chooser — 2026-11-12 重做：单列大章 + 手风琴小节 */
+.exam-chapter-card { width: min(860px, 100%); max-height: min(88vh, 920px); padding: 0; display: flex; flex-direction: column; overflow: hidden; border-radius: 20px; }
+.exam-chapter-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 22px 26px 18px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 5%, var(--surface)), var(--surface)); }
+.exam-chapter-head-main { min-width: 0; }
+.exam-chapter-head h2 { margin: 0; font-family: var(--font-serif); font-size: clamp(24px, 3vw, 30px); line-height: 1.25; color: var(--ink); }
+.exam-chapter-lead { max-width: 54ch; margin: 8px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.75; }
+.exam-chapter-stat { flex: 0 0 auto; display: flex; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); }
+.exam-chapter-stat span { min-width: 78px; padding: 9px 12px 8px; display: grid; gap: 1px; }
+.exam-chapter-stat span + span { border-left: 1px solid var(--line); }
+.exam-chapter-stat b { font-family: var(--font-serif); font-size: 24px; font-weight: 600; line-height: 1.05; color: var(--accent); font-variant-numeric: tabular-nums; }
+.exam-chapter-stat em { font-style: normal; font-size: 10px; letter-spacing: .08em; color: var(--faint); }
+.exam-chapter-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 12px 26px 6px; }
+.exam-chapter-tools { position: sticky; top: -12px; z-index: 2; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0; padding: 10px 0 12px; background: var(--surface); }
+.exam-chapter-subject { display: inline-flex; align-items: center; gap: 6px; color: var(--ink); font-size: 11.5px; font-weight: 600; }
+.exam-chapter-subject i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.exam-chapter-hint { color: var(--faint); font-size: 10.5px; line-height: 1.5; }
+.exam-chapter-tool-actions { display: flex; gap: 4px; margin-left: auto; }
+.exam-chapter-tool-actions button { min-height: 28px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--muted); font: inherit; font-size: 10.5px; cursor: pointer; }
+.exam-chapter-tool-actions button:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); color: var(--accent); }
+.exam-chapter-list { display: grid; gap: 8px; padding-bottom: 6px; }
+.exam-chapter-block { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); transition: border-color .18s ease, background .18s ease, box-shadow .18s ease; }
+.exam-chapter-block.is-on { border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); background: color-mix(in srgb, var(--accent) 3%, var(--surface)); }
+.exam-chapter-block.is-open { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); box-shadow: 0 10px 24px -24px rgba(39, 30, 20, .6); }
+.exam-chapter-row { display: flex; align-items: stretch; min-height: 48px; }
+.exam-chapter-option { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 11px 14px; color: var(--ink-soft); cursor: pointer; }
+.exam-chapter-option input, .exam-section-option input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.exam-check { flex: 0 0 auto; width: 18px; height: 18px; display: inline-grid; place-items: center; border: 1.5px solid var(--line-strong); border-radius: 5px; background: var(--surface); transition: background .15s ease, border-color .15s ease; }
+.exam-check::after { content: ''; width: 9px; height: 5px; margin-top: -2px; border-left: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); opacity: 0; transform: rotate(-45deg) scale(.4); transition: opacity .15s ease, transform .15s ease; }
+input:checked + .exam-check { border-color: var(--accent); background: var(--accent); }
+input:checked + .exam-check::after { opacity: 1; transform: rotate(-45deg) scale(1); }
+input:focus-visible + .exam-check { outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 2px; }
+.exam-chapter-name { min-width: 0; color: var(--ink); font-family: var(--font-serif); font-size: 15.5px; line-height: 1.45; overflow-wrap: anywhere; }
+.exam-chapter-meta { flex: 0 0 auto; margin-left: auto; padding-left: 10px; color: var(--faint); font-size: 10px; white-space: nowrap; }
+.exam-chapter-expand { flex: 0 0 auto; display: flex; align-items: center; gap: 7px; padding: 0 12px; border: 0; border-left: 1px solid var(--line); background: transparent; color: var(--faint); font: inherit; font-size: 10.5px; cursor: pointer; transition: color .15s ease, background .15s ease; }
+.exam-chapter-expand:disabled { opacity: .4; cursor: default; }
+.exam-chapter-expand:not(:disabled):hover { color: var(--accent); background: color-mix(in srgb, var(--accent) 5%, transparent); }
+.exam-chapter-picked { white-space: nowrap; }
+.exam-chapter-chev { width: 7px; height: 7px; margin-top: -3px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); transition: transform .18s ease, margin .18s ease; }
+.exam-chapter-expand[aria-expanded="true"] .exam-chapter-chev { margin-top: 2px; transform: rotate(225deg); }
+.exam-section-block { padding: 12px 14px 14px 42px; border-top: 1px dashed var(--line); background: color-mix(in srgb, var(--surface-2) 45%, var(--surface)); }
+.exam-section-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.exam-section-label { color: var(--faint); font-size: 10px; letter-spacing: .1em; }
+.exam-section-actions { display: flex; gap: 2px; margin-left: auto; }
+.exam-section-actions .linkish { min-height: 26px; padding: 2px 7px; border: 0; border-radius: 5px; background: none; color: var(--muted); font: inherit; font-size: 10.5px; cursor: pointer; }
+.exam-section-actions .linkish:hover { background: var(--surface-3); color: var(--accent); }
+.exam-section-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 6px; }
+.exam-section-option { display: flex; align-items: center; gap: 7px; min-height: 34px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink-soft); font-size: 11.5px; line-height: 1.45; cursor: pointer; transition: border-color .15s ease, background .15s ease; }
+.exam-section-option:hover { border-color: var(--line-strong); }
+.exam-section-option:has(input:checked) { border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); background: var(--accent-soft); color: var(--ink); }
+.exam-section-name { min-width: 0; overflow-wrap: anywhere; }
+.exam-check-sm { width: 15px; height: 15px; border-radius: 4px; }
+.exam-check-sm::after { width: 7px; height: 4px; }
+.exam-chapter-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; padding: 14px 26px 16px; border-top: 1px solid var(--line); background: var(--surface); flex-wrap: wrap; }
+.exam-chapter-foot .exam-rules-agree { cursor: default; font-variant-numeric: tabular-nums; }
+.exam-rules-source { margin: 12px 2px 6px; color: var(--faint); font-size: 9.5px; line-height: 1.65; }
 #examChaptersStart:disabled, #examChaptersStart[aria-disabled="true"] { background: var(--surface-3); border-color: var(--line-strong); color: var(--faint); box-shadow: none; cursor: not-allowed; transform: none; opacity: 1; }
-@media (max-width: 560px) {
-  .exam-chapter-grid { grid-template-columns: 1fr; max-height: 42vh; }
+@media (max-width: 700px) {
+  .exam-rules-overlay { padding: 10px; }
+  .exam-chapter-card { max-height: calc(100dvh - 20px); border-radius: 16px; }
+  .exam-chapter-head { flex-direction: column; align-items: stretch; gap: 12px; padding: 16px 16px 14px; }
+  .exam-chapter-lead { margin-top: 6px; font-size: 12px; }
+  .exam-chapter-stat { width: 100%; }
+  .exam-chapter-stat span { flex: 1 1 0; min-width: 0; padding: 8px 10px 7px; }
+  .exam-chapter-stat b { font-size: 20px; }
+  .exam-chapter-body { padding: 8px 14px 4px; }
+  .exam-chapter-tools { top: -8px; padding: 8px 0 10px; }
+  .exam-chapter-hint { display: none; }
+  .exam-chapter-meta { display: none; }
+  .exam-chapter-name { font-size: 15px; }
+  .exam-chapter-expand { padding: 0 10px; }
+  .exam-chapter-block { border-radius: 11px; }
+  .exam-chapter-row { min-height: 46px; }
+  .exam-section-block { padding: 10px 10px 12px 14px; }
+  .exam-section-grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); }
+  .exam-chapter-foot { flex-direction: column; align-items: stretch; padding: 12px 14px 14px; }
+  .exam-chapter-foot .exam-rules-actions { width: 100%; margin-left: 0; }
+  .exam-chapter-foot .btn { flex: 1 1 0; min-height: 40px; }
+}
+@media (max-width: 400px) {
+  .exam-chapter-picked { display: none; }
 }
 
 .exam-score-static { font-family: var(--font-mono); font-weight: 600; color: var(--ink); }
@@ -6213,17 +6280,5 @@ math[display="block"] {
 }
 
 
-/* 2026-11-11: 章下小节级联筛选 */
-.exam-chapter-block { display: grid; gap: 6px; }
-.exam-section-block { margin: 0 0 4px 22px; padding: 8px 10px; border-left: 2px solid color-mix(in srgb, var(--accent) 32%, var(--line)); background: var(--surface); border-radius: 0 8px 8px 0; }
-.exam-section-label { display: block; margin-bottom: 6px; color: var(--faint); font-size: 10.5px; letter-spacing: .04em; }
-.exam-section-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-.exam-section-option { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-2); color: var(--ink-soft); font-size: 11px; line-height: 1.4; cursor: pointer; }
-.exam-section-option:has(input:checked) { border-color: color-mix(in srgb, var(--accent) 38%, var(--line)); background: var(--accent-soft); color: var(--ink); }
-.exam-section-option input { width: 13px; height: 13px; margin: 0; accent-color: var(--accent); }
+/* 2026-11-12: 章下小节手风琴（样式见上方 .exam-section-*） */
 .final-section-filter { margin-top: 8px; }
-@media (max-width: 640px) {
-  .exam-section-block { margin-left: 10px; padding: 7px 8px; }
-  .exam-section-grid { gap: 5px; }
-  .exam-section-option { padding: 6px 7px; min-height: 34px; }
-}

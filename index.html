@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.12-d629176a";</script>
+<script>window.__BUILD_ID__="2026.11.12-b195ed9b";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -4059,19 +4059,86 @@ body.is-paper-dragging { cursor: grabbing; user-select: none; }
   box-shadow: none;
 }
 
-/* AI exam chapter chooser */
-.exam-chapter-card { width: min(760px, 100%); }
-.exam-chapter-tools { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; color: var(--muted); font-size: 11.5px; flex-wrap: wrap; }
-.exam-chapter-tools > span { margin-right: auto; }
-.exam-chapter-tools .linkish { font-size: 11px; }
-.exam-chapter-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-height: 330px; overflow: auto; padding: 2px; }
-.exam-chapter-option { display: flex; align-items: flex-start; gap: 8px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--ink-soft); font-size: 11.5px; line-height: 1.5; cursor: pointer; }
-.exam-chapter-option:has(input:checked) { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); background: var(--accent-soft); }
-.exam-chapter-option input { flex: 0 0 auto; width: 15px; height: 15px; margin-top: 1px; accent-color: var(--accent); }
-.exam-rules-source { margin: 10px 0 0; color: var(--faint); font-size: 9.5px; line-height: 1.6; }
+/* AI exam chapter chooser — 2026-11-12 重做：单列大章 + 手风琴小节 */
+.exam-chapter-card { width: min(860px, 100%); max-height: min(88vh, 920px); padding: 0; display: flex; flex-direction: column; overflow: hidden; border-radius: 20px; }
+.exam-chapter-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 22px 26px 18px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 5%, var(--surface)), var(--surface)); }
+.exam-chapter-head-main { min-width: 0; }
+.exam-chapter-head h2 { margin: 0; font-family: var(--font-serif); font-size: clamp(24px, 3vw, 30px); line-height: 1.25; color: var(--ink); }
+.exam-chapter-lead { max-width: 54ch; margin: 8px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.75; }
+.exam-chapter-stat { flex: 0 0 auto; display: flex; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); }
+.exam-chapter-stat span { min-width: 78px; padding: 9px 12px 8px; display: grid; gap: 1px; }
+.exam-chapter-stat span + span { border-left: 1px solid var(--line); }
+.exam-chapter-stat b { font-family: var(--font-serif); font-size: 24px; font-weight: 600; line-height: 1.05; color: var(--accent); font-variant-numeric: tabular-nums; }
+.exam-chapter-stat em { font-style: normal; font-size: 10px; letter-spacing: .08em; color: var(--faint); }
+.exam-chapter-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 12px 26px 6px; }
+.exam-chapter-tools { position: sticky; top: -12px; z-index: 2; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0; padding: 10px 0 12px; background: var(--surface); }
+.exam-chapter-subject { display: inline-flex; align-items: center; gap: 6px; color: var(--ink); font-size: 11.5px; font-weight: 600; }
+.exam-chapter-subject i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.exam-chapter-hint { color: var(--faint); font-size: 10.5px; line-height: 1.5; }
+.exam-chapter-tool-actions { display: flex; gap: 4px; margin-left: auto; }
+.exam-chapter-tool-actions button { min-height: 28px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--muted); font: inherit; font-size: 10.5px; cursor: pointer; }
+.exam-chapter-tool-actions button:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); color: var(--accent); }
+.exam-chapter-list { display: grid; gap: 8px; padding-bottom: 6px; }
+.exam-chapter-block { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); transition: border-color .18s ease, background .18s ease, box-shadow .18s ease; }
+.exam-chapter-block.is-on { border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); background: color-mix(in srgb, var(--accent) 3%, var(--surface)); }
+.exam-chapter-block.is-open { border-color: color-mix(in srgb, var(--accent) 42%, var(--line)); box-shadow: 0 10px 24px -24px rgba(39, 30, 20, .6); }
+.exam-chapter-row { display: flex; align-items: stretch; min-height: 48px; }
+.exam-chapter-option { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 11px 14px; color: var(--ink-soft); cursor: pointer; }
+.exam-chapter-option input, .exam-section-option input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.exam-check { flex: 0 0 auto; width: 18px; height: 18px; display: inline-grid; place-items: center; border: 1.5px solid var(--line-strong); border-radius: 5px; background: var(--surface); transition: background .15s ease, border-color .15s ease; }
+.exam-check::after { content: ''; width: 9px; height: 5px; margin-top: -2px; border-left: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); opacity: 0; transform: rotate(-45deg) scale(.4); transition: opacity .15s ease, transform .15s ease; }
+input:checked + .exam-check { border-color: var(--accent); background: var(--accent); }
+input:checked + .exam-check::after { opacity: 1; transform: rotate(-45deg) scale(1); }
+input:focus-visible + .exam-check { outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 2px; }
+.exam-chapter-name { min-width: 0; color: var(--ink); font-family: var(--font-serif); font-size: 15.5px; line-height: 1.45; overflow-wrap: anywhere; }
+.exam-chapter-meta { flex: 0 0 auto; margin-left: auto; padding-left: 10px; color: var(--faint); font-size: 10px; white-space: nowrap; }
+.exam-chapter-expand { flex: 0 0 auto; display: flex; align-items: center; gap: 7px; padding: 0 12px; border: 0; border-left: 1px solid var(--line); background: transparent; color: var(--faint); font: inherit; font-size: 10.5px; cursor: pointer; transition: color .15s ease, background .15s ease; }
+.exam-chapter-expand:disabled { opacity: .4; cursor: default; }
+.exam-chapter-expand:not(:disabled):hover { color: var(--accent); background: color-mix(in srgb, var(--accent) 5%, transparent); }
+.exam-chapter-picked { white-space: nowrap; }
+.exam-chapter-chev { width: 7px; height: 7px; margin-top: -3px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); transition: transform .18s ease, margin .18s ease; }
+.exam-chapter-expand[aria-expanded="true"] .exam-chapter-chev { margin-top: 2px; transform: rotate(225deg); }
+.exam-section-block { padding: 12px 14px 14px 42px; border-top: 1px dashed var(--line); background: color-mix(in srgb, var(--surface-2) 45%, var(--surface)); }
+.exam-section-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.exam-section-label { color: var(--faint); font-size: 10px; letter-spacing: .1em; }
+.exam-section-actions { display: flex; gap: 2px; margin-left: auto; }
+.exam-section-actions .linkish { min-height: 26px; padding: 2px 7px; border: 0; border-radius: 5px; background: none; color: var(--muted); font: inherit; font-size: 10.5px; cursor: pointer; }
+.exam-section-actions .linkish:hover { background: var(--surface-3); color: var(--accent); }
+.exam-section-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 6px; }
+.exam-section-option { display: flex; align-items: center; gap: 7px; min-height: 34px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink-soft); font-size: 11.5px; line-height: 1.45; cursor: pointer; transition: border-color .15s ease, background .15s ease; }
+.exam-section-option:hover { border-color: var(--line-strong); }
+.exam-section-option:has(input:checked) { border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); background: var(--accent-soft); color: var(--ink); }
+.exam-section-name { min-width: 0; overflow-wrap: anywhere; }
+.exam-check-sm { width: 15px; height: 15px; border-radius: 4px; }
+.exam-check-sm::after { width: 7px; height: 4px; }
+.exam-chapter-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; padding: 14px 26px 16px; border-top: 1px solid var(--line); background: var(--surface); flex-wrap: wrap; }
+.exam-chapter-foot .exam-rules-agree { cursor: default; font-variant-numeric: tabular-nums; }
+.exam-rules-source { margin: 12px 2px 6px; color: var(--faint); font-size: 9.5px; line-height: 1.65; }
 #examChaptersStart:disabled, #examChaptersStart[aria-disabled="true"] { background: var(--surface-3); border-color: var(--line-strong); color: var(--faint); box-shadow: none; cursor: not-allowed; transform: none; opacity: 1; }
-@media (max-width: 560px) {
-  .exam-chapter-grid { grid-template-columns: 1fr; max-height: 42vh; }
+@media (max-width: 700px) {
+  .exam-rules-overlay { padding: 10px; }
+  .exam-chapter-card { max-height: calc(100dvh - 20px); border-radius: 16px; }
+  .exam-chapter-head { flex-direction: column; align-items: stretch; gap: 12px; padding: 16px 16px 14px; }
+  .exam-chapter-lead { margin-top: 6px; font-size: 12px; }
+  .exam-chapter-stat { width: 100%; }
+  .exam-chapter-stat span { flex: 1 1 0; min-width: 0; padding: 8px 10px 7px; }
+  .exam-chapter-stat b { font-size: 20px; }
+  .exam-chapter-body { padding: 8px 14px 4px; }
+  .exam-chapter-tools { top: -8px; padding: 8px 0 10px; }
+  .exam-chapter-hint { display: none; }
+  .exam-chapter-meta { display: none; }
+  .exam-chapter-name { font-size: 15px; }
+  .exam-chapter-expand { padding: 0 10px; }
+  .exam-chapter-block { border-radius: 11px; }
+  .exam-chapter-row { min-height: 46px; }
+  .exam-section-block { padding: 10px 10px 12px 14px; }
+  .exam-section-grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); }
+  .exam-chapter-foot { flex-direction: column; align-items: stretch; padding: 12px 14px 14px; }
+  .exam-chapter-foot .exam-rules-actions { width: 100%; margin-left: 0; }
+  .exam-chapter-foot .btn { flex: 1 1 0; min-height: 40px; }
+}
+@media (max-width: 400px) {
+  .exam-chapter-picked { display: none; }
 }
 
 .exam-score-static { font-family: var(--font-mono); font-weight: 600; color: var(--ink); }
@@ -6239,20 +6306,8 @@ math[display="block"] {
 }
 
 
-/* 2026-11-11: 章下小节级联筛选 */
-.exam-chapter-block { display: grid; gap: 6px; }
-.exam-section-block { margin: 0 0 4px 22px; padding: 8px 10px; border-left: 2px solid color-mix(in srgb, var(--accent) 32%, var(--line)); background: var(--surface); border-radius: 0 8px 8px 0; }
-.exam-section-label { display: block; margin-bottom: 6px; color: var(--faint); font-size: 10.5px; letter-spacing: .04em; }
-.exam-section-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-.exam-section-option { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-2); color: var(--ink-soft); font-size: 11px; line-height: 1.4; cursor: pointer; }
-.exam-section-option:has(input:checked) { border-color: color-mix(in srgb, var(--accent) 38%, var(--line)); background: var(--accent-soft); color: var(--ink); }
-.exam-section-option input { width: 13px; height: 13px; margin: 0; accent-color: var(--accent); }
+/* 2026-11-12: 章下小节手风琴（样式见上方 .exam-section-*） */
 .final-section-filter { margin-top: 8px; }
-@media (max-width: 640px) {
-  .exam-section-block { margin-left: 10px; padding: 7px 8px; }
-  .exam-section-grid { gap: 5px; }
-  .exam-section-option { padding: 6px 7px; min-height: 34px; }
-}
 
 </style>
 </head>
@@ -18717,10 +18772,10 @@ var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_M
 var UPDATE_LOG = [
   {
     date: '2026-11-12',
-    title: '习题集入库与公式收口',
-    historyTitle: '习题集入库与公式收口',
-    summary: '本轮把西经配套章节题库的 223 道可复核题录入题库，新增「习题集」来源筛选与卡片标签；四科总数 9163（1559 / 3522 / 1199 / 2883），来源分布 8350 考研同型、590 教材课后、223 习题集。同时修复模拟考结果页、题库、错题与知识点搜索的公式排版：选项改为字母与正文/公式同一基线，MathML 子元素不再块级独占整行，四处章名去掉未渲染的美元符号。本块 7 项 / 7 组，67 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。',
-    notifySummary: '题库新增 223 道西经习题集题，新增「习题集」来源筛选，总数 9163；同时修复模拟考、题库、错题与知识点搜索的公式和选项排版。本块 7 条要点。',
+    title: '习题集与章节弹窗',
+    historyTitle: '习题集与章节弹窗',
+    summary: '本轮把西经配套章节题库的 223 道可复核题录入题库，新增「习题集」来源筛选与卡片标签；四科总数 9163（1559 / 3522 / 1199 / 2883），来源分布 8350 考研同型、590 教材课后、223 习题集。同时修复模拟考结果页、题库、错题与知识点搜索的公式排版：选项改为字母与正文/公式同一基线，MathML 子元素不再块级独占整行，四处章名去掉未渲染的美元符号。模拟考选择章节弹窗改为单列大章卡片 + 手风琴小节，勾选不再整页重绘与滚动回顶。本块 9 项 / 9 组，68 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。',
+    notifySummary: '模拟考选择章节弹窗改为单列大章卡片与手风琴小节：勾选即时更新、不再整页重绘和滚动回顶，全选/清空与单章小节调整即时生效。本块 9 条要点。',
     notifyItems: [
       {
         group: '习题集入库',
@@ -18733,6 +18788,14 @@ var UPDATE_LOG = [
       {
         group: '错题小节',
         text: '错题筛选工具栏在章选择后保留小节下拉：选定大章才出现，只列出当前章确实有题的小节；换章自动回到全部小节，清空筛选时一并恢复。',
+      },
+      {
+        group: '章节弹窗',
+        text: '模拟考选择章节弹窗改为单列大章卡片：头部实时显示已选章节与小节，每章一行放章名、小节数和「调整小节」入口；点开只在原位展开该章小节，同一时间只展开一章。',
+      },
+      {
+        group: '选择体验',
+        text: '勾选章节或小节改为界面原地更新，不再整页重绘与滚动回顶；全选/清空、单章小节全选/清空即时生效，顶部与底部计数、开考按钮同步更新。',
       },
     ],
     items: [
@@ -18763,6 +18826,14 @@ var UPDATE_LOG = [
       {
         group: '数学记号',
         text: '章节选择弹窗的「n 级行列式」「n 维向量空间」「二次型 f = XᵀAX」「对偶空间 V*」四个名称去掉未渲染的 $...$，改按纯文本与 Unicode 显示；题库、模拟考与错题结果页的公式排版同步回归。',
+      },
+      {
+        group: '章节弹窗',
+        text: '模拟考选择章节弹窗改为单列大章卡片：顶部实时显示已选章节与小节，每章一行并排章名、小节数与「调整小节」入口；点开只在原位展开该章小节，同一时间只展开一章，小节使用自适应网格而非参差胶囊，选中章节有浅底与统一勾选框。',
+      },
+      {
+        group: '选择体验',
+        text: '勾选章节或小节改为界面原地更新，不再整页重绘与滚动回顶；全选/清空、单章小节全选/清空即时生效，顶部统计、底部摘要与开考按钮同步更新；手机、平板、桌面与深色主题均已检查。',
       },
     ],
   },
@@ -29425,38 +29496,130 @@ function finalExamChapterHtml() {
     totalSections += secs.length;
     chosenSections += chosen.filter(function (x) { return secs.indexOf(x) >= 0; }).length;
   });
-  var chapterHtml = chapters.map(function (ch) {
+  var chapterHtml = chapters.map(function (ch, chIndex) {
     var on = selected.indexOf(ch) >= 0;
     var secs = finalExamChapterSections(subject, ch);
     var chosen = Array.isArray(secMap[ch]) ? secMap[ch] : secs;
+    var chosenCount = chosen.filter(function (x) { return secs.indexOf(x) >= 0; }).length;
+    var secId = 'examChapterSections-' + chIndex;
     var secHtml = '';
-    if (on && secs.length) {
-      secHtml = '<div class="exam-section-block" data-section-block="' + attr(ch) + '"><span class="exam-section-label">' + esc(ch) + ' · 小节</span><div class="exam-section-grid">' +
+    if (secs.length) {
+      secHtml = '<div class="exam-section-block" id="' + secId + '" hidden><div class="exam-section-head"><span class="exam-section-label">小节范围</span><span class="exam-section-actions"><button class="linkish" type="button" data-act="final-ai-sections-all" data-chapter="' + attr(ch) + '">全选</button><button class="linkish" type="button" data-act="final-ai-sections-none" data-chapter="' + attr(ch) + '">清空</button></span></div><div class="exam-section-grid">' +
         secs.map(function (sec) {
-          return '<label class="exam-section-option"><input type="checkbox" data-final-ai-section data-chapter="' + attr(ch) + '" value="' + attr(sec) + '"' + (chosen.indexOf(sec) >= 0 ? ' checked' : '') + '><span>' + esc(sec) + '</span></label>';
+          return '<label class="exam-section-option"><input type="checkbox" data-final-ai-section data-chapter="' + attr(ch) + '" value="' + attr(sec) + '"' + (chosen.indexOf(sec) >= 0 ? ' checked' : '') + '><span class="exam-check exam-check-sm" aria-hidden="true"></span><span class="exam-section-name">' + esc(sec) + '</span></label>';
         }).join('') + '</div></div>';
     }
-    return '<div class="exam-chapter-block"><label class="exam-chapter-option"><input type="checkbox" data-final-ai-chapter value="' + attr(ch) + '"' + (on ? ' checked' : '') + '><span>' + esc(ch) + '</span></label>' + secHtml + '</div>';
+    var expandBtn = secs.length
+      ? '<button class="exam-chapter-expand" type="button" data-act="final-ai-chapter-toggle" aria-expanded="false" aria-controls="' + secId + '"' + (on ? '' : ' disabled aria-disabled="true"') + '><span class="exam-chapter-picked" data-chapter-picked>' + (on ? (chosenCount === secs.length ? '调整小节' : '已选 ' + chosenCount + ' / ' + secs.length) : '未选择') + '</span><span class="exam-chapter-chev" aria-hidden="true"></span></button>'
+      : '';
+    return '<article class="exam-chapter-block' + (on ? ' is-on' : '') + '" data-chapter-block="' + attr(ch) + '"><div class="exam-chapter-row"><label class="exam-chapter-option"><input type="checkbox" data-final-ai-chapter value="' + attr(ch) + '"' + (on ? ' checked' : '') + '><span class="exam-check" aria-hidden="true"></span><span class="exam-chapter-name">' + esc(ch) + '</span><span class="exam-chapter-meta">' + (secs.length ? secs.length + ' 个小节' : '无小节') + '</span></label>' + expandBtn + '</div>' + secHtml + '</article>';
   }).join('');
   return '<div class="exam-rules-overlay" data-exam-chapters role="dialog" aria-modal="true" aria-labelledby="examChaptersTitle">' +
     '<section class="exam-rules-card exam-chapter-card" tabindex="-1">' +
-      '<header class="exam-rules-head"><p class="eyebrow">' + (isStandard ? 'STANDARD EXAM · CHAPTERS' : 'AI EXAM · CHAPTERS') + '</p><h2 id="examChaptersTitle">' + (isStandard ? '选择标准题库章节' : '选择出题章节') + '</h2><span>' + (isStandard ? '先选章节，再选小节，从题库随机抽题；确认后进入题目准备页' : '先选章节，再选小节，让 AI 按范围命题；生成完成后进入题目准备页') + '，点「开始模拟考」时阅读考生守则</span></header>' +
-      '<div class="exam-rules-body">' +
-        '<div class="exam-chapter-tools"><span>' + esc(subjectOf(subject).name) + ' · 先选大章，再勾小节</span><button class="linkish" type="button" data-act="final-ai-chapters-all">全选章节</button><button class="linkish" type="button" data-act="final-ai-chapters-none">清空</button></div>' +
-        '<div class="exam-chapter-grid">' + chapterHtml + '</div>' +
+      '<header class="exam-rules-head exam-chapter-head"><div class="exam-chapter-head-main"><p class="eyebrow">' + (isStandard ? 'STANDARD EXAM · CHAPTERS' : 'AI EXAM · CHAPTERS') + '</p><h2 id="examChaptersTitle">' + (isStandard ? '选择标准题库章节' : '选择出题章节') + '</h2><p class="exam-chapter-lead">' + (isStandard ? '先选大章，再按需展开调整小节；题目从所选范围随机抽取。' : '先选大章，再按需展开调整小节；AI 只围绕所选范围命题。') + '</p></div>' +
+        '<div class="exam-chapter-stat" aria-live="polite"><span><b data-final-chapter-count>' + selected.length + '</b><em>已选章节</em></span><span><b data-final-section-count>' + chosenSections + '</b><em>已选小节</em></span></div>' +
+      '</header>' +
+      '<div class="exam-rules-body exam-chapter-body">' +
+        '<div class="exam-chapter-tools"><span class="exam-chapter-subject"><i aria-hidden="true"></i>' + esc(subjectOf(subject).name) + '</span><span class="exam-chapter-hint">勾选大章后，点右侧「调整小节」</span><span class="exam-chapter-tool-actions"><button type="button" data-act="final-ai-chapters-all">全选</button><button type="button" data-act="final-ai-chapters-none">清空</button></span></div>' +
+        '<div class="exam-chapter-list">' + chapterHtml + '</div>' +
         '<p class="exam-rules-source">' + (isStandard ? '题目从所选章节与小节的题库中随机抽取；抽题范围一科一张卷，不混合科目。' : 'AI 只会围绕所选章节与小节命题；题目仍须有唯一、可验证的标准答案。') + '</p>' +
       '</div>' +
-      '<footer class="exam-rules-foot"><span class="exam-rules-agree" id="examChapterCount">已选 ' + selected.length + ' / ' + chapters.length + ' 章 · ' + chosenSections + ' 个小节</span><div class="exam-rules-actions"><button class="btn" data-act="final-ai-chapters-cancel" type="button">取消</button><button class="btn btn-primary" id="examChaptersStart" data-act="final-ai-chapters-confirm" type="button"' + (selected.length ? '' : ' disabled aria-disabled="true"') + '>' + (isStandard ? '从标准题库开考' : '生成题目') + '</button></div></footer>' +
+      '<footer class="exam-rules-foot exam-chapter-foot"><span class="exam-rules-agree" id="examChapterCount" aria-live="polite">已选 ' + selected.length + ' / ' + chapters.length + ' 章 · ' + chosenSections + ' 个小节</span><div class="exam-rules-actions"><button class="btn" data-act="final-ai-chapters-cancel" type="button">取消</button><button class="btn btn-primary" id="examChaptersStart" data-act="final-ai-chapters-confirm" type="button"' + (selected.length ? '' : ' disabled aria-disabled="true"') + '>' + (isStandard ? '从标准题库开考' : '生成题目') + '</button></div></footer>' +
     '</section></div>';
 }
+function finalExamChapterBlockEl(ch) {
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('[data-chapter-block]'));
+  for (var i = 0; i < blocks.length; i++) {
+    if (blocks[i].getAttribute('data-chapter-block') === ch) return blocks[i];
+  }
+  return null;
+}
+function finalExamChapterBlockSections(block) {
+  return Array.prototype.slice.call(block.querySelectorAll('[data-final-ai-section]'));
+}
+function finalExamChapterRefreshBlock(block) {
+  if (!block) return;
+  var box = block.querySelector('[data-final-ai-chapter]');
+  var on = !!(box && box.checked);
+  var boxes = finalExamChapterBlockSections(block);
+  var picked = boxes.filter(function (b) { return b.checked; }).length;
+  block.classList.toggle('is-on', on);
+  var expand = block.querySelector('[data-act="final-ai-chapter-toggle"]');
+  if (expand) {
+    expand.disabled = !on;
+    expand.setAttribute('aria-disabled', String(!on));
+    if (!on && expand.getAttribute('aria-expanded') === 'true') {
+      expand.setAttribute('aria-expanded', 'false');
+      var panel = block.querySelector('.exam-section-block');
+      if (panel) panel.hidden = true;
+      block.classList.remove('is-open');
+    }
+  }
+  var label = block.querySelector('[data-chapter-picked]');
+  if (label) label.textContent = on ? (picked === boxes.length ? '调整小节' : '已选 ' + picked + ' / ' + boxes.length) : '未选择';
+}
 function finalExamChapterSync() {
-  var boxes = Array.prototype.slice.call(document.querySelectorAll('[data-final-ai-chapter]'));
-  var checked = boxes.filter(function (b) { return b.checked; });
-  var secs = Array.prototype.slice.call(document.querySelectorAll('[data-final-ai-section]:checked'));
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('[data-chapter-block]'));
+  var checkedChapters = 0, checkedSections = 0;
+  blocks.forEach(function (block) {
+    var box = block.querySelector('[data-final-ai-chapter]');
+    if (box && box.checked) {
+      checkedChapters += 1;
+      checkedSections += finalExamChapterBlockSections(block).filter(function (b) { return b.checked; }).length;
+    }
+    finalExamChapterRefreshBlock(block);
+  });
   var count = qs('#examChapterCount');
-  if (count) count.textContent = '已选 ' + checked.length + ' / ' + boxes.length + ' 章 · ' + secs.length + ' 个小节';
+  if (count) count.textContent = '已选 ' + checkedChapters + ' / ' + blocks.length + ' 章 · ' + checkedSections + ' 个小节';
+  var chapterTotal = qs('[data-final-chapter-count]');
+  var sectionTotal = qs('[data-final-section-count]');
+  if (chapterTotal) chapterTotal.textContent = String(checkedChapters);
+  if (sectionTotal) sectionTotal.textContent = String(checkedSections);
   var btn = qs('#examChaptersStart');
-  if (btn) { btn.disabled = !checked.length; btn.setAttribute('aria-disabled', String(!checked.length)); }
+  if (btn) { btn.disabled = !checkedChapters; btn.setAttribute('aria-disabled', String(!checkedChapters)); }
+}
+function finalExamChapterSetAll(on) {
+  var secMap = {};
+  var chapters = [];
+  Array.prototype.slice.call(document.querySelectorAll('[data-chapter-block]')).forEach(function (block) {
+    var ch = block.getAttribute('data-chapter-block');
+    var box = block.querySelector('[data-final-ai-chapter]');
+    if (box) box.checked = on;
+    var secBoxes = finalExamChapterBlockSections(block);
+    if (on) {
+      secBoxes.forEach(function (b) { b.checked = true; });
+      if (secBoxes.length) secMap[ch] = secBoxes.map(function (b) { return b.value; });
+      chapters.push(ch);
+    }
+  });
+  ui.finalAiChapterSel = on ? chapters : [];
+  ui.finalAiSectionSel = on ? secMap : {};
+  finalExamChapterSync();
+}
+function finalExamChapterSetSections(block, on) {
+  if (!block) return;
+  var ch = block.getAttribute('data-chapter-block');
+  var boxes = finalExamChapterBlockSections(block);
+  boxes.forEach(function (b) { b.checked = on; });
+  finalExamSectionMap()[ch] = on ? boxes.map(function (b) { return b.value; }) : [];
+  finalExamChapterSync();
+}
+function finalExamChapterToggle(btn) {
+  if (!btn || btn.disabled) return;
+  var block = btn.closest('.exam-chapter-block');
+  if (!block) return;
+  var opening = btn.getAttribute('aria-expanded') !== 'true';
+  Array.prototype.slice.call(document.querySelectorAll('.exam-chapter-block.is-open')).forEach(function (other) {
+    other.classList.remove('is-open');
+    var panel = other.querySelector('.exam-section-block');
+    if (panel) panel.hidden = true;
+    var otherBtn = other.querySelector('[data-act="final-ai-chapter-toggle"]');
+    if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+  });
+  btn.setAttribute('aria-expanded', String(opening));
+  block.classList.toggle('is-open', opening);
+  var panel = block.querySelector('.exam-section-block');
+  if (panel) panel.hidden = !opening;
 }
 function finalExamChapterCancel() {
   ui.finalAiChaptersOpen = false;
@@ -31079,21 +31242,24 @@ document.addEventListener('change', function (e) {
     var chBox = e.target;
     var chVal = chBox.value;
     var list = Array.isArray(ui.finalAiChapterSel) ? ui.finalAiChapterSel.slice() : [];
+    var block = chBox.closest ? chBox.closest('[data-chapter-block]') : null;
     if (chBox.checked) {
       if (list.indexOf(chVal) < 0) list.push(chVal);
-      var secs = finalExamChapterSections(finalSubject(), chVal);
-      if (secs.length) finalExamSectionMap()[chVal] = secs.slice();
+      var secBoxes = block ? finalExamChapterBlockSections(block) : [];
+      secBoxes.forEach(function (b) { b.checked = true; });
+      if (secBoxes.length) finalExamSectionMap()[chVal] = secBoxes.map(function (b) { return b.value; });
     } else {
       list = list.filter(function (x) { return x !== chVal; });
+      finalExamSectionMap()[chVal] = [];
     }
     ui.finalAiChapterSel = list;
-    render();
-    setTimeout(function () { window.scrollTo(0, 0); }, 20);
+    finalExamChapterSync();
     return;
   }
   if (e.target && e.target.hasAttribute && e.target.hasAttribute('data-final-ai-section')) {
     var secCh = e.target.getAttribute('data-chapter');
-    var picked = Array.prototype.slice.call(document.querySelectorAll('[data-final-ai-section][data-chapter]')).filter(function (b) { return b.getAttribute('data-chapter') === secCh && b.checked; }).map(function (b) { return b.value; });
+    var secBlock = e.target.closest ? e.target.closest('[data-chapter-block]') : null;
+    var picked = secBlock ? finalExamChapterBlockSections(secBlock).filter(function (b) { return b.checked; }).map(function (b) { return b.value; }) : [];
     finalExamSectionMap()[secCh] = picked;
     finalExamChapterSync();
     return;
@@ -31141,8 +31307,11 @@ document.addEventListener('click', function (e) {
   else if (act === 'final-ai-ready-cancel') { e.preventDefault(); finalExamReadyCancel(); }
   else if (act === 'final-ai-chapters-confirm') { e.preventDefault(); finalExamChapterConfirm(); }
   else if (act === 'final-ai-chapters-cancel') { e.preventDefault(); finalExamChapterCancel(); }
-  else if (act === 'final-ai-chapters-all') { e.preventDefault(); var allChs = finalExamChapterList(finalSubject()); ui.finalAiChapterSel = allChs.slice(); ui.finalAiSectionSel = {}; allChs.forEach(function (ch) { var secs = finalExamChapterSections(finalSubject(), ch); if (secs.length) ui.finalAiSectionSel[ch] = secs.slice(); }); render(); }
-  else if (act === 'final-ai-chapters-none') { e.preventDefault(); ui.finalAiChapterSel = []; ui.finalAiSectionSel = {}; render(); }
+  else if (act === 'final-ai-chapters-all') { e.preventDefault(); finalExamChapterSetAll(true); }
+  else if (act === 'final-ai-chapters-none') { e.preventDefault(); finalExamChapterSetAll(false); }
+  else if (act === 'final-ai-chapter-toggle') { e.preventDefault(); finalExamChapterToggle(el); }
+  else if (act === 'final-ai-sections-all') { e.preventDefault(); finalExamChapterSetSections(el.closest ? el.closest('[data-chapter-block]') : null, true); }
+  else if (act === 'final-ai-sections-none') { e.preventDefault(); finalExamChapterSetSections(el.closest ? el.closest('[data-chapter-block]') : null, false); }
   else if (act === 'final-exam-rules-confirm') { e.preventDefault(); finalExamRulesConfirm(); }
   else if (act === 'final-exam-rules-cancel') { e.preventDefault(); finalExamRulesCancel(); }
   else if (act === 'final-exam-choice') { e.preventDefault(); finalExamChoice(el.getAttribute('data-qid'), el.getAttribute('data-option')); }

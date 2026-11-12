@@ -811,38 +811,130 @@ function finalExamChapterHtml() {
     totalSections += secs.length;
     chosenSections += chosen.filter(function (x) { return secs.indexOf(x) >= 0; }).length;
   });
-  var chapterHtml = chapters.map(function (ch) {
+  var chapterHtml = chapters.map(function (ch, chIndex) {
     var on = selected.indexOf(ch) >= 0;
     var secs = finalExamChapterSections(subject, ch);
     var chosen = Array.isArray(secMap[ch]) ? secMap[ch] : secs;
+    var chosenCount = chosen.filter(function (x) { return secs.indexOf(x) >= 0; }).length;
+    var secId = 'examChapterSections-' + chIndex;
     var secHtml = '';
-    if (on && secs.length) {
-      secHtml = '<div class="exam-section-block" data-section-block="' + attr(ch) + '"><span class="exam-section-label">' + esc(ch) + ' · 小节</span><div class="exam-section-grid">' +
+    if (secs.length) {
+      secHtml = '<div class="exam-section-block" id="' + secId + '" hidden><div class="exam-section-head"><span class="exam-section-label">小节范围</span><span class="exam-section-actions"><button class="linkish" type="button" data-act="final-ai-sections-all" data-chapter="' + attr(ch) + '">全选</button><button class="linkish" type="button" data-act="final-ai-sections-none" data-chapter="' + attr(ch) + '">清空</button></span></div><div class="exam-section-grid">' +
         secs.map(function (sec) {
-          return '<label class="exam-section-option"><input type="checkbox" data-final-ai-section data-chapter="' + attr(ch) + '" value="' + attr(sec) + '"' + (chosen.indexOf(sec) >= 0 ? ' checked' : '') + '><span>' + esc(sec) + '</span></label>';
+          return '<label class="exam-section-option"><input type="checkbox" data-final-ai-section data-chapter="' + attr(ch) + '" value="' + attr(sec) + '"' + (chosen.indexOf(sec) >= 0 ? ' checked' : '') + '><span class="exam-check exam-check-sm" aria-hidden="true"></span><span class="exam-section-name">' + esc(sec) + '</span></label>';
         }).join('') + '</div></div>';
     }
-    return '<div class="exam-chapter-block"><label class="exam-chapter-option"><input type="checkbox" data-final-ai-chapter value="' + attr(ch) + '"' + (on ? ' checked' : '') + '><span>' + esc(ch) + '</span></label>' + secHtml + '</div>';
+    var expandBtn = secs.length
+      ? '<button class="exam-chapter-expand" type="button" data-act="final-ai-chapter-toggle" aria-expanded="false" aria-controls="' + secId + '"' + (on ? '' : ' disabled aria-disabled="true"') + '><span class="exam-chapter-picked" data-chapter-picked>' + (on ? (chosenCount === secs.length ? '调整小节' : '已选 ' + chosenCount + ' / ' + secs.length) : '未选择') + '</span><span class="exam-chapter-chev" aria-hidden="true"></span></button>'
+      : '';
+    return '<article class="exam-chapter-block' + (on ? ' is-on' : '') + '" data-chapter-block="' + attr(ch) + '"><div class="exam-chapter-row"><label class="exam-chapter-option"><input type="checkbox" data-final-ai-chapter value="' + attr(ch) + '"' + (on ? ' checked' : '') + '><span class="exam-check" aria-hidden="true"></span><span class="exam-chapter-name">' + esc(ch) + '</span><span class="exam-chapter-meta">' + (secs.length ? secs.length + ' 个小节' : '无小节') + '</span></label>' + expandBtn + '</div>' + secHtml + '</article>';
   }).join('');
   return '<div class="exam-rules-overlay" data-exam-chapters role="dialog" aria-modal="true" aria-labelledby="examChaptersTitle">' +
     '<section class="exam-rules-card exam-chapter-card" tabindex="-1">' +
-      '<header class="exam-rules-head"><p class="eyebrow">' + (isStandard ? 'STANDARD EXAM · CHAPTERS' : 'AI EXAM · CHAPTERS') + '</p><h2 id="examChaptersTitle">' + (isStandard ? '选择标准题库章节' : '选择出题章节') + '</h2><span>' + (isStandard ? '先选章节，再选小节，从题库随机抽题；确认后进入题目准备页' : '先选章节，再选小节，让 AI 按范围命题；生成完成后进入题目准备页') + '，点「开始模拟考」时阅读考生守则</span></header>' +
-      '<div class="exam-rules-body">' +
-        '<div class="exam-chapter-tools"><span>' + esc(subjectOf(subject).name) + ' · 先选大章，再勾小节</span><button class="linkish" type="button" data-act="final-ai-chapters-all">全选章节</button><button class="linkish" type="button" data-act="final-ai-chapters-none">清空</button></div>' +
-        '<div class="exam-chapter-grid">' + chapterHtml + '</div>' +
+      '<header class="exam-rules-head exam-chapter-head"><div class="exam-chapter-head-main"><p class="eyebrow">' + (isStandard ? 'STANDARD EXAM · CHAPTERS' : 'AI EXAM · CHAPTERS') + '</p><h2 id="examChaptersTitle">' + (isStandard ? '选择标准题库章节' : '选择出题章节') + '</h2><p class="exam-chapter-lead">' + (isStandard ? '先选大章，再按需展开调整小节；题目从所选范围随机抽取。' : '先选大章，再按需展开调整小节；AI 只围绕所选范围命题。') + '</p></div>' +
+        '<div class="exam-chapter-stat" aria-live="polite"><span><b data-final-chapter-count>' + selected.length + '</b><em>已选章节</em></span><span><b data-final-section-count>' + chosenSections + '</b><em>已选小节</em></span></div>' +
+      '</header>' +
+      '<div class="exam-rules-body exam-chapter-body">' +
+        '<div class="exam-chapter-tools"><span class="exam-chapter-subject"><i aria-hidden="true"></i>' + esc(subjectOf(subject).name) + '</span><span class="exam-chapter-hint">勾选大章后，点右侧「调整小节」</span><span class="exam-chapter-tool-actions"><button type="button" data-act="final-ai-chapters-all">全选</button><button type="button" data-act="final-ai-chapters-none">清空</button></span></div>' +
+        '<div class="exam-chapter-list">' + chapterHtml + '</div>' +
         '<p class="exam-rules-source">' + (isStandard ? '题目从所选章节与小节的题库中随机抽取；抽题范围一科一张卷，不混合科目。' : 'AI 只会围绕所选章节与小节命题；题目仍须有唯一、可验证的标准答案。') + '</p>' +
       '</div>' +
-      '<footer class="exam-rules-foot"><span class="exam-rules-agree" id="examChapterCount">已选 ' + selected.length + ' / ' + chapters.length + ' 章 · ' + chosenSections + ' 个小节</span><div class="exam-rules-actions"><button class="btn" data-act="final-ai-chapters-cancel" type="button">取消</button><button class="btn btn-primary" id="examChaptersStart" data-act="final-ai-chapters-confirm" type="button"' + (selected.length ? '' : ' disabled aria-disabled="true"') + '>' + (isStandard ? '从标准题库开考' : '生成题目') + '</button></div></footer>' +
+      '<footer class="exam-rules-foot exam-chapter-foot"><span class="exam-rules-agree" id="examChapterCount" aria-live="polite">已选 ' + selected.length + ' / ' + chapters.length + ' 章 · ' + chosenSections + ' 个小节</span><div class="exam-rules-actions"><button class="btn" data-act="final-ai-chapters-cancel" type="button">取消</button><button class="btn btn-primary" id="examChaptersStart" data-act="final-ai-chapters-confirm" type="button"' + (selected.length ? '' : ' disabled aria-disabled="true"') + '>' + (isStandard ? '从标准题库开考' : '生成题目') + '</button></div></footer>' +
     '</section></div>';
 }
+function finalExamChapterBlockEl(ch) {
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('[data-chapter-block]'));
+  for (var i = 0; i < blocks.length; i++) {
+    if (blocks[i].getAttribute('data-chapter-block') === ch) return blocks[i];
+  }
+  return null;
+}
+function finalExamChapterBlockSections(block) {
+  return Array.prototype.slice.call(block.querySelectorAll('[data-final-ai-section]'));
+}
+function finalExamChapterRefreshBlock(block) {
+  if (!block) return;
+  var box = block.querySelector('[data-final-ai-chapter]');
+  var on = !!(box && box.checked);
+  var boxes = finalExamChapterBlockSections(block);
+  var picked = boxes.filter(function (b) { return b.checked; }).length;
+  block.classList.toggle('is-on', on);
+  var expand = block.querySelector('[data-act="final-ai-chapter-toggle"]');
+  if (expand) {
+    expand.disabled = !on;
+    expand.setAttribute('aria-disabled', String(!on));
+    if (!on && expand.getAttribute('aria-expanded') === 'true') {
+      expand.setAttribute('aria-expanded', 'false');
+      var panel = block.querySelector('.exam-section-block');
+      if (panel) panel.hidden = true;
+      block.classList.remove('is-open');
+    }
+  }
+  var label = block.querySelector('[data-chapter-picked]');
+  if (label) label.textContent = on ? (picked === boxes.length ? '调整小节' : '已选 ' + picked + ' / ' + boxes.length) : '未选择';
+}
 function finalExamChapterSync() {
-  var boxes = Array.prototype.slice.call(document.querySelectorAll('[data-final-ai-chapter]'));
-  var checked = boxes.filter(function (b) { return b.checked; });
-  var secs = Array.prototype.slice.call(document.querySelectorAll('[data-final-ai-section]:checked'));
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('[data-chapter-block]'));
+  var checkedChapters = 0, checkedSections = 0;
+  blocks.forEach(function (block) {
+    var box = block.querySelector('[data-final-ai-chapter]');
+    if (box && box.checked) {
+      checkedChapters += 1;
+      checkedSections += finalExamChapterBlockSections(block).filter(function (b) { return b.checked; }).length;
+    }
+    finalExamChapterRefreshBlock(block);
+  });
   var count = qs('#examChapterCount');
-  if (count) count.textContent = '已选 ' + checked.length + ' / ' + boxes.length + ' 章 · ' + secs.length + ' 个小节';
+  if (count) count.textContent = '已选 ' + checkedChapters + ' / ' + blocks.length + ' 章 · ' + checkedSections + ' 个小节';
+  var chapterTotal = qs('[data-final-chapter-count]');
+  var sectionTotal = qs('[data-final-section-count]');
+  if (chapterTotal) chapterTotal.textContent = String(checkedChapters);
+  if (sectionTotal) sectionTotal.textContent = String(checkedSections);
   var btn = qs('#examChaptersStart');
-  if (btn) { btn.disabled = !checked.length; btn.setAttribute('aria-disabled', String(!checked.length)); }
+  if (btn) { btn.disabled = !checkedChapters; btn.setAttribute('aria-disabled', String(!checkedChapters)); }
+}
+function finalExamChapterSetAll(on) {
+  var secMap = {};
+  var chapters = [];
+  Array.prototype.slice.call(document.querySelectorAll('[data-chapter-block]')).forEach(function (block) {
+    var ch = block.getAttribute('data-chapter-block');
+    var box = block.querySelector('[data-final-ai-chapter]');
+    if (box) box.checked = on;
+    var secBoxes = finalExamChapterBlockSections(block);
+    if (on) {
+      secBoxes.forEach(function (b) { b.checked = true; });
+      if (secBoxes.length) secMap[ch] = secBoxes.map(function (b) { return b.value; });
+      chapters.push(ch);
+    }
+  });
+  ui.finalAiChapterSel = on ? chapters : [];
+  ui.finalAiSectionSel = on ? secMap : {};
+  finalExamChapterSync();
+}
+function finalExamChapterSetSections(block, on) {
+  if (!block) return;
+  var ch = block.getAttribute('data-chapter-block');
+  var boxes = finalExamChapterBlockSections(block);
+  boxes.forEach(function (b) { b.checked = on; });
+  finalExamSectionMap()[ch] = on ? boxes.map(function (b) { return b.value; }) : [];
+  finalExamChapterSync();
+}
+function finalExamChapterToggle(btn) {
+  if (!btn || btn.disabled) return;
+  var block = btn.closest('.exam-chapter-block');
+  if (!block) return;
+  var opening = btn.getAttribute('aria-expanded') !== 'true';
+  Array.prototype.slice.call(document.querySelectorAll('.exam-chapter-block.is-open')).forEach(function (other) {
+    other.classList.remove('is-open');
+    var panel = other.querySelector('.exam-section-block');
+    if (panel) panel.hidden = true;
+    var otherBtn = other.querySelector('[data-act="final-ai-chapter-toggle"]');
+    if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+  });
+  btn.setAttribute('aria-expanded', String(opening));
+  block.classList.toggle('is-open', opening);
+  var panel = block.querySelector('.exam-section-block');
+  if (panel) panel.hidden = !opening;
 }
 function finalExamChapterCancel() {
   ui.finalAiChaptersOpen = false;
@@ -2465,21 +2557,24 @@ document.addEventListener('change', function (e) {
     var chBox = e.target;
     var chVal = chBox.value;
     var list = Array.isArray(ui.finalAiChapterSel) ? ui.finalAiChapterSel.slice() : [];
+    var block = chBox.closest ? chBox.closest('[data-chapter-block]') : null;
     if (chBox.checked) {
       if (list.indexOf(chVal) < 0) list.push(chVal);
-      var secs = finalExamChapterSections(finalSubject(), chVal);
-      if (secs.length) finalExamSectionMap()[chVal] = secs.slice();
+      var secBoxes = block ? finalExamChapterBlockSections(block) : [];
+      secBoxes.forEach(function (b) { b.checked = true; });
+      if (secBoxes.length) finalExamSectionMap()[chVal] = secBoxes.map(function (b) { return b.value; });
     } else {
       list = list.filter(function (x) { return x !== chVal; });
+      finalExamSectionMap()[chVal] = [];
     }
     ui.finalAiChapterSel = list;
-    render();
-    setTimeout(function () { window.scrollTo(0, 0); }, 20);
+    finalExamChapterSync();
     return;
   }
   if (e.target && e.target.hasAttribute && e.target.hasAttribute('data-final-ai-section')) {
     var secCh = e.target.getAttribute('data-chapter');
-    var picked = Array.prototype.slice.call(document.querySelectorAll('[data-final-ai-section][data-chapter]')).filter(function (b) { return b.getAttribute('data-chapter') === secCh && b.checked; }).map(function (b) { return b.value; });
+    var secBlock = e.target.closest ? e.target.closest('[data-chapter-block]') : null;
+    var picked = secBlock ? finalExamChapterBlockSections(secBlock).filter(function (b) { return b.checked; }).map(function (b) { return b.value; }) : [];
     finalExamSectionMap()[secCh] = picked;
     finalExamChapterSync();
     return;
@@ -2527,8 +2622,11 @@ document.addEventListener('click', function (e) {
   else if (act === 'final-ai-ready-cancel') { e.preventDefault(); finalExamReadyCancel(); }
   else if (act === 'final-ai-chapters-confirm') { e.preventDefault(); finalExamChapterConfirm(); }
   else if (act === 'final-ai-chapters-cancel') { e.preventDefault(); finalExamChapterCancel(); }
-  else if (act === 'final-ai-chapters-all') { e.preventDefault(); var allChs = finalExamChapterList(finalSubject()); ui.finalAiChapterSel = allChs.slice(); ui.finalAiSectionSel = {}; allChs.forEach(function (ch) { var secs = finalExamChapterSections(finalSubject(), ch); if (secs.length) ui.finalAiSectionSel[ch] = secs.slice(); }); render(); }
-  else if (act === 'final-ai-chapters-none') { e.preventDefault(); ui.finalAiChapterSel = []; ui.finalAiSectionSel = {}; render(); }
+  else if (act === 'final-ai-chapters-all') { e.preventDefault(); finalExamChapterSetAll(true); }
+  else if (act === 'final-ai-chapters-none') { e.preventDefault(); finalExamChapterSetAll(false); }
+  else if (act === 'final-ai-chapter-toggle') { e.preventDefault(); finalExamChapterToggle(el); }
+  else if (act === 'final-ai-sections-all') { e.preventDefault(); finalExamChapterSetSections(el.closest ? el.closest('[data-chapter-block]') : null, true); }
+  else if (act === 'final-ai-sections-none') { e.preventDefault(); finalExamChapterSetSections(el.closest ? el.closest('[data-chapter-block]') : null, false); }
   else if (act === 'final-exam-rules-confirm') { e.preventDefault(); finalExamRulesConfirm(); }
   else if (act === 'final-exam-rules-cancel') { e.preventDefault(); finalExamRulesCancel(); }
   else if (act === 'final-exam-choice') { e.preventDefault(); finalExamChoice(el.getAttribute('data-qid'), el.getAttribute('data-option')); }

@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.12-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.12--bb2feda7-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.12--b195ed9b-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -148,11 +148,11 @@
 
 ## 更新记录
 
-### 2026-11-12 · 习题集入库与公式收口
+### 2026-11-12 · 习题集与章节弹窗
 
-**7 项 · 7 组**
+**9 项 · 9 组**
 
-本轮把西经配套章节题库的 223 道可复核题录入题库，新增「习题集」来源筛选与卡片标签；四科总数 9163（1559 / 3522 / 1199 / 2883），来源分布 8350 考研同型、590 教材课后、223 习题集。同时修复模拟考结果页、题库、错题与知识点搜索的公式排版：选项改为字母与正文/公式同一基线，MathML 子元素不再块级独占整行，四处章名去掉未渲染的美元符号。本块 7 项 / 7 组，67 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+本轮把西经配套章节题库的 223 道可复核题录入题库，新增「习题集」来源筛选与卡片标签；四科总数 9163（1559 / 3522 / 1199 / 2883），来源分布 8350 考研同型、590 教材课后、223 习题集。同时修复模拟考结果页、题库、错题与知识点搜索的公式排版：选项改为字母与正文/公式同一基线，MathML 子元素不再块级独占整行，四处章名去掉未渲染的美元符号。模拟考选择章节弹窗改为单列大章卡片 + 手风琴小节，勾选不再整页重绘与滚动回顶。本块 9 项 / 9 组，68 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -163,6 +163,8 @@
 | **质量门禁** | 来源白名单与来源正则加入「习题集」，只有考研同型题才强制要求「真题」来源标记；新增题继续通过 55 章、825 桶每桶 ≥10、十类题型、四选项唯一与主观题解答开头检查；回归新增公式排版与章名纯文本断言。 |
 | **公式排版** | 模拟考结果页与题库选项改为 flex 布局，字母、正文与行内公式共用基线；MathML 子元素恢复 inline math，不再让 mrow、mstyle 独占整行；长选项在右侧自然换行，不再把公式或连接词单独挤成一行。 |
 | **数学记号** | 章节选择弹窗的「n 级行列式」「n 维向量空间」「二次型 f = XᵀAX」「对偶空间 V*」四个名称去掉未渲染的 $...$，改按纯文本与 Unicode 显示；题库、模拟考与错题结果页的公式排版同步回归。 |
+| **章节弹窗** | 模拟考选择章节弹窗改为单列大章卡片：顶部实时显示已选章节与小节，每章一行并排章名、小节数与「调整小节」入口；点开只在原位展开该章小节，同一时间只展开一章，小节使用自适应网格而非参差胶囊，选中章节有浅底与统一勾选框。 |
+| **选择体验** | 勾选章节或小节改为界面原地更新，不再整页重绘与滚动回顶；全选/清空、单章小节全选/清空即时生效，顶部统计、底部摘要与开考按钮同步更新；手机、平板、桌面与深色主题均已检查。 |
 
 <img src="assets/v2/20261112-changelog.png" alt="网页内更新记录" width="820">
 
@@ -798,7 +800,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、发布与源码打包脚本 |
-| `tests/` | 66 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面与模拟考 |
+| `tests/` | 68 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面与模拟考 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 

@@ -813,10 +813,10 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('223 道习题集'),'习题集 current count');
   assert.ok(md.includes('9163'),'bank total');
-  assert.ok(md.includes('66 项回归测试'),'current test count');
-  assert.ok(!md.includes('64 项回归测试'),'stale test count');
+  assert.ok(md.includes('68 项回归测试'),'current test count');
+  assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.12 Release'),'current release link');
-  assert.ok(md.includes('2026.11.12--bb2feda7'),'current build badge');
+  assert.ok(md.includes('2026.11.12--b195ed9b'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -838,4 +838,24 @@ test('chapter picker labels stay plain text and option labels hang cleanly',()=>
   assert.match(exam,/exam-result-text/,'模拟考结果选项正文需要独立容器');
   assert.match(lib,/bank-option-key/,'题库选项需要独立字母标签');
   assert.match(lib,/bank-option-text/,'题库选项正文需要独立容器');
+});
+
+test('exam chapter picker uses one-column accordion with in-place counts and no rerender',()=>{
+  const exam=read('src/js/59-exam.js'), css=read('src/styles.css');
+  for (const cls of ['exam-chapter-head','exam-chapter-stat','exam-chapter-tools','exam-chapter-list','exam-chapter-block','exam-chapter-expand','exam-chapter-chev','exam-section-block','exam-section-grid','exam-check-sm']) {
+    assert.match(exam,new RegExp(cls),'章节选择新结构缺少 '+cls);
+  }
+  assert.match(exam,/data-final-chapter-count/,'需要实时章节计数');
+  assert.match(exam,/data-final-section-count/,'需要实时小节计数');
+  assert.match(exam,/final-ai-chapter-toggle/,'需要章节展开按钮');
+  assert.match(exam,/aria-controls="' \+ secId/,'展开按钮需要 aria-controls');
+  assert.match(exam,/finalExamChapterSync()/,'章节变化应原地同步计数');
+  const chapterHandler=(exam.match(/hasAttribute\('data-final-ai-chapter'\)\)[\s\S]{0,2200}?hasAttribute\('data-final-ai-section'\)/)||[''])[0];
+  assert.ok(chapterHandler,'找不到章节复选框处理逻辑');
+  assert.ok(!/render\(\)/.test(chapterHandler),'勾选章节不应整页 render，避免滚动回顶');
+  assert.match(exam,/finalExamChapterSetSections/,'单章小节全选/清空需要原地处理');
+  assert.match(css,/\.exam-chapter-card\s*\{[^}]*display:\s*flex/,'章节弹窗需要 flex 纵向布局');
+  assert.match(css,/\.exam-chapter-body\s*\{[^}]*overflow-y:\s*auto/,'章节弹窗主体应独立滚动');
+  assert.match(css,/\.exam-section-grid\s*\{[^}]*grid-template-columns:\s*repeat\(auto-fill/,'小节应使用自适应网格而非胶囊堆叠');
+  assert.ok(!/\.exam-chapter-grid\s*\{/.test(css),'旧双列章节网格样式应删除');
 });
