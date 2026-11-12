@@ -252,10 +252,11 @@ async function visibleBox(page, selector) {
       const downloadPromise = page.waitForEvent('download', { timeout: 15000 });
       await page.locator('[data-act="export-state"]').first().click();
       const download = await downloadPromise;
-      const tempPath = await download.path();
       const savedName = download.suggestedFilename() || ('qa-backup-' + Date.now() + '.json');
-      const filePath = path.join(__dirname, '..', 'debug', 'qa-' + savedName);
-      fs.copyFileSync(tempPath, filePath);
+      const debugDir = path.join(__dirname, '..', 'debug');
+      fs.mkdirSync(debugDir, { recursive: true });
+      const filePath = path.join(debugDir, 'qa-' + savedName);
+      await download.saveAs(filePath);
       const raw = fs.readFileSync(filePath);
       let payload;
       try { payload = JSON.parse(filePath.endsWith('.gz') ? zlib.gunzipSync(raw).toString('utf8') : raw.toString('utf8')); }
