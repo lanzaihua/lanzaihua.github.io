@@ -548,7 +548,7 @@ function renderBankItem(it) {
       '</span>' +
     '</div>' +
     '<div class="bank-q md">' + renderMarkdown(String(it.question || '').replace(/^【[^】]{1,20}】\s*/, '')) + '</div>' +
-    (it.type === 'choice' && Array.isArray(it.options) && it.options.length ? '<div class="bank-options">' + it.options.map(function (o) { return '<div class="bank-option"><b>' + esc(o.key) + '．</b>' + renderInline(o.text) + '</div>'; }).join('') + '</div>' : '') +
+    (it.type === 'choice' && Array.isArray(it.options) && it.options.length ? '<div class="bank-options">' + it.options.map(function (o) { return '<div class="bank-option"><b class="bank-option-key">' + esc(o.key) + '．</b><span class="bank-option-text">' + renderInline(o.text) + '</span></div>'; }).join('') + '</div>' : '') +
     '<div class="bank-actions">' +
       '<button class="btn btn-xs" data-act="toggle-bank-answer" data-bank-id="' + attr(it.id) + '" type="button" aria-expanded="' + open + '" aria-controls="answer-' + attr(it.id) + '">' + (open ? '收起解答' : '显示解答') + '</button>' +
       '<button class="btn btn-xs" data-act="add-from-bank" data-bank-id="' + attr(it.id) + '" type="button">加入错题本</button>' +

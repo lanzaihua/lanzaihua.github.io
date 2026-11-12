@@ -1527,7 +1527,7 @@ function finalExamResultHtml(mock) {
     return '<article class="exam-result-q' + (wrong ? ' is-wrong' : '') + '">' +
       '<div class="exam-result-head"><span class="exam-qnum">' + pad(i + 1, 2) + '</span><b>' + renderInline(q.title) + '</b><span class="exam-result-diff">难度 ' + stars(qDiff) + '</span><span class="' + (wrong ? 'exam-bad' : 'exam-good') + '">' + (wrong ? '未掌握' : '正确') + '</span><span class="exam-result-score">' + q.score + ' / ' + qMax + '</span></div>' +
       '<div class="exam-result-question"><h4>题干</h4><div class="md">' + renderMarkdown(qText) + '</div>' +
-        (qType === 'choice' && qOptions.length ? '<div class="exam-result-options">' + qOptions.map(function (o) { return '<span class="exam-result-option">' + esc(o.key) + '．' + renderInline(o.text) + '</span>'; }).join('') + '</div>' : '') +
+        (qType === 'choice' && qOptions.length ? '<div class="exam-result-options">' + qOptions.map(function (o) { return '<span class="exam-result-option"><b class="exam-result-key">' + esc(o.key) + '．</b><span class="exam-result-text">' + renderInline(o.text) + '</span></span>'; }).join('') + '</div>' : '') +
       '</div>' +
       finalExamRubricHtml(Object.assign({}, q, { max: qMax })) +
       (q.userChoice || q.userText || q.userDraw ? '<div class="exam-user-answer"><span>你的作答</span>' + (q.userChoice ? '<p>选项 ' + esc(q.userChoice) + '</p>' : '') + (q.userText ? '<div class="md">' + renderMarkdown(q.userText) + '</div>' : '') + (q.userDraw ? '<img src="' + attr(q.userDraw) + '" alt="手写作答">' : '') + (q.aiHandwritingText ? '<p class="faint exam-ai-handwriting">AI 识别手写：' + renderInline(q.aiHandwritingText) + '</p>' : '') + '</div>' : '<p class="faint">未作答</p>') +

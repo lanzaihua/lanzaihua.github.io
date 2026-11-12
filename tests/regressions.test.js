@@ -293,7 +293,10 @@ test('bank objective options survive the move into an entry',()=>{
 test('styles keep MathML layout boxes and balanced mobile action rows',()=>{
   const css=read('src/styles.css');
   assert.ok(css.includes('display: inline math !important'),'MathML 行内公式必须保留 math 盒模型');
-  assert.ok(css.includes('display: revert !important'),'MathML 子元素不能被强制成文本 display');
+  assert.equal(css.includes('display: revert !important'),false,'revert 会把 MathML 子元素交还 UA 的 block math，行内公式因此独占整行');
+  assert.match(css,/\.math-inline-scroll math > \*:not\(mtable\)[\s\S]{0,220}display:\s*inline math !important/,'行内公式的 mrow 必须保持 inline math，不能整行占宽');
+  assert.match(css,/\.exam-result-option\s*\{[^}]*display:\s*flex/,'模拟考结果选项需要 flex 排版，选项字母不能单独占行');
+  assert.match(css,/\.bank-option\s*\{[^}]*display:\s*flex/,'题库选项需要 flex 排版，选项字母不能单独占行');
   assert.ok(/\.math-inline-scroll\.is-wide[\s\S]{0,400}font-size: 1em !important/.test(css),'宽公式不能缩小字号');
   assert.match(css,/\.bank-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端题库操作按钮应为两列');
   assert.match(css,/\.entry-foot\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端错题操作按钮应为两列');
@@ -823,4 +826,16 @@ test('navigation, link actions and dialog close buttons keep 34px/40px touch tar
   assert.match(css,/\.dlg-head \.icon-btn,[\s\S]{0,120}\.notif-close\s*\{[^}]*width:\s*34px/,'dialog close 34px');
   assert.match(css,/@media \(max-width: 900px\)[\s\S]{0,500}\.cross-tabs \.tab-cross\s*\{[^}]*min-height:\s*38px/,'tablet tab-cross 38px');
   assert.match(css,/\.pages-banner-badge,[\s\S]{0,160}font-size:\s*10px/,'decorative labels 10px');
+});
+
+test('chapter picker labels stay plain text and option labels hang cleanly',()=>{
+  const chapters=read('src/js/00-chapters.js');
+  assert.equal((chapters.match(/"\$[^"]*"/g)||[]).length,0,'章/小节选择是纯文本渲染，不能在名称里写 $...$ 公式');
+  assert.match(chapters,/"n 级行列式"/,'行列式小节应用纯文本 n');
+  assert.match(chapters,/"对偶空间 V\*、/,'对偶空间小节应用纯文本 V*');
+  const exam=read('src/js/59-exam.js'), lib=read('src/js/30-library.js');
+  assert.match(exam,/exam-result-key/,'模拟考结果选项需要独立字母标签');
+  assert.match(exam,/exam-result-text/,'模拟考结果选项正文需要独立容器');
+  assert.match(lib,/bank-option-key/,'题库选项需要独立字母标签');
+  assert.match(lib,/bank-option-text/,'题库选项正文需要独立容器');
 });

@@ -4870,13 +4870,24 @@ html.is-exam-locked .main { max-width: 900px; padding-top: clamp(42px, 8vh, 86px
   margin: 2px 0 12px 12px;
 }
 .bank-option {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
   font-size: 13px;
   line-height: 1.65;
   color: var(--ink-2);
 }
-.bank-option b {
+.bank-option-key {
+  flex: 0 0 auto;
+  min-width: 1.55em;
   color: var(--accent);
-  margin-right: 4px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.bank-option-text {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .bank-more {
@@ -4903,9 +4914,24 @@ html.is-exam-locked .main { max-width: 900px; padding-top: clamp(42px, 8vh, 86px
   margin-top: 8px;
 }
 .exam-result-option {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
   font-size: 13px;
   line-height: 1.65;
   color: var(--ink-2);
+}
+.exam-result-key {
+  flex: 0 0 auto;
+  min-width: 1.55em;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.exam-result-text {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .exam-result-diff {
@@ -5484,7 +5510,9 @@ p, li, .md p, .md li { text-wrap: pretty; }
 .exam-opt math:not([display="block"]) > *,
 .exam-option-text math:not([display="block"]) > *,
 .math-inline-scroll math > *:not(mtable) {
-  display: revert !important;
+  /* 2026-11-12: revert 会把 MathML 子元素交还 UA 的 block math，
+     令 <mrow> 独占整行；行内公式必须保持 inline math。 */
+  display: inline math !important;
   width: auto !important;
 }
 .math-inline-scroll.is-wide {

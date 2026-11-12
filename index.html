@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.12-bb2feda7";</script>
+<script>window.__BUILD_ID__="2026.11.12-485dfe30";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -4896,13 +4896,24 @@ html.is-exam-locked .main { max-width: 900px; padding-top: clamp(42px, 8vh, 86px
   margin: 2px 0 12px 12px;
 }
 .bank-option {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
   font-size: 13px;
   line-height: 1.65;
   color: var(--ink-2);
 }
-.bank-option b {
+.bank-option-key {
+  flex: 0 0 auto;
+  min-width: 1.55em;
   color: var(--accent);
-  margin-right: 4px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.bank-option-text {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .bank-more {
@@ -4929,9 +4940,24 @@ html.is-exam-locked .main { max-width: 900px; padding-top: clamp(42px, 8vh, 86px
   margin-top: 8px;
 }
 .exam-result-option {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
   font-size: 13px;
   line-height: 1.65;
   color: var(--ink-2);
+}
+.exam-result-key {
+  flex: 0 0 auto;
+  min-width: 1.55em;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.exam-result-text {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .exam-result-diff {
@@ -5510,7 +5536,9 @@ p, li, .md p, .md li { text-wrap: pretty; }
 .exam-opt math:not([display="block"]) > *,
 .exam-option-text math:not([display="block"]) > *,
 .math-inline-scroll math > *:not(mtable) {
-  display: revert !important;
+  /* 2026-11-12: revert 会把 MathML 子元素交还 UA 的 block math，
+     令 <mrow> 独占整行；行内公式必须保持 inline math。 */
+  display: inline math !important;
   width: auto !important;
 }
 .math-inline-scroll.is-wide {
@@ -9300,7 +9328,7 @@ var CHAPTER_SECTIONS = {
     "第二章 行列式": [
       "引言",
       "排列",
-      "$n$ 级行列式",
+      "n 级行列式",
       "行列式的性质",
       "行列式的计算",
       "按行（列）展开",
@@ -9309,7 +9337,7 @@ var CHAPTER_SECTIONS = {
     ],
     "第三章 线性方程组": [
       "消元法",
-      "$n$ 维向量空间",
+      "n 维向量空间",
       "线性相关性",
       "矩阵的秩",
       "有解判别",
@@ -9325,7 +9353,7 @@ var CHAPTER_SECTIONS = {
       "初等矩阵"
     ],
     "第五章 二次型": [
-      "二次型、$f=X^{\\mathsf T}AX$、非退化替换、合同",
+      "二次型 f = XᵀAX 与非退化替换、合同",
       "定理1（化为平方和）、定理2（对称矩阵合同于对角阵）；配方法、合同变换法",
       "复规范形（定理3）、实惯性定理（定理4）",
       "正定（定理5、6）、负定、半正定（定理7）；顺序主子式与主子式"
@@ -9372,7 +9400,7 @@ var CHAPTER_SECTIONS = {
     ],
     "第十章 双线性函数与辛空间": [
       "线性函数：定义、由基上的取值唯一决定（定理1）",
-      "对偶空间 $V^*$、对偶基、对偶基换基（定理2）",
+      "对偶空间 V*、对偶基、对偶基换基（定理2）",
       "双线性函数：度量矩阵、对称/反称、非退化、定理5/6、准欧氏",
       "辛空间：辛基、迷向、拉格朗日、辛变换（定理8、11、12）"
     ]
@@ -13937,7 +13965,7 @@ function renderBankItem(it) {
       '</span>' +
     '</div>' +
     '<div class="bank-q md">' + renderMarkdown(String(it.question || '').replace(/^【[^】]{1,20}】\s*/, '')) + '</div>' +
-    (it.type === 'choice' && Array.isArray(it.options) && it.options.length ? '<div class="bank-options">' + it.options.map(function (o) { return '<div class="bank-option"><b>' + esc(o.key) + '．</b>' + renderInline(o.text) + '</div>'; }).join('') + '</div>' : '') +
+    (it.type === 'choice' && Array.isArray(it.options) && it.options.length ? '<div class="bank-options">' + it.options.map(function (o) { return '<div class="bank-option"><b class="bank-option-key">' + esc(o.key) + '．</b><span class="bank-option-text">' + renderInline(o.text) + '</span></div>'; }).join('') + '</div>' : '') +
     '<div class="bank-actions">' +
       '<button class="btn btn-xs" data-act="toggle-bank-answer" data-bank-id="' + attr(it.id) + '" type="button" aria-expanded="' + open + '" aria-controls="answer-' + attr(it.id) + '">' + (open ? '收起解答' : '显示解答') + '</button>' +
       '<button class="btn btn-xs" data-act="add-from-bank" data-bank-id="' + attr(it.id) + '" type="button">加入错题本</button>' +
@@ -18689,10 +18717,10 @@ var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_M
 var UPDATE_LOG = [
   {
     date: '2026-11-12',
-    title: '错题小节与习题集入库',
-    historyTitle: '错题小节与习题集入库',
-    summary: '在 11-12 已完成的错题小节筛选基础上，本轮把西经配套章节题库的 223 道可复核题录入题库，新增「习题集」来源筛选与卡片标签；四科总数 9163（1559 / 3522 / 1199 / 2883），来源分布 8350 考研同型、590 教材课后、223 习题集；同步 build、QA、审计、站点一致性与 README 计数。本块 5 项 / 5 组，66 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。',
-    notifySummary: '错题页补上小节筛选；题库新增 223 道西经习题集题（131 选择 + 92 判断填空），新增「习题集」来源筛选，总数 9163。本块 5 条要点。',
+    title: '习题集入库与公式收口',
+    historyTitle: '习题集入库与公式收口',
+    summary: '本轮把西经配套章节题库的 223 道可复核题录入题库，新增「习题集」来源筛选与卡片标签；四科总数 9163（1559 / 3522 / 1199 / 2883），来源分布 8350 考研同型、590 教材课后、223 习题集。同时修复模拟考结果页、题库、错题与知识点搜索的公式排版：选项改为字母与正文/公式同一基线，MathML 子元素不再块级独占整行，四处章名去掉未渲染的美元符号。本块 7 项 / 7 组，67 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。',
+    notifySummary: '题库新增 223 道西经习题集题，新增「习题集」来源筛选，总数 9163；同时修复模拟考、题库、错题与知识点搜索的公式和选项排版。本块 7 条要点。',
     notifyItems: [
       {
         group: '习题集入库',
@@ -18726,7 +18754,15 @@ var UPDATE_LOG = [
       },
       {
         group: '质量门禁',
-        text: '来源白名单与来源正则加入「习题集」，只有考研同型题才强制要求「真题」来源标记；新增题继续通过 55 章、825 桶每桶 ≥10、十类题型、四选项唯一与主观题解答开头检查。',
+        text: '来源白名单与来源正则加入「习题集」，只有考研同型题才强制要求「真题」来源标记；新增题继续通过 55 章、825 桶每桶 ≥10、十类题型、四选项唯一与主观题解答开头检查；回归新增公式排版与章名纯文本断言。',
+      },
+      {
+        group: '公式排版',
+        text: '模拟考结果页与题库选项改为 flex 布局，字母、正文与行内公式共用基线；MathML 子元素恢复 inline math，不再让 mrow、mstyle 独占整行；长选项在右侧自然换行，不再把公式或连接词单独挤成一行。',
+      },
+      {
+        group: '数学记号',
+        text: '章节选择弹窗的「n 级行列式」「n 维向量空间」「二次型 f = XᵀAX」「对偶空间 V*」四个名称去掉未渲染的 $...$，改按纯文本与 Unicode 显示；题库、模拟考与错题结果页的公式排版同步回归。',
       },
     ],
   },
@@ -30105,7 +30141,7 @@ function finalExamResultHtml(mock) {
     return '<article class="exam-result-q' + (wrong ? ' is-wrong' : '') + '">' +
       '<div class="exam-result-head"><span class="exam-qnum">' + pad(i + 1, 2) + '</span><b>' + renderInline(q.title) + '</b><span class="exam-result-diff">难度 ' + stars(qDiff) + '</span><span class="' + (wrong ? 'exam-bad' : 'exam-good') + '">' + (wrong ? '未掌握' : '正确') + '</span><span class="exam-result-score">' + q.score + ' / ' + qMax + '</span></div>' +
       '<div class="exam-result-question"><h4>题干</h4><div class="md">' + renderMarkdown(qText) + '</div>' +
-        (qType === 'choice' && qOptions.length ? '<div class="exam-result-options">' + qOptions.map(function (o) { return '<span class="exam-result-option">' + esc(o.key) + '．' + renderInline(o.text) + '</span>'; }).join('') + '</div>' : '') +
+        (qType === 'choice' && qOptions.length ? '<div class="exam-result-options">' + qOptions.map(function (o) { return '<span class="exam-result-option"><b class="exam-result-key">' + esc(o.key) + '．</b><span class="exam-result-text">' + renderInline(o.text) + '</span></span>'; }).join('') + '</div>' : '') +
       '</div>' +
       finalExamRubricHtml(Object.assign({}, q, { max: qMax })) +
       (q.userChoice || q.userText || q.userDraw ? '<div class="exam-user-answer"><span>你的作答</span>' + (q.userChoice ? '<p>选项 ' + esc(q.userChoice) + '</p>' : '') + (q.userText ? '<div class="md">' + renderMarkdown(q.userText) + '</div>' : '') + (q.userDraw ? '<img src="' + attr(q.userDraw) + '" alt="手写作答">' : '') + (q.aiHandwritingText ? '<p class="faint exam-ai-handwriting">AI 识别手写：' + renderInline(q.aiHandwritingText) + '</p>' : '') + '</div>' : '<p class="faint">未作答</p>') +
