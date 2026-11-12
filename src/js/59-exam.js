@@ -1530,7 +1530,7 @@ function finalExamQuestionHtml(q, i, mock) {
   var body = '<div class="exam-qbody md">' + renderMarkdown(finalExamStripTypeLabel(q.question)) + '</div>';
   if (q.type === 'choice') {
     var opts = (q.options || []).map(function (o) {
-      return '<button class="exam-opt' + (a.choice === o.key ? ' is-on' : '') + '" data-act="final-exam-choice" data-qid="' + attr(q.id) + '" data-option="' + attr(o.key) + '" type="button"><b>' + esc(o.key) + '</b><span>' + renderInline(o.text) + '</span></button>';
+      return '<button class="exam-opt' + (a.choice === o.key ? ' is-on' : '') + '" data-act="final-exam-choice" data-qid="' + attr(q.id) + '" data-option="' + attr(o.key) + '" type="button"><b class="exam-opt-key">' + esc(o.key) + '</b><span class="exam-opt-text">' + renderInline(o.text) + '</span></button>';
     }).join('');
     return '<section class="exam-question" id="exam-q-' + attr(q.id) + '">' + head + body + '<div class="exam-options">' + opts + '</div></section>';
   }

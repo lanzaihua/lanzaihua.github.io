@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.12-311ecf4b";</script>
+<script>window.__BUILD_ID__="2026.11.13-daa938ce";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -6309,6 +6309,93 @@ math[display="block"] {
 /* 2026-11-12: 章下小节手风琴（样式见上方 .exam-section-*） */
 .final-section-filter { margin-top: 8px; }
 
+/* 2026-11-13: 行内公式与选项排版的唯一权威段
+   1) 行内公式与正文同字号、同基线，公式内部元素不再按块级独占一行；
+   2) 选项字母悬挂，正文独立换行，不再把“A．”挤到上一行或单独成行；
+   3) 段落使用 text-wrap:pretty，避免右侧还有空位却把末尾词/公式推下去；
+   4) 普通公式一律 inline，只有真正超宽的 .is-wide 公式保留横向滚动。 */
+.math-inline-scroll:not(.is-wide) {
+  display: inline !important;
+  max-width: none;
+  overflow: visible;
+  vertical-align: baseline;
+}
+.math-tail {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+.math-inline-scroll.is-wide {
+  display: inline-block !important;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  vertical-align: middle;
+  -webkit-overflow-scrolling: touch;
+}
+.md-option {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.md-option-key {
+  flex: 0 0 auto;
+  min-width: 1.55em;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.md-option-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.exam-opt-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: block;
+}
+.md p,
+.md li,
+.entry-body p,
+.entry-body li,
+.kb-answer-body p,
+.kb-answer-body li,
+.exam-qbody,
+.exam-result-q .md p,
+.exam-result-q .md li {
+  text-wrap: pretty;
+}
+.md math:not([display="block"]),
+.block .md math:not([display="block"]),
+.entry-body .md math:not([display="block"]),
+.bank-q math:not([display="block"]),
+.bank-answer math:not([display="block"]),
+.exam-qbody math:not([display="block"]),
+.exam-result-q .md math:not([display="block"]),
+.exam-opt math:not([display="block"]),
+.exam-option-text math:not([display="block"]),
+.exam-rubric math:not([display="block"]),
+.kb-answer math:not([display="block"]) {
+  font-size: 1em !important;
+}
+.math-inline-scroll.is-wide math {
+  font-size: .86em !important;
+}
+
+/* 2026-11-13: 更新记录双列卡片里的长代码块不能把网格撑破。 */
+.changelog-group,
+.changelog-list,
+.changelog-list li {
+  min-width: 0;
+}
+.changelog-list {
+  grid-template-columns: minmax(0, 1fr);
+}
+.changelog-list li {
+  overflow-wrap: anywhere;
+}
+
 </style>
 </head>
 <body>
@@ -12019,6 +12106,30 @@ function normalizeCjkStrong(src) {
   return parts.join('');
 }
 
+/**
+ * 行内公式排版：\dfrac / \displaystyle 会把分数线拉到展示尺寸，
+ * 在 13–14px 的正文里撑高行盒，导致公式上下留白、句子被拆行。
+ * 只有真正的块级公式保留展示尺寸；行内一律压成紧凑的 \frac。
+ */
+function compactInlineMath(tex) {
+  return String(tex == null ? '' : tex)
+    .replace(/\\dfrac(?![A-Za-z])/g, '\\frac')
+    .replace(/\\displaystyle(?![A-Za-z])/g, '')
+    .replace(/\\limits(?![A-Za-z])/g, '')
+    .replace(/\\nolimits(?![A-Za-z])/g, '');
+}
+
+/** 把 Markdown 里的选项段落变成“字母悬挂 + 正文可换行”的结构。 */
+function formatOptionParagraphs(html) {
+  return String(html == null ? '' : html).replace(
+    /<p>([A-Da-d])[．.、]\s*([\s\S]*?)<\/p>/g,
+    function (m, key, body) {
+      if (!body || /^\s*<(?:div|table|ul|ol|pre|blockquote)/.test(body)) return m;
+      return '<p class="md-option"><b class="md-option-key">' + key + '．</b><span class="md-option-text">' + body + '</span></p>';
+    }
+  );
+}
+
 function renderMarkdown(src) {
   if (!src) return '';
   var codeSeg = extractCodeSegments(src);
@@ -12062,7 +12173,7 @@ function renderMarkdown(src) {
       return MATH_TOKEN + (store.length - 1) + MATH_END;
     })
     .replace(/\$([^$\n]+?)\$/g, function (m, tex) {
-      store.push({ tex: tex, display: false });
+      store.push({ tex: compactInlineMath(tex), display: false });
       return MATH_TOKEN + (store.length - 1) + MATH_END;
     });
   text = formatSubquestionBreaks(text);
@@ -12087,6 +12198,10 @@ function renderMarkdown(src) {
     return renderMath(q.tex, q.display);
   });
   html = html.replace(/<table>/g, '<div class="table-wrap"><table>').replace(/<\/table>/g, '</table></div>');
+  // 行内公式与紧跟的中文标点绑成不可拆分的尾串，避免“公式在行末、逗号掉到下一行”。
+  // 只包裹紧邻的单个公式；禁止跨过其它 span 去吞掉整段文字，否则整句会变成
+  // 一个 inline-block 的 math-tail，既不能换行，又会压到相邻卡片上。
+  html = html.replace(/(<span class="math-inline-scroll">(?:(?!<\/?span\b)[\s\S])*?<\/span>)([，。；：、])/g, '<span class="math-tail">$1$2</span>');
   html = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
   // 属性清洗已由 sanitizeMarkdownHtml 按 DOM 完成；这里不能再跑 on* 正则，
   // 否则会把正文里的 &lt;img ... onerror=...&gt; 文字当成属性删掉。
@@ -13354,7 +13469,12 @@ function renderBlock(b, i, e) {
   var num = pad(i + 1, 2);
   return '<section class="' + cls + '">' +
     '<div class="block-head"><span class="block-num">' + num + '</span><h3 class="block-title">' + renderInline(b.title || '内容') + '</h3></div>' +
-    '<div class="md">' + renderMarkdown(stripTypePrefix(b.md)) + '</div>' + entryAttachmentsHtml(e, b.key) +
+    '<div class="md">' + (function () {
+      var body = renderMarkdown(stripTypePrefix(b.md));
+      return /^(?:question|original|stem)$/.test(b.key || '') && typeof formatOptionParagraphs === 'function'
+        ? formatOptionParagraphs(body)
+        : body;
+    })() + '</div>' + entryAttachmentsHtml(e, b.key) +
   '</section>';
 }
 
@@ -18778,6 +18898,73 @@ function autoAiPendingCount() {
 var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_ID__) || '').match(/^(\d{4})\.(\d{2})\.(\d{2})/);
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [
+{
+  "date": "2026-11-13",
+  "title": "公式排版与全站收口",
+  "historyTitle": "公式排版与全站收口",
+  "summary": "本轮把公式与选项排版从零散补丁收成一套统一规则：行内分式降级为 frac 并去掉 displaystyle，公式与紧跟的中文标点绑成不可拆尾串，错题选项与模拟考选项改为字母悬挂、正文占满剩余宽度，MathML 行内盒模型与三端基线一并校正。四科题库 1559 / 3522 / 1199 / 2883 = 9163，静态扫描无残留裸 LaTeX，72 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过。本块 7 项 / 7 组。",
+  "notifySummary": "本轮把公式与选项排版从零散补丁收成一套统一规则：行内分式降级为 frac 并去掉 displaystyle，公式与紧跟的中文标点绑成不可拆尾串，错题选项与模拟考选项改为字母悬挂、正文占满剩余宽度，MathML 行内盒模型与三端基线一并校正。四科题库 1559 / 3522 / 1199 / 2883 = 9163，静态扫描无残留裸 LaTeX，72 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过。本块 7 项 / 7 组。",
+  "notifyItems": [
+    {
+      "group": "行内分式",
+      "text": "行内公式不再用 \\dfrac、\\displaystyle、\\limits 撑高行盒：渲染前统一降为 \\frac 并去掉强制展示命令，块级公式保持原尺寸；知识点搜索里的 dy/dx 由 21.7px 高、段落 49.1px 回到与正文同一基线。"
+    },
+    {
+      "group": "标点收口",
+      "text": "公式与紧跟的中文标点绑定为不可拆的 math-tail 尾串，逗号、句号、冒号不再被甩到下一行；长公式整体换行，不把标点单独留在行首。"
+    },
+    {
+      "group": "选项悬挂",
+      "text": "错题题干的 A．/B． 选项改为 md-option 的 flex 结构，字母固定宽悬挂、正文占满剩余宽度；模拟考运行页选项补 exam-opt-text 的 flex:1 与 min-width:0，长题干与公式在右侧自然换行，不把字母挤成单独一行。"
+    },
+    {
+      "group": "行内盒模型",
+      "text": "styles.css 末尾合并为一套权威规则：普通 .math-inline-scroll 为 inline、只有 .is-wide 才 inline-block 横向滚动；MathML 的 mrow/mstyle 保持 inline math，行内公式字号 1em，不再被旧补丁整块化。"
+    },
+    {
+      "group": "三端基线",
+      "text": "题库、错题、模拟考、知识点搜索在 390 / 820 / 1440 三端逐页复核：选项、题干预览、解答与公式共用基线；段落启用 text-wrap:pretty，右侧空白不再换来孤立标点或半行文字。"
+    },
+    {
+      "group": "数学语言",
+      "text": "四科题库静态扫描 question / answer / standardSolution / detailedAnalysis / options，去除数学片段后无残留裸 LaTeX；章名与小节名保持纯文本 Unicode，不再出现未渲染的 $...$。"
+    },
+    {
+      "group": "防复发",
+      "text": "回归测试增至 72 项，新增 compactInlineMath、formatOptionParagraphs、math-tail、md-option 与 exam-opt-text 断言；站点一致性与构建继续跑严格 QA、公式检查、六视口真实交互与性能门禁，后续改公式或选项结构都必须重跑同一套检查。"
+    }
+  ],
+  "items": [
+    {
+      "group": "行内分式",
+      "text": "行内公式不再用 \\dfrac、\\displaystyle、\\limits 撑高行盒：渲染前统一降为 \\frac 并去掉强制展示命令，块级公式保持原尺寸；知识点搜索里的 dy/dx 由 21.7px 高、段落 49.1px 回到与正文同一基线。"
+    },
+    {
+      "group": "标点收口",
+      "text": "公式与紧跟的中文标点绑定为不可拆的 math-tail 尾串，逗号、句号、冒号不再被甩到下一行；长公式整体换行，不把标点单独留在行首。"
+    },
+    {
+      "group": "选项悬挂",
+      "text": "错题题干的 A．/B． 选项改为 md-option 的 flex 结构，字母固定宽悬挂、正文占满剩余宽度；模拟考运行页选项补 exam-opt-text 的 flex:1 与 min-width:0，长题干与公式在右侧自然换行，不把字母挤成单独一行。"
+    },
+    {
+      "group": "行内盒模型",
+      "text": "styles.css 末尾合并为一套权威规则：普通 .math-inline-scroll 为 inline、只有 .is-wide 才 inline-block 横向滚动；MathML 的 mrow/mstyle 保持 inline math，行内公式字号 1em，不再被旧补丁整块化。"
+    },
+    {
+      "group": "三端基线",
+      "text": "题库、错题、模拟考、知识点搜索在 390 / 820 / 1440 三端逐页复核：选项、题干预览、解答与公式共用基线；段落启用 text-wrap:pretty，右侧空白不再换来孤立标点或半行文字。"
+    },
+    {
+      "group": "数学语言",
+      "text": "四科题库静态扫描 question / answer / standardSolution / detailedAnalysis / options，去除数学片段后无残留裸 LaTeX；章名与小节名保持纯文本 Unicode，不再出现未渲染的 $...$。"
+    },
+    {
+      "group": "防复发",
+      "text": "回归测试增至 72 项，新增 compactInlineMath、formatOptionParagraphs、math-tail、md-option 与 exam-opt-text 断言；站点一致性与构建继续跑严格 QA、公式检查、六视口真实交互与性能门禁，后续改公式或选项结构都必须重跑同一套检查。"
+    }
+  ]
+},
   {
     date: '2026-11-12',
     title: '全站审计与质量门禁',
@@ -30247,7 +30434,7 @@ function finalExamQuestionHtml(q, i, mock) {
   var body = '<div class="exam-qbody md">' + renderMarkdown(finalExamStripTypeLabel(q.question)) + '</div>';
   if (q.type === 'choice') {
     var opts = (q.options || []).map(function (o) {
-      return '<button class="exam-opt' + (a.choice === o.key ? ' is-on' : '') + '" data-act="final-exam-choice" data-qid="' + attr(q.id) + '" data-option="' + attr(o.key) + '" type="button"><b>' + esc(o.key) + '</b><span>' + renderInline(o.text) + '</span></button>';
+      return '<button class="exam-opt' + (a.choice === o.key ? ' is-on' : '') + '" data-act="final-exam-choice" data-qid="' + attr(q.id) + '" data-option="' + attr(o.key) + '" type="button"><b class="exam-opt-key">' + esc(o.key) + '</b><span class="exam-opt-text">' + renderInline(o.text) + '</span></button>';
     }).join('');
     return '<section class="exam-question" id="exam-q-' + attr(q.id) + '">' + head + body + '<div class="exam-options">' + opts + '</div></section>';
   }

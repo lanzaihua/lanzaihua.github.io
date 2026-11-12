@@ -6282,3 +6282,90 @@ math[display="block"] {
 
 /* 2026-11-12: 章下小节手风琴（样式见上方 .exam-section-*） */
 .final-section-filter { margin-top: 8px; }
+
+/* 2026-11-13: 行内公式与选项排版的唯一权威段
+   1) 行内公式与正文同字号、同基线，公式内部元素不再按块级独占一行；
+   2) 选项字母悬挂，正文独立换行，不再把“A．”挤到上一行或单独成行；
+   3) 段落使用 text-wrap:pretty，避免右侧还有空位却把末尾词/公式推下去；
+   4) 普通公式一律 inline，只有真正超宽的 .is-wide 公式保留横向滚动。 */
+.math-inline-scroll:not(.is-wide) {
+  display: inline !important;
+  max-width: none;
+  overflow: visible;
+  vertical-align: baseline;
+}
+.math-tail {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+.math-inline-scroll.is-wide {
+  display: inline-block !important;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  vertical-align: middle;
+  -webkit-overflow-scrolling: touch;
+}
+.md-option {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.md-option-key {
+  flex: 0 0 auto;
+  min-width: 1.55em;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.md-option-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.exam-opt-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: block;
+}
+.md p,
+.md li,
+.entry-body p,
+.entry-body li,
+.kb-answer-body p,
+.kb-answer-body li,
+.exam-qbody,
+.exam-result-q .md p,
+.exam-result-q .md li {
+  text-wrap: pretty;
+}
+.md math:not([display="block"]),
+.block .md math:not([display="block"]),
+.entry-body .md math:not([display="block"]),
+.bank-q math:not([display="block"]),
+.bank-answer math:not([display="block"]),
+.exam-qbody math:not([display="block"]),
+.exam-result-q .md math:not([display="block"]),
+.exam-opt math:not([display="block"]),
+.exam-option-text math:not([display="block"]),
+.exam-rubric math:not([display="block"]),
+.kb-answer math:not([display="block"]) {
+  font-size: 1em !important;
+}
+.math-inline-scroll.is-wide math {
+  font-size: .86em !important;
+}
+
+/* 2026-11-13: 更新记录双列卡片里的长代码块不能把网格撑破。 */
+.changelog-group,
+.changelog-list,
+.changelog-list li {
+  min-width: 0;
+}
+.changelog-list {
+  grid-template-columns: minmax(0, 1fr);
+}
+.changelog-list li {
+  overflow-wrap: anywhere;
+}

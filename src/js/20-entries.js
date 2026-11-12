@@ -304,7 +304,12 @@ function renderBlock(b, i, e) {
   var num = pad(i + 1, 2);
   return '<section class="' + cls + '">' +
     '<div class="block-head"><span class="block-num">' + num + '</span><h3 class="block-title">' + renderInline(b.title || '内容') + '</h3></div>' +
-    '<div class="md">' + renderMarkdown(stripTypePrefix(b.md)) + '</div>' + entryAttachmentsHtml(e, b.key) +
+    '<div class="md">' + (function () {
+      var body = renderMarkdown(stripTypePrefix(b.md));
+      return /^(?:question|original|stem)$/.test(b.key || '') && typeof formatOptionParagraphs === 'function'
+        ? formatOptionParagraphs(body)
+        : body;
+    })() + '</div>' + entryAttachmentsHtml(e, b.key) +
   '</section>';
 }
 

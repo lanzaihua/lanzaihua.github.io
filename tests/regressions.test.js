@@ -813,10 +813,10 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('223 道习题集'),'习题集 current count');
   assert.ok(md.includes('9163'),'bank total');
-  assert.ok(md.includes('71 项回归测试'),'current test count');
+  assert.ok(md.includes('72 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
-  assert.ok(md.includes('v2026.11.12 Release'),'current release link');
-  assert.ok(md.includes('2026.11.12--311ecf4b'),'current build badge');
+  assert.ok(md.includes('v2026.11.13 Release'),'current release link');
+  assert.ok(md.includes('2026.11.13--daa938ce'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -858,4 +858,34 @@ test('exam chapter picker uses one-column accordion with in-place counts and no 
   assert.match(css,/\.exam-chapter-body\s*\{[^}]*overflow-y:\s*auto/,'章节弹窗主体应独立滚动');
   assert.match(css,/\.exam-section-grid\s*\{[^}]*grid-template-columns:\s*repeat\(auto-fill/,'小节应使用自适应网格而非胶囊堆叠');
   assert.ok(!/\.exam-chapter-grid\s*\{/.test(css),'旧双列章节网格样式应删除');
+});
+
+test('inline fractions keep text baseline and option labels hang without splitting',()=>{
+  const {parseHTML}=require('linkedom');
+  const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  assert.equal(r.ctx.compactInlineMath('\\dfrac{dy}{dx}'),'\\frac{dy}{dx}','行内分式必须降为 frac，避免撑高整行');
+  assert.equal(r.ctx.compactInlineMath('\\displaystyle \\sum_{i=1}^n a_i'),' \\sum_{i=1}^n a_i','行内公式不应强制 displaystyle');
+  const options=r.ctx.formatOptionParagraphs('<p>A．<span>x</span></p><p>B. y</p>');
+  assert.match(options,/class="md-option"/,'选项段落需要独立排版容器');
+  assert.match(options,/class="md-option-key">A．<\/b>/,'选项字母需要独立标签');
+  assert.match(options,/class="md-option-text"/,'选项正文需要独立容器');
+  const math=r.ctx.renderMarkdown('导数定义：$\\dfrac{dy}{dx}$，也是微商。');
+  assert.match(math,/math-tail/,'公式与紧跟的中文标点必须绑定，不能把标点甩到下一行');
+  assert.equal(math.includes('displaystyle="true"'),false,math);
+  assert.equal(math.includes('\\dfrac'),false,math);
+  const multi=document.createElement('div');
+  multi.innerHTML=r.ctx.renderMarkdown('错题题干的 $A．/B．$ 选项改为 flex，公式 $min-width:0$，长题干自然换行。');
+  const tails=[...multi.querySelectorAll('.math-tail')];
+  assert.ok(tails.length>0,multi.innerHTML);
+  for(const t of tails){
+    assert.equal(t.querySelectorAll('math').length,1,'math-tail 只能包一个紧邻公式，不能吞掉整段文字');
+    assert.equal(t.textContent.includes('选项改为'),false,'math-tail 不能跨过正文吞掉后续公式');
+  }
+  const css=read('src/styles.css');
+  assert.match(css,/\.math-tail\s*\{[^}]*display:\s*inline-block/,'公式尾串必须原子化');
+  assert.match(css,/\.math-inline-scroll:not\(\.is-wide\)\s*\{[^}]*display:\s*inline !important/,'普通行内公式不能变成整块');
+  assert.match(css,/\.md-option\s*\{[^}]*display:\s*flex/,'错题选项需要 flex 悬挂字母');
+  assert.match(css,/\.exam-opt-text\s*\{[^}]*flex:\s*1 1 auto/,'模拟考选项正文必须占满剩余宽度');
 });

@@ -556,6 +556,30 @@ function normalizeCjkStrong(src) {
   return parts.join('');
 }
 
+/**
+ * 行内公式排版：\dfrac / \displaystyle 会把分数线拉到展示尺寸，
+ * 在 13–14px 的正文里撑高行盒，导致公式上下留白、句子被拆行。
+ * 只有真正的块级公式保留展示尺寸；行内一律压成紧凑的 \frac。
+ */
+function compactInlineMath(tex) {
+  return String(tex == null ? '' : tex)
+    .replace(/\\dfrac(?![A-Za-z])/g, '\\frac')
+    .replace(/\\displaystyle(?![A-Za-z])/g, '')
+    .replace(/\\limits(?![A-Za-z])/g, '')
+    .replace(/\\nolimits(?![A-Za-z])/g, '');
+}
+
+/** 把 Markdown 里的选项段落变成“字母悬挂 + 正文可换行”的结构。 */
+function formatOptionParagraphs(html) {
+  return String(html == null ? '' : html).replace(
+    /<p>([A-Da-d])[．.、]\s*([\s\S]*?)<\/p>/g,
+    function (m, key, body) {
+      if (!body || /^\s*<(?:div|table|ul|ol|pre|blockquote)/.test(body)) return m;
+      return '<p class="md-option"><b class="md-option-key">' + key + '．</b><span class="md-option-text">' + body + '</span></p>';
+    }
+  );
+}
+
 function renderMarkdown(src) {
   if (!src) return '';
   var codeSeg = extractCodeSegments(src);
@@ -599,7 +623,7 @@ function renderMarkdown(src) {
       return MATH_TOKEN + (store.length - 1) + MATH_END;
     })
     .replace(/\$([^$\n]+?)\$/g, function (m, tex) {
-      store.push({ tex: tex, display: false });
+      store.push({ tex: compactInlineMath(tex), display: false });
       return MATH_TOKEN + (store.length - 1) + MATH_END;
     });
   text = formatSubquestionBreaks(text);
@@ -624,6 +648,10 @@ function renderMarkdown(src) {
     return renderMath(q.tex, q.display);
   });
   html = html.replace(/<table>/g, '<div class="table-wrap"><table>').replace(/<\/table>/g, '</table></div>');
+  // 行内公式与紧跟的中文标点绑成不可拆分的尾串，避免“公式在行末、逗号掉到下一行”。
+  // 只包裹紧邻的单个公式；禁止跨过其它 span 去吞掉整段文字，否则整句会变成
+  // 一个 inline-block 的 math-tail，既不能换行，又会压到相邻卡片上。
+  html = html.replace(/(<span class="math-inline-scroll">(?:(?!<\/?span\b)[\s\S])*?<\/span>)([，。；：、])/g, '<span class="math-tail">$1$2</span>');
   html = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
   // 属性清洗已由 sanitizeMarkdownHtml 按 DOM 完成；这里不能再跑 on* 正则，
   // 否则会把正文里的 &lt;img ... onerror=...&gt; 文字当成属性删掉。
