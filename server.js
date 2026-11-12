@@ -450,6 +450,7 @@ async function callSolveApi(subject, text, hint, images, wrongText, wrongImages,
     err.code = 'NO_AI_KEY';
     throw err;
   }
+  await assertSafeAiBaseUrl(cfg.baseUrl);
   const skillBundle = loadSkillBundle(subject, text, hint);
   const languageNames = { 'zh-CN': '简体中文', 'zh-TW': '繁體中文', 'en': 'English', 'fr': 'French', 'de': 'German', 'ja': 'Japanese', 'ko': 'Korean', 'pt': 'Portuguese', 'ru': 'Russian', 'es': 'Spanish' };
   const targetLanguage = languageNames[language] || '简体中文';

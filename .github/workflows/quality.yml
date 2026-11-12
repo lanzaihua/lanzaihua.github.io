@@ -16,6 +16,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci --ignore-scripts
+      - name: Hydrate omitted bank data and full skill chapters
+        run: |
+          # The public repo intentionally omits src/data (186MB) and full skill chapters;
+          # the release source.zip carries them. Keep code/tests from this checkout.
+          curl -fL --retry 3 -o /tmp/source.zip https://github.com/lanzaihua/lanzaihua.github.io/releases/latest/download/source.zip
+          unzip -oq /tmp/source.zip 'src/data/*' 'skills/*'
       - name: Unit, data, QA and repo-language gates
         run: npm run check
       - name: Install browser for real interaction tests

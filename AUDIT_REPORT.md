@@ -41,7 +41,7 @@
 | SEC-004 | 中 | 超大请求体可能反复写响应或拖垮服务 | readBody 缺少 settled 与断开处理 | 6MB/26MB 上限、413 后 req.destroy()；测试 7MB 请求后 health 仍 200 |
 | SEC-005 | 中 | Service Worker 可能缓存 /api 私有响应 | fetch 事件未排除 API 路径 | sw.js 跳过 /api；站点一致性脚本新增门禁 |
 | DATA-001 | 高 | 确认导入后导入弹窗不关闭，挡住设置页 | finishMerge 只关闭冲突弹窗 | 同时关闭 #importDialog；浏览器备份往返实测条目数不减少、弹窗关闭 |
-| CI-001 | 高 | 浏览器 QA 硬编码 msedge，CI 无法运行；只测 4 视口且只看截图 | 工具依赖本机浏览器，覆盖面不足 | 新增 tools/browser.js；六视口；真实点击科目、题库、章节、模拟考、笔记、设置、更新记录、备份往返；CI 安装 Chromium |
+| CI-001 | 高 | 浏览器 QA 硬编码 msedge，CI 无法运行；只测 4 视口且只看截图 | 工具依赖本机浏览器，覆盖面不足 | 新增 tools/browser.js；六视口；真实点击科目、题库、章节、模拟考、笔记、设置、更新记录、备份往返；CI 安装 Chromium，并先从 Releases 的 source.zip 注入公开仓库有意省略的 src/data 与完整 skills 章节，再跑全量数据与技能测试 |
 | PERF-001 | 中 | 没有性能回归门禁 | 缺少测量脚本 | 新增 qa-performance.js：FCP 580ms、DCL 742ms、load 749ms、题库切换 581ms、JS 堆 27MB；阈值失败即阻断 |
 
 ## 4. 修改文件清单
