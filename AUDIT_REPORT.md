@@ -42,7 +42,7 @@
 | SEC-005 | 中 | Service Worker 可能缓存 /api 私有响应 | fetch 事件未排除 API 路径 | sw.js 跳过 /api；站点一致性脚本新增门禁 |
 | DATA-001 | 高 | 确认导入后导入弹窗不关闭，挡住设置页 | finishMerge 只关闭冲突弹窗 | 同时关闭 #importDialog；浏览器备份往返实测条目数不减少、弹窗关闭 |
 | CI-001 | 高 | 浏览器 QA 硬编码 msedge，CI 无法运行；只测 4 视口且只看截图 | 工具依赖本机浏览器，覆盖面不足 | 新增 tools/browser.js；六视口；真实点击科目、题库、章节、模拟考、笔记、设置、更新记录、备份往返；CI 安装 Chromium，并先从 Releases 的 source.zip 注入公开仓库有意省略的 src/data 与完整 skills 章节，再跑全量数据与技能测试 |
-| PERF-001 | 中 | 没有性能回归门禁 | 缺少测量脚本 | 新增 qa-performance.js：FCP 580ms、DCL 742ms、load 749ms、题库切换 581ms、JS 堆 27MB；阈值失败即阻断 |
+| PERF-001 | 中 | 没有性能回归门禁 | 缺少测量脚本 | 新增 qa-performance.js：FCP 528ms、DCL 605ms、load 610ms、题库切换 583ms、JS 堆 27MB；阈值失败即阻断 |
 
 ## 4. 修改文件清单
 
@@ -94,7 +94,7 @@
 - Word/PDF 导出的逐页排版与字体嵌入。
 - iOS Safari、Firefox、真实手机软键盘遮挡。
 - 真实 OCR 扫描质量、超大图片、并发多标签压力。
-- GitHub Actions 在远端 runner 的实际耗时与结果（推送审计分支后确认）。
+- GitHub Actions 已在远端 runner 验证：审计分支 1c35efa 的 run 43249146289 全部必需步骤 success；合并 main 后 run 43250290905 success；QA 脚本修复后 run 43252822150 success，最终 main run 43254046907 success。Pages build 10af7bd 已成功，线上构建 2026.11.12-311ecf4b。
 - 全量无障碍审计（本次只覆盖触控尺寸与对比度相关既有门禁）。
 
 ## 9. 发布与回滚
@@ -102,3 +102,5 @@
 - 所有修改先提交到 fix/full-site-audit-2026-11，不直接覆盖 main。
 - 回滚点：备份/pre-audit-20261112.tar.gz 与 main 的 f9f5afc6。
 - 发布前必须通过：npm run check、npm test、verify:build、verify:skills、qa:responsive、qa:formulas、qa:perf。
+- 实际合并：fix/full-site-audit-2026-11 → main 的合并提交 983ada7c；QA 选择器修复再合并为 10af7bd2。Release v2026.11.12 已更新为「全站审计与质量门禁」，assets 为 source.zip 13,931,995 bytes（sha256:e9e884d5…）与 SHA256SUMS。
+- 线上验收：https://lanzaihua.github.io/?v=311ecf4b 构建号正确；390 / 360 / 430 / 834 / 1112 / 1440 六视口真实交互 failures 0；全新 localStorage 只有 1 条 update 通知「网页已更新 · 2026-11-12 · 全站审计与质量门禁」，无 pageerror。
