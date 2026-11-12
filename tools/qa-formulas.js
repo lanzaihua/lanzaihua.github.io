@@ -1,5 +1,5 @@
 'use strict';
-const { chromium } = require('playwright-core');
+const { launchChromium } = require('./browser');
 const { startServer } = require('./qa-server');
 
 const seed = {
@@ -24,7 +24,7 @@ const seed = {
 (async () => {
   const server = await startServer();
   const base = server.base;
-  const browser = await chromium.launch({ channel: 'msedge', headless: true });
+  const browser = await launchChromium();
   const page = await (await browser.newContext({ viewport: { width: 1200, height: 1000 } })).newPage();
   const failures = [];
   try {

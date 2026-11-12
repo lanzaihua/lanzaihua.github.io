@@ -26,6 +26,12 @@ async function initSync() {
   }
   try {
     var health = await fetch('/api/health', { headers: apiHeaders(), cache: 'no-store' });
+    if (health.status === 401) {
+      sync.available = true;
+      setSyncState('locked', '需要访问口令');
+      if (typeof render === 'function') render();
+      return;
+    }
     if (!health.ok) throw new Error('no api');
     sync.available = true;
     var res = await fetch('/api/state', { headers: apiHeaders(), cache: 'no-store' });

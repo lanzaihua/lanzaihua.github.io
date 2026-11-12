@@ -33,6 +33,15 @@ add(/<b>A<\/b>高代|<b>M<\/b>数分|<b>G<\/b>解几|<b>E<\/b>西经/.test(js), 
 add(/仅本机保存<\/span><\/span>\s*·\s*数据保存在浏览器与自建服务里/.test(js), '页脚仍把“仅本机保存”和“自建服务”并列');
 add(/从空白开始/.test(js), '首页仍有“从空白开始”旧文案');
 
+const serviceWorker = read(path.join(SRC, 'static', 'sw.js'));
+add(!/url\.pathname\.indexOf\('\/api\/'\)\s*===\s*0/.test(serviceWorker), 'Service Worker 可能把 /api 私有响应写入缓存');
+const server = read(path.join(ROOT, 'server.js'));
+add(!/function assertSafeAiBaseUrl/.test(server), 'server.js 缺少 AI 上游 SSRF 防护');
+add(!/req\.destroy\(\)/.test(server), 'server.js 超大请求体没有中止连接');
+add(!/application\/manifest\+json/.test(server), 'server.js 缺少 webmanifest MIME');
+add(/writeHead\([^)]*200[^)]*\)[\s\S]{0,120}index\.html/.test(server), 'server.js 可能仍把缺失静态资源回退成首页 200');
+add(!/securityHeaders/.test(server), 'server.js 缺少基本安全响应头');
+
 const changelog = read(path.join(SRC, 'js', '48-changelog.js'));
 const sandbox = {
   window: {},

@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
+const dns = require('dns').promises;
+const net = require('net');
 const { loadSkillBundle, buildSystemPrompt, SUBJECT_NAMES } = require('./skills');
 
 const ROOT = __dirname;
@@ -13,11 +15,12 @@ const STATE_FILE = path.join(DATA_DIR, 'state.json');
 const PORT = Number(process.env.PORT || 4173);
 const LAN = process.argv.indexOf('--lan') >= 0 || process.env.HOST === '0.0.0.0';
 const HOST = LAN ? '0.0.0.0' : (process.env.HOST || '127.0.0.1');
+const LOOPBACK_HOST = HOST === '127.0.0.1' || HOST === '::1' || HOST === 'localhost';
 let TOKEN = process.env.NOTEBOOK_TOKEN || '';
 let AUTO_TOKEN = false;
 const ALLOW_DSH_CREDENTIAL_REUSE = process.env.ALLOW_DSH_CREDENTIAL_REUSE === '1';
-// --lan 且未设口令时自动生成一次性口令，避免局域网内任何人都能读写数据。
-if (LAN && !TOKEN) { TOKEN = crypto.randomBytes(18).toString('hex'); AUTO_TOKEN = true; }
+// 只要不是回环绑定且未设口令，就自动生成一次性口令；自定义 HOST 也不能裸奔。
+if (!LOOPBACK_HOST && !TOKEN) { TOKEN = crypto.randomBytes(18).toString('hex'); AUTO_TOKEN = true; }
 
 const AI_API_KEY = process.env.AI_API_KEY || process.env.OPENAI_API_KEY || '';
 const DSH_BASE_URL = (process.env.DSH_AI_BASE_URL || 'https://api.deepseek.com/anthropic').replace(/\/+$/, '');
@@ -33,16 +36,35 @@ const MIME = {
   '.json': 'application/json; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+  '.avif': 'image/avif',
+  '.woff2': 'font/woff2',
+  '.map': 'application/json; charset=utf-8',
+  '.webmanifest': 'application/manifest+json; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.pdf': 'application/pdf',
   '.ico': 'image/x-icon'
 };
 
+function securityHeaders(extra) {
+  return Object.assign({
+    'X-Content-Type-Options': 'nosniff',
+    'Referrer-Policy': 'no-referrer',
+    'X-Frame-Options': 'DENY',
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
+  }, extra || {});
+}
+
 function json(res, code, obj) {
   const body = JSON.stringify(obj);
-  res.writeHead(code, {
+  res.writeHead(code, securityHeaders({
     'Content-Type': 'application/json; charset=utf-8',
     'Content-Length': Buffer.byteLength(body),
     'Cache-Control': 'no-store'
-  });
+  }));
   res.end(body);
 }
 
@@ -71,49 +93,65 @@ function authOk(req) {
 }
 
 function serveStatic(req, res) {
+  const headOnly = req.method === 'HEAD';
   let urlPath;
   try { urlPath = decodeURIComponent((req.url || '/').split('?')[0]); }
   catch (e) { res.writeHead(400); return res.end('invalid URL encoding'); }
   if (urlPath.indexOf('\0') >= 0) { res.writeHead(400); return res.end('invalid URL'); }
   if (urlPath === '/' || urlPath === '') urlPath = '/index.html';
-  if (urlPath === '/favicon.ico') { res.writeHead(204); return res.end(); }
+  if (urlPath === '/favicon.ico') { res.writeHead(204, securityHeaders()); return res.end(); }
   const file = path.normalize(path.join(DIST, urlPath));
   const relative = path.relative(DIST, file);
   if (relative === '..' || relative.startsWith('..' + path.sep) || path.isAbsolute(relative)) { res.writeHead(403); return res.end('forbidden'); }
   fs.readFile(file, function (err, buf) {
     if (err) {
-      fs.readFile(path.join(DIST, 'index.html'), function (e2, html) {
-        if (e2) { res.writeHead(404); return res.end('not found'); }
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
-        res.end(html);
+      // 缺失资源必须 404，不能把首页 HTML 冒充成 JS/CSS/图片。
+      fs.readFile(path.join(DIST, '404.html'), function (e2, page) {
+        const body = e2 ? Buffer.from('not found') : page;
+        res.writeHead(404, securityHeaders({ 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache', 'Content-Length': body.length }));
+        res.end(headOnly ? undefined : body);
       });
       return;
     }
     const ext = path.extname(file).toLowerCase();
-    res.writeHead(200, {
+    res.writeHead(200, securityHeaders({
       'Content-Type': MIME[ext] || 'application/octet-stream',
+      'Content-Length': buf.length,
       'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=300'
-    });
-    res.end(buf);
+    }));
+    res.end(headOnly ? undefined : buf);
   });
 }
 
 function readBody(req, res, cb, maxBytes) {
   const limit = maxBytes || 6 * 1024 * 1024;
   let size = 0;
+  let settled = false;
   const chunks = [];
+  function fail(status, body) {
+    if (settled) return;
+    settled = true;
+    res.writeHead(status, securityHeaders({ 'Content-Type': 'application/json; charset=utf-8' }));
+    res.end(JSON.stringify(body));
+  }
   req.on('data', function (c) {
+    if (settled) return;
     size += c.length;
     if (size > limit) {
-      res.writeHead(413, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ error: '请求太大（图片请压缩后再试）', code: 'TOO_LARGE' }));
+      fail(413, { error: '请求太大（图片请压缩后再试）', code: 'TOO_LARGE' });
       req.destroy();
       return;
     }
     chunks.push(c);
   });
-  req.on('end', function () { cb(Buffer.concat(chunks).toString('utf8')); });
-  req.on('error', function () { res.writeHead(400); res.end('bad request'); });
+  req.on('end', function () {
+    if (settled) return;
+    settled = true;
+    cb(Buffer.concat(chunks).toString('utf8'));
+  });
+  req.on('error', function () {
+    if (!settled) fail(400, { error: 'bad request' });
+  });
 }
 
 
@@ -329,7 +367,55 @@ function normalizeUsage(u) {
   };
 }
 
+function isPrivateAddress(address) {
+  const ip = String(address || '').toLowerCase().replace(/^\[|\]$/g, '');
+  if (!ip) return true;
+  if (net.isIPv4(ip)) {
+    const p = ip.split('.').map(Number);
+    return p[0] === 0 || p[0] === 10 || p[0] === 127 ||
+      (p[0] === 100 && p[1] >= 64 && p[1] <= 127) ||
+      (p[0] === 169 && p[1] === 254) ||
+      (p[0] === 172 && p[1] >= 16 && p[1] <= 31) ||
+      (p[0] === 192 && p[1] === 168) ||
+      (p[0] === 198 && (p[1] === 18 || p[1] === 19)) ||
+      p[0] >= 224;
+  }
+  if (net.isIPv6(ip)) {
+    if (ip === '::' || ip === '::1') return true;
+    if (/^::ffff:/.test(ip) && net.isIPv4(ip.slice(7))) return isPrivateAddress(ip.slice(7));
+    return /^(fc|fd|fe8|fe9|fea|feb|ff)/.test(ip);
+  }
+  return true;
+}
+
+async function assertSafeAiBaseUrl(baseUrl) {
+  let u;
+  try { u = new URL(String(baseUrl || '')); }
+  catch (e) { const err = new Error('AI 接口地址格式不正确'); err.code = 'UNSAFE_AI_URL'; throw err; }
+  if (u.protocol !== 'http:' && u.protocol !== 'https:') {
+    const err = new Error('AI 接口只支持 http/https'); err.code = 'UNSAFE_AI_URL'; throw err;
+  }
+  if (u.username || u.password) {
+    const err = new Error('AI 接口地址不能包含账号密码'); err.code = 'UNSAFE_AI_URL'; throw err;
+  }
+  if (process.env.ALLOW_PRIVATE_AI_BASE_URL === '1') return;
+  const host = u.hostname.toLowerCase();
+  if (host === 'localhost' || /\.localhost$/.test(host) || host === 'metadata.google.internal') {
+    const err = new Error('AI 接口地址不能指向本机或元数据服务'); err.code = 'UNSAFE_AI_URL'; throw err;
+  }
+  let addresses;
+  if (net.isIP(host)) addresses = [host];
+  else {
+    try { addresses = (await dns.lookup(host, { all: true })).map(function (x) { return x.address; }); }
+    catch (e) { const err = new Error('AI 接口域名无法解析'); err.code = 'UNSAFE_AI_URL'; throw err; }
+  }
+  if (!addresses.length || addresses.some(isPrivateAddress)) {
+    const err = new Error('AI 接口地址不能指向内网、回环或元数据地址'); err.code = 'UNSAFE_AI_URL'; throw err;
+  }
+}
+
 async function postAiJson(cfg, payload) {
+  await assertSafeAiBaseUrl(cfg.baseUrl);
   const controller = new AbortController();
   const timer = setTimeout(function () { controller.abort(); }, SOLVE_TIMEOUT_MS);
   const headers = { 'content-type': 'application/json' };
@@ -343,7 +429,7 @@ async function postAiJson(cfg, payload) {
   }
   try {
     const res = await fetch(aiEndpointServer(cfg), {
-      method: 'POST', headers: headers, body: JSON.stringify(payload), signal: controller.signal
+      method: 'POST', headers: headers, body: JSON.stringify(payload), signal: controller.signal, redirect: 'error'
     });
     const raw = await res.text();
     if (!res.ok) throw aiUpstreamError(res, raw);
@@ -364,6 +450,7 @@ async function callSolveApi(subject, text, hint, images, wrongText, wrongImages,
     err.code = 'NO_AI_KEY';
     throw err;
   }
+  await assertSafeAiBaseUrl(cfg.baseUrl);
   const skillBundle = loadSkillBundle(subject, text, hint);
   const languageNames = { 'zh-CN': '简体中文', 'zh-TW': '繁體中文', 'en': 'English', 'fr': 'French', 'de': 'German', 'ja': 'Japanese', 'ko': 'Korean', 'pt': 'Portuguese', 'ru': 'Russian', 'es': 'Spanish' };
   const targetLanguage = languageNames[language] || '简体中文';
@@ -430,6 +517,7 @@ function solveError(res, e) {
   const code = (e && e.code) || 'SOLVE_FAILED';
   if (code === 'SKILL_MISSING') return json(res, 503, { error: (e && e.message) || '找不到对应科目技能', code: code });
   if (code === 'NO_CREDENTIAL' || code === 'NO_AI_KEY') return json(res, 503, { error: '服务端没有配置 AI 模型服务；可设置 AI_API_KEY / AI_BASE_URL / AI_MODEL，或在页面设置里填写后由请求携带', code: 'NO_AI_KEY' });
+  if (code === 'UNSAFE_AI_URL') return json(res, 400, { error: (e && e.message) || 'AI 接口地址不安全', code: code });
   if (code === 'UPSTREAM_AUTH') return json(res, 502, { error: 'AI 服务鉴权失败，请检查 API Key 或接口权限', code: code });
   if (code === 'MODEL_UNAVAILABLE') return json(res, 502, { error: '当前模型不可用或不支持对话生成，已从列表移除', code: code });
   if (code === 'EMPTY_RESPONSE') return json(res, 502, { error: '模型没有返回内容，请重试', code: code });
@@ -546,7 +634,8 @@ async function handleOcr(req, res) {
       return json(res, 200, { ok: true, text: textOut, model: model, protocol: cfg.protocol, elapsedMs: Date.now() - started });
     } catch (e) {
       console.log('[ocr] error ' + (e && e.code) + ' ' + (e && e.message));
-      return json(res, 502, { error: e && e.message ? e.message : 'OCR 失败', code: e && e.code ? e.code : 'OCR_ERROR' });
+      const status = e && e.code === 'UNSAFE_AI_URL' ? 400 : 502;
+      return json(res, status, { error: e && e.message ? e.message : 'OCR 失败', code: e && e.code ? e.code : 'OCR_ERROR' });
     }
   }, 26 * 1024 * 1024);
 }
@@ -554,7 +643,7 @@ async function handleOcr(req, res) {
 
 const server = http.createServer(function (req, res) {
   const url = (req.url || '/').split('?')[0];
-  if ((url === '/api/state' || url === '/api/solve' || url === '/api/ocr' || url === '/api/ai/status') && !authOk(req)) {
+  if (url.indexOf('/api/') === 0 && !authOk(req)) {
     return json(res, 401, { error: 'unauthorized' });
   }
 
@@ -598,7 +687,8 @@ const server = http.createServer(function (req, res) {
       try {
         writeState(cur.rev + 1, payload.state);
       } catch (e) {
-        return json(res, 500, { error: 'write failed: ' + (e.message || e) });
+        console.error('state write failed:', e && e.message ? e.message : e);
+        return json(res, 500, { error: 'write failed' });
       }
       return json(res, 200, { rev: cur.rev + 1, updatedAt: readState().updatedAt });
     });
