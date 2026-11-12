@@ -107,6 +107,11 @@ function wrapBareMathFragmentsLine(src) {
     // 纯英文词组（空格/斜杠/连字符连接，如 one-sided derivative、points / pitfalls、
     // state-of-the-art）不是公式；否则连字符会被排成减号、单词被排成斜体。
     if (/^[A-Za-z][A-Za-z'’]*(?:[\s/\-]+[A-Za-z][A-Za-z'’]*)+$/.test(core) && !/[=^_0-9]/.test(core)) return chunk;
+    // CSS 声明（min-width:0、text-wrap:pretty）不是公式；连字符不能被排成减号。
+    if (/^[a-z][a-z0-9-]*\s*:\s*[^;]+$/i.test(core) && /-/.test(core)) return chunk;
+    // CSS 选择器 / 类名（.math-inline-scroll、.is-wide）不是公式；
+    // 否则点号后的连字符会被排成减号，英文标识符还会被拆成斜体。
+    if (/^\.[A-Za-z][A-Za-z0-9_-]*$/.test(core)) return chunk;
     // 用空格分隔的数字宽度列表（390 / 820 / 1440）按正文排，不排成斜体公式。
     if (/^\d+(?:\s+\/\s+\d+)+$/.test(core)) return chunk;
     return m[1] + label + '$' + core + '$' + m[3];

@@ -816,7 +816,7 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('72 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.13 Release'),'current release link');
-  assert.ok(md.includes('2026.11.13--daa938ce'),'current build badge');
+  assert.ok(md.includes('2026.11.13--125a8250'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -883,6 +883,11 @@ test('inline fractions keep text baseline and option labels hang without splitti
     assert.equal(t.querySelectorAll('math').length,1,'math-tail 只能包一个紧邻公式，不能吞掉整段文字');
     assert.equal(t.textContent.includes('选项改为'),false,'math-tail 不能跨过正文吞掉后续公式');
   }
+  const cssTokens=document.createElement('div');
+  cssTokens.innerHTML=r.ctx.renderMarkdown('普通 .math-inline-scroll 为 inline，只有 .is-wide 才横向滚动；补 min-width:0 与 text-wrap:pretty。');
+  assert.equal(cssTokens.querySelectorAll('math').length,0,'CSS 类名和声明不能被自动包成公式');
+  assert.equal(cssTokens.textContent.includes('.math-inline-scroll'),true,cssTokens.innerHTML);
+  assert.equal(cssTokens.textContent.includes('min-width:0'),true,cssTokens.innerHTML);
   const css=read('src/styles.css');
   assert.match(css,/\.math-tail\s*\{[^}]*display:\s*inline-block/,'公式尾串必须原子化');
   assert.match(css,/\.math-inline-scroll:not\(\.is-wide\)\s*\{[^}]*display:\s*inline !important/,'普通行内公式不能变成整块');
