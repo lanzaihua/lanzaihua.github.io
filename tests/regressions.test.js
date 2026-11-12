@@ -812,7 +812,8 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('9163'),'bank total');
   assert.ok(md.includes('66 项回归测试'),'current test count');
   assert.ok(!md.includes('64 项回归测试'),'stale test count');
-  assert.ok(md.includes('v2026.11.11 Release'),'current release link');
+  assert.ok(md.includes('v2026.11.12 Release'),'current release link');
+  assert.ok(md.includes('2026.11.12--bb2feda7'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
