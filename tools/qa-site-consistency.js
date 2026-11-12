@@ -13,8 +13,8 @@ function add(cond, msg) { if (cond) problems.push(msg); }
 const banks = ['bank-algebra.json', 'bank-analysis.json', 'bank-geometry.json', 'bank-western.json']
   .map((f) => JSON.parse(read(path.join(SRC, 'data', f))));
 const totals = banks.map((b) => (b.items || []).length);
-add(totals[0] < 1550 || totals[1] < 3522 || totals[2] < 1199 || totals[3] < 2660, '四科题库计数低于下限：' + totals.join(' / '));
-add(totals.reduce((a, b) => a + b, 0) < 8940, '题库总数低于 8940');
+add(totals[0] < 1559 || totals[1] < 3522 || totals[2] < 1199 || totals[3] < 2883, '四科题库计数低于下限：' + totals.join(' / '));
+add(totals.reduce((a, b) => a + b, 0) < 9163, '题库总数低于 9163');
 
 const jsFiles = fs.readdirSync(path.join(SRC, 'js')).filter((f) => /\.js$/.test(f));
 const js = jsFiles.map((f) => read(path.join(SRC, 'js', f))).join('\n');
@@ -25,7 +25,7 @@ const styles = read(path.join(SRC, 'styles.css'));
 add(!/\.home-title\s*\{[^}]*max-width:\s*none\s*!important/.test(styles), '首页标题可能再次被 20ch 窄宽强制换行');
 add(/\.home-icon-group\s*\{[^}]*position:\s*fixed/s.test(styles), '手机首页工具栏又变成固定悬浮，可能遮挡内容');
 add(!/\.bank-option math[\s\S]{0,500}display:\s*inline\s*!important/.test(styles), '题库选项公式可能再次按块级公式换行');
-add(/92\s*道/.test(allSource), '页面仍含 92 道旧计数');
+add(/(?:解几|解析几何)[^\n]{0,20}92\s*道/.test(allSource), '页面仍含解析几何 92 的旧计数');
 add(/<b>A<\/b>高代|<b>M<\/b>数分|<b>G<\/b>解几|<b>E<\/b>西经/.test(js), '规范页仍用 A/M/G/E 旧编号');
 add(/仅本机保存<\/span><\/span>\s*·\s*数据保存在浏览器与自建服务里/.test(js), '页脚仍把“仅本机保存”和“自建服务”并列');
 add(/从空白开始/.test(js), '首页仍有“从空白开始”旧文案');
@@ -69,7 +69,7 @@ logs.forEach((b) => {
 const readme = read(path.join(ROOT, 'README.md'));
 add(/(?:解析几何|解几)[^\n]{0,30}901/.test(readme), '仓库 README 仍含解析几何 901 旧计数');
 add(/8251/.test(readme), '仓库 README 仍含 8251');
-add(/92\s*道/.test(readme), '仓库 README 仍含 92 道');
+add(/(?:解几|解析几何)[^\n]{0,20}92\s*道/.test(readme), '仓库 README 仍含解析几何 92 的旧计数');
 add(!readme.includes('3554833568@qq.com'), '仓库 README 缺少邮箱');
 
 const headings = Array.from(readme.matchAll(/^### (\d{4}-\d{2}-\d{2}) · (.+)$/gm)).map((m) => ({

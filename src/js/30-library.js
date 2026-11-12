@@ -484,7 +484,7 @@ function viewBank(subjectId) {
   var bankBook = bookLabelFor(subjectId);
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bankBook ? ' · ' + esc(bankBook) : '') + ' / QUESTION BANK</p>' +
     '<h1 class="page-title">题库</h1>' +
-    '<p class="page-sub">考研同型 + 教材课后：按考研大纲与教材章节整理的考研原创同型题及教材课后习题，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '第一章至第十章排序。' : '') + '</p></div>' +
+    '<p class="page-sub">考研同型 + 教材课后 + 习题集：按考研大纲与教材章节整理的考研原创同型题、教材课后习题及各类习题集题，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '第一章至第十章排序。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="templates" type="button">看模板</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
@@ -494,7 +494,7 @@ function viewBank(subjectId) {
   var bankFiltersOn = bankFiltersActive(f);
   var toolbar = '<div class="toolbar bank-filters">' +
     '<div class="seg bank-origin" role="group" aria-label="按题目来源筛选题库">' +
-      bankOriginBtn('all', '全部来源') + bankOriginBtn('exam', '考研同型') + bankOriginBtn('textbook', '教材课后') +
+      bankOriginBtn('all', '全部来源') + bankOriginBtn('exam', '考研同型') + bankOriginBtn('textbook', '教材课后') + bankOriginBtn('exercise', '习题集') +
     '</div>' +
     '<select class="select" data-bank-filter="chapter" aria-label="按章节筛选题库">' + optionList(['all'].concat(chapters), f.chapter, '全部章节') + '</select>' +
     (f.chapter !== 'all' ? '<select class="select" data-bank-filter="section" aria-label="按小节筛选题库">' + optionList(['all'].concat(bankSections), f.section, '全部小节') + '</select>' : '') +
@@ -543,7 +543,7 @@ function renderBankItem(it) {
       '<h3 class="bank-title">' + esc(it.title) + '</h3>' +
       '<span class="bank-meta">' +
         (it.templateId ? '<span class="chip">' + esc(it.templateId) + '</span>' : '') +
-        '<span class="chip chip-star">' + stars(it.difficulty) + '</span>' + (String(it.title || '').indexOf(typeLabel) >= 0 ? '' : '<span class="chip">' + esc(typeLabel) + '</span>') + '<span class="chip chip-exam">' + (it.examOrigin === '教材课后习题' ? '教材课后' : '考研同型') + '</span>' +
+        '<span class="chip chip-star">' + stars(it.difficulty) + '</span>' + (String(it.title || '').indexOf(typeLabel) >= 0 ? '' : '<span class="chip">' + esc(typeLabel) + '</span>') + '<span class="chip chip-exam">' + bankOriginLabel(it) + '</span>' +
         (it.chapter ? '<span class="chip">' + esc(it.chapter) + '</span>' : '') +
       '</span>' +
     '</div>' +

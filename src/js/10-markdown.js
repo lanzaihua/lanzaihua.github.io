@@ -726,7 +726,14 @@ function bankFilterFor(subjectId) {
   return f;
 }
 function bankOriginKey(item) {
-  return item && item.examOrigin === '教材课后习题' ? 'textbook' : 'exam';
+  if (item && item.examOrigin === '教材课后习题') return 'textbook';
+  if (item && item.examOrigin === '习题集') return 'exercise';
+  return 'exam';
+}
+function bankOriginLabel(item) {
+  if (item && item.examOrigin === '教材课后习题') return '教材课后';
+  if (item && item.examOrigin === '习题集') return '习题集';
+  return '考研同型';
 }
 function bankFiltersActive(f) {
   return !!f && (f.chapter !== 'all' || f.section !== 'all' || f.category !== 'all' || f.type !== 'all' || f.template !== 'all' || f.diff !== 'all' || f.origin !== 'all');

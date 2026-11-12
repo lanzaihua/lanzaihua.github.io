@@ -22,7 +22,7 @@ SUBJECTS = {
     "gaodai": ("bank-algebra.json", 1559),
     "shufen": ("bank-analysis.json", 3522),
     "jieji": ("bank-geometry.json", 1199),
-    "xijing": ("bank-western.json", 2660),
+    "xijing": ("bank-western.json", 2883),
 }
 CATEGORIES = [
     "计算题", "证明题", "概念辨析题", "公式填空题", "应用题",
@@ -105,11 +105,14 @@ def audit(data_dir: Path, strict_difficulty: bool):
 
     if len(base_items) < 8250:
         problems.append(("GLOBAL", f"基础题库 {len(base_items)} < 8250"))
-    if len(all_items) < 8940:
-        problems.append(("GLOBAL", f"题库总数 {len(all_items)} < 8940"))
+    if len(all_items) < 9163:
+        problems.append(("GLOBAL", f"题库总数 {len(all_items)} < 9163"))
     textbook = [item for item in all_items if item.get("examOrigin") == "教材课后习题"]
     if len(textbook) < 590:
         problems.append(("GLOBAL", f"教材课后题 {len(textbook)} < 590"))
+    exercise = [item for item in all_items if item.get("examOrigin") == "习题集"]
+    if len(exercise) < 223:
+        problems.append(("GLOBAL", f"习题集题 {len(exercise)} < 223"))
 
     chapter_keys = {item.get("subject") + "|" + item.get("chapter") for item in all_items}
     if len(chapter_keys) != 55:
@@ -161,9 +164,9 @@ def audit(data_dir: Path, strict_difficulty: bool):
             problems.append((identifier, "points 为空"))
         if not isinstance(item.get("pitfalls"), list) or not item.get("pitfalls"):
             problems.append((identifier, "pitfalls 为空"))
-        if not re.search(r"考研|真题|同型|教材课后", str(item.get("source") or "")):
+        if not re.search(r"考研|真题|同型|教材课后|习题集", str(item.get("source") or "")):
             problems.append((identifier, "来源不是考研/真题/同型/教材课后"))
-        if item.get("examOrigin") not in {"考研原创同型题", "教材课后习题"}:
+        if item.get("examOrigin") not in {"考研原创同型题", "教材课后习题", "习题集"}:
             problems.append((identifier, "examOrigin 错误"))
         if not isinstance(item.get("difficulty"), int) or not 1 <= item["difficulty"] <= 5:
             problems.append((identifier, "difficulty 不是 1-5"))

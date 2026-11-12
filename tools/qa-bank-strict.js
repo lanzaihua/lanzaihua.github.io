@@ -20,8 +20,9 @@ for (const f of FILES) {
 function fail(id, msg) { issues.push(id + ' · ' + msg); }
 // 1. global shape
 if (baseItems.length < 8250) fail('GLOBAL', '基础题库 ' + baseItems.length + ' < 8250');
-if (all.length < 8831) fail('GLOBAL', '题库总数 ' + all.length + ' < 8831');
-if (all.filter(q => q.examOrigin === '教材课后习题').length < 581) fail('GLOBAL', '教材课后题 ' + all.filter(q => q.examOrigin === '教材课后习题').length + ' < 581');
+if (all.length < 9163) fail('GLOBAL', '题库总数 ' + all.length + ' < 9163');
+if (all.filter(q => q.examOrigin === '教材课后习题').length < 590) fail('GLOBAL', '教材课后题 ' + all.filter(q => q.examOrigin === '教材课后习题').length + ' < 590');
+if (all.filter(q => q.examOrigin === '习题集').length < 223) fail('GLOBAL', '习题集题 ' + all.filter(q => q.examOrigin === '习题集').length + ' < 223');
 const chapters = new Set(all.map(q => q.subject + '|' + q.chapter));
 if (chapters.size !== 55) fail('GLOBAL', 'chapters ' + chapters.size + ' != 55');
 // 2. exact buckets and category counts
@@ -78,7 +79,7 @@ for (const q of all) {
   if (!q.title || !q.question || !q.answer || !q.standardSolution || !q.detailedAnalysis) fail(q.id, '缺少核心字段');
   if (!Array.isArray(q.points) || !q.points.length) fail(q.id, 'points 为空');
   if (!Array.isArray(q.pitfalls) || !q.pitfalls.length) fail(q.id, 'pitfalls 为空');
-  if (!/考研|真题|同型|教材课后/.test(String(q.source || ''))) fail(q.id, '来源既不是考研/真题/同型，也不是教材课后');
+  if (!/考研|真题|同型|教材课后|习题集/.test(String(q.source || ''))) fail(q.id, '来源既不是考研/真题/同型/教材课后/习题集');
   if (/\\cdot\s+2(?![\^0-9A-Za-z])|·\s+2(?![\^0-9A-Za-z])/.test(String(q.question))) fail(q.id, '题干残留公式突变 · 2');
   if (/证明过程见标准解答/.test(String(q.answer))) fail(q.id, '答案只指向标准解答，没有结论');
   const trailingTimesTwo = /(?:\\cdot|·)\s*2\s*(?=\$|$)/;
@@ -97,7 +98,7 @@ if (q.type === 'subjective' && !/^(解|证明|答)[：:]/.test(String(q.standard
     const outside = String(field).replace(/\$\$[\s\S]*?\$\$/g, '').replace(/\$[^$]*\$/g, '');
     if (/\\[a-zA-Z]+|[\uE000\uE001]/.test(outside)) fail(q.id, '数学公式未放入 $...$ 或残留裸 LaTeX');
   }
-  if (!['考研原创同型题','教材课后习题'].includes(q.examOrigin)) fail(q.id, 'examOrigin 错误');
+  if (!['考研原创同型题','教材课后习题','习题集'].includes(q.examOrigin)) fail(q.id, 'examOrigin 错误');
   if (/【[^】]+】/.test(String(q.question))) fail(q.id, '题干含【】题型标记');
   if (/\\text\{[ \t]|[ \t]\}/.test(String(q.question)) || /[\u4e00-\u9fa5][ \t]+[\u4e00-\u9fa5]/.test(String(q.question)) || /[ \t]=|=[ \t]/.test(String(q.question))) fail(q.id, '题干含多余空格');
   if (q.examOrigin !== '教材课后习题' && /模板编号|所属的章节名称|题型名称|标准步骤的第|核心公式或结论|题型特征|适用条件|常见易错点|典型变式|完整步骤/.test(String(q.question))) fail(q.id, '题干仍在问元信息');

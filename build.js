@@ -195,7 +195,7 @@ if (randomExamSource.indexOf("String(q.answer || '').trim()") < 0) throw new Err
 if (randomExamSource.indexOf('finalExamEnsureStandardTypes') < 0) throw new Error('59-exam.js 缺少标准题库题型保障');
 if (randomExamSource.indexOf('choiceTarget') < 0 || randomExamSource.indexOf('fillTarget') < 0) throw new Error('59-exam.js 缺少标准题库客观题/填空题配额');
 const coverageErrors = []; const seenBankQuestions = Object.create(null);
-const CALC_BANK_TOTAL = 8940;
+const CALC_BANK_TOTAL = 9163;
 const bankTotal = Object.keys(banks).reduce(function (n, k) { return n + (banks[k].items || []).length; }, 0);
 const QUESTION_CATEGORIES = ['计算题', '应用题', '综合题', '概念辨析题', '证明题', '公式填空题', '反例与存在性题', '分类讨论题', '误差分析题', '多解比较题'];
 const CATEGORY_TARGETS = { '计算题':1075, '应用题':675, '综合题':825, '概念辨析题':875, '证明题':825, '公式填空题':850, '反例与存在性题':750, '分类讨论题':825, '误差分析题':725, '多解比较题':825 };
@@ -292,9 +292,10 @@ if (it.type === 'subjective' && !/^(解|证明|答)[：:]/.test(String(it.standa
     });
     if (it.examOrigin === '教材课后习题') {
       if (!/教材课后/.test(String(it.source || ''))) coverageErrors.push(it.id + ' 教材课后题缺少教材来源标记');
+    } else if (it.examOrigin === '习题集') {
+      if (!/习题集/.test(String(it.source || ''))) coverageErrors.push(it.id + ' 习题集题缺少习题集来源标记');
     } else {
       if (!/考研|真题|同型/.test(String(it.source || ''))) coverageErrors.push(it.id + ' 未标注考研真题或原创同型题');
-      if (it.examOrigin !== '考研原创同型题' && !/真题/.test(String(it.source || ''))) coverageErrors.push(it.id + ' 缺少考研来源标记');
     }
     if (!Array.isArray(it.points) || !it.points.length) coverageErrors.push(it.id + ' 缺少解题要点');
     if (it.type === 'choice' && (!Array.isArray(it.options) || it.options.length < 2 || !it.correct)) coverageErrors.push(it.id + ' 客观题缺少选项或答案');

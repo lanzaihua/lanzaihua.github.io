@@ -616,6 +616,7 @@ test('filters can be cleared from every toolbar and bank source can be filtered'
   const r=runtime();
   r.run('10-markdown.js');
   assert.equal(r.ctx.bankOriginKey({examOrigin:'教材课后习题'}),'textbook');
+  assert.equal(r.ctx.bankOriginKey({examOrigin:'习题集'}),'exercise');
   assert.equal(r.ctx.bankOriginKey({examOrigin:'考研原创同型题'}),'exam');
   assert.equal(r.ctx.bankOriginKey({}),'exam');
   r.ctx.ui.bankFilters.gaodai={chapter:'all',category:'all',type:'all',template:'all',diff:'all'};
@@ -637,6 +638,7 @@ test('filters can be cleared from every toolbar and bank source can be filtered'
   assert.match(library,/data-act="bank-origin"/);
   assert.match(library,/bankOriginBtn\('exam', '考研同型'\)/);
   assert.match(library,/bankOriginBtn\('textbook', '教材课后'\)/);
+  assert.match(library,/bankOriginBtn\('exercise', '习题集'\)/);
   assert.match(library,/bankOriginKey/);
   assert.match(library,/data-template-filter="chapter"/);
   assert.match(library,/data-act="clear-template-filters"[^>]*>清空筛选/);
@@ -746,7 +748,7 @@ test('bank totals include reviewed textbook and question-bank additions',()=>{
   const files={algebra:'bank-algebra',analysis:'bank-analysis',geometry:'bank-geometry',western:'bank-western'};
   const totals={};
   for(const [k,f] of Object.entries(files)){const d=JSON.parse(read('src/data/'+f+'.json'));totals[k]=d.items.length;}
-  assert.deepEqual(totals,{algebra:1559,analysis:3522,geometry:1199,western:2660});
+  assert.deepEqual(totals,{algebra:1559,analysis:3522,geometry:1199,western:2883});
   for(const f of ['bank-algebra','bank-analysis']){
     const d=JSON.parse(read('src/data/'+f+'.json'));
     for(const q of d.items.filter(x=>['GA-TX048','GA-TX049','GA-TX050','MA-TX070','MA-TX071','MA-TX072'].includes(x.id))){
@@ -806,7 +808,8 @@ test('README puts source details after technical notes and before feedback, with
   const at=['## 技术说明','## 源码、构建与开源','## 反馈'].map(h=>md.indexOf(h));
   assert.ok(at[0]>=0&&at[0]<at[1]&&at[1]<at[2],'README section order');
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
-  assert.ok(md.includes('8940'),'bank total');
+  assert.ok(md.includes('223 道习题集'),'习题集 current count');
+  assert.ok(md.includes('9163'),'bank total');
   assert.ok(md.includes('66 项回归测试'),'current test count');
   assert.ok(!md.includes('64 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.11 Release'),'current release link');
