@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.14-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.14--ae9259e0-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.14--ff270e43-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -21,7 +21,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261113-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261114-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -112,29 +112,29 @@
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261113-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
-<td width="50%"><img src="assets/v2/20261113-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261114-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
+<td width="50%"><img src="assets/v2/20261114-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261113-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261113-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
+<td width="50%"><img src="assets/v2/20261114-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261114-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
-<p align="center"><img src="assets/v2/20261113-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
+<p align="center"><img src="assets/v2/20261114-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
 
-<p align="center"><img src="assets/v2/20261113-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
+<p align="center"><img src="assets/v2/20261114-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
 | 设备 | 视口 | 处理 |
 |---|---|---|
-| 手机 | 390 × 844 | 单列内容，操作按钮可横向滚动，弹窗内部滚动 |
+| 手机 | 390 × 844 | 单列内容；顶栏压缩，主操作按钮换行，题库筛选默认折叠，弹窗内部滚动 |
 | 平板竖屏 | 834 × 1112 | 隐藏侧栏，设置弹窗 780 宽，更新记录两列 |
 | 平板横屏 | 1112 × 834 | 设置弹窗 860 宽，更新记录两列 |
 | 电脑 | 1440 × 1000 | 正文限宽，设置弹窗 860 宽，更新记录 860 / 两列 |
 
-长表格、长公式在自身容器内横向滑动，不会把整页撑出横向滚动。
+长公式在自身容器内横向滑动，不会把整页撑出横向滚动；规范与统计表在手机上按行卡片化，不需要左右拖动。
 
 <details>
 <summary><b>适配验证命令</b></summary>
@@ -165,7 +165,7 @@
 | **界面系统** | 全站视觉层收口为 Warm Academic 3.0：统一暖白画布、纯白面板、细线分隔与砖红强调；标题、正文、元信息、按钮和输入框共用一套字号与高度，页面留白、卡片圆角与分区节奏一致，深色主题沿用同一组 token。 |
 | **手机页头** | 手机与平板顶栏压到 146px 左右：品牌、搜索、设置与通知同排，科目切换与主标签分行，主内容不再被 247px 顶栏推到首屏之外；首页指标带改为 2×2，科目入口上移。 |
 | **主操作** | 手机端主操作按钮恢复显示并换行排列，不再被隐藏；按钮、标签与弹窗关闭键保持 40–44px 触控尺寸，长标题与长按钮在窄屏自然折行。 |
-| **题库浏览** | 题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。 |
+| **题库浏览** | 题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。 |
 | **结果阅读** | 模拟考结果默认逐题展开、可单题收起，并新增全部 / 只看错题 / 只看未答筛选；长结果页不再一次铺开 27 道题，回顾时先看错误与未答。 |
 | **移动表格** | 规范页与统计表在手机上改成按行卡片：每行保留字段名、正文与位置，不再把三列表格压成需要左右拖动的窄条；数据表统一带列名，桌面仍保留原表格。 |
 

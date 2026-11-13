@@ -663,11 +663,16 @@ test('filters can be cleared from every toolbar and bank source can be filtered'
 
   const entries=read('src/js/20-entries.js');
   const library=read('src/js/30-library.js');
+  const shell=read('src/js/15-shell.js');
   const init=read('src/js/90-init.js');
   assert.match(entries,/data-act="clear-entry-filters"[^>]*>清空筛选/);
   assert.equal((entries.match(/data-act="clear-entry-filters"/g)||[]).length,1,'错题清空按钮只能有一个，避免工具栏和下方重复');
   assert.match(library,/data-act="clear-bank-filters"[^>]*>清空筛选/);
   assert.match(library,/data-act="bank-origin"/);
+  assert.match(library,/var originIntro = '考研同型 \+ 教材课后' \+ \(originCounts\.exercise > 0 \? ' \+ 习题集' : ''\)/,'题库介绍必须按当前科目实际来源生成');
+  assert.match(library,/var sourceDesc = originCounts\.exercise > 0/);
+  assert.ok(!library.includes('考研同型 + 教材课后 + 习题集：'),'没有习题集的科目不能写 + 习题集');
+  assert.match(shell,/var hasExercise = bankOf\(subjectId\)\.some/,'总览来源介绍也必须按科目实际题源生成');
   assert.match(library,/bankOriginBtn\('exam', '考研同型'\)/);
   assert.match(library,/bankOriginBtn\('textbook', '教材课后'\)/);
   assert.match(library,/bankOriginBtn\('exercise', '习题集'\)/);
@@ -845,7 +850,7 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('81 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.14 Release'),'current release link');
-  assert.ok(md.includes('2026.11.14--ae9259e0'),'current build badge');
+  assert.ok(md.includes('2026.11.14--ff270e43'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{

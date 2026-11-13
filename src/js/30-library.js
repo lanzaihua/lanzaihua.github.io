@@ -486,9 +486,11 @@ function viewBank(subjectId) {
   });
 
   var bankBook = bookLabelFor(subjectId);
+  var originIntro = '考研同型 + 教材课后' + (originCounts.exercise > 0 ? ' + 习题集' : '');
+  var sourceDesc = originCounts.exercise > 0 ? '考研原创同型题、教材课后习题及配套习题集题' : '考研原创同型题与教材课后习题';
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bankBook ? ' · ' + esc(bankBook) : '') + ' / QUESTION BANK</p>' +
     '<h1 class="page-title">题库</h1>' +
-    '<p class="page-sub">考研同型 + 教材课后 + 习题集：按考研大纲与教材章节整理的考研原创同型题、教材课后习题及各类习题集题，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '第一章至第十章排序。' : '') + '</p></div>' +
+    '<p class="page-sub">' + esc(originIntro) + '：按考研大纲与教材章节整理的' + sourceDesc + '，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '第一章至第十章排序。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="templates" type="button">看模板</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 

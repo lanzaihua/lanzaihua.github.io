@@ -559,12 +559,13 @@ function viewOverview(subjectId) {
     return String(b.updatedAt || b.date || '').localeCompare(String(a.updatedAt || a.date || ''));
   }).slice(0, 4);
 
+  var hasExercise = bankOf(subjectId).some(function (it) { return bankOriginKey(it) === 'exercise'; });
   var hero =
     '<section class="hero">' +
       '<div>' +
         '<div class="hero-kicker"><span class="dot" style="background:var(--' + s.id + ')"></span> 第 ' + pad(SUBJECTS.indexOf(s) + 1, 2) + ' 科 / ' + esc(s.skill) + (bookShortFor(s.id) ? ' · ' + esc(bookShortFor(s.id)) : '') + '</div>' +
         '<h1 class="hero-title">' + esc(s.name) + '</h1>' +
-        '<p class="hero-desc">' + esc(s.tagline) + '。错题条目、模板库与考研同型/教材课后/习题集题库都在这里，手机和电脑同一套交互。</p>' +
+        '<p class="hero-desc">' + esc(s.tagline) + '。错题条目、模板库与考研同型/教材课后' + (hasExercise ? '/习题集' : '') + '题库都在这里，手机和电脑同一套交互。</p>' +
         '<div class="hero-meta" style="margin-top:16px">' +
           (st.total ? '<span>最近更新 ' + esc(timeAgo(st.last)) + '</span>' : '<span>尚无错题</span>') +
           '<span>模板 ' + st.templates + '</span>' +
