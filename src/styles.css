@@ -8429,3 +8429,24 @@ html[data-theme="dark"]{
   }
   .bank-item .btn, .exam-q .btn { padding-top: 8px; padding-bottom: 8px; }
 }
+
+/* 2026-11-14 UI3 contrast: small brand subtitles need 4.5:1 on warm paper */
+.brand-sub, .home-brand-sub, .notes-brand-sub { color: #665F56 !important; }
+
+/* 2026-11-14 UI3 contrast pass: secondary and faint copy need 4.5:1 on warm paper */
+@media (prefers-color-scheme: light) {
+  :root { --muted: #665F56; --faint: #665F56; --ui-ink-secondary: #665F56; --ui-ink-faint: #665F56; --color-text-secondary: #665F56; }
+}
+html[data-theme="light"] { --muted: #665F56; --faint: #665F56; --ui-ink-secondary: #665F56; --ui-ink-faint: #665F56; --color-text-secondary: #665F56; }
+html[data-theme="dark"] .brand-sub, html[data-theme="dark"] .home-brand-sub, html[data-theme="dark"] .notes-brand-sub { color: #B3AA9D !important; }
+@media (prefers-color-scheme: dark) {
+  html[data-theme="auto"] .brand-sub, html[data-theme="auto"] .home-brand-sub, html[data-theme="auto"] .notes-brand-sub { color: #B3AA9D !important; }
+}
+.btn-primary, .btn-primary:hover { background: #A85F3B; border-color: #A85F3B; color: #FFFFFF; }
+.btn-primary:hover { background: #944F2F; border-color: #944F2F; }
+
+/* 2026-11-14 UI3 contrast pass 2: active/accent text and primary fills */
+:root { --ui-primary-strong: #8F4C2E; --accent-deep: #8F4C2E; }
+.btn-primary, button.btn-primary, .btn-primary:hover, button.btn-primary:hover { background: #8F4C2E !important; border-color: #8F4C2E !important; color: #FFFFFF !important; }
+.btn-primary:hover, button.btn-primary:hover { background: #7A3F25 !important; border-color: #7A3F25 !important; }
+.final-subject-tab.is-on span, .final-section-tab.is-on span { color: #8F4C2E !important; opacity: 1 !important; }
