@@ -156,8 +156,13 @@
 
 ## 9. Git 与发布
 
-- 本轮分支：`redesign/warm-academic-3`
-- 发布 commit：发布后记录在 GitHub Actions 与仓库历史；本报告随后同步。
+- 基线 main：`4c1428ca4ac539548f57b9d893cf3e62b1be1df1`
+- 设计分支：`redesign/warm-academic-3`
+- 功能提交：`dfc1187e715fe66304b0e3c441ff7f3c1ade5738`（27 文件）、`ab54c75a7dcd8f01e23e9802bc20e920a30592fa`（验收报告、source.zip、SHA256SUMS、打包脚本）
+- 功能分支 CI：Quality checks `43419400267` success、`43419791023` success（含新增 WCAG 步骤）
+- 合并 main：`e40e84e9d859974600072ecc14067eb02440d119`
+- main CI：Quality checks `43420893497` success；pages build and deployment `43420892897` success
+- 线上：`https://lanzaihua.github.io/?v=a7ea7cf2`，页面内构建号 `2026.11.13-a7ea7cf2`
 - 发布前本地门禁：`npm test`、严格 QA、站点一致性、构建一致性、技能包一致性、六视口、公式、无障碍、性能全部通过。
 
 ## 10. 结论
