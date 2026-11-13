@@ -96,6 +96,9 @@ function wrapBareMathFragmentsLine(src) {
     // 题库编号（GA-B0001 / MA-0001）不是公式，避免连字符被排成减号。
     if (/^[A-Z]{1,4}-[A-Z]?\d+[A-Za-z0-9-]*$/.test(core)) return chunk;
     if (/[#*\`>]/.test(core)) return chunk;
+    // 单独一个 LaTeX 命令（如 \frac、\dfrac）缺少参数，不能当成完整行内公式；
+    // 否则 Temml 解析失败会把源码原样吐回正文。
+    if (/^\\[A-Za-z]+$/.test(core)) return chunk;
     // Markdown 表格整行保留：管道符不是公式边界，表格交给 marked 渲染。
     if (/^\s*\|.*\|\s*$/.test(core)) return chunk;
     if (/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?\s*$/.test(core)) return chunk;

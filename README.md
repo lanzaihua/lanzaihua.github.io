@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.13-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.13--125a8250-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.13--46a3ab6f-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -157,7 +157,7 @@
 
 | 分组 | 本次更新 |
 |---|---|
-| **行内分式** | 行内公式不再用 \dfrac、\displaystyle、\limits 撑高行盒：渲染前统一降为 \frac 并去掉强制展示命令，块级公式保持原尺寸；知识点搜索里的 dy/dx 由 21.7px 高、段落 49.1px 回到与正文同一基线。 |
+| **行内分式** | 行内公式不再用强制展示命令撑高行盒：渲染前统一降级为普通分式，块级公式保持原尺寸；知识点搜索里的 dy/dx 由 21.7px 高、段落 49.1px 回到与正文同一基线。 |
 | **标点收口** | 公式与紧跟的中文标点绑定为不可拆的 math-tail 尾串，逗号、句号、冒号不再被甩到下一行；长公式整体换行，不把标点单独留在行首。 |
 | **选项悬挂** | 错题题干的 A．/B． 选项改为 md-option 的 flex 结构，字母固定宽悬挂、正文占满剩余宽度；模拟考运行页选项补 exam-opt-text 的 flex:1 与 min-width:0，长题干与公式在右侧自然换行，不把字母挤成单独一行。 |
 | **行内盒模型** | styles.css 末尾合并为一套权威规则：普通 .math-inline-scroll 为 inline、只有 .is-wide 才 inline-block 横向滚动；MathML 的 mrow/mstyle 保持 inline math，行内公式字号 1em，不再被旧补丁整块化。 |

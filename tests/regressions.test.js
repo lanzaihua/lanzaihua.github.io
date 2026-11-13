@@ -816,7 +816,7 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('72 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.13 Release'),'current release link');
-  assert.ok(md.includes('2026.11.13--125a8250'),'current build badge');
+  assert.ok(md.includes('2026.11.13--46a3ab6f'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -888,6 +888,10 @@ test('inline fractions keep text baseline and option labels hang without splitti
   assert.equal(cssTokens.querySelectorAll('math').length,0,'CSS 类名和声明不能被自动包成公式');
   assert.equal(cssTokens.textContent.includes('.math-inline-scroll'),true,cssTokens.innerHTML);
   assert.equal(cssTokens.textContent.includes('min-width:0'),true,cssTokens.innerHTML);
+  const bareCmd=document.createElement('div');
+  bareCmd.innerHTML=r.ctx.renderMarkdown('命令 \\frac 缺少参数时不能单独变成公式。');
+  assert.equal(bareCmd.querySelectorAll('math').length,0,'单独 LaTeX 命令不能被当成完整公式');
+  assert.equal(bareCmd.textContent.includes('\\frac'),true,bareCmd.innerHTML);
   const css=read('src/styles.css');
   assert.match(css,/\.math-tail\s*\{[^}]*display:\s*inline-block/,'公式尾串必须原子化');
   assert.match(css,/\.math-inline-scroll:not\(\.is-wide\)\s*\{[^}]*display:\s*inline !important/,'普通行内公式不能变成整块');

@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.13-125a8250";</script>
+<script>window.__BUILD_ID__="2026.11.13-46a3ab6f";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -11646,6 +11646,9 @@ function wrapBareMathFragmentsLine(src) {
     // 题库编号（GA-B0001 / MA-0001）不是公式，避免连字符被排成减号。
     if (/^[A-Z]{1,4}-[A-Z]?\d+[A-Za-z0-9-]*$/.test(core)) return chunk;
     if (/[#*\`>]/.test(core)) return chunk;
+    // 单独一个 LaTeX 命令（如 \frac、\dfrac）缺少参数，不能当成完整行内公式；
+    // 否则 Temml 解析失败会把源码原样吐回正文。
+    if (/^\\[A-Za-z]+$/.test(core)) return chunk;
     // Markdown 表格整行保留：管道符不是公式边界，表格交给 marked 渲染。
     if (/^\s*\|.*\|\s*$/.test(core)) return chunk;
     if (/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?\s*$/.test(core)) return chunk;
@@ -18912,7 +18915,7 @@ var UPDATE_LOG = [
   "notifyItems": [
     {
       "group": "行内分式",
-      "text": "行内公式不再用 \\dfrac、\\displaystyle、\\limits 撑高行盒：渲染前统一降为 \\frac 并去掉强制展示命令，块级公式保持原尺寸；知识点搜索里的 dy/dx 由 21.7px 高、段落 49.1px 回到与正文同一基线。"
+      "text": "行内公式不再用强制展示命令撑高行盒：渲染前统一降级为普通分式，块级公式保持原尺寸；知识点搜索里的 dy/dx 由 21.7px 高、段落 49.1px 回到与正文同一基线。"
     },
     {
       "group": "标点收口",
@@ -18942,7 +18945,7 @@ var UPDATE_LOG = [
   "items": [
     {
       "group": "行内分式",
-      "text": "行内公式不再用 \\dfrac、\\displaystyle、\\limits 撑高行盒：渲染前统一降为 \\frac 并去掉强制展示命令，块级公式保持原尺寸；知识点搜索里的 dy/dx 由 21.7px 高、段落 49.1px 回到与正文同一基线。"
+      "text": "行内公式不再用强制展示命令撑高行盒：渲染前统一降级为普通分式，块级公式保持原尺寸；知识点搜索里的 dy/dx 由 21.7px 高、段落 49.1px 回到与正文同一基线。"
     },
     {
       "group": "标点收口",
