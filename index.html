@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.14-17752ef4";</script>
+<script>window.__BUILD_ID__="2026.11.14-cdaccb35";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -8442,6 +8442,16 @@ html[data-theme="dark"]{
     color: var(--ui-ink-faint);
   }
   .guide-panel .md .table-wrap { overflow: visible !important; }
+}
+
+/* 2026-11-14 UI3 touch floor: keep mobile actions at 40px after visual token pass */
+@media (max-width: 900px), (pointer: coarse) {
+  .btn, .bank-filter-toggle, .bank-item .btn, .exam-q .btn, .changelog-more,
+  .page-actions .btn, .page-actions button {
+    min-height: 40px !important;
+    height: 40px !important;
+  }
+  .bank-item .btn, .exam-q .btn { padding-top: 8px; padding-bottom: 8px; }
 }
 
 </style>

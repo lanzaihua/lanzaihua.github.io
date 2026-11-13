@@ -149,6 +149,11 @@ async function visibleBox(page, selector) {
     await goto(page, '#/xijing/bank');
     const bankCount = await page.locator('.bank-item').count();
     assert(bankCount > 0, failures, device.name + ' / bank has no cards');
+    const filterToggle = page.locator('[data-act="toggle-bank-filters"]');
+    if (await filterToggle.count() && await filterToggle.isVisible() && (await filterToggle.getAttribute('aria-expanded')) !== 'true') {
+      await filterToggle.click();
+      await sleep(page, 220);
+    }
     const exerciseBtn = page.locator('[data-act="bank-origin"][data-value="exercise"]');
     if (await exerciseBtn.count()) {
       await exerciseBtn.click();

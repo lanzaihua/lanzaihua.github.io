@@ -8419,3 +8419,13 @@ html[data-theme="dark"]{
   }
   .guide-panel .md .table-wrap { overflow: visible !important; }
 }
+
+/* 2026-11-14 UI3 touch floor: keep mobile actions at 40px after visual token pass */
+@media (max-width: 900px), (pointer: coarse) {
+  .btn, .bank-filter-toggle, .bank-item .btn, .exam-q .btn, .changelog-more,
+  .page-actions .btn, .page-actions button {
+    min-height: 40px !important;
+    height: 40px !important;
+  }
+  .bank-item .btn, .exam-q .btn { padding-top: 8px; padding-bottom: 8px; }
+}
