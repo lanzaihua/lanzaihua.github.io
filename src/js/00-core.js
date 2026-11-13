@@ -16,6 +16,7 @@ function subjectFromRoute(id) { return id; }
 SUBJECTS.forEach(function (s) { SUBJ_BY_ID[s.id] = s; });
 var VIEWS = [
   { id: 'overview', label: '总览' },
+  { id: 'stats', label: '统计' },
   { id: 'entries', label: '错题' },
   { id: 'templates', label: '模板库' },
   { id: 'bank', label: '题库' },

@@ -496,6 +496,7 @@ function renderMain() {
   main.innerHTML = pagesBanner + lockBanner + knowledgePanel;
   var view = state.activeView;
   if (view === 'overview') main.innerHTML += viewOverview(subj);
+  else if (view === 'stats') main.innerHTML += viewStats(subj);
   else if (view === 'entries') main.innerHTML += viewEntries(subj);
   else if (view === 'final') main.innerHTML += viewFinal();
   else if (view === 'notes') { main.innerHTML += viewNotes(); if (ui.noteKb) initKnowledgeView(); else { initNotesView(); if (ui.noteLibrary && ui.noteQuery && typeof noteFilterLibrary === 'function') noteFilterLibrary(ui.noteQuery); } }

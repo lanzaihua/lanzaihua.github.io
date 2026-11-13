@@ -22,6 +22,7 @@ const DEVICES = [
 const ROUTES = [
   ['home', '#/home'],
   ['overview', '#/gaodai/overview'],
+  ['stats', '#/gaodai/stats'],
   ['entries', '#/gaodai/entries'],
   ['templates', '#/gaodai/templates'],
   ['bank', '#/gaodai/bank'],

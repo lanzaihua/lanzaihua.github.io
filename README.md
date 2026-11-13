@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.13-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.13--c8619c8b-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.13--ce5a2390-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -151,9 +151,9 @@
 
 ### 2026-11-13 · 暖白学术与全站收口
 
-**20 项 · 20 组**
+**22 项 · 22 组**
 
-本轮把全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163，74 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；西经习题集与教材课后里被拍平的公式已改回 LaTeX 并纳入数据门禁。README 历史折叠并与本块同步。本块 20 项 / 20 组。
+本轮把全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163；新增统计中心，用本机错题、复习打卡与模拟考记录展示近 14 天节拍、四科对比、错因与章节分布，空数据给出明确空态；76 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；西经习题集与教材课后里被拍平的公式已改回 LaTeX 并纳入数据门禁。README 历史折叠并与本块同步。本块 22 项 / 22 组。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -168,8 +168,10 @@
 | **三端基线** | 题库、错题、模拟考、知识点搜索在 390 / 820 / 1440 三端逐页复核：选项、题干预览、解答与公式共用基线；段落启用 text-wrap:pretty，右侧空白不再换来孤立标点或半行文字。 |
 | **数学语言** | 四科题库静态扫描 question / answer / standardSolution / detailedAnalysis / options，去除数学片段后无残留裸 LaTeX；章名与小节名保持纯文本 Unicode，不再出现未渲染的 $...$。 |
 | **西经公式** | 西经习题集与教材课后中原本被拍平成 x0.5、x1、x2 的式子改回 LaTeX：WE-9116 的效用函数、四个分式选项与解答，WE-9117 的 min 效用函数与替代比例，另修 13 组题干、选项或解答；删除无图引用，答案里的 A． 改为悬挂式。 |
-| **防复发** | 回归测试增至 74 项，新增 compactInlineMath、formatOptionParagraphs、math-tail、md-option 与 exam-opt-text 断言；站点一致性与构建继续跑严格 QA、公式检查、六视口真实交互与性能门禁，后续改公式或选项结构都必须重跑同一套检查。 |
-| **视觉层级** | 统一页面标题、正文、辅助说明、按钮与输入框高度，收齐卡片和分区留白；期末复习两个入口改为等宽卡片，设置弹窗按主题、语言、AI、同步等分区排版；手机与平板的按章索引改为纵向卡片，不再横向滚动。 |
+| **统计中心** | 新增「统计」视图：累计错题、已掌握与待复习、题库总量、题型模板、近 30 天复习、已交模拟考六个指标，以及近 14 天学习记录、四科对比、错因分布、章节分布与最近模拟考成绩；全部读取本机错题、复习打卡与考试记录，不写死数字。 |
+| **统计空态** | 没有学习记录时不再拉出空白柱状图：学习记录、章节分布与模拟考成绩各自给出说明与下一步入口；数字为 0 时保留真实统计口径，不用占位数据或假进度。 |
+| **防复发** | 回归测试增至 76 项，新增 compactInlineMath、formatOptionParagraphs、math-tail、md-option 与 exam-opt-text 断言；站点一致性与构建继续跑严格 QA、公式检查、六视口真实交互与性能门禁，后续改公式或选项结构都必须重跑同一套检查。 |
+| **视觉层级** | 统一页面标题、正文、辅助说明、按钮与输入框高度，收齐卡片和分区留白；期末复习两个入口改为等宽卡片，设置弹窗按主题、语言、AI、同步等分区排版；手机与平板的按章索引改为纵向卡片，不再横向滚动；深色主题补齐新画布、面板、正文与边框 token，不再出现浅底浅字。 |
 | **手机页头** | 压缩手机与平板顶栏：隐藏重复的品牌副标题、主题与语言图标，搜索框独占一行；首页页脚说明与工具按钮分行；笔记库隐藏顶栏重复搜索；平板首页内容垂直居中，页脚前不再出现整屏空白。 |
 | **来源筛选** | 题库来源只显示当前科目确实有题的类型：高代、数分、解几不再出现 0 条的「习题集」死路，切科目后 0 条来源自动回到全部；首页与总览文案统一为考研同型 / 教材课后 / 习题集三类题源。 |
 | **编号规范** | 规范页分清两套编号：错题条目用 A / M / G / E，题库与模板用 GA / MA / GE / WE；标题示例与编号增长规则同步改写，不再把「只增不减」写成绝对规则。 |
@@ -841,7 +843,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、六视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 74 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、静态服务与接口安全 |
+| `tests/` | 76 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、静态服务与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 

@@ -813,10 +813,10 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('223 道习题集'),'习题集 current count');
   assert.ok(md.includes('9163'),'bank total');
-  assert.ok(md.includes('74 项回归测试'),'current test count');
+  assert.ok(md.includes('76 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.13 Release'),'current release link');
-  assert.ok(md.includes('2026.11.13--c8619c8b'),'current build badge');
+  assert.ok(md.includes('2026.11.13--ce5a2390'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -875,6 +875,20 @@ test('Warm Academic tokens, home rhythm and exam answer card stay wired',()=>{
   assert.match(css,/\.exam-cardnav-item\s*\{[^}]*min-height:\s*34px/,'答题卡按钮触控高度至少 34px');
   assert.ok(!/background:\s*#000000?\b/.test(css),'深色模式不能用纯黑背景');
 });
+test('stats centre uses real data and an editorial empty state',()=>{
+  const stats=read('src/js/16-stats.js'), core=read('src/js/00-core.js'), shell=read('src/js/15-shell.js'), css=read('src/styles.css');
+  for(const fn of ['statsAllEntries','statsActivitySeries','statsSubjectRows','statsTotals','statsErrorTotals','statsChapterRows','statsExamRows','viewStats']) assert.ok(stats.includes('function '+fn),'统计中心缺少 '+fn);
+  assert.ok(core.includes("id: 'stats'"),'视图列表必须包含统计页');
+  assert.ok(shell.includes("view === 'stats'")&&shell.includes('viewStats(subj)'),'统计页必须接入主视图渲染');
+  assert.match(stats,/stats-chart-empty/,'学习记录为空时必须使用空态而不是拉高空白图表');
+  assert.match(stats,/examHistory/,'模拟考成绩必须读取真实已交卷记录');
+  assert.match(stats,/reviewAt/,'复习次数必须读取真实复习打卡');
+  assert.ok(!/9163|1559|3522/.test(stats),'统计页不能写死题库数字');
+  assert.match(css,/\.stats-metrics\s*\{[^}]*grid-template-columns/,'统计指标需要自适应网格');
+  assert.match(css,/\.stats-chart-empty\s*\{[^}]*grid-template-columns/,'空态图表需要单独排版');
+  assert.match(css,/\.stats-layout\s*\{[^}]*display:\s*grid/,'统计面板需要网格布局');
+});
+
 test('inline fractions keep text baseline and option labels hang without splitting',()=>{
   const {parseHTML}=require('linkedom');
   const {document}=parseHTML('<!doctype html><html><body></body></html>');
@@ -940,4 +954,14 @@ test('western exercise math is typeset instead of flattened plain text',()=>{
       assert.ok(!/[＝]|[A-Za-z]0\.5(?![0-9])|k1\/2/.test(outside),item.id+' 仍有拍平公式：'+outside.slice(0,60));
     }
   }
+});
+
+
+test('dark theme overrides the new color tokens, not only the paper aliases',()=>{
+  const css=read('src/styles.css');
+  assert.match(css,/html\[data-theme="dark"\]\s*\{[^}]*--color-bg:\s*#1D1B18/s,'深色主题必须覆盖新画布 token');
+  assert.match(css,/html\[data-theme="dark"\]\s*\{[^}]*--color-surface:\s*#26231F/s,'深色主题必须覆盖新面板 token');
+  assert.match(css,/html\[data-theme="dark"\]\s*\{[^}]*--color-text:\s*#F2EEE6/s,'深色主题必须覆盖新正文 token');
+  assert.match(css,/html\[data-theme="dark"\]\s*\{[^}]*--color-border:\s*#3B362F/s,'深色主题必须覆盖新边框 token');
+  assert.match(css,/html\[data-theme="auto"\]\s*\{[^}]*--color-bg:\s*#1D1B18/s,'跟随系统的深色同样要覆盖新画布 token');
 });
