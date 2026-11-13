@@ -8,7 +8,7 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.13-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.14-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
 <a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.14--2112c385-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
@@ -845,7 +845,7 @@
 ### 仓库与许可证
 
 - **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
-- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.13/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.13/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
+- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.14/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.14/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
 - **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
 - **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
 - **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
