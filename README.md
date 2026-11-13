@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.13-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.13--ce5a2390-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.14--2112c385-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -149,6 +149,25 @@
 
 ## 更新记录
 
+### 2026-11-14 · 健壮性与离线兜底
+
+**5 项 · 5 组**
+
+本轮补存储、路由、缓存与错误边界：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；六视口门禁加入深链恢复、标题焦点与 44px 触控。四科题库 1559 / 3522 / 1199 / 2883 = 9163，80 项回归测试、严格 QA、站点一致性与桌面/移动浏览器检查通过。本块 5 项 / 5 组。
+
+| 分组 | 本次更新 |
+|---|---|
+| **存储降级** | 本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。 |
+| **损坏备份** | 启动时读到损坏 JSON 会把原文另存为 key-corrupted-backup，保留原始存储不动，并提示先导出再恢复或清空。 |
+| **深链兜底** | 直接访问 /gaodai、/shufen/bank 这类没有扩展名的深链时，404 页把路径还原成 #/ 路由并回到对应页面，不再只显示一句「页面不存在」。 |
+| **缓存边界** | Service Worker 缓存名升到 v2，只缓存状态 200 且不是 Range 的响应，跳过 /api 与自身脚本；离线仍能打开最近一次成功页面。 |
+| **错误与焦点** | 新增全局错误卡片与未处理 Promise 兜底，出错时说明数据未丢并可刷新；hash 路由切换后焦点落到页面标题，屏幕阅读器能感知换页；移动端主要按钮保持 44px 触控高度。 |
+
+<img src="assets/v2/20261114-changelog.png" alt="网页内更新记录" width="820">
+
+<details>
+<summary>历史更新 · 2026-11-13 及更早 · 22 个版本</summary>
+
 ### 2026-11-13 · 暖白学术与全站收口
 
 **22 项 · 22 组**
@@ -240,9 +259,6 @@
 | **记录核对** | 逐块核对 20 个日期的更新记录与构建日：11-11 只保留一块，不新增同日第二块；11-10 及更早历史块保持当天状态，不改写为今天的计数；GitHub Releases 每日期仍只有一条。 |
 
 <img src="assets/v2/20261111-changelog.png" alt="网页内更新记录" width="820">
-
-<details>
-<summary>2026-11-10 及更早 · 19 个版本</summary>
 
 ### 2026-11-10 · 界面回退与三端收口
 
@@ -824,7 +840,7 @@
 
 ## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.13 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.13/source.zip) 提供。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.14 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.14/source.zip) 提供。
 
 ### 仓库与许可证
 
@@ -843,7 +859,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、六视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 76 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、静态服务与接口安全 |
+| `tests/` | 80 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、深链兜底与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 

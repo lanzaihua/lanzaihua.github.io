@@ -8,12 +8,12 @@ const zlib = require('node:zlib');
 const ROOT = path.join(__dirname, '..');
 const KEY = 'sanke-cuotiben-v1';
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
-function runtime(raw, denied = false) {
+function runtime(raw, denied = false, quota = false) {
   const values = new Map(raw === undefined ? [] : [[KEY, raw]]);
   const subjects = JSON.parse(read('src/data/seed.json')).subjects;
   const ctx = { console, Date, Set, Map, Intl, URL, Blob, setTimeout: () => 0, clearTimeout() {},
     location: {hostname: 'localhost', protocol: 'https:', hash: '', pathname: '/', search: ''},
-    localStorage: {getItem(k) {if(denied) throw Error('denied');return values.get(k) ?? null;},setItem(k,v) {if(denied) throw Error('denied'); values.set(k,v);}},
+    localStorage: {getItem(k) {if(denied) throw Error('denied');return values.get(k) ?? null;},setItem(k,v) {if(denied) throw Error('denied'); if (quota) throw Object.assign(Error('quota'), {name: 'QuotaExceededError'}); values.set(k,v);}},
     window: {addEventListener() {}, __SEED__: {subjects}, __BANKS__: {}, __PAGES__: true},
     document: {addEventListener() {}, querySelector(){return null;},querySelectorAll(){return [];}} };
   vm.createContext(ctx);
@@ -34,7 +34,36 @@ test('corrupt and invalid-shaped state is preserved instead of overwritten', () 
   for(const raw of ['{broken',JSON.stringify({entries: []}),JSON.stringify({entries:{gaodai:[null]}})]) {
     const r = runtime(raw); assert.equal(r.ctx.storageRecoveryBlocked,true);
     assert.equal(r.ctx.persistLocal(),false); assert.equal(r.values.get(KEY),raw);
+    assert.equal(r.values.get(KEY + '-corrupted-backup'),raw,'corrupt raw text must be backed up under a separate key');
   }
+});
+test('quota failure keeps the latest state in memory and reports a warning without throwing', () => {
+  const r = runtime(JSON.stringify(savedState()), false, true);
+  assert.equal(r.ctx.persistLocal(true), false);
+  const remembered = r.ctx.safeStorage.memory[KEY];
+  assert.match(remembered || '', /"id":"keep"/);
+  assert.equal(r.ctx.safeStorage.get(KEY), remembered);
+  assert.equal(r.values.get(KEY).includes('"id":"keep"'), true);
+});
+test('missing static routes use a 404 page that restores the hash route', () => {
+  const html = read('src/static/404.html');
+  assert.match(html, /location\.replace\(target\)/);
+  assert.match(html, /'\/#\/' \+ seg/);
+  assert.match(html, /href="\/"/);
+});
+test('service worker skips API and partial responses and clears old cache names', () => {
+  const sw = read('src/static/sw.js');
+  assert.match(sw, /CACHE = 'sike-cuotiben-v2'/);
+  assert.match(sw, /url\.pathname\.indexOf\('\/api\/'\) === 0\) return/);
+  assert.match(sw, /req\.headers\.get\('range'\)/);
+  assert.match(sw, /\/sw\.js/);
+});
+test('route changes move focus to the page heading', () => {
+  const js = read('src/js/90-init.js');
+  assert.match(js, /function focusRouteHeading\(\)/);
+  assert.match(js, /focusRouteHeading\(\);/);
+  assert.match(js, /showFatalError/);
+  assert.match(js, /unhandledrejection/);
 });
 test('duplicate toast messages do not stack on screen', () => {
   const r=runtime();
@@ -813,10 +842,10 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('223 道习题集'),'习题集 current count');
   assert.ok(md.includes('9163'),'bank total');
-  assert.ok(md.includes('76 项回归测试'),'current test count');
+  assert.ok(md.includes('80 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
-  assert.ok(md.includes('v2026.11.13 Release'),'current release link');
-  assert.ok(md.includes('2026.11.13--ce5a2390'),'current build badge');
+  assert.ok(md.includes('v2026.11.14 Release'),'current release link');
+  assert.ok(md.includes('2026.11.14--2112c385'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{

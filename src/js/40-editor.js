@@ -600,8 +600,7 @@ function backupSafeLibraries(libs) {
 
 async function exportState() {
   if (storageRecoveryBlocked) {
-    var raw;
-    try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { toast('浏览器禁止读取存储，无法导出原始数据'); return; }
+    var raw = safeStorage.get(STORAGE_KEY);
     if (raw == null) { toast('没有可导出的原始存储'); return; }
     var recoveryLink = document.createElement('a');
     recoveryLink.href = URL.createObjectURL(new Blob([raw], { type: 'application/octet-stream' }));

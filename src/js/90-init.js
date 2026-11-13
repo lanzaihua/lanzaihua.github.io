@@ -501,7 +501,7 @@ function handleAction(act, el) {
     }
     case 'push-sync': {
       var tok = qs('#syncToken');
-      if (tok) { sync.token = tok.value.trim(); localStorage.setItem(TOKEN_KEY, sync.token); }
+      if (tok) { sync.token = tok.value.trim(); safeStorage.set(TOKEN_KEY, sync.token); }
       if (!(state.rev || 0) && sync.available) {
         pullSync(true).then(function () { pushSync(true); });
       } else {
@@ -511,13 +511,13 @@ function handleAction(act, el) {
     }
     case 'pull-sync': {
       var tok2 = qs('#syncToken');
-      if (tok2) { sync.token = tok2.value.trim(); localStorage.setItem(TOKEN_KEY, sync.token); }
+      if (tok2) { sync.token = tok2.value.trim(); safeStorage.set(TOKEN_KEY, sync.token); }
       pullSync(true);
       break;
     }
     case 'dismiss-pages-banner':
       pagesBannerDismissed = true;
-      try { localStorage.setItem('sanke-pages-banner-dismissed', '1'); } catch (e) { /* noop */ }
+      safeStorage.set('sanke-pages-banner-dismissed', '1');
       render();
       break;
     case 'export-state': exportState(); break;
@@ -529,11 +529,7 @@ function handleAction(act, el) {
     case 'reset-state': {
       confirmDialog('要恢复初始数据吗？', '这会清空错题、笔记、AI 服务配置、同步口令和所有设置，只保留模板库与题库；导出的 JSON 备份不受影响。此操作无法撤销，请确认。', function () {
         var oldRev = state.rev || 0;
-        try {
-          Object.keys(localStorage).forEach(function (k) {
-            if (k.indexOf('sanke-') === 0) localStorage.removeItem(k);
-          });
-        } catch (e) { /* ignore */ }
+        safeStorage.clearByPrefix('sanke-');
         storageRecoveryBlocked = false;
         state = seedState();
         state.rev = oldRev + 1;
@@ -567,6 +563,15 @@ function handleAction(act, el) {
     case 'notif-mark-all-read': if (typeof notifMarkAllRead === 'function') notifMarkAllRead(); break;
     default: break;
   }
+}
+
+function focusRouteHeading() {
+  var main = qs('#main');
+  if (!main) return;
+  var heading = main.querySelector('h1') || main.querySelector('h2');
+  if (!heading) return;
+  heading.setAttribute('tabindex', '-1');
+  try { heading.focus({ preventScroll: true }); } catch (e) { heading.focus(); }
 }
 
 function bindEvents() {
@@ -663,6 +668,10 @@ document.addEventListener('input', function (e) {
     });
   }
 
+  window.addEventListener('storage-warning', function (e) {
+    var msg = e && e.detail && e.detail.message;
+    if (msg && typeof toast === 'function') toast(msg);
+  });
   window.addEventListener('hashchange', function () {
     if (suppressHash) return;
     parseHash();
@@ -673,6 +682,7 @@ document.addEventListener('input', function (e) {
       var el = qs('#entry-' + decodeURIComponent(m[1]));
       if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
+    focusRouteHeading();
   });
 
   document.querySelectorAll('dialog').forEach(function (d) {
@@ -733,12 +743,48 @@ function syncResponsiveLabels() {
   }
 }
 
+function showFatalError(reason) {
+  try {
+    if (window.__sankeFatalShown) return;
+    window.__sankeFatalShown = true;
+    var box = document.createElement('div');
+    box.className = 'fatal-error';
+    box.setAttribute('role', 'alert');
+    var title = document.createElement('strong');
+    title.textContent = '页面遇到异常，操作没有生效';
+    var body = document.createElement('p');
+    body.textContent = '浏览器里的错题数据不会被删除。可以先刷新重试；如果反复出现，请到「设置与同步」导出备份。';
+    var detail = document.createElement('code');
+    detail.textContent = String(reason || 'unknown error').slice(0, 240);
+    var retry = document.createElement('button');
+    retry.type = 'button';
+    retry.className = 'btn btn-primary';
+    retry.textContent = '刷新页面';
+    retry.addEventListener('click', function () { location.reload(); });
+    box.appendChild(title); box.appendChild(body); box.appendChild(detail); box.appendChild(retry);
+    document.body.appendChild(box);
+  } catch (e) { /* 错误边界自身不能再次抛错 */ }
+}
+
 function boot() {
+  window.addEventListener('error', function (e) {
+    if (!e || !e.error) return;
+    if (e.error && e.error.name === 'AbortError') return;
+    showFatalError(e.error && e.error.message ? e.error.message : '脚本错误');
+  });
+  window.addEventListener('unhandledrejection', function (e) {
+    var reason = e && e.reason;
+    if (reason && reason.name === 'AbortError') return;
+    showFatalError(reason && reason.message ? reason.message : String(reason || '未处理的异步错误'));
+  });
+  if (typeof safeStorage !== 'undefined' && !safeStorage.supported()) {
+    setTimeout(function () { if (typeof toast === 'function') toast('浏览器存储不可用：本次改动只保留在内存中，刷新会丢失；请检查无痕模式或站点存储权限'); }, 0);
+  }
   try {
     var tm = String(location.search || '').match(/[?&]token=([^&]+)/);
     if (tm) {
       sync.token = decodeURIComponent(tm[1]);
-      localStorage.setItem(TOKEN_KEY, sync.token);
+      safeStorage.set(TOKEN_KEY, sync.token);
       if (window.history && history.replaceState) history.replaceState(null, '', location.pathname + location.hash);
     }
   } catch (e) { /* file:// */ }

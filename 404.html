@@ -6,6 +6,19 @@
 <title>页面不存在 · 四科错题本</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script>
+(function () {
+  try {
+    var path = location.pathname.replace(/\/+$/, '');
+    if (!path || path === '/' || path === '/404.html' || path === '/index.html' || /\.[a-z0-9]+$/i.test(path)) return;
+    var seg = path.replace(/^\/+/, '');
+    var q = location.search ? location.search.slice(1) : '';
+    var h = location.hash || '';
+    var target = '/#/' + seg + (q ? '?' + q : '') + h;
+    location.replace(target);
+  } catch (e) { /* 保留静态兜底页 */ }
+})();
+</script>
 <style>
   :root { color-scheme: light dark; }
   body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f4f1e9; color: #2a2622; font: 16px/1.7 -apple-system, "Segoe UI", "Noto Sans SC", sans-serif; }
@@ -21,8 +34,8 @@
 <main>
   <span class="seal" aria-hidden="true">题</span>
   <h1>这个页面不存在</h1>
-  <p>链接可能写错了，或者页面已经移动。回到首页继续复习即可，本机错题数据不受影响。</p>
-  <p><a href="https://lanzaihua.github.io/">回到四科错题本首页</a></p>
+  <p>链接可能写错了，或者页面已经移动。正在尝试回到对应页面；如果 3 秒内没有跳转，请点下面的链接。</p>
+  <p><a href="/">回到四科错题本首页</a></p>
 </main>
 </body>
 </html>

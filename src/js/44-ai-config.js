@@ -320,10 +320,8 @@ function aiProtocolOrder() {
 var AI_BAD_MODEL_KEY = 'sanke-ai-bad-models-v1';
 
 function aiBadModelMap() {
-  try {
-    var raw = JSON.parse(localStorage.getItem(AI_BAD_MODEL_KEY) || '{}');
-    return raw && typeof raw === 'object' ? raw : {};
-  } catch (e) { return {}; }
+  var raw = safeStorage.getJSON(AI_BAD_MODEL_KEY, {});
+  return raw && typeof raw === 'object' ? raw : {};
 }
 
 function aiModelIsBlacklisted(protocol, model) {
@@ -337,11 +335,11 @@ function aiBlacklistModel(protocol, model) {
   var list = Array.isArray(map[protocol]) ? map[protocol] : [];
   if (list.indexOf(model) < 0) list.push(model);
   map[protocol] = list;
-  try { localStorage.setItem(AI_BAD_MODEL_KEY, JSON.stringify(map)); } catch (e) { /* noop */ }
+  safeStorage.setJSON(AI_BAD_MODEL_KEY, map);
 }
 
 function aiClearModelBlacklist() {
-  try { localStorage.removeItem(AI_BAD_MODEL_KEY); } catch (e) { /* noop */ }
+  safeStorage.remove(AI_BAD_MODEL_KEY);
 }
 
 function aiBlacklistCount() {
@@ -480,11 +478,7 @@ function aiProtocolLabel(protocol) {
 }
 
 function aiConfig() {
-  var cfg = null;
-  try {
-    var raw = localStorage.getItem(AI_CONFIG_KEY);
-    if (raw) cfg = JSON.parse(raw);
-  } catch (e) { cfg = null; }
+  var cfg = safeStorage.getJSON(AI_CONFIG_KEY, null);
   if (!cfg || typeof cfg !== 'object') {
     var legacy = (typeof dshToken === 'function') ? dshToken() : '';
     if (legacy) {
@@ -565,13 +559,13 @@ function aiSaveConfig(cfg) {
     apiKey: String(cfg.apiKey || '').trim(),
     savedAt: nowIso()
   };
-  localStorage.setItem(AI_CONFIG_KEY, JSON.stringify(next));
+  safeStorage.setJSON(AI_CONFIG_KEY, next);
   if (next.protocol === 'dsh' && typeof setDshToken === 'function') setDshToken(next.apiKey);
   return next;
 }
 
 function aiClearConfig() {
-  try { localStorage.removeItem(AI_CONFIG_KEY); } catch (e) { /* noop */ }
+  safeStorage.remove(AI_CONFIG_KEY);
   if (typeof clearDshToken === 'function') clearDshToken();
 }
 

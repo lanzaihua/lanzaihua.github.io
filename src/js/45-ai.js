@@ -36,14 +36,11 @@ var AI_THINKING_EFFORTS = [
 
 function aiThinkingConfig() {
   var cfg = { enabled: true, effort: 'high' };
-  try {
-    var raw = localStorage.getItem(AI_THINKING_KEY);
-    var saved = raw ? JSON.parse(raw) : null;
-    if (saved && typeof saved === 'object') {
-      if (typeof saved.enabled === 'boolean') cfg.enabled = saved.enabled;
-      if (AI_THINKING_EFFORTS.some(function (x) { return x.id === saved.effort; })) cfg.effort = saved.effort;
-    }
-  } catch (e) { /* noop */ }
+  var saved = safeStorage.getJSON(AI_THINKING_KEY, null);
+  if (saved && typeof saved === 'object') {
+    if (typeof saved.enabled === 'boolean') cfg.enabled = saved.enabled;
+    if (AI_THINKING_EFFORTS.some(function (x) { return x.id === saved.effort; })) cfg.effort = saved.effort;
+  }
   return cfg;
 }
 
@@ -51,7 +48,7 @@ function aiSaveThinking(patch) {
   var cfg = aiThinkingConfig();
   if (patch && typeof patch.enabled === 'boolean') cfg.enabled = patch.enabled;
   if (patch && AI_THINKING_EFFORTS.some(function (x) { return x.id === patch.effort; })) cfg.effort = patch.effort;
-  try { localStorage.setItem(AI_THINKING_KEY, JSON.stringify(cfg)); } catch (e) { /* noop */ }
+  safeStorage.setJSON(AI_THINKING_KEY, cfg);
   return cfg;
 }
 
@@ -199,20 +196,12 @@ function aiPeakInfo() {
 }
 
 function aiDeferRead() {
-  try {
-    var raw = localStorage.getItem(AI_DEFER_KEY);
-    var list = raw ? JSON.parse(raw) : [];
-    return Array.isArray(list) ? list.filter(function (x) { return x && x.id; }) : [];
-  } catch (e) { return []; }
+  var list = safeStorage.getJSON(AI_DEFER_KEY, []);
+  return Array.isArray(list) ? list.filter(function (x) { return x && x.id; }) : [];
 }
 
 function aiDeferWrite(list) {
-  try {
-    localStorage.setItem(AI_DEFER_KEY, JSON.stringify(list));
-    return true;
-  } catch (e) {
-    return false;
-  }
+  return safeStorage.setJSON(AI_DEFER_KEY, list);
 }
 
 function aiDeferCount() { return aiDeferRead().length; }

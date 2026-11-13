@@ -3,11 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.13-ce5a2390";</script>
+<script>window.__BUILD_ID__="2026.11.14-2112c385";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -7504,6 +7502,49 @@ html[data-theme="dark"] {
     --xijing: #D2AB74;
   }
 }
+/* ===== 2026-11-14 健壮性与可访问性：错误边界、路由焦点、触控目标 ===== */
+.fatal-error {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9999;
+  width: min(360px, calc(100vw - 32px));
+  padding: 16px 18px;
+  border: 1px solid var(--border, #d8d1c4);
+  border-radius: var(--radius-card, 14px);
+  background: var(--surface, #fffdf8);
+  color: var(--ink, #2a2622);
+  box-shadow: 0 18px 44px rgba(40, 32, 24, .18);
+}
+.fatal-error strong { display: block; font-size: 14px; }
+.fatal-error p { margin: 6px 0 8px; color: var(--muted, #6b6359); font-size: 12px; line-height: 1.65; }
+.fatal-error code { display: block; max-height: 84px; overflow: auto; margin: 0 0 10px; padding: 7px 8px; border-radius: 7px; background: var(--surface-2, #f4efe5); color: var(--muted, #6b6359); font: 11px/1.5 var(--font-mono, monospace); overflow-wrap: anywhere; }
+.fatal-error .btn { min-height: 36px; }
+
+.main > h1:focus,
+.main > h2:focus,
+.main h1[tabindex="-1"]:focus,
+.main h2[tabindex="-1"]:focus {
+  outline: 2px solid color-mix(in srgb, var(--accent, #b23a26) 55%, transparent);
+  outline-offset: 5px;
+  border-radius: 2px;
+}
+
+@media (max-width: 900px), (pointer: coarse) {
+  .btn,
+  .icon-btn,
+  .tab,
+  .seg button,
+  .subject-jump-btn,
+  .exam-answer-tabs button,
+  .changelog-more,
+  .bank-origin button {
+    min-height: 44px !important;
+  }
+  .icon-btn { min-width: 44px !important; }
+  .exam-answer-tabs button { padding: 8px 12px; }
+  .tab { min-width: 32px; padding-top: 10px; padding-bottom: 10px; }
+}
 
 </style>
 </head>
@@ -11176,6 +11217,85 @@ var TOKEN_KEY = 'sanke-sync-token';
 var THEME_ORDER = ['auto', 'light', 'dark'];
 var THEME_LABEL = { auto: '自动', light: '浅色', dark: '深色' };
 var STATUS_LABEL = { mastered: '已掌握', unmastered: '未掌握' };
+var STORAGE_WARNING_EVENT = 'storage-warning';
+var storageLastWarning = null;
+
+function storageWarn(message, key) {
+  storageLastWarning = { message: String(message || ''), key: String(key || ''), at: Date.now() };
+  try {
+    if (typeof window !== 'undefined' && window.dispatchEvent && typeof CustomEvent === 'function') {
+      window.dispatchEvent(new CustomEvent(STORAGE_WARNING_EVENT, { detail: storageLastWarning }));
+    }
+  } catch (e) { /* 事件只是提示，不影响主流程 */ }
+}
+
+var safeStorage = (function () {
+  var memory = Object.create(null);
+  var memoryOnly = Object.create(null);
+  var warned = Object.create(null);
+  var STALE_KEYS = ['sanke-i18n-cache-v10', 'sanke-i18n-cache-v9', 'sanke-i18n-cache-v8', 'sanke-i18n-cache-v7', 'sanke-i18n-cache-v6'];
+  function cleanupStale() {
+    STALE_KEYS.forEach(function (k) { try { localStorage.removeItem(k); } catch (e) { /* 旧缓存可丢弃 */ } });
+  }
+  function set(key, value, options) {
+    var str = String(value);
+    memory[key] = str;
+    try {
+      localStorage.setItem(key, str);
+      delete memoryOnly[key];
+      return true;
+    } catch (e) {
+      memoryOnly[key] = true;
+      if (!warned[key] && !(options && options.silent)) {
+        warned[key] = 1;
+        cleanupStale();
+        storageWarn('浏览器存储不可写或空间不足：当前改动只保留在内存中，请先导出备份、关闭其他页面后重试；刷新会丢失这些改动', key);
+      }
+      return false;
+    }
+  }
+  function get(key) {
+    if (memoryOnly[key] && Object.prototype.hasOwnProperty.call(memory, key)) return memory[key];
+    try {
+      var v = localStorage.getItem(key);
+      if (v !== null) return v;
+    } catch (e) { /* 回退到内存副本 */ }
+    return Object.prototype.hasOwnProperty.call(memory, key) ? memory[key] : null;
+  }
+  function remove(key) {
+    delete memory[key];
+    delete memoryOnly[key];
+    try { localStorage.removeItem(key); } catch (e) { /* 已不可读时无需再删 */ }
+  }
+  function getJSON(key, fallback) {
+    var raw = get(key);
+    if (raw == null || raw === '') return fallback;
+    try { return JSON.parse(raw); } catch (e) { backupCorrupted(key, raw); return fallback; }
+  }
+  function setJSON(key, value) { return set(key, JSON.stringify(value)); }
+  function backupCorrupted(key, raw) {
+    if (raw == null) return false;
+    return set(key + '-corrupted-backup', raw);
+  }
+  function clearByPrefix(prefix) {
+    Object.keys(memory).forEach(function (k) { if (k.indexOf(prefix) === 0) { delete memory[k]; delete memoryOnly[k]; } });
+    try {
+      Object.keys(localStorage).forEach(function (k) {
+        if (k.indexOf(prefix) === 0) localStorage.removeItem(k);
+      });
+    } catch (e) { /* 浏览器拒绝枚举时只能清内存 */ }
+  }
+  function supported() {
+    try {
+      var probe = '__sanke_storage_probe__';
+      localStorage.setItem(probe, '1');
+      localStorage.removeItem(probe);
+      return true;
+    } catch (e) { return false; }
+  }
+  return { get: get, set: set, remove: remove, getJSON: getJSON, setJSON: setJSON, backupCorrupted: backupCorrupted, clearByPrefix: clearByPrefix, supported: supported, memory: memory };
+})();
+
 var ERROR_TYPES = ['概念', '计算', '方法选择', '条件漏用', '表述'];
 var REVIEW_DAY_NUMBERS = [1, 2, 3, 4, 5, 7, 8, 10, 12, 14, 15, 18, 21, 23, 25, 30, 32, 35, 45, 50, 60, 70, 90, 95, 120, 125, 160, 180, 210, 270, 365];
 var REVIEW_DAYS = REVIEW_DAY_NUMBERS.map(function (n) { return 'd' + n; });
@@ -11551,7 +11671,7 @@ var sync = {
   online: false,
   busy: false,
   lastSync: null,
-  token: (function () { try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; } })()
+  token: safeStorage.get(TOKEN_KEY) || ''
 };
 var ui = {
   open: {},
@@ -11866,23 +11986,22 @@ function seedState() {
 }
 
 function loadState() {
+  var raw = safeStorage.get(STORAGE_KEY);
+  lastWrittenRaw = raw || null;
+  if (!raw) { isFreshLocal = true; return seedState(); }
   try {
-    var raw = localStorage.getItem(STORAGE_KEY);
-    lastWrittenRaw = raw || null;
-    if (!raw) { isFreshLocal = true; return seedState(); }
     var st = JSON.parse(raw);
     if (!stateCollectionsIntact(st)) throw new Error('Invalid saved state');
     // Migration must preserve user entries, including backups predating clearEpoch.
     migrateLegacySubjectKeys(st);
     st.clearEpoch = EMPTY_EPOCH;
     var migrated = migrateState(st);
-    if (subjectMigrationPending) {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated)); } catch (err) { /* quota */ }
-    }
+    if (subjectMigrationPending) safeStorage.set(STORAGE_KEY, JSON.stringify(migrated));
     return migrated;
   } catch (e) {
     storageRecoveryBlocked = true;
-    setTimeout(function () { if (typeof toast === 'function') toast('无法读取原有数据，已保留原始存储；请先导出原始数据或恢复备份，再继续保存'); }, 0);
+    safeStorage.backupCorrupted(STORAGE_KEY, raw);
+    setTimeout(function () { if (typeof toast === 'function') toast('无法读取原有数据；损坏内容已另存为备份，原始存储保持不变。请先导出备份，再手动恢复或清空'); }, 0);
     return seedState();
   }
 }
@@ -12342,32 +12461,30 @@ function persistLocal(quiet) {
     if (typeof toast === 'function') toast('原始数据需要恢复，当前改动未保存；请先恢复有效备份');
     return false;
   }
-  try {
-    var diskRaw = null;
-    try { diskRaw = localStorage.getItem(STORAGE_KEY); } catch (readErr) { diskRaw = null; }
-    if (diskRaw && lastWrittenRaw != null && diskRaw !== lastWrittenRaw) {
-      try {
-        var remoteState = JSON.parse(diskRaw);
-        if (remoteState && remoteState.entries && sanitizeStateCollections(remoteState)) {
-          state = mergeConcurrentState(state, remoteState);
-        }
-      } catch (mergeErr) { /* keep local; still write */ }
-    }
-    var rawOut = JSON.stringify(state);
-    localStorage.setItem(STORAGE_KEY, rawOut);
-    lastWrittenRaw = rawOut;
-    persistQuotaWarned = false;
-    subjectMigrationPending = false;
-    return true;
-  } catch (e) {
+  var diskRaw = safeStorage.get(STORAGE_KEY);
+  if (diskRaw && lastWrittenRaw != null && diskRaw !== lastWrittenRaw) {
+    try {
+      var remoteState = JSON.parse(diskRaw);
+      if (remoteState && remoteState.entries && sanitizeStateCollections(remoteState)) {
+        state = mergeConcurrentState(state, remoteState);
+      }
+    } catch (mergeErr) { /* keep local; still write */ }
+  }
+  var rawOut = JSON.stringify(state);
+  var wrote = safeStorage.set(STORAGE_KEY, rawOut, { silent: true });
+  if (!wrote) {
     if (!persistQuotaWarned) {
       persistQuotaWarned = true;
       if (!quiet) {
-        try { if (typeof toast === 'function') toast('本机存储已满：请先导出备份，再删除不需要的笔记'); } catch (err) { /* boot */ }
+        try { if (typeof toast === 'function') toast('本机存储已满：当前改动只保留在内存中；请先导出备份，再删除不需要的笔记'); } catch (err) { /* boot */ }
       }
     }
     return false;
   }
+  lastWrittenRaw = rawOut;
+  persistQuotaWarned = false;
+  subjectMigrationPending = false;
+  return true;
 }
 
 function markDirty(extra, quiet) {
@@ -14127,7 +14244,7 @@ function renderFoot() {
 }
 
 var pagesBannerDismissed = false;
-try { pagesBannerDismissed = localStorage.getItem('sanke-pages-banner-dismissed') === '1'; } catch (e) { /* noop */ }
+pagesBannerDismissed = safeStorage.get('sanke-pages-banner-dismissed') === '1';
 
 function subjectJumpHtml(context) {
   var current = (context === 'final' && typeof finalSubject === 'function') ? finalSubject() : state.activeSubject;
@@ -16361,8 +16478,7 @@ function backupSafeLibraries(libs) {
 
 async function exportState() {
   if (storageRecoveryBlocked) {
-    var raw;
-    try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { toast('浏览器禁止读取存储，无法导出原始数据'); return; }
+    var raw = safeStorage.get(STORAGE_KEY);
     if (raw == null) { toast('没有可导出的原始存储'); return; }
     var recoveryLink = document.createElement('a');
     recoveryLink.href = URL.createObjectURL(new Blob([raw], { type: 'application/octet-stream' }));
@@ -17545,10 +17661,8 @@ function aiProtocolOrder() {
 var AI_BAD_MODEL_KEY = 'sanke-ai-bad-models-v1';
 
 function aiBadModelMap() {
-  try {
-    var raw = JSON.parse(localStorage.getItem(AI_BAD_MODEL_KEY) || '{}');
-    return raw && typeof raw === 'object' ? raw : {};
-  } catch (e) { return {}; }
+  var raw = safeStorage.getJSON(AI_BAD_MODEL_KEY, {});
+  return raw && typeof raw === 'object' ? raw : {};
 }
 
 function aiModelIsBlacklisted(protocol, model) {
@@ -17562,11 +17676,11 @@ function aiBlacklistModel(protocol, model) {
   var list = Array.isArray(map[protocol]) ? map[protocol] : [];
   if (list.indexOf(model) < 0) list.push(model);
   map[protocol] = list;
-  try { localStorage.setItem(AI_BAD_MODEL_KEY, JSON.stringify(map)); } catch (e) { /* noop */ }
+  safeStorage.setJSON(AI_BAD_MODEL_KEY, map);
 }
 
 function aiClearModelBlacklist() {
-  try { localStorage.removeItem(AI_BAD_MODEL_KEY); } catch (e) { /* noop */ }
+  safeStorage.remove(AI_BAD_MODEL_KEY);
 }
 
 function aiBlacklistCount() {
@@ -17705,11 +17819,7 @@ function aiProtocolLabel(protocol) {
 }
 
 function aiConfig() {
-  var cfg = null;
-  try {
-    var raw = localStorage.getItem(AI_CONFIG_KEY);
-    if (raw) cfg = JSON.parse(raw);
-  } catch (e) { cfg = null; }
+  var cfg = safeStorage.getJSON(AI_CONFIG_KEY, null);
   if (!cfg || typeof cfg !== 'object') {
     var legacy = (typeof dshToken === 'function') ? dshToken() : '';
     if (legacy) {
@@ -17790,13 +17900,13 @@ function aiSaveConfig(cfg) {
     apiKey: String(cfg.apiKey || '').trim(),
     savedAt: nowIso()
   };
-  localStorage.setItem(AI_CONFIG_KEY, JSON.stringify(next));
+  safeStorage.setJSON(AI_CONFIG_KEY, next);
   if (next.protocol === 'dsh' && typeof setDshToken === 'function') setDshToken(next.apiKey);
   return next;
 }
 
 function aiClearConfig() {
-  try { localStorage.removeItem(AI_CONFIG_KEY); } catch (e) { /* noop */ }
+  safeStorage.remove(AI_CONFIG_KEY);
   if (typeof clearDshToken === 'function') clearDshToken();
 }
 
@@ -17861,14 +17971,11 @@ var AI_THINKING_EFFORTS = [
 
 function aiThinkingConfig() {
   var cfg = { enabled: true, effort: 'high' };
-  try {
-    var raw = localStorage.getItem(AI_THINKING_KEY);
-    var saved = raw ? JSON.parse(raw) : null;
-    if (saved && typeof saved === 'object') {
-      if (typeof saved.enabled === 'boolean') cfg.enabled = saved.enabled;
-      if (AI_THINKING_EFFORTS.some(function (x) { return x.id === saved.effort; })) cfg.effort = saved.effort;
-    }
-  } catch (e) { /* noop */ }
+  var saved = safeStorage.getJSON(AI_THINKING_KEY, null);
+  if (saved && typeof saved === 'object') {
+    if (typeof saved.enabled === 'boolean') cfg.enabled = saved.enabled;
+    if (AI_THINKING_EFFORTS.some(function (x) { return x.id === saved.effort; })) cfg.effort = saved.effort;
+  }
   return cfg;
 }
 
@@ -17876,7 +17983,7 @@ function aiSaveThinking(patch) {
   var cfg = aiThinkingConfig();
   if (patch && typeof patch.enabled === 'boolean') cfg.enabled = patch.enabled;
   if (patch && AI_THINKING_EFFORTS.some(function (x) { return x.id === patch.effort; })) cfg.effort = patch.effort;
-  try { localStorage.setItem(AI_THINKING_KEY, JSON.stringify(cfg)); } catch (e) { /* noop */ }
+  safeStorage.setJSON(AI_THINKING_KEY, cfg);
   return cfg;
 }
 
@@ -18024,20 +18131,12 @@ function aiPeakInfo() {
 }
 
 function aiDeferRead() {
-  try {
-    var raw = localStorage.getItem(AI_DEFER_KEY);
-    var list = raw ? JSON.parse(raw) : [];
-    return Array.isArray(list) ? list.filter(function (x) { return x && x.id; }) : [];
-  } catch (e) { return []; }
+  var list = safeStorage.getJSON(AI_DEFER_KEY, []);
+  return Array.isArray(list) ? list.filter(function (x) { return x && x.id; }) : [];
 }
 
 function aiDeferWrite(list) {
-  try {
-    localStorage.setItem(AI_DEFER_KEY, JSON.stringify(list));
-    return true;
-  } catch (e) {
-    return false;
-  }
+  return safeStorage.setJSON(AI_DEFER_KEY, list);
 }
 
 function aiDeferCount() { return aiDeferRead().length; }
@@ -19293,14 +19392,10 @@ var DSH_MODEL = 'deepseek-flash';
 var DSH_TIMEOUT_MS = 240000;
 var SKILL_PACKS_STATE = { data: null, promise: null };
 
-function dshToken() {
-  try { return localStorage.getItem(DSH_TOKEN_KEY) || ''; } catch (e) { return ''; }
-}
+function dshToken() { return safeStorage.get(DSH_TOKEN_KEY) || ''; }
 function setDshToken(v) {
-  try {
-    if (v) localStorage.setItem(DSH_TOKEN_KEY, v);
-    else localStorage.removeItem(DSH_TOKEN_KEY);
-  } catch (e) { /* ignore */ }
+  if (v) safeStorage.set(DSH_TOKEN_KEY, v);
+  else safeStorage.remove(DSH_TOKEN_KEY);
 }
 function clearDshToken() { setDshToken(''); }
 
@@ -20394,11 +20489,32 @@ function autoAiPendingCount() {
 var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_ID__) || '').match(/^(\d{4})\.(\d{2})\.(\d{2})/);
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [{
+  "date": "2026-11-14",
+  "title": "健壮性与离线兜底",
+  "historyTitle": "健壮性与离线兜底",
+  "summary": "本轮补存储、路由、缓存与错误边界：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；六视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，80 项回归、严格 QA、站点一致性与桌面/移动浏览器检查通过。本块 5 项 / 5 组。",
+  "notifySummary": "本轮修存储、深链、缓存和错误边界：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控。题库 9163，80 项测试与站点一致性通过。本块 5 条要点。",
+  "notifyItems": [
+    { "group": "存储降级", "text": "本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。" },
+    { "group": "损坏备份", "text": "启动时读到损坏 JSON 会把原文另存为 key-corrupted-backup，保留原始存储不动，并提示先导出再恢复或清空。" },
+    { "group": "深链兜底", "text": "直接访问 /gaodai、/shufen/bank 这类没有扩展名的深链时，404 页把路径还原成 #/ 路由并回到对应页面，不再只显示一句「页面不存在」。" },
+    { "group": "缓存边界", "text": "Service Worker 缓存名升到 v2，只缓存状态 200 且不是 Range 的响应，跳过 /api 与自身脚本；离线仍能打开最近一次成功页面。" },
+    { "group": "错误与焦点", "text": "新增全局错误卡片与未处理 Promise 兜底，出错时说明数据未丢并可刷新；hash 路由切换后焦点落到页面标题，屏幕阅读器能感知换页；移动端主要按钮保持 44px 触控高度。" }
+  ],
+  "items": [
+    { "group": "存储降级", "text": "本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。" },
+    { "group": "损坏备份", "text": "启动时读到损坏 JSON 会把原文另存为 key-corrupted-backup，保留原始存储不动，并提示先导出再恢复或清空。" },
+    { "group": "深链兜底", "text": "直接访问 /gaodai、/shufen/bank 这类没有扩展名的深链时，404 页把路径还原成 #/ 路由并回到对应页面，不再只显示一句「页面不存在」。" },
+    { "group": "缓存边界", "text": "Service Worker 缓存名升到 v2，只缓存状态 200 且不是 Range 的响应，跳过 /api 与自身脚本；离线仍能打开最近一次成功页面。" },
+    { "group": "错误与焦点", "text": "新增全局错误卡片与未处理 Promise 兜底，出错时说明数据未丢并可刷新；hash 路由切换后焦点落到页面标题，屏幕阅读器能感知换页；移动端主要按钮保持 44px 触控高度。" }
+  ]
+},
+{
   "date": "2026-11-13",
   "title": "暖白学术与全站收口",
   "historyTitle": "暖白学术与全站收口",
-  "summary": "本轮把全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163，76 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；西经习题集与教材课后里被拍平的公式已改回 LaTeX 并纳入数据门禁。README 历史折叠并与本块同步。本块 20 项 / 20 组。",
-  "notifySummary": "本轮全站切换 Warm Academic 3.0：统一暖白纸面、卡片、按钮与输入框层级，首页加入学习工作台、连续学习与 7 天节拍，模拟考加入答题卡，谷时条改为参考图灰绿；公式排版、三端基线、手机页头、来源筛选与编号规范一并收口。题库 9163，76 项测试与六视口检查通过；西经被拍平的公式改回 LaTeX 并加了数据门禁。本块 20 条要点。",
+  "summary": "本轮把全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163，76 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；西经习题集与教材课后里被拍平的公式已改回 LaTeX 并纳入数据门禁。README 历史折叠并与本块同步。本块 22 项 / 22 组。",
+  "notifySummary": "本轮全站切换 Warm Academic 3.0：统一暖白纸面、卡片、按钮与输入框层级，首页加入学习工作台、连续学习与 7 天节拍，模拟考加入答题卡，谷时条改为参考图灰绿；公式排版、三端基线、手机页头、来源筛选与编号规范一并收口。题库 9163，76 项测试与六视口检查通过；西经被拍平的公式改回 LaTeX 并加了数据门禁。本块 22 条要点。",
   "notifyItems": [
     {
       "group": "设计系统",
@@ -27857,8 +27973,8 @@ var I18N_STYLE = {
 
 function i18nLoad() {
   if (i18nMemory) return i18nMemory;
-  try { localStorage.removeItem('sanke-i18n-cache-v10'); localStorage.removeItem('sanke-i18n-cache-v9'); localStorage.removeItem('sanke-i18n-cache-v8'); localStorage.removeItem('sanke-i18n-cache-v7'); localStorage.removeItem('sanke-i18n-cache-v6'); } catch (e) { /* old cache */ }
-  try { i18nMemory = JSON.parse(localStorage.getItem(I18N_KEY) || '{}') || {}; } catch (e) { i18nMemory = {}; }
+  ['sanke-i18n-cache-v10','sanke-i18n-cache-v9','sanke-i18n-cache-v8','sanke-i18n-cache-v7','sanke-i18n-cache-v6'].forEach(function (k) { safeStorage.remove(k); });
+  i18nMemory = safeStorage.getJSON(I18N_KEY, {}) || {};
   i18nSeedUI();
   return i18nMemory;
 }
@@ -27871,7 +27987,7 @@ function i18nFor(language) {
 }
 
 function i18nSave() {
-  try { localStorage.setItem(I18N_KEY, JSON.stringify(i18nMemory || {})); return true; } catch (e) { return false; }
+  return safeStorage.setJSON(I18N_KEY, i18nMemory || {});
 }
 
 function i18nSeedUI() {
@@ -34324,7 +34440,7 @@ function handleAction(act, el) {
     }
     case 'push-sync': {
       var tok = qs('#syncToken');
-      if (tok) { sync.token = tok.value.trim(); localStorage.setItem(TOKEN_KEY, sync.token); }
+      if (tok) { sync.token = tok.value.trim(); safeStorage.set(TOKEN_KEY, sync.token); }
       if (!(state.rev || 0) && sync.available) {
         pullSync(true).then(function () { pushSync(true); });
       } else {
@@ -34334,13 +34450,13 @@ function handleAction(act, el) {
     }
     case 'pull-sync': {
       var tok2 = qs('#syncToken');
-      if (tok2) { sync.token = tok2.value.trim(); localStorage.setItem(TOKEN_KEY, sync.token); }
+      if (tok2) { sync.token = tok2.value.trim(); safeStorage.set(TOKEN_KEY, sync.token); }
       pullSync(true);
       break;
     }
     case 'dismiss-pages-banner':
       pagesBannerDismissed = true;
-      try { localStorage.setItem('sanke-pages-banner-dismissed', '1'); } catch (e) { /* noop */ }
+      safeStorage.set('sanke-pages-banner-dismissed', '1');
       render();
       break;
     case 'export-state': exportState(); break;
@@ -34352,11 +34468,7 @@ function handleAction(act, el) {
     case 'reset-state': {
       confirmDialog('要恢复初始数据吗？', '这会清空错题、笔记、AI 服务配置、同步口令和所有设置，只保留模板库与题库；导出的 JSON 备份不受影响。此操作无法撤销，请确认。', function () {
         var oldRev = state.rev || 0;
-        try {
-          Object.keys(localStorage).forEach(function (k) {
-            if (k.indexOf('sanke-') === 0) localStorage.removeItem(k);
-          });
-        } catch (e) { /* ignore */ }
+        safeStorage.clearByPrefix('sanke-');
         storageRecoveryBlocked = false;
         state = seedState();
         state.rev = oldRev + 1;
@@ -34390,6 +34502,15 @@ function handleAction(act, el) {
     case 'notif-mark-all-read': if (typeof notifMarkAllRead === 'function') notifMarkAllRead(); break;
     default: break;
   }
+}
+
+function focusRouteHeading() {
+  var main = qs('#main');
+  if (!main) return;
+  var heading = main.querySelector('h1') || main.querySelector('h2');
+  if (!heading) return;
+  heading.setAttribute('tabindex', '-1');
+  try { heading.focus({ preventScroll: true }); } catch (e) { heading.focus(); }
 }
 
 function bindEvents() {
@@ -34486,6 +34607,10 @@ document.addEventListener('input', function (e) {
     });
   }
 
+  window.addEventListener('storage-warning', function (e) {
+    var msg = e && e.detail && e.detail.message;
+    if (msg && typeof toast === 'function') toast(msg);
+  });
   window.addEventListener('hashchange', function () {
     if (suppressHash) return;
     parseHash();
@@ -34496,6 +34621,7 @@ document.addEventListener('input', function (e) {
       var el = qs('#entry-' + decodeURIComponent(m[1]));
       if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
+    focusRouteHeading();
   });
 
   document.querySelectorAll('dialog').forEach(function (d) {
@@ -34556,12 +34682,48 @@ function syncResponsiveLabels() {
   }
 }
 
+function showFatalError(reason) {
+  try {
+    if (window.__sankeFatalShown) return;
+    window.__sankeFatalShown = true;
+    var box = document.createElement('div');
+    box.className = 'fatal-error';
+    box.setAttribute('role', 'alert');
+    var title = document.createElement('strong');
+    title.textContent = '页面遇到异常，操作没有生效';
+    var body = document.createElement('p');
+    body.textContent = '浏览器里的错题数据不会被删除。可以先刷新重试；如果反复出现，请到「设置与同步」导出备份。';
+    var detail = document.createElement('code');
+    detail.textContent = String(reason || 'unknown error').slice(0, 240);
+    var retry = document.createElement('button');
+    retry.type = 'button';
+    retry.className = 'btn btn-primary';
+    retry.textContent = '刷新页面';
+    retry.addEventListener('click', function () { location.reload(); });
+    box.appendChild(title); box.appendChild(body); box.appendChild(detail); box.appendChild(retry);
+    document.body.appendChild(box);
+  } catch (e) { /* 错误边界自身不能再次抛错 */ }
+}
+
 function boot() {
+  window.addEventListener('error', function (e) {
+    if (!e || !e.error) return;
+    if (e.error && e.error.name === 'AbortError') return;
+    showFatalError(e.error && e.error.message ? e.error.message : '脚本错误');
+  });
+  window.addEventListener('unhandledrejection', function (e) {
+    var reason = e && e.reason;
+    if (reason && reason.name === 'AbortError') return;
+    showFatalError(reason && reason.message ? reason.message : String(reason || '未处理的异步错误'));
+  });
+  if (typeof safeStorage !== 'undefined' && !safeStorage.supported()) {
+    setTimeout(function () { if (typeof toast === 'function') toast('浏览器存储不可用：本次改动只保留在内存中，刷新会丢失；请检查无痕模式或站点存储权限'); }, 0);
+  }
   try {
     var tm = String(location.search || '').match(/[?&]token=([^&]+)/);
     if (tm) {
       sync.token = decodeURIComponent(tm[1]);
-      localStorage.setItem(TOKEN_KEY, sync.token);
+      safeStorage.set(TOKEN_KEY, sync.token);
       if (window.history && history.replaceState) history.replaceState(null, '', location.pathname + location.hash);
     }
   } catch (e) { /* file:// */ }

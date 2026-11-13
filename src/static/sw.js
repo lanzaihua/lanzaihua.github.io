@@ -1,6 +1,6 @@
 /* 四科错题本：网络优先、离线回退到最近一次成功页面。 */
 'use strict';
-const CACHE = 'sike-cuotiben-v1';
+const CACHE = 'sike-cuotiben-v2';
 const CORE = ['./', './index.html', './favicon.svg', './manifest.webmanifest'];
 
 self.addEventListener('install', function (event) {
@@ -20,8 +20,9 @@ self.addEventListener('fetch', function (event) {
   var url = new URL(req.url);
   if (req.method !== 'GET' || url.origin !== self.location.origin) return;
   if (url.pathname.indexOf('/api/') === 0) return;
+  if (url.pathname.slice(-6) === '/sw.js') return;
   event.respondWith(fetch(req).then(function (res) {
-    if (res && res.ok) {
+    if (res && res.status === 200 && !req.headers.get('range')) {
       const copy = res.clone();
       caches.open(CACHE).then(function (cache) { cache.put(req, copy); }).catch(function () {});
     }

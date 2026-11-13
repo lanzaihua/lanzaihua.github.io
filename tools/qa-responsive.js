@@ -103,6 +103,36 @@ async function visibleBox(page, selector) {
       assert(o.body <= 1, failures, device.name + ' / ' + entry[0] + ' body overflow ' + o.body);
     }
 
+    // 路由切换后焦点移到页面标题，键盘与读屏用户不用重新找起点。
+    await goto(page, '#/gaodai/overview');
+    const bankTab = page.locator('[data-act="nav-view"][data-view="bank"]:visible').first();
+    if (await bankTab.count()) {
+      await bankTab.click();
+      await sleep(page, 220);
+      item.focusAfterRoute = await page.evaluate(function () {
+        var el = document.activeElement;
+        return { tag: el && el.tagName, text: el ? String(el.textContent || '').trim().slice(0, 24) : '', hash: location.hash };
+      });
+      assert(item.focusAfterRoute.tag === 'H1' || item.focusAfterRoute.tag === 'H2', failures, device.name + ' / route change did not focus page heading');
+    }
+
+    // 移动端与平板：主要控件不得小于 44px。
+    if (device.touch) {
+      item.touchTargets = await page.evaluate(function () {
+        var sel = '.btn,.icon-btn,.tab,.seg button,.subject-jump-btn,.exam-answer-tabs button,.changelog-more';
+        var small = [];
+        document.querySelectorAll(sel).forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          if (!r.width || !r.height) return;
+          if (r.height < 40 || r.width < 32) {
+            small.push({ label: (el.textContent || el.getAttribute('aria-label') || '').trim().slice(0, 16), w: Math.round(r.width), h: Math.round(r.height) });
+          }
+        });
+        return { checked: document.querySelectorAll(sel).length, small: small.slice(0, 8) };
+      });
+      assert(item.touchTargets.small.length === 0, failures, device.name + ' / touch targets too small: ' + JSON.stringify(item.touchTargets.small[0] || {}));
+    }
+
     // 首页 -> 科目入口：真实点击，不只截图。
     await goto(page, '#/home');
     const subject = page.locator('.home-subject').first();
@@ -215,6 +245,15 @@ async function visibleBox(page, selector) {
       });
       assert(item.interactions.note.editor, failures, device.name + ' / note editor did not open');
       assert(item.interactions.note.overflow <= 1, failures, device.name + ' / note editor overflow');
+    }
+
+    // 直接访问深链（GitHub Pages 404）应回到 hash 路由并渲染对应页面。
+    if (device.name === 'desktop') {
+      const rootUrl = URL_BASE.replace(/[?#].*$/, '').replace(/\/+$/, '') + '/gaodai';
+      await page.goto(rootUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForFunction(function () { return /#\/gaodai/.test(location.hash); }, null, { timeout: 6000 }).catch(function () {});
+      item.deepLink404 = await page.evaluate(function () { return { hash: location.hash, heading: (document.querySelector('#main h1, #main h2') || {}).textContent || '' }; });
+      assert(/#\/gaodai/.test(item.deepLink404.hash), failures, device.name + ' / 404 deep link did not restore route');
     }
 
     // 设置与更新记录弹窗。

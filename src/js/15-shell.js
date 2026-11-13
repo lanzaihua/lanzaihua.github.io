@@ -464,7 +464,7 @@ function renderFoot() {
 }
 
 var pagesBannerDismissed = false;
-try { pagesBannerDismissed = localStorage.getItem('sanke-pages-banner-dismissed') === '1'; } catch (e) { /* noop */ }
+pagesBannerDismissed = safeStorage.get('sanke-pages-banner-dismissed') === '1';
 
 function subjectJumpHtml(context) {
   var current = (context === 'final' && typeof finalSubject === 'function') ? finalSubject() : state.activeSubject;

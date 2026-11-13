@@ -8,14 +8,10 @@ var DSH_MODEL = 'deepseek-flash';
 var DSH_TIMEOUT_MS = 240000;
 var SKILL_PACKS_STATE = { data: null, promise: null };
 
-function dshToken() {
-  try { return localStorage.getItem(DSH_TOKEN_KEY) || ''; } catch (e) { return ''; }
-}
+function dshToken() { return safeStorage.get(DSH_TOKEN_KEY) || ''; }
 function setDshToken(v) {
-  try {
-    if (v) localStorage.setItem(DSH_TOKEN_KEY, v);
-    else localStorage.removeItem(DSH_TOKEN_KEY);
-  } catch (e) { /* ignore */ }
+  if (v) safeStorage.set(DSH_TOKEN_KEY, v);
+  else safeStorage.remove(DSH_TOKEN_KEY);
 }
 function clearDshToken() { setDshToken(''); }
 

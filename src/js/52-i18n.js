@@ -479,8 +479,8 @@ var I18N_STYLE = {
 
 function i18nLoad() {
   if (i18nMemory) return i18nMemory;
-  try { localStorage.removeItem('sanke-i18n-cache-v10'); localStorage.removeItem('sanke-i18n-cache-v9'); localStorage.removeItem('sanke-i18n-cache-v8'); localStorage.removeItem('sanke-i18n-cache-v7'); localStorage.removeItem('sanke-i18n-cache-v6'); } catch (e) { /* old cache */ }
-  try { i18nMemory = JSON.parse(localStorage.getItem(I18N_KEY) || '{}') || {}; } catch (e) { i18nMemory = {}; }
+  ['sanke-i18n-cache-v10','sanke-i18n-cache-v9','sanke-i18n-cache-v8','sanke-i18n-cache-v7','sanke-i18n-cache-v6'].forEach(function (k) { safeStorage.remove(k); });
+  i18nMemory = safeStorage.getJSON(I18N_KEY, {}) || {};
   i18nSeedUI();
   return i18nMemory;
 }
@@ -493,7 +493,7 @@ function i18nFor(language) {
 }
 
 function i18nSave() {
-  try { localStorage.setItem(I18N_KEY, JSON.stringify(i18nMemory || {})); return true; } catch (e) { return false; }
+  return safeStorage.setJSON(I18N_KEY, i18nMemory || {});
 }
 
 function i18nSeedUI() {

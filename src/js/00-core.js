@@ -28,6 +28,85 @@ var TOKEN_KEY = 'sanke-sync-token';
 var THEME_ORDER = ['auto', 'light', 'dark'];
 var THEME_LABEL = { auto: '自动', light: '浅色', dark: '深色' };
 var STATUS_LABEL = { mastered: '已掌握', unmastered: '未掌握' };
+var STORAGE_WARNING_EVENT = 'storage-warning';
+var storageLastWarning = null;
+
+function storageWarn(message, key) {
+  storageLastWarning = { message: String(message || ''), key: String(key || ''), at: Date.now() };
+  try {
+    if (typeof window !== 'undefined' && window.dispatchEvent && typeof CustomEvent === 'function') {
+      window.dispatchEvent(new CustomEvent(STORAGE_WARNING_EVENT, { detail: storageLastWarning }));
+    }
+  } catch (e) { /* 事件只是提示，不影响主流程 */ }
+}
+
+var safeStorage = (function () {
+  var memory = Object.create(null);
+  var memoryOnly = Object.create(null);
+  var warned = Object.create(null);
+  var STALE_KEYS = ['sanke-i18n-cache-v10', 'sanke-i18n-cache-v9', 'sanke-i18n-cache-v8', 'sanke-i18n-cache-v7', 'sanke-i18n-cache-v6'];
+  function cleanupStale() {
+    STALE_KEYS.forEach(function (k) { try { localStorage.removeItem(k); } catch (e) { /* 旧缓存可丢弃 */ } });
+  }
+  function set(key, value, options) {
+    var str = String(value);
+    memory[key] = str;
+    try {
+      localStorage.setItem(key, str);
+      delete memoryOnly[key];
+      return true;
+    } catch (e) {
+      memoryOnly[key] = true;
+      if (!warned[key] && !(options && options.silent)) {
+        warned[key] = 1;
+        cleanupStale();
+        storageWarn('浏览器存储不可写或空间不足：当前改动只保留在内存中，请先导出备份、关闭其他页面后重试；刷新会丢失这些改动', key);
+      }
+      return false;
+    }
+  }
+  function get(key) {
+    if (memoryOnly[key] && Object.prototype.hasOwnProperty.call(memory, key)) return memory[key];
+    try {
+      var v = localStorage.getItem(key);
+      if (v !== null) return v;
+    } catch (e) { /* 回退到内存副本 */ }
+    return Object.prototype.hasOwnProperty.call(memory, key) ? memory[key] : null;
+  }
+  function remove(key) {
+    delete memory[key];
+    delete memoryOnly[key];
+    try { localStorage.removeItem(key); } catch (e) { /* 已不可读时无需再删 */ }
+  }
+  function getJSON(key, fallback) {
+    var raw = get(key);
+    if (raw == null || raw === '') return fallback;
+    try { return JSON.parse(raw); } catch (e) { backupCorrupted(key, raw); return fallback; }
+  }
+  function setJSON(key, value) { return set(key, JSON.stringify(value)); }
+  function backupCorrupted(key, raw) {
+    if (raw == null) return false;
+    return set(key + '-corrupted-backup', raw);
+  }
+  function clearByPrefix(prefix) {
+    Object.keys(memory).forEach(function (k) { if (k.indexOf(prefix) === 0) { delete memory[k]; delete memoryOnly[k]; } });
+    try {
+      Object.keys(localStorage).forEach(function (k) {
+        if (k.indexOf(prefix) === 0) localStorage.removeItem(k);
+      });
+    } catch (e) { /* 浏览器拒绝枚举时只能清内存 */ }
+  }
+  function supported() {
+    try {
+      var probe = '__sanke_storage_probe__';
+      localStorage.setItem(probe, '1');
+      localStorage.removeItem(probe);
+      return true;
+    } catch (e) { return false; }
+  }
+  return { get: get, set: set, remove: remove, getJSON: getJSON, setJSON: setJSON, backupCorrupted: backupCorrupted, clearByPrefix: clearByPrefix, supported: supported, memory: memory };
+})();
+
 var ERROR_TYPES = ['概念', '计算', '方法选择', '条件漏用', '表述'];
 var REVIEW_DAY_NUMBERS = [1, 2, 3, 4, 5, 7, 8, 10, 12, 14, 15, 18, 21, 23, 25, 30, 32, 35, 45, 50, 60, 70, 90, 95, 120, 125, 160, 180, 210, 270, 365];
 var REVIEW_DAYS = REVIEW_DAY_NUMBERS.map(function (n) { return 'd' + n; });
@@ -403,7 +482,7 @@ var sync = {
   online: false,
   busy: false,
   lastSync: null,
-  token: (function () { try { return localStorage.getItem(TOKEN_KEY) || ''; } catch (e) { return ''; } })()
+  token: safeStorage.get(TOKEN_KEY) || ''
 };
 var ui = {
   open: {},
@@ -718,23 +797,22 @@ function seedState() {
 }
 
 function loadState() {
+  var raw = safeStorage.get(STORAGE_KEY);
+  lastWrittenRaw = raw || null;
+  if (!raw) { isFreshLocal = true; return seedState(); }
   try {
-    var raw = localStorage.getItem(STORAGE_KEY);
-    lastWrittenRaw = raw || null;
-    if (!raw) { isFreshLocal = true; return seedState(); }
     var st = JSON.parse(raw);
     if (!stateCollectionsIntact(st)) throw new Error('Invalid saved state');
     // Migration must preserve user entries, including backups predating clearEpoch.
     migrateLegacySubjectKeys(st);
     st.clearEpoch = EMPTY_EPOCH;
     var migrated = migrateState(st);
-    if (subjectMigrationPending) {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated)); } catch (err) { /* quota */ }
-    }
+    if (subjectMigrationPending) safeStorage.set(STORAGE_KEY, JSON.stringify(migrated));
     return migrated;
   } catch (e) {
     storageRecoveryBlocked = true;
-    setTimeout(function () { if (typeof toast === 'function') toast('无法读取原有数据，已保留原始存储；请先导出原始数据或恢复备份，再继续保存'); }, 0);
+    safeStorage.backupCorrupted(STORAGE_KEY, raw);
+    setTimeout(function () { if (typeof toast === 'function') toast('无法读取原有数据；损坏内容已另存为备份，原始存储保持不变。请先导出备份，再手动恢复或清空'); }, 0);
     return seedState();
   }
 }
@@ -1194,32 +1272,30 @@ function persistLocal(quiet) {
     if (typeof toast === 'function') toast('原始数据需要恢复，当前改动未保存；请先恢复有效备份');
     return false;
   }
-  try {
-    var diskRaw = null;
-    try { diskRaw = localStorage.getItem(STORAGE_KEY); } catch (readErr) { diskRaw = null; }
-    if (diskRaw && lastWrittenRaw != null && diskRaw !== lastWrittenRaw) {
-      try {
-        var remoteState = JSON.parse(diskRaw);
-        if (remoteState && remoteState.entries && sanitizeStateCollections(remoteState)) {
-          state = mergeConcurrentState(state, remoteState);
-        }
-      } catch (mergeErr) { /* keep local; still write */ }
-    }
-    var rawOut = JSON.stringify(state);
-    localStorage.setItem(STORAGE_KEY, rawOut);
-    lastWrittenRaw = rawOut;
-    persistQuotaWarned = false;
-    subjectMigrationPending = false;
-    return true;
-  } catch (e) {
+  var diskRaw = safeStorage.get(STORAGE_KEY);
+  if (diskRaw && lastWrittenRaw != null && diskRaw !== lastWrittenRaw) {
+    try {
+      var remoteState = JSON.parse(diskRaw);
+      if (remoteState && remoteState.entries && sanitizeStateCollections(remoteState)) {
+        state = mergeConcurrentState(state, remoteState);
+      }
+    } catch (mergeErr) { /* keep local; still write */ }
+  }
+  var rawOut = JSON.stringify(state);
+  var wrote = safeStorage.set(STORAGE_KEY, rawOut, { silent: true });
+  if (!wrote) {
     if (!persistQuotaWarned) {
       persistQuotaWarned = true;
       if (!quiet) {
-        try { if (typeof toast === 'function') toast('本机存储已满：请先导出备份，再删除不需要的笔记'); } catch (err) { /* boot */ }
+        try { if (typeof toast === 'function') toast('本机存储已满：当前改动只保留在内存中；请先导出备份，再删除不需要的笔记'); } catch (err) { /* boot */ }
       }
     }
     return false;
   }
+  lastWrittenRaw = rawOut;
+  persistQuotaWarned = false;
+  subjectMigrationPending = false;
+  return true;
 }
 
 function markDirty(extra, quiet) {
