@@ -287,6 +287,11 @@ function handleAction(act, el) {
       ui.bankShowLimit = 120;
       render();
       break;
+    case 'toggle-bank-filters': {
+      var openNow = document.body.classList.toggle('bank-filters-open');
+      el.setAttribute('aria-expanded', openNow ? 'true' : 'false');
+      break;
+    }
     case 'clear-bank-filters': {
       var bf = bankFilterFor(state.activeSubject);
       bf.chapter = 'all';

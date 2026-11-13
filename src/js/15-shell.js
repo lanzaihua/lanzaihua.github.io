@@ -531,7 +531,7 @@ function dataTable(headers, rows, opts) {
   var body = rows.map(function (r) {
     var attrs = r.attrs || '';
     var cls = r.className ? ' class="' + r.className + '"' : '';
-    var cells = r.cells.map(function (c) { return '<td>' + c + '</td>'; }).join('');
+    var cells = r.cells.map(function (c, i) { return '<td data-label="' + attr(headers[i] || '') + '">' + c + '</td>'; }).join('');
     return '<tr' + cls + ' ' + attrs + '>' + cells + '</tr>';
   }).join('');
   var wrapClass = 'table-wrap' + (opts.className ? ' ' + opts.className : '');

@@ -1622,8 +1622,10 @@ function finalExamResultHtml(mock) {
     var answerForChoice = finalExamChoiceAnswer({ type: qType, options: qOptions, correct: q.correct || source.correct || '', answer: q.answer });
     var qAnswered = !!(q.userChoice || String(q.userText || '').trim() || q.userDraw);
     var wrong = !q.correct || !qAnswered || !(Number(q.max || source.score) > 0);
-    return '<article class="exam-result-q' + (wrong ? ' is-wrong' : '') + '">' +
-      '<div class="exam-result-head"><span class="exam-qnum">' + pad(i + 1, 2) + '</span><b>' + renderInline(q.title) + '</b><span class="exam-result-diff">难度 ' + stars(qDiff) + '</span><span class="' + (wrong ? 'exam-bad' : 'exam-good') + '">' + (wrong ? '未掌握' : '正确') + '</span><span class="exam-result-score">' + q.score + ' / ' + qMax + '</span></div>' +
+    return '<article class="exam-result-q' + (wrong ? ' is-wrong' : '') + ' is-open" data-unanswered="' + (qAnswered ? 'false' : 'true') + '">' +
+      '<div class="exam-result-head"><span class="exam-qnum">' + pad(i + 1, 2) + '</span><b>' + renderInline(q.title) + '</b><span class="exam-result-diff">难度 ' + stars(qDiff) + '</span><span class="' + (wrong ? 'exam-bad' : 'exam-good') + '">' + (wrong ? '未掌握' : '正确') + '</span><span class="exam-result-score">' + q.score + ' / ' + qMax + '</span>' +
+        '<button class="btn btn-xs exam-result-toggle" data-act="toggle-result-card" type="button" aria-expanded="true">收起</button></div>' +
+      '<div class="exam-result-body">' +
       '<div class="exam-result-question"><h4>题干</h4><div class="md">' + renderMarkdown(qText) + '</div>' +
         (qType === 'choice' && qOptions.length ? '<div class="exam-result-options">' + qOptions.map(function (o) { return '<span class="exam-result-option"><b class="exam-result-key">' + esc(o.key) + '．</b><span class="exam-result-text">' + renderInline(o.text) + '</span></span>'; }).join('') + '</div>' : '') +
       '</div>' +
@@ -1634,12 +1636,14 @@ function finalExamResultHtml(mock) {
       (q.points && q.points.length ? '<h4>解题要点</h4><ul>' + q.points.map(function (x) { return '<li>' + renderInline(x) + '</li>'; }).join('') + '</ul>' : '') +
       (q.pitfalls && q.pitfalls.length ? '<h4>易错点</h4><ul>' + q.pitfalls.map(function (x) { return '<li>' + renderInline(x) + '</li>'; }).join('') + '</ul>' : '') + '</div>' +
       '<div class="exam-result-actions">' + (wrong ? (q.addedEntry ? '<span class="chip">已加入错题</span>' : '<button class="btn btn-xs" data-act="final-add-wrong-entry" data-qid="' + attr(q.id) + '" type="button">加入错题</button>') : '') + '<span class="faint">' + (q.source ? esc(q.source) : '') + '</span></div>' +
+      '</div>' +
     '</article>';
   }).join('');
   return '<div class="exam-shell exam-result"><header class="exam-result-hero"><div><p class="eyebrow">FINAL MOCK EXAM · RESULT</p><h1>模拟考结果</h1><p>' + esc(mock.title) + ' · ' + esc(mock.gradedBy || '标准答案批改') + '</p></div><div class="exam-score"><b>' + Math.round((r.total || 0) * 10) / 10 + '</b><span>/ ' + finalExamTotalScore(mock) + '</span></div><div class="exam-result-actions"><button class="btn btn-xs" data-act="final-exam-export-docx" type="button">导出 DOCX</button><button class="btn btn-xs" data-act="final-exam-export-pdf" type="button">导出 PDF</button><button class="btn" data-act="final-exam-back" type="button">返回期末</button><button class="btn btn-primary" data-act="final-start-exam" type="button">再考一次</button></div></header>' +
     (mock.aiError ? '<p class="exam-note">AI 批改未完成：' + esc(mock.aiError) + '。已用标准答案完成批改。</p>' : '') +
     '<div class="exam-result-summary"><span>' + (r.questions || []).filter(function (x) { return x.correct; }).length + ' 题正确</span><span>' + (r.questions || []).filter(function (x) { return !x.correct; }).length + ' 题需要回看</span><span>' + (r.questions || []).length + ' 题已批改</span></div>' +
-    '<div class="exam-result-list">' + rows + '</div></div>';
+    '<div class="exam-result-filterbar" role="group" aria-label="筛选模拟考结果"><button class="btn btn-xs is-on" data-act="exam-result-filter" data-filter="all" type="button" aria-pressed="true">全部</button><button class="btn btn-xs" data-act="exam-result-filter" data-filter="wrong" type="button" aria-pressed="false">只看错题</button><button class="btn btn-xs" data-act="exam-result-filter" data-filter="unanswered" type="button" aria-pressed="false">只看未答</button></div>' +
+    '<div class="exam-result-list" data-filter="all">' + rows + '</div></div>';
 }
 
 function finalExamReadyHtml() {
@@ -2651,4 +2655,24 @@ document.addEventListener('click', function (e) {
   else if (act === 'final-exam-resume') { e.preventDefault(); state.activeView = 'final'; ui.finalExamMode = 'exam'; if (typeof updateHash === 'function') updateHash(); render(); setTimeout(function () { window.scrollTo(0, 0); }, 20); }
   else if (act === 'final-exam-back' || act === 'final-exam-show-result') { e.preventDefault(); ui.finalExamMode = act === 'final-exam-show-result' ? 'result' : ''; render(); }
   else if (act === 'final-add-wrong-entry') { e.preventDefault(); finalAddWrongEntry(el.getAttribute('data-qid')); }
+  else if (act === 'toggle-result-card') {
+    e.preventDefault();
+    var card = el.closest('.exam-result-q');
+    if (!card) return;
+    var open = card.classList.toggle('is-open');
+    el.setAttribute('aria-expanded', open ? 'true' : 'false');
+    el.textContent = open ? '收起' : '展开';
+  }
+  else if (act === 'exam-result-filter') {
+    e.preventDefault();
+    var f = el.getAttribute('data-filter') || 'all';
+    var list = document.querySelector('.exam-result-list');
+    if (list) list.setAttribute('data-filter', f);
+    var bar = el.closest('.exam-result-filterbar');
+    if (bar) bar.querySelectorAll('button').forEach(function (b) {
+      var on = b === el;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
 });

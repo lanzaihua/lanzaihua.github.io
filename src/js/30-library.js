@@ -443,6 +443,7 @@ function viewTemplates(subjectId) {
     '<select class="select" data-template-filter="chapter" aria-label="按章节筛选模板">' + optionList(['all'].concat(tplChapters), tf.chapter, '全部章节') + '</select>' +
     (tf.chapter !== 'all' ? '<select class="select" data-template-filter="section" aria-label="按小节筛选模板">' + optionList(['all'].concat(tplSections), tf.section, '全部小节') + '</select>' : '') +
     '<button class="btn btn-xs filter-clear" data-act="clear-template-filters" type="button" title="' + (tplFiltersActive ? '清空模板筛选' : '当前没有可清空的筛选') + '"' + (tplFiltersActive ? '' : ' disabled') + '>清空筛选</button>' +
+    '</div>' +
     '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + tpls.length + ' / ' + allTpls.length + ' 张</span>' +
   '</div>';
 
@@ -496,6 +497,8 @@ function viewBank(subjectId) {
   }
   var bankFiltersOn = bankFiltersActive(f);
   var toolbar = '<div class="toolbar bank-filters">' +
+    '<button class="btn btn-xs bank-filter-toggle" data-act="toggle-bank-filters" type="button" aria-expanded="' + (document.body.classList.contains('bank-filters-open') ? 'true' : 'false') + '">筛选</button>' +
+    '<div class="bank-filter-fields">' +
     '<div class="seg bank-origin" role="group" aria-label="按题目来源筛选题库">' +
       bankOriginBtn('all', '全部来源') +
       (originCounts.exam > 0 ? bankOriginBtn('exam', '考研同型') : '') +
@@ -518,6 +521,7 @@ function viewBank(subjectId) {
       }).join('') +
     '</select>' +
     '<button class="btn btn-xs filter-clear" data-act="clear-bank-filters" type="button" title="' + (bankFiltersOn ? '清空题库筛选' : '当前没有可清空的筛选') + '"' + (bankFiltersOn ? '' : ' disabled') + '>清空筛选</button>' +
+    '</div>' +
     '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + filtered.length + ' / ' + items.length + ' 题</span>' +
   '</div>';
 

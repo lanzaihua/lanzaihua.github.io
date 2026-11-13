@@ -842,10 +842,10 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('223 道习题集'),'习题集 current count');
   assert.ok(md.includes('9163'),'bank total');
-  assert.ok(md.includes('80 项回归测试'),'current test count');
+  assert.ok(md.includes('81 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.14 Release'),'current release link');
-  assert.ok(md.includes('2026.11.14--2112c385'),'current build badge');
+  assert.ok(md.includes('2026.11.14--17752ef4'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -903,6 +903,19 @@ test('Warm Academic tokens, home rhythm and exam answer card stay wired',()=>{
   assert.match(exam,/data-act="exam-jump"/,'答题卡题号必须可跳转');
   assert.match(css,/\.exam-cardnav-item\s*\{[^}]*min-height:\s*34px/,'答题卡按钮触控高度至少 34px');
   assert.ok(!/background:\s*#000000?\b/.test(css),'深色模式不能用纯黑背景');
+});
+test('UI3 mobile toolbar, result filters and stacked tables stay wired',()=>{
+  const css=read('src/styles.css'), shell=read('src/js/15-shell.js'), bank=read('src/js/30-library.js'), exam=read('src/js/59-exam.js'), init=read('src/js/90-init.js');
+  assert.match(shell,/td data-label="' \+ attr\(headers\[i\]/,'数据表单元格需要带列名，移动端才能改成卡片');
+  assert.match(bank,/data-act="toggle-bank-filters"/,'题库工具栏需要折叠筛选按钮');
+  assert.match(bank,/class="bank-filter-fields"/,'筛选控件需要独立容器');
+  assert.match(init,/toggle-bank-filters/,'题库筛选按钮需要实际处理逻辑');
+  assert.match(exam,/data-act="toggle-result-card"/,'模拟考结果需要单题折叠');
+  assert.match(exam,/data-act="exam-result-filter"/,'模拟考结果需要全部/错题/未答筛选');
+  assert.match(css,/\.page-actions\{[^}]*display:flex!important/,'手机端主操作不能被隐藏');
+  assert.match(css,/\.bank-filter-fields\{/,'题库筛选需要折叠样式');
+  assert.match(css,/\.exam-result-list\[data-filter="wrong"\]/,'模拟考结果筛选需要可见性规则');
+  assert.match(css,/\.table-wrap:not\(\.chapter-index\) > table\.data td\s*\{/,'移动端数据表需要卡片化单元格');
 });
 test('stats centre uses real data and an editorial empty state',()=>{
   const stats=read('src/js/16-stats.js'), core=read('src/js/00-core.js'), shell=read('src/js/15-shell.js'), css=read('src/styles.css');
