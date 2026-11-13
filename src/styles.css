@@ -7071,3 +7071,8 @@ html[data-theme="dark"] .btn-primary:hover { background: #B76540; border-color: 
 
 .final-section-tab.is-on b{color:var(--color-primary-ink)!important;}
 .note-books-empty-mark small{font-size:10px!important;letter-spacing:.08em!important;color:#6F685F!important;}
+
+/* 2026-11-13 · answer option labels must hang left, not drift to the centre of the row */
+.bank-answer-text .md-option { display: flex; align-items: baseline; gap: 2px; text-align: left; }
+.bank-answer-text .md-option-text { flex: 1 1 auto; min-width: 0; text-align: left; }
+.bank-answer-text .md-option-key { flex: 0 0 auto; }

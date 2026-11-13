@@ -572,7 +572,7 @@ function renderBankItem(it) {
       (it.standardSolution || it.detailedAnalysis
         ? ''
         : '<div class="bank-sec"><h4>解题要点</h4><p class="faint">这道题还没有完整解答数据；可先参考下面的答案与要点。</p></div>') +
-      (it.answer ? '<section class="bank-sec bank-sec-answer"><h4>答案</h4><div class="md bank-answer-text">' + renderMarkdown(it.answer) + '</div></section>' : '') +
+      (it.answer ? '<section class="bank-sec bank-sec-answer"><h4>答案</h4><div class="md bank-answer-text">' + (typeof formatOptionParagraphs === 'function' ? formatOptionParagraphs(renderMarkdown(it.answer)) : renderMarkdown(it.answer)) + '</div></section>' : '') +
       (it.solution && it.solution.length ? '<section class="bank-sec"><h4>解题要点</h4><ol class="bank-solution">' + it.solution.map(function (s) { return '<li>' + renderMarkdown(s) + '</li>'; }).join('') + '</ol></section>' : '') +
       (bankPitfallList(it).length ? '<section class="bank-sec bank-sec-pitfalls"><h4>易错点</h4><ul class="bank-pitfalls">' + bankPitfallList(it).map(function (s) { return '<li>' + renderMarkdown(s) + '</li>'; }).join('') + '</ul></section>' : '') +
       (it.pointKeys && it.pointKeys.length ? '<div class="bank-points multi-actions">' + it.pointKeys.map(function (p) { return '<span class="chip">' + renderInline(p) + '</span>'; }).join('') + rel + '</div>' : rel) +

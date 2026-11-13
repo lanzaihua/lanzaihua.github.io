@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.13-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.13--a7ea7cf2-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.13--c8619c8b-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -151,9 +151,9 @@
 
 ### 2026-11-13 · 暖白学术与全站收口
 
-**19 项 · 19 组**
+**20 项 · 20 组**
 
-本轮把全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163，73 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；README 历史折叠并与本块同步。本块 19 项 / 19 组。
+本轮把全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163，74 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；西经习题集与教材课后里被拍平的公式已改回 LaTeX 并纳入数据门禁。README 历史折叠并与本块同步。本块 20 项 / 20 组。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -167,7 +167,8 @@
 | **行内盒模型** | styles.css 末尾合并为一套权威规则：普通 .math-inline-scroll 为 inline、只有 .is-wide 才 inline-block 横向滚动；MathML 的 mrow/mstyle 保持 inline math，行内公式字号 1em，不再被旧补丁整块化。 |
 | **三端基线** | 题库、错题、模拟考、知识点搜索在 390 / 820 / 1440 三端逐页复核：选项、题干预览、解答与公式共用基线；段落启用 text-wrap:pretty，右侧空白不再换来孤立标点或半行文字。 |
 | **数学语言** | 四科题库静态扫描 question / answer / standardSolution / detailedAnalysis / options，去除数学片段后无残留裸 LaTeX；章名与小节名保持纯文本 Unicode，不再出现未渲染的 $...$。 |
-| **防复发** | 回归测试增至 73 项，新增 compactInlineMath、formatOptionParagraphs、math-tail、md-option 与 exam-opt-text 断言；站点一致性与构建继续跑严格 QA、公式检查、六视口真实交互与性能门禁，后续改公式或选项结构都必须重跑同一套检查。 |
+| **西经公式** | 西经习题集与教材课后中原本被拍平成 x0.5、x1、x2 的式子改回 LaTeX：WE-9116 的效用函数、四个分式选项与解答，WE-9117 的 min 效用函数与替代比例，另修 13 组题干、选项或解答；删除无图引用，答案里的 A． 改为悬挂式。 |
+| **防复发** | 回归测试增至 74 项，新增 compactInlineMath、formatOptionParagraphs、math-tail、md-option 与 exam-opt-text 断言；站点一致性与构建继续跑严格 QA、公式检查、六视口真实交互与性能门禁，后续改公式或选项结构都必须重跑同一套检查。 |
 | **视觉层级** | 统一页面标题、正文、辅助说明、按钮与输入框高度，收齐卡片和分区留白；期末复习两个入口改为等宽卡片，设置弹窗按主题、语言、AI、同步等分区排版；手机与平板的按章索引改为纵向卡片，不再横向滚动。 |
 | **手机页头** | 压缩手机与平板顶栏：隐藏重复的品牌副标题、主题与语言图标，搜索框独占一行；首页页脚说明与工具按钮分行；笔记库隐藏顶栏重复搜索；平板首页内容垂直居中，页脚前不再出现整屏空白。 |
 | **来源筛选** | 题库来源只显示当前科目确实有题的类型：高代、数分、解几不再出现 0 条的「习题集」死路，切科目后 0 条来源自动回到全部；首页与总览文案统一为考研同型 / 教材课后 / 习题集三类题源。 |
@@ -840,7 +841,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、六视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 73 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、静态服务与接口安全 |
+| `tests/` | 74 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、静态服务与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 

@@ -813,10 +813,10 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('223 道习题集'),'习题集 current count');
   assert.ok(md.includes('9163'),'bank total');
-  assert.ok(md.includes('73 项回归测试'),'current test count');
+  assert.ok(md.includes('74 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.13 Release'),'current release link');
-  assert.ok(md.includes('2026.11.13--a7ea7cf2'),'current build badge');
+  assert.ok(md.includes('2026.11.13--c8619c8b'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -912,4 +912,32 @@ test('inline fractions keep text baseline and option labels hang without splitti
   assert.match(css,/\.math-inline-scroll:not\(\.is-wide\)\s*\{[^}]*display:\s*inline !important/,'普通行内公式不能变成整块');
   assert.match(css,/\.md-option\s*\{[^}]*display:\s*flex/,'错题选项需要 flex 悬挂字母');
   assert.match(css,/\.exam-opt-text\s*\{[^}]*flex:\s*1 1 auto/,'模拟考选项正文必须占满剩余宽度');
+});
+
+
+test('western exercise math is typeset instead of flattened plain text',()=>{
+  const {parseHTML}=require('linkedom');
+  const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  const bank=JSON.parse(read('src/data/bank-western.json'));
+  const q=bank.items.find(x=>x.id==='WE-9116');
+  assert.match(q.question,/\$U\(x,y\)=\\ln\(x\^\{0\.5\}\+y\)\$/,'效用函数必须使用 LaTeX 指数');
+  assert.match(q.options[0].text,/\\dfrac\{1\}\{2x\^\{0\.5\}\}/,'无差异曲线斜率必须使用 LaTeX 分式');
+  const box=document.createElement('div');
+  box.innerHTML=r.ctx.renderMarkdown(q.question);
+  assert.ok(box.querySelectorAll('math').length>0,'题干公式必须被 Temml 渲染');
+  for(const m of box.querySelectorAll('math')) m.remove();
+  assert.equal(box.textContent.includes('x0.5'),false,'渲染后不能残留拍平的 x0.5');
+  const options=document.createElement('div');
+  options.innerHTML=q.options.map(o=>r.ctx.renderMarkdown(o.text)).join('');
+  assert.equal(options.textContent.includes('－'),false,'选项不能残留全角负号');
+  const q7=bank.items.find(x=>x.id==='WE-9117');
+  assert.match(q7.question,/\\min\\\{3x_1,x_2\\\}/,'min 型效用函数必须使用 LaTeX 下标');
+  for(const item of bank.items.filter(x=>/^WE-9[1-3]\\d\\d$/.test(x.id))) {
+    for(const field of [item.question].concat((item.options||[]).map(o=>o.text||''))) {
+      const outside=String(field||'').replace(/\$\$[\s\S]*?\$\$/g,'').replace(/\$[^$]*\$/g,'');
+      assert.ok(!/[＝]|[A-Za-z]0\.5(?![0-9])|k1\/2/.test(outside),item.id+' 仍有拍平公式：'+outside.slice(0,60));
+    }
+  }
 });

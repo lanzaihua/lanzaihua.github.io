@@ -98,6 +98,12 @@ if (q.type === 'subjective' && !/^(解|证明|答)[：:]/.test(String(q.standard
     const outside = String(field).replace(/\$\$[\s\S]*?\$\$/g, '').replace(/\$[^$]*\$/g, '');
     if (/\\[a-zA-Z]+|[\uE000\uE001]/.test(outside)) fail(q.id, '数学公式未放入 $...$ 或残留裸 LaTeX');
   }
+  const visibleMathFields = [q.question].concat((q.options || []).map(function (o) { return o && o.text || ''; }));
+  for (const field of visibleMathFields) {
+    if (!field) continue;
+    const outside = String(field).replace(/\$\$[\s\S]*?\$\$/g, '').replace(/\$[^$]*\$/g, '');
+    if (/[＝]|[A-Za-z]0\.5(?![0-9])|k1\/2/.test(outside)) fail(q.id, '题干/选项残留拍平成普通文本的公式');
+  }
   if (!['考研原创同型题','教材课后习题','习题集'].includes(q.examOrigin)) fail(q.id, 'examOrigin 错误');
   if (/【[^】]+】/.test(String(q.question))) fail(q.id, '题干含【】题型标记');
   if (/\\text\{[ \t]|[ \t]\}/.test(String(q.question)) || /[\u4e00-\u9fa5][ \t]+[\u4e00-\u9fa5]/.test(String(q.question)) || /[ \t]=|=[ \t]/.test(String(q.question))) fail(q.id, '题干含多余空格');
