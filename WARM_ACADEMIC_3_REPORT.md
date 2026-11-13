@@ -4,7 +4,7 @@
 - 仓库：https://github.com/lanzaihua/lanzaihua.github.io
 - 项目目录：D:/学习/大一/错题本网页
 - 基线 commit：4c1428ca4ac539548f57b9d893cf3e62b1be1df1（main）
-- 本轮构建：2026.11.13-a7ea7cf2
+- 本轮构建：2026.11.13-c8619c8b
 - 验收日期：2026-11-13（Asia/Shanghai）
 - 说明：本报告只记录实际执行过的检查；未运行的项目在“未验证项与剩余风险”中明确列出。
 
@@ -74,16 +74,17 @@
 - `src/js/59-exam.js`：答题卡、题号跳转、已答状态、考生守则与结果页选项结构。
 - `src/js/30-library.js`：题库来源筛选、空来源回退、选项结构、规范页编号说明。
 - `src/js/58-final.js`：期末复习空态与材料说明。
-- `src/js/48-changelog.js`：2026-11-13「暖白学术与全站收口」19 项/19 组，通知唯一。
+- `src/js/48-changelog.js`：2026-11-13「暖白学术与全站收口」20 项/20 组，通知唯一。
 - `src/js/40-editor.js`：导入合并完成后关闭冲突弹窗与导入弹窗（修复弹窗挡设置页）。
 - `src/js/10-markdown.js`：行内分式降级、math-tail 紧邻标点、选项段落悬挂。
 - `src/js/20-entries.js`：错题题干/原文选项段落转换。
 - `src/data/seed.json`：规范页编号口径与标准解答收束说明。
-- `tests/regressions.test.js`：新增 Warm Academic token、学习节拍、答题卡、对比度选择器等回归；73 项。
+- `src/data/bank-western.json`：WE-9116 效用函数与四个分式选项、WE-9117 min 效用函数与替代比例、13 组题干/选项/解答由拍平文本改回 LaTeX。
+- `tests/regressions.test.js`：新增 Warm Academic token、学习节拍、答题卡、对比度选择器等回归；74 项。
 - `tools/qa-a11y.js`：新增 axe WCAG 2A/AA 扫描；已接入 `npm run qa:a11y` 与 GitHub Actions。
 - `tools/qa-site-consistency.js`：新增设计 token、谷时色、无障碍选择器门禁。
 - `.github/workflows/quality.yml`：构建、发布一致性、技能包、六视口、公式、无障碍、性能全部作为必需步骤。
-- `README.md` / `CHANGELOG.md` / `导出/GitHub-README.md` / `导出/GitHub-CHANGELOG.md`：最新 19 项块、当前截图、版本徽章与历史折叠。
+- `README.md` / `CHANGELOG.md` / `导出/GitHub-README.md` / `导出/GitHub-CHANGELOG.md`：最新 20 项块、当前截图、版本徽章与历史折叠。
 - `assets/v2/20261113-*.png`：首页、总览、笔记、模板、规范、期末、欢迎、更新记录截图。
 
 ## 5. 测试与验收结果
@@ -92,19 +93,19 @@
 
 | 项目 | 结果 |
 |---|---|
-| `npm test` | 73 tests / 73 pass / 0 fail |
+| `npm test` | 74 tests / 74 pass / 0 fail |
 | 严格题库 QA | 9163 总题、55 章、825 桶、每桶 ≥10、0 problems / 0 warnings |
 | 题库审计 Python | BANK AUDIT PASS，教材课后 590，习题集 223 |
 | 站点一致性 | `{ok:true, totals:[1559,3522,1199,2883], dates:22}` |
 | 技能包一致性 | 4 科 10/23/6/17 章，problems [] |
-| 构建一致性 | root / dist / dist-pages 均为 2026.11.13-a7ea7cf2 |
+| 构建一致性 | root / dist / dist-pages 均为 2026.11.13-c8619c8b |
 | 公式检查 | 5 个页面 raw []、broken 0 |
 | 六视口真实交互 | 390×844、360×800、430×932、834×1112、1112×834、1440×1000 全部 failures=0，errors=[] |
 | 横向溢出 | 六视口均为 doc/body 横向 -10（无溢出）；深色模式 -10 |
 | 数据保护 | 浏览器内备份往返：beforeCount=1、afterCount=1，导入弹窗关闭 |
 | 无障碍 | axe WCAG 2A/AA：首页、总览、错题、题库、模板、规范、期末、笔记 8 个路由均为 0 violations |
 | 性能 | FCP 552ms、DCL 697ms、load 705ms、题库切换 534ms、JS 堆 27MB、120 卡；problems [] |
-| 更新记录 | 2026-11-13 仅一块，19 项/19 组；最新 8 组展开、历史折叠 |
+| 更新记录 | 2026-11-13 仅一块，20 项/20 组；最新 8 组展开、历史折叠 |
 | 通知 | 全新存储下 1 条 update，标题「网页已更新 · 2026-11-13 · 暖白学术与全站收口」，无 pageerror |
 | 谷时进度条 | 计算样式与截图均为 rgb(183,193,175) / #B7C1AF |
 
@@ -138,11 +139,12 @@
 3. 来源筛选中 0 条“习题集”死路：只显示当前科目有题来源，切科后自动回全部。
 4. 错题/题库/模拟考选项字母被长公式挤成单独一行：字母固定悬挂，正文 flex:1、min-width:0。
 5. 知识点搜索行内分式撑高行盒：统一从展示分式降级为普通分式，标点与公式绑定。
-6. 更新记录同屏显示 19 组过长：最新 8 组展开，历史折叠；说明与行为一致。
+6. 更新记录同屏显示 20 组过长：最新 8 组展开，历史折叠；说明与行为一致。
 7. 规范页编号混淆：错题 A/M/G/E 与题库 GA/MA/GE/WE 分开说明。
 8. 设置弹窗确认导入后仍遮挡页面：合并成功同时关闭冲突与导入弹窗。
 9. 小字号对比度不足：新增深色文字 token 并修正 8 个路由，axe serious 归零。
 10. 谷时条颜色与参考图不一致：统一为 #B7C1AF。
+11. 西经习题集公式被 OCR 拍平成 x0.5、x1、x2：WE-9116、WE-9117 与 13 组题干/选项/解答改回 LaTeX，并新增数据门禁与三端答案基线检查。
 
 ## 8. 未验证项与剩余风险
 
@@ -158,11 +160,11 @@
 
 - 基线 main：`4c1428ca4ac539548f57b9d893cf3e62b1be1df1`
 - 设计分支：`redesign/warm-academic-3`
-- 功能提交：`dfc1187e715fe66304b0e3c441ff7f3c1ade5738`（27 文件）、`ab54c75a7dcd8f01e23e9802bc20e920a30592fa`（验收报告、source.zip、SHA256SUMS、打包脚本）
+- 功能提交：`4f91d47020095850b3de0674350c05bdeceba5f2`（西经公式与选项对齐）、`018bf4ab35a4e334791e0bcd366ecfe6dd89575e`（更新记录截图、source.zip、SHA256SUMS）
 - 功能分支 CI：Quality checks `43419400267` success、`43419791023` success（含新增 WCAG 步骤）
 - 合并 main：`e40e84e9d859974600072ecc14067eb02440d119`
 - main CI：Quality checks `43420893497` success；pages build and deployment `43420892897` success
-- 线上：`https://lanzaihua.github.io/?v=a7ea7cf2`，页面内构建号 `2026.11.13-a7ea7cf2`
+- 线上：`https://lanzaihua.github.io/?v=c8619c8b`，页面内构建号 `2026.11.13-c8619c8b`
 - 发布前本地门禁：`npm test`、严格 QA、站点一致性、构建一致性、技能包一致性、六视口、公式、无障碍、性能全部通过。
 
 ## 10. 结论
