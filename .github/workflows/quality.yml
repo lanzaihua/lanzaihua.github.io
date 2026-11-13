@@ -44,5 +44,8 @@ jobs:
       - name: Formula rendering regression
         run: npm run qa:formulas
 
+      - name: WCAG accessibility regression
+        run: npm run qa:a11y
+
       - name: Performance regression
         run: npm run qa:perf

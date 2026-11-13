@@ -21,9 +21,11 @@
     "verify:build": "node tools/verify-build-consistency.js",
     "verify:skills": "node tools/verify-skill-packs.js",
     "languages": "node tools/check_repo_languages.js && python tools/audit_bank.py --strict-difficulty",
-    "qa:perf": "node tools/qa-performance.js"
+    "qa:perf": "node tools/qa-performance.js",
+    "qa:a11y": "node tools/qa-a11y.js"
   },
   "devDependencies": {
+    "axe-core": "^4.14.0",
     "linkedom": "^0.18.15",
     "playwright-core": "^1.49.1"
   }

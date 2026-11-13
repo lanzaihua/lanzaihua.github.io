@@ -461,6 +461,9 @@ function viewBank(subjectId) {
   var bankSections = f.chapter !== 'all' ? chapterSectionsFor(subjectId, f.chapter).filter(function (sec) { return bankSectionCounts[sec] > 0; }) : [];
   if (f.chapter !== 'all' && bankSectionCounts['综合与其他'] > 0) bankSections.push('综合与其他');
   if (f.chapter === 'all' || bankSections.indexOf(f.section) < 0) f.section = 'all';
+  var originCounts = { all: items.length, exam: 0, textbook: 0, exercise: 0 };
+  items.forEach(function (it) { var ok = bankOriginKey(it); if (originCounts[ok] != null) originCounts[ok] += 1; });
+  if (f.origin !== 'all' && !originCounts[f.origin]) f.origin = 'all';
   var filtered = items.filter(function (it) {
     if (f.chapter !== 'all' && it.chapter !== f.chapter) return false;
     if (f.section !== 'all' && sectionForItem(subjectId, it) !== f.section) return false;
@@ -494,7 +497,10 @@ function viewBank(subjectId) {
   var bankFiltersOn = bankFiltersActive(f);
   var toolbar = '<div class="toolbar bank-filters">' +
     '<div class="seg bank-origin" role="group" aria-label="按题目来源筛选题库">' +
-      bankOriginBtn('all', '全部来源') + bankOriginBtn('exam', '考研同型') + bankOriginBtn('textbook', '教材课后') + bankOriginBtn('exercise', '习题集') +
+      bankOriginBtn('all', '全部来源') +
+      (originCounts.exam > 0 ? bankOriginBtn('exam', '考研同型') : '') +
+      (originCounts.textbook > 0 ? bankOriginBtn('textbook', '教材课后') : '') +
+      (originCounts.exercise > 0 ? bankOriginBtn('exercise', '习题集') : '') +
     '</div>' +
     '<select class="select" data-bank-filter="chapter" aria-label="按章节筛选题库">' + optionList(['all'].concat(chapters), f.chapter, '全部章节') + '</select>' +
     (f.chapter !== 'all' ? '<select class="select" data-bank-filter="section" aria-label="按小节筛选题库">' + optionList(['all'].concat(bankSections), f.section, '全部小节') + '</select>' : '') +
@@ -596,8 +602,8 @@ function viewGuide(subjectId) {
     '<div class="guide-card"><span class="guide-card-kicker">复习节奏</span><h3>重做优先</h3>' +
       '<div class="guide-days"><span>D1</span><span>D3</span><span>D7</span><span>D15</span><span>D30</span><span>D60</span><span>D365</span></div>' +
       '<p>按 1–5 星与内容难度生成 20–32 个节点，同星级会按错误类型、要点和变式数量再细分，最远 D1800；按录入与上一节点时间解锁，当天看一遍，之后遮住解答重写，变式也做对再标「已掌握」。</p></div>' +
-    '<div class="guide-card"><span class="guide-card-kicker">编号前缀</span><h3>一科一号</h3>' +
-      '<div class="guide-prefix"><span><b>GA</b>高代</span><span><b>MA</b>数分</span><span><b>GE</b>解几</span><span><b>WE</b>西经</span></div></div>' +
+    '<div class="guide-card"><span class="guide-card-kicker">编号前缀</span><h3>条目与题库分开</h3>' +
+      '<div class="guide-prefix"><span><b>A</b>高代错题</span><span><b>M</b>数分错题</span><span><b>G</b>解几错题</span><span><b>E</b>西经错题</span></div><div class="guide-prefix" style="margin-top:8px"><span><b>GA</b>高代题库</span><span><b>MA</b>数分题库</span><span><b>GE</b>解几题库</span><span><b>WE</b>西经题库</span></div></div>' +
   '</aside>';
   var guideBook = bookLabelFor(subjectId);
   return '<div class="page-head"><div><p class="eyebrow">' + esc(s.name) + (guideBook ? ' · ' + esc(guideBook) : '') + ' / CONVENTIONS</p>' +
