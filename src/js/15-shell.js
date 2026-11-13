@@ -96,8 +96,143 @@ function homeSubjectNote(id) {
   return map[id] || '';
 }
 
+function homeWorkbenchData() {
+  var rows = SUBJECTS.map(function (s) {
+    var st = statsFor(s.id);
+    return { subject: s, st: st };
+  });
+  var totals = { total: 0, mastered: 0, unmastered: 0, bank: 0 };
+  rows.forEach(function (r) {
+    totals.total += r.st.total;
+    totals.mastered += r.st.mastered;
+    totals.unmastered += r.st.unmastered;
+    totals.bank += r.st.bank;
+  });
+  totals.pct = totals.total ? Math.round((totals.mastered / totals.total) * 100) : 0;
+  var recent = [];
+  SUBJECTS.forEach(function (s) {
+    entriesOf(s.id).forEach(function (e) {
+      recent.push({ subject: s, entry: e, at: String(e.updatedAt || e.date || '') });
+    });
+  });
+  recent.sort(function (a, b) { return b.at.localeCompare(a.at); });
+  return { rows: rows, totals: totals, recent: recent.slice(0, 3) };
+}
+
+function renderHomeWorkbench() {
+  var host = qs('#homeWorkbench');
+  if (!host) return;
+  var d = homeWorkbenchData();
+  var t = d.totals;
+  var focus = d.rows.slice().sort(function (a, b) { return b.st.unmastered - a.st.unmastered; })[0] || d.rows[0];
+  var focusHref = '#/' + focus.subject.id + '/entries';
+  var focusTitle = '';
+  var focusNote = '';
+  var focusAction = '去错题本';
+  if (!t.total) {
+    focusTitle = '先建立今天的手感';
+    focusNote = '从标准题库挑 10 道题，做完把不会的加入错题本；今天只做一点也算开始。';
+    focusHref = '#/' + focus.subject.id + '/bank';
+    focusAction = '去题库挑题';
+  } else if (t.unmastered > 0) {
+    focusTitle = focus.subject.name + '还有 ' + focus.st.unmastered + ' 道未掌握';
+    focusNote = '按 1 / 3 / 7 天的节奏复习，先合上答案独立写一遍，再对照标准解答。';
+  } else {
+    focusTitle = '四科错题都已掌握';
+    focusNote = '做一组限时模拟卷保持手感，或者从题库挑新题扩到错题本。';
+    focusHref = '#/final';
+    focusAction = '去模拟考';
+  }
+  var progress = d.rows.map(function (r) {
+    var pct = r.st.total ? r.st.pct : 0;
+    return '<div class="hw-progress-row" style="--subj:var(--' + attr(r.subject.id) + ')">' +
+      '<span>' + esc(r.subject.short || r.subject.name) + '</span>' +
+      '<i><em style="width:' + pct + '%"></em></i>' +
+      '<b>' + (r.st.total ? pct + '%' : '—') + '</b>' +
+    '</div>';
+  }).join('');
+  var recent = d.recent.length ? d.recent.map(function (r) {
+    return '<button class="hw-recent-item" data-act="jump-entry" data-id="' + attr(r.entry.id) + '" style="--subj:var(--' + attr(r.subject.id) + ')" type="button">' +
+      '<span class="dot" aria-hidden="true"></span>' +
+      '<span>' + esc(r.subject.short || r.subject.name) + ' · ' + renderInline(entryTitle(r.entry)) + '</span>' +
+      '<time>' + esc(timeAgo(r.at)) + '</time>' +
+    '</button>';
+  }).join('') : '<p class="hw-empty">还没有记录。点任意一科开始，第一条错题会出现在这里。</p>';
+  var rhythm = homeStudyRhythm();
+  var trendBars = rhythm.days.map(function (day) {
+    var h = Math.max(4, Math.round((day.count / rhythm.peak) * 100));
+    return '<span class="hw-trend-day' + (day.today ? ' is-today' : '') + '" title="' + esc(day.label + '：' + day.count + ' 次复习') + '">' +
+      '<i style="height:' + h + '%"></i><small>' + esc(day.short) + '</small></span>';
+  }).join('');
+  host.innerHTML =
+    '<div class="hw-top">' +
+      '<div class="hw-metric"><span>错题总数</span><b>' + t.total + '</b><small>四科合计</small></div>' +
+      '<div class="hw-metric"><span>待复习</span><b>' + t.unmastered + '</b><small>尚未掌握</small></div>' +
+      '<div class="hw-metric"><span>已掌握</span><b>' + t.mastered + '</b><small>独立做对</small></div>' +
+      '<div class="hw-metric"><span>完成度</span><b>' + t.pct + '%</b><small>已掌握 / 错题</small></div>' +
+      '<div class="hw-focus">' +
+        '<span class="hw-label">TODAY · 今日建议</span>' +
+        '<b>' + esc(focusTitle) + '</b>' +
+        '<p>' + esc(focusNote) + '</p>' +
+        '<a class="btn btn-xs" href="' + attr(focusHref) + '">' + esc(focusAction) + '</a>' +
+      '</div>' +
+    '</div>' +
+    '<div class="hw-bottom">' +
+      '<div class="hw-block"><div class="hw-block-head"><b>四科进度</b><span>已掌握 / 错题</span></div>' + progress + '</div>' +
+      '<div class="hw-block"><div class="hw-block-head"><b>最近记录</b><span>按更新时间</span></div><div class="hw-recent-list">' + recent + '</div></div>' +
+      '<div class="hw-block hw-rhythm">' +
+        '<div class="hw-block-head"><b>学习节奏</b><span>近 7 天复习</span></div>' +
+        '<div class="hw-streak"><b>' + rhythm.streak + '</b><span>天连续学习</span><em>' + (rhythm.weekTotal ? '本周 ' + rhythm.weekTotal + ' 次复习' : '本周还没有复习记录') + '</em></div>' +
+        '<div class="hw-trend" aria-label="近 7 天复习次数">' + trendBars + '</div>' +
+        '<button class="btn btn-xs hw-ai" data-act="ai-open" data-subject="' + attr(state.activeSubject || 'gaodai') + '" type="button">AI 智能录入</button>' +
+      '</div>' +
+    '</div>';
+}
+function homeStudyRhythm() {
+  var counts = {};
+  SUBJECTS.forEach(function (s) {
+    entriesOf(s.id).forEach(function (e) {
+      var at = e && e.reviewAt ? e.reviewAt : null;
+      if (!at) return;
+      Object.keys(at).forEach(function (key) {
+        var d = new Date(at[key]);
+        if (isNaN(d.getTime())) return;
+        var k = localDayKey(d);
+        counts[k] = (counts[k] || 0) + 1;
+      });
+    });
+  });
+  var days = [];
+  var now = new Date();
+  for (var i = 6; i >= 0; i--) {
+    var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+    var k = localDayKey(d);
+    days.push({
+      key: k,
+      label: (d.getMonth() + 1) + ' 月 ' + d.getDate() + ' 日',
+      short: ['日', '一', '二', '三', '四', '五', '六'][d.getDay()],
+      count: counts[k] || 0,
+      today: i === 0
+    });
+  }
+  var peak = 0;
+  days.forEach(function (x) { if (x.count > peak) peak = x.count; });
+  var weekTotal = days.reduce(function (n, x) { return n + x.count; }, 0);
+  var streak = 0;
+  for (var j = days.length - 1; j >= 0; j--) {
+    if (days[j].count > 0) streak++;
+    else if (j === days.length - 1) continue;
+    else break;
+  }
+  return { days: days, peak: Math.max(1, peak), weekTotal: weekTotal, streak: streak };
+}
+function localDayKey(d) {
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1, 2) + '-' + pad(d.getDate(), 2);
+}
+
 function renderHome() {
   renderHomeClock();
+  if (typeof renderHomeWorkbench === 'function') renderHomeWorkbench();
   var footNote = qs('#homeFootNote');
   if (footNote) {
     footNote.textContent = PAGES
@@ -110,7 +245,7 @@ function renderHome() {
     var st = statsFor(s.id);
     var n = bankOf(s.id).length;
     var count = st.total ? st.total + ' 道错题' : '0 道错题';
-    return '<a class="home-subject" href="#/' + attr(subjectRouteId(s.id)) + '/entries" style="--subj:var(--' + attr(s.id) + ')">' +
+    return '<a class="home-subject" href="#/' + attr(subjectRouteId(s.id)) + '/entries" style="--subj:var(--' + attr(s.id) + ');--subj-ink:var(--' + attr(s.id) + '-ink)">' +
       '<span class="hs-index">' + pad(i + 1, 2) + '</span>' +
       '<span class="hs-main"><span class="hs-name">' + esc(s.name) + '</span>' +
       '<span class="hs-desc">' + esc(homeSubjectNote(s.id)) + '</span></span>' +
@@ -324,7 +459,7 @@ function renderFoot() {
     var fs = footSubject();
     right.innerHTML = state.activeView === 'notes'
       ? '笔记 ｜ 多页 · 手写 · 智能扫描 · 导出'
-      : '来源：' + subjectSourceLabel(fs.sourceFile) + ' ｜ skill：' + fs.skill;
+      : '数据默认保存在本机 · 可在设置导出备份';
   }
 }
 
@@ -334,7 +469,7 @@ try { pagesBannerDismissed = localStorage.getItem('sanke-pages-banner-dismissed'
 function subjectJumpHtml(context) {
   var current = (context === 'final' && typeof finalSubject === 'function') ? finalSubject() : state.activeSubject;
   return '<nav class="subject-jump" aria-label="跳转到科目">' +
-    '<span class="subject-jump-label">' + (context === 'final' ? '跳到科目' : '打开科目') + '</span>' +
+    '<span class="subject-jump-label">' + (context === 'final' ? '跳到科目' : (context === 'notes' ? '前往科目' : '打开科目')) + '</span>' +
     SUBJECTS.map(function (s) {
       return '<button class="subject-jump-btn' + (s.id === current ? ' is-current' : '') + '" data-act="nav-subject" data-subject="' + s.id + '" style="--subj:var(--' + s.id + ')" type="button" aria-label="打开' + attr(s.name) + '">' +
         '<span class="subject-jump-dot" aria-hidden="true"></span><span>' + esc(s.name) + '</span></button>';
@@ -346,7 +481,7 @@ function renderMain() {
   var main = qs('#main');
   if (!main) return;
   var subj = state.activeSubject;
-  var bannerText = '数据只保存在本机浏览器；需要跨设备时，请导出并在另一设备导入 JSON 备份；AI 配置不提供数据同步。';
+  var bannerText = '数据默认保存在本机浏览器；需要跨设备时，可导出备份后在另一设备导入，或在本机启动 server.js 后连接同步；AI 配置不随数据同步传输。';
   var pagesBanner = (PAGES && !pagesBannerDismissed) ? '<div class="restore-banner pages-banner"><span class="pages-banner-badge">' + 'LOCAL FIRST' + '</span><span class="pages-banner-copy">' + bannerText + '</span><button class="btn btn-xs" data-act="export-state" type="button">导出备份</button><button class="banner-close" data-act="dismiss-pages-banner" type="button" aria-label="关闭静态版提示" title="关闭提示">×</button></div>' : '';
   var lockBanner = sync.mode === 'locked'
     ? '<div class="restore-banner" style="border-style:solid;border-color:var(--line-strong)"><span>云端同步需要访问口令。页面本身可以离线使用，填写口令后才会读写云端数据。</span><button class="btn btn-xs" data-act="open-settings" type="button">填写口令</button></div>'
@@ -398,7 +533,8 @@ function dataTable(headers, rows, opts) {
     var cells = r.cells.map(function (c) { return '<td>' + c + '</td>'; }).join('');
     return '<tr' + cls + ' ' + attrs + '>' + cells + '</tr>';
   }).join('');
-  return '<div class="table-wrap"><table class="data">' + (head ? '<thead><tr>' + head + '</tr></thead>' : '') + '<tbody>' + body + '</tbody></table></div>';
+  var wrapClass = 'table-wrap' + (opts.className ? ' ' + opts.className : '');
+  return '<div class="' + wrapClass + '"><table class="data">' + (head ? '<thead><tr>' + head + '</tr></thead>' : '') + '<tbody>' + body + '</tbody></table></div>';
 }
 
 function errorBars(stats) {
@@ -427,7 +563,7 @@ function viewOverview(subjectId) {
       '<div>' +
         '<div class="hero-kicker"><span class="dot" style="background:var(--' + s.id + ')"></span> 第 ' + pad(SUBJECTS.indexOf(s) + 1, 2) + ' 科 / ' + esc(s.skill) + (bookShortFor(s.id) ? ' · ' + esc(bookShortFor(s.id)) : '') + '</div>' +
         '<h1 class="hero-title">' + esc(s.name) + '</h1>' +
-        '<p class="hero-desc">' + esc(s.tagline) + '。错题条目、模板库与考研同型/教材课后题库都在这里，手机和电脑同一套交互。</p>' +
+        '<p class="hero-desc">' + esc(s.tagline) + '。错题条目、模板库与考研同型/教材课后/习题集题库都在这里，手机和电脑同一套交互。</p>' +
         '<div class="hero-meta" style="margin-top:16px">' +
           (st.total ? '<span>最近更新 ' + esc(timeAgo(st.last)) + '</span>' : '<span>尚无错题</span>') +
           '<span>模板 ' + st.templates + '</span>' +
@@ -504,7 +640,7 @@ function chapterTable(s, st) {
       count ? '<span class="linkish" data-act="filter-chapter" data-chapter="' + attr(ch) + '">' + count + ' 题</span>' : '<span class="faint">—</span>'
     ] });
   });
-  return dataTable(['章', '最近模板', '条目'], rows);
+  return dataTable(['章', '最近模板', '条目'], rows, { className: 'chapter-index' });
 }
 
 function overviewXifang(entries, st) {

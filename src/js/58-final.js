@@ -232,7 +232,7 @@ function finalSubjectTabsHtml(showNote) {
 function finalMaterialsHtml() {
   var list = finalMaterials();
   if (!list.length) {
-    return '<div class="final-empty"><b>还没有加入题目</b><p>用页面顶部的「挑错题 / 挑题库题」入口，把题目加入期末材料。</p></div>';
+    return '<div class="final-empty"><b>还没有加入题目</b><p>用页面顶部的「挑错题 / 挑题库题」入口加入材料；不加入也能直接生成，系统会从当前科目的标准题库按考试时长抽题。</p></div>';
   }
   return '<div class="final-material-list">' + list.map(function (m) {
     return '<div class="final-material">' +
@@ -617,7 +617,7 @@ function finalPaperEditorHtml(p) {
 function finalPapersHtml() {
   var fe = finalData();
   var p = finalActivePaper();
-  return '<div class="final-paper-head"><div><h2>我的模拟卷</h2><p>' + esc(subjectOf(finalSubject()).name) + ' · 按考试时长自动选题；一张卷只含一个科目，可自由编辑与导出。</p></div><div class="final-paper-head-actions"><button class="btn btn-primary" data-act="final-generate-paper" type="button">生成模拟卷</button></div></div>' +
+  return '<div class="final-paper-head"><div><h2>我的模拟卷</h2><p>' + esc(subjectOf(finalSubject()).name) + ' · 按考试时长自动选题，材料为空时从标准题库抽题；一张卷只含一个科目，可自由编辑与导出。</p></div><div class="final-paper-head-actions"><button class="btn btn-primary" data-act="final-generate-paper" type="button">生成模拟卷</button></div></div>' +
     finalSubjectTabsHtml() + finalChapterFilterHtml(finalSubject()) +
     '<p class="final-paper-hint">模拟卷用于编辑、保存和导出；需要限时考试请切到「模拟考」。</p>' +
     finalPaperChipsHtml() + (p ? finalPaperEditorHtml(p) : '<div class="final-empty"><b>当前科目还没有模拟卷</b><p>先点「生成模拟卷」；也可以从错题或题库插入题目。</p></div>') + finalPaperImportHtml();

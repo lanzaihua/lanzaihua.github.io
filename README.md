@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.13-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.13--46a3ab6f-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.13--a7ea7cf2-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -21,7 +21,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261112-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261113-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -63,7 +63,7 @@
 - 118 张模板按科目和章节组织，顶部章节目录可直接跳转。
 - 模板固定四段：识别特征 / 首选方法 / 步骤骨架 / 易错点。
 - 8350 道考研同型题 + 590 道教材课后习题 + 223 道习题集题，可以展开查看标准解答、详细解析、答案、解题要点和易错点。
-- 模板、题库、错题条目都支持复制 Markdown 源码；题库由 8350 道考研同型题、590 道教材课后题与 223 道习题集题组成。基础 8250 道按每章 1–5★ 各 10 客观 + 10 填空 + 10 主观配置，教材 590 道为补充、不占该配额。
+- 模板、题库、错题条目都支持复制 Markdown 源码；题库由 8350 道考研同型题、590 道教材课后题与 223 道习题集题组成。其中 8250 道为按每章 1–5★ 各 10 客观 + 10 填空 + 10 主观配置的基础题，100 道为西经配套题；590 道教材课后与 223 道习题集为补充，不占该配额。
 
 ### 统一笔记库
 
@@ -112,18 +112,18 @@
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261112-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
-<td width="50%"><img src="assets/v2/20261112-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261113-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
+<td width="50%"><img src="assets/v2/20261113-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261112-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261112-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
+<td width="50%"><img src="assets/v2/20261113-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261113-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
-<p align="center"><img src="assets/v2/20261112-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
+<p align="center"><img src="assets/v2/20261113-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
 
-<p align="center"><img src="assets/v2/20261112-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
+<p align="center"><img src="assets/v2/20261113-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
@@ -149,21 +149,33 @@
 
 ## 更新记录
 
-### 2026-11-13 · 公式排版与全站收口
+### 2026-11-13 · 暖白学术与全站收口
 
-**7 项 · 7 组**
+**19 项 · 19 组**
 
-本轮把公式与选项排版从零散补丁收成一套统一规则：行内分式降级为 frac 并去掉 displaystyle，公式与紧跟的中文标点绑成不可拆尾串，错题选项与模拟考选项改为字母悬挂、正文占满剩余宽度，MathML 行内盒模型与三端基线一并校正。四科题库 1559 / 3522 / 1199 / 2883 = 9163，静态扫描无残留裸 LaTeX，72 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过。本块 7 项 / 7 组。
+本轮把全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163，73 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；README 历史折叠并与本块同步。本块 19 项 / 19 组。
 
 | 分组 | 本次更新 |
 |---|---|
+| **设计系统** | 全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一为同一套 token，四科辅助色只用于识别与图表；标题、正文、辅助说明、按钮、输入框、卡片与弹窗建立固定层级，深色模式不用纯黑。 |
+| **学习工作台** | 首页在问候下加入学习工作台：错题总数、待复习、已掌握、完成度、今日建议、四科进度、最近记录，以及连续学习天数、近 7 天复习节拍与 AI 智能录入入口，不用先翻页也能决定今天做什么。 |
+| **答题卡** | 模拟考页增加答题卡：27 个题号按 34px 触控尺寸排列，点题号平滑跳到对应题目，已作答的题号高亮；顶部仍保留剩余时间、已答计数与交卷按钮。 |
+| **谷时配色** | AI 暂存与峰谷时间条统一为用户参考图的灰绿色（#B7C1AF），峰时段仍保留砖红；图例、轨道与全天谷时的状态使用同一颜色，不再出现两套绿色。 |
 | **行内分式** | 行内公式不再用强制展示命令撑高行盒：渲染前统一降级为普通分式，块级公式保持原尺寸；知识点搜索里的 dy/dx 由 21.7px 高、段落 49.1px 回到与正文同一基线。 |
 | **标点收口** | 公式与紧跟的中文标点绑定为不可拆的 math-tail 尾串，逗号、句号、冒号不再被甩到下一行；长公式整体换行，不把标点单独留在行首。 |
 | **选项悬挂** | 错题题干的 A．/B． 选项改为 md-option 的 flex 结构，字母固定宽悬挂、正文占满剩余宽度；模拟考运行页选项补 exam-opt-text 的 flex:1 与 min-width:0，长题干与公式在右侧自然换行，不把字母挤成单独一行。 |
 | **行内盒模型** | styles.css 末尾合并为一套权威规则：普通 .math-inline-scroll 为 inline、只有 .is-wide 才 inline-block 横向滚动；MathML 的 mrow/mstyle 保持 inline math，行内公式字号 1em，不再被旧补丁整块化。 |
 | **三端基线** | 题库、错题、模拟考、知识点搜索在 390 / 820 / 1440 三端逐页复核：选项、题干预览、解答与公式共用基线；段落启用 text-wrap:pretty，右侧空白不再换来孤立标点或半行文字。 |
 | **数学语言** | 四科题库静态扫描 question / answer / standardSolution / detailedAnalysis / options，去除数学片段后无残留裸 LaTeX；章名与小节名保持纯文本 Unicode，不再出现未渲染的 $...$。 |
-| **防复发** | 回归测试增至 72 项，新增 compactInlineMath、formatOptionParagraphs、math-tail、md-option 与 exam-opt-text 断言；站点一致性与构建继续跑严格 QA、公式检查、六视口真实交互与性能门禁，后续改公式或选项结构都必须重跑同一套检查。 |
+| **防复发** | 回归测试增至 73 项，新增 compactInlineMath、formatOptionParagraphs、math-tail、md-option 与 exam-opt-text 断言；站点一致性与构建继续跑严格 QA、公式检查、六视口真实交互与性能门禁，后续改公式或选项结构都必须重跑同一套检查。 |
+| **视觉层级** | 统一页面标题、正文、辅助说明、按钮与输入框高度，收齐卡片和分区留白；期末复习两个入口改为等宽卡片，设置弹窗按主题、语言、AI、同步等分区排版；手机与平板的按章索引改为纵向卡片，不再横向滚动。 |
+| **手机页头** | 压缩手机与平板顶栏：隐藏重复的品牌副标题、主题与语言图标，搜索框独占一行；首页页脚说明与工具按钮分行；笔记库隐藏顶栏重复搜索；平板首页内容垂直居中，页脚前不再出现整屏空白。 |
+| **来源筛选** | 题库来源只显示当前科目确实有题的类型：高代、数分、解几不再出现 0 条的「习题集」死路，切科目后 0 条来源自动回到全部；首页与总览文案统一为考研同型 / 教材课后 / 习题集三类题源。 |
+| **编号规范** | 规范页分清两套编号：错题条目用 A / M / G / E，题库与模板用 GA / MA / GE / WE；标题示例与编号增长规则同步改写，不再把「只增不减」写成绝对规则。 |
+| **记录折叠** | 更新记录最近 8 组默认展开，历史更新仍折叠；设置里的说明同步为「最近更新置顶并默认展开，历史更新折叠」，不再写默认展开 6 组。 |
+| **同步口径** | LOCAL FIRST 横幅与设置服务器说明统一为「数据默认保存在本机；可导出备份导入，或在本机启动 server.js 后连接同步」，不再一处说不同步、一处说可同步。 |
+| **仓库同步** | README 最新块与网页更新记录逐字对齐，2026-11-10 及更早的 19 个版本折叠到 details；同时修正 109/115 题数、30/57 项记录、三处 undefined 摘要与七处历史组数计数。 |
+| **发布归并** | GitHub Releases 同一内容日期只保留一条发布记录，旧标签和同日拆分记录不再并列展示；README、CHANGELOG、网页更新记录与 Release 正文使用同一份摘要。 |
 
 <img src="assets/v2/20261113-changelog.png" alt="网页内更新记录" width="820">
 
@@ -195,7 +207,7 @@
 
 **24 项 · 24 组**
 
-本轮在原有真实进度、公式与习题修复的基础上，给题库补了章下小节：四科 55 章共 343 个小节写入章节目录，题库、模板库、模拟考章节弹窗与期末复习的章选择都改为先选大章、再选小节，只展示当前章里确实有题的小节。题库新增 109 道可复核题目：西经 100 道配套题库单项选择题（WE-9001–WE-9100，答案与解析来自原书）与高代 9 道行列式教材题（GA-9001–GA-9009），总数 8940（1559 / 3522 / 1199 / 2660），教材课后 590。QA 与构建的配额从精确相等改为下限，避免新增题目被旧总数误判；本块 24 项 / 24 组，66 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
+本轮在原有真实进度、公式与习题修复的基础上，给题库补了章下小节：四科 55 章共 343 个小节写入章节目录，题库、模板库、模拟考章节弹窗与期末复习的章选择都改为先选大章、再选小节，只展示当前章里确实有题的小节。题库新增 115 道可复核题目：西经 100 道配套题库单项选择题（WE-9001–WE-9100，答案与解析来自原书）、高代 12 道（GA-9001–GA-9009 行列式教材题与 GA-TX048/049/050）与数分 3 道（MA-TX070/071/072），总数 8940（1559 / 3522 / 1199 / 2660），教材课后 590。QA 与构建的配额从精确相等改为下限，避免新增题目被旧总数误判；本块 24 项 / 24 组，66 项测试、严格 QA、站点一致性与 390 / 820 / 1440 检查通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -225,6 +237,9 @@
 | **记录核对** | 逐块核对 20 个日期的更新记录与构建日：11-11 只保留一块，不新增同日第二块；11-10 及更早历史块保持当天状态，不改写为今天的计数；GitHub Releases 每日期仍只有一条。 |
 
 <img src="assets/v2/20261111-changelog.png" alt="网页内更新记录" width="820">
+
+<details>
+<summary>2026-11-10 及更早 · 19 个版本</summary>
 
 ### 2026-11-10 · 界面回退与三端收口
 
@@ -780,6 +795,8 @@
 | **数据** | 默认保存在浏览器 localStorage；可选本机 server.js 做跨设备同步。 |
 | **AI** | 智能录入与录入后自动补全队列；页面关闭后队列顺延。 |
 
+</details>
+
 完整记录见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 隐私与限制
@@ -823,7 +840,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、六视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 72 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、静态服务与接口安全 |
+| `tests/` | 73 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、静态服务与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 

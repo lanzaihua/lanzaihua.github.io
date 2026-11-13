@@ -478,7 +478,7 @@ languageRow +
       '<button class="btn btn-xs" data-act="push-sync" type="button">立即推送</button></div></div>' +
     '<div class="setting-row"><div><div class="st">访问口令</div><div class="sd">服务器设置 NOTEBOOK_TOKEN 时填写；区分大小写</div></div>' +
       '<input id="syncToken" value="' + attr(sync.token) + '" placeholder="留空表示不使用" class="sync-token-input"></div>' +
-    '<div class="setting-row"><div><div class="st">服务器</div><div class="sd">' + (sync.available ? '已连接 /api/state；数据写入 data/state.json' : '未检测到 server.js；启动后刷新页面即可自动同步') + '</div></div>' +
+    '<div class="setting-row"><div><div class="st">服务器</div><div class="sd">' + (sync.available ? '已连接 /api/state；数据写入 data/state.json' : '未连接 server.js：数据只在本机；启动后刷新页面即可同步') + '</div></div>' +
       '<span class="chip">' + (sync.available ? 'ONLINE' : 'LOCAL') + '</span></div>' +
     '<div class="setting-row"><div><div class="st">数据备份</div><div class="sd">导出为 JSON，可导入到另一台设备；不依赖服务器</div></div>' +
       '<div class="multi-actions"><button class="btn btn-xs" data-act="export-state" type="button">导出</button>' +
@@ -487,7 +487,7 @@ languageRow +
       '<button class="btn btn-xs btn-danger" data-act="reset-state" type="button">恢复</button></div>' +
     '</div>' +
 '<div class="settings-section"><div class="settings-section-head"><span class="settings-section-title">关于与更新</span><span class="settings-section-note">ABOUT</span></div>' +
-    '<div class="setting-row"><div><div class="st">更新记录</div><div class="sd">最近更新默认展开，历史更新默认折叠；不会自动弹出</div></div>' +
+    '<div class="setting-row"><div><div class="st">更新记录</div><div class="sd">最近更新置顶并默认展开，历史更新折叠；不会自动弹出</div></div>' +
       '<button class="btn btn-xs" data-act="open-changelog" type="button">查看更新</button></div>' +
     '<div class="setting-row"><div><div class="st">当前科目规模</div><div class="sd">' + st.total + ' 道错题 · ' + st.templates + ' 张模板 · ' + st.bank + ' 道题库题</div></div></div>' +
     '</div>' +

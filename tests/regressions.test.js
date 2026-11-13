@@ -813,10 +813,10 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('223 道习题集'),'习题集 current count');
   assert.ok(md.includes('9163'),'bank total');
-  assert.ok(md.includes('72 项回归测试'),'current test count');
+  assert.ok(md.includes('73 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.13 Release'),'current release link');
-  assert.ok(md.includes('2026.11.13--46a3ab6f'),'current build badge');
+  assert.ok(md.includes('2026.11.13--a7ea7cf2'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -860,6 +860,21 @@ test('exam chapter picker uses one-column accordion with in-place counts and no 
   assert.ok(!/\.exam-chapter-grid\s*\{/.test(css),'旧双列章节网格样式应删除');
 });
 
+test('Warm Academic tokens, home rhythm and exam answer card stay wired',()=>{
+  const css=read('src/styles.css'), shell=read('src/js/15-shell.js'), exam=read('src/js/59-exam.js');
+  for(const t of ['--color-bg: #F6F4EE','--color-surface: #FFFFFF','--color-text: #302C28','--color-border: #E8E3DA','--color-primary: #C8754D','--color-success: #64866C','--offpeak-sage: #B7C1AF']){
+    assert.ok(css.includes(t),'缺少设计 token '+t);
+  }
+  assert.match(css,/\.ai-defer-track\s*\{[^}]*var\(--offpeak-sage\)/,'谷时进度条必须使用参考图的灰绿色');
+  assert.ok(shell.includes('homeStudyRhythm'),'首页学习工作台需要连续学习与近 7 天节奏');
+  assert.match(shell,/hw-trend-day/,'首页趋势需要 7 天柱状节拍');
+  assert.match(shell,/data-act="ai-open"/,'首页工作台需要 AI 智能录入入口');
+  assert.match(css,/\.hw-bottom\s*\{[^}]*grid-template-columns:\s*minmax/,'首页工作台必须使用自适应三栏网格');
+  assert.match(exam,/exam-cardnav/,'模拟考需要答题卡');
+  assert.match(exam,/data-act="exam-jump"/,'答题卡题号必须可跳转');
+  assert.match(css,/\.exam-cardnav-item\s*\{[^}]*min-height:\s*34px/,'答题卡按钮触控高度至少 34px');
+  assert.ok(!/background:\s*#000000?\b/.test(css),'深色模式不能用纯黑背景');
+});
 test('inline fractions keep text baseline and option labels hang without splitting',()=>{
   const {parseHTML}=require('linkedom');
   const {document}=parseHTML('<!doctype html><html><body></body></html>');

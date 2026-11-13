@@ -1571,6 +1571,12 @@ function finalExamPaperHtml(mock) {
     '<div class="exam-sticky"><header class="exam-top" title="点击展开 / 收起考试信息，向下拖动可展开" aria-label="考试信息栏"><div><p class="eyebrow">FINAL MOCK EXAM</p><h1 class="exam-title">' + esc(mock.title) + '</h1><p class="exam-sub">' + (mock.examSource === 'standard' ? '标准题库组卷；交卷后按标准答案批改，不使用 AI 批改。' : '交卷后由 AI 批改；未配置 AI 时按标准答案批改。') + '</p></div>' +
       '<div class="exam-clock"><span>剩余时间</span><b id="finalExamClock" data-no-i18n>' + finalFormatClock(finalExamRemain(mock)) + '</b><small>' + mock.duration + ' 分钟 · 满分 <span id="finalExamTotalScore" data-no-i18n>' + finalExamTotalScore(mock) + '</span></small></div>' +
       '<div class="exam-side"><span id="finalExamAnswered" data-no-i18n>' + finalExamLabel('已答', '已答') + ' ' + answered + ' / ' + mock.questions.length + '</span><button class="btn btn-primary" id="finalExamSubmitBtn" data-act="final-submit-exam" data-no-i18n type="button"' + (early ? '' : ' disabled') + '>' + finalExamLabel(early ? '提前交卷' : '开考 30 分钟后可交', early ? '提前交卷' : '开考 30 分钟后可交') + '</button><button class="linkish" data-act="final-exam-exit" type="button">暂时离开</button></div></header></div>' +
+    '<nav class="exam-cardnav" aria-label="答题卡"><span class="exam-cardnav-label">答题卡</span><div class="exam-cardnav-list">' +
+      mock.questions.map(function (q, i) {
+        var answered = finalExamAnsweredCount({ questions: [q] }) > 0;
+        return '<button class="exam-cardnav-item' + (answered ? ' is-on' : '') + '" data-act="exam-jump" data-index="' + i + '" data-qid="' + attr(q.id) + '" type="button" aria-label="第 ' + (i + 1) + ' 题' + (answered ? '，已作答' : '') + '">' + (i + 1) + '</button>';
+      }).join('') +
+    '</div></nav>' +
     '<div class="exam-paper">' + qs + '</div>' +
     '<footer class="exam-foot"><span>答题自动保存在本机；到时自动收卷。</span><button class="btn btn-primary" data-act="final-submit-exam" data-no-i18n type="button"' + (early ? '' : ' disabled') + '>' + finalExamLabel(early ? '交卷' : '开考 30 分钟后可交', early ? '交卷' : '开考 30 分钟后可交') + '</button></footer></div>';
 }
@@ -1704,6 +1710,9 @@ function finalExamChoice(qid, key) {
   var card = qs('#exam-q-' + qid);
   if (card) {
     card.querySelectorAll('.exam-opt').forEach(function (b) { b.classList.toggle('is-on', b.getAttribute('data-option') === key); });
+  var navBtn = null;
+  document.querySelectorAll('.exam-cardnav-item').forEach(function (b) { if (b.getAttribute('data-qid') === qid) navBtn = b; });
+  if (navBtn) { navBtn.classList.toggle('is-on', !!key); navBtn.setAttribute('aria-label', '第 ' + (Number(navBtn.getAttribute('data-index')) + 1) + ' 题' + (key ? '，已作答' : '')); }
   }
   var count = qs('#finalExamAnswered'); if (count) count.textContent = finalExamLabel('已答', '已答') + ' ' + finalExamAnsweredCount(mock) + ' / ' + mock.questions.length;
 }
@@ -2630,6 +2639,7 @@ document.addEventListener('click', function (e) {
   else if (act === 'final-exam-rules-confirm') { e.preventDefault(); finalExamRulesConfirm(); }
   else if (act === 'final-exam-rules-cancel') { e.preventDefault(); finalExamRulesCancel(); }
   else if (act === 'final-exam-choice') { e.preventDefault(); finalExamChoice(el.getAttribute('data-qid'), el.getAttribute('data-option')); }
+  else if (act === 'exam-jump') { e.preventDefault(); var jumpIndex = Number(el.getAttribute('data-index')); var jumpMock = finalExamMock(); var jumpQ = jumpMock && jumpMock.questions ? jumpMock.questions[jumpIndex] : null; var jumpEl = jumpQ ? qs('#exam-q-' + jumpQ.id) : null; if (jumpEl) { jumpEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); jumpEl.classList.add('is-focus'); setTimeout(function () { jumpEl.classList.remove('is-focus'); }, 900); } }
   else if (act === 'final-submit-exam') { e.preventDefault(); finalSubmitExam(false); }
   else if (act === 'final-exam-answer-mode') { e.preventDefault(); finalExamAnswerMode(el.getAttribute('data-qid'), el.getAttribute('data-mode')); }
   else if (act === 'final-exam-draw-clear') { e.preventDefault(); finalExamClearDraw(el.getAttribute('data-qid')); }
