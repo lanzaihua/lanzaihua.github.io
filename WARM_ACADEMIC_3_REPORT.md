@@ -3,7 +3,7 @@
 - 站点：https://lanzaihua.github.io/
 - 仓库：https://github.com/lanzaihua/lanzaihua.github.io
 - 项目目录：D:/学习/大一/错题本网页
-- 基线：main 4c1428ca4ac539548f57b9d893cf3e62b1be1df1
+- 基线：main 85be7c22ed5c53da92662ac791a101f80e9fb8df
 - 本轮构建：2026.11.13-ce5a2390
 - 验收日期：2026-11-13（Asia/Shanghai）
 - 原则：只记录实际执行的检查；未运行的项目在“未验证项与剩余风险”中明确列出。
@@ -44,7 +44,7 @@
 - 根因：Warm Academic 3.0 新增 --color-bg / --color-surface / --color-text / --color-border token，并把 --paper / --surface / --ink 映射到它们；旧深色块只覆盖了 --paper 等别名，没有覆盖新的 --color-* token，后定义层又把浅色值写回。
 - 修复：在 src/styles.css 末尾补充明确的 html[data-theme="dark"] 与 prefers-color-scheme: dark 下 html[data-theme="auto"] 两套 --color-* token；深色画布 #1D1B18、面板 #26231F、正文 #F2EEE6、边框 #3B362F。
 - 防复发：tests/regressions.test.js 新增 dark theme overrides the new color tokens，断言深色块必须覆盖画布、面板、正文、边框四个 token。
-- 验证：深色首页、统计、题库截图 debug/wa3-dark-home-1440.png、debug/wa3-dark-stats-1440.png、debug/wa3-dark-bank-1440.png；body 背景实测 rgb(29,27,24)，无横向溢出。
+- 验证：深色首页、统计、题库截图 debug/wa3-dark-home-1440.png、debug/wa3-dark-stats-1440.png、debug/wa3-dark-stats-390.png、debug/wa3-dark-bank-1440.png；body 背景实测 rgb(29,27,24)，无横向溢出。
 
 ### 3.2 统计中心缺失（P2）
 
@@ -86,7 +86,7 @@
 - 构建一致性：root / dist / dist-pages / 导出 HTML 均为 2026.11.13-ce5a2390。
 - 公式检查：overview / entries / templates / bank / guide 全部 raw []、broken 0。
 - 性能：FCP 544 ms、DCL 717 ms、load 725 ms、题库切换 574 ms、JS 堆 27 MB、120 张卡，problems []。
-- 六视口：390×844、360×800、430×932、834×1112、1112×834、1440×1000，真实点击首页科目、题库来源与章节级联、模拟考章节弹窗、笔记、设置、更新记录与备份往返；failures []、errors 0、无横向溢出。
+- 六视口：390×844、360×800、430×932、834×1112、1112×834、1440×1000，真实点击首页科目、题库来源与章节级联、模拟考章节弹窗、笔记、设置、更新记录与备份往返；本地最终运行 failures []、errors 0、无横向溢出，GitHub Actions 六视口步骤 success（run 43459287313）。
 - 截图：debug/wa3-home-1440.png、wa3-overview-1440.png、wa3-stats-empty-390.png、wa3-stats-seeded2-1440.png、wa3-guide-vp.png、wa3-final-vp.png、wa3-notes-vp.png、wa3-dark-home-1440.png、wa3-dark-stats-1440.png、wa3-dark-bank-1440.png、assets/v2/20261113-changelog.png。
 
 ## 5. 未验证项与剩余风险
@@ -95,7 +95,7 @@
 - 未对 9163 道题逐题独立数学证明复算；只做结构、公式渲染、答案存在性、选项唯一性、配额与抽样检查。
 - guide 表格仍偏密、期末复习两个入口卡层次仍可继续细化；不影响功能，但距离“出版物级”还有空间。
 - 导出 DOCX / PDF 未在本轮逐页检查分页与字体嵌入。
-- 线上发布、GitHub CI 与 Release 资产更新在报告定稿时尚未完成；完成后需以线上构建号与 CI 结果为准。
+- 线上发布与 Release 资产在报告定稿时仍在收尾；CI run 43459287313 已 success，最终线上构建号与 Release 资产以下一线验收为准。
 - 体量仍是约 15.8 MB 单文件，首屏解析成本存在；本轮只加性能门禁，未拆分题库包。
 
 ## 6. 回滚
