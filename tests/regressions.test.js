@@ -858,8 +858,8 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('9163'),'bank total');
   assert.ok(md.includes('86 项回归测试'),'current test count');
   assert.ok(!md.includes('81 项回归测试')&&!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
-  assert.ok(md.includes('v2026.11.14.3.2 Release'),'current release link');
-  assert.ok(md.includes('2026.11.14--ccd938f7'),'current build badge');
+  assert.ok(md.includes('v2026.11.15.3.3 Release'),'current release link');
+  assert.ok(md.includes('2026.11.15--31608627'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -1072,4 +1072,13 @@ test('3.2 mobile touch targets and knowledge search focus are wired', () => {
   assert.match(css, /@media \(max-width: 1112px\)[\s\S]{0,1600}\.msub[\s\S]{0,160}min-height:\s*42px/s);
   assert.match(css, /#settings \.seg button[\s\S]{0,120}min-height:\s*40px/s);
   assert.match(css, /#searchInput[\s\S]{0,60}min-height:\s*40px/s);
+});
+
+
+test('3.3 final planning labels, AI state copy and numbering examples stay aligned', () => {
+  const finalUi = read('src/js/58-final.js');
+  assert.match(finalUi, /function finalPlanLabel\(m, max\)/);
+  assert.doesNotMatch(finalUi, /materials\.map\(function \(m\) \{ return m\.code; \}\)/);
+  assert.match(finalUi, /aiConfigReady\(\)\) \? '按章节生成新题 · 已配置 AI'/);
+  assert.match(finalUi, /pad\(i \+ 1, 2\)/);
 });

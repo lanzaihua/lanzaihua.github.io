@@ -170,6 +170,13 @@ function finalSortedMaterials() {
   return finalMaterials().slice().sort(function (a, b) { return finalPriority(b) - finalPriority(a); });
 }
 
+function finalPlanLabel(m, max) {
+  var t = String((m && m.title) || '').replace(/\s+/g, ' ').trim();
+  if (!t) t = m && m.type === 'bank' ? '题库题' : '错题';
+  if (t.length > max) t = t.slice(0, max - 1) + '…';
+  return t;
+}
+
 function finalPlanData() {
   var fe = finalData();
   if (!fe.date) return { empty: true, duration: fe.duration };
@@ -179,7 +186,7 @@ function finalPlanData() {
   if (exam.getTime() < today.getTime()) return { past: true, exam: exam, duration: fe.duration, today: today };
   var total = Math.max(0, finalDaysBetween(today, exam));
   var materials = finalSortedMaterials();
-  var codes = materials.map(function (m) { return m.code; });
+  var labels = materials.map(function (m) { return finalPlanLabel(m, 14); });
   var p1 = Math.ceil(total * 0.45);
   var p2 = Math.ceil(total * 0.35);
   var days = [];
@@ -187,11 +194,11 @@ function finalPlanData() {
     var d = finalAddDays(today, i);
     var phase = i < p1 ? 0 : (i < p1 + p2 ? 1 : 2);
     var focus = '';
-    var c1 = codes.length ? codes[i % codes.length] : '';
-    var c2 = codes.length ? codes[(i + 1) % codes.length] : '';
-    if (phase === 0) focus = codes.length ? '回看 ' + c1 + (c2 && c2 !== c1 ? ' · ' + c2 : '') + '，整理公式与错因' : '整理错题本，补全公式与模板';
-    if (phase === 1) focus = codes.length ? '限时重做 ' + c1 + (c2 && c2 !== c1 ? ' · ' + c2 : '') + '，再做变式' : '按章节做变式题，记录卡点';
-    if (phase === 2) focus = (i === total - 1) ? '考前最后一轮：只看错题标题、公式和易错点' : (i % 2 === 0 ? '限时模拟卷 · ' + fe.duration + ' 分钟' : (codes.length ? '错题清单回看 ' + c1 + ' · ' + c2 : '回看错题清单与模板'));
+    var c1 = labels.length ? labels[i % labels.length] : '';
+    var c2 = labels.length ? labels[(i + 1) % labels.length] : '';
+    if (phase === 0) focus = labels.length ? '回看 ' + c1 + (c2 && c2 !== c1 ? ' · ' + c2 : '') + '，整理公式与错因' : '整理错题本，补全公式与模板';
+    if (phase === 1) focus = labels.length ? '限时重做 ' + c1 + (c2 && c2 !== c1 ? ' · ' + c2 : '') + '，再做变式' : '按章节做变式题，记录卡点';
+    if (phase === 2) focus = (i === total - 1) ? '考前最后一轮：只看错题标题、公式和易错点' : (i % 2 === 0 ? '限时模拟卷 · ' + fe.duration + ' 分钟' : (labels.length ? '错题清单回看 ' + c1 + ' · ' + c2 : '回看错题清单与模板'));
     days.push({ date: d, key: finalDateKey(d), phase: phase, focus: focus, done: !!fe.done[finalDateKey(d)] });
   }
   return { empty: false, past: false, today: today, exam: exam, total: total, days: days, phases: [p1, p2, Math.max(0, total - p1 - p2)], materials: materials, duration: fe.duration };
@@ -221,7 +228,6 @@ function finalPlanHtml() {
     '<div class="final-phase-grid">' + phaseCards + '</div>' +
     '<div class="final-day-list">' + rows + '<div class="final-day is-exam"><span class="fd-date">' + pad(data.exam.getMonth() + 1, 2) + '.' + pad(data.exam.getDate(), 2) + '<small>考试</small></span><span class="fd-phase">考试日</span><span class="fd-focus">带齐证件与文具，按模拟卷节奏答题</span><span class="fd-check">—</span></div></div>';
 }
-
 function finalSubject() { return finalData().subject || state.activeSubject || 'gaodai'; }
 function finalSubjectTabsHtml(showNote) {
   return '<div class="final-subject-tabs" role="tablist" aria-label="模拟卷科目">' + SUBJECTS.map(function (s) {
@@ -234,10 +240,10 @@ function finalMaterialsHtml() {
   if (!list.length) {
     return '<div class="final-empty"><b>还没有加入题目</b><p>用页面顶部的「挑错题 / 挑题库题」入口加入材料；不加入也能直接生成，系统会从当前科目的标准题库按考试时长抽题。</p></div>';
   }
-  return '<div class="final-material-list">' + list.map(function (m) {
+  return '<div class="final-material-list">' + list.map(function (m, i) {
     return '<div class="final-material">' +
-      '<span class="fm-code">' + esc(m.code) + '</span>' +
-      '<span class="fm-main"><b>' + renderInline(m.title) + '</b><small>' + esc(m.subjectName) + ' · ' + esc(m.chapter) + '</small></span>' +
+      '<span class="fm-code" aria-hidden="true">' + pad(i + 1, 2) + '</span>' +
+      '<span class="fm-main"><b title="' + attr(m.title) + '">' + renderInline(m.title) + '</b><small>' + esc(m.subjectName) + ' · ' + esc(m.chapter) + '</small></span>' +
       '<span class="fm-type">' + (m.type === 'entry' ? '错题' : '题库') + '</span>' +
       '<button class="icon-mini" data-act="final-remove-item" data-key="' + attr(m.key) + '" type="button" aria-label="从本卷移除（不删除原题）" title="从本卷移除，不删除错题或题库原题">×</button>' +
     '</div>';
@@ -638,7 +644,7 @@ function finalExamStartPanelHtml() {
     '<p class="final-paper-hint">先选章节：标准题库随机抽题，AI 按章节生成；确认考生守则后开始计时。一科一张卷，不混合科目。</p>' +
     '<div class="final-exam-start-actions">' +
       '<button class="btn btn-primary final-start-primary" data-act="final-start-exam" type="button"><b>从标准题库开考</b><span>不调用 AI · 按标准答案批改</span></button>' +
-      '<button class="btn final-start-secondary" data-act="final-ai-exam" type="button"><b>AI 出题开考</b><span>按章节生成新题 · 需配置 API</span></button>' +
+      '<button class="btn final-start-secondary" data-act="final-ai-exam" type="button"><b>AI 出题开考</b><span>' + ((typeof aiConfigReady === 'function' && aiConfigReady()) ? '按章节生成新题 · 已配置 AI' : '按章节生成新题 · 需配置 API') + '</span></button>' +
     '</div>' +
     '<p class="final-exam-action-note">第一次用建议先走标准题库：不消耗 API，答案可复核，交卷后能逐题回看。</p>' +
     finalExamSummaryHtml() + finalExamHistoryHtml() + '</section>';
