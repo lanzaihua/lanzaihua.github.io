@@ -7798,8 +7798,8 @@ body::before,body::after{content:none!important}
   letter-spacing:-.04em!important;color:var(--ui-ink)!important;
   margin:0 0 14px!important;max-width:none!important;
 }
-.home-welcome-note{font-size:14px!important;line-height:1.75!important;color:var(--ui-ink-secondary)!important;margin:0 0 34px!important;max-width:62ch}
-.home-workbench{margin:0 0 34px!important}
+.home-welcome-note{font-size:14px!important;line-height:1.75!important;color:var(--ui-ink-secondary)!important;margin:0 0 22px!important;max-width:62ch}
+.home-workbench{margin:0 0 24px!important}
 .hw-top{
   display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr)) minmax(260px,1.18fr)!important;
   background:var(--ui-surface)!important;border:1px solid var(--ui-line)!important;
@@ -9160,4 +9160,43 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .home-main { padding-top: 16px !important; }
   .home-title { margin-bottom: 4px !important; }
   .home-subject { padding-top: 11px !important; padding-bottom: 11px !important; }
+}
+
+
+/* Warm Academic 3.2 · mobile/tablet touch targets. Key controls stay >=40px, never shrink with labels. */
+@media (max-width: 1112px) {
+  .mobile-brand {
+    min-width: 40px;
+    min-height: 42px;
+    justify-content: center;
+  }
+  #subjectNav .msub,
+  .msub {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #searchInput {
+    min-height: 40px;
+  }
+  #settings button,
+  #settings .setting-row .btn,
+  #settings .setting-row .seg button,
+  #settings .seg button,
+  #settings .btn,
+  #settings #userNameInput,
+  #settings select,
+  #settings .select {
+    min-height: 40px !important;
+  }
+  #settings .seg {
+    min-height: 40px;
+    align-items: stretch;
+  }
+  #settings .seg button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

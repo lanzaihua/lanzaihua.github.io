@@ -145,7 +145,13 @@ async function visibleBox(page, selector) {
         blocks: rects,
         overlaps: overlaps,
         list: list ? { client: list.clientWidth, scroll: list.scrollWidth, width: list.getBoundingClientRect().width } : null,
-        item: first ? { width: first.getBoundingClientRect().width, scroll: first.scrollWidth, client: first.clientWidth } : null
+        item: first ? { width: first.getBoundingClientRect().width, scroll: first.scrollWidth, client: first.clientWidth } : null,
+        fourthBottom: (function () {
+          var cards = document.querySelectorAll('.home-subject');
+          var last = cards[cards.length - 1];
+          return last ? Math.round(last.getBoundingClientRect().bottom) : null;
+        })(),
+        viewportHeight: window.innerHeight
       };
     });
     assert(item.homeLayout.display !== 'none', failures, device.name + ' / home workbench hidden');
@@ -153,6 +159,7 @@ async function visibleBox(page, selector) {
     assert(item.homeLayout.overlaps === 0, failures, device.name + ' / home workbench columns overlap');
     assert(item.homeLayout.list && item.homeLayout.list.scroll <= item.homeLayout.list.client + 2, failures, device.name + ' / recent records overflow column');
     assert(item.homeLayout.item && item.homeLayout.item.width <= item.homeLayout.list.width + 2, failures, device.name + ' / recent record wider than column');
+    if (device.width >= 1440 && device.height >= 1000) assert(item.homeLayout.fourthBottom !== null && item.homeLayout.fourthBottom <= item.homeLayout.viewportHeight, failures, device.name + ' / fourth subject card below first screen (' + item.homeLayout.fourthBottom + ' > ' + item.homeLayout.viewportHeight + ')');
     if (homeRaw === null) await page.evaluate(function () { localStorage.removeItem('sanke-cuotiben-v1'); });
     else await page.evaluate(function (raw) { localStorage.setItem('sanke-cuotiben-v1', raw); }, homeRaw);
     await goto(page, '#/home');
@@ -181,7 +188,7 @@ async function visibleBox(page, selector) {
     // 移动端与平板：主要控件不得小于 44px。
     if (device.touch) {
       item.touchTargets = await page.evaluate(function () {
-        var sel = '.btn,.icon-btn,.tab,.seg button,.subject-jump-btn,.exam-answer-tabs button,.changelog-more';
+        var sel = '.btn,.icon-btn,.tab,.seg button,.subject-jump-btn,.exam-answer-tabs button,.changelog-more,.msub,.mobile-brand,#searchInput';
         var small = [];
         document.querySelectorAll(sel).forEach(function (el) {
           var r = el.getBoundingClientRect();
@@ -193,6 +200,24 @@ async function visibleBox(page, selector) {
         return { checked: document.querySelectorAll(sel).length, small: small.slice(0, 8) };
       });
       assert(item.touchTargets.small.length === 0, failures, device.name + ' / touch targets too small: ' + JSON.stringify(item.touchTargets.small[0] || {}));
+    }
+
+    // 知识面板：Escape 必须关闭，并把焦点交还搜索框；aria-hidden 同步。
+    if (device.touch) {
+      await page.locator('#searchInput').fill('导数');
+      await page.waitForSelector('#kbAnswerPanel', { timeout: 8000 });
+      item.knowledge = { open: true, hidden: await page.locator('#kbAnswerPanel').getAttribute('aria-hidden') };
+      await page.keyboard.press('Escape');
+      await sleep(page, 180);
+      const afterEscape = await page.evaluate(function () {
+        return { panel: !!document.getElementById('kbAnswerPanel'), active: document.activeElement && document.activeElement.id, hidden: document.getElementById('searchInput') && document.getElementById('searchInput').getAttribute('aria-controls') };
+      });
+      item.knowledge.afterEscape = afterEscape;
+      assert(item.knowledge.hidden === 'false', failures, device.name + ' / knowledge search panel aria-hidden not false');
+      assert(!afterEscape.panel, failures, device.name + ' / Escape did not close knowledge panel');
+      assert(afterEscape.active === 'searchInput', failures, device.name + ' / focus did not return to search after Escape');
+      assert(afterEscape.panel === false, failures, device.name + ' / knowledge search panel did not close');
+      await page.locator('#searchInput').fill('');
     }
 
     // 首页 -> 科目入口：真实点击，不只截图。
@@ -353,6 +378,18 @@ async function visibleBox(page, selector) {
     assert(item.dialogs.settings.left >= 0 && item.dialogs.settings.right <= device.width + 1, failures, device.name + ' / settings off-screen');
     assert(item.dialogs.settings.sections === 5, failures, device.name + ' / settings sections');
     assert(item.dialogs.settings.overflow <= 1, failures, device.name + ' / settings overflow');
+    if (device.touch) {
+      item.dialogs.settingsControls = await page.evaluate(function () {
+        var small = [];
+        document.querySelectorAll('#settings button,#settings select,#settings .user-name-input').forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          if (!r.width || !r.height || r.bottom < 0 || r.top > innerHeight) return;
+          if (r.height < 40) small.push({ label: (el.textContent || el.value || el.getAttribute('aria-label') || '').trim().slice(0, 18), w: Math.round(r.width), h: Math.round(r.height) });
+        });
+        return small;
+      });
+      assert(item.dialogs.settingsControls.length === 0, failures, device.name + ' / settings touch target too small: ' + JSON.stringify(item.dialogs.settingsControls[0] || {}));
+    }
 
     // 数据备份：真实下载 JSON/GZIP，再通过导入入口合并回来。
     if (device.name === 'desktop') {

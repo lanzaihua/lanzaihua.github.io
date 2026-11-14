@@ -280,7 +280,7 @@ function knowledgeSearchPanelHtml() {
   srcBits.push('页码：' + esc(source.page || '以纸书版次为准'));
   var sourceLine = srcBits.join(' · ');
   var questionHtml = knowledgeSearchQuestionsHtml(a);
-  return '<section class="kb-answer card" id="kbAnswerPanel" aria-live="polite">' +
+  return '<section class="kb-answer card" id="kbAnswerPanel" aria-live="polite" aria-hidden="false">' +
     '<div class="kb-answer-head"><span class="eyebrow">知识点 / KNOWLEDGE</span><button class="kb-answer-close" data-act="kb-answer-close" type="button" aria-label="关闭知识点">×</button></div>' +
     '<h2>' + esc(a.title || a.query) + '</h2>' +
     '<p class="kb-answer-meta"><span>' + esc(subj.name) + '</span><span>skill：' + esc(subj.skill) + '</span></p>' +
@@ -293,9 +293,23 @@ function knowledgeSearchPanelHtml() {
   '</section>';
 }
 
-function knowledgeSearchClose() {
+function syncKnowledgeSearchAria() {
+  var panel = document.getElementById('kbAnswerPanel');
+  if (panel) panel.setAttribute('aria-hidden', ui.kbAnswer ? 'false' : 'true');
+}
+
+function knowledgeSearchClose(restoreFocus) {
+  var had = !!ui.kbAnswer;
   ui.kbAnswer = null;
+  ui.kbAnswerToken = 0;
+  if (ui.kbTimer) { clearTimeout(ui.kbTimer); ui.kbTimer = null; }
   render();
+  if (had && restoreFocus) {
+    setTimeout(function () {
+      var el = document.getElementById('searchInput');
+      if (el) { el.focus(); try { el.setSelectionRange(el.value.length, el.value.length); } catch (e) {} }
+    }, 0);
+  }
 }
 
 function knowledgeSearchOnInput(value) {
@@ -468,11 +482,20 @@ function knowledgeSearchAdd() {
   toast('已加入知识笔记：' + note.title);
 }
 
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Escape' || !ui.kbAnswer) return;
+  var panel = document.getElementById('kbAnswerPanel');
+  if (!panel) return;
+  e.preventDefault();
+  knowledgeSearchClose(true);
+});
+
 document.addEventListener('click', function (e) {
   var el = e.target && e.target.closest ? e.target.closest('[data-act]') : null;
   if (!el) return;
   var act = el.getAttribute('data-act');
-  if (act === 'kb-answer-close' || act === 'kb-answer-no') { e.preventDefault(); knowledgeSearchClose(); }
+  if (act === 'kb-answer-close') { e.preventDefault(); knowledgeSearchClose(true); }
+  else if (act === 'kb-answer-no') { e.preventDefault(); knowledgeSearchClose(false); }
   else if (act === 'kb-answer-add') { e.preventDefault(); knowledgeSearchAdd(); }
   else if (act === 'kb-question-open') { e.preventDefault(); knowledgeSearchOpenQuestion(el.getAttribute('data-kind'), el.getAttribute('data-id')); }
 });

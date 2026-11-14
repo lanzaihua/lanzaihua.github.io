@@ -856,10 +856,10 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('223 道习题集'),'习题集 current count');
   assert.ok(md.includes('9163'),'bank total');
-  assert.ok(md.includes('85 项回归测试'),'current test count');
+  assert.ok(md.includes('86 项回归测试'),'current test count');
   assert.ok(!md.includes('81 项回归测试')&&!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
-  assert.ok(md.includes('v2026.11.14 Release'),'current release link');
-  assert.ok(md.includes('2026.11.14--f0b20569'),'current build badge');
+  assert.ok(md.includes('v2026.11.14.3.2 Release'),'current release link');
+  assert.ok(md.includes('2026.11.14--ccd938f7'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -1054,4 +1054,22 @@ test('3.1 home first screen, empty guide and mobile entry fixes stay wired', () 
   assert.match(css, /\.cross-tabs\s*\{[^}]*order:\s*5[^}]*flex:\s*1 1 100%/s);
   assert.match(css, /\.kb-answer-body \.table-wrap\s*\{[^}]*overflow-x:\s*auto/s);
   assert.match(css, /@media \(min-width: 1024px\)[\s\S]{0,260}\.home-subject\s*\{[^}]*padding-top:\s*12px/s);
+});
+
+
+test('3.2 mobile touch targets and knowledge search focus are wired', () => {
+  const css = read('src/styles.css');
+  const html = read('src/index.template.html');
+  const ks = read('src/js/57-knowledge-search.js');
+  const shell = read('src/js/15-shell.js');
+  assert.doesNotMatch(html, /id="searchInput"[^>]*aria-(controls|expanded)/);
+  assert.match(ks, /function syncKnowledgeSearchAria\(/);
+  assert.match(ks, /panel\.setAttribute\('aria-hidden', ui\.kbAnswer \? 'false' : 'true'\)/);
+  assert.match(ks, /function knowledgeSearchClose\(restoreFocus\)/);
+  assert.match(ks, /knowledgeSearchClose\(true\)/);
+  assert.match(ks, /if \(e\.key !== 'Escape' \|\| !ui\.kbAnswer\) return/);
+  assert.match(shell, /syncKnowledgeSearchAria/);
+  assert.match(css, /@media \(max-width: 1112px\)[\s\S]{0,1600}\.msub[\s\S]{0,160}min-height:\s*42px/s);
+  assert.match(css, /#settings \.seg button[\s\S]{0,120}min-height:\s*40px/s);
+  assert.match(css, /#searchInput[\s\S]{0,60}min-height:\s*40px/s);
 });

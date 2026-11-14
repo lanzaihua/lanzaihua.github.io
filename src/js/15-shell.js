@@ -289,6 +289,7 @@ function render() {
   if (typeof renderNotificationBadge === 'function') renderNotificationBadge();
   renderMain();
   renderFoot();
+  if (typeof syncKnowledgeSearchAria === 'function') syncKnowledgeSearchAria();
   if (typeof decorateMathScrollers === 'function') setTimeout(decorateMathScrollers, 30);
   renderHome();
   renderSyncStatus();

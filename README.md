@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.14-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.14--f0b20569-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.14.3.2-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.14--ccd938f7-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -151,9 +151,9 @@
 
 ### 2026-11-14 · 健壮性修复与发布
 
-**23 项 · 23 组**
+**25 项 · 25 组**
 
-本轮补存储、路由、缓存、错误边界与同步损坏保护：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；服务端数据文件损坏时改为失败关闭，前端停止覆盖本地数据并提示保留原始副本。同时完成 Warm Academic 3.1 精修：首页压缩到 1440×1000 首屏露出四科入口，错题空态改成三步引导，规范页加入字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；八视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，85 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过；本块已随 GitHub Pages 与 v2026.11.14 Release 正式发布。本块 23 项 / 23 组。
+本轮补存储、路由、缓存、错误边界与同步损坏保护：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；服务端数据文件损坏时改为失败关闭，前端停止覆盖本地数据并提示保留原始副本。同时完成 Warm Academic 3.1 精修：首页压缩到 1440×1000 首屏露出四科入口，错题空态改成三步引导，规范页加入字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；八视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，86 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过；3.2 又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14.3.2 Release 发布。本块 25 项 / 25 组。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -161,7 +161,7 @@
 | **损坏备份** | 启动时读到损坏 JSON 会把原文另存为 key-corrupted-backup，保留原始存储不动，并提示先导出再恢复或清空。 |
 | **深链兜底** | 直接访问 /gaodai、/shufen/bank 这类没有扩展名的深链时，404 页把路径还原成 #/ 路由并回到对应页面，不再只显示一句「页面不存在」。 |
 | **缓存边界** | Service Worker 缓存名升到 v2，只缓存状态 200 且不是 Range 的响应，跳过 /api 与自身脚本；离线仍能打开最近一次成功页面。 |
-| **错误与焦点** | 新增全局错误卡片与未处理 Promise 兜底，出错时说明数据未丢并可刷新；hash 路由切换后焦点落到页面标题，屏幕阅读器能感知换页；移动端主要按钮保持 44px 触控高度。 |
+| **错误与焦点** | 新增全局错误卡片与未处理 Promise 兜底，出错时说明数据未丢并可刷新；hash 路由切换后焦点落到页面标题，屏幕阅读器能感知换页；知识点搜索面板支持 Escape 关闭并把焦点送回搜索框，开合状态用 aria-hidden 同步；移动端主要按钮保持 44px 触控高度。 |
 | **界面系统** | 在 Warm Academic 3.0 基础上做 3.1 精修：保留暖白画布、纯白面板、细线分隔与砖红强调；统一标题、正文、元信息、按钮和输入框的字号与高度；首页首屏、错题空态、规范页导读、题库范围条、期末入口与统计结论同批收口；深色主题沿用同一组 token。 |
 | **手机页头** | 手机与平板顶栏压到 146px 左右：品牌、搜索、设置与通知同排，科目切换与主标签分行，主内容不再被 247px 顶栏推到首屏之外；首页指标带改为 2×2，科目入口上移。 |
 | **主操作** | 手机端主操作按钮恢复显示并换行排列，不再被隐藏；按钮、标签与弹窗关闭键保持 40–44px 触控尺寸，长标题与长按钮在窄屏自然折行。 |
@@ -176,10 +176,12 @@
 | **统计结论** | 学习统计的五个面板各加一句基于真实数据的结论：最忙的一天、四科累计与最高、错因最多、章节最集中、最近均分与最高分；没有数据时继续用明确空态。 |
 | **AI 动作可达** | 智能录入弹窗的提交行改为底部吸附，桌面初始视口不再把「生成并自动入库」裁掉；弹窗正文可滚动，窄屏按钮仍可点到。 |
 | **同步损坏保护** | 服务端数据文件损坏时，GET /api/state 返回 500 STATE_CORRUPTED、写入返回 409，health 标明 stateCorrupted 与备份路径；前端停止覆盖本地数据并提示「本地数据文件损坏，已保留原始副本」，启动日志不再输出空白或重复口令。 |
-| **首页首屏** | 桌面端压缩问候区、工作台与分区间距，四科入口在 1440×1000 首屏完整可见；手机端保持单栏顺序与正文字号，不靠缩小内容硬塞。 |
+| **首页首屏** | 3.2 再收紧首页问候区与工作台的纵向间距（34→22 / 34→24）：四科入口第 4 卡在 1440×1000 下 bottom≈978px，完整进入首屏并留出安全余量；手机端保持单栏顺序与正文字号，不靠缩小内容硬塞。 |
 | **空态引导** | 错题空态改为三步起步卡：从题库挑一道、手动新增、智能录入；筛选无结果时仍提示换条件或清空，不用假数据填满页面。 |
-| **文档校准** | README、CHANGELOG、网页更新记录与 GitHub Release 统一为本块 23 项 / 23 组、85 项回归、8 视口；版本徽章指向最终构建，九枚徽章颜色两两不同，历史更新继续收在 details。 |
+| **文档校准** | README、CHANGELOG、网页更新记录与 GitHub Release 统一为本块 25 项 / 25 组、86 项回归、8 视口；版本徽章指向最终构建，九枚徽章颜色两两不同，历史更新继续收在 details。 |
 | **发布边界** | 源码、网页记录、README、CHANGELOG 与 GitHub Release 已对齐同一个构建并上线；线上构建号与仓库一致，不再保留候选或待发布字样。 |
+| **测试门禁** | 修复 Windows 下 node --test 跑完不休的问题：临时目录写入 commonjs 包标记，stopChild 先检查退出码再等待 exit，SSRF 测试关闭改为回调 Promise；86 项回归约 3 秒退出 0。 |
+| **触控尺寸** | 触控规则扩到 1112px 及以下：品牌入口 42px、科目切换 42px、搜索框 40px、设置按钮 40px、分页 40px；手机、平板与横屏平板的触控目标不再低于 40px，桌面尺寸不变。 |
 
 <img src="assets/v2/20261114-changelog.png" alt="网页内更新记录" width="820">
 
@@ -858,7 +860,7 @@
 
 ## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.14 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.14/source.zip) 提供。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.14.3.2 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.14.3.2/source.zip) 提供。
 
 ### 仓库与许可证
 
@@ -877,7 +879,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、8 视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 85 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、深链兜底与接口安全 |
+| `tests/` | 86 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、深链兜底与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 
