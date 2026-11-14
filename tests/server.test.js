@@ -102,3 +102,32 @@ test('oversized request body is rejected and the server stays alive',async()=>{
     assert.equal(healthStatus,200,'server must stay alive after oversized body');
   } finally {child.kill();await new Promise(r=>child.once('exit',r));fs.rmSync(temporary,{recursive:true,force:true});}
 });
+
+test('corrupt server state fails closed, is backed up, and cannot be overwritten',async()=>{
+  const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'notebook-server-corrupt-'));
+  fs.copyFileSync(path.join(ROOT,'server.js'),path.join(temporary,'server.js'));
+  fs.copyFileSync(path.join(ROOT,'skills.js'),path.join(temporary,'skills.js'));
+  fs.mkdirSync(path.join(temporary,'dist'));fs.writeFileSync(path.join(temporary,'dist','index.html'),'HOME');
+  fs.mkdirSync(path.join(temporary,'data'));
+  const corrupt='{ this is not valid json';
+  fs.writeFileSync(path.join(temporary,'data','state.json'),corrupt);
+  const reserve=http.createServer();await new Promise(r=>reserve.listen(0,'127.0.0.1',r));const port=reserve.address().port;await new Promise(r=>reserve.close(r));
+  const child=spawn(process.execPath,['server.js'],{cwd:temporary,env:{...process.env,PORT:String(port),HOST:'127.0.0.1',NOTEBOOK_TOKEN:''},stdio:['ignore','pipe','pipe']});
+  try {
+    await new Promise((resolve,reject)=>{let logs='';const timer=setTimeout(()=>reject(Error('server startup timeout: '+logs)),5000);child.stdout.on('data',d=>{logs+=d;if(logs.includes('本机:')){clearTimeout(timer);resolve();}});child.on('exit',c=>{clearTimeout(timer);reject(Error('server exited '+c));});});
+    const health=await request(port,'/api/health');
+    assert.equal(health.status,200);
+    assert.equal(JSON.parse(health.body).stateCorrupted,true);
+    const get=await request(port,'/api/state');
+    assert.equal(get.status,500);
+    assert.equal(JSON.parse(get.body).code,'STATE_CORRUPTED');
+    const payload=JSON.stringify({baseRev:0,state:{entries:{gaodai:[],shufen:[],jieji:[],xijing:[]}}});
+    const put=await request(port,'/api/state',{method:'PUT',headers:{'Content-Type':'application/json','Content-Length':Buffer.byteLength(payload)},body:payload});
+    assert.equal(put.status,409,put.body);
+    assert.equal(JSON.parse(put.body).code,'STATE_CORRUPTED');
+    const backup=path.join(temporary,'data','state.json.corrupted');
+    assert.ok(fs.existsSync(backup),'corrupt state must be backed up');
+    assert.equal(fs.readFileSync(backup,'utf8'),corrupt);
+    assert.equal(fs.readFileSync(path.join(temporary,'data','state.json'),'utf8'),corrupt,'original corrupt file must remain untouched');
+  } finally {child.kill();await new Promise(r=>child.once('exit',r));fs.rmSync(temporary,{recursive:true,force:true});}
+});

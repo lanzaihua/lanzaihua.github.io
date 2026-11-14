@@ -1,6 +1,6 @@
 'use strict';
 /*
- * 三端真实浏览器回归：6 个视口 + 首页/四科/题库/笔记/模拟考/设置/更新记录 + 深色模式。
+ * 三端真实浏览器回归：8 个视口 + 首页/四科/题库/笔记/模拟考/设置/更新记录 + 深色模式。
  * 用法：node tools/qa-responsive.js
  * 可选：PAGE_URL=... node tools/qa-responsive.js
  * CI 先运行 npx playwright-core install --with-deps chromium。
@@ -15,9 +15,11 @@ const DEVICES = [
   { name: 'phone-390', width: 390, height: 844, mobile: true, touch: true, dpr: 2 },
   { name: 'phone-360', width: 360, height: 800, mobile: true, touch: true, dpr: 2 },
   { name: 'phone-430', width: 430, height: 932, mobile: true, touch: true, dpr: 2 },
+  { name: 'tablet-768', width: 768, height: 1024, mobile: true, touch: true, dpr: 2 },
   { name: 'tablet-portrait', width: 834, height: 1112, mobile: true, touch: true, dpr: 2 },
   { name: 'tablet-landscape', width: 1112, height: 834, mobile: true, touch: true, dpr: 2 },
-  { name: 'desktop', width: 1440, height: 1000, mobile: false, touch: false, dpr: 1 }
+  { name: 'desktop', width: 1440, height: 1000, mobile: false, touch: false, dpr: 1 },
+  { name: 'desktop-1920', width: 1920, height: 1080, mobile: false, touch: false, dpr: 1 }
 ];
 const ROUTES = [
   ['home', '#/home'],

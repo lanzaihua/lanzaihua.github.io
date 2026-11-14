@@ -73,9 +73,25 @@ function readState() {
     if (!fs.existsSync(STATE_FILE)) return { rev: 0, updatedAt: null, state: null };
     const raw = fs.readFileSync(STATE_FILE, 'utf8');
     const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') throw new Error('state is not an object');
     return { rev: Number(parsed.rev || 0), updatedAt: parsed.updatedAt || null, state: parsed.state || null };
   } catch (e) {
-    return { rev: 0, updatedAt: null, state: null, error: String(e.message || e) };
+    // 损坏的状态文件绝不能当成空状态返回：下一次 PUT 会以 baseRev=0 通过并覆盖原始文件。
+    // 先保留一份只读副本，再让所有读写接口明确失败，等待用户导出副本或手动恢复。
+    let backup = STATE_FILE + '.corrupted';
+    try {
+      if (!fs.existsSync(backup)) fs.copyFileSync(STATE_FILE, backup);
+    } catch (copyError) {
+      backup = null;
+    }
+    return {
+      rev: 0,
+      updatedAt: null,
+      state: null,
+      error: String(e.message || e),
+      corrupted: true,
+      backupPath: backup
+    };
   }
 }
 
@@ -651,6 +667,8 @@ const server = http.createServer(function (req, res) {
     const cur = readState();
     return json(res, 200, {
       ok: true, rev: cur.rev, updatedAt: cur.updatedAt, token: !!TOKEN, lan: LAN,
+      stateCorrupted: !!cur.corrupted,
+      stateBackup: cur.backupPath || null,
       ai: (function () { var c = envAiConfig(); return { configured: !!c.apiKey, model: c.model, protocol: c.protocol }; })()
     });
   }
@@ -669,7 +687,16 @@ const server = http.createServer(function (req, res) {
   }
 
   if (url === '/api/state' && req.method === 'GET') {
-    return json(res, 200, readState());
+    const cur = readState();
+    if (cur.corrupted) {
+      return json(res, 500, {
+        error: '本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存',
+        code: 'STATE_CORRUPTED',
+        backup: cur.backupPath || null,
+        detail: cur.error
+      });
+    }
+    return json(res, 200, cur);
   }
 
   if (url === '/api/state' && req.method === 'PUT') {
@@ -680,6 +707,13 @@ const server = http.createServer(function (req, res) {
         return json(res, 400, { error: 'state.entries required' });
       }
       const cur = readState();
+      if (cur.corrupted) {
+        return json(res, 409, {
+          error: '本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存',
+          code: 'STATE_CORRUPTED',
+          backup: cur.backupPath || null
+        });
+      }
       const baseRev = Number(payload.baseRev || 0);
       if (baseRev !== cur.rev) {
         return json(res, 409, { rev: cur.rev, updatedAt: cur.updatedAt, state: cur.state });
@@ -715,10 +749,6 @@ server.listen(PORT, HOST, function () {
     });
   } else {
     lines.push('  手机访问：重新用 node server.js --lan 启动，然后打开终端里的局域网地址');
-    if (!process.env.NOTEBOOK_TOKEN) {
-      lines.push('  本次访问口令: ' + TOKEN);
-      lines.push('  局域网设备首次打开后，请到「设置 → 同步」把上面的口令填入访问口令。');
-    }
   }
   lines.push('  数据文件: ' + STATE_FILE);
   const startupAi = envAiConfig();

@@ -6,6 +6,30 @@ function entryCreateButtons(subjectId) {
     '<button class="btn btn-primary" data-act="ai-open" data-subject="' + attr(subjectId) + '" type="button">智能录入</button>';
 }
 
+function entryEmptyGuide(subjectId) {
+  var bankHref = '#/' + attr(subjectRouteId(subjectId)) + '/bank';
+  return '<div class="entry-empty-guide" aria-label="开始记录错题的三种方式">' +
+    '<a class="entry-empty-step" href="' + bankHref + '">' +
+      '<span class="ees-index">01</span>' +
+      '<b>从题库挑一道</b>' +
+      '<p>按章节、题型和难度筛选，先做一道标准题。</p>' +
+      '<em>去题库 <span aria-hidden="true">→</span></em>' +
+    '</a>' +
+    '<button class="entry-empty-step" data-act="add-entry" type="button">' +
+      '<span class="ees-index">02</span>' +
+      '<b>手动新增</b>' +
+      '<p>把原题、错因和自己的解法完整记下来。</p>' +
+      '<em>开始记录 <span aria-hidden="true">→</span></em>' +
+    '</button>' +
+    '<button class="entry-empty-step" data-act="ai-open" data-subject="' + attr(subjectId) + '" type="button">' +
+      '<span class="ees-index">03</span>' +
+      '<b>智能录入</b>' +
+      '<p>贴题干或图片，交给 AI 整理成条目。</p>' +
+      '<em>交给 AI <span aria-hidden="true">→</span></em>' +
+    '</button>' +
+  '</div>';
+}
+
 function viewEntries(subjectId) {
   var f = filterFor(subjectId);
   var list = filteredEntries(subjectId);
@@ -70,11 +94,17 @@ function viewEntries(subjectId) {
 
   var listHtml;
   if (!list.length) {
-    listHtml = emptyState(
-      all.length ? '没有符合筛选的题' : '还没有错题',
-      all.length ? '换个章节或状态看看，或清空搜索词。' : '点「手动新增」记录，或点「智能录入」整理。',
-      '<div class="multi-actions">' + entryCreateButtons(subjectId) + '</div>'
-    );
+    listHtml = all.length
+      ? emptyState(
+          '没有符合筛选的题',
+          '换个章节或状态看看，或清空筛选。',
+          '<div class="multi-actions">' + entryCreateButtons(subjectId) + '</div>'
+        )
+      : emptyState(
+          '还没有错题',
+          '先记下第一道错题，或者从题库挑一道；三种方式都可以随时开始。',
+          entryEmptyGuide(subjectId)
+        );
   } else {
     listHtml = '<div class="entry-list">' + list.map(renderEntryCard).join('') + '</div>';
   }

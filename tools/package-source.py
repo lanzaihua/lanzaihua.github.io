@@ -27,7 +27,7 @@ STATIC_FILES = [
     "robots.txt", "sitemap.xml", "sw.js",
 ]
 ROOT_FILES = [
-    ".gitattributes", ".gitignore", ".nojekyll", "404.html", "AUDIT_REPORT.md", "CHANGELOG.md", "WARM_ACADEMIC_3_REPORT.md",
+    ".gitattributes", ".gitignore", ".nojekyll", "404.html", "AUDIT_REPORT.md", "AUDIT_REPORT_2026-11-14.md", "CHANGELOG.md", "WARM_ACADEMIC_3_REPORT.md", "WARM_ACADEMIC_3_1_REPORT.md", "WARM_ACADEMIC_3_DESIGN.md", "UI_UX_3_DESIGN.md",
     "LICENSE", "Makefile", "README.md", "build.js", "favicon.svg", "manifest.webmanifest",
     "package-lock.json", "package.json", "robots.txt", "server.js",
     "sitemap.xml", "skills.js", "sw.js",

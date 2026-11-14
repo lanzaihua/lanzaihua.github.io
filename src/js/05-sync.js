@@ -33,12 +33,31 @@ async function initSync() {
       return;
     }
     if (!health.ok) throw new Error('no api');
+    var healthInfo = null;
+    try { healthInfo = await health.json(); } catch (e) {}
     sync.available = true;
+    if (healthInfo && healthInfo.stateCorrupted) {
+      setSyncState('conflict', '本地数据文件损坏，已保留原始副本');
+      toast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
+      if (typeof render === 'function') render();
+      return;
+    }
     var res = await fetch('/api/state', { headers: apiHeaders(), cache: 'no-store' });
     if (res.status === 401) {
       setSyncState('locked', '需要访问口令');
       if (typeof render === 'function') render();
       return;
+    }
+    if (res.status >= 500) {
+      var stateError = null;
+      try { stateError = await res.json(); } catch (e) {}
+      if (stateError && stateError.code === 'STATE_CORRUPTED') {
+        setSyncState('conflict', '本地数据文件损坏，已保留原始副本');
+        toast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
+        if (typeof render === 'function') render();
+        return;
+      }
+      throw new Error('bad state');
     }
     if (!res.ok) throw new Error('bad state');
     var remote = await res.json();

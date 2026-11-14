@@ -142,6 +142,15 @@ test('sync conflict preserves local edits and revision',async()=>{
   r.ctx.fetch=async()=>({status:409,json:async()=>({rev:9,state:{...savedState(),updatedAt:'2026-12-01T00:00:00Z'}})});
   await r.ctx.pushSync(false);assert.equal(r.ctx.state.rev,7);assert.equal(r.ctx.sync.mode,'conflict');
 });
+test('startup sync surfaces corrupted server state without replacing local data',async()=>{
+  const r=runtime(JSON.stringify(savedState()));r.run('05-sync.js');r.ctx.PAGES=false;r.ctx.renderSyncStatus=()=>{};r.ctx.toast=()=>{};
+  const before=r.ctx.state.updatedAt;
+  r.ctx.fetch=async url=>url==='/api/health'?{ok:true,status:200,json:async()=>({stateCorrupted:true,stateBackup:'data/state.json.corrupted'})}:{ok:true,status:200,json:async()=>({rev:3,state:{...savedState(),updatedAt:'2026-12-01T00:00:00Z'}})};
+  await r.ctx.initSync();
+  assert.equal(r.ctx.sync.mode,'conflict');
+  assert.match(String(r.ctx.sync.detail),/损坏/);
+  assert.equal(r.ctx.state.updatedAt,before);
+});
 test('edits made while pushing retain their timestamp and schedule another push',async()=>{
   const r=runtime();r.run('05-sync.js');r.ctx.sync.available=true;r.ctx.renderSyncStatus=()=>{};
   r.ctx.state.updatedAt='2026-01-01T00:00:00Z';let scheduled=false;
@@ -327,7 +336,7 @@ test('styles keep MathML layout boxes and balanced mobile action rows',()=>{
   assert.match(css,/\.exam-result-option\s*\{[^}]*display:\s*flex/,'模拟考结果选项需要 flex 排版，选项字母不能单独占行');
   assert.match(css,/\.bank-option\s*\{[^}]*display:\s*flex/,'题库选项需要 flex 排版，选项字母不能单独占行');
   assert.ok(/\.math-inline-scroll\.is-wide[\s\S]{0,400}font-size: 1em !important/.test(css),'宽公式不能缩小字号');
-  assert.match(css,/\.bank-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端题库操作按钮应为两列');
+  assert.match(css,/\.bank-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/,'移动端题库操作按钮应为两列');
   assert.match(css,/\.entry-foot\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端错题操作按钮应为两列');
 });
 test('site shell restores warm home greeting and paper layout',()=>{
@@ -850,7 +859,7 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('81 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.14 Release'),'current release link');
-  assert.ok(md.includes('2026.11.14--45820005'),'current build badge');
+  assert.ok(md.includes('2026.11.14--2a6c7910'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -1014,4 +1023,35 @@ test('dark theme overrides the new color tokens, not only the paper aliases',()=
   assert.match(css,/html\[data-theme="dark"\]\s*\{[^}]*--color-text:\s*#F2EEE6/s,'深色主题必须覆盖新正文 token');
   assert.match(css,/html\[data-theme="dark"\]\s*\{[^}]*--color-border:\s*#3B362F/s,'深色主题必须覆盖新边框 token');
   assert.match(css,/html\[data-theme="auto"\]\s*\{[^}]*--color-bg:\s*#1D1B18/s,'跟随系统的深色同样要覆盖新画布 token');
+});
+
+test('Warm Academic 3.1 keeps guide cards, exam stages and bank scope readable', () => {
+  const css = read('src/styles.css');
+  const library = read('src/js/30-library.js');
+  const finalUi = read('src/js/58-final.js');
+  const stats = read('src/js/16-stats.js');
+  assert.match(library, /decorateGuideTables/);
+  assert.match(library, /guide-jump/);
+  assert.match(library, /bank-resultbar/);
+  assert.match(finalUi, /final-flow-label/);
+  assert.match(finalUi, /data-act="final-ai-exam"/);
+  assert.match(stats, /stats-insight/);
+  assert.match(css, /\.final-flow \.final-section-tab\s*\{[^}]*display:\s*grid\s*!important/);
+  assert.match(css, /\.guide-facts\s*\{[^}]*repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(css, /\.guide-layout \.guide-panel \.md \.guide-table td[\s\S]{0,180}width:\s*auto !important/);
+  assert.match(css, /\.bank-filters \.count-note\s*\{\s*display:\s*none/);
+});
+
+
+test('3.1 home first screen, empty guide and mobile entry fixes stay wired', () => {
+  const css = read('src/styles.css');
+  const entries = read('src/js/20-entries.js');
+  assert.match(entries, /entry-empty-guide/);
+  assert.match(entries, /从题库挑一道/);
+  assert.match(css, /\.entry-empty-guide\s*\{[^}]*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/s);
+  assert.match(css, /\.entry-empty-step\s*\{[^}]*min-height:\s*142px/s);
+  assert.match(css, /\.tabs\s*\{[^}]*order:\s*4[^}]*flex:\s*1 1 100%/s);
+  assert.match(css, /\.cross-tabs\s*\{[^}]*order:\s*5[^}]*flex:\s*1 1 100%/s);
+  assert.match(css, /\.kb-answer-body \.table-wrap\s*\{[^}]*overflow-x:\s*auto/s);
+  assert.match(css, /@media \(min-width: 1024px\)[\s\S]{0,260}\.home-subject\s*\{[^}]*padding-top:\s*12px/s);
 });
