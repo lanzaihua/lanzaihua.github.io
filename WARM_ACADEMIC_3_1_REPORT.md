@@ -94,7 +94,9 @@
 - 未调用真实 AI API 验证智能录入、AI 出题、AI 批改的视觉状态；本轮只验证静态布局与现有 mock/错误边界。
 - 未逐题数学验算 9163 道题；只运行题库结构、公式渲染与数据门禁。
 - `npm ci --ignore-scripts` 未重新执行（当前 `node_modules` 已存在）；没有在本机重新安装依赖验证冷启动。
-- `npm run verify:pages`、`verify:build`、`verify:skills`、`qa:py` 本轮未重新单独执行；构建与截图前已通过 `prepare:pages`，但没有把本轮所有门禁报告合并成一份 CI 日志。
+- `npm run verify:build` 通过：root / dist / dist-pages 均为 `2026.11.14-2a6c7910`，problems []。
+- `npm run verify:pages` 与 `npm run verify:skills` 通过：四科章节 10/23/6/17，skills problems []。
+- `qa:py` 本轮未重新单独执行。
 - GitHub Actions 尚未针对本轮 commit 运行；PR 创建后需要等 CI 全绿再讨论合并。
 - Release `v2026.11.14` 仍是上一版 12 项 / 81 项测试的正文与资产，线上仍是 `2026.11.14-45820005`；本轮没有发布，不能声称线上已更新。
 - 更新记录截图 `20261114-changelog.png` 为 22 组、0 math-raw，但截图从摘要中部开始，标题未入镜；这是截图裁切问题，不影响页面。
