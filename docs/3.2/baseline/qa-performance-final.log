@@ -1,0 +1,20 @@
+{
+  "url": "http://127.0.0.1:4173/",
+  "metrics": {
+    "fcp": 472,
+    "dcl": 702,
+    "load": 708,
+    "heap": 28490247,
+    "bankSwitch": 606,
+    "cards": 120,
+    "heapMB": 27
+  },
+  "limits": {
+    "fcp": 8000,
+    "dcl": 12000,
+    "load": 16000,
+    "bankSwitch": 6000,
+    "heapMB": 700
+  },
+  "problems": []
+}

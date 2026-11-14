@@ -1055,3 +1055,21 @@ test('3.1 home first screen, empty guide and mobile entry fixes stay wired', () 
   assert.match(css, /\.kb-answer-body \.table-wrap\s*\{[^}]*overflow-x:\s*auto/s);
   assert.match(css, /@media \(min-width: 1024px\)[\s\S]{0,260}\.home-subject\s*\{[^}]*padding-top:\s*12px/s);
 });
+
+
+test('3.2 mobile touch targets and knowledge search focus are wired', () => {
+  const css = read('src/styles.css');
+  const html = read('src/index.template.html');
+  const ks = read('src/js/57-knowledge-search.js');
+  const shell = read('src/js/15-shell.js');
+  assert.doesNotMatch(html, /id="searchInput"[^>]*aria-(controls|expanded)/);
+  assert.match(ks, /function syncKnowledgeSearchAria\(/);
+  assert.match(ks, /panel\.setAttribute\('aria-hidden', ui\.kbAnswer \? 'false' : 'true'\)/);
+  assert.match(ks, /function knowledgeSearchClose\(restoreFocus\)/);
+  assert.match(ks, /knowledgeSearchClose\(true\)/);
+  assert.match(ks, /if \(e\.key !== 'Escape' \|\| !ui\.kbAnswer\) return/);
+  assert.match(shell, /syncKnowledgeSearchAria/);
+  assert.match(css, /@media \(max-width: 1112px\)[\s\S]{0,1600}\.msub[\s\S]{0,160}min-height:\s*42px/s);
+  assert.match(css, /#settings \.seg button[\s\S]{0,120}min-height:\s*40px/s);
+  assert.match(css, /#searchInput[\s\S]{0,60}min-height:\s*40px/s);
+});

@@ -1,0 +1,1279 @@
+device phone-390 start
+device phone-390 done failures=0
+device phone-360 start
+device phone-360 done failures=0
+device phone-430 start
+device phone-430 done failures=0
+device tablet-768 start
+device tablet-768 done failures=0
+device tablet-portrait start
+device tablet-portrait done failures=0
+device tablet-landscape start
+device tablet-landscape done failures=0
+device desktop start
+device desktop done failures=0
+device desktop-1920 start
+device desktop-1920 done failures=0
+{
+  "url": "http://127.0.0.1:4173/",
+  "report": [
+    {
+      "device": "phone-390",
+      "viewport": "390x844",
+      "routes": {
+        "home": {
+          "doc": 0,
+          "body": 0
+        },
+        "overview": {
+          "doc": 0,
+          "body": 0
+        },
+        "stats": {
+          "doc": 0,
+          "body": 0
+        },
+        "entries": {
+          "doc": 0,
+          "body": 0
+        },
+        "templates": {
+          "doc": 0,
+          "body": 0
+        },
+        "bank": {
+          "doc": 0,
+          "body": 0
+        },
+        "guide": {
+          "doc": 0,
+          "body": 0
+        },
+        "notes": {
+          "doc": 0,
+          "body": 0
+        },
+        "knowledge": {
+          "doc": 0,
+          "body": 0
+        },
+        "final": {
+          "doc": 0,
+          "body": 0
+        }
+      },
+      "dialogs": {
+        "settings": {
+          "width": 390,
+          "left": 0,
+          "right": 390,
+          "sections": 5,
+          "overflow": 0
+        },
+        "settingsControls": [],
+        "changelog": {
+          "width": 358,
+          "left": 16,
+          "right": 374,
+          "height": 844,
+          "viewportHeight": 844,
+          "overflow": 0
+        }
+      },
+      "interactions": {
+        "homeToSubject": "#/gaodai/entries",
+        "bankExercise": {
+          "pressed": "true",
+          "cards": 120,
+          "countText": "223 / 2883 题"
+        },
+        "bankCascade": {
+          "section": true,
+          "cards": 14
+        },
+        "bankAnswer": {
+          "open": true,
+          "solution": true,
+          "overflow": 0
+        },
+        "examPicker": {
+          "open": true,
+          "chapters": 10,
+          "sections": 10,
+          "statText": "10\n已选章节\n72\n已选小节"
+        },
+        "note": {
+          "editor": true,
+          "hash": "#/notes",
+          "overflow": 0
+        }
+      },
+      "errors": [],
+      "homeDock": {
+        "position": "static",
+        "inFooter": true,
+        "overlap": false
+      },
+      "homeLayout": {
+        "display": "grid",
+        "blocks": [
+          {
+            "left": 18,
+            "right": 372,
+            "top": 1394.609375,
+            "bottom": 1588.125,
+            "width": 354
+          },
+          {
+            "left": 18,
+            "right": 372,
+            "top": 1610.125,
+            "bottom": 1801.640625,
+            "width": 354
+          },
+          {
+            "left": 18,
+            "right": 372,
+            "top": 1823.640625,
+            "bottom": 2052.203125,
+            "width": 354
+          }
+        ],
+        "overlaps": 0,
+        "list": {
+          "client": 354,
+          "scroll": 354,
+          "width": 354
+        },
+        "item": {
+          "width": 354,
+          "scroll": 354,
+          "client": 354
+        },
+        "fourthBottom": 742,
+        "viewportHeight": 844
+      },
+      "focusAfterRoute": {
+        "tag": "H1",
+        "text": "题库",
+        "hash": "#/gaodai/bank"
+      },
+      "touchTargets": {
+        "checked": 567,
+        "small": []
+      },
+      "knowledge": {
+        "open": true,
+        "hidden": "false",
+        "afterEscape": {
+          "panel": false,
+          "active": "searchInput",
+          "hidden": null
+        }
+      },
+      "dark": {
+        "theme": "dark",
+        "overflow": 0
+      }
+    },
+    {
+      "device": "phone-360",
+      "viewport": "360x800",
+      "routes": {
+        "home": {
+          "doc": 0,
+          "body": 0
+        },
+        "overview": {
+          "doc": 0,
+          "body": 0
+        },
+        "stats": {
+          "doc": 0,
+          "body": 0
+        },
+        "entries": {
+          "doc": 0,
+          "body": 0
+        },
+        "templates": {
+          "doc": 0,
+          "body": 0
+        },
+        "bank": {
+          "doc": 0,
+          "body": 0
+        },
+        "guide": {
+          "doc": 0,
+          "body": 0
+        },
+        "notes": {
+          "doc": 0,
+          "body": 0
+        },
+        "knowledge": {
+          "doc": 0,
+          "body": 0
+        },
+        "final": {
+          "doc": 0,
+          "body": 0
+        }
+      },
+      "dialogs": {
+        "settings": {
+          "width": 360,
+          "left": 0,
+          "right": 360,
+          "sections": 5,
+          "overflow": 0
+        },
+        "settingsControls": [],
+        "changelog": {
+          "width": 328,
+          "left": 16,
+          "right": 344,
+          "height": 800,
+          "viewportHeight": 800,
+          "overflow": 0
+        }
+      },
+      "interactions": {
+        "homeToSubject": "#/gaodai/entries",
+        "bankExercise": {
+          "pressed": "true",
+          "cards": 120,
+          "countText": "223 / 2883 题"
+        },
+        "bankCascade": {
+          "section": true,
+          "cards": 14
+        },
+        "bankAnswer": {
+          "open": true,
+          "solution": true,
+          "overflow": 0
+        },
+        "examPicker": {
+          "open": true,
+          "chapters": 10,
+          "sections": 10,
+          "statText": "10\n已选章节\n72\n已选小节"
+        },
+        "note": {
+          "editor": true,
+          "hash": "#/notes",
+          "overflow": 0
+        }
+      },
+      "errors": [],
+      "homeDock": {
+        "position": "static",
+        "inFooter": true,
+        "overlap": false
+      },
+      "homeLayout": {
+        "display": "grid",
+        "blocks": [
+          {
+            "left": 18,
+            "right": 342,
+            "top": 1389.296875,
+            "bottom": 1582.8125,
+            "width": 324
+          },
+          {
+            "left": 18,
+            "right": 342,
+            "top": 1604.8125,
+            "bottom": 1796.328125,
+            "width": 324
+          },
+          {
+            "left": 18,
+            "right": 342,
+            "top": 1818.328125,
+            "bottom": 2046.890625,
+            "width": 324
+          }
+        ],
+        "overlaps": 0,
+        "list": {
+          "client": 324,
+          "scroll": 324,
+          "width": 324
+        },
+        "item": {
+          "width": 324,
+          "scroll": 324,
+          "client": 324
+        },
+        "fourthBottom": 737,
+        "viewportHeight": 800
+      },
+      "focusAfterRoute": {
+        "tag": "H1",
+        "text": "题库",
+        "hash": "#/gaodai/bank"
+      },
+      "touchTargets": {
+        "checked": 567,
+        "small": []
+      },
+      "knowledge": {
+        "open": true,
+        "hidden": "false",
+        "afterEscape": {
+          "panel": false,
+          "active": "searchInput",
+          "hidden": null
+        }
+      },
+      "dark": {
+        "theme": "dark",
+        "overflow": 0
+      }
+    },
+    {
+      "device": "phone-430",
+      "viewport": "430x932",
+      "routes": {
+        "home": {
+          "doc": 0,
+          "body": 0
+        },
+        "overview": {
+          "doc": 0,
+          "body": 0
+        },
+        "stats": {
+          "doc": 0,
+          "body": 0
+        },
+        "entries": {
+          "doc": 0,
+          "body": 0
+        },
+        "templates": {
+          "doc": 0,
+          "body": 0
+        },
+        "bank": {
+          "doc": 0,
+          "body": 0
+        },
+        "guide": {
+          "doc": 0,
+          "body": 0
+        },
+        "notes": {
+          "doc": 0,
+          "body": 0
+        },
+        "knowledge": {
+          "doc": 0,
+          "body": 0
+        },
+        "final": {
+          "doc": 0,
+          "body": 0
+        }
+      },
+      "dialogs": {
+        "settings": {
+          "width": 430,
+          "left": 0,
+          "right": 430,
+          "sections": 5,
+          "overflow": 0
+        },
+        "settingsControls": [],
+        "changelog": {
+          "width": 398,
+          "left": 16,
+          "right": 414,
+          "height": 932,
+          "viewportHeight": 932,
+          "overflow": 0
+        }
+      },
+      "interactions": {
+        "homeToSubject": "#/gaodai/entries",
+        "bankExercise": {
+          "pressed": "true",
+          "cards": 120,
+          "countText": "223 / 2883 题"
+        },
+        "bankCascade": {
+          "section": true,
+          "cards": 14
+        },
+        "bankAnswer": {
+          "open": true,
+          "solution": true,
+          "overflow": 0
+        },
+        "examPicker": {
+          "open": true,
+          "chapters": 10,
+          "sections": 10,
+          "statText": "10\n已选章节\n72\n已选小节"
+        },
+        "note": {
+          "editor": true,
+          "hash": "#/notes",
+          "overflow": 0
+        }
+      },
+      "errors": [],
+      "homeDock": {
+        "position": "static",
+        "inFooter": true,
+        "overlap": false
+      },
+      "homeLayout": {
+        "display": "grid",
+        "blocks": [
+          {
+            "left": 18,
+            "right": 412,
+            "top": 1412.671875,
+            "bottom": 1606.1875,
+            "width": 394
+          },
+          {
+            "left": 18,
+            "right": 412,
+            "top": 1628.1875,
+            "bottom": 1819.703125,
+            "width": 394
+          },
+          {
+            "left": 18,
+            "right": 412,
+            "top": 1841.703125,
+            "bottom": 2070.265625,
+            "width": 394
+          }
+        ],
+        "overlaps": 0,
+        "list": {
+          "client": 394,
+          "scroll": 394,
+          "width": 394
+        },
+        "item": {
+          "width": 394,
+          "scroll": 394,
+          "client": 394
+        },
+        "fourthBottom": 749,
+        "viewportHeight": 932
+      },
+      "focusAfterRoute": {
+        "tag": "H1",
+        "text": "题库",
+        "hash": "#/gaodai/bank"
+      },
+      "touchTargets": {
+        "checked": 567,
+        "small": []
+      },
+      "knowledge": {
+        "open": true,
+        "hidden": "false",
+        "afterEscape": {
+          "panel": false,
+          "active": "searchInput",
+          "hidden": null
+        }
+      },
+      "dark": {
+        "theme": "dark",
+        "overflow": 0
+      }
+    },
+    {
+      "device": "tablet-768",
+      "viewport": "768x1024",
+      "routes": {
+        "home": {
+          "doc": 0,
+          "body": 0
+        },
+        "overview": {
+          "doc": 0,
+          "body": 0
+        },
+        "stats": {
+          "doc": 0,
+          "body": 0
+        },
+        "entries": {
+          "doc": 0,
+          "body": 0
+        },
+        "templates": {
+          "doc": 0,
+          "body": 0
+        },
+        "bank": {
+          "doc": 0,
+          "body": 0
+        },
+        "guide": {
+          "doc": 0,
+          "body": 0
+        },
+        "notes": {
+          "doc": 0,
+          "body": 0
+        },
+        "knowledge": {
+          "doc": 0,
+          "body": 0
+        },
+        "final": {
+          "doc": 0,
+          "body": 0
+        }
+      },
+      "dialogs": {
+        "settings": {
+          "width": 728,
+          "left": 20,
+          "right": 748,
+          "sections": 5,
+          "overflow": 0
+        },
+        "settingsControls": [],
+        "changelog": {
+          "width": 728,
+          "left": 20,
+          "right": 748,
+          "height": 979,
+          "viewportHeight": 1024,
+          "overflow": 0
+        }
+      },
+      "interactions": {
+        "homeToSubject": "#/gaodai/entries",
+        "bankExercise": {
+          "pressed": "true",
+          "cards": 120,
+          "countText": "223 / 2883 题"
+        },
+        "bankCascade": {
+          "section": true,
+          "cards": 14
+        },
+        "bankAnswer": {
+          "open": true,
+          "solution": true,
+          "overflow": 0
+        },
+        "examPicker": {
+          "open": true,
+          "chapters": 10,
+          "sections": 10,
+          "statText": "10\n已选章节\n72\n已选小节"
+        },
+        "note": {
+          "editor": true,
+          "hash": "#/notes",
+          "overflow": 0
+        }
+      },
+      "errors": [],
+      "homeDock": {
+        "position": "static",
+        "inFooter": true,
+        "overlap": false
+      },
+      "homeLayout": {
+        "display": "grid",
+        "blocks": [
+          {
+            "left": 30,
+            "right": 372,
+            "top": 675.71875,
+            "bottom": 870.234375,
+            "width": 342
+          },
+          {
+            "left": 396,
+            "right": 738,
+            "top": 675.71875,
+            "bottom": 870.234375,
+            "width": 342
+          },
+          {
+            "left": 30,
+            "right": 738,
+            "top": 894.234375,
+            "bottom": 1123.796875,
+            "width": 708
+          }
+        ],
+        "overlaps": 0,
+        "list": {
+          "client": 342,
+          "scroll": 342,
+          "width": 342
+        },
+        "item": {
+          "width": 342,
+          "scroll": 342,
+          "client": 342
+        },
+        "fourthBottom": 1567,
+        "viewportHeight": 1024
+      },
+      "focusAfterRoute": {
+        "tag": "H1",
+        "text": "题库",
+        "hash": "#/gaodai/bank"
+      },
+      "touchTargets": {
+        "checked": 567,
+        "small": []
+      },
+      "knowledge": {
+        "open": true,
+        "hidden": "false",
+        "afterEscape": {
+          "panel": false,
+          "active": "searchInput",
+          "hidden": null
+        }
+      },
+      "dark": {
+        "theme": "dark",
+        "overflow": 0
+      }
+    },
+    {
+      "device": "tablet-portrait",
+      "viewport": "834x1112",
+      "routes": {
+        "home": {
+          "doc": 0,
+          "body": 0
+        },
+        "overview": {
+          "doc": 0,
+          "body": 0
+        },
+        "stats": {
+          "doc": 0,
+          "body": 0
+        },
+        "entries": {
+          "doc": 0,
+          "body": 0
+        },
+        "templates": {
+          "doc": 0,
+          "body": 0
+        },
+        "bank": {
+          "doc": 0,
+          "body": 0
+        },
+        "guide": {
+          "doc": 0,
+          "body": 0
+        },
+        "notes": {
+          "doc": 0,
+          "body": 0
+        },
+        "knowledge": {
+          "doc": 0,
+          "body": 0
+        },
+        "final": {
+          "doc": 0,
+          "body": 0
+        }
+      },
+      "dialogs": {
+        "settings": {
+          "width": 780,
+          "left": 27,
+          "right": 807,
+          "sections": 5,
+          "overflow": 0
+        },
+        "settingsControls": [],
+        "changelog": {
+          "width": 780,
+          "left": 27,
+          "right": 807,
+          "height": 1067,
+          "viewportHeight": 1112,
+          "overflow": 0
+        }
+      },
+      "interactions": {
+        "homeToSubject": "#/gaodai/entries",
+        "bankExercise": {
+          "pressed": "true",
+          "cards": 120,
+          "countText": "223 / 2883 题"
+        },
+        "bankCascade": {
+          "section": true,
+          "cards": 14
+        },
+        "bankAnswer": {
+          "open": true,
+          "solution": true,
+          "overflow": 0
+        },
+        "examPicker": {
+          "open": true,
+          "chapters": 10,
+          "sections": 10,
+          "statText": "10\n已选章节\n72\n已选小节"
+        },
+        "note": {
+          "editor": true,
+          "hash": "#/notes",
+          "overflow": 0
+        }
+      },
+      "errors": [],
+      "homeDock": {
+        "position": "static",
+        "inFooter": true,
+        "overlap": false
+      },
+      "homeLayout": {
+        "display": "grid",
+        "blocks": [
+          {
+            "left": 30,
+            "right": 405,
+            "top": 631.78125,
+            "bottom": 826.296875,
+            "width": 375
+          },
+          {
+            "left": 429,
+            "right": 804,
+            "top": 631.78125,
+            "bottom": 826.296875,
+            "width": 375
+          },
+          {
+            "left": 30,
+            "right": 804,
+            "top": 850.296875,
+            "bottom": 1079.859375,
+            "width": 774
+          }
+        ],
+        "overlaps": 0,
+        "list": {
+          "client": 375,
+          "scroll": 375,
+          "width": 375
+        },
+        "item": {
+          "width": 375,
+          "scroll": 375,
+          "client": 375
+        },
+        "fourthBottom": 1523,
+        "viewportHeight": 1112
+      },
+      "focusAfterRoute": {
+        "tag": "H1",
+        "text": "题库",
+        "hash": "#/gaodai/bank"
+      },
+      "touchTargets": {
+        "checked": 567,
+        "small": []
+      },
+      "knowledge": {
+        "open": true,
+        "hidden": "false",
+        "afterEscape": {
+          "panel": false,
+          "active": "searchInput",
+          "hidden": null
+        }
+      },
+      "dark": {
+        "theme": "dark",
+        "overflow": 0
+      }
+    },
+    {
+      "device": "tablet-landscape",
+      "viewport": "1112x834",
+      "routes": {
+        "home": {
+          "doc": 0,
+          "body": 0
+        },
+        "overview": {
+          "doc": 0,
+          "body": 0
+        },
+        "stats": {
+          "doc": 0,
+          "body": 0
+        },
+        "entries": {
+          "doc": 0,
+          "body": 0
+        },
+        "templates": {
+          "doc": 0,
+          "body": 0
+        },
+        "bank": {
+          "doc": 0,
+          "body": 0
+        },
+        "guide": {
+          "doc": 0,
+          "body": 0
+        },
+        "notes": {
+          "doc": 0,
+          "body": 0
+        },
+        "knowledge": {
+          "doc": 0,
+          "body": 0
+        },
+        "final": {
+          "doc": 0,
+          "body": 0
+        }
+      },
+      "dialogs": {
+        "settings": {
+          "width": 860,
+          "left": 126,
+          "right": 986,
+          "sections": 5,
+          "overflow": 0
+        },
+        "settingsControls": [],
+        "changelog": {
+          "width": 860,
+          "left": 126,
+          "right": 986,
+          "height": 771,
+          "viewportHeight": 834,
+          "overflow": 0
+        }
+      },
+      "interactions": {
+        "homeToSubject": "#/gaodai/entries",
+        "bankExercise": {
+          "pressed": "true",
+          "cards": 120,
+          "countText": "223 / 2883 题"
+        },
+        "bankCascade": {
+          "section": true,
+          "cards": 14
+        },
+        "bankAnswer": {
+          "open": true,
+          "solution": true,
+          "overflow": 0
+        },
+        "examPicker": {
+          "open": true,
+          "chapters": 10,
+          "sections": 10,
+          "statText": "10\n已选章节\n72\n已选小节"
+        },
+        "note": {
+          "editor": true,
+          "hash": "#/notes",
+          "overflow": 0
+        }
+      },
+      "errors": [],
+      "homeDock": {
+        "position": "static",
+        "inFooter": true,
+        "overlap": false
+      },
+      "homeLayout": {
+        "display": "grid",
+        "blocks": [
+          {
+            "left": 30,
+            "right": 375.140625,
+            "top": 514.015625,
+            "bottom": 743.578125,
+            "width": 345.140625
+          },
+          {
+            "left": 403.140625,
+            "right": 731.859375,
+            "top": 514.015625,
+            "bottom": 743.578125,
+            "width": 328.71875
+          },
+          {
+            "left": 759.859375,
+            "right": 1081.984375,
+            "top": 514.015625,
+            "bottom": 743.578125,
+            "width": 322.125
+          }
+        ],
+        "overlaps": 0,
+        "list": {
+          "client": 329,
+          "scroll": 329,
+          "width": 328.71875
+        },
+        "item": {
+          "width": 328.71875,
+          "scroll": 329,
+          "client": 329
+        },
+        "fourthBottom": 1007,
+        "viewportHeight": 834
+      },
+      "focusAfterRoute": {
+        "tag": "H1",
+        "text": "题库",
+        "hash": "#/gaodai/bank"
+      },
+      "touchTargets": {
+        "checked": 567,
+        "small": []
+      },
+      "knowledge": {
+        "open": true,
+        "hidden": "false",
+        "afterEscape": {
+          "panel": false,
+          "active": "searchInput",
+          "hidden": null
+        }
+      },
+      "dark": {
+        "theme": "dark",
+        "overflow": 0
+      }
+    },
+    {
+      "device": "desktop",
+      "viewport": "1440x1000",
+      "routes": {
+        "home": {
+          "doc": -10,
+          "body": -10
+        },
+        "overview": {
+          "doc": -10,
+          "body": -10
+        },
+        "stats": {
+          "doc": -10,
+          "body": -10
+        },
+        "entries": {
+          "doc": -10,
+          "body": -10
+        },
+        "templates": {
+          "doc": -10,
+          "body": -10
+        },
+        "bank": {
+          "doc": -10,
+          "body": -10
+        },
+        "guide": {
+          "doc": -10,
+          "body": -10
+        },
+        "notes": {
+          "doc": -10,
+          "body": -10
+        },
+        "knowledge": {
+          "doc": -10,
+          "body": -10
+        },
+        "final": {
+          "doc": -10,
+          "body": -10
+        }
+      },
+      "dialogs": {
+        "settings": {
+          "width": 860,
+          "left": 285,
+          "right": 1145,
+          "sections": 5,
+          "overflow": -10
+        },
+        "changelog": {
+          "width": 860,
+          "left": 285,
+          "right": 1145,
+          "height": 933,
+          "viewportHeight": 1000,
+          "overflow": -10
+        }
+      },
+      "interactions": {
+        "homeToSubject": "#/gaodai/entries",
+        "bankExercise": {
+          "pressed": "true",
+          "cards": 120,
+          "countText": "223 / 2883 题"
+        },
+        "bankCascade": {
+          "section": true,
+          "cards": 14
+        },
+        "bankAnswer": {
+          "open": true,
+          "solution": true,
+          "overflow": -10
+        },
+        "examPicker": {
+          "open": true,
+          "chapters": 10,
+          "sections": 10,
+          "statText": "10\n已选章节\n72\n已选小节"
+        },
+        "note": {
+          "editor": true,
+          "hash": "#/notes",
+          "overflow": -10
+        },
+        "addToEntries": 1
+      },
+      "errors": [],
+      "homeDock": {
+        "position": "static",
+        "inFooter": true,
+        "overlap": false
+      },
+      "homeLayout": {
+        "display": "grid",
+        "blocks": [
+          {
+            "left": 195,
+            "right": 535.984375,
+            "top": 517.171875,
+            "bottom": 736.734375,
+            "width": 340.984375
+          },
+          {
+            "left": 563.984375,
+            "right": 888.734375,
+            "top": 517.171875,
+            "bottom": 736.734375,
+            "width": 324.75
+          },
+          {
+            "left": 916.734375,
+            "right": 1234.984375,
+            "top": 517.171875,
+            "bottom": 736.734375,
+            "width": 318.25
+          }
+        ],
+        "overlaps": 0,
+        "list": {
+          "client": 325,
+          "scroll": 325,
+          "width": 324.75
+        },
+        "item": {
+          "width": 324.75,
+          "scroll": 325,
+          "client": 325
+        },
+        "fourthBottom": 1000,
+        "viewportHeight": 1000
+      },
+      "focusAfterRoute": {
+        "tag": "H1",
+        "text": "题库",
+        "hash": "#/gaodai/bank"
+      },
+      "deepLink404": {
+        "hash": "#/gaodai",
+        "heading": "高等代数"
+      },
+      "data": {
+        "file": "错题本备份-2026-11-14.json.gz",
+        "app": "sanke-cuotiben",
+        "version": 4,
+        "beforeCount": 1,
+        "dialog": "文件：qa-错题本备份-2026-11-14.json.gz · 当前本机 1 条 · 1 页笔记 · 0 模板 · 1 题 · 模拟卷 0 张 · 模拟考 0 份\n导入文件 1 条 · 1 页笔记 · 0 模板 · 1 题 · 模拟卷 0 张 · 模拟考 0 份\n\n当前数据\n高等代数\n1 条\n数学分析\n0 条\n解析几",
+        "afterCount": 1
+      },
+      "dark": {
+        "theme": "dark",
+        "overflow": -10
+      }
+    },
+    {
+      "device": "desktop-1920",
+      "viewport": "1920x1080",
+      "routes": {
+        "home": {
+          "doc": -10,
+          "body": -10
+        },
+        "overview": {
+          "doc": -10,
+          "body": -10
+        },
+        "stats": {
+          "doc": -10,
+          "body": -10
+        },
+        "entries": {
+          "doc": -10,
+          "body": -10
+        },
+        "templates": {
+          "doc": -10,
+          "body": -10
+        },
+        "bank": {
+          "doc": -10,
+          "body": -10
+        },
+        "guide": {
+          "doc": -10,
+          "body": -10
+        },
+        "notes": {
+          "doc": -10,
+          "body": -10
+        },
+        "knowledge": {
+          "doc": -10,
+          "body": -10
+        },
+        "final": {
+          "doc": -10,
+          "body": -10
+        }
+      },
+      "dialogs": {
+        "settings": {
+          "width": 860,
+          "left": 525,
+          "right": 1385,
+          "sections": 5,
+          "overflow": -10
+        },
+        "changelog": {
+          "width": 860,
+          "left": 525,
+          "right": 1385,
+          "height": 1013,
+          "viewportHeight": 1080,
+          "overflow": -10
+        }
+      },
+      "interactions": {
+        "homeToSubject": "#/gaodai/entries",
+        "bankExercise": {
+          "pressed": "true",
+          "cards": 120,
+          "countText": "223 / 2883 题"
+        },
+        "bankCascade": {
+          "section": true,
+          "cards": 14
+        },
+        "bankAnswer": {
+          "open": true,
+          "solution": true,
+          "overflow": -10
+        },
+        "examPicker": {
+          "open": true,
+          "chapters": 10,
+          "sections": 10,
+          "statText": "10\n已选章节\n72\n已选小节"
+        },
+        "note": {
+          "editor": true,
+          "hash": "#/notes",
+          "overflow": -10
+        }
+      },
+      "errors": [],
+      "homeDock": {
+        "position": "static",
+        "inFooter": true,
+        "overlap": false
+      },
+      "homeLayout": {
+        "display": "grid",
+        "blocks": [
+          {
+            "left": 435,
+            "right": 775.984375,
+            "top": 517.171875,
+            "bottom": 736.734375,
+            "width": 340.984375
+          },
+          {
+            "left": 803.984375,
+            "right": 1128.734375,
+            "top": 517.171875,
+            "bottom": 736.734375,
+            "width": 324.75
+          },
+          {
+            "left": 1156.734375,
+            "right": 1474.984375,
+            "top": 517.171875,
+            "bottom": 736.734375,
+            "width": 318.25
+          }
+        ],
+        "overlaps": 0,
+        "list": {
+          "client": 325,
+          "scroll": 325,
+          "width": 324.75
+        },
+        "item": {
+          "width": 324.75,
+          "scroll": 325,
+          "client": 325
+        },
+        "fourthBottom": 1000,
+        "viewportHeight": 1080
+      },
+      "focusAfterRoute": {
+        "tag": "H1",
+        "text": "题库",
+        "hash": "#/gaodai/bank"
+      },
+      "dark": {
+        "theme": "dark",
+        "overflow": -10
+      }
+    }
+  ],
+  "failures": []
+}
