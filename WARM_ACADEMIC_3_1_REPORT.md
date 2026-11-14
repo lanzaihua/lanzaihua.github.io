@@ -97,7 +97,7 @@
 - `npm run verify:build` 通过：root / dist / dist-pages 均为 `2026.11.14-2a6c7910`，problems []。
 - `npm run verify:pages` 与 `npm run verify:skills` 通过：四科章节 10/23/6/17，skills problems []。
 - `qa:py` 本轮未重新单独执行。
-- GitHub Actions 尚未针对本轮 commit 运行；PR 创建后需要等 CI 全绿再讨论合并。
+- GitHub Actions 已针对 commit `d317afa8741088e228c319e9ec57ebb9e1f1fb9c` 运行两次 Quality checks，run `43567197331` 与 `43567191072` 均 success；所有步骤（回归、数据/QA/语言、构建、发布一致性、8 视口真实交互、公式、无障碍、性能）通过。
 - Release `v2026.11.14` 仍是上一版 12 项 / 81 项测试的正文与资产，线上仍是 `2026.11.14-45820005`；本轮没有发布，不能声称线上已更新。
 - 更新记录截图 `20261114-changelog.png` 为 22 组、0 math-raw，但截图从摘要中部开始，标题未入镜；这是截图裁切问题，不影响页面。
 - 知识面板手机端宽表目前可横向滚动，但没有“左右滑动”提示；仍有可读性改进空间。
