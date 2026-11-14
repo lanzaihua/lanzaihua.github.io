@@ -1,0 +1,102 @@
+
+> sanke-cuotiben@1.0.0 check
+> npm test && node tools/qa-bank-strict.js --strict-difficulty && node tools/qa-site-consistency.js && node tools/check_repo_languages.js && python tools/audit_bank.py --strict-difficulty
+
+
+> sanke-cuotiben@1.0.0 test
+> node --test tests/*.test.js
+
+Warning: Temml doesn't work in quirks mode. Make sure your website has a suitable doctype.
+✔ malformed imported collections are sanitized before rendering (37.4039ms)
+✔ saved state with null entries is treated as corrupt, not silently cleaned (8.8223ms)
+✔ concurrent tabs keep independent additions and expose same-entry conflicts (8.5543ms)
+✔ 2027 official holiday and makeup workday calendar is applied (7.854ms)
+✔ template counterexample and derivative notation are corrected (4.154ms)
+✔ inline code keeps LaTeX literal and blank underscores render (427.6752ms)
+✔ updates keep one honest block per day and the home toolbar stays in flow (45.5763ms)
+Warning: Temml doesn't work in quirks mode. Make sure your website has a suitable doctype.
+Warning: Temml doesn't work in quirks mode. Make sure your website has a suitable doctype.
+gaodai: 10 chapters, D:\学习\大一\错题本网页\skills\advanced-algebra
+shufen: 23 chapters, D:\学习\大一\错题本网页\skills\mathematical-analysis
+jieji: 6 chapters, D:\学习\大一\错题本网页\skills\analytic-geometry
+xijing: 17 chapters, D:\学习\大一\错题本网页\skills\western-economics
+Warning: Temml doesn't work in quirks mode. Make sure your website has a suitable doctype.
+Warning: Temml doesn't work in quirks mode. Make sure your website has a suitable doctype.
+Warning: Temml doesn't work in quirks mode. Make sure your website has a suitable doctype.
+Warning: Temml doesn't work in quirks mode. Make sure your website has a suitable doctype.
+Warning: Temml doesn't work in quirks mode. Make sure your website has a suitable doctype.
+Warning: Temml doesn't work in quirks mode. Make sure your website has a suitable doctype.
+Warning: Temml doesn't work in quirks mode. Make sure your website has a suitable doctype.
+✔ legacy state without clearEpoch retains entries through migration and reload (48.857ms)
+✔ corrupt and invalid-shaped state is preserved instead of overwritten (19.6264ms)
+✔ quota failure keeps the latest state in memory and reports a warning without throwing (9.5888ms)
+✔ missing static routes use a 404 page that restores the hash route (9.0424ms)
+✔ service worker skips API and partial responses and clears old cache names (1.5752ms)
+✔ route changes move focus to the page heading (1.9319ms)
+✔ duplicate toast messages do not stack on screen (325.5605ms)
+✔ blocked browser storage does not abort application boot (5.9683ms)
+✔ malformed entry hash does not abort route parsing (6.3849ms)
+✔ AI choices require distinct A-D keys and a correct key present in options (16.04ms)
+✔ Markdown strips executable tags, URL schemes and attributes; preserves Markdown and math (100.0382ms)
+✔ literal angle brackets and inline <b> text survive Markdown rendering (16.972ms)
+✔ sync conflict preserves local edits and revision (13.2153ms)
+✔ startup sync surfaces corrupted server state without replacing local data (8.3463ms)
+✔ edits made while pushing retain their timestamp and schedule another push (6.3973ms)
+✔ all four complete skill packs are usable without author home directories (138.137ms)
+✔ filling blanks survive typography normalization and rendering (10.8206ms)
+✔ paper preview includes all choice options and material import preserves metadata (17.0015ms)
+✔ local edit counter is independent from server optimistic-lock revision (5.8849ms)
+✔ textbook analyses contain no accidentally appended chapter appendix (178.3148ms)
+✔ bank math never loses command backslashes (151.8555ms)
+✔ all nonempty bank template references resolve in the same subject (136.8996ms)
+✔ corrected textbook least-squares solution satisfies the unrounded normal equations (27.5087ms)
+✔ startup sync never silently replaces unsynced local changes with newer remote data (8.3492ms)
+✔ Markdown tables render as tables instead of bare formulas (13.5542ms)
+✔ library backup excludes built-in banks and templates (13.4896ms)
+✔ unknown top-level route returns to overview instead of staying on missing page (9.9368ms)
+✔ opening notifications does not clear unread badges; expanding one marks only that item read (9.0906ms)
+✔ manual pull asks before replacing local changes; background pull preserves them (5.3468ms)
+✔ bank labels follow question structure instead of a single template (136.0857ms)
+✔ cases environments, Chinese subscripts and multi-part proofs render without raw LaTeX (21.9743ms)
+✔ bare arithmetic in Chinese prose renders as math while dates and IDs stay text (11.6672ms)
+✔ bank titles do not repeat the difficulty star inside the title (137.3575ms)
+✔ bank objective options survive the move into an entry (7.7515ms)
+✔ styles keep MathML layout boxes and balanced mobile action rows (4.529ms)
+✔ site shell restores warm home greeting and paper layout (3.0134ms)
+✔ exam header stays sticky at a stable height with explicit expand and collapse rules (3.6483ms)
+✔ markdown lists survive bare-math wrapping and short display formulas stay inline (39.3185ms)
+✔ real AI progress uses determinate values only when the total is known (16.2731ms)
+✔ AI entry, generation and grading are wired to real progress and cancellation (3.4689ms)
+✔ long AI waits stream real fields, real item counts and live elapsed time (5.9758ms)
+✔ streamed JSON fields and arrays produce monotonic exact progress (8.336ms)
+✔ elapsed text is live to a tenth of a second and completion needs an explicit flag (7.0408ms)
+✔ notification update digest groups items and gives each a stable card (6.5102ms)
+✔ one-click read marks every notification read and template no longer clears them (5.3182ms)
+✔ home notification badge stays anchored to its button on narrow screens (3.0757ms)
+✔ standard bank chapter confirmation opens the ready page without an extra rules modal (6.8753ms)
+✔ standard exam rules describe standard grading instead of AI grading (6.0636ms)
+✔ long task dock exposes real value text, failure state and removal (9.6293ms)
+✔ long task started from an open dialog stays in the dialog top layer (14.2177ms)
+✔ every long loading flow reports real counts or stages and stays cancellable (6.5737ms)
+✔ filters can be cleared from every toolbar and bank source can be filtered (11.7619ms)
+✔ notification signature covers notify items and final page avoids duplicate summaries (9.33ms)
+✔ home restores warm 2ea palette, daily greeting and welcome dialog (3.2338ms)
+✔ mobile and tablet controls meet touch target and helper text sizes (2.9985ms)
+✔ escaped dollar formulas render as math on entry, bank, exam and knowledge surfaces (22.187ms)
+✔ matrix stems name the matrix and read as complete sentences (25.6761ms)
+✔ bank totals include reviewed textbook and question-bank additions (205.1455ms)
+✔ every chapter exposes a section list and items map into it (789.0022ms)
+✔ entries, bank, template, exam and final chapter filters cascade into sections (4.0118ms)
+✔ README puts source details after technical notes and before feedback, with current counts (2.5534ms)
+✔ navigation, link actions and dialog close buttons keep 34px/40px touch targets (5.2435ms)
+✔ chapter picker labels stay plain text and option labels hang cleanly (2.0533ms)
+✔ exam chapter picker uses one-column accordion with in-place counts and no rerender (3.9803ms)
+✔ Warm Academic tokens, home rhythm and exam answer card stay wired (8.2755ms)
+✔ UI3 mobile toolbar, result filters and stacked tables stay wired (4.5961ms)
+✔ stats centre uses real data and an editorial empty state (12.1446ms)
+✔ inline fractions keep text baseline and option labels hang without splitting (28.1159ms)
+✔ western exercise math is typeset instead of flattened plain text (106.7683ms)
+✔ dark theme overrides the new color tokens, not only the paper aliases (6.2751ms)
+✔ Warm Academic 3.1 keeps guide cards, exam stages and bank scope readable (8.7853ms)
+✔ 3.1 home first screen, empty guide and mobile entry fixes stay wired (8.8183ms)
+✔ repository ships real Python, Shell and Makefile sources and a language gate (158.1825ms)
