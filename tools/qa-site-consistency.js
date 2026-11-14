@@ -163,6 +163,23 @@ const badgeColors = Array.from(readme.matchAll(/img\.shields\.io\/badge\/[^"?]*-
 add(badgeColors.length !== 9, '仓库徽章不是 9 个');
 add(new Set(badgeColors).size !== badgeColors.length, '仓库徽章颜色有重复：' + badgeColors.join(','));
 
+// 同一天只允许一条发布记录：README、CHANGELOG 与更新记录里不能再出现 .3.x 这类点分版本号。
+const changelogMd = read(path.join(ROOT, 'CHANGELOG.md'));
+[['README.md', readme], ['CHANGELOG.md', changelogMd], ['src/js/48-changelog.js', changelog]].forEach(([name, text]) => {
+  add(/\bv?\d{4}\.\d{2}\.\d{2}\.\d+\b/.test(text), name + ' 仍含点分版本号；同一天只保留一条发布记录');
+});
+add(!/releases\/download\/v\d{4}\.\d{2}\.\d{2}\/source\.zip/.test(readme), 'README 源码链接必须指向日期 Release，不再使用点分版本');
+
+// README 只展开最新一块，11-14 及更早全部收进 details。
+const updateStart = readme.indexOf('## 更新记录');
+const updateDetails = updateStart >= 0 ? readme.indexOf('<details>', updateStart) : -1;
+add(updateStart < 0 || updateDetails < 0, 'README 没有把历史更新收进 details');
+if (updateStart >= 0 && updateDetails > updateStart) {
+  const visible = readme.slice(updateStart, updateDetails);
+  add((visible.match(/^### \d{4}-\d{2}-\d{2}/gm) || []).length !== 1, 'README 更新记录只能展开最新一块');
+  add(!/<summary>历史更新 · 2026-11-14 及更早 · \d+ 个版本<\/summary>/.test(readme.slice(updateDetails, updateDetails + 120)), 'README 历史折叠标题必须从 2026-11-14 及更早开始');
+}
+
 ['advanced-algebra', 'mathematical-analysis', 'analytic-geometry', 'western-economics'].forEach((s) => {
   add(!fs.existsSync(path.join(ROOT, 'skills', s, 'SKILL.md')), '缺少开源 skill：skills/' + s);
 });

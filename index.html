@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.15-13886958";</script>
+<script>window.__BUILD_ID__="2026.11.15-eec22ffa";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -22477,8 +22477,8 @@ var UPDATE_LOG = [{
   "date": "2026-11-15",
   "title": "排版收口与稳定性加固",
   "historyTitle": "排版收口与稳定性加固",
-  "summary": "本轮在 3.3 排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9163，92 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过；同时复核 3.2 发布产物与同日记录，修正 README 历史版本指向。本块随 GitHub Pages 与 v2026.11.15.3.4 Release 发布。15 项 / 15 组。",
-  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限。四科 9163，92 项测试。本块 15 条要点。",
+  "summary": "本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9163，93 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.15 Release 发布。17 项 / 17 组。",
+  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限；README 只展开最新一块，旧记录收进 details；GitHub Releases 同日只保留一条，不再加小版本后缀；同一天通知原地替换。四科 9163，93 项测试。本块 17 条要点。",
   "notifyItems": [
     {
       "group": "卡片留白",
@@ -22506,7 +22506,7 @@ var UPDATE_LOG = [{
     },
     {
       "group": "防复发",
-      "text": "回归测试扩展到 92 项，覆盖计划标题、材料序号、AI 文案、规范示例、静默存储、拆包体积与深链；1440/390 截图复核贴边与长标题。"
+      "text": "回归测试扩展到 93 项，覆盖计划标题、材料序号、AI 文案、规范示例、静默存储、拆包体积与深链；1440/390 截图复核贴边与长标题。"
     },
     {
       "group": "存储回读",
@@ -22534,11 +22534,19 @@ var UPDATE_LOG = [{
     },
     {
       "group": "发布门禁",
-      "text": "CI 先构建 Pages 再发布，新增真浏览器门禁验证拆包加载、二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 92 项。"
+      "text": "CI 先构建 Pages 再发布，新增真浏览器门禁验证拆包加载、二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 93 项。"
     },
     {
       "group": "Cloudflare 缓存",
       "text": "新增 Cloudflare Pages 缓存头与迁移文档；当前仍是 GitHub Pages，不把未上线的迁移写成已完成。"
+    },
+    {
+      "group": "记录归并",
+      "text": "README 只展开最新一块，2026-11-14 及更早 23 个版本收进 details；GitHub Releases 同一天只保留一条，标签统一为 v2026.11.15 / v2026.11.14，不再给同一天加小版本后缀。"
+    },
+    {
+      "group": "通知去重",
+      "text": "同一天记录再修改时，原地替换已有更新通知的标题与正文，保留首次时间与已读状态，不再追加补充或生成第二条；旧版同日重复通知在启动时按日期合并。"
     }
   ],
   "items": [
@@ -22568,7 +22576,7 @@ var UPDATE_LOG = [{
     },
     {
       "group": "防复发",
-      "text": "回归测试扩展到 92 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头与深链断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。"
+      "text": "回归测试扩展到 93 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头与深链断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。"
     },
     {
       "group": "存储回读",
@@ -22596,11 +22604,19 @@ var UPDATE_LOG = [{
     },
     {
       "group": "发布门禁",
-      "text": "CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 92 项。"
+      "text": "CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 93 项。"
     },
     {
       "group": "Cloudflare 缓存",
       "text": "新增 Cloudflare Pages _headers 与迁移文档：HTML 立即校验、题库 1 小时 + stale-while-revalidate、安全头；当前仍由 GitHub Pages 提供，未声称已切换。"
+    },
+    {
+      "group": "记录归并",
+      "text": "README 只展开最新一块，2026-11-14 及更早 23 个版本收进 details；GitHub Releases 同一天只保留一条，标签统一为 v2026.11.15 / v2026.11.14，不再给同一天加小版本后缀；网页、CHANGELOG、README 与 Release 共用同一份摘要。"
+    },
+    {
+      "group": "通知去重",
+      "text": "同一天记录再修改时，原地替换已有更新通知的标题与正文，保留首次时间与已读状态，不再追加补充或生成第二条；旧版同日重复通知在启动时按日期合并，更新记录与通知标题统一为日期加标题。"
     }
   ]
 },
@@ -22608,15 +22624,15 @@ var UPDATE_LOG = [{
   "date": "2026-11-14",
   "title": "健壮性修复与发布",
   "historyTitle": "健壮性修复与发布",
-  "summary": "本轮补存储、路由、缓存、错误边界与同步损坏保护：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；服务端数据文件损坏时改为失败关闭，前端停止覆盖本地数据并提示保留原始副本。同时完成 Warm Academic 3.1 精修：首页压缩到 1440×1000 首屏露出四科入口，错题空态改成三步引导，规范页加入字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；八视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，86 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过；3.2 又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14.3.2 Release 发布。本块 25 项 / 25 组。",
-  "notifySummary": "本轮修存储、深链、缓存、错误边界和同步损坏保护：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控；服务端数据文件损坏时失败关闭，前端不再覆盖本地数据。同时完成 Warm Academic 3.1 精修：首页首屏露出四科入口，错题空态改成三步引导，规范页加字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；题库 9163，86 项测试、8 视口、公式、无障碍与性能门禁通过；3.2 又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14.3.2 Release 发布。本块 25 条要点。",
+  "summary": "本轮补存储、路由、缓存、错误边界与同步损坏保护：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；服务端数据文件损坏时改为失败关闭，前端停止覆盖本地数据并提示保留原始副本。同时完成暖白学术界面精修：首页压缩到 1440×1000 首屏露出四科入口，错题空态改成三步引导，规范页加入字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；八视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，86 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过；随后又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14 Release 发布。本块 25 项 / 25 组。",
+  "notifySummary": "本轮修存储、深链、缓存、错误边界和同步损坏保护：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控；服务端数据文件损坏时失败关闭，前端不再覆盖本地数据。同时完成暖白学术界面精修：首页首屏露出四科入口，错题空态改成三步引导，规范页加字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；题库 9163，86 项测试、8 视口、公式、无障碍与性能门禁通过；随后又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14 Release 发布。本块 25 条要点。",
   "notifyItems": [
     { "group": "存储降级", "text": "本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。" },
     { "group": "损坏备份", "text": "启动时读到损坏 JSON 会把原文另存为 key-corrupted-backup，保留原始存储不动，并提示先导出再恢复或清空。" },
     { "group": "深链兜底", "text": "直接访问 /gaodai、/shufen/bank 这类没有扩展名的深链时，404 页把路径还原成 #/ 路由并回到对应页面，不再只显示一句「页面不存在」。" },
     { "group": "缓存边界", "text": "Service Worker 缓存名升到 v2，只缓存状态 200 且不是 Range 的响应，跳过 /api 与自身脚本；离线仍能打开最近一次成功页面。" },
     { "group": "错误与焦点", "text": "新增全局错误卡片与未处理 Promise 兜底，出错时说明数据未丢并可刷新；hash 路由切换后焦点落到页面标题，屏幕阅读器能感知换页；知识点搜索面板支持 Escape 关闭并把焦点送回搜索框，开合状态用 aria-hidden 同步；移动端主要按钮保持 44px 触控高度。" },
-    { "group": "界面系统", "text": "在 Warm Academic 3.0 基础上做 3.1 精修：保留暖白画布、纯白面板、细线分隔与砖红强调；统一标题、正文、元信息、按钮和输入框的字号与高度；首页首屏、错题空态、规范页导读、题库范围条、期末入口与统计结论同批收口；深色主题沿用同一组 token。" },
+    { "group": "界面系统", "text": "在暖白学术视觉（Warm Academic）基础上继续精修：保留暖白画布、纯白面板、细线分隔与砖红强调；统一标题、正文、元信息、按钮和输入框的字号与高度；首页首屏、错题空态、规范页导读、题库范围条、期末入口与统计结论同批收口；深色主题沿用同一组 token。" },
     { "group": "手机页头", "text": "手机与平板顶栏压到 146px 左右：品牌、搜索、设置与通知同排，科目切换与主标签分行，主内容不再被 247px 顶栏推到首屏之外；首页指标带改为 2×2，科目入口上移。" },
     { "group": "主操作", "text": "手机端主操作按钮恢复显示并换行排列，不再被隐藏；按钮、标签与弹窗关闭键保持 40–44px 触控尺寸，长标题与长按钮在窄屏自然折行。" },
     { "group": "题库浏览", "text": "题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。" },
@@ -22630,7 +22646,7 @@ var UPDATE_LOG = [{
     { "group": "统计结论", "text": "学习统计的五个面板各加一句基于真实数据的结论：最忙的一天、四科累计与最高、错因最多、章节最集中、最近均分与最高分；没有数据时继续用明确空态。" },
     { "group": "AI 动作可达", "text": "智能录入弹窗的提交行改为底部吸附，桌面初始视口不再把「生成并自动入库」裁掉；弹窗正文可滚动，窄屏按钮仍可点到。" },
     { "group": "同步损坏保护", "text": "服务端数据文件损坏时，GET /api/state 返回 500 STATE_CORRUPTED、写入返回 409，health 标明 stateCorrupted 与备份路径；前端停止覆盖本地数据并提示「本地数据文件损坏，已保留原始副本」，启动日志不再输出空白或重复口令。" },
-    {"group":"首页首屏","text":"3.2 再收紧首页问候区与工作台的纵向间距（34→22 / 34→24）：四科入口第 4 卡在 1440×1000 下 bottom≈978px，完整进入首屏并留出安全余量；手机端保持单栏顺序与正文字号，不靠缩小内容硬塞。"},
+    {"group":"首页首屏","text":"本轮再收紧首页问候区与工作台的纵向间距（34→22 / 34→24）：四科入口第 4 卡在 1440×1000 下 bottom≈978px，完整进入首屏并留出安全余量；手机端保持单栏顺序与正文字号，不靠缩小内容硬塞。"},
     {"group":"空态引导","text":"错题空态改为三步起步卡：从题库挑一道、手动新增、智能录入；筛选无结果时仍提示换条件或清空，不用假数据填满页面。"},
     {"group":"文档校准","text":"README、CHANGELOG、网页更新记录与 GitHub Release 统一为本块 25 项 / 25 组、86 项回归、8 视口；版本徽章指向最终构建，九枚徽章颜色两两不同，历史更新继续收在 details。"},
     {"group":"发布边界","text":"源码、网页记录、README、CHANGELOG 与 GitHub Release 已对齐同一个构建并上线；线上构建号与仓库一致，不再保留候选或待发布字样。"},
@@ -22643,7 +22659,7 @@ var UPDATE_LOG = [{
     { "group": "深链兜底", "text": "直接访问 /gaodai、/shufen/bank 这类没有扩展名的深链时，404 页把路径还原成 #/ 路由并回到对应页面，不再只显示一句「页面不存在」。" },
     { "group": "缓存边界", "text": "Service Worker 缓存名升到 v2，只缓存状态 200 且不是 Range 的响应，跳过 /api 与自身脚本；离线仍能打开最近一次成功页面。" },
     { "group": "错误与焦点", "text": "新增全局错误卡片与未处理 Promise 兜底，出错时说明数据未丢并可刷新；hash 路由切换后焦点落到页面标题，屏幕阅读器能感知换页；知识点搜索面板支持 Escape 关闭并把焦点送回搜索框，开合状态用 aria-hidden 同步；移动端主要按钮保持 44px 触控高度。" },
-    { "group": "界面系统", "text": "在 Warm Academic 3.0 基础上做 3.1 精修：保留暖白画布、纯白面板、细线分隔与砖红强调；统一标题、正文、元信息、按钮和输入框的字号与高度；首页首屏、错题空态、规范页导读、题库范围条、期末入口与统计结论同批收口；深色主题沿用同一组 token。" },
+    { "group": "界面系统", "text": "在暖白学术视觉（Warm Academic）基础上继续精修：保留暖白画布、纯白面板、细线分隔与砖红强调；统一标题、正文、元信息、按钮和输入框的字号与高度；首页首屏、错题空态、规范页导读、题库范围条、期末入口与统计结论同批收口；深色主题沿用同一组 token。" },
     { "group": "手机页头", "text": "手机与平板顶栏压到 146px 左右：品牌、搜索、设置与通知同排，科目切换与主标签分行，主内容不再被 247px 顶栏推到首屏之外；首页指标带改为 2×2，科目入口上移。" },
     { "group": "主操作", "text": "手机端主操作按钮恢复显示并换行排列，不再被隐藏；按钮、标签与弹窗关闭键保持 40–44px 触控尺寸，长标题与长按钮在窄屏自然折行。" },
     { "group": "题库浏览", "text": "题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。" },
@@ -22657,7 +22673,7 @@ var UPDATE_LOG = [{
     { "group": "统计结论", "text": "学习统计的五个面板各加一句基于真实数据的结论：最忙的一天、四科累计与最高、错因最多、章节最集中、最近均分与最高分；没有数据时继续用明确空态。" },
     { "group": "AI 动作可达", "text": "智能录入弹窗的提交行改为底部吸附，桌面初始视口不再把「生成并自动入库」裁掉；弹窗正文可滚动，窄屏按钮仍可点到。" },
     { "group": "同步损坏保护", "text": "服务端数据文件损坏时，GET /api/state 返回 500 STATE_CORRUPTED、写入返回 409，health 标明 stateCorrupted 与备份路径；前端停止覆盖本地数据并提示「本地数据文件损坏，已保留原始副本」，启动日志不再输出空白或重复口令。" },
-    {"group":"首页首屏","text":"3.2 再收紧首页问候区与工作台的纵向间距（34→22 / 34→24）：四科入口第 4 卡在 1440×1000 下 bottom≈978px，完整进入首屏并留出安全余量；手机端保持单栏顺序与正文字号，不靠缩小内容硬塞。"},
+    {"group":"首页首屏","text":"本轮再收紧首页问候区与工作台的纵向间距（34→22 / 34→24）：四科入口第 4 卡在 1440×1000 下 bottom≈978px，完整进入首屏并留出安全余量；手机端保持单栏顺序与正文字号，不靠缩小内容硬塞。"},
     {"group":"空态引导","text":"错题空态改为三步起步卡：从题库挑一道、手动新增、智能录入；筛选无结果时仍提示换条件或清空，不用假数据填满页面。"},
     {"group":"文档校准","text":"README、CHANGELOG、网页更新记录与 GitHub Release 统一为本块 25 项 / 25 组、86 项回归、8 视口；版本徽章指向最终构建，九枚徽章颜色两两不同，历史更新继续收在 details。"},
     {"group":"发布边界","text":"源码、网页记录、README、CHANGELOG 与 GitHub Release 已对齐同一个构建并上线；线上构建号与仓库一致，不再保留候选或待发布字样。"},
@@ -22669,12 +22685,12 @@ var UPDATE_LOG = [{
   "date": "2026-11-13",
   "title": "暖白学术与全站收口",
   "historyTitle": "暖白学术与全站收口",
-  "summary": "本轮把全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163，76 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；西经习题集与教材课后里被拍平的公式已改回 LaTeX 并纳入数据门禁。README 历史折叠并与本块同步。本块 22 项 / 22 组。",
-  "notifySummary": "本轮全站切换 Warm Academic 3.0：统一暖白纸面、卡片、按钮与输入框层级，首页加入学习工作台、连续学习与 7 天节拍，模拟考加入答题卡，谷时条改为参考图灰绿；公式排版、三端基线、手机页头、来源筛选与编号规范一并收口。题库 9163，76 项测试与六视口检查通过；西经被拍平的公式改回 LaTeX 并加了数据门禁。本块 22 条要点。",
+  "summary": "本轮把全站切到暖白学术视觉（Warm Academic）：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163，76 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；西经习题集与教材课后里被拍平的公式已改回 LaTeX 并纳入数据门禁。README 历史折叠并与本块同步。本块 22 项 / 22 组。",
+  "notifySummary": "本轮全站切换 暖白学术视觉（Warm Academic）：统一暖白纸面、卡片、按钮与输入框层级，首页加入学习工作台、连续学习与 7 天节拍，模拟考加入答题卡，谷时条改为参考图灰绿；公式排版、三端基线、手机页头、来源筛选与编号规范一并收口。题库 9163，76 项测试与六视口检查通过；西经被拍平的公式改回 LaTeX 并加了数据门禁。本块 22 条要点。",
   "notifyItems": [
     {
       "group": "设计系统",
-      "text": "全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一为同一套 token，四科辅助色只用于识别与图表；标题、正文、辅助说明、按钮、输入框、卡片与弹窗建立固定层级，深色模式不用纯黑。"
+      "text": "全站切到暖白学术视觉（Warm Academic）：暖白纸面、纯白面板、细边框与轻阴影统一为同一套 token，四科辅助色只用于识别与图表；标题、正文、辅助说明、按钮、输入框、卡片与弹窗建立固定层级，深色模式不用纯黑。"
     },
     {
       "group": "学习工作台",
@@ -22765,7 +22781,7 @@ var UPDATE_LOG = [{
   "items": [
     {
       "group": "设计系统",
-      "text": "全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一为同一套 token，四科辅助色只用于识别与图表；标题、正文、辅助说明、按钮、输入框、卡片与弹窗建立固定层级，深色模式不用纯黑。"
+      "text": "全站切到暖白学术视觉（Warm Academic）：暖白纸面、纯白面板、细边框与轻阴影统一为同一套 token，四科辅助色只用于识别与图表；标题、正文、辅助说明、按钮、输入框、卡片与弹窗建立固定层级，深色模式不用纯黑。"
     },
     {
       "group": "学习工作台",
@@ -31230,12 +31246,13 @@ function initNotifications() {
     var cleaned = n.body.replace(/\n?构建：[^\n]*/g, '').replace(/\n{3,}/g, '\n\n').trim();
     if (cleaned !== n.body) n.body = cleaned;
   });
-  var seenUpdateTitles = {};
+  var seenUpdateDates = {};
   state.notifications = state.notifications.filter(function (n) {
     if (!n || n.kind !== 'update') return true;
-    var key = String(n.title || '');
-    if (seenUpdateTitles[key]) return false;
-    seenUpdateTitles[key] = true;
+    var stamp = (String(n.title || '').match(/网页已更新\s*·\s*(\d{4}-\d{2}-\d{2})/) || [])[1];
+    var key = stamp || String(n.title || n.id || '');
+    if (seenUpdateDates[key]) return false;
+    seenUpdateDates[key] = true;
     return true;
   });
   if (!ui.notifSelected) ui.notifSelected = {};
@@ -31276,24 +31293,38 @@ function initNotifications() {
     delta.summary = deltaSummaryText.slice(previousSummaryText.length).replace(/^[\s；;，,。、:：\-—]+/, '');
   }
   var hasNewContent = delta.items.length > 0 || (!sameEdition && delta.summaryChanged && !!delta.summary);
-  if (latest && contentChanged && !alreadyNotified && hasNewContent) {
+  var isSameDateRefresh = !!(sameEdition && lastUpdate);
+  if (latest && contentChanged && !alreadyNotified && (hasNewContent || isSameDateRefresh)) {
+    var bodyItems = isSameDateRefresh ? (latest.notifyItems || []) : delta.items;
+    var bodySummary = isSameDateRefresh
+      ? String(latest.notifySummary || latest.summary || '')
+      : (delta.summaryChanged ? delta.summary : '');
     var upLines = ['版本：' + (latest.date || '') + ' · ' + (latest.title || '新版本')];
-    if (delta.summaryChanged && delta.summary) upLines.push(delta.summary);
-    if (delta.items.length) {
+    if (bodySummary) upLines.push(bodySummary);
+    if (bodyItems.length) {
       upLines.push('');
       upLines.push('本次更新内容：');
-      delta.items.forEach(function (it, i) {
+      bodyItems.forEach(function (it, i) {
         upLines.push((i + 1) + '. 【' + (it.group || '更新') + '】' + it.text);
       });
     }
     var updateTitle = '网页已更新 · ' + (latest.date || '') + ' · ' + (latest.title || '新版本');
-    if (sameEdition && previousItems.length) updateTitle += ' · 补充 ' + notifClock();
-    notifAdd(updateTitle, upLines.join('\n'), 'update', {
+    var updateExtra = {
       updateSignature: versionKey,
       buildId: buildId,
       updateItems: (latest.items || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; }),
       updateSummary: String(latest.notifySummary || latest.summary || '')
-    });
+    };
+    if (isSameDateRefresh) {
+      // 同一天只保留一条更新通知：原地替换标题与正文，保留原始时间、已读状态和 id。
+      lastUpdate.title = updateTitle;
+      lastUpdate.body = upLines.join('\n');
+      lastUpdate.kind = 'update';
+      Object.assign(lastUpdate, updateExtra);
+      lastUpdate.time = lastUpdate.time || nowIso();
+    } else {
+      notifAdd(updateTitle, upLines.join('\n'), 'update', updateExtra);
+    }
     state.notifVersion = versionKey;
     state.notifBuildId = buildId;
     state.notifNotifyItems = (latest.notifyItems || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; });
