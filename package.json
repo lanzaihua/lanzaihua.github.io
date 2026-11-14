@@ -22,7 +22,9 @@
     "verify:skills": "node tools/verify-skill-packs.js",
     "languages": "node tools/check_repo_languages.js && python tools/audit_bank.py --strict-difficulty",
     "qa:perf": "node tools/qa-performance.js",
-    "qa:a11y": "node tools/qa-a11y.js"
+    "qa:a11y": "node tools/qa-a11y.js",
+    "qa:size": "node tools/qa-size.js",
+    "qa:pages": "node tools/qa-pages.js"
   },
   "devDependencies": {
     "axe-core": "^4.14.0",

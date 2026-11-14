@@ -747,8 +747,11 @@ async function checkAiStatus() {
   try {
     var res = await fetch('/api/ai/status', { headers: apiHeaders(), cache: 'no-store' });
     if (res.ok) {
-      var data = await res.json();
-      if (data.configured) {
+      var data = null;
+      try { data = await res.json(); } catch (parseErr) { data = null; }
+      if (!data) {
+        fallbackDirectStatus('服务端返回了无法解析的状态。');
+      } else if (data.configured) {
         aiState.transport = 'server';
         aiState.statusNote = '已连接本机 AI 服务 · ' + (data.protocol ? aiProtocolLabel(data.protocol) + ' · ' : '') + (data.model || '模型') + '，支持图片。';
       } else {

@@ -1,0 +1,12 @@
+'use strict';
+const fs=require('node:fs');const path=require('node:path');const ROOT=path.join(__dirname,'..');
+const read=f=>fs.readFileSync(path.join(ROOT,f));
+const dist=read('dist/index.html'),pages=read('dist-pages/index.html'),root=read('index.html');
+const mb=n=>(n/1024/1024).toFixed(2)+' MB';
+const problems=[];
+if(root.length>4*1024*1024) problems.push('Pages 首页超过 4MB：'+mb(root.length));
+if(dist.length>8*1024*1024 && root.length>dist.length*0.25) problems.push('拆分不足：首页是单文件版的 '+(root.length/dist.length*100).toFixed(1)+'%');
+if(!root.equals(pages)) problems.push('根 index.html 与 dist-pages 不一致');
+for(const f of ['data/bank.json','dist-pages/data/bank.json']) if(!fs.existsSync(path.join(ROOT,f))) problems.push('缺少 '+f);
+console.log(JSON.stringify({root:mb(root.length),dist:mb(dist.length),pages:mb(pages.length),ratio:(root.length/dist.length*100).toFixed(1)+'%',problems},null,2));
+if(problems.length) process.exit(1);

@@ -8,12 +8,12 @@ const zlib = require('node:zlib');
 const ROOT = path.join(__dirname, '..');
 const KEY = 'sanke-cuotiben-v1';
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
-function runtime(raw, denied = false, quota = false) {
+function runtime(raw, denied = false, quota = false, silent = false) {
   const values = new Map(raw === undefined ? [] : [[KEY, raw]]);
   const subjects = JSON.parse(read('src/data/seed.json')).subjects;
   const ctx = { console, Date, Set, Map, Intl, URL, Blob, setTimeout: () => 0, clearTimeout() {},
     location: {hostname: 'localhost', protocol: 'https:', hash: '', pathname: '/', search: ''},
-    localStorage: {getItem(k) {if(denied) throw Error('denied');return values.get(k) ?? null;},setItem(k,v) {if(denied) throw Error('denied'); if (quota) throw Object.assign(Error('quota'), {name: 'QuotaExceededError'}); values.set(k,v);}},
+    localStorage: {getItem(k) {if(denied) throw Error('denied');return values.get(k) ?? null;},setItem(k,v) {if(denied) throw Error('denied'); if (quota) throw Object.assign(Error('quota'), {name: 'QuotaExceededError'}); if (silent) return; values.set(k,v);}},
     window: {addEventListener() {}, __SEED__: {subjects}, __BANKS__: {}, __PAGES__: true},
     document: {addEventListener() {}, querySelector(){return null;},querySelectorAll(){return [];}} };
   vm.createContext(ctx);
@@ -45,18 +45,25 @@ test('quota failure keeps the latest state in memory and reports a warning witho
   assert.equal(r.ctx.safeStorage.get(KEY), remembered);
   assert.equal(r.values.get(KEY).includes('"id":"keep"'), true);
 });
-test('missing static routes use a 404 page that restores the hash route', () => {
+test('missing static routes use a 404 page that restores the route through a query parameter', () => {
   const html = read('src/static/404.html');
-  assert.match(html, /location\.replace\(target\)/);
-  assert.match(html, /'\/#\/' \+ seg/);
+  assert.match(html, /spa_redirect=/);
+  assert.match(html, /encodeURIComponent\(deep\)/);
   assert.match(html, /href="\/"/);
 });
 test('service worker skips API and partial responses and clears old cache names', () => {
   const sw = read('src/static/sw.js');
-  assert.match(sw, /CACHE = 'sike-cuotiben-v2'/);
+  assert.match(sw, /CACHE_VERSION/);
+  assert.match(sw, /'sike-cuotiben-' \+ CACHE_VERSION/);
   assert.match(sw, /url\.pathname\.indexOf\('\/api\/'\) === 0\) return/);
   assert.match(sw, /req\.headers\.get\('range'\)/);
   assert.match(sw, /\/sw\.js/);
+});
+test('silent localStorage writes are detected by read-back and fall back to memory', () => {
+  const r = runtime(undefined, false, false, true);
+  assert.equal(r.ctx.persistLocal(true), false);
+  assert.equal(r.values.has(KEY), false);
+  assert.match(r.ctx.safeStorage.get(KEY) || '', /entries/);
 });
 test('route changes move focus to the page heading', () => {
   const js = read('src/js/90-init.js');
@@ -856,10 +863,12 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('223 道习题集'),'习题集 current count');
   assert.ok(md.includes('9163'),'bank total');
-  assert.ok(md.includes('86 项回归测试'),'current test count');
-  assert.ok(!md.includes('81 项回归测试')&&!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
-  assert.ok(md.includes('v2026.11.15.3.3 Release'),'current release link');
-  assert.ok(md.includes('2026.11.15--31608627'),'current build badge');
+  assert.ok(md.includes('92 项回归测试'),'current test count');
+  assert.ok(!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
+  assert.ok(md.includes('v2026.11.15.3.4 Release'),'current release link');
+  const build=(read('index.html').match(/__BUILD_ID__="([^"]+)"/)||[])[1];
+  assert.ok(build,'root build id');
+  assert.ok(md.includes('VERSION-'+build.replace('-','--')),'build badge matches root index');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{

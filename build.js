@@ -327,11 +327,13 @@ if (fs.existsSync(skillPackGzFile)) {
   skillPacksGz = zlib.gzipSync(Buffer.from(skillPacksRaw, 'utf8'), { level: 9 }).toString('base64');
 }
 const seedJson = escScript(JSON.stringify(seed));
-const banksJson = escScript(JSON.stringify(banks));
+const banksRaw = JSON.stringify(banks);
+const splitBanks = PAGES;
+const banksJson = splitBanks ? '{}' : escScript(banksRaw);
 
 const packSignature = JSON.stringify(skillPacks.subjects);
 const buildDay = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai' }).format(new Date()).replace(/-/g, '.');
-const buildId = buildDay + '-' + crypto.createHash('sha1').update(template + app + styles + seedJson + banksJson + packSignature).digest('hex').slice(0, 8);
+const buildId = buildDay + '-' + crypto.createHash('sha1').update(template + app + styles + seedJson + banksRaw + packSignature).digest('hex').slice(0, 8);
 
 let html = template
   .replace('__STYLES__', function () { return styles; })
@@ -346,6 +348,12 @@ let html = template
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, html, 'utf8');
+if (splitBanks) {
+  const bankOut = path.join(path.dirname(OUT), 'data', 'bank.json');
+  fs.mkdirSync(path.dirname(bankOut), { recursive: true });
+  fs.writeFileSync(bankOut, banksRaw, 'utf8');
+  console.log('external bank: ' + bankOut + ' (' + (Buffer.byteLength(banksRaw) / 1024 / 1024).toFixed(1) + ' MB)');
+}
 
 // 静态附属文件：robots / sitemap / manifest / 404 / favicon / service worker
 const staticDir = path.join(SRC, 'static');

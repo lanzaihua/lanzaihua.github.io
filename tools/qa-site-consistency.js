@@ -37,18 +37,20 @@ add(/从空白开始/.test(js), '首页仍有“从空白开始”旧文案');
 
 const serviceWorker = read(path.join(SRC, 'static', 'sw.js'));
 add(!/url\.pathname\.indexOf\('\/api\/'\)\s*===\s*0/.test(serviceWorker), 'Service Worker 可能把 /api 私有响应写入缓存');
-add(!/CACHE = 'sike-cuotiben-v2'/.test(serviceWorker), 'Service Worker 缓存名未升级，旧页面可能继续命中');
+add(!/CACHE_VERSION/.test(serviceWorker) || !/'sike-cuotiben-'\s*\+\s*CACHE_VERSION/.test(serviceWorker), 'Service Worker 缓存名没有绑定版本，旧页面可能继续命中');
 add(!/req\.headers\.get\('range'\)/.test(serviceWorker), 'Service Worker 可能缓存 Range 分段响应');
 const notFoundHtml = read(path.join(SRC, 'static', '404.html'));
-add(!/location\.replace\(target\)/.test(notFoundHtml), '404 页不会把深链还原到 hash 路由');
+add(!/spa_redirect/.test(notFoundHtml), '404 页不会把深链还原到查询参数路由');
 const coreJs = read(path.join(SRC, 'js', '00-core.js'));
 add(!/var safeStorage =/.test(coreJs) || !/memoryOnly/.test(coreJs), '缺少带内存降级的 safeStorage');
-add(/localStorage\.(getItem|setItem|removeItem)/.test(jsFiles.filter((f) => f !== '00-core.js').map((f) => read(path.join(SRC, 'js', f))).join('\n')), '仍有模块绕过 safeStorage 直接读写 localStorage');
+// 00-core 是唯一存储出口；48-changelog 只在更新文案里提到 localStorage，不是运行代码。
+add(/localStorage\.(getItem|setItem|removeItem)/.test(jsFiles.filter((f) => f !== '00-core.js' && f !== '48-changelog.js').map((f) => read(path.join(SRC, 'js', f))).join('\n')), '仍有模块绕过 safeStorage 直接读写 localStorage');
 const initJs = read(path.join(SRC, 'js', '90-init.js'));
 add(!/function focusRouteHeading\(\)/.test(initJs) || !/focusRouteHeading\(\);/.test(initJs), '路由切换后没有恢复标题焦点');
 add(!/unhandledrejection/.test(initJs) || !/showFatalError/.test(initJs), '缺少全局错误边界');
 add(!/\.fatal-error\s*\{/.test(styles) || !/min-height:\s*44px/.test(styles), '缺少错误卡片或移动端 44px 触控目标');
-add((read(path.join(SRC, 'index.template.html')).match(/http-equiv="Cache-Control"/g) || []).length > 1, 'HTML 仍有互相冲突的缓存 meta');
+add((read(path.join(SRC, 'index.template.html')).match(/http-equiv="Cache-Control"/g) || []).length > 0, 'HTML 仍有 Cache-Control meta，会强制绕过缓存重复下载 15MB');
+add(!/getItem\(key\)\s*!==\s*str/.test(coreJs), 'safeStorage 没有回读校验，静默写入失败会被当成成功');
 const server = read(path.join(ROOT, 'server.js'));
 add(!/function assertSafeAiBaseUrl/.test(server), 'server.js 缺少 AI 上游 SSRF 防护');
 add(!/req\.destroy\(\)/.test(server), 'server.js 超大请求体没有中止连接');

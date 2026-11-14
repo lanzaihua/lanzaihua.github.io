@@ -22,6 +22,17 @@ if (!ids.root || ids.root !== ids.dist || ids.root !== ids.pages) problems.push(
 const rootBuf = read('index.html');
 const pagesBuf = read('dist-pages/index.html');
 if (rootBuf && pagesBuf && !rootBuf.equals(pagesBuf)) problems.push('根 index.html 与 dist-pages/index.html 字节不一致');
+const distBuf = read('dist/index.html');
+if (distBuf && rootBuf && distBuf.length > 8 * 1024 * 1024) {
+  // dist 保留单文件离线版；Pages 版必须拆分，且 HTML 体积要比单文件版少 75% 以上。
+  const rootSize = rootBuf.length;
+  if (rootSize > 4 * 1024 * 1024) problems.push('Pages 版 index.html 仍然过大: ' + rootSize + ' bytes');
+  if (rootSize > distBuf.length * 0.25) problems.push('Pages 版拆分不足，只降到单文件版的 ' + Math.round(rootSize / distBuf.length * 100) + '%');
+}
+for (const f of ['data/bank.json', 'dist-pages/data/bank.json']) if (!fs.existsSync(path.join(ROOT, f))) problems.push('缺少拆分题库: ' + f);
+if (fs.existsSync(path.join(ROOT, 'data/bank.json')) && fs.existsSync(path.join(ROOT, 'dist-pages/data/bank.json'))) {
+  if (!fs.readFileSync(path.join(ROOT, 'data/bank.json')).equals(fs.readFileSync(path.join(ROOT, 'dist-pages/data/bank.json')))) problems.push('根 data/bank.json 与 dist-pages 不一致');
+}
 const exportHtml = path.join(ROOT, '导出', '四科错题本.html');
 if (fs.existsSync(exportHtml)) {
   const exportId = buildId(fs.readFileSync(exportHtml, 'utf8'), '导出/四科错题本.html');

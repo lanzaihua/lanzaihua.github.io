@@ -11,11 +11,10 @@
   try {
     var path = location.pathname.replace(/\/+$/, '');
     if (!path || path === '/' || path === '/404.html' || path === '/index.html' || /\.[a-z0-9]+$/i.test(path)) return;
-    var seg = path.replace(/^\/+/, '');
-    var q = location.search ? location.search.slice(1) : '';
-    var h = location.hash || '';
-    var target = '/#/' + seg + (q ? '?' + q : '') + h;
-    location.replace(target);
+    var deep = path + (location.search || '') + (location.hash || '');
+    // GitHub Pages 的 404.html 与首页不是同一个文档上下文，sessionStorage 可能被清除。
+    // 把原始路径放进查询参数，首页读出后再换回 hash 路由，避免静默回首页。
+    location.replace('/?spa_redirect=' + encodeURIComponent(deep));
   } catch (e) { /* 保留静态兜底页 */ }
 })();
 </script>
