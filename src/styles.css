@@ -8307,7 +8307,7 @@ html[data-theme="dark"]{
   .home-subject{grid-template-columns:30px minmax(0,1fr) auto 16px!important;gap:8px!important}
   .home-subject .hs-side{display:flex!important;flex-direction:column;align-items:flex-end;gap:2px}
   .home-subject .hs-meta{display:block!important;font-size:9px!important;white-space:nowrap}
-  .hw-bottom{display:none!important}
+  /* .hw-bottom stays visible: progress, recent records and rhythm are part of the phone workbench. */
   .changelog-summary-hint{display:inline!important}
   .changelog-history-row{min-height:44px}
   .changelog-history-row::after{content:"›";margin-left:6px;color:var(--ui-ink-faint);font-size:16px;line-height:1}
@@ -8444,6 +8444,35 @@ html[data-theme="dark"] .brand-sub, html[data-theme="dark"] .home-brand-sub, htm
 }
 .btn-primary, .btn-primary:hover { background: #A85F3B; border-color: #A85F3B; color: #FFFFFF; }
 .btn-primary:hover { background: #944F2F; border-color: #944F2F; }
+
+/* 2026-11-14 UI3 layout guard: home workbench columns must never overlap.
+   根因：.hw-recent-list 是隐式网格，子按钮里的 nowrap 标题把自动列撑到 max-content（实测 800px），
+   超出 .hw-block 的 325px 栏宽后再叠到「学习节奏」栏。显式 minmax(0,1fr) 才能让省略号真正生效。 */
+.hw-bottom { min-width: 0; }
+.hw-bottom > .hw-block,
+.hw-bottom > .hw-block > .hw-recent-list,
+.hw-bottom > .hw-block > .hw-recent-list > .hw-recent-item { min-width: 0 !important; }
+.hw-bottom > .hw-block { overflow: hidden; }
+.hw-recent-list { grid-template-columns: minmax(0,1fr) !important; }
+.hw-recent-item { width: 100% !important; max-width: 100% !important; overflow: hidden; }
+.hw-recent-item > span:not(.dot) { max-width: 100%; }
+
+/* 面板之间的内容不允许越界，避免任何一栏的绝对/最大内容宽度压到下一栏 */
+.hw-block > * { max-width: 100%; }
+
+/* 手机端保留完整工作台（此前 700px 以下把 .hw-bottom 整段 display:none，等于删掉了进度/记录/节奏） */
+@media (max-width: 700px) {
+  .hw-bottom {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 22px !important;
+    margin-top: 22px !important;
+  }
+  .hw-rhythm { grid-column: auto !important; }
+  .hw-block { padding-top: 13px !important; }
+  .hw-progress-row { grid-template-columns: 40px minmax(0,1fr) 36px !important; }
+  .hw-recent-item { min-height: 42px !important; }
+}
 
 /* 2026-11-14 UI3 contrast pass 2: active/accent text and primary fills */
 :root { --ui-primary-strong: #8F4C2E; --accent-deep: #8F4C2E; }

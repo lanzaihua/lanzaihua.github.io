@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.14-ff270e43";</script>
+<script>window.__BUILD_ID__="2026.11.14-45820005";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -8331,7 +8331,7 @@ html[data-theme="dark"]{
   .home-subject{grid-template-columns:30px minmax(0,1fr) auto 16px!important;gap:8px!important}
   .home-subject .hs-side{display:flex!important;flex-direction:column;align-items:flex-end;gap:2px}
   .home-subject .hs-meta{display:block!important;font-size:9px!important;white-space:nowrap}
-  .hw-bottom{display:none!important}
+  /* .hw-bottom stays visible: progress, recent records and rhythm are part of the phone workbench. */
   .changelog-summary-hint{display:inline!important}
   .changelog-history-row{min-height:44px}
   .changelog-history-row::after{content:"›";margin-left:6px;color:var(--ui-ink-faint);font-size:16px;line-height:1}
@@ -8468,6 +8468,35 @@ html[data-theme="dark"] .brand-sub, html[data-theme="dark"] .home-brand-sub, htm
 }
 .btn-primary, .btn-primary:hover { background: #A85F3B; border-color: #A85F3B; color: #FFFFFF; }
 .btn-primary:hover { background: #944F2F; border-color: #944F2F; }
+
+/* 2026-11-14 UI3 layout guard: home workbench columns must never overlap.
+   根因：.hw-recent-list 是隐式网格，子按钮里的 nowrap 标题把自动列撑到 max-content（实测 800px），
+   超出 .hw-block 的 325px 栏宽后再叠到「学习节奏」栏。显式 minmax(0,1fr) 才能让省略号真正生效。 */
+.hw-bottom { min-width: 0; }
+.hw-bottom > .hw-block,
+.hw-bottom > .hw-block > .hw-recent-list,
+.hw-bottom > .hw-block > .hw-recent-list > .hw-recent-item { min-width: 0 !important; }
+.hw-bottom > .hw-block { overflow: hidden; }
+.hw-recent-list { grid-template-columns: minmax(0,1fr) !important; }
+.hw-recent-item { width: 100% !important; max-width: 100% !important; overflow: hidden; }
+.hw-recent-item > span:not(.dot) { max-width: 100%; }
+
+/* 面板之间的内容不允许越界，避免任何一栏的绝对/最大内容宽度压到下一栏 */
+.hw-block > * { max-width: 100%; }
+
+/* 手机端保留完整工作台（此前 700px 以下把 .hw-bottom 整段 display:none，等于删掉了进度/记录/节奏） */
+@media (max-width: 700px) {
+  .hw-bottom {
+    display: grid !important;
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 22px !important;
+    margin-top: 22px !important;
+  }
+  .hw-rhythm { grid-column: auto !important; }
+  .hw-block { padding-top: 13px !important; }
+  .hw-progress-row { grid-template-columns: 40px minmax(0,1fr) 36px !important; }
+  .hw-recent-item { min-height: 42px !important; }
+}
 
 /* 2026-11-14 UI3 contrast pass 2: active/accent text and primary fills */
 :root { --ui-primary-strong: #8F4C2E; --accent-deep: #8F4C2E; }
@@ -21428,8 +21457,8 @@ var UPDATE_LOG = [{
   "date": "2026-11-14",
   "title": "健壮性与全站视觉收口",
   "historyTitle": "健壮性与全站视觉收口",
-  "summary": "本轮补存储、路由、缓存与错误边界：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；六视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，81 项回归、严格 QA、站点一致性与桌面/移动浏览器检查通过。本块 11 项 / 11 组。",
-  "notifySummary": "本轮修存储、深链、缓存和错误边界：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控。题库 9163，81 项测试与站点一致性通过。本块 11 条要点。",
+  "summary": "本轮补存储、路由、缓存与错误边界：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；六视口门禁加入深链恢复、标题焦点与 44px 触控。首页三栏工作台也改为列宽锁定与手机单栏，长标题不再压到相邻栏。四科 9163，81 项回归、严格 QA、站点一致性与桌面/移动浏览器检查通过。本块 12 项 / 12 组。",
+  "notifySummary": "本轮修存储、深链、缓存和错误边界：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控。题库 9163，81 项测试与站点一致性通过。本块 12 条要点。",
   "notifyItems": [
     { "group": "存储降级", "text": "本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。" },
     { "group": "损坏备份", "text": "启动时读到损坏 JSON 会把原文另存为 key-corrupted-backup，保留原始存储不动，并提示先导出再恢复或清空。" },
@@ -21441,7 +21470,8 @@ var UPDATE_LOG = [{
     { "group": "主操作", "text": "手机端主操作按钮恢复显示并换行排列，不再被隐藏；按钮、标签与弹窗关闭键保持 40–44px 触控尺寸，长标题与长按钮在窄屏自然折行。" },
     { "group": "题库浏览", "text": "题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。" },
     { "group": "结果阅读", "text": "模拟考结果默认逐题展开、可单题收起，并新增全部 / 只看错题 / 只看未答筛选；长结果页不再一次铺开 27 道题，回顾时先看错误与未答。" },
-    { "group": "移动表格", "text": "规范页与统计表在手机上改成按行卡片：每行保留字段名、正文与位置，不再把三列表格压成需要左右拖动的窄条；数据表统一带列名，桌面仍保留原表格。" }
+    { "group": "移动表格", "text": "规范页与统计表在手机上改成按行卡片：每行保留字段名、正文与位置，不再把三列表格压成需要左右拖动的窄条；数据表统一带列名，桌面仍保留原表格。" },
+    { "group": "首页工作台", "text": "首页三栏工作台修掉最近记录撑破栏宽的问题：最近记录列锁定 minmax(0,1fr)，长标题在栏内省略；手机不再隐藏四科进度、最近记录和学习节奏，改为单栏完整显示；桌面三栏、平板两栏加整行节奏，任何宽度都不再压到相邻栏。" }
   ],
   "items": [
     { "group": "存储降级", "text": "本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。" },
@@ -21454,7 +21484,8 @@ var UPDATE_LOG = [{
     { "group": "主操作", "text": "手机端主操作按钮恢复显示并换行排列，不再被隐藏；按钮、标签与弹窗关闭键保持 40–44px 触控尺寸，长标题与长按钮在窄屏自然折行。" },
     { "group": "题库浏览", "text": "题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。" },
     { "group": "结果阅读", "text": "模拟考结果默认逐题展开、可单题收起，并新增全部 / 只看错题 / 只看未答筛选；长结果页不再一次铺开 27 道题，回顾时先看错误与未答。" },
-    { "group": "移动表格", "text": "规范页与统计表在手机上改成按行卡片：每行保留字段名、正文与位置，不再把三列表格压成需要左右拖动的窄条；数据表统一带列名，桌面仍保留原表格。" }
+    { "group": "移动表格", "text": "规范页与统计表在手机上改成按行卡片：每行保留字段名、正文与位置，不再把三列表格压成需要左右拖动的窄条；数据表统一带列名，桌面仍保留原表格。" },
+    { "group": "首页工作台", "text": "首页三栏工作台修掉最近记录撑破栏宽的问题：最近记录列锁定 minmax(0,1fr)，长标题在栏内省略；手机不再隐藏四科进度、最近记录和学习节奏，改为单栏完整显示；桌面三栏、平板两栏加整行节奏，任何宽度都不再压到相邻栏。" }
   ]
 },
 {

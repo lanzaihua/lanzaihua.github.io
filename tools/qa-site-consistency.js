@@ -28,6 +28,8 @@ add(!/\.bank-option math[\s\S]{0,500}display:\s*inline\s*!important/.test(styles
 add(/display:\s*revert/.test(styles), 'MathML 子元素又被 revert 成 UA 的 block math，行内公式会独占整行');
 add(!/\.math-inline-scroll math > \*:not\(mtable\)[\s\S]{0,220}display:\s*inline math/.test(styles), '行内公式 mrow 必须保持 inline math');
 add(!/\.exam-result-option\s*\{[^}]*display:\s*flex/.test(styles), '模拟考结果选项缺少 flex 排版，选项字母可能单独占行');
+add(!/\.hw-recent-list\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/.test(styles), '首页最近记录列缺少 minmax(0,1fr)，长标题会撑开并压到相邻栏');
+add(/\.hw-bottom\s*\{[^}]*display:\s*none/.test(styles), '首页工作台在窄屏又被整段隐藏');
 add(/(?:解几|解析几何)[^\n]{0,20}92\s*道/.test(allSource), '页面仍含解析几何 92 的旧计数');
 add(!(/<b>A<\/b>高代错题/.test(js) && /<b>GA<\/b>高代题库/.test(js)), '规范页编号速查必须区分错题条目与题库编号');
 add(/仅本机保存<\/span><\/span>\s*·\s*数据保存在浏览器与自建服务里/.test(js), '页脚仍把“仅本机保存”和“自建服务”并列');

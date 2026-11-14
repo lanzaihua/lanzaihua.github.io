@@ -850,7 +850,7 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('81 项回归测试'),'current test count');
   assert.ok(!md.includes('67 项回归测试')&&!md.includes('66 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.14 Release'),'current release link');
-  assert.ok(md.includes('2026.11.14--ff270e43'),'current build badge');
+  assert.ok(md.includes('2026.11.14--45820005'),'current build badge');
   assert.ok(!md.slice(0,3000).includes('20261110-home.png'),'首页截图必须用当前版本');
 });
 test('navigation, link actions and dialog close buttons keep 34px/40px touch targets',()=>{
@@ -904,6 +904,9 @@ test('Warm Academic tokens, home rhythm and exam answer card stay wired',()=>{
   assert.match(shell,/hw-trend-day/,'首页趋势需要 7 天柱状节拍');
   assert.match(shell,/data-act="ai-open"/,'首页工作台需要 AI 智能录入入口');
   assert.match(css,/\.hw-bottom\s*\{[^}]*grid-template-columns:\s*minmax/,'首页工作台必须使用自适应三栏网格');
+  assert.match(css,/\.hw-recent-list\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/,'最近记录的隐式网格必须锁成 minmax(0,1fr)，长标题不能撑破栏宽');
+  assert.match(css,/\.hw-recent-item\s*\{[^}]*overflow:\s*hidden/,'最近记录条目必须裁剪，不能压到相邻栏');
+  assert.equal(/\.hw-bottom\s*\{[^}]*display:\s*none/.test(css),false,'窄屏不能整段隐藏首页工作台');
   assert.match(exam,/exam-cardnav/,'模拟考需要答题卡');
   assert.match(exam,/data-act="exam-jump"/,'答题卡题号必须可跳转');
   assert.match(css,/\.exam-cardnav-item\s*\{[^}]*min-height:\s*34px/,'答题卡按钮触控高度至少 34px');

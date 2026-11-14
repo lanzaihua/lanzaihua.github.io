@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.14-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.14--ff270e43-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.14--45820005-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -151,9 +151,9 @@
 
 ### 2026-11-14 · 健壮性与全站视觉收口
 
-**11 项 · 11 组**
+**12 项 · 12 组**
 
-本轮同时补健壮性和视觉收口：localStorage 不可写时改用内存副本并保留损坏原文备份，深链由 404 页还原到对应 hash，Service Worker 升到 v2 并跳过 /api 与 Range；全站切到 Warm Academic 3.0，统一暖白画布、纯白面板、细线分隔与砖红强调，手机页头压到 146px，主操作恢复显示，题库筛选默认折叠，规范表格按行卡片化。四科题库 1559 / 3522 / 1199 / 2883 = 9163，81 项回归测试、严格 QA、站点一致性、公式检查与六视口浏览器检查通过。本块 11 项 / 11 组。
+本轮同时补健壮性和视觉收口：localStorage 不可写时改用内存副本并保留损坏原文备份，深链由 404 页还原到对应 hash，Service Worker 升到 v2 并跳过 /api 与 Range；全站切到 Warm Academic 3.0，统一暖白画布、纯白面板、细线分隔与砖红强调，手机页头压到 146px，主操作恢复显示，题库筛选默认折叠，规范表格按行卡片化。首页三栏工作台也改为列宽锁定与手机单栏，长标题不再压到相邻栏。四科题库 1559 / 3522 / 1199 / 2883 = 9163，81 项回归测试、严格 QA、站点一致性、公式检查与六视口浏览器检查通过。本块 12 项 / 12 组。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -168,6 +168,7 @@
 | **题库浏览** | 题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。 |
 | **结果阅读** | 模拟考结果默认逐题展开、可单题收起，并新增全部 / 只看错题 / 只看未答筛选；长结果页不再一次铺开 27 道题，回顾时先看错误与未答。 |
 | **移动表格** | 规范页与统计表在手机上改成按行卡片：每行保留字段名、正文与位置，不再把三列表格压成需要左右拖动的窄条；数据表统一带列名，桌面仍保留原表格。 |
+| **首页工作台** | 首页三栏工作台修掉最近记录撑破栏宽的问题：最近记录列锁定 minmax(0,1fr)，长标题在栏内省略；手机不再隐藏四科进度、最近记录和学习节奏，改为单栏完整显示；桌面三栏、平板两栏加整行节奏，任何宽度都不再压到相邻栏。 |
 
 <img src="assets/v2/20261114-changelog.png" alt="网页内更新记录" width="820">
 

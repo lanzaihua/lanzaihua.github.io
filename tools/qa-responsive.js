@@ -95,6 +95,66 @@ async function visibleBox(page, selector) {
     assert(item.homeDock.inFooter, failures, device.name + ' / home toolbar not in footer');
     assert(!item.homeDock.overlap, failures, device.name + ' / home toolbar overlaps subject card');
 
+    // 首页工作台：三栏（手机单栏）不能互相覆盖；长标题必须在最近记录栏内省略。
+    // 回归的是 2026-11-14 的真实 bug：隐式网格被 nowrap 标题撑到 800px，压到「学习节奏」。
+    const homeRaw = await page.evaluate(function () { return localStorage.getItem('sanke-cuotiben-v1'); });
+    await page.evaluate(function () {
+      var key = 'sanke-cuotiben-v1';
+      var raw = localStorage.getItem(key);
+      var st = raw ? JSON.parse(raw) : {};
+      st.entries = st.entries || {};
+      ['gaodai', 'shufen', 'jieji', 'xijing'].forEach(function (s) { if (!Array.isArray(st.entries[s])) st.entries[s] = []; });
+      var longTitle = '设函数在闭区间上连续，证明存在最大值与最小值，并讨论一致连续与振荡间断点的关系，这是一条故意写得很长的最近记录标题';
+      for (var i = 0; i < 3; i++) {
+        st.entries.gaodai.push({
+          id: 'QA-LONG-' + i, code: 'QA-' + i, subject: 'gaodai', summary: longTitle,
+          stars: 2, status: 'unmastered', chapter: '第一章', section: '第一节',
+          date: '2026-11-14 09:00', updatedAt: new Date(Date.now() - i * 3600000).toISOString(),
+          reviewAt: {}, blocks: [{ key: 'question', title: '题目', md: longTitle }], variants: [], points: []
+        });
+      }
+      localStorage.setItem(key, JSON.stringify(st));
+    });
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await sleep(page, 500);
+    if (await page.locator('#apiWelcomeDialog[open]').count()) {
+      const dismissHome = page.locator('#apiWelcomeDialog [data-act="dismiss-api-welcome"], #apiWelcomeDialog [data-act="close-dialog"], #apiWelcomeDialog .dlg-close').first();
+      if (await dismissHome.count()) await dismissHome.click({ force: true });
+    }
+    item.homeLayout = await page.evaluate(function () {
+      var bottom = document.querySelector('.hw-bottom');
+      if (!bottom) return { missing: true };
+      var blocks = Array.prototype.slice.call(bottom.children);
+      var rects = blocks.map(function (el) {
+        var r = el.getBoundingClientRect();
+        return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, width: r.width };
+      });
+      var overlaps = 0;
+      for (var i = 0; i < rects.length; i++) {
+        for (var j = i + 1; j < rects.length; j++) {
+          var a = rects[i], b = rects[j];
+          if (a.left < b.right - 1 && a.right > b.left + 1 && a.top < b.bottom - 1 && a.bottom > b.top + 1) overlaps++;
+        }
+      }
+      var list = document.querySelector('.hw-recent-list');
+      var first = document.querySelector('.hw-recent-item');
+      return {
+        display: getComputedStyle(bottom).display,
+        blocks: rects,
+        overlaps: overlaps,
+        list: list ? { client: list.clientWidth, scroll: list.scrollWidth, width: list.getBoundingClientRect().width } : null,
+        item: first ? { width: first.getBoundingClientRect().width, scroll: first.scrollWidth, client: first.clientWidth } : null
+      };
+    });
+    assert(item.homeLayout.display !== 'none', failures, device.name + ' / home workbench hidden');
+    assert(item.homeLayout.blocks && item.homeLayout.blocks.length === 3, failures, device.name + ' / home workbench columns missing');
+    assert(item.homeLayout.overlaps === 0, failures, device.name + ' / home workbench columns overlap');
+    assert(item.homeLayout.list && item.homeLayout.list.scroll <= item.homeLayout.list.client + 2, failures, device.name + ' / recent records overflow column');
+    assert(item.homeLayout.item && item.homeLayout.item.width <= item.homeLayout.list.width + 2, failures, device.name + ' / recent record wider than column');
+    if (homeRaw === null) await page.evaluate(function () { localStorage.removeItem('sanke-cuotiben-v1'); });
+    else await page.evaluate(function (raw) { localStorage.setItem('sanke-cuotiben-v1', raw); }, homeRaw);
+    await goto(page, '#/home');
+
     for (const entry of ROUTES) {
       await goto(page, entry[1]);
       const o = await overflow(page);
