@@ -327,7 +327,7 @@ test('styles keep MathML layout boxes and balanced mobile action rows',()=>{
   assert.match(css,/\.exam-result-option\s*\{[^}]*display:\s*flex/,'模拟考结果选项需要 flex 排版，选项字母不能单独占行');
   assert.match(css,/\.bank-option\s*\{[^}]*display:\s*flex/,'题库选项需要 flex 排版，选项字母不能单独占行');
   assert.ok(/\.math-inline-scroll\.is-wide[\s\S]{0,400}font-size: 1em !important/.test(css),'宽公式不能缩小字号');
-  assert.match(css,/\.bank-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端题库操作按钮应为两列');
+  assert.match(css,/\.bank-actions\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/,'移动端题库操作按钮应为两列');
   assert.match(css,/\.entry-foot\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/,'移动端错题操作按钮应为两列');
 });
 test('site shell restores warm home greeting and paper layout',()=>{
@@ -1014,4 +1014,21 @@ test('dark theme overrides the new color tokens, not only the paper aliases',()=
   assert.match(css,/html\[data-theme="dark"\]\s*\{[^}]*--color-text:\s*#F2EEE6/s,'深色主题必须覆盖新正文 token');
   assert.match(css,/html\[data-theme="dark"\]\s*\{[^}]*--color-border:\s*#3B362F/s,'深色主题必须覆盖新边框 token');
   assert.match(css,/html\[data-theme="auto"\]\s*\{[^}]*--color-bg:\s*#1D1B18/s,'跟随系统的深色同样要覆盖新画布 token');
+});
+
+test('Warm Academic 3.1 keeps guide cards, exam stages and bank scope readable', () => {
+  const css = read('src/styles.css');
+  const library = read('src/js/30-library.js');
+  const finalUi = read('src/js/58-final.js');
+  const stats = read('src/js/16-stats.js');
+  assert.match(library, /decorateGuideTables/);
+  assert.match(library, /guide-jump/);
+  assert.match(library, /bank-resultbar/);
+  assert.match(finalUi, /final-flow-label/);
+  assert.match(finalUi, /data-act="final-ai-exam"/);
+  assert.match(stats, /stats-insight/);
+  assert.match(css, /\.final-flow \.final-section-tab\s*\{[^}]*display:\s*grid\s*!important/);
+  assert.match(css, /\.guide-facts\s*\{[^}]*repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(css, /\.guide-layout \.guide-panel \.md \.guide-table td[\s\S]{0,180}width:\s*auto !important/);
+  assert.match(css, /\.bank-filters \.count-note\s*\{\s*display:\s*none/);
 });

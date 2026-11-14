@@ -148,6 +148,17 @@ function handleAction(act, el) {
       if (chapterEl) chapterEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       break;
     }
+    case 'guide-jump': {
+      var guideTarget = qs('#' + el.getAttribute('data-target'));
+      if (!guideTarget) break;
+      guideTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var guideHeading = guideTarget.querySelector('.panel-title');
+      if (guideHeading) {
+        guideHeading.setAttribute('tabindex', '-1');
+        guideHeading.focus({ preventScroll: true });
+      }
+      break;
+    }
     case 'note-goto-subject':
       noteSaveNow();
       state.activeSubject = el.getAttribute('data-subject');

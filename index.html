@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.14-45820005";</script>
+<script>window.__BUILD_ID__="2026.11.14-f2dd4626";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -8504,6 +8504,518 @@ html[data-theme="dark"] .brand-sub, html[data-theme="dark"] .home-brand-sub, htm
 .btn-primary:hover, button.btn-primary:hover { background: #7A3F25 !important; border-color: #7A3F25 !important; }
 .final-subject-tab.is-on span, .final-section-tab.is-on span { color: #8F4C2E !important; opacity: 1 !important; }
 
+/* ==========================================================================
+   2026-11-14 Warm Academic 3.1 — 全站视觉精修
+   目标：更清楚的阅读层级、更少但有意义的卡片、统一的表格/标签/按钮节奏。
+   这一层只覆盖展示，不改题库、存储、同步、AI 或考试逻辑。
+   ========================================================================== */
+:root {
+  --wa3-rule: #E1D9CC;
+  --wa3-rule-soft: #ECE6DC;
+  --wa3-tint: #FBF8F2;
+  --wa3-tint-2: #F2ECE2;
+  --wa3-quiet: #6E675E;
+  --wa3-shadow: 0 1px 2px rgba(48, 44, 40, .04);
+}
+html[data-theme="dark"] {
+  --wa3-rule: #3B362F;
+  --wa3-rule-soft: #332E27;
+  --wa3-tint: #24211D;
+  --wa3-tint-2: #2D2923;
+  --wa3-quiet: #C9C1B5;
+  --wa3-shadow: 0 1px 2px rgba(0, 0, 0, .22);
+}
+
+body {
+  font-variant-numeric: tabular-nums;
+  text-rendering: optimizeLegibility;
+}
+.page-head { gap: 24px; padding-bottom: 18px; }
+.page-title { letter-spacing: -.012em; }
+.page-sub { max-width: 76ch; line-height: 1.8; }
+.eyebrow, .page-kicker { letter-spacing: .14em; }
+.panel { border-color: var(--wa3-rule); box-shadow: var(--wa3-shadow); }
+.panel-head {
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--wa3-rule-soft);
+  align-items: flex-start;
+}
+.panel-body { padding-top: 16px; }
+.panel-title { letter-spacing: -.006em; }
+.panel-sub { color: var(--wa3-quiet); }
+
+/* 首页：把工作台当成一张桌面，而不是五张互不相干的卡片 */
+.hw-topbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 28px;
+  margin: 0 0 20px;
+  padding: 0 0 13px;
+  border-bottom: 1px solid var(--wa3-rule);
+}
+.hw-topbar span {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  color: var(--accent-deep);
+}
+.hw-topbar p {
+  margin: 0;
+  max-width: 58ch;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--wa3-quiet);
+  text-align: right;
+}
+.hw-top {
+  border: 1px solid var(--wa3-rule);
+  background: var(--surface);
+  border-radius: var(--radius-card, 14px);
+  overflow: hidden;
+}
+.hw-metric { border-color: var(--wa3-rule-soft); }
+.hw-focus {
+  position: relative;
+  background: var(--wa3-tint);
+  border-color: var(--wa3-rule-soft);
+}
+.hw-focus::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--accent);
+}
+.hw-focus .hw-label { letter-spacing: .12em; }
+.hw-bottom { border-top: 1px solid var(--wa3-rule-soft); }
+.hw-block { padding-top: 16px; }
+.hw-block-head { padding-bottom: 10px; border-bottom: 1px solid var(--wa3-rule-soft); }
+.hw-recent-item { border-radius: 0; border-bottom: 1px solid var(--wa3-rule-soft); padding-left: 2px; padding-right: 2px; }
+.hw-recent-item:last-child { border-bottom: 0; }
+.hw-progress-row i { background: var(--wa3-rule-soft); }
+
+/* 题库：始终告诉用户“现在看到的是哪一批题” */
+.bank-resultbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 0 0 4px;
+  padding: 10px 0 13px;
+  border-bottom: 1px dashed var(--wa3-rule);
+}
+.bank-result-kicker {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--wa3-quiet);
+}
+.bank-result-chips {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+.bank-scope-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 26px;
+  padding: 0 9px;
+  border: 1px solid var(--wa3-rule);
+  border-radius: 5px;
+  background: var(--wa3-tint);
+  color: var(--ink-soft);
+  font-size: 11.5px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.bank-scope-empty { color: var(--wa3-quiet); font-size: 11.5px; }
+.bank-result-count {
+  flex: 0 0 auto;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--wa3-quiet);
+}
+.bank-item { border-color: var(--wa3-rule); }
+.bank-item + .bank-item { border-top-color: var(--wa3-rule-soft); }
+
+/* 规范：从“说明文档”变成一页可以扫读、可以定位的手册 */
+.guide-page-head .page-sub { max-width: 70ch; }
+.guide-layout { align-items: start; gap: 24px; }
+.guide-main { display: grid; gap: 18px; min-width: 0; }
+.guide-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 2px;
+  border: 1px solid var(--wa3-rule);
+  border-radius: var(--radius-card, 14px);
+  background: var(--surface);
+  overflow: hidden;
+}
+.guide-facts > div {
+  min-width: 0;
+  padding: 17px 18px 16px;
+  border-right: 1px solid var(--wa3-rule-soft);
+}
+.guide-facts > div:last-child { border-right: 0; }
+.guide-facts b {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--accent-deep);
+}
+.guide-facts span {
+  display: block;
+  margin-top: 7px;
+  font-size: 10.5px;
+  letter-spacing: .08em;
+  color: var(--ink);
+}
+.guide-facts small {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--wa3-quiet);
+}
+.guide-panel { overflow: hidden; }
+.guide-panel .panel-head { align-items: flex-start; gap: 20px; }
+.guide-panel-heading { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.guide-section-no {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  line-height: 1.4;
+  letter-spacing: .15em;
+  color: var(--accent-deep);
+}
+.guide-panel-lead {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--wa3-quiet);
+}
+.guide-panel .panel-title { margin: 0; }
+.guide-table-wrap { overflow-x: auto; border: 1px solid var(--wa3-rule-soft); border-radius: 7px; }
+.guide-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.guide-table th {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--wa3-rule);
+  background: var(--wa3-tint-2);
+  color: var(--ink-soft);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-align: left;
+}
+.guide-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--wa3-rule-soft);
+  line-height: 1.65;
+  vertical-align: top;
+}
+.guide-table tr:last-child td { border-bottom: 0; }
+.guide-table td:first-child { width: 20%; font-weight: 600; color: var(--ink); }
+.guide-table td:nth-child(2) { width: 56%; }
+.guide-table code { overflow-wrap: anywhere; }
+.guide-toc-list { display: grid; gap: 2px; margin-top: 10px; }
+.guide-toc-list button {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  min-height: 34px;
+  padding: 4px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--wa3-rule-soft);
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+.guide-toc-list button:last-child { border-bottom: 0; }
+.guide-toc-list button:hover { color: var(--accent-deep); }
+.guide-toc-list b { font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-deep); }
+.guide-toc-list button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* 期末复习：两个阶段是工作流，不是两张同权重的大卡 */
+.final-flow {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 22px;
+  margin: 0 0 18px;
+}
+.final-flow-label { padding: 6px 0 6px 14px; border-left: 2px solid var(--accent); }
+.final-flow-label span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: .14em;
+  color: var(--accent-deep);
+}
+.final-flow-label p { margin: 6px 0 0; font-size: 12px; line-height: 1.65; color: var(--wa3-quiet); }
+.final-section-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin: 0; }
+.final-section-tab {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+  min-height: 70px;
+  padding: 12px 14px;
+  border: 1px solid var(--wa3-rule);
+  border-radius: var(--radius-card, 14px);
+  background: var(--surface);
+  text-align: left;
+}
+.final-section-tab em {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--wa3-rule);
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-style: normal;
+  color: var(--wa3-quiet);
+}
+.final-tab-copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.final-section-tab b { font-size: 14.5px; }
+.final-section-tab .final-tab-copy span { font-size: 11.5px; line-height: 1.5; }
+.final-section-tab.is-on { border-color: var(--accent); background: var(--wa3-tint); }
+.final-section-tab.is-on em { border-color: var(--accent); color: var(--accent-deep); }
+.final-exam-entry .final-panel-head { padding-bottom: 14px; }
+.final-kicker {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: .14em;
+  color: var(--accent-deep);
+}
+.final-panel-meta { font-size: 11px; letter-spacing: .04em; color: var(--wa3-quiet); }
+.final-exam-start-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+.final-start-primary, .final-start-secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 3px;
+  height: auto;
+  min-height: 64px;
+  padding: 10px 14px;
+  text-align: left;
+}
+.final-start-primary b, .final-start-secondary b { font-size: 13.5px; font-weight: 600; }
+.final-start-primary span, .final-start-secondary span { font-size: 10.5px; font-weight: 400; line-height: 1.45; opacity: .78; }
+.final-exam-action-note {
+  margin: 9px 0 16px;
+  padding-left: 10px;
+  border-left: 2px solid var(--wa3-rule);
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: var(--wa3-quiet);
+}
+.final-exam-entry #finalExamSummary, .final-exam-entry .final-exam-summary { margin-top: 14px; }
+
+/* 统计：每块图表都给一句可读结论，别让用户自己读柱子 */
+.stats-layout { gap: 16px; }
+.stats-panel .panel-head { padding-bottom: 10px; }
+.stats-insight {
+  margin: 14px 0 0;
+  padding-top: 11px;
+  border-top: 1px dashed var(--wa3-rule);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--wa3-quiet);
+}
+.stats-chart-foot { margin-top: 10px; }
+.stats-metrics { gap: 0; border: 1px solid var(--wa3-rule); border-radius: var(--radius-card, 14px); overflow: hidden; }
+.stats-metrics > * { border-right: 1px solid var(--wa3-rule-soft); }
+.stats-metrics > *:last-child { border-right: 0; }
+
+/* 笔记：把画布收成一张真正的纸，不让编辑区无限拉宽 */
+.note-workspace { gap: 20px; align-items: start; }
+.note-canvas-col { width: 100%; max-width: 940px; margin-inline: auto; min-width: 0; }
+.note-pagebar { border-color: var(--wa3-rule); }
+
+/* 通用表格：3.1 的统一读数节奏 */
+table.data { border-color: var(--wa3-rule); }
+table.data th { background: var(--wa3-tint-2); color: var(--ink-soft); font-size: 10.5px; letter-spacing: .05em; }
+table.data td { border-top-color: var(--wa3-rule-soft); }
+table.data tbody tr:hover { background: var(--wa3-tint); }
+.form-note { color: var(--wa3-quiet); }
+
+/* 键盘焦点统一，但不打扰鼠标用户 */
+.where-focus:focus-visible,
+.final-section-tab:focus-visible,
+.bank-scope-chip:focus-visible,
+.guide-toc-list button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 980px) {
+  .final-flow { grid-template-columns: 1fr; gap: 12px; }
+  .final-flow-label { padding: 0 0 0 12px; }
+  .guide-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .guide-facts > div:nth-child(2n) { border-right: 0; }
+  .guide-facts > div:nth-child(n+3) { border-top: 1px solid var(--wa3-rule-soft); }
+}
+
+@media (max-width: 760px) {
+  .hw-topbar { display: block; margin-bottom: 16px; }
+  .hw-topbar p { margin-top: 6px; text-align: left; }
+  .page-head { padding-bottom: 15px; }
+  .page-sub { font-size: 13px; line-height: 1.75; }
+  .panel-head { padding-bottom: 11px; }
+  .panel-body { padding-top: 14px; }
+  .bank-resultbar { gap: 7px; padding-top: 8px; }
+  .bank-result-kicker { display: none; }
+  .bank-result-count { margin-left: auto; }
+  .final-section-tabs { grid-template-columns: 1fr; }
+  .final-section-tab { min-height: 62px; }
+  .final-exam-start-actions { grid-template-columns: 1fr; }
+  .final-start-primary, .final-start-secondary { min-height: 58px; }
+  .guide-facts > div { padding: 14px 14px 13px; }
+  .guide-facts b { font-size: 24px; }
+  .guide-facts small { font-size: 10.5px; }
+  .guide-panel .panel-head { gap: 10px; }
+  .guide-panel-lead { font-size: 12px; }
+  .guide-table-wrap { overflow: visible; border: 0; }
+  .guide-table, .guide-table tbody, .guide-table tr, .guide-table td { display: block; width: 100%; }
+  .guide-table thead { display: none; }
+  .guide-table tr { padding: 11px 0; border-bottom: 1px solid var(--wa3-rule); }
+  .guide-table tr:last-child { border-bottom: 0; }
+  .guide-table td { border: 0; padding: 3px 0; }
+  .guide-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: .08em;
+    color: var(--wa3-quiet);
+  }
+  .guide-table td:first-child { width: auto; font-size: 13px; }
+  .guide-table td:nth-child(2) { width: auto; }
+  .stats-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats-metrics > * { border-bottom: 1px solid var(--wa3-rule-soft); }
+  .stats-metrics > *:nth-child(2n) { border-right: 0; }
+  .stats-metrics > *:nth-last-child(-n+2) { border-bottom: 0; }
+  .note-canvas-col { max-width: none; }
+}
+
+@media (max-width: 420px) {
+  .guide-facts { grid-template-columns: 1fr; }
+  .guide-facts > div { border-right: 0; }
+  .guide-facts > div + div { border-top: 1px solid var(--wa3-rule-soft); }
+  .final-section-tab { grid-template-columns: 28px minmax(0, 1fr); padding: 10px 12px; }
+  .final-section-tab em { width: 26px; height: 26px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .final-section-tab, .guide-toc-list button, .hw-recent-item, .bank-scope-chip { transition: none !important; }
+}
+
+
+/* 3.1 收尾：期末阶段卡按“序号 + 标题说明 + 箭头”单行排，不再被旧层的纵向 flex 覆盖 */
+.final-flow .final-section-tab {
+  display: grid !important;
+  grid-template-columns: 32px minmax(0, 1fr) auto !important;
+  grid-template-rows: auto !important;
+  align-items: center !important;
+  justify-content: initial !important;
+  gap: 12px !important;
+  min-height: 70px !important;
+  padding: 12px 16px !important;
+  text-align: left !important;
+}
+.final-flow .final-section-tab em { grid-column: 1; grid-row: 1; }
+.final-flow .final-section-tab .final-tab-copy { grid-column: 2; grid-row: 1; align-items: flex-start; text-align: left; }
+.final-flow .final-section-tab .final-tab-copy b { display: block; }
+.final-flow .final-section-tab .final-tab-copy span { display: block; margin-top: 1px; }
+.final-flow .final-section-tab::after {
+  content: "→";
+  grid-column: 3;
+  grid-row: 1;
+  position: static;
+  align-self: center;
+  color: var(--wa3-quiet);
+  font-size: 14px;
+}
+.final-flow .final-section-tab.is-on::after { color: var(--accent-deep); }
+.final-flow .final-section-tab::before { top: 14px; bottom: 14px; }
+
+@media (max-width: 760px) {
+  .final-flow .final-section-tab { min-height: 60px !important; padding: 11px 14px !important; }
+  .bank-filters .count-note { display: none; }
+  .guide-layout .guide-panel .md .guide-table td,
+  .guide-layout .guide-panel .md .guide-table td:first-child,
+  .guide-layout .guide-panel .md .guide-table td:nth-child(2),
+  .guide-layout .guide-panel .md .guide-table td:nth-child(3) {
+    display: block;
+    width: auto !important;
+    max-width: none !important;
+  }
+  .guide-table tr { padding: 12px 1px; }
+}
+
+@media (max-width: 420px) {
+  .final-flow .final-section-tab {
+    grid-template-columns: 28px minmax(0, 1fr) auto !important;
+    gap: 10px !important;
+    min-height: 58px !important;
+    padding: 10px 12px !important;
+  }
+  .final-flow .final-section-tab em { width: 26px; height: 26px; }
+  .guide-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .guide-facts > div { padding: 13px 14px 12px; border-right: 1px solid var(--wa3-rule-soft); }
+  .guide-facts > div:nth-child(2n) { border-right: 0; }
+  .guide-facts > div:nth-child(n+3) { border-top: 1px solid var(--wa3-rule-soft); }
+  .guide-facts > div + div { border-top: 0; }
+  .guide-facts b { font-size: 23px; }
+}
+
+
+/* Warm Academic 3.1 · guide table card refinement (mobile) */
+@media (max-width: 760px) {
+  .guide-layout .guide-panel .md .guide-table tr { padding: 13px 0; }
+  .guide-layout .guide-panel .md .guide-table td { padding: 2px 0; }
+  .guide-layout .guide-panel .md .guide-table td:first-child { padding-top: 0; font-size: 14px; font-weight: 600; }
+  .guide-layout .guide-panel .md .guide-table td:first-child::before { display: none; }
+  .guide-layout .guide-panel .md .guide-table td:not(:first-child)::before { margin-bottom: 1px; }
+}
+
+/* Warm Academic 3.1 · AI dialog keeps its submit row reachable */
+#aiDialog .dlg-body { padding-bottom: 72px; overscroll-behavior: contain; }
+#aiDialog .ai-submit-row {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  margin-top: 12px;
+  padding: 10px 0 2px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+
 </style>
 </head>
 <body>
@@ -14903,6 +15415,7 @@ function renderHomeWorkbench() {
       '<i style="height:' + h + '%"></i><small>' + esc(day.short) + '</small></span>';
   }).join('');
   host.innerHTML =
+    '<div class="hw-topbar"><span>STUDY DESK · 今日工作台</span><p>四科进度、最近记录和复习节奏都在这一页；不用翻页，先决定今天做哪一件。</p></div>' +
     '<div class="hw-top">' +
       '<div class="hw-metric"><span>错题总数</span><b>' + t.total + '</b><small>四科合计</small></div>' +
       '<div class="hw-metric"><span>待复习</span><b>' + t.unmastered + '</b><small>尚未掌握</small></div>' +
@@ -15644,13 +16157,20 @@ function statsTrendHtml(series) {
       '<div class="stats-chart-empty-actions"><button class="btn btn-xs" data-act="nav-view" data-view="bank" type="button">去题库</button><button class="btn btn-xs" data-act="nav-view" data-view="entries" type="button">看错题</button></div>' +
     '</div>';
   }
+  var peakDay = series.days.reduce(function (best, d) { return !best || d.total > best.total ? d : best; }, null);
+  var readout = '<p class="stats-insight">14 天共复习 ' + series.totalReviews + ' 次、更新 ' + series.totalUpdates + ' 条' +
+    (peakDay && peakDay.total ? '；最忙的一天是 ' + esc(peakDay.label) + '（' + peakDay.total + ' 条记录）。' : '。') + '</p>';
   return '<div class="stats-chart" role="img" aria-label="近 14 天学习记录，复习 ' + series.totalReviews + ' 次，条目更新 ' + series.totalUpdates + ' 条">' + bars + '</div>' +
-    '<div class="stats-chart-foot"><span><i class="legend-dot is-review"></i>复习打卡 ' + series.totalReviews + ' 次</span><span><i class="legend-dot is-update"></i>条目更新 ' + series.totalUpdates + ' 条</span></div>';
+    '<div class="stats-chart-foot"><span><i class="legend-dot is-review"></i>复习打卡 ' + series.totalReviews + ' 次</span><span><i class="legend-dot is-update"></i>条目更新 ' + series.totalUpdates + ' 条</span></div>' +
+    readout;
 }
 
 function statsSubjectHtml(rows) {
   var max = 1;
   rows.forEach(function (r) { max = Math.max(max, r.st.total); });
+  var total = rows.reduce(function (n, r) { return n + r.st.total; }, 0);
+  var mastered = rows.reduce(function (n, r) { return n + r.st.mastered; }, 0);
+  var top = rows.slice().sort(function (a, b) { return b.st.total - a.st.total; })[0];
   return '<div class="stats-subject-list">' + rows.map(function (r) {
     var st = r.st;
     var w = st.total ? Math.max(4, Math.round((st.total / max) * 100)) : 0;
@@ -15660,34 +16180,48 @@ function statsSubjectHtml(rows) {
       '<span class="stats-subject-num">' + st.total + ' <small>错题</small></span>' +
       '<span class="stats-subject-meta">' + st.pct + '% 掌握 · ' + st.bank + ' 题库</span>' +
     '</a>';
-  }).join('') + '</div>';
+  }).join('') + '</div>' +
+    '<p class="stats-insight">累计 ' + total + ' 条错题，整体掌握 ' + (total ? Math.round((mastered / total) * 100) : 0) + '%' +
+    (top && top.st.total ? '；错题最多的是' + esc(top.subject.name) + '（' + top.st.total + ' 条）。' : '。') + '</p>';
 }
 
 function statsErrorHtml(counts) {
-  return errorBars({ errors: counts });
+  var total = 0, topKey = '', topVal = 0;
+  Object.keys(counts || {}).forEach(function (k) {
+    var n = Number(counts[k]) || 0;
+    total += n;
+    if (n > topVal) { topVal = n; topKey = k; }
+  });
+  return errorBars({ errors: counts }) +
+    (total ? '<p class="stats-insight">已标记 ' + total + ' 条错因' + (topKey ? '；出现最多的是「' + esc(topKey) + '」（' + topVal + ' 条）。' : '。') + '</p>' : '');
 }
 
 function statsChapterHtml(rows) {
   if (!rows.length) return emptyState('还没有章节数据', '录入第一道错题后，这里会按章节显示分布与掌握情况。', '<button class="btn" data-act="nav-view" data-view="bank" type="button">去题库挑一道</button>');
   var max = 1;
   rows.forEach(function (r) { max = Math.max(max, r.total); });
+  var top = rows.slice().sort(function (a, b) { return b.total - a.total; })[0];
   return '<div class="stats-chapter-list">' + rows.map(function (r) {
     var pct = Math.round((r.mastered / r.total) * 100);
     return '<div class="stats-chapter-row">' +
       '<div class="stats-chapter-head"><b>' + esc(r.chapter) + '</b><span>' + r.total + ' 题 · 已掌握 ' + pct + '%</span></div>' +
       '<div class="stats-chapter-track"><i style="width:' + Math.max(4, Math.round((r.total / max) * 100)) + '%"></i><em style="width:' + pct + '%"></em></div>' +
     '</div>';
-  }).join('') + '</div>';
+  }).join('') + '</div>' +
+    (top ? '<p class="stats-insight">错题最集中的是' + esc(top.chapter) + '（' + top.total + ' 条）。先处理这一章，收益最大。</p>' : '');
 }
 
 function statsExamHtml(rows) {
   if (!rows.length) return emptyState('还没有交卷记录', '完成一次标准题库模拟考后，成绩会出现在这里；草稿和进行中的考试不计数。', '<button class="btn" data-act="nav-final" type="button">去期末复习</button>');
+  var best = rows.slice().sort(function (a, b) { return b.score - a.score; })[0];
+  var avg = Math.round(rows.reduce(function (n, r) { return n + r.score; }, 0) / rows.length);
   return '<div class="stats-exam-list">' + rows.map(function (r) {
     return '<div class="stats-exam-row">' +
       '<div><b>' + esc(r.title) + '</b><span>' + esc(r.subject) + ' · ' + esc(formatDate(r.date)) + ' · ' + r.count + ' 题</span></div>' +
       '<em>' + r.score + '<small> / 100</small></em>' +
     '</div>';
-  }).join('') + '</div>';
+  }).join('') + '</div>' +
+    '<p class="stats-insight">最近 ' + rows.length + ' 次平均 ' + avg + ' 分' + (best ? '，最高 ' + best.score + ' 分（' + esc(best.title) + '）。' : '。') + '</p>';
 }
 
 function viewStats() {
@@ -16691,6 +17225,24 @@ function viewBank(subjectId) {
     '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + filtered.length + ' / ' + items.length + ' 题</span>' +
   '</div>';
 
+  var originNames = { exam: '考研同型', textbook: '教材课后', exercise: '习题集' };
+  var diffNames = { '1': '基础', '2': '常规', '3': '综合', '4': '压轴', '5': '竞赛' };
+  var scopeChips = [];
+  if (q) scopeChips.push('搜索：' + q);
+  if (f.origin !== 'all') scopeChips.push(originNames[f.origin] || f.origin);
+  if (f.chapter !== 'all') scopeChips.push(f.chapter + (f.section !== 'all' ? ' · ' + f.section : ''));
+  if (f.category !== 'all') scopeChips.push(f.category);
+  if (f.type !== 'all') scopeChips.push(f.type === 'choice' ? '客观题' : f.type === 'fill' ? '填空题' : '主观题');
+  if (f.diff !== 'all') scopeChips.push('难度 ' + (diffNames[f.diff] || f.diff));
+  if (f.template !== 'all') scopeChips.push('模板 ' + f.template);
+  var resultbar = '<div class="bank-resultbar" aria-label="当前筛选范围">' +
+    '<span class="bank-result-kicker">当前范围</span>' +
+    '<div class="bank-result-chips">' +
+      (scopeChips.length ? scopeChips.map(function (label) { return '<span class="bank-scope-chip">' + esc(label) + '</span>'; }).join('') : '<span class="bank-scope-empty">全部题目</span>') +
+    '</div>' +
+    '<span class="bank-result-count">' + filtered.length + ' 题</span>' +
+  '</div>';
+
   var list;
   if (!items.length) {
     list = emptyState('题库还没生成', '题库作者正在整理四科 skill 的题型与变式，稍后刷新即可；你仍然可以手动新增或智能录入。', '<div class="multi-actions">' + entryCreateButtons(subjectId) + '</div>');
@@ -16703,7 +17255,7 @@ function viewBank(subjectId) {
       (filtered.length > shown.length ? '<div class="bank-more"><button class="btn" data-act="bank-show-more" type="button">加载更多 · 已显示 ' + shown.length + ' / ' + filtered.length + '</button></div>' : '');
   }
   var listHead = '<h2 class="sr-only">题目列表</h2>';
-  return head + toolbar + listHead + list;
+  return head + toolbar + resultbar + listHead + list;
 }
 
 function renderBankItem(it) {
@@ -16750,15 +17302,45 @@ function renderBankItem(it) {
   '</article>';
 }
 
+function decorateGuideTables(html) {
+  if (!html || typeof DOMParser === 'undefined') return html;
+  try {
+    var doc = new DOMParser().parseFromString('<div data-guide-root="1">' + html + '</div>', 'text/html');
+    var root = doc.querySelector('[data-guide-root]');
+    if (!root) return html;
+    Array.prototype.forEach.call(root.querySelectorAll('table'), function (table) {
+      var heads = Array.prototype.map.call(table.querySelectorAll('thead th'), function (th) {
+        return String(th.textContent || '').replace(/\s+/g, ' ').trim();
+      });
+      if (!heads.length) return;
+      table.classList.add('guide-table');
+      Array.prototype.forEach.call(table.querySelectorAll('tbody tr'), function (tr) {
+        Array.prototype.forEach.call(tr.children, function (td, i) {
+          if (heads[i]) td.setAttribute('data-label', heads[i]);
+        });
+      });
+      var wrap = table.parentNode;
+      if (wrap && wrap.classList && wrap.classList.contains('table-wrap')) wrap.classList.add('guide-table-wrap');
+    });
+    return root.innerHTML;
+  } catch (e) { return html; }
+}
+
 function viewGuide(subjectId) {
   var s = subjectOf(subjectId);
-  var conventions = renderMarkdown(s.conventionsMd || '');
-  var example = s.exampleMd ? renderMarkdown(s.exampleMd) : '';
-  var main = '<section class="panel guide-panel"><div class="panel-head"><h2 class="panel-title">条目规范与复习法</h2><span class="panel-sub">统一适用四科</span></div>' +
+  var conventions = decorateGuideTables(renderMarkdown(s.conventionsMd || ''));
+  var example = s.exampleMd ? decorateGuideTables(renderMarkdown(s.exampleMd)) : '';
+  var main = '<div class="guide-facts" aria-label="规范摘要">' +
+      '<div><b>5</b><span>必填字段</span><small>解答、解析、答案、要点、易错点</small></div>' +
+      '<div><b>02</b><span>套编号</span><small>错题 A/M/G/E · 题库 GA/MA/GE/WE</small></div>' +
+      '<div><b>7</b><span>复习节点</span><small>D1 至 D365，按节奏解锁</small></div>' +
+      '<div><b>01</b><span>套写法</span><small>Markdown + LaTeX，网页统一渲染</small></div>' +
+    '</div>' +
+    '<section class="panel guide-panel guide-fields" id="guide-fields"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">01 / FIELDS</span><h2 class="panel-title">条目规范与复习法</h2><p class="guide-panel-lead">一条错题先写全五件套，再按 1 / 3 / 7 天的节奏重做；下面的表格是四科共用的最低标准。</p></div><span class="panel-sub">统一适用四科</span></div>' +
     '<div class="panel-body"><div class="md">' + conventions + '</div>' +
     '<p class="form-note">本页为四科统一规范；新增或修改只写入网页数据，不改写原始 Markdown 文件。</p></div></section>' +
-    (example ? '<section class="panel guide-panel guide-example"><div class="panel-head"><h2 class="panel-title">格式示范</h2><span class="panel-sub">照这个写</span></div><div class="panel-body"><div class="md">' + example + '</div></div></section>' : '') +
-    '<section class="panel guide-panel guide-data"><div class="panel-head"><h2 class="panel-title">数据与维护</h2></div><div class="panel-body"><div class="md">' +
+    (example ? '<section class="panel guide-panel guide-example" id="guide-example"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">02 / EXAMPLE</span><h2 class="panel-title">格式示范</h2><p class="guide-panel-lead">不必逐字模仿，但字段顺序、公式写法和解答结构照这个来。</p></div><span class="panel-sub">照这个写</span></div><div class="panel-body"><div class="md">' + example + '</div></div></section>' : '') +
+    '<section class="panel guide-panel guide-data" id="guide-data"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">03 / DATA</span><h2 class="panel-title">数据与维护</h2><p class="guide-panel-lead">数据默认留在本机；换设备或清缓存前，先导出 JSON 备份。</p></div></div><div class="panel-body"><div class="md">' +
       '<ul>' +
       '<li>网页数据默认保存在浏览器 localStorage；用同一台设备打开即可继续编辑。</li>' +
       '<li>换设备时：在「设置与同步」里导出 JSON，再到另一台设备导入。</li>' +
@@ -16767,6 +17349,12 @@ function viewGuide(subjectId) {
       '</ul>' +
     '</div></div></section>';
   var aside = '<aside class="guide-aside" aria-label="规范速览">' +
+    '<div class="guide-card guide-toc"><span class="guide-card-kicker">本页目录</span><h3>从哪里开始</h3>' +
+      '<div class="guide-toc-list">' +
+        '<button type="button" data-act="guide-jump" data-target="guide-fields"><b>01</b><span>条目规范与复习法</span></button>' +
+        (example ? '<button type="button" data-act="guide-jump" data-target="guide-example"><b>02</b><span>格式示范</span></button>' : '') +
+        '<button type="button" data-act="guide-jump" data-target="guide-data"><b>03</b><span>数据与维护</span></button>' +
+      '</div></div>' +
     '<div class="guide-card"><span class="guide-card-kicker">五件套</span><h3>缺一不可</h3>' +
       '<ul class="guide-check"><li>考试标准解答过程</li><li>详细解析</li><li>答案</li><li>解题要点</li><li>易错点</li></ul></div>' +
     '<div class="guide-card"><span class="guide-card-kicker">复习节奏</span><h3>重做优先</h3>' +
@@ -16776,7 +17364,7 @@ function viewGuide(subjectId) {
       '<div class="guide-prefix"><span><b>A</b>高代错题</span><span><b>M</b>数分错题</span><span><b>G</b>解几错题</span><span><b>E</b>西经错题</span></div><div class="guide-prefix" style="margin-top:8px"><span><b>GA</b>高代题库</span><span><b>MA</b>数分题库</span><span><b>GE</b>解几题库</span><span><b>WE</b>西经题库</span></div></div>' +
   '</aside>';
   var guideBook = bookLabelFor(subjectId);
-  return '<div class="page-head"><div><p class="eyebrow">' + esc(s.name) + (guideBook ? ' · ' + esc(guideBook) : '') + ' / CONVENTIONS</p>' +
+  return '<div class="page-head guide-page-head"><div><p class="eyebrow">' + esc(s.name) + (guideBook ? ' · ' + esc(guideBook) : '') + ' / CONVENTIONS</p>' +
     '<h1 class="page-title">规范</h1>' +
     '<p class="page-sub">四科统一使用同一套条目字段、编号规则、书写格式、复习节奏和维护约定。' + (guideBook ? '章节入口按' + esc(guideBook) + '第一章至第十章排列。' : '') + '</p></div></div>' +
     '<div class="guide-layout"><div class="guide-main">' + main + '</div>' + aside + '</div>';
@@ -21455,10 +22043,10 @@ var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [{
   "date": "2026-11-14",
-  "title": "健壮性与全站视觉收口",
-  "historyTitle": "健壮性与全站视觉收口",
-  "summary": "本轮补存储、路由、缓存与错误边界：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；六视口门禁加入深链恢复、标题焦点与 44px 触控。首页三栏工作台也改为列宽锁定与手机单栏，长标题不再压到相邻栏。四科 9163，81 项回归、严格 QA、站点一致性与桌面/移动浏览器检查通过。本块 12 项 / 12 组。",
-  "notifySummary": "本轮修存储、深链、缓存和错误边界：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控。题库 9163，81 项测试与站点一致性通过。本块 12 条要点。",
+  "title": "健壮性与视觉精修",
+  "historyTitle": "健壮性与视觉精修",
+  "summary": "本轮补存储、路由、缓存与错误边界：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；六视口门禁加入深链恢复、标题焦点与 44px 触控。首页三栏工作台也改为列宽锁定与手机单栏，长标题不再压到相邻栏。四科 9163，82 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过。本块 18 项 / 18 组，含 Warm Academic 3.1 的工作台、规范页、期末入口、题库范围、统计结论与 AI 动作可达。",
+  "notifySummary": "本轮修存储、深链、缓存和错误边界：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控。题库 9163，82 项测试、8 视口真实交互、公式、无障碍与性能门禁通过。本块 18 条要点。",
   "notifyItems": [
     { "group": "存储降级", "text": "本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。" },
     { "group": "损坏备份", "text": "启动时读到损坏 JSON 会把原文另存为 key-corrupted-backup，保留原始存储不动，并提示先导出再恢复或清空。" },
@@ -21471,7 +22059,13 @@ var UPDATE_LOG = [{
     { "group": "题库浏览", "text": "题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。" },
     { "group": "结果阅读", "text": "模拟考结果默认逐题展开、可单题收起，并新增全部 / 只看错题 / 只看未答筛选；长结果页不再一次铺开 27 道题，回顾时先看错误与未答。" },
     { "group": "移动表格", "text": "规范页与统计表在手机上改成按行卡片：每行保留字段名、正文与位置，不再把三列表格压成需要左右拖动的窄条；数据表统一带列名，桌面仍保留原表格。" },
-    { "group": "首页工作台", "text": "首页三栏工作台修掉最近记录撑破栏宽的问题：最近记录列锁定 minmax(0,1fr)，长标题在栏内省略；手机不再隐藏四科进度、最近记录和学习节奏，改为单栏完整显示；桌面三栏、平板两栏加整行节奏，任何宽度都不再压到相邻栏。" }
+    { "group": "首页工作台", "text": "首页三栏工作台修掉最近记录撑破栏宽的问题：最近记录列锁定 minmax(0,1fr)，长标题在栏内省略；手机不再隐藏四科进度、最近记录和学习节奏，改为单栏完整显示；桌面三栏、平板两栏加整行节奏，任何宽度都不再压到相邻栏。" },
+    { "group": "工作台信息架构", "text": "首页在问候下加 STUDY DESK 工作台抬头，统计、四科进度、最近记录与学习节奏同屏；四科入口保留编号与识别色，零数据不画假进度。" },
+    { "group": "规范页重排", "text": "规范页改为四格要点 + 01/02/03 三块正文 + 右侧目录：字段规范、格式示例、数据维护各自成块，右侧目录可跳到对应位置；桌面保留三列表格，手机改成带字段名的纵向卡片。" },
+    { "group": "期末入口", "text": "期末复习增加 FINAL WORKFLOW 阶段说明，把「出模拟卷」和「进行模拟考」拆成有主次的阶段卡；标准题库开考为主、AI 出题为次，窄屏单列，两个入口都不再有重复大卡的感觉。" },
+    { "group": "题库范围", "text": "题库筛选下增加当前范围、条件与命中题数；手机筛选折叠时不再重复显示同一个计数，展开后仍保留完整筛选台。" },
+    { "group": "统计结论", "text": "学习统计的五个面板各加一句基于真实数据的结论：最忙的一天、四科累计与最高、错因最多、章节最集中、最近均分与最高分；没有数据时继续用明确空态。" },
+    { "group": "AI 动作可达", "text": "智能录入弹窗的提交行改为底部吸附，桌面初始视口不再把「生成并自动入库」裁掉；弹窗正文可滚动，窄屏按钮仍可点到。" }
   ],
   "items": [
     { "group": "存储降级", "text": "本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。" },
@@ -21485,7 +22079,13 @@ var UPDATE_LOG = [{
     { "group": "题库浏览", "text": "题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。" },
     { "group": "结果阅读", "text": "模拟考结果默认逐题展开、可单题收起，并新增全部 / 只看错题 / 只看未答筛选；长结果页不再一次铺开 27 道题，回顾时先看错误与未答。" },
     { "group": "移动表格", "text": "规范页与统计表在手机上改成按行卡片：每行保留字段名、正文与位置，不再把三列表格压成需要左右拖动的窄条；数据表统一带列名，桌面仍保留原表格。" },
-    { "group": "首页工作台", "text": "首页三栏工作台修掉最近记录撑破栏宽的问题：最近记录列锁定 minmax(0,1fr)，长标题在栏内省略；手机不再隐藏四科进度、最近记录和学习节奏，改为单栏完整显示；桌面三栏、平板两栏加整行节奏，任何宽度都不再压到相邻栏。" }
+    { "group": "首页工作台", "text": "首页三栏工作台修掉最近记录撑破栏宽的问题：最近记录列锁定 minmax(0,1fr)，长标题在栏内省略；手机不再隐藏四科进度、最近记录和学习节奏，改为单栏完整显示；桌面三栏、平板两栏加整行节奏，任何宽度都不再压到相邻栏。" },
+    { "group": "工作台信息架构", "text": "首页在问候下加 STUDY DESK 工作台抬头，统计、四科进度、最近记录与学习节奏同屏；四科入口保留编号与识别色，零数据不画假进度。" },
+    { "group": "规范页重排", "text": "规范页改为四格要点 + 01/02/03 三块正文 + 右侧目录：字段规范、格式示例、数据维护各自成块，右侧目录可跳到对应位置；桌面保留三列表格，手机改成带字段名的纵向卡片。" },
+    { "group": "期末入口", "text": "期末复习增加 FINAL WORKFLOW 阶段说明，把「出模拟卷」和「进行模拟考」拆成有主次的阶段卡；标准题库开考为主、AI 出题为次，窄屏单列，两个入口都不再有重复大卡的感觉。" },
+    { "group": "题库范围", "text": "题库筛选下增加当前范围、条件与命中题数；手机筛选折叠时不再重复显示同一个计数，展开后仍保留完整筛选台。" },
+    { "group": "统计结论", "text": "学习统计的五个面板各加一句基于真实数据的结论：最忙的一天、四科累计与最高、错因最多、章节最集中、最近均分与最高分；没有数据时继续用明确空态。" },
+    { "group": "AI 动作可达", "text": "智能录入弹窗的提交行改为底部吸附，桌面初始视口不再把「生成并自动入库」裁掉；弹窗正文可滚动，窄屏按钮仍可点到。" }
   ]
 },
 {
@@ -31276,17 +31876,22 @@ function finalPapersHtml() {
 
 function finalSectionTabsHtml() {
   var section = ui.finalSection === 'exam' ? 'exam' : 'paper';
-  return '<div class="final-section-tabs" role="tablist" aria-label="期末复习模块">' +
-    '<button class="final-section-tab' + (section === 'paper' ? ' is-on' : '') + '" data-act="final-section" data-section="paper" role="tab" aria-selected="' + (section === 'paper') + '" type="button"><b>出模拟卷</b><span>选题、编辑、导出</span></button>' +
-    '<button class="final-section-tab' + (section === 'exam' ? ' is-on' : '') + '" data-act="final-section" data-section="exam" role="tab" aria-selected="' + (section === 'exam') + '" type="button"><b>进行模拟考</b><span>限时、标准/AI 批改、历史</span></button>' +
-  '</div>';
+  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>先出卷，再开考；两条入口互不替代。</p></div>' +
+    '<div class="final-section-tabs" role="tablist" aria-label="期末复习模块">' +
+    '<button class="final-section-tab' + (section === 'paper' ? ' is-on' : '') + '" data-act="final-section" data-section="paper" role="tab" aria-selected="' + (section === 'paper') + '" type="button"><em>01</em><span class="final-tab-copy"><b>出模拟卷</b><span>选题、编辑、导出</span></span></button>' +
+    '<button class="final-section-tab' + (section === 'exam' ? ' is-on' : '') + '" data-act="final-section" data-section="exam" role="tab" aria-selected="' + (section === 'exam') + '" type="button"><em>02</em><span class="final-tab-copy"><b>进行模拟考</b><span>限时、标准/AI 批改、历史</span></span></button>' +
+  '</div></div>';
 }
 
 function finalExamStartPanelHtml() {
-  return '<section class="final-panel card final-exam-entry"><div class="final-panel-head"><h2>期末模拟考</h2><span>限时 · 标准答案或 AI 批改</span></div>' +
+  return '<section class="final-panel card final-exam-entry" id="final-exam-entry"><div class="final-panel-head"><div><span class="final-kicker">STANDARD EXAM</span><h2>期末模拟考</h2></div><span class="final-panel-meta">限时 · 交卷即批改</span></div>' +
     finalSubjectTabsHtml(false) +
-    '<p class="final-paper-hint">先选章节，标准题库随机抽题或 AI 生成；确认考生守则后开始计时。一科一张卷，不混合科目。</p>' +
-    '<div class="final-exam-start-actions"><button class="btn btn-primary" data-act="final-ai-exam" type="button">AI 出题开考</button><button class="btn" data-act="final-start-exam" type="button">标准题库开考</button></div>' +
+    '<p class="final-paper-hint">先选章节：标准题库随机抽题，AI 按章节生成；确认考生守则后开始计时。一科一张卷，不混合科目。</p>' +
+    '<div class="final-exam-start-actions">' +
+      '<button class="btn btn-primary final-start-primary" data-act="final-start-exam" type="button"><b>从标准题库开考</b><span>不调用 AI · 按标准答案批改</span></button>' +
+      '<button class="btn final-start-secondary" data-act="final-ai-exam" type="button"><b>AI 出题开考</b><span>按章节生成新题 · 需配置 API</span></button>' +
+    '</div>' +
+    '<p class="final-exam-action-note">第一次用建议先走标准题库：不消耗 API，答案可复核，交卷后能逐题回看。</p>' +
     finalExamSummaryHtml() + finalExamHistoryHtml() + '</section>';
 }
 
@@ -35088,6 +35693,17 @@ function handleAction(act, el) {
     case 'jump-tpl-chapter': {
       var chapterEl = qs('#tpl-chapter-' + el.getAttribute('data-index'));
       if (chapterEl) chapterEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      break;
+    }
+    case 'guide-jump': {
+      var guideTarget = qs('#' + el.getAttribute('data-target'));
+      if (!guideTarget) break;
+      guideTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var guideHeading = guideTarget.querySelector('.panel-title');
+      if (guideHeading) {
+        guideHeading.setAttribute('tabindex', '-1');
+        guideHeading.focus({ preventScroll: true });
+      }
       break;
     }
     case 'note-goto-subject':

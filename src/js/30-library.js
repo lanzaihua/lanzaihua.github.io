@@ -527,6 +527,24 @@ function viewBank(subjectId) {
     '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + filtered.length + ' / ' + items.length + ' 题</span>' +
   '</div>';
 
+  var originNames = { exam: '考研同型', textbook: '教材课后', exercise: '习题集' };
+  var diffNames = { '1': '基础', '2': '常规', '3': '综合', '4': '压轴', '5': '竞赛' };
+  var scopeChips = [];
+  if (q) scopeChips.push('搜索：' + q);
+  if (f.origin !== 'all') scopeChips.push(originNames[f.origin] || f.origin);
+  if (f.chapter !== 'all') scopeChips.push(f.chapter + (f.section !== 'all' ? ' · ' + f.section : ''));
+  if (f.category !== 'all') scopeChips.push(f.category);
+  if (f.type !== 'all') scopeChips.push(f.type === 'choice' ? '客观题' : f.type === 'fill' ? '填空题' : '主观题');
+  if (f.diff !== 'all') scopeChips.push('难度 ' + (diffNames[f.diff] || f.diff));
+  if (f.template !== 'all') scopeChips.push('模板 ' + f.template);
+  var resultbar = '<div class="bank-resultbar" aria-label="当前筛选范围">' +
+    '<span class="bank-result-kicker">当前范围</span>' +
+    '<div class="bank-result-chips">' +
+      (scopeChips.length ? scopeChips.map(function (label) { return '<span class="bank-scope-chip">' + esc(label) + '</span>'; }).join('') : '<span class="bank-scope-empty">全部题目</span>') +
+    '</div>' +
+    '<span class="bank-result-count">' + filtered.length + ' 题</span>' +
+  '</div>';
+
   var list;
   if (!items.length) {
     list = emptyState('题库还没生成', '题库作者正在整理四科 skill 的题型与变式，稍后刷新即可；你仍然可以手动新增或智能录入。', '<div class="multi-actions">' + entryCreateButtons(subjectId) + '</div>');
@@ -539,7 +557,7 @@ function viewBank(subjectId) {
       (filtered.length > shown.length ? '<div class="bank-more"><button class="btn" data-act="bank-show-more" type="button">加载更多 · 已显示 ' + shown.length + ' / ' + filtered.length + '</button></div>' : '');
   }
   var listHead = '<h2 class="sr-only">题目列表</h2>';
-  return head + toolbar + listHead + list;
+  return head + toolbar + resultbar + listHead + list;
 }
 
 function renderBankItem(it) {
@@ -586,15 +604,45 @@ function renderBankItem(it) {
   '</article>';
 }
 
+function decorateGuideTables(html) {
+  if (!html || typeof DOMParser === 'undefined') return html;
+  try {
+    var doc = new DOMParser().parseFromString('<div data-guide-root="1">' + html + '</div>', 'text/html');
+    var root = doc.querySelector('[data-guide-root]');
+    if (!root) return html;
+    Array.prototype.forEach.call(root.querySelectorAll('table'), function (table) {
+      var heads = Array.prototype.map.call(table.querySelectorAll('thead th'), function (th) {
+        return String(th.textContent || '').replace(/\s+/g, ' ').trim();
+      });
+      if (!heads.length) return;
+      table.classList.add('guide-table');
+      Array.prototype.forEach.call(table.querySelectorAll('tbody tr'), function (tr) {
+        Array.prototype.forEach.call(tr.children, function (td, i) {
+          if (heads[i]) td.setAttribute('data-label', heads[i]);
+        });
+      });
+      var wrap = table.parentNode;
+      if (wrap && wrap.classList && wrap.classList.contains('table-wrap')) wrap.classList.add('guide-table-wrap');
+    });
+    return root.innerHTML;
+  } catch (e) { return html; }
+}
+
 function viewGuide(subjectId) {
   var s = subjectOf(subjectId);
-  var conventions = renderMarkdown(s.conventionsMd || '');
-  var example = s.exampleMd ? renderMarkdown(s.exampleMd) : '';
-  var main = '<section class="panel guide-panel"><div class="panel-head"><h2 class="panel-title">条目规范与复习法</h2><span class="panel-sub">统一适用四科</span></div>' +
+  var conventions = decorateGuideTables(renderMarkdown(s.conventionsMd || ''));
+  var example = s.exampleMd ? decorateGuideTables(renderMarkdown(s.exampleMd)) : '';
+  var main = '<div class="guide-facts" aria-label="规范摘要">' +
+      '<div><b>5</b><span>必填字段</span><small>解答、解析、答案、要点、易错点</small></div>' +
+      '<div><b>02</b><span>套编号</span><small>错题 A/M/G/E · 题库 GA/MA/GE/WE</small></div>' +
+      '<div><b>7</b><span>复习节点</span><small>D1 至 D365，按节奏解锁</small></div>' +
+      '<div><b>01</b><span>套写法</span><small>Markdown + LaTeX，网页统一渲染</small></div>' +
+    '</div>' +
+    '<section class="panel guide-panel guide-fields" id="guide-fields"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">01 / FIELDS</span><h2 class="panel-title">条目规范与复习法</h2><p class="guide-panel-lead">一条错题先写全五件套，再按 1 / 3 / 7 天的节奏重做；下面的表格是四科共用的最低标准。</p></div><span class="panel-sub">统一适用四科</span></div>' +
     '<div class="panel-body"><div class="md">' + conventions + '</div>' +
     '<p class="form-note">本页为四科统一规范；新增或修改只写入网页数据，不改写原始 Markdown 文件。</p></div></section>' +
-    (example ? '<section class="panel guide-panel guide-example"><div class="panel-head"><h2 class="panel-title">格式示范</h2><span class="panel-sub">照这个写</span></div><div class="panel-body"><div class="md">' + example + '</div></div></section>' : '') +
-    '<section class="panel guide-panel guide-data"><div class="panel-head"><h2 class="panel-title">数据与维护</h2></div><div class="panel-body"><div class="md">' +
+    (example ? '<section class="panel guide-panel guide-example" id="guide-example"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">02 / EXAMPLE</span><h2 class="panel-title">格式示范</h2><p class="guide-panel-lead">不必逐字模仿，但字段顺序、公式写法和解答结构照这个来。</p></div><span class="panel-sub">照这个写</span></div><div class="panel-body"><div class="md">' + example + '</div></div></section>' : '') +
+    '<section class="panel guide-panel guide-data" id="guide-data"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">03 / DATA</span><h2 class="panel-title">数据与维护</h2><p class="guide-panel-lead">数据默认留在本机；换设备或清缓存前，先导出 JSON 备份。</p></div></div><div class="panel-body"><div class="md">' +
       '<ul>' +
       '<li>网页数据默认保存在浏览器 localStorage；用同一台设备打开即可继续编辑。</li>' +
       '<li>换设备时：在「设置与同步」里导出 JSON，再到另一台设备导入。</li>' +
@@ -603,6 +651,12 @@ function viewGuide(subjectId) {
       '</ul>' +
     '</div></div></section>';
   var aside = '<aside class="guide-aside" aria-label="规范速览">' +
+    '<div class="guide-card guide-toc"><span class="guide-card-kicker">本页目录</span><h3>从哪里开始</h3>' +
+      '<div class="guide-toc-list">' +
+        '<button type="button" data-act="guide-jump" data-target="guide-fields"><b>01</b><span>条目规范与复习法</span></button>' +
+        (example ? '<button type="button" data-act="guide-jump" data-target="guide-example"><b>02</b><span>格式示范</span></button>' : '') +
+        '<button type="button" data-act="guide-jump" data-target="guide-data"><b>03</b><span>数据与维护</span></button>' +
+      '</div></div>' +
     '<div class="guide-card"><span class="guide-card-kicker">五件套</span><h3>缺一不可</h3>' +
       '<ul class="guide-check"><li>考试标准解答过程</li><li>详细解析</li><li>答案</li><li>解题要点</li><li>易错点</li></ul></div>' +
     '<div class="guide-card"><span class="guide-card-kicker">复习节奏</span><h3>重做优先</h3>' +
@@ -612,7 +666,7 @@ function viewGuide(subjectId) {
       '<div class="guide-prefix"><span><b>A</b>高代错题</span><span><b>M</b>数分错题</span><span><b>G</b>解几错题</span><span><b>E</b>西经错题</span></div><div class="guide-prefix" style="margin-top:8px"><span><b>GA</b>高代题库</span><span><b>MA</b>数分题库</span><span><b>GE</b>解几题库</span><span><b>WE</b>西经题库</span></div></div>' +
   '</aside>';
   var guideBook = bookLabelFor(subjectId);
-  return '<div class="page-head"><div><p class="eyebrow">' + esc(s.name) + (guideBook ? ' · ' + esc(guideBook) : '') + ' / CONVENTIONS</p>' +
+  return '<div class="page-head guide-page-head"><div><p class="eyebrow">' + esc(s.name) + (guideBook ? ' · ' + esc(guideBook) : '') + ' / CONVENTIONS</p>' +
     '<h1 class="page-title">规范</h1>' +
     '<p class="page-sub">四科统一使用同一套条目字段、编号规则、书写格式、复习节奏和维护约定。' + (guideBook ? '章节入口按' + esc(guideBook) + '第一章至第十章排列。' : '') + '</p></div></div>' +
     '<div class="guide-layout"><div class="guide-main">' + main + '</div>' + aside + '</div>';

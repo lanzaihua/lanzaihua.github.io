@@ -146,13 +146,20 @@ function statsTrendHtml(series) {
       '<div class="stats-chart-empty-actions"><button class="btn btn-xs" data-act="nav-view" data-view="bank" type="button">去题库</button><button class="btn btn-xs" data-act="nav-view" data-view="entries" type="button">看错题</button></div>' +
     '</div>';
   }
+  var peakDay = series.days.reduce(function (best, d) { return !best || d.total > best.total ? d : best; }, null);
+  var readout = '<p class="stats-insight">14 天共复习 ' + series.totalReviews + ' 次、更新 ' + series.totalUpdates + ' 条' +
+    (peakDay && peakDay.total ? '；最忙的一天是 ' + esc(peakDay.label) + '（' + peakDay.total + ' 条记录）。' : '。') + '</p>';
   return '<div class="stats-chart" role="img" aria-label="近 14 天学习记录，复习 ' + series.totalReviews + ' 次，条目更新 ' + series.totalUpdates + ' 条">' + bars + '</div>' +
-    '<div class="stats-chart-foot"><span><i class="legend-dot is-review"></i>复习打卡 ' + series.totalReviews + ' 次</span><span><i class="legend-dot is-update"></i>条目更新 ' + series.totalUpdates + ' 条</span></div>';
+    '<div class="stats-chart-foot"><span><i class="legend-dot is-review"></i>复习打卡 ' + series.totalReviews + ' 次</span><span><i class="legend-dot is-update"></i>条目更新 ' + series.totalUpdates + ' 条</span></div>' +
+    readout;
 }
 
 function statsSubjectHtml(rows) {
   var max = 1;
   rows.forEach(function (r) { max = Math.max(max, r.st.total); });
+  var total = rows.reduce(function (n, r) { return n + r.st.total; }, 0);
+  var mastered = rows.reduce(function (n, r) { return n + r.st.mastered; }, 0);
+  var top = rows.slice().sort(function (a, b) { return b.st.total - a.st.total; })[0];
   return '<div class="stats-subject-list">' + rows.map(function (r) {
     var st = r.st;
     var w = st.total ? Math.max(4, Math.round((st.total / max) * 100)) : 0;
@@ -162,34 +169,48 @@ function statsSubjectHtml(rows) {
       '<span class="stats-subject-num">' + st.total + ' <small>错题</small></span>' +
       '<span class="stats-subject-meta">' + st.pct + '% 掌握 · ' + st.bank + ' 题库</span>' +
     '</a>';
-  }).join('') + '</div>';
+  }).join('') + '</div>' +
+    '<p class="stats-insight">累计 ' + total + ' 条错题，整体掌握 ' + (total ? Math.round((mastered / total) * 100) : 0) + '%' +
+    (top && top.st.total ? '；错题最多的是' + esc(top.subject.name) + '（' + top.st.total + ' 条）。' : '。') + '</p>';
 }
 
 function statsErrorHtml(counts) {
-  return errorBars({ errors: counts });
+  var total = 0, topKey = '', topVal = 0;
+  Object.keys(counts || {}).forEach(function (k) {
+    var n = Number(counts[k]) || 0;
+    total += n;
+    if (n > topVal) { topVal = n; topKey = k; }
+  });
+  return errorBars({ errors: counts }) +
+    (total ? '<p class="stats-insight">已标记 ' + total + ' 条错因' + (topKey ? '；出现最多的是「' + esc(topKey) + '」（' + topVal + ' 条）。' : '。') + '</p>' : '');
 }
 
 function statsChapterHtml(rows) {
   if (!rows.length) return emptyState('还没有章节数据', '录入第一道错题后，这里会按章节显示分布与掌握情况。', '<button class="btn" data-act="nav-view" data-view="bank" type="button">去题库挑一道</button>');
   var max = 1;
   rows.forEach(function (r) { max = Math.max(max, r.total); });
+  var top = rows.slice().sort(function (a, b) { return b.total - a.total; })[0];
   return '<div class="stats-chapter-list">' + rows.map(function (r) {
     var pct = Math.round((r.mastered / r.total) * 100);
     return '<div class="stats-chapter-row">' +
       '<div class="stats-chapter-head"><b>' + esc(r.chapter) + '</b><span>' + r.total + ' 题 · 已掌握 ' + pct + '%</span></div>' +
       '<div class="stats-chapter-track"><i style="width:' + Math.max(4, Math.round((r.total / max) * 100)) + '%"></i><em style="width:' + pct + '%"></em></div>' +
     '</div>';
-  }).join('') + '</div>';
+  }).join('') + '</div>' +
+    (top ? '<p class="stats-insight">错题最集中的是' + esc(top.chapter) + '（' + top.total + ' 条）。先处理这一章，收益最大。</p>' : '');
 }
 
 function statsExamHtml(rows) {
   if (!rows.length) return emptyState('还没有交卷记录', '完成一次标准题库模拟考后，成绩会出现在这里；草稿和进行中的考试不计数。', '<button class="btn" data-act="nav-final" type="button">去期末复习</button>');
+  var best = rows.slice().sort(function (a, b) { return b.score - a.score; })[0];
+  var avg = Math.round(rows.reduce(function (n, r) { return n + r.score; }, 0) / rows.length);
   return '<div class="stats-exam-list">' + rows.map(function (r) {
     return '<div class="stats-exam-row">' +
       '<div><b>' + esc(r.title) + '</b><span>' + esc(r.subject) + ' · ' + esc(formatDate(r.date)) + ' · ' + r.count + ' 题</span></div>' +
       '<em>' + r.score + '<small> / 100</small></em>' +
     '</div>';
-  }).join('') + '</div>';
+  }).join('') + '</div>' +
+    '<p class="stats-insight">最近 ' + rows.length + ' 次平均 ' + avg + ' 分' + (best ? '，最高 ' + best.score + ' 分（' + esc(best.title) + '）。' : '。') + '</p>';
 }
 
 function viewStats() {

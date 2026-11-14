@@ -165,6 +165,7 @@ function renderHomeWorkbench() {
       '<i style="height:' + h + '%"></i><small>' + esc(day.short) + '</small></span>';
   }).join('');
   host.innerHTML =
+    '<div class="hw-topbar"><span>STUDY DESK · 今日工作台</span><p>四科进度、最近记录和复习节奏都在这一页；不用翻页，先决定今天做哪一件。</p></div>' +
     '<div class="hw-top">' +
       '<div class="hw-metric"><span>错题总数</span><b>' + t.total + '</b><small>四科合计</small></div>' +
       '<div class="hw-metric"><span>待复习</span><b>' + t.unmastered + '</b><small>尚未掌握</small></div>' +

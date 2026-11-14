@@ -625,17 +625,22 @@ function finalPapersHtml() {
 
 function finalSectionTabsHtml() {
   var section = ui.finalSection === 'exam' ? 'exam' : 'paper';
-  return '<div class="final-section-tabs" role="tablist" aria-label="期末复习模块">' +
-    '<button class="final-section-tab' + (section === 'paper' ? ' is-on' : '') + '" data-act="final-section" data-section="paper" role="tab" aria-selected="' + (section === 'paper') + '" type="button"><b>出模拟卷</b><span>选题、编辑、导出</span></button>' +
-    '<button class="final-section-tab' + (section === 'exam' ? ' is-on' : '') + '" data-act="final-section" data-section="exam" role="tab" aria-selected="' + (section === 'exam') + '" type="button"><b>进行模拟考</b><span>限时、标准/AI 批改、历史</span></button>' +
-  '</div>';
+  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>先出卷，再开考；两条入口互不替代。</p></div>' +
+    '<div class="final-section-tabs" role="tablist" aria-label="期末复习模块">' +
+    '<button class="final-section-tab' + (section === 'paper' ? ' is-on' : '') + '" data-act="final-section" data-section="paper" role="tab" aria-selected="' + (section === 'paper') + '" type="button"><em>01</em><span class="final-tab-copy"><b>出模拟卷</b><span>选题、编辑、导出</span></span></button>' +
+    '<button class="final-section-tab' + (section === 'exam' ? ' is-on' : '') + '" data-act="final-section" data-section="exam" role="tab" aria-selected="' + (section === 'exam') + '" type="button"><em>02</em><span class="final-tab-copy"><b>进行模拟考</b><span>限时、标准/AI 批改、历史</span></span></button>' +
+  '</div></div>';
 }
 
 function finalExamStartPanelHtml() {
-  return '<section class="final-panel card final-exam-entry"><div class="final-panel-head"><h2>期末模拟考</h2><span>限时 · 标准答案或 AI 批改</span></div>' +
+  return '<section class="final-panel card final-exam-entry" id="final-exam-entry"><div class="final-panel-head"><div><span class="final-kicker">STANDARD EXAM</span><h2>期末模拟考</h2></div><span class="final-panel-meta">限时 · 交卷即批改</span></div>' +
     finalSubjectTabsHtml(false) +
-    '<p class="final-paper-hint">先选章节，标准题库随机抽题或 AI 生成；确认考生守则后开始计时。一科一张卷，不混合科目。</p>' +
-    '<div class="final-exam-start-actions"><button class="btn btn-primary" data-act="final-ai-exam" type="button">AI 出题开考</button><button class="btn" data-act="final-start-exam" type="button">标准题库开考</button></div>' +
+    '<p class="final-paper-hint">先选章节：标准题库随机抽题，AI 按章节生成；确认考生守则后开始计时。一科一张卷，不混合科目。</p>' +
+    '<div class="final-exam-start-actions">' +
+      '<button class="btn btn-primary final-start-primary" data-act="final-start-exam" type="button"><b>从标准题库开考</b><span>不调用 AI · 按标准答案批改</span></button>' +
+      '<button class="btn final-start-secondary" data-act="final-ai-exam" type="button"><b>AI 出题开考</b><span>按章节生成新题 · 需配置 API</span></button>' +
+    '</div>' +
+    '<p class="final-exam-action-note">第一次用建议先走标准题库：不消耗 API，答案可复核，交卷后能逐题回看。</p>' +
     finalExamSummaryHtml() + finalExamHistoryHtml() + '</section>';
 }
 
