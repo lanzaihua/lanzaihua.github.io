@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.14-f2dd4626";</script>
+<script>window.__BUILD_ID__="2026.11.14-2a6c7910";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9016,6 +9016,176 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   background: var(--surface);
 }
 
+
+/* 2026-11-14 · 首屏节奏与错题空态引导 */
+.entry-empty-guide {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px auto 4px;
+  max-width: 760px;
+  text-align: left;
+}
+.entry-empty-step {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  min-height: 142px;
+  padding: 15px 15px 13px;
+  border: 1px solid var(--wa3-rule);
+  border-radius: 12px;
+  background: var(--wa3-tint);
+  color: var(--ui-ink);
+  text-align: left;
+  text-decoration: none;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color var(--ui-fast) var(--ui-ease), background var(--ui-fast) var(--ui-ease), transform var(--ui-fast) var(--ui-ease);
+}
+.entry-empty-step:hover {
+  border-color: color-mix(in srgb, var(--ui-primary) 38%, var(--wa3-rule));
+  background: var(--ui-surface);
+  transform: translateY(-1px);
+}
+.entry-empty-step:focus-visible {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 2px;
+}
+.entry-empty-step .ees-index {
+  font: 10px/1 var(--font-mono);
+  letter-spacing: .1em;
+  color: var(--ui-primary-strong);
+}
+.entry-empty-step b {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+.entry-empty-step p {
+  margin: 0;
+  color: var(--ui-ink-secondary);
+  font-size: 12px;
+  line-height: 1.65;
+}
+.entry-empty-step em {
+  margin-top: auto;
+  padding-top: 8px;
+  color: var(--ui-primary-strong);
+  font: 10.5px/1.4 var(--font-mono);
+  font-style: normal;
+  letter-spacing: .02em;
+}
+.entry-empty-step em span { margin-left: 2px; }
+
+@media (min-width: 1024px) {
+  .home-inner { padding-top: 24px !important; }
+  .home-top { padding-bottom: 20px !important; margin-bottom: 26px !important; }
+  .home-kicker { margin-bottom: 13px !important; }
+  .home-title { font-size: clamp(42px, 4.2vw, 56px) !important; margin-bottom: 10px !important; }
+  .home-welcome-note { margin-bottom: 24px !important; }
+  .home-workbench { margin-bottom: 26px !important; }
+  .hw-top > .hw-metric { padding-top: 15px !important; padding-bottom: 13px !important; }
+  .hw-top > .hw-focus { padding-top: 15px !important; padding-bottom: 13px !important; }
+  .hw-bottom { margin-top: 20px !important; }
+  .home-subjects-head { margin-bottom: 10px !important; }
+}
+
+@media (max-width: 760px) {
+  .entry-empty-guide { grid-template-columns: minmax(0, 1fr); gap: 8px; margin-top: 18px; }
+  .entry-empty-step { min-height: 0; padding: 13px 14px 12px; }
+  .entry-empty-step b { font-size: 16px; }
+  .entry-empty-step p { font-size: 12px; }
+}
+
+
+/* 2026-11-14 · 3.1 首屏与手机入口修正 */
+@media (min-width: 1024px) {
+  .home-inner { padding-top: 18px !important; }
+  .home-top { padding-bottom: 14px !important; margin-bottom: 18px !important; }
+  .home-main { padding-top: 20px !important; }
+  .home-kicker { margin-bottom: 10px !important; }
+  .home-title {
+    font-size: clamp(40px, 3.8vw, 50px) !important;
+    line-height: 1.02 !important;
+    margin-bottom: 8px !important;
+  }
+  .home-welcome-note { margin-bottom: 16px !important; }
+  .home-workbench { margin-bottom: 18px !important; }
+  .home-subjects-head {
+    margin-top: 18px !important;
+    padding-top: 14px !important;
+    margin-bottom: 8px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .home-main { display: flex; flex-direction: column; }
+  .home-kicker { order: 0; }
+  .home-title { order: 0; }
+  .home-welcome-note { order: 0; }
+  .home-subjects-head { order: 1; margin-top: 6px !important; }
+  .home-subjects { order: 2; }
+  .home-notes-entry { order: 3; }
+  .home-final-entry { order: 4; }
+  .home-workbench { order: 5; margin-top: 10px !important; }
+  .home-features { order: 6; }
+}
+
+@media (max-width: 900px) {
+  .tabs {
+    order: 4;
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    padding-bottom: 4px !important;
+  }
+  .cross-tabs {
+    order: 5;
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: flex-end;
+    padding-top: 0 !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .kb-answer-body .table-wrap {
+    max-width: 100%;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--wa3-rule, var(--ui-line));
+    border-radius: 8px;
+    padding: 2px;
+    background: var(--ui-surface);
+  }
+  .kb-answer-body .table-wrap table {
+    min-width: 560px;
+    margin: 0;
+  }
+  .kb-answer-body .table-wrap th,
+  .kb-answer-body .table-wrap td {
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 9px 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-welcome-note { margin-bottom: 8px !important; }
+  .home-workbench { margin-bottom: 12px !important; }
+  .home-subjects-head { margin-top: 10px !important; margin-bottom: 6px !important; }
+  .home-subject { padding-top: 12px !important; padding-bottom: 12px !important; }
+}
+
+@media (min-width: 1024px) {
+  .home-main { padding-top: 16px !important; }
+  .home-title { margin-bottom: 4px !important; }
+  .home-subject { padding-top: 11px !important; padding-bottom: 11px !important; }
+}
+
 </style>
 </head>
 <body>
@@ -14067,12 +14237,31 @@ async function initSync() {
       return;
     }
     if (!health.ok) throw new Error('no api');
+    var healthInfo = null;
+    try { healthInfo = await health.json(); } catch (e) {}
     sync.available = true;
+    if (healthInfo && healthInfo.stateCorrupted) {
+      setSyncState('conflict', '本地数据文件损坏，已保留原始副本');
+      toast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
+      if (typeof render === 'function') render();
+      return;
+    }
     var res = await fetch('/api/state', { headers: apiHeaders(), cache: 'no-store' });
     if (res.status === 401) {
       setSyncState('locked', '需要访问口令');
       if (typeof render === 'function') render();
       return;
+    }
+    if (res.status >= 500) {
+      var stateError = null;
+      try { stateError = await res.json(); } catch (e) {}
+      if (stateError && stateError.code === 'STATE_CORRUPTED') {
+        setSyncState('conflict', '本地数据文件损坏，已保留原始副本');
+        toast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
+        if (typeof render === 'function') render();
+        return;
+      }
+      throw new Error('bad state');
     }
     if (!res.ok) throw new Error('bad state');
     var remote = await res.json();
@@ -16271,6 +16460,30 @@ function entryCreateButtons(subjectId) {
     '<button class="btn btn-primary" data-act="ai-open" data-subject="' + attr(subjectId) + '" type="button">智能录入</button>';
 }
 
+function entryEmptyGuide(subjectId) {
+  var bankHref = '#/' + attr(subjectRouteId(subjectId)) + '/bank';
+  return '<div class="entry-empty-guide" aria-label="开始记录错题的三种方式">' +
+    '<a class="entry-empty-step" href="' + bankHref + '">' +
+      '<span class="ees-index">01</span>' +
+      '<b>从题库挑一道</b>' +
+      '<p>按章节、题型和难度筛选，先做一道标准题。</p>' +
+      '<em>去题库 <span aria-hidden="true">→</span></em>' +
+    '</a>' +
+    '<button class="entry-empty-step" data-act="add-entry" type="button">' +
+      '<span class="ees-index">02</span>' +
+      '<b>手动新增</b>' +
+      '<p>把原题、错因和自己的解法完整记下来。</p>' +
+      '<em>开始记录 <span aria-hidden="true">→</span></em>' +
+    '</button>' +
+    '<button class="entry-empty-step" data-act="ai-open" data-subject="' + attr(subjectId) + '" type="button">' +
+      '<span class="ees-index">03</span>' +
+      '<b>智能录入</b>' +
+      '<p>贴题干或图片，交给 AI 整理成条目。</p>' +
+      '<em>交给 AI <span aria-hidden="true">→</span></em>' +
+    '</button>' +
+  '</div>';
+}
+
 function viewEntries(subjectId) {
   var f = filterFor(subjectId);
   var list = filteredEntries(subjectId);
@@ -16335,11 +16548,17 @@ function viewEntries(subjectId) {
 
   var listHtml;
   if (!list.length) {
-    listHtml = emptyState(
-      all.length ? '没有符合筛选的题' : '还没有错题',
-      all.length ? '换个章节或状态看看，或清空搜索词。' : '点「手动新增」记录，或点「智能录入」整理。',
-      '<div class="multi-actions">' + entryCreateButtons(subjectId) + '</div>'
-    );
+    listHtml = all.length
+      ? emptyState(
+          '没有符合筛选的题',
+          '换个章节或状态看看，或清空筛选。',
+          '<div class="multi-actions">' + entryCreateButtons(subjectId) + '</div>'
+        )
+      : emptyState(
+          '还没有错题',
+          '先记下第一道错题，或者从题库挑一道；三种方式都可以随时开始。',
+          entryEmptyGuide(subjectId)
+        );
   } else {
     listHtml = '<div class="entry-list">' + list.map(renderEntryCard).join('') + '</div>';
   }
@@ -22045,15 +22264,15 @@ var UPDATE_LOG = [{
   "date": "2026-11-14",
   "title": "健壮性与视觉精修",
   "historyTitle": "健壮性与视觉精修",
-  "summary": "本轮补存储、路由、缓存与错误边界：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；六视口门禁加入深链恢复、标题焦点与 44px 触控。首页三栏工作台也改为列宽锁定与手机单栏，长标题不再压到相邻栏。四科 9163，82 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过。本块 18 项 / 18 组，含 Warm Academic 3.1 的工作台、规范页、期末入口、题库范围、统计结论与 AI 动作可达。",
-  "notifySummary": "本轮修存储、深链、缓存和错误边界：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控。题库 9163，82 项测试、8 视口真实交互、公式、无障碍与性能门禁通过。本块 18 条要点。",
+  "summary": "本轮补存储、路由、缓存与错误边界：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta。同时完成 Warm Academic 3.1 精修：首页压缩到 1440×1000 首屏露出四科入口，错题空态改成三步引导，规范页加入字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；八视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，85 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过；本块只对齐候选构建，尚未发布。本块 22 项 / 22 组。",
+  "notifySummary": "本轮修存储、深链、缓存和错误边界：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控。同时完成 Warm Academic 3.1 精修：首页首屏露出四科入口，错题空态改成三步引导，规范页加字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；题库 9163，85 项测试、8 视口、公式、无障碍与性能门禁通过。本块只对齐候选构建，尚未发布。本块 22 条要点。",
   "notifyItems": [
     { "group": "存储降级", "text": "本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。" },
     { "group": "损坏备份", "text": "启动时读到损坏 JSON 会把原文另存为 key-corrupted-backup，保留原始存储不动，并提示先导出再恢复或清空。" },
     { "group": "深链兜底", "text": "直接访问 /gaodai、/shufen/bank 这类没有扩展名的深链时，404 页把路径还原成 #/ 路由并回到对应页面，不再只显示一句「页面不存在」。" },
     { "group": "缓存边界", "text": "Service Worker 缓存名升到 v2，只缓存状态 200 且不是 Range 的响应，跳过 /api 与自身脚本；离线仍能打开最近一次成功页面。" },
     { "group": "错误与焦点", "text": "新增全局错误卡片与未处理 Promise 兜底，出错时说明数据未丢并可刷新；hash 路由切换后焦点落到页面标题，屏幕阅读器能感知换页；移动端主要按钮保持 44px 触控高度。" },
-    { "group": "界面系统", "text": "全站视觉层收口为 Warm Academic 3.0：统一暖白画布、纯白面板、细线分隔与砖红强调；标题、正文、元信息、按钮和输入框共用一套字号与高度，页面留白、卡片圆角与分区节奏一致，深色主题沿用同一组 token。" },
+    { "group": "界面系统", "text": "在 Warm Academic 3.0 基础上做 3.1 精修：保留暖白画布、纯白面板、细线分隔与砖红强调；统一标题、正文、元信息、按钮和输入框的字号与高度；首页首屏、错题空态、规范页导读、题库范围条、期末入口与统计结论同批收口；深色主题沿用同一组 token。" },
     { "group": "手机页头", "text": "手机与平板顶栏压到 146px 左右：品牌、搜索、设置与通知同排，科目切换与主标签分行，主内容不再被 247px 顶栏推到首屏之外；首页指标带改为 2×2，科目入口上移。" },
     { "group": "主操作", "text": "手机端主操作按钮恢复显示并换行排列，不再被隐藏；按钮、标签与弹窗关闭键保持 40–44px 触控尺寸，长标题与长按钮在窄屏自然折行。" },
     { "group": "题库浏览", "text": "题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。" },
@@ -22065,7 +22284,11 @@ var UPDATE_LOG = [{
     { "group": "期末入口", "text": "期末复习增加 FINAL WORKFLOW 阶段说明，把「出模拟卷」和「进行模拟考」拆成有主次的阶段卡；标准题库开考为主、AI 出题为次，窄屏单列，两个入口都不再有重复大卡的感觉。" },
     { "group": "题库范围", "text": "题库筛选下增加当前范围、条件与命中题数；手机筛选折叠时不再重复显示同一个计数，展开后仍保留完整筛选台。" },
     { "group": "统计结论", "text": "学习统计的五个面板各加一句基于真实数据的结论：最忙的一天、四科累计与最高、错因最多、章节最集中、最近均分与最高分；没有数据时继续用明确空态。" },
-    { "group": "AI 动作可达", "text": "智能录入弹窗的提交行改为底部吸附，桌面初始视口不再把「生成并自动入库」裁掉；弹窗正文可滚动，窄屏按钮仍可点到。" }
+    { "group": "AI 动作可达", "text": "智能录入弹窗的提交行改为底部吸附，桌面初始视口不再把「生成并自动入库」裁掉；弹窗正文可滚动，窄屏按钮仍可点到。" },
+    {"group":"首页首屏","text":"桌面端压缩问候区、工作台与分区间距，四科入口在 1440×1000 首屏完整可见；手机端保持单栏顺序与正文字号，不靠缩小内容硬塞。"},
+    {"group":"空态引导","text":"错题空态改为三步起步卡：从题库挑一道、手动新增、智能录入；筛选无结果时仍提示换条件或清空，不用假数据填满页面。"},
+    {"group":"文档校准","text":"README、CHANGELOG 与网页更新记录统一为本块 22 项 / 22 组、85 项回归、8 视口；版本徽章改为候选构建，九枚徽章颜色两两不同，历史更新继续收在 details。"},
+    {"group":"发布边界","text":"本轮只把源码、网页记录、README 与 CHANGELOG 对齐成同一个候选构建；GitHub Release 与线上部署留到发布步骤，未上线前不写成已上线。"}
   ],
   "items": [
     { "group": "存储降级", "text": "本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。" },
@@ -22073,7 +22296,7 @@ var UPDATE_LOG = [{
     { "group": "深链兜底", "text": "直接访问 /gaodai、/shufen/bank 这类没有扩展名的深链时，404 页把路径还原成 #/ 路由并回到对应页面，不再只显示一句「页面不存在」。" },
     { "group": "缓存边界", "text": "Service Worker 缓存名升到 v2，只缓存状态 200 且不是 Range 的响应，跳过 /api 与自身脚本；离线仍能打开最近一次成功页面。" },
     { "group": "错误与焦点", "text": "新增全局错误卡片与未处理 Promise 兜底，出错时说明数据未丢并可刷新；hash 路由切换后焦点落到页面标题，屏幕阅读器能感知换页；移动端主要按钮保持 44px 触控高度。" },
-    { "group": "界面系统", "text": "全站视觉层收口为 Warm Academic 3.0：统一暖白画布、纯白面板、细线分隔与砖红强调；标题、正文、元信息、按钮和输入框共用一套字号与高度，页面留白、卡片圆角与分区节奏一致，深色主题沿用同一组 token。" },
+    { "group": "界面系统", "text": "在 Warm Academic 3.0 基础上做 3.1 精修：保留暖白画布、纯白面板、细线分隔与砖红强调；统一标题、正文、元信息、按钮和输入框的字号与高度；首页首屏、错题空态、规范页导读、题库范围条、期末入口与统计结论同批收口；深色主题沿用同一组 token。" },
     { "group": "手机页头", "text": "手机与平板顶栏压到 146px 左右：品牌、搜索、设置与通知同排，科目切换与主标签分行，主内容不再被 247px 顶栏推到首屏之外；首页指标带改为 2×2，科目入口上移。" },
     { "group": "主操作", "text": "手机端主操作按钮恢复显示并换行排列，不再被隐藏；按钮、标签与弹窗关闭键保持 40–44px 触控尺寸，长标题与长按钮在窄屏自然折行。" },
     { "group": "题库浏览", "text": "题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。" },
@@ -22085,7 +22308,11 @@ var UPDATE_LOG = [{
     { "group": "期末入口", "text": "期末复习增加 FINAL WORKFLOW 阶段说明，把「出模拟卷」和「进行模拟考」拆成有主次的阶段卡；标准题库开考为主、AI 出题为次，窄屏单列，两个入口都不再有重复大卡的感觉。" },
     { "group": "题库范围", "text": "题库筛选下增加当前范围、条件与命中题数；手机筛选折叠时不再重复显示同一个计数，展开后仍保留完整筛选台。" },
     { "group": "统计结论", "text": "学习统计的五个面板各加一句基于真实数据的结论：最忙的一天、四科累计与最高、错因最多、章节最集中、最近均分与最高分；没有数据时继续用明确空态。" },
-    { "group": "AI 动作可达", "text": "智能录入弹窗的提交行改为底部吸附，桌面初始视口不再把「生成并自动入库」裁掉；弹窗正文可滚动，窄屏按钮仍可点到。" }
+    { "group": "AI 动作可达", "text": "智能录入弹窗的提交行改为底部吸附，桌面初始视口不再把「生成并自动入库」裁掉；弹窗正文可滚动，窄屏按钮仍可点到。" },
+    {"group":"首页首屏","text":"桌面端压缩问候区、工作台与分区间距，四科入口在 1440×1000 首屏完整可见；手机端保持单栏顺序与正文字号，不靠缩小内容硬塞。"},
+    {"group":"空态引导","text":"错题空态改为三步起步卡：从题库挑一道、手动新增、智能录入；筛选无结果时仍提示换条件或清空，不用假数据填满页面。"},
+    {"group":"文档校准","text":"README、CHANGELOG 与网页更新记录统一为本块 22 项 / 22 组、85 项回归、8 视口；版本徽章改为候选构建，九枚徽章颜色两两不同，历史更新继续收在 details。"},
+    {"group":"发布边界","text":"本轮只把源码、网页记录、README 与 CHANGELOG 对齐成同一个候选构建；GitHub Release 与线上部署留到发布步骤，未上线前不写成已上线。"}
   ]
 },
 {
