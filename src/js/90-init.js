@@ -581,6 +581,13 @@ function handleAction(act, el) {
   }
 }
 
+function refocusAfterRender(selector) {
+  setTimeout(function () {
+    var el = document.querySelector(selector);
+    if (el && typeof el.focus === 'function') { try { el.focus({ preventScroll: true }); } catch (e) { el.focus(); } }
+  }, 0);
+}
+
 function focusRouteHeading() {
   var main = qs('#main');
   if (!main) return;
@@ -619,6 +626,7 @@ function bindEvents() {
         persistLocal();
       }
       render();
+      refocusAfterRender('[data-filter="' + key + '"]');
     } else if (t.matches('[data-bank-filter]')) {
       var bk = t.getAttribute('data-bank-filter');
       var bff = bankFilterFor(state.activeSubject);
@@ -626,12 +634,14 @@ function bindEvents() {
       if (bk === 'chapter') bff.section = 'all';
       ui.bankShowLimit = 120;
       render();
+      refocusAfterRender('[data-bank-filter="' + bk + '"]');
     } else if (t.matches('[data-template-filter]')) {
       var tk = t.getAttribute('data-template-filter');
       var tff = templateFilterFor(state.activeSubject);
       tff[tk] = t.value;
       if (tk === 'chapter') tff.section = 'all';
       render();
+      refocusAfterRender('[data-template-filter="' + tk + '"]');
     } else if (t.matches('#aiThinkingToggle') || t.matches('#settingsThinkingToggle')) {
       aiSaveThinking({ enabled: t.checked });
       aiSyncThinkingControls();
@@ -766,23 +776,59 @@ function showFatalError(reason) {
     var box = document.createElement('div');
     box.className = 'fatal-error';
     box.setAttribute('role', 'alert');
+    box.setAttribute('aria-live', 'assertive');
     var title = document.createElement('strong');
     title.textContent = '页面遇到异常，操作没有生效';
     var body = document.createElement('p');
-    body.textContent = '浏览器里的错题数据不会被删除。可以先刷新重试；如果反复出现，请到「设置与同步」导出备份。';
+    body.textContent = '浏览器里的错题数据不会被删除。可以先刷新重试；如果反复出现，请先导出备份，再排查原因。';
     var detail = document.createElement('code');
     detail.textContent = String(reason || 'unknown error').slice(0, 240);
+    var actions = document.createElement('div');
+    actions.className = 'fatal-actions';
     var retry = document.createElement('button');
     retry.type = 'button';
     retry.className = 'btn btn-primary';
     retry.textContent = '刷新页面';
     retry.addEventListener('click', function () { location.reload(); });
-    box.appendChild(title); box.appendChild(body); box.appendChild(detail); box.appendChild(retry);
+    var backup = document.createElement('button');
+    backup.type = 'button';
+    backup.className = 'btn';
+    backup.textContent = '导出备份';
+    backup.addEventListener('click', function () {
+      try {
+        Promise.resolve(exportState()).catch(function () { if (typeof toast === 'function') toast('导出失败，请到「设置与同步」重试'); });
+      } catch (err) { if (typeof toast === 'function') toast('导出失败，请到「设置与同步」重试'); }
+    });
+    actions.appendChild(backup); actions.appendChild(retry);
+    box.appendChild(title); box.appendChild(body); box.appendChild(detail); box.appendChild(actions);
     document.body.appendChild(box);
+    retry.focus({ preventScroll: true });
   } catch (e) { /* 错误边界自身不能再次抛错 */ }
 }
 
-function boot() {
+function restoreSpaRedirect() {
+  try {
+    var m = String(location.search || '').match(/[?&]spa_redirect=([^&]+)/);
+    if (!m) return false;
+    var deep = decodeURIComponent(m[1]);
+    if (!deep || deep.charAt(0) !== '/') return false;
+    if (/^\/(?:index\.html)?(?:[?#]|$)/.test(deep)) return false;
+    if (/\.[a-z0-9]+(?:[?#]|$)/i.test(deep)) return false;
+    var hashAt = deep.indexOf('#');
+    var hashPart = hashAt >= 0 ? deep.slice(hashAt) : '';
+    var beforeHash = hashAt >= 0 ? deep.slice(0, hashAt) : deep;
+    var qAt = beforeHash.indexOf('?');
+    var path = qAt >= 0 ? beforeHash.slice(0, qAt) : beforeHash;
+    var query = qAt >= 0 ? beforeHash.slice(qAt + 1) : '';
+    var seg = path.replace(/^\/+/, '').replace(/\/+$/, '');
+    var next = hashPart || ('#/' + seg + (query ? '?' + query : ''));
+    if (window.history && history.replaceState) history.replaceState(null, '', '/' + next);
+    else location.hash = next;
+    return true;
+  } catch (e) { return false; }
+}
+
+async function boot() {
   window.addEventListener('error', function (e) {
     if (!e || !e.error) return;
     if (e.error && e.error.name === 'AbortError') return;
@@ -793,6 +839,16 @@ function boot() {
     if (reason && reason.name === 'AbortError') return;
     showFatalError(reason && reason.message ? reason.message : String(reason || '未处理的异步错误'));
   });
+  // 对话框关闭后，如果焦点落回 body 或已关闭的 dialog，就回到当前页标题，
+  // 避免键盘与读屏用户丢失位置；原生 dialog 已正确归还焦点时不抢焦点。
+  document.addEventListener('close', function (e) {
+    var dlg = e.target;
+    if (!dlg || !dlg.matches || !dlg.matches('dialog')) return;
+    setTimeout(function () {
+      var active = document.activeElement;
+      if (!active || active === document.body || dlg.contains(active)) focusRouteHeading();
+    }, 0);
+  }, true);
   if (typeof safeStorage !== 'undefined' && !safeStorage.supported()) {
     setTimeout(function () { if (typeof toast === 'function') toast('浏览器存储不可用：本次改动只保留在内存中，刷新会丢失；请检查无痕模式或站点存储权限'); }, 0);
   }
@@ -804,7 +860,12 @@ function boot() {
       if (window.history && history.replaceState) history.replaceState(null, '', location.pathname + location.hash);
     }
   } catch (e) { /* file:// */ }
+  await loadBankData();
+  if (window.__BANK_LOAD_ERROR__) {
+    setTimeout(function () { if (typeof toast === 'function') toast('题库加载失败：' + window.__BANK_LOAD_ERROR__ + '；错题与笔记仍可使用'); }, 0);
+  }
   applyTheme();
+  restoreSpaRedirect();
   parseHash();
   if (typeof finalExamAutoCollectExpired === 'function') finalExamAutoCollectExpired();
   render();
@@ -821,7 +882,10 @@ function boot() {
   updateHomeVisibility();
   bindEvents();
   if ('serviceWorker' in navigator && window.isSecureContext) {
-    setTimeout(function () { navigator.serviceWorker.register('sw.js').catch(function () { /* 离线缓存不可用不影响主流程 */ }); }, 1200);
+    setTimeout(function () {
+      var v = encodeURIComponent(window.__BUILD_ID__ || 'dev');
+      navigator.serviceWorker.register('sw.js?v=' + v).catch(function () { /* 离线缓存不可用不影响主流程 */ });
+    }, 1200);
   }
   var apiWelcomeDlg = qs('#apiWelcomeDialog');
   if (apiWelcomeDlg) apiWelcomeDlg.addEventListener('cancel', function (e) { e.preventDefault(); dismissApiWelcome(false); });

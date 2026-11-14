@@ -27,9 +27,11 @@ jobs:
       - name: Install browser for real interaction tests
         run: npx playwright-core install --with-deps chromium
       - name: Build single-file and static-site artifacts
-        run: npm run build && npm run prepare:pages
+        run: npm run build && npm run build:pages && npm run prepare:pages
       - name: Verify published files match source build
         run: npm run verify:pages && npm run verify:build && npm run verify:skills
+      - name: Page weight and split-bank gate
+        run: npm run qa:size
       - name: Real browser core flows on six viewports
         run: |
           node server.js > /tmp/notebook-server.log 2>&1 &

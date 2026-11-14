@@ -48,21 +48,29 @@ var safeStorage = (function () {
   function cleanupStale() {
     STALE_KEYS.forEach(function (k) { try { localStorage.removeItem(k); } catch (e) { /* 旧缓存可丢弃 */ } });
   }
+  function warnWriteFailure(key, options, reason) {
+    memoryOnly[key] = true;
+    if (!warned[key] && !(options && options.silent)) {
+      warned[key] = 1;
+      cleanupStale();
+      storageWarn((reason || '浏览器存储不可写或空间不足') + '：当前改动只保留在内存中，请先导出备份、关闭其他页面后重试；刷新会丢失这些改动', key);
+    }
+    return false;
+  }
   function set(key, value, options) {
     var str = String(value);
     memory[key] = str;
     try {
       localStorage.setItem(key, str);
+      // 某些浏览器（隐私模式、配额被代理、存储策略）会静默忽略写入：
+      // setItem 不抛错，但读回来是旧值。必须回读比对，不能把失败当成功。
+      if (localStorage.getItem(key) !== str) {
+        return warnWriteFailure(key, options, '浏览器没有真正写入存储');
+      }
       delete memoryOnly[key];
       return true;
     } catch (e) {
-      memoryOnly[key] = true;
-      if (!warned[key] && !(options && options.silent)) {
-        warned[key] = 1;
-        cleanupStale();
-        storageWarn('浏览器存储不可写或空间不足：当前改动只保留在内存中，请先导出备份、关闭其他页面后重试；刷新会丢失这些改动', key);
-      }
-      return false;
+      return warnWriteFailure(key, options, e && e.name === 'QuotaExceededError' ? '浏览器存储已满' : '浏览器存储不可写');
     }
   }
   function get(key) {

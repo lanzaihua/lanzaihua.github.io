@@ -9229,3 +9229,6 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 .final-exam-entry .exam-history-bulk{margin-left:0!important;margin-right:0!important}
 .final-papers .final-paper-head + .final-subject-tabs{padding-top:0!important}
 
+
+.fatal-error .fatal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.fatal-error .fatal-actions .btn{min-height:44px}

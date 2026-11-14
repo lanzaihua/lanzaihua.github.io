@@ -1,6 +1,7 @@
 /* 四科错题本：网络优先、离线回退到最近一次成功页面。 */
 'use strict';
-const CACHE = 'sike-cuotiben-v2';
+const CACHE_VERSION = new URL(self.location.href).searchParams.get('v') || 'dev';
+const CACHE = 'sike-cuotiben-' + CACHE_VERSION;
 const CORE = ['./', './index.html', './favicon.svg', './manifest.webmanifest'];
 
 self.addEventListener('install', function (event) {
