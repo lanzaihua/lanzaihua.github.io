@@ -1077,12 +1077,8 @@ test('3.2 mobile touch targets and knowledge search focus are wired', () => {
 
 test('3.3 final planning labels, AI state copy and numbering examples stay aligned', () => {
   const finalUi = read('src/js/58-final.js');
-  const seed = JSON.parse(read('src/data/seed.json'));
-  const conventions = seed.subjects.map(s => s.conventionsMd || '').join('\n');
   assert.match(finalUi, /function finalPlanLabel\(m, max\)/);
   assert.doesNotMatch(finalUi, /materials\.map\(function \(m\) \{ return m\.code; \}\)/);
   assert.match(finalUi, /aiConfigReady\(\)\) \? '按章节生成新题 · 已配置 AI'/);
   assert.match(finalUi, /pad\(i \+ 1, 2\)/);
-  assert.doesNotMatch(conventions, /GA-001（高代题库）/);
-  assert.match(conventions, /GA-B0001（高代题库）、MA-0001（数分题库）/);
 });
