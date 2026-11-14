@@ -162534,6 +162534,109 @@
       "options": [],
       "correct": "",
       "category": "计算题"
+    },
+    {
+      "id": "MA-TX070",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "type": "subjective",
+      "templateId": "",
+      "pointKeys": [],
+      "title": "教材习题 · 重要极限 · $(1+1/n)^n$",
+      "question": "求极限 $\\lim\\limits_{n\\to\\infty}\\left(1+\\frac1n\\right)^n$。",
+      "answer": "$e$。",
+      "standardSolution": "解：\n取对数：\n$$\\ln\\left(1+\\frac1n\\right)^n=n\\ln\\left(1+\\frac1n\\right).$$\n由 $\\ln(1+x)=x+o(x)$（$x\\to0$），取 $x=\\frac1n$，得\n$$n\\ln\\left(1+\\frac1n\\right)=n\\left(\\frac1n+o\\left(\\frac1n\\right)\\right)=1+o(1)\\to1.$$\n由指数函数连续性，\n$$\\lim_{n\\to\\infty}\\left(1+\\frac1n\\right)^n=e^{\\lim n\\ln(1+1/n)}=e.$$",
+      "detailedAnalysis": "这是重要极限，不能直接写 $1^\\infty=1$；先取对数把幂指型化成乘积型。",
+      "solution": [],
+      "difficulty": 2,
+      "tags": [
+        "教材习题",
+        "习题集精选"
+      ],
+      "source": "教材课后 · 吉米多维奇习题集 · 第1卷 分析引论",
+      "relatedEntries": [],
+      "pitfalls": [
+        "把 $1^\\infty$ 直接当成 1",
+        "换元后忘记回代"
+      ],
+      "points": [
+        "取对数",
+        "用 $\\ln(1+x)\\sim x$",
+        "指数函数连续"
+      ],
+      "templateTitle": "重要极限",
+      "verification": "",
+      "category": "计算题",
+      "examOrigin": "教材课后习题"
+    },
+    {
+      "id": "MA-TX071",
+      "subject": "shufen",
+      "chapter": "第五章 导数和微分",
+      "type": "subjective",
+      "templateId": "",
+      "pointKeys": [],
+      "title": "教材习题 · 幂指函数求导 · $x^x$",
+      "question": "设 $y=x^x$（$x>0$），求 $y'$。",
+      "answer": "$y'=x^x(\\ln x+1)$。",
+      "standardSolution": "解：\n幂指函数先取对数：\n$$\\ln y=x\\ln x.$$\n两边对 $x$ 求导：\n$$\\frac{y'}{y}=\\ln x+x\\cdot\\frac1x=\\ln x+1.$$\n所以\n$$y'=y(\\ln x+1)=x^x(\\ln x+1).$$",
+      "detailedAnalysis": "底数和指数都含 $x$，既不能只用幂函数公式，也不能只用指数函数公式；取对数或写成 $e^{x\\ln x}$ 再求导。",
+      "solution": [],
+      "difficulty": 2,
+      "tags": [
+        "教材习题",
+        "习题集精选"
+      ],
+      "source": "教材课后 · 吉米多维奇习题集 · 第1卷 单变量函数微分学",
+      "relatedEntries": [],
+      "pitfalls": [
+        "套用 $(x^n)\\prime=nx^{n-1}$",
+        "漏掉 $\\ln x+1$ 中的 1"
+      ],
+      "points": [
+        "取对数",
+        "隐函数求导",
+        "回代 $y=x^x$"
+      ],
+      "templateTitle": "幂指函数求导",
+      "verification": "",
+      "category": "计算题",
+      "examOrigin": "教材课后习题"
+    },
+    {
+      "id": "MA-TX072",
+      "subject": "shufen",
+      "chapter": "第八章 不定积分",
+      "type": "subjective",
+      "templateId": "",
+      "pointKeys": [],
+      "title": "教材习题 · 分部积分 · $x e^x$",
+      "question": "求不定积分 $\\int xe^x\\,dx$。",
+      "answer": "$e^x(x-1)+C$。",
+      "standardSolution": "解：\n取 $u=x$，$dv=e^x dx$，则 $du=dx$，$v=e^x$。分部积分：\n$$\\int xe^x dx=xe^x-\\int e^x dx=xe^x-e^x+C=e^x(x-1)+C.$$\n求导验算：$\\left[e^x(x-1)\\right]\\prime=e^x(x-1)+e^x=xe^x$。",
+      "detailedAnalysis": "多项式乘指数函数，选多项式为 $u$（求导后降次），指数函数为 $dv$。",
+      "solution": [],
+      "difficulty": 2,
+      "tags": [
+        "教材习题",
+        "习题集精选"
+      ],
+      "source": "教材课后 · 吉米多维奇习题集 · 第2卷 不定积分",
+      "relatedEntries": [],
+      "pitfalls": [
+        "$u,dv$ 选反",
+        "漏写积分常数",
+        "分部积分符号写错"
+      ],
+      "points": [
+        "选 $u=x$",
+        "分部积分公式",
+        "求导验算"
+      ],
+      "templateTitle": "分部积分",
+      "verification": "",
+      "category": "计算题",
+      "examOrigin": "教材课后习题"
     }
   ]
 }
