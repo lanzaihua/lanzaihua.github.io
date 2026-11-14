@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.14.3.2-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.14--ccd938f7-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.15.3.3-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.15--31608627-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20file-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -149,11 +149,29 @@
 
 ## 更新记录
 
+### 2026-11-15 · 排版收口与内容校准
+
+**7 项 · 7 组**
+
+本轮收口全站排版与自相矛盾内容：设置页各分区、期末复习的计划行与材料行、我的模拟卷说明和模拟考入口统一卡片内边距，标题与正文不再贴住边框；每日计划不再显示 FX-AI-* 或 GA-B0001 这类内部编号，改用可读题目标题，复习材料改 01/02 序号与两行标题；AI 出题按钮按当前配置显示「已配置 AI / 需配置 API」，规范页题库示例改为真实的 GA-B0001、MA-0001。7 项 / 7 组，87 项回归、严格 QA 与站点一致性通过，1440/390 截图复核。
+
+| 分组 | 本次更新 |
+|---|---|
+| **卡片留白** | 设置页每个分区是带描边的圆角卡片，但标题和行内容离左边框只有 1px；改为 18px 内边距，手机 16/14px，相邻分区留 10px，行内容与标题重新对齐。 |
+| **期末行距** | 复习计划行、复习材料行、我的模拟卷说明、模拟考入口、上次模拟考卡片统一 20px 左右内边距；长标题与按钮不再顶到卡片边缘。 |
+| **复习名称** | 每日计划不再使用 FX-AI-mvz8... 或 GA-B0001 这类内部编号，改为题目标题（最多 14 字后截断）；空标题回退为「题库题 / 错题」，长计划文本允许两行。 |
+| **材料序号** | 复习材料左侧改 01/02 序号，标题最多两行并带 title 提示；原始 ID 不再逐字换行挤压正文，类型与移除按钮仍保持右对齐。 |
+| **AI 文案** | 「AI 出题开考」按 aiConfigReady() 显示「按章节生成新题 · 已配置 AI」或「需配置 API」，不再出现设置页已配置、期末页仍说需配置的矛盾。 |
+| **规范编号** | 规范页题库示例由 GA-001 改为 GA-B0001（高代）、MA-0001（数分），与题库实际编号一致，不再把不存在的编号当示例。 |
+| **防复发** | 回归测试增至 87 项，新增 finalPlanLabel、材料序号、AI 动态文案与规范示例断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。 |
+
+<img src="assets/v2/20261115-changelog.png" alt="网页内更新记录" width="820">
+
 ### 2026-11-14 · 健壮性修复与发布
 
 **25 项 · 25 组**
 
-本轮补存储、路由、缓存、错误边界与同步损坏保护：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；服务端数据文件损坏时改为失败关闭，前端停止覆盖本地数据并提示保留原始副本。同时完成 Warm Academic 3.1 精修：首页压缩到 1440×1000 首屏露出四科入口，错题空态改成三步引导，规范页加入字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；八视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，86 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过；3.2 又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14.3.2 Release 发布。本块 25 项 / 25 组。
+本轮补存储、路由、缓存、错误边界与同步损坏保护：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；服务端数据文件损坏时改为失败关闭，前端停止覆盖本地数据并提示保留原始副本。同时完成 Warm Academic 3.1 精修：首页压缩到 1440×1000 首屏露出四科入口，错题空态改成三步引导，规范页加入字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；八视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，86 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过；3.2 又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.15.3.3 Release 发布。本块 25 项 / 25 组。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -860,7 +878,7 @@
 
 ## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.14.3.2 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.14.3.2/source.zip) 提供。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.15.3.3 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.15.3.3/source.zip) 提供。
 
 ### 仓库与许可证
 
