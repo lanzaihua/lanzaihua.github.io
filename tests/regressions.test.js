@@ -710,9 +710,10 @@ test('notification signature covers notify items and final page avoids duplicate
   assert.notEqual(r.ctx.notifUpdateSignature(base),r.ctx.notifUpdateSignature(edited),'同一天只改通知要点文字也必须触发新签名');
   const js=read('src/js/55-notifications.js');
   assert.match(js,/state\.notifNotifyItems = \(latest\.notifyItems \|\| \[\]\)/,'通知快照必须在发送成功后保存');
-  assert.match(js,/function notifClock\(date\)/,'补充通知的时间要按本机时区显示');
-  assert.equal(/String\(nowIso\(\)\)\.slice\(11, 19\)/.test(js),false,'补充通知标题不能直接截 UTC 时间');
-  assert.match(js,/updateTitle \+= ' · 补充 ' \+ notifClock\(\)/,'补充通知标题必须用本地时分秒');
+  assert.match(js,/isSameDateRefresh/,'同一天更新必须走原地替换分支');
+  assert.match(js,/lastUpdate\.title = updateTitle/,'同一天更新只能替换原通知标题');
+  assert.equal(js.includes("updateTitle += ' · 补充 '"),false,'同一天更新不能再追加第二条补充通知');
+
   const finalJs=read('src/js/58-final.js');
   assert.equal(/final-head-facts/.test(finalJs),false,'期末首屏不能重复展示日期、时长和材料数');
   assert.equal(/final-empty-actions/.test(finalJs),false,'复习材料空态不能重复期末页顶部入口');
@@ -722,6 +723,28 @@ test('notification signature covers notify items and final page avoids duplicate
   assert.match(read('src/styles.css'),/@media \(max-width: 900px\)[\s\S]{0,200}\.topbar \{ position: static; \}/,'手机与平板顶栏不再吸顶遮挡内容');
 });
 
+
+test('same-date update reuses one notification and removes earlier duplicates',()=>{
+  const r=runtime();r.run('55-notifications.js');
+  r.ctx.renderNotifications=()=>{};r.ctx.renderNotificationBadge=()=>{};r.ctx.markDirty=()=>{};
+  const oldTitle='网页已更新 · 2026-11-15 · 旧标题';
+  const old={id:'u1',title:oldTitle,body:'旧正文',kind:'update',read:true,time:'2026-11-15T08:00:00+08:00',updateSignature:'old',updateItems:[{group:'A',text:'旧'}],updateSummary:'旧'};
+  r.ctx.state.notifications=[old,Object.assign({},old,{id:'u2'})];
+  r.ctx.state.notifVersion='old';
+  r.ctx.state.notifWelcomed=true;
+  r.ctx.state.notifReviewDate='2026-11-15';
+  r.ctx.state.notifUpdateItems=[{group:'A',text:'旧'}];
+  r.ctx.state.notifUpdateSummary='旧';
+  r.ctx.UPDATE_LOG=[{date:'2026-11-15',title:'新标题',summary:'新摘要',notifySummary:'新摘要',items:[{group:'A',text:'新正文'}],notifyItems:[{group:'A',text:'新通知'}]}];
+  r.ctx.initNotifications();
+  const updates=r.ctx.state.notifications.filter(n=>n.kind==='update');
+  assert.equal(updates.length,1,'同一天只能保留一条更新通知');
+  assert.equal(updates[0].id,'u1','保留最早那条通知的时间与已读状态');
+  assert.equal(updates[0].read,true);
+  assert.equal(updates[0].title,'网页已更新 · 2026-11-15 · 新标题');
+  assert.match(updates[0].body,/新通知/);
+  assert.doesNotMatch(updates[0].title,/补充/);
+});
 
 test('home restores warm 2ea palette, daily greeting and welcome dialog',()=>{
   const css=read('src/styles.css');
@@ -863,9 +886,15 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('590 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('223 道习题集'),'习题集 current count');
   assert.ok(md.includes('9163'),'bank total');
-  assert.ok(md.includes('92 项回归测试'),'current test count');
-  assert.ok(!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
-  assert.ok(md.includes('v2026.11.15.3.4 Release'),'current release link');
+  assert.ok(md.includes('93 项回归测试'),'current test count');
+  assert.ok(!md.includes('92 项回归测试')&&!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
+  assert.ok(md.includes('v2026.11.15 Release'),'current release link');
+  assert.equal(/\bv?\d{4}\.\d{2}\.\d{2}\.\d+\b/.test(md),false,'README must not keep dotted release versions');
+  const updateAt=md.indexOf('## 更新记录');
+  const detailsAt=md.indexOf('<details>',updateAt);
+  assert.ok(updateAt>=0&&detailsAt>updateAt,'README history must be folded');
+  assert.equal((md.slice(updateAt,detailsAt).match(/^### \d{4}-\d{2}-\d{2}/gm)||[]).length,1,'README only expands the latest update');
+  assert.ok(md.slice(detailsAt,detailsAt+120).includes('2026-11-14 及更早'),'README history fold starts at 11-14');
   const build=(read('index.html').match(/__BUILD_ID__="([^"]+)"/)||[])[1];
   assert.ok(build,'root build id');
   assert.ok(md.includes('VERSION-'+build.replace('-','--')),'build badge matches root index');

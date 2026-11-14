@@ -329,12 +329,13 @@ function initNotifications() {
     var cleaned = n.body.replace(/\n?构建：[^\n]*/g, '').replace(/\n{3,}/g, '\n\n').trim();
     if (cleaned !== n.body) n.body = cleaned;
   });
-  var seenUpdateTitles = {};
+  var seenUpdateDates = {};
   state.notifications = state.notifications.filter(function (n) {
     if (!n || n.kind !== 'update') return true;
-    var key = String(n.title || '');
-    if (seenUpdateTitles[key]) return false;
-    seenUpdateTitles[key] = true;
+    var stamp = (String(n.title || '').match(/网页已更新\s*·\s*(\d{4}-\d{2}-\d{2})/) || [])[1];
+    var key = stamp || String(n.title || n.id || '');
+    if (seenUpdateDates[key]) return false;
+    seenUpdateDates[key] = true;
     return true;
   });
   if (!ui.notifSelected) ui.notifSelected = {};
@@ -375,24 +376,38 @@ function initNotifications() {
     delta.summary = deltaSummaryText.slice(previousSummaryText.length).replace(/^[\s；;，,。、:：\-—]+/, '');
   }
   var hasNewContent = delta.items.length > 0 || (!sameEdition && delta.summaryChanged && !!delta.summary);
-  if (latest && contentChanged && !alreadyNotified && hasNewContent) {
+  var isSameDateRefresh = !!(sameEdition && lastUpdate);
+  if (latest && contentChanged && !alreadyNotified && (hasNewContent || isSameDateRefresh)) {
+    var bodyItems = isSameDateRefresh ? (latest.notifyItems || []) : delta.items;
+    var bodySummary = isSameDateRefresh
+      ? String(latest.notifySummary || latest.summary || '')
+      : (delta.summaryChanged ? delta.summary : '');
     var upLines = ['版本：' + (latest.date || '') + ' · ' + (latest.title || '新版本')];
-    if (delta.summaryChanged && delta.summary) upLines.push(delta.summary);
-    if (delta.items.length) {
+    if (bodySummary) upLines.push(bodySummary);
+    if (bodyItems.length) {
       upLines.push('');
       upLines.push('本次更新内容：');
-      delta.items.forEach(function (it, i) {
+      bodyItems.forEach(function (it, i) {
         upLines.push((i + 1) + '. 【' + (it.group || '更新') + '】' + it.text);
       });
     }
     var updateTitle = '网页已更新 · ' + (latest.date || '') + ' · ' + (latest.title || '新版本');
-    if (sameEdition && previousItems.length) updateTitle += ' · 补充 ' + notifClock();
-    notifAdd(updateTitle, upLines.join('\n'), 'update', {
+    var updateExtra = {
       updateSignature: versionKey,
       buildId: buildId,
       updateItems: (latest.items || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; }),
       updateSummary: String(latest.notifySummary || latest.summary || '')
-    });
+    };
+    if (isSameDateRefresh) {
+      // 同一天只保留一条更新通知：原地替换标题与正文，保留原始时间、已读状态和 id。
+      lastUpdate.title = updateTitle;
+      lastUpdate.body = upLines.join('\n');
+      lastUpdate.kind = 'update';
+      Object.assign(lastUpdate, updateExtra);
+      lastUpdate.time = lastUpdate.time || nowIso();
+    } else {
+      notifAdd(updateTitle, upLines.join('\n'), 'update', updateExtra);
+    }
     state.notifVersion = versionKey;
     state.notifBuildId = buildId;
     state.notifNotifyItems = (latest.notifyItems || []).map(function (it) { return { group: it.group || '更新', text: String(it.text || '') }; });

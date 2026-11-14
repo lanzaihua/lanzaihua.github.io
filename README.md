@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.15.3.4-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.15--13886958-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.15-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.15--eec22ffa-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -151,9 +151,9 @@
 
 ### 2026-11-15 · 排版收口与稳定性加固
 
-**15 项 · 15 组**
+**17 项 · 17 组**
 
-本轮在 3.3 排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9163，92 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过；同时复核 3.2 发布产物与同日记录，修正 README 历史版本指向。本块随 GitHub Pages 与 v2026.11.15.3.4 Release 发布。15 项 / 15 组。
+本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9163，93 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.15 Release 发布。17 项 / 17 组。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -163,23 +163,28 @@
 | **材料序号** | 复习材料左侧改 01/02 序号，标题最多两行并带 title 提示；原始 ID 不再逐字换行挤压正文，类型与移除按钮仍保持右对齐。 |
 | **AI 文案** | 「AI 出题开考」按 aiConfigReady() 显示「按章节生成新题 · 已配置 AI」或「需配置 API」，不再出现设置页已配置、期末页仍说需配置的矛盾。 |
 | **规范编号** | 规范页题库示例由 GA-001 改为 GA-B0001（高代）、MA-0001（数分），与题库实际编号一致，不再把不存在的编号当示例。 |
-| **防复发** | 回归测试扩展到 92 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头与深链断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。 |
+| **防复发** | 回归测试扩展到 93 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头与深链断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。 |
 | **存储回读** | localStorage.setItem 后立即回读比对，静默失败或配额满就降级到内存并提示；错误卡片新增「导出备份」，不再出现「显示已保存但刷新丢失」。 |
 | **题库拆包** | Pages 版首页从 15.2MB 降到 3.0MB，9163 道题移到 data/bank.json（12.3MB），首屏不再解析整库；dist 仍保留单文件离线版，两种构建号一致。 |
 | **索引缓存** | 首次进入题库后按四科写入 IndexedDB，构建号变化自动换新；网络失败回退上一版缓存，读不到才提示题库加载失败，错题与笔记仍可用。 |
 | **深链兜底** | 404 改为 /?spa_redirect=… 再还原 hash，不依赖 sessionStorage；清空会话存储也能回到原页，未知路径才回首页。 |
 | **缓存边界** | 移除强制 Cache-Control meta；Service Worker 缓存名绑定构建号、注册带 ?v=，仍只缓存 200 非 Range，跳过 /api 与自身脚本。 |
 | **AI 与焦点** | AI 状态响应不是 JSON 时按未配置处理并说明原因；筛选重渲染后焦点回原控件，弹窗关闭落到 body 时回页面标题。 |
-| **发布门禁** | CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 92 项。 |
+| **发布门禁** | CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 93 项。 |
 | **Cloudflare 缓存** | 新增 Cloudflare Pages _headers 与迁移文档：HTML 立即校验、题库 1 小时 + stale-while-revalidate、安全头；当前仍由 GitHub Pages 提供，未声称已切换。 |
+| **记录归并** | README 只展开最新一块，2026-11-14 及更早 23 个版本收进 details；GitHub Releases 同一天只保留一条，标签统一为 v2026.11.15 / v2026.11.14，不再给同一天加小版本后缀；网页、CHANGELOG、README 与 Release 共用同一份摘要。 |
+| **通知去重** | 同一天记录再修改时，原地替换已有更新通知的标题与正文，保留首次时间与已读状态，不再追加补充或生成第二条；旧版同日重复通知在启动时按日期合并，更新记录与通知标题统一为日期加标题。 |
 
 <img src="assets/v2/20261115-changelog.png" alt="网页内更新记录" width="820">
+
+<details>
+<summary>历史更新 · 2026-11-14 及更早 · 23 个版本</summary>
 
 ### 2026-11-14 · 健壮性修复与发布
 
 **25 项 · 25 组**
 
-本轮补存储、路由、缓存、错误边界与同步损坏保护：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；服务端数据文件损坏时改为失败关闭，前端停止覆盖本地数据并提示保留原始副本。同时完成 Warm Academic 3.1 精修：首页压缩到 1440×1000 首屏露出四科入口，错题空态改成三步引导，规范页加入字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；八视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，86 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过；3.2 又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14.3.2 Release 发布。本块 25 项 / 25 组。
+本轮补存储、路由、缓存、错误边界与同步损坏保护：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；服务端数据文件损坏时改为失败关闭，前端停止覆盖本地数据并提示保留原始副本。同时完成暖白学术界面精修：首页压缩到 1440×1000 首屏露出四科入口，错题空态改成三步引导，规范页加入字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；八视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，86 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过；随后又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14 Release 发布。本块 25 项 / 25 组。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -188,7 +193,7 @@
 | **深链兜底** | 直接访问 /gaodai、/shufen/bank 这类没有扩展名的深链时，404 页把路径还原成 #/ 路由并回到对应页面，不再只显示一句「页面不存在」。 |
 | **缓存边界** | Service Worker 缓存名升到 v2，只缓存状态 200 且不是 Range 的响应，跳过 /api 与自身脚本；离线仍能打开最近一次成功页面。 |
 | **错误与焦点** | 新增全局错误卡片与未处理 Promise 兜底，出错时说明数据未丢并可刷新；hash 路由切换后焦点落到页面标题，屏幕阅读器能感知换页；知识点搜索面板支持 Escape 关闭并把焦点送回搜索框，开合状态用 aria-hidden 同步；移动端主要按钮保持 44px 触控高度。 |
-| **界面系统** | 在 Warm Academic 3.0 基础上做 3.1 精修：保留暖白画布、纯白面板、细线分隔与砖红强调；统一标题、正文、元信息、按钮和输入框的字号与高度；首页首屏、错题空态、规范页导读、题库范围条、期末入口与统计结论同批收口；深色主题沿用同一组 token。 |
+| **界面系统** | 在暖白学术视觉（Warm Academic）基础上继续精修：保留暖白画布、纯白面板、细线分隔与砖红强调；统一标题、正文、元信息、按钮和输入框的字号与高度；首页首屏、错题空态、规范页导读、题库范围条、期末入口与统计结论同批收口；深色主题沿用同一组 token。 |
 | **手机页头** | 手机与平板顶栏压到 146px 左右：品牌、搜索、设置与通知同排，科目切换与主标签分行，主内容不再被 247px 顶栏推到首屏之外；首页指标带改为 2×2，科目入口上移。 |
 | **主操作** | 手机端主操作按钮恢复显示并换行排列，不再被隐藏；按钮、标签与弹窗关闭键保持 40–44px 触控尺寸，长标题与长按钮在窄屏自然折行。 |
 | **题库浏览** | 题库手机端增加「筛选」折叠：默认只留来源与计数，点开才展开章节、题型、形式、模板与难度；题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不再写「+ 习题集」；桌面保持完整筛选台，首题位置从 787px 提前到约 544px。 |
@@ -202,7 +207,7 @@
 | **统计结论** | 学习统计的五个面板各加一句基于真实数据的结论：最忙的一天、四科累计与最高、错因最多、章节最集中、最近均分与最高分；没有数据时继续用明确空态。 |
 | **AI 动作可达** | 智能录入弹窗的提交行改为底部吸附，桌面初始视口不再把「生成并自动入库」裁掉；弹窗正文可滚动，窄屏按钮仍可点到。 |
 | **同步损坏保护** | 服务端数据文件损坏时，GET /api/state 返回 500 STATE_CORRUPTED、写入返回 409，health 标明 stateCorrupted 与备份路径；前端停止覆盖本地数据并提示「本地数据文件损坏，已保留原始副本」，启动日志不再输出空白或重复口令。 |
-| **首页首屏** | 3.2 再收紧首页问候区与工作台的纵向间距（34→22 / 34→24）：四科入口第 4 卡在 1440×1000 下 bottom≈978px，完整进入首屏并留出安全余量；手机端保持单栏顺序与正文字号，不靠缩小内容硬塞。 |
+| **首页首屏** | 本轮再收紧首页问候区与工作台的纵向间距（34→22 / 34→24）：四科入口第 4 卡在 1440×1000 下 bottom≈978px，完整进入首屏并留出安全余量；手机端保持单栏顺序与正文字号，不靠缩小内容硬塞。 |
 | **空态引导** | 错题空态改为三步起步卡：从题库挑一道、手动新增、智能录入；筛选无结果时仍提示换条件或清空，不用假数据填满页面。 |
 | **文档校准** | README、CHANGELOG、网页更新记录与 GitHub Release 统一为本块 25 项 / 25 组、86 项回归、8 视口；版本徽章指向最终构建，九枚徽章颜色两两不同，历史更新继续收在 details。 |
 | **发布边界** | 源码、网页记录、README、CHANGELOG 与 GitHub Release 已对齐同一个构建并上线；线上构建号与仓库一致，不再保留候选或待发布字样。 |
@@ -211,18 +216,15 @@
 
 <img src="assets/v2/20261114-changelog.png" alt="网页内更新记录" width="820">
 
-<details>
-<summary>历史更新 · 2026-11-13 及更早 · 22 个版本</summary>
-
 ### 2026-11-13 · 暖白学术与全站收口
 
 **22 项 · 22 组**
 
-本轮把全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163；新增统计中心，用本机错题、复习打卡与模拟考记录展示近 14 天节拍、四科对比、错因与章节分布，空数据给出明确空态；76 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；西经习题集与教材课后里被拍平的公式已改回 LaTeX 并纳入数据门禁。README 历史折叠并与本块同步。本块 22 项 / 22 组。
+本轮把全站切到暖白学术视觉（Warm Academic）：暖白纸面、纯白面板、细边框与轻阴影统一成一套 token，标题、正文、按钮、输入框、卡片与弹窗共用层级；首页加入学习工作台、连续学习与近 7 天节拍，模拟考加入答题卡，AI 暂存谷时条改为参考图的灰绿色。公式排版、三端基线、手机页头、来源筛选、编号规范与更新记录折叠一并收口。四科题库 1559 / 3522 / 1199 / 2883 = 9163；新增统计中心，用本机错题、复习打卡与模拟考记录展示近 14 天节拍、四科对比、错因与章节分布，空数据给出明确空态；76 项回归测试、严格 QA、站点一致性、公式检查、六视口真实交互与性能门禁通过；西经习题集与教材课后里被拍平的公式已改回 LaTeX 并纳入数据门禁。README 历史折叠并与本块同步。本块 22 项 / 22 组。
 
 | 分组 | 本次更新 |
 |---|---|
-| **设计系统** | 全站切到 Warm Academic 3.0：暖白纸面、纯白面板、细边框与轻阴影统一为同一套 token，四科辅助色只用于识别与图表；标题、正文、辅助说明、按钮、输入框、卡片与弹窗建立固定层级，深色模式不用纯黑。 |
+| **设计系统** | 全站切到暖白学术视觉（Warm Academic）：暖白纸面、纯白面板、细边框与轻阴影统一为同一套 token，四科辅助色只用于识别与图表；标题、正文、辅助说明、按钮、输入框、卡片与弹窗建立固定层级，深色模式不用纯黑。 |
 | **学习工作台** | 首页在问候下加入学习工作台：错题总数、待复习、已掌握、完成度、今日建议、四科进度、最近记录，以及连续学习天数、近 7 天复习节拍与 AI 智能录入入口，不用先翻页也能决定今天做什么。 |
 | **答题卡** | 模拟考页增加答题卡：27 个题号按 34px 触控尺寸排列，点题号平滑跳到对应题目，已作答的题号高亮；顶部仍保留剩余时间、已答计数与交卷按钮。 |
 | **谷时配色** | AI 暂存与峰谷时间条统一为用户参考图的灰绿色（#B7C1AF），峰时段仍保留砖红；图例、轨道与全天谷时的状态使用同一颜色，不再出现两套绿色。 |
@@ -886,12 +888,12 @@
 
 ## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.15.3.4 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.15.3.4/source.zip) 提供。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.15 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.15/source.zip) 提供。
 
 ### 仓库与许可证
 
 - **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
-- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.14/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.14/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
+- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.15/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.15/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
 - **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
 - **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
 - **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
@@ -905,7 +907,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、8 视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 92 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
+| `tests/` | 93 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 
