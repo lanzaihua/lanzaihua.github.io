@@ -43,6 +43,7 @@ jobs:
           done
           curl -fsS http://127.0.0.1:4173/api/health >/dev/null
           PAGE_URL=http://127.0.0.1:4173 npm run qa:responsive
+          PAGE_URL=http://127.0.0.1:4173 npm run qa:paper
       - name: Formula rendering regression
         run: npm run qa:formulas
 

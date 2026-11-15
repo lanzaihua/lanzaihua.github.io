@@ -886,7 +886,7 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('885 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('416 道习题集'),'习题集 current count');
   assert.ok(md.includes('9651'),'bank total');
-  assert.ok(md.includes('106 项回归测试'),'current test count');
+  assert.ok(md.includes('109 项回归测试'),'current test count');
   assert.ok(!md.includes('92 项回归测试')&&!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.15 Release'),'current release link');
   assert.equal(/\bv?\d{4}\.\d{2}\.\d{2}\.\d+\b/.test(md),false,'README must not keep dotted release versions');
@@ -916,12 +916,13 @@ test('final paper editor header keeps a full-width title and untruncated actions
   const css=read('src/styles.css');
   const block=css.slice(css.lastIndexOf('2026-11-15 · 模拟卷编辑卡'));
   assert.ok(block.length>0,'缺少模拟卷编辑卡最终覆盖层');
-  assert.match(block,/\.final-editor-head\{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important/,'编辑头必须保持横向 flex 并允许换行');
-  assert.match(block,/\.final-editor-head>\.fpi-label:first-child\{flex:1 1 240px/,'首列基宽必须是 240px，不能把 basis 变成高度');
+  assert.match(block,/\.final-editor-head\{[^}]*display:grid!important/,'编辑头必须使用显式网格，不能用 flex-basis 当高度');
+  assert.match(block,/\.final-editor-head\{[^}]*grid-template-columns:minmax\(240px,1fr\)/,'桌面首列基宽必须是 240px');
+  assert.match(block,/\.final-editor-head>\.fpi-label:first-child\{grid-column:1/,'标题必须落在第一列而不是被拉伸成整行');
   assert.match(block,/\.fpi-duration\{display:flex/,'时长与分钟必须同行');
-  assert.match(block,/@media \(max-width:760px\)\{[\s\S]*?\.final-editor-head>\.fpi-label:first-child\{flex-basis:100%!important/,'手机标题必须独占整行');
-  assert.match(block,/\.final-editor-actions\{display:grid!important;grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/,'手机操作区必须是三列网格');
-  assert.match(block,/\.final-editor-actions \.btn\{width:100%;min-height:40px!important;padding:6px 8px;white-space:normal/,'手机按钮必须允许换行且不低于 40px');
+  assert.match(block,/@media \(max-width:760px\)\{[\s\S]*?\.final-editor-head>\.fpi-label:first-child\{grid-column:1\/-1/,'手机标题必须独占整行');
+  assert.match(block,/grid-template-columns:repeat\(auto-fit,minmax\(92px,1fr\)\)/,'手机操作区必须是自适应网格');
+  assert.match(block,/\.final-editor-actions \.btn\{[^}]*height:auto!important/,'按钮高度必须随文字增长，不能裁字');
   assert.match(css,/\.final-editor-head > \.fpi-label:first-child \{ flex: 1 1 240px/, '基础层首列基宽不能回到 360px');
 });
 

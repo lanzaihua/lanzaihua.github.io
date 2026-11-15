@@ -25,7 +25,8 @@
     "qa:perf": "node tools/qa-performance.js",
     "qa:a11y": "node tools/qa-a11y.js",
     "qa:size": "node tools/qa-size.js",
-    "qa:pages": "node tools/qa-pages.js"
+    "qa:pages": "node tools/qa-pages.js",
+    "qa:paper": "node tools/qa-paper-editor.js"
   },
   "devDependencies": {
     "axe-core": "^4.14.0",

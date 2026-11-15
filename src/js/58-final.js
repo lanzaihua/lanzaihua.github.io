@@ -607,19 +607,7 @@ function finalPaperSmartScores() {
   toast('已按题型重新分配分值');
 }
 
-function finalPaperEditorHtml(p) {
-  if (!p) return '';
-  return '<div class="final-editor">' +
-    '<div class="final-editor-head"><label class="fpi-label">卷名 <input class="input" data-paper-field="title" value="' + attr(p.title) + '"></label>' +
-      '<label class="fpi-label">时长 <span class="fpi-duration"><input class="input input-num" type="number" min="15" max="300" step="5" data-paper-field="duration" value="' + attr(p.duration) + '"><span>分钟</span></span></label>' +
-      '<span class="final-editor-meta">' + finalPaperScoreText(p) + '</span>' +
-      '<span class="final-editor-actions"><button class="btn btn-xs" data-act="final-save-paper" type="button">保存</button><button class="btn btn-xs" data-act="final-add-paper-item" type="button">补一题</button><button class="btn btn-xs" data-act="final-import-bank" type="button">从题库插入</button><button class="btn btn-xs" data-act="final-import-entry" type="button">从错题插入</button><button class="btn btn-xs" data-act="final-generate-paper" type="button">再生成</button><button class="btn btn-xs btn-danger" data-act="final-delete-paper" type="button">删除卷</button></span></div>' +
-    '<div class="final-scorebar"><span>卷面总分 <b data-paper-score-total>' + Math.round((p.items || []).reduce(function (s, it) { return s + (Number(it.score) || 0); }, 0) * 10) / 10 + '</b> / 100 · 客观题单题建议不超过 7 分</span><button class="btn btn-xs" data-act="final-smart-scores" type="button">智能分配</button></div>' +
-    '<div class="final-editor-tools"><button class="btn btn-xs" data-act="final-export-docx" type="button">导出 DOCX</button><button class="btn btn-xs" data-act="final-export-pdf" type="button">导出 PDF</button><span class="faint">可在下面直接修改题目、答案和分值；导出使用当前编辑内容。PDF 通过打印窗口另存。</span></div>' +
-    '<div class="final-paper-items">' + p.items.map(function (it, i) { return finalPaperItemHtml(it, i, p); }).join('') + '</div>' +
-  '</div>';
-}
-
+// 编辑卡 HTML 由 60-paper-edit.js 唯一提供（含 AI 出卷行与保留提示），这里不再保留旧实现，避免两套布局漂移。
 function finalPapersHtml() {
   var fe = finalData();
   var p = finalActivePaper();

@@ -9269,3 +9269,75 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 }
 
 
+
+
+/* 2026-11-15 · 模拟卷编辑卡头部（Grid 重构，最终层）
+   之前的 flex + flex-basis + 全宽 label 组合在 760px 以下会把标题、时长、meta、操作拆成四行，
+   并且让输入框参与 flex 拉伸，出现「卷名与输入框之间大片空白 / 标题被截断 / 按钮文字被裁」。
+   这里改为显式网格：桌面一行（标题 | 时长 | 计数 | 操作），平板操作独占一行，
+   手机标题一行、时长与计数一行、操作 auto-fit 网格；所有单元 align-self:start，永远不被行高拉伸。 */
+.final-editor-head{
+  display:grid!important;
+  grid-template-columns:minmax(240px,1fr) max-content max-content max-content;
+  align-items:end!important;
+  gap:10px 12px!important;
+  margin-bottom:8px;
+}
+.final-editor-head>.fpi-label{margin:0!important;min-width:0;align-content:start!important;align-self:start!important}
+.final-editor-head>.fpi-label:first-child{grid-column:1;width:auto!important;flex:none!important}
+.final-editor-head>.fpi-label:nth-child(2){grid-column:2}
+.final-editor-head .input{min-width:0;box-sizing:border-box}
+.final-editor-head>.fpi-label:first-child .input{width:100%!important;min-width:0!important}
+.final-editor-head .input-num{width:72px;min-width:72px}
+.fpi-duration{display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap;width:auto!important}
+.fpi-duration .input-num{flex:0 0 72px;width:72px!important;min-width:72px!important}
+.final-editor-meta{grid-column:3;padding-bottom:9px;white-space:nowrap;align-self:end!important}
+.final-editor-actions{
+  grid-column:4;
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  justify-content:flex-end;
+  align-items:center;
+  gap:6px!important;
+  margin:0!important;
+  padding:0!important;
+  align-self:end!important;
+}
+.final-editor-actions .btn{
+  flex:0 0 auto;
+  height:auto!important;
+  min-height:36px!important;
+  padding:6px 10px;
+  line-height:1.3;
+  white-space:nowrap;
+  overflow:visible;
+}
+@media (max-width:1100px){
+  .final-editor-head{grid-template-columns:minmax(220px,1fr) max-content max-content}
+  .final-editor-actions{grid-column:1/-1;justify-content:flex-start;padding-top:2px!important}
+}
+@media (max-width:760px){
+  .final-editor-head{grid-template-columns:max-content minmax(0,1fr)}
+  .final-editor-head>.fpi-label:first-child{grid-column:1/-1;width:100%!important}
+  .final-editor-head>.fpi-label:nth-child(2){grid-column:1}
+  .fpi-duration{grid-column:1;width:auto!important}
+  .fpi-duration .input-num{flex:0 0 72px;width:72px!important;min-width:72px!important}
+  .final-editor-meta{grid-column:2;justify-self:start;padding-bottom:0;align-self:center!important}
+  .final-editor-actions{
+    grid-column:1/-1;
+    display:grid!important;
+    grid-template-columns:repeat(auto-fit,minmax(92px,1fr));
+    gap:8px!important;
+    width:100%;
+    padding-top:2px!important;
+  }
+  .final-editor-actions .btn{
+    width:100%;
+    min-height:40px!important;
+    height:auto!important;
+    padding:6px 8px;
+    white-space:normal;
+    text-align:center;
+    overflow-wrap:anywhere;
+  }
+}
