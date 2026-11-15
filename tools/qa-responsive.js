@@ -282,8 +282,55 @@ async function visibleBox(page, selector) {
       failures.push(device.name + ' / exercise source button missing');
     }
 
-    // 模拟考章节弹窗：取消/全选/展开小节/恢复。
+    // 模拟卷编辑卡：标题不能截断，操作区不能压缩文字；三端都不出现大段空白。
     await goto(page, '#/final');
+    if (!(await page.locator('.final-editor-head').count())) {
+      const generate = page.locator('[data-act="final-generate-paper"]:visible').first();
+      if (await generate.count()) { await generate.click(); await sleep(page, 900); }
+    }
+    if (await page.locator('.final-editor-head').count()) {
+      item.interactions.paperEditor = await page.evaluate(function () {
+        var head = document.querySelector('.final-editor-head');
+        var first = head.querySelector(':scope > .fpi-label');
+        var input = first && first.querySelector('input');
+        var hr = head.getBoundingClientRect();
+        var fr = first ? first.getBoundingClientRect() : { width: 0, height: 0 };
+        var buttons = Array.prototype.map.call(head.querySelectorAll('.final-editor-actions .btn'), function (el) {
+          var r = el.getBoundingClientRect();
+          return {
+            text: (el.textContent || '').trim().slice(0, 12),
+            w: Math.round(r.width), h: Math.round(r.height),
+            scrollW: el.scrollWidth, clientW: el.clientWidth,
+            scrollH: el.scrollHeight, clientH: el.clientHeight
+          };
+        });
+        return {
+          headW: Math.round(hr.width), headH: Math.round(hr.height),
+          firstW: Math.round(fr.width), firstH: Math.round(fr.height),
+          inputW: input ? input.clientWidth : 0,
+          buttons: buttons,
+          overflow: document.documentElement.scrollWidth - window.innerWidth
+        };
+      });
+      var pe = item.interactions.paperEditor;
+      assert(pe.headH <= 320, failures, device.name + ' / paper editor header too tall (' + pe.headH + 'px)');
+      assert(pe.firstH <= 120, failures, device.name + ' / paper title label stretched to ' + pe.firstH + 'px');
+      assert(pe.inputW >= (device.width <= 760 ? pe.headW - 40 : 200), failures, device.name + ' / paper title input too narrow (' + pe.inputW + 'px)');
+      if (device.width <= 760) {
+        assert(pe.firstW >= pe.headW - 4, failures, device.name + ' / paper title not full width on narrow screen (' + pe.firstW + '/' + pe.headW + ')');
+      }
+      assert(pe.buttons.length === 6, failures, device.name + ' / paper editor actions ' + pe.buttons.length);
+      pe.buttons.forEach(function (btn) {
+        assert(btn.scrollW <= btn.clientW + 1, failures, device.name + ' / paper action clipped horizontally: ' + btn.text);
+        assert(btn.scrollH <= btn.clientH + 1, failures, device.name + ' / paper action clipped vertically: ' + btn.text);
+        assert(btn.h >= (device.touch ? 36 : 28), failures, device.name + ' / paper action too short: ' + btn.text);
+      });
+      assert(pe.overflow <= 1, failures, device.name + ' / paper editor overflow ' + pe.overflow);
+    } else {
+      failures.push(device.name + ' / paper editor did not render');
+    }
+
+    // 模拟考章节弹窗：取消/全选/展开小节/恢复。
     const examTab = page.locator('[data-act="final-section"][data-section="exam"]:visible').first();
     if (await examTab.count()) { await examTab.click(); await sleep(page, 250); }
     const startStandard = page.locator('[data-act="final-start-exam"]:visible').first();

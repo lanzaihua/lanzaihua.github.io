@@ -84,3 +84,25 @@ test('paper DOCX includes options and full solutions, not only the answer', () =
   for (const t of ['A．', 'B．', 'C．', 'D．', '参考答案与解析', '标准解答：', '详细解析：', '解题要点：', '易错点：']) assert.equal(xml.includes(t), true, 'DOCX 缺少 ' + t);
   assert.equal(/&(?!(amp|lt|gt|quot|apos);)/.test(xml), false, 'DOCX XML 存在非法裸 &');
 });
+
+test('paper DOCX renders relation symbols and does not duplicate answer letters', () => {
+  const { Blob, TextEncoder, Uint8Array, DataView } = globalThis;
+  const ctx = { console, Date, Math, JSON, Blob, TextEncoder, Uint8Array, DataView, Array, Object, String, Number, RegExp, Set, Map,
+    window: { innerWidth: 1200, print() {} },
+    document: { addEventListener() {}, querySelector() { return null; }, createElement() { return { style: {}, setAttribute() {}, remove() {}, click() {} }; }, body: { appendChild() {} } },
+    state: { activeSubject: 'gaodai' }, SUBJECTS: [{ id: 'gaodai', name: '高等代数' }], SUBJ_BY_ID: { gaodai: { id: 'gaodai', name: '高等代数' } },
+    toast() {}, qs() { return null; }, esc(s) { return String(s); }, attr(s) { return String(s); }, renderMarkdown(s) { return s; }, markDirty() {}, nowIso() { return '2026-11-15T00:00:00+08:00'; }, normalizeStars(x) { return x || 3; }, entryTitle() { return ''; }, findEntry() { return null; }, bankOf() { return []; }, aiConfigReady() { return false; }, setTimeout() {}, clearTimeout() {}, location: { hash: '' }, URL: { createObjectURL() { return ''; }, revokeObjectURL() {} } };
+  vm.createContext(ctx);
+  vm.runInContext(read('src/js/58-final.js'), ctx);
+  assert.equal(ctx.finalDocxLatexToText('f\\mid g 且 g\\mid f'), 'f∣ g 且 g∣ f');
+  assert.equal(ctx.finalDocxLatexToText('f\\mid g').includes('mid'), false, '\\mid 不应残留为文本 mid');
+  assert.equal(ctx.finalDocxLatexToText('A\\subseteq B'), 'A⊆ B');
+  assert.equal(ctx.finalDocxLatexToText('\\deg r<\\deg g'), 'deg r<deg g', '\\deg 不应渲染成 ° 前缀');
+  const xml = ctx.finalPaperDocxDocumentXml({ title: '测试卷', duration: 120, items: [
+    { score: 3, title: '选择题', question: '下列说法正确的是（ ）', answer: 'B．正确项', correct: 'B', options: [{ key: 'A', text: '错项一' }, { key: 'B', text: '正确项' }, { key: 'C', text: '错项二' }, { key: 'D', text: '错项三' }], standardSolution: '解：\n\n因为定义如此。', detailedAnalysis: '按定义判断。' }
+  ] });
+  assert.equal(xml.includes('答案：B．正确项'), true, '答案字母应只出现一次');
+  assert.equal(xml.includes('B．B．'), false, '答案字母重复');
+  assert.equal(/解：<w:br\/><w:br\/>/.test(xml), false, '“解：”后不应有空行');
+});
+

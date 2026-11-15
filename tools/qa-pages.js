@@ -14,7 +14,7 @@ async function waitServer(){for(let i=0;i<60;i++){try{const r=await fetch(base+'
   const home=await page.evaluate(()=>({id:window.__BUILD_ID__,source:window.__BANK_SOURCE__,count:window.__BANKS__&&window.__BANKS__.gaodai&&window.__BANKS__.gaodai.items&&window.__BANKS__.gaodai.items.length}));
   assert.ok(home.id,'build id missing');assert.ok(home.count>1000,'external bank not loaded: '+home.count);assert.notEqual(home.source,'failed');
   await page.goto(base+'/#/gaodai/bank',{waitUntil:'networkidle'});await page.waitForTimeout(700);
-  assert.match(await page.locator('#main').innerText(),/1559\s*\/\s*1559/);
+  assert.match(await page.locator('#main').innerText(),/2046\s*\/\s*2046/);
   await page.reload({waitUntil:'networkidle'});await page.waitForTimeout(500);
   const cached=await page.evaluate(()=>window.__BANK_SOURCE__);
   assert.ok(['idb','network'].includes(cached),'unexpected bank source '+cached);

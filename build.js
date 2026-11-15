@@ -353,6 +353,14 @@ if (splitBanks) {
   fs.mkdirSync(path.dirname(bankOut), { recursive: true });
   fs.writeFileSync(bankOut, banksRaw, 'utf8');
   console.log('external bank: ' + bankOut + ' (' + (Buffer.byteLength(banksRaw) / 1024 / 1024).toFixed(1) + ' MB)');
+  const manifest = { build: buildId, subjects: {} };
+  Object.keys(banks).forEach(function (id) {
+    const raw = JSON.stringify(banks[id]);
+    fs.writeFileSync(path.join(path.dirname(bankOut), 'bank-' + id + '.json'), raw, 'utf8');
+    manifest.subjects[id] = { count: banks[id].items.length, bytes: Buffer.byteLength(raw) };
+    console.log('bank shard: bank-' + id + '.json (' + (manifest.subjects[id].bytes / 1024 / 1024).toFixed(1) + ' MB, ' + manifest.subjects[id].count + ' items)');
+  });
+  fs.writeFileSync(path.join(path.dirname(bankOut), 'bank-index.json'), JSON.stringify(manifest), 'utf8');
 }
 
 // 静态附属文件：robots / sitemap / manifest / 404 / favicon / service worker

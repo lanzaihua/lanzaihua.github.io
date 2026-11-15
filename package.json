@@ -19,6 +19,7 @@
     "qa:responsive": "node tools/qa-responsive.js",
     "qa:formulas": "node tools/qa-formulas.js",
     "verify:build": "node tools/verify-build-consistency.js",
+    "verify:release": "node tools/verify-release.js --online",
     "verify:skills": "node tools/verify-skill-packs.js",
     "languages": "node tools/check_repo_languages.js && python tools/audit_bank.py --strict-difficulty",
     "qa:perf": "node tools/qa-performance.js",

@@ -824,7 +824,7 @@ test('bank totals include reviewed textbook and question-bank additions',()=>{
   const files={algebra:'bank-algebra',analysis:'bank-analysis',geometry:'bank-geometry',western:'bank-western'};
   const totals={};
   for(const [k,f] of Object.entries(files)){const d=JSON.parse(read('src/data/'+f+'.json'));totals[k]=d.items.length;}
-  assert.deepEqual(totals,{algebra:1559,analysis:3522,geometry:1199,western:2883});
+  assert.deepEqual(totals,{algebra:2046,analysis:3523,geometry:1199,western:2883});
   for(const f of ['bank-algebra','bank-analysis']){
     const d=JSON.parse(read('src/data/'+f+'.json'));
     for(const q of d.items.filter(x=>['GA-TX048','GA-TX049','GA-TX050','MA-TX070','MA-TX071','MA-TX072'].includes(x.id))){
@@ -907,6 +907,22 @@ test('navigation, link actions and dialog close buttons keep 34px/40px touch tar
   assert.match(css,/\.dlg-head \.icon-btn,[\s\S]{0,120}\.notif-close\s*\{[^}]*width:\s*34px/,'dialog close 34px');
   assert.match(css,/@media \(max-width: 900px\)[\s\S]{0,500}\.cross-tabs \.tab-cross\s*\{[^}]*min-height:\s*38px/,'tablet tab-cross 38px');
   assert.match(css,/\.pages-banner-badge,[\s\S]{0,160}font-size:\s*10px/,'decorative labels 10px');
+});
+
+test('final paper editor header keeps a full-width title and untruncated actions on narrow screens',()=>{
+  const js=read('src/js/60-paper-edit.js');
+  assert.match(js,/class="fpi-duration"/,'时长输入与“分钟”需要包在同一行容器内，不能各自占网格行');
+  assert.match(js,/final-editor-actions/,'编辑头操作区');
+  const css=read('src/styles.css');
+  const block=css.slice(css.lastIndexOf('2026-11-15 · 模拟卷编辑卡'));
+  assert.ok(block.length>0,'缺少模拟卷编辑卡最终覆盖层');
+  assert.match(block,/\.final-editor-head\{display:flex!important;flex-direction:row!important;flex-wrap:wrap!important/,'编辑头必须保持横向 flex 并允许换行');
+  assert.match(block,/\.final-editor-head>\.fpi-label:first-child\{flex:1 1 240px/,'首列基宽必须是 240px，不能把 basis 变成高度');
+  assert.match(block,/\.fpi-duration\{display:flex/,'时长与分钟必须同行');
+  assert.match(block,/@media \(max-width:760px\)\{[\s\S]*?\.final-editor-head>\.fpi-label:first-child\{flex-basis:100%!important/,'手机标题必须独占整行');
+  assert.match(block,/\.final-editor-actions\{display:grid!important;grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/,'手机操作区必须是三列网格');
+  assert.match(block,/\.final-editor-actions \.btn\{width:100%;min-height:40px!important;padding:6px 8px;white-space:normal/,'手机按钮必须允许换行且不低于 40px');
+  assert.match(css,/\.final-editor-head > \.fpi-label:first-child \{ flex: 1 1 240px/, '基础层首列基宽不能回到 360px');
 });
 
 test('chapter picker labels stay plain text and option labels hang cleanly',()=>{

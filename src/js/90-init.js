@@ -860,6 +860,8 @@ async function boot() {
       if (window.history && history.replaceState) history.replaceState(null, '', location.pathname + location.hash);
     }
   } catch (e) { /* file:// */ }
+  await storageHydrate();
+  storageEstimate().then(function () { return storageRequestPersist(); });
   await loadBankData();
   if (window.__BANK_LOAD_ERROR__) {
     setTimeout(function () { if (typeof toast === 'function') toast('题库加载失败：' + window.__BANK_LOAD_ERROR__ + '；错题与笔记仍可使用'); }, 0);

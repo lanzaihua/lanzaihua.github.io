@@ -45,7 +45,7 @@ function finalPaperEditorHtml(p) {
   if (!p) return '';
   return '<div class="final-editor">' +
     '<div class="final-editor-head"><label class="fpi-label">卷名 <input class="input" data-paper-field="title" value="' + attr(p.title) + '"></label>' +
-      '<label class="fpi-label">时长 <input class="input input-num" type="number" min="15" max="300" step="5" data-paper-field="duration" value="' + attr(p.duration) + '"> 分钟</label>' +
+      '<label class="fpi-label">时长 <span class="fpi-duration"><input class="input input-num" type="number" min="15" max="300" step="5" data-paper-field="duration" value="' + attr(p.duration) + '"><span>分钟</span></span></label>' +
       '<span class="final-editor-meta">' + finalPaperScoreText(p) + '</span>' +
       '<span class="final-editor-actions"><button class="btn btn-xs" data-act="final-save-paper" type="button">保存</button><button class="btn btn-xs" data-act="final-add-paper-item" type="button">补一题</button><button class="btn btn-xs" data-act="final-import-bank" type="button">从题库插入</button><button class="btn btn-xs" data-act="final-import-entry" type="button">从错题插入</button><button class="btn btn-xs" data-act="final-generate-paper" type="button">再生成</button><button class="btn btn-xs btn-danger" data-act="final-delete-paper" type="button">删除卷</button></span></div>' +
     '<p class="final-paper-preserve">删除卷或从卷中移除题目，只影响这份模拟卷；错题和题库中的原题会保留。</p>' +

@@ -3191,9 +3191,11 @@ function noteStateBytes() {
 }
 
 function noteImageFits(dataUrl, what) {
-  var size = noteStateBytes();
-  if (size + String(dataUrl || '').length <= STORAGE_GUARD_CHARS) return true;
-  toast('本机存储空间不足：这张' + (what || '图片') + '没有写入。请先到「设置与同步」导出备份，再删除不需要的笔记图片', { title: '未保存' });
+  var size = noteStateBytes() + String(dataUrl || '').length;
+  var cap = (typeof storageCapacityChars === 'function') ? storageCapacityChars() : STORAGE_GUARD_CHARS;
+  if (size <= cap) return true;
+  var used = (size / 1048576).toFixed(1), room = (cap / 1048576).toFixed(1);
+  toast('这张' + (what || '图片') + '没有写入：预计占用 ' + used + ' MB，超过当前可用 ' + room + ' MB。可先导出备份，或清理不用的笔记图片', { title: '未保存' });
   return false;
 }
 

@@ -23,6 +23,15 @@ var VIEWS = [
   { id: 'guide', label: '规范' }
 ];
 var STORAGE_KEY = 'sanke-cuotiben-v1';
+var STORAGE_META_KEY = 'sanke-cuotiben-meta-v2';
+var IDB_NAME = 'sanke-cuotiben-store';
+var IDB_VERSION = 1;
+var IDB_STORE = 'state';
+var IDB_KEY = 'current';
+var LS_MIRROR_LIMIT = 3 * 1024 * 1024;
+// 主存储迁到 IndexedDB 后，容量由浏览器配额决定（通常是磁盘可用空间的一大块），
+// 这里只留一个防失控的硬上限，避免单次 stringify 把页面卡死。
+var STORAGE_GUARD_CHARS = 1024 * 1024 * 1024;
 var EMPTY_EPOCH = '2026-10-24-empty-v1';
 var TOKEN_KEY = 'sanke-sync-token';
 var THEME_ORDER = ['auto', 'light', 'dark'];
@@ -114,6 +123,211 @@ var safeStorage = (function () {
   }
   return { get: get, set: set, remove: remove, getJSON: getJSON, setJSON: setJSON, backupCorrupted: backupCorrupted, clearByPrefix: clearByPrefix, supported: supported, memory: memory };
 })();
+
+/* ---------------------------------------------------------
+   大容量本机存储：IndexedDB 主存储 + localStorage 小镜像
+   localStorage 只有 5–10MB，笔记图片一多就会撞上限；IndexedDB
+   的配额随磁盘走（Chrome 通常允许到磁盘可用空间的 60%），
+   因此把完整 state 写进 IndexedDB，localStorage 只保留元信息
+   和一份小状态镜像，保证旧版本与同步逻辑仍然可用。
+   --------------------------------------------------------- */
+var storageBackend = 'local';
+var storageIdb = { supported: false, ok: false, error: '', lastWriteAt: 0, lastName: '' };
+var storageIdbPromise = null;
+var idbWriteChain = Promise.resolve();
+var storageQuota = { usage: 0, quota: 0, persisted: false, checkedAt: 0 };
+var storageHydrated = false;
+
+function storageIdbSupported() {
+  try { return typeof indexedDB !== 'undefined' && !!indexedDB && typeof indexedDB.open === 'function'; }
+  catch (e) { return false; }
+}
+storageIdb.supported = storageIdbSupported();
+
+function storageOpenDb() {
+  if (storageIdbPromise) return storageIdbPromise;
+  storageIdbPromise = new Promise(function (resolve, reject) {
+    var req;
+    try { req = indexedDB.open(IDB_NAME, IDB_VERSION); }
+    catch (e) { reject(e); return; }
+    req.onupgradeneeded = function () {
+      var db = req.result;
+      if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
+    };
+    req.onsuccess = function () { resolve(req.result); };
+    req.onerror = function () { reject(req.error || new Error('IndexedDB 打开失败')); };
+    req.onblocked = function () { reject(new Error('IndexedDB 被其他标签页占用')); };
+  });
+  return storageIdbPromise;
+}
+
+function storageIdbGet() {
+  return storageOpenDb().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction(IDB_STORE, 'readonly');
+      var req = tx.objectStore(IDB_STORE).get(IDB_KEY);
+      req.onsuccess = function () { resolve(req.result || null); };
+      req.onerror = function () { reject(req.error || new Error('IndexedDB 读取失败')); };
+    });
+  });
+}
+
+function storageIdbPut(record) {
+  return storageOpenDb().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction(IDB_STORE, 'readwrite');
+      tx.objectStore(IDB_STORE).put(record, IDB_KEY);
+      tx.oncomplete = function () { resolve(record); };
+      tx.onerror = function () { reject(tx.error || new Error('IndexedDB 写入失败')); };
+      tx.onabort = function () { reject(tx.error || new Error('IndexedDB 写入中止')); };
+    });
+  });
+}
+
+function storageMetaWrite(extra) {
+  try {
+    var meta = { v: 2, backend: storageBackend, rev: Number(state && state.rev) || 0, updatedAt: (state && state.updatedAt) || '', at: Date.now() };
+    if (extra) Object.keys(extra).forEach(function (k) { meta[k] = extra[k]; });
+    localStorage.setItem(STORAGE_META_KEY, JSON.stringify(meta));
+  } catch (e) { /* 元信息写不进去不影响主存储 */ }
+}
+
+function storageMetaRead() {
+  try {
+    var raw = localStorage.getItem(STORAGE_META_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+
+function storageEstimate() {
+  if (!(typeof navigator !== 'undefined' && navigator.storage && navigator.storage.estimate)) return Promise.resolve(storageQuota);
+  return navigator.storage.estimate().then(function (est) {
+    storageQuota.usage = Number(est && est.usage) || 0;
+    storageQuota.quota = Number(est && est.quota) || 0;
+    storageQuota.checkedAt = Date.now();
+    return storageQuota;
+  }).catch(function () { return storageQuota; });
+}
+
+function storageRequestPersist() {
+  if (!(typeof navigator !== 'undefined' && navigator.storage && navigator.storage.persist)) return Promise.resolve(false);
+  return navigator.storage.persist().then(function (ok) {
+    storageQuota.persisted = !!ok;
+    return !!ok;
+  }).catch(function () { return false; });
+}
+
+function storageCapacityChars() {
+  // 只要浏览器支持 IndexedDB，就不再受 localStorage 的 4MB 限制：
+  // 有配额估算就按配额留 20% 余量，没有就退到 512MB 的防失控硬上限。
+  if (!storageIdb.supported) return 4 * 1024 * 1024;
+  if (storageQuota.quota > 0) {
+    // 浏览器配额就是上限：留 20% 余量后全部可用，不再叠加自设的 4MB/512MB 上限。
+    var room = Math.max(8 * 1024 * 1024, storageQuota.quota - storageQuota.usage);
+    return Math.floor(room * 0.8);
+  }
+  return STORAGE_GUARD_CHARS;
+}
+
+function storageQueueIdbWrite(raw, quiet) {
+  if (!storageIdb.supported) return false;
+  storageBackend = 'idb';
+  var record = {
+    raw: raw,
+    rev: Number(state && state.rev) || 0,
+    updatedAt: (state && state.updatedAt) || '',
+    bytes: raw.length,
+    savedAt: Date.now()
+  };
+  idbWriteChain = idbWriteChain.then(function () {
+    return storageIdbPut(record);
+  }).then(function () {
+    storageIdb.ok = true;
+    storageIdb.error = '';
+    storageIdb.lastWriteAt = Date.now();
+    // 完整数据已经在 IDB 里，超过 localStorage 镜像上限时腾出空间。
+    if (raw.length > LS_MIRROR_LIMIT) {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* quota 已释放则忽略 */ }
+      try { delete safeStorage.memory[STORAGE_KEY]; } catch (e) { /* noop */ }
+      lsMirrorStale = false;
+    }
+    storageMetaWrite({ bytes: raw.length });
+    storageUnsaved = false;
+    persistQuotaWarned = false;
+    storageGuardBanner(false);
+  }).catch(function (err) {
+    storageIdb.ok = false;
+    storageIdb.error = String((err && (err.name || err.message)) || err || '写入失败');
+    storageUnsaved = true;
+    storageGuardBanner(true);
+    if (!quiet && !persistQuotaWarned) {
+      persistQuotaWarned = true;
+      try {
+        if (typeof toast === 'function') toast('本机大容量存储写入失败：' + storageIdb.error + '；请先导出备份', { title: '未保存' });
+      } catch (e) { /* boot */ }
+    }
+  });
+  return true;
+}
+
+// 启动时把 IDB 里的最新状态合并进内存；返回是否替换了当前 state。
+function storageHydrate() {
+  if (storageHydrated) return Promise.resolve(false);
+  storageHydrated = true;
+  if (!storageIdb.supported) return Promise.resolve(false);
+  return storageEstimate().then(function () {
+    return storageIdbGet();
+  }).then(function (rec) {
+    var curRaw = null;
+    try { curRaw = safeStorage.get(STORAGE_KEY); } catch (e) { curRaw = null; }
+    var curRev = Number(state && state.rev) || 0;
+    if (!rec || !rec.raw) {
+      // 首次升级：把 localStorage 里的旧数据迁移进 IDB。
+      if (!curRaw) return false;
+      storageBackend = 'idb';
+      storageQueueIdbWrite(curRaw, true);
+      return false;
+    }
+    storageBackend = 'idb';
+    var recRev = Number(rec.rev) || 0;
+    if (curRaw && curRaw === rec.raw) { lastWrittenRaw = curRaw; return false; }
+    if (curRaw && curRev >= recRev) {
+      // localStorage 反而更新（例如小状态刚写完就刷新）：回写 IDB。
+      storageQueueIdbWrite(curRaw, true);
+      return false;
+    }
+    var parsed;
+    try { parsed = JSON.parse(rec.raw); }
+    catch (e) {
+      storageIdb.error = 'IndexedDB 数据损坏';
+      return false;
+    }
+    if (!stateCollectionsIntact(parsed)) {
+      storageIdb.error = 'IndexedDB 数据结构不完整';
+      return false;
+    }
+    try {
+      migrateLegacySubjectKeys(parsed);
+      parsed.clearEpoch = EMPTY_EPOCH;
+      var migrated = migrateState(parsed);
+      Object.keys(state).forEach(function (k) { delete state[k]; });
+      Object.keys(migrated).forEach(function (k) { state[k] = migrated[k]; });
+      lastWrittenRaw = rec.raw;
+      storageRecoveryBlocked = false;
+      storageIdb.ok = true;
+      isFreshLocal = false;
+      if (typeof sortBaseLibraryOrder === 'function') sortBaseLibraryOrder();
+      return true;
+    } catch (e) {
+      storageIdb.error = 'IndexedDB 数据迁移失败';
+      return false;
+    }
+  }).catch(function (err) {
+    storageIdb.error = String((err && (err.name || err.message)) || err || 'IndexedDB 不可用');
+    return false;
+  });
+}
+
 
 var ERROR_TYPES = ['概念', '计算', '方法选择', '条件漏用', '表述'];
 var REVIEW_DAY_NUMBERS = [1, 2, 3, 4, 5, 7, 8, 10, 12, 14, 15, 18, 21, 23, 25, 30, 32, 35, 45, 50, 60, 70, 90, 95, 120, 125, 160, 180, 210, 270, 365];
@@ -1269,14 +1483,39 @@ function adoptConcurrentState(remoteRaw) {
 
 if (typeof window !== 'undefined' && window.addEventListener) {
   window.addEventListener('storage', function (e) {
-    if (!e || e.key !== STORAGE_KEY || !e.newValue) return;
+    if (!e) return;
+    if (e.key === STORAGE_META_KEY) {
+      // 另一标签页把最新状态写进了 IndexedDB：按 rev 重新水合，避免两边各写各的。
+      try {
+        var meta = e.newValue ? JSON.parse(e.newValue) : null;
+        if (meta && meta.backend === 'idb' && Number(meta.rev) > Number(state.rev)) {
+          storageHydrated = false;
+          storageHydrate().then(function (changed) {
+            if (changed) {
+              if (typeof sortBaseLibraryOrder === 'function') sortBaseLibraryOrder();
+              if (typeof render === 'function' && (typeof topOpenDialog !== 'function' || !topOpenDialog())) render();
+            }
+          });
+        }
+      } catch (err) { /* 元信息损坏时忽略 */ }
+      return;
+    }
+    if (e.key !== STORAGE_KEY || !e.newValue) return;
     if (e.newValue === lastWrittenRaw) return;
     adoptConcurrentState(e.newValue);
   });
 }
 
 var storageUnsaved = false;
-var STORAGE_GUARD_CHARS = 4 * 1024 * 1024;
+var lsMirrorStale = false;
+
+function storageGuardDetail() {
+  if (storageRecoveryBlocked) return '原始数据需要恢复，当前改动没有写入。';
+  var backend = storageBackend === 'idb' ? '大容量存储' : '浏览器存储';
+  var usage = storageQuota.usage ? '（已用 ' + (storageQuota.usage / 1048576).toFixed(1) + ' MB）' : '';
+  var reason = storageIdb.error ? '：' + storageIdb.error : '空间不足';
+  return backend + '写入失败' + usage + reason + '。';
+}
 
 function storageGuardBanner(show) {
   if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
@@ -1287,7 +1526,7 @@ function storageGuardBanner(show) {
     el.id = 'storageGuardBanner';
     el.className = 'storage-guard-banner';
     el.setAttribute('role', 'alert');
-    el.innerHTML = '<div><b>改动尚未保存到本机</b><span>本机存储空间不足。刷新或关闭页面会丢失这些改动，请先导出备份，再删除不需要的笔记图片。</span></div><div class="storage-guard-actions"><button type="button" class="btn btn-primary" data-storage-guard="export">导出备份</button><button type="button" class="btn" data-storage-guard="retry">重试保存</button></div>';
+    el.innerHTML = '<div><b>改动尚未保存到本机</b><span data-storage-guard-detail></span></div><div class="storage-guard-actions"><button type="button" class="btn btn-primary" data-storage-guard="export">导出备份</button><button type="button" class="btn" data-storage-guard="retry">重试保存</button></div>';
     el.addEventListener('click', function (e) {
       var btn = e.target && e.target.closest ? e.target.closest('[data-storage-guard]') : null;
       if (!btn) return;
@@ -1295,12 +1534,15 @@ function storageGuardBanner(show) {
         if (typeof exportState === 'function') exportState();
         else if (typeof toast === 'function') toast('请到「设置与同步」导出备份');
       } else {
+        storageEstimate();
         persistLocal(false);
         if (typeof toast === 'function') toast(storageUnsaved ? '仍然无法保存：请先导出备份并精简内容' : '已恢复保存');
       }
     });
     (document.body || document.documentElement).appendChild(el);
   }
+  var detail = el.querySelector('[data-storage-guard-detail]');
+  if (detail) detail.textContent = storageGuardDetail() + '刷新或关闭页面会丢失这些改动，请先导出备份。';
 }
 
 if (typeof window !== 'undefined' && window.addEventListener) {
@@ -1318,7 +1560,7 @@ function persistLocal(quiet) {
     return false;
   }
   var diskRaw = safeStorage.get(STORAGE_KEY);
-  if (diskRaw && lastWrittenRaw != null && diskRaw !== lastWrittenRaw) {
+  if (!lsMirrorStale && diskRaw && lastWrittenRaw != null && diskRaw !== lastWrittenRaw) {
     try {
       var remoteState = JSON.parse(diskRaw);
       if (remoteState && remoteState.entries && sanitizeStateCollections(remoteState)) {
@@ -1327,33 +1569,54 @@ function persistLocal(quiet) {
     } catch (mergeErr) { /* keep local; still write */ }
   }
   var rawOut = JSON.stringify(state);
-  if (rawOut.length > STORAGE_GUARD_CHARS) {
+  var cap = storageCapacityChars();
+  if (rawOut.length > cap) {
     storageUnsaved = true;
     storageGuardBanner(true);
     if (!persistQuotaWarned) {
       persistQuotaWarned = true;
-      try { if (typeof toast === 'function') toast('本机存储接近上限：这次改动没有写盘，请先导出备份，再删除笔记图片', { title: '未保存' }); } catch (err) { /* boot */ }
+      try {
+        if (typeof toast === 'function') toast('本机数据已达 ' + (rawOut.length / 1048576).toFixed(1) + ' MB，超过当前可用配额 ' + (cap / 1048576).toFixed(1) + ' MB；请先导出备份', { title: '未保存' });
+      } catch (err) { /* boot */ }
     }
     return false;
   }
-  var wrote = safeStorage.set(STORAGE_KEY, rawOut, { silent: true });
-  if (!wrote) {
-    storageUnsaved = true;
-    storageGuardBanner(true);
-    if (!persistQuotaWarned) {
-      persistQuotaWarned = true;
-      if (!quiet) {
-        try { if (typeof toast === 'function') toast('本机存储已满：当前改动只保留在内存中；请先导出备份，再删除不需要的笔记', { title: '未保存' }); } catch (err) { /* boot */ }
-      }
-    }
-    return false;
+  // 小状态继续镜像到 localStorage（同步事件、旧版本兼容都靠它）；
+  // 超过镜像上限就只在内存留副本，由 IndexedDB 承担持久化。
+  var wroteLS = false;
+  if (rawOut.length <= LS_MIRROR_LIMIT) {
+    wroteLS = safeStorage.set(STORAGE_KEY, rawOut, { silent: true });
+  } else {
+    lsMirrorStale = true;
+    safeStorage.memory[STORAGE_KEY] = rawOut;
   }
-  lastWrittenRaw = rawOut;
-  persistQuotaWarned = false;
-  storageUnsaved = false;
-  storageGuardBanner(false);
-  subjectMigrationPending = false;
-  return true;
+  var queued = storageQueueIdbWrite(rawOut, quiet);
+  if (queued) {
+    lastWrittenRaw = rawOut;
+    storageMetaWrite({ bytes: rawOut.length });
+    persistQuotaWarned = false;
+    storageUnsaved = false;
+    storageGuardBanner(false);
+    subjectMigrationPending = false;
+    return true;
+  }
+  if (wroteLS) {
+    lastWrittenRaw = rawOut;
+    persistQuotaWarned = false;
+    storageUnsaved = false;
+    storageGuardBanner(false);
+    subjectMigrationPending = false;
+    return true;
+  }
+  storageUnsaved = true;
+  storageGuardBanner(true);
+  if (!persistQuotaWarned) {
+    persistQuotaWarned = true;
+    if (!quiet) {
+      try { if (typeof toast === 'function') toast('本机存储写入失败：当前改动只保留在内存中；请先导出备份', { title: '未保存' }); } catch (err) { /* boot */ }
+    }
+  }
+  return false;
 }
 
 function markDirty(extra, quiet) {

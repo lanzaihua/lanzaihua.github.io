@@ -611,7 +611,7 @@ function finalPaperEditorHtml(p) {
   if (!p) return '';
   return '<div class="final-editor">' +
     '<div class="final-editor-head"><label class="fpi-label">卷名 <input class="input" data-paper-field="title" value="' + attr(p.title) + '"></label>' +
-      '<label class="fpi-label">时长 <input class="input input-num" type="number" min="15" max="300" step="5" data-paper-field="duration" value="' + attr(p.duration) + '"> 分钟</label>' +
+      '<label class="fpi-label">时长 <span class="fpi-duration"><input class="input input-num" type="number" min="15" max="300" step="5" data-paper-field="duration" value="' + attr(p.duration) + '"><span>分钟</span></span></label>' +
       '<span class="final-editor-meta">' + finalPaperScoreText(p) + '</span>' +
       '<span class="final-editor-actions"><button class="btn btn-xs" data-act="final-save-paper" type="button">保存</button><button class="btn btn-xs" data-act="final-add-paper-item" type="button">补一题</button><button class="btn btn-xs" data-act="final-import-bank" type="button">从题库插入</button><button class="btn btn-xs" data-act="final-import-entry" type="button">从错题插入</button><button class="btn btn-xs" data-act="final-generate-paper" type="button">再生成</button><button class="btn btn-xs btn-danger" data-act="final-delete-paper" type="button">删除卷</button></span></div>' +
     '<div class="final-scorebar"><span>卷面总分 <b data-paper-score-total>' + Math.round((p.items || []).reduce(function (s, it) { return s + (Number(it.score) || 0); }, 0) * 10) / 10 + '</b> / 100 · 客观题单题建议不超过 7 分</span><button class="btn btn-xs" data-act="final-smart-scores" type="button">智能分配</button></div>' +
@@ -704,7 +704,7 @@ function finalDocxLatexToText(x){
  s=s.replace(/\\sqrt\s*\{([^{}]*)\}/g,"√($1)").replace(/\\sqrt\s*([A-Za-z0-9])/g,"√$1");
  s=s.replace(/\\(?:mathbb|mathbf|mathrm|text|operatorname)\s*\{([^{}]*)\}/g,"$1");
  s=s.replace(/\\left|\\right|\\displaystyle|\\limits/g,"");
- s=s.replace(/\\(lambda|alpha|beta|gamma|delta|theta|pi|sigma|omega|mu|nu|phi|psi|rho|tau|epsilon|varepsilon|infty|partial|nabla|sum|prod|int|pm|mp|times|cdot|div|le|leq|ge|geq|neq|ne|to|rightarrow|Rightarrow|in|notin|subset|cup|cap|forall|exists)/g,function(_,n){var m={lambda:"λ",alpha:"α",beta:"β",gamma:"γ",delta:"δ",theta:"θ",pi:"π",sigma:"σ",omega:"ω",mu:"μ",nu:"ν",phi:"φ",psi:"ψ",rho:"ρ",tau:"τ",epsilon:"ε",varepsilon:"ε",nmid:"∤",mid:"∣",ne:"≠",infty:"∞",partial:"∂",nabla:"∇",sum:"Σ",prod:"Π",int:"∫",pm:"±",mp:"∓",times:"×",cdot:"·",div:"÷",le:"≤",leq:"≤",ge:"≥",geq:"≥",neq:"≠",to:"→",rightarrow:"→",Rightarrow:"⇒",in:"∈",notin:"∉",subset:"⊂",cup:"∪",cap:"∩",forall:"∀",exists:"∃"};return m[n]||n;});
+ s=s.replace(/\\(lambda|alpha|beta|gamma|delta|theta|pi|sigma|omega|mu|nu|phi|psi|rho|tau|epsilon|varepsilon|infty|partial|nabla|sum|prod|int|pm|mp|times|cdot|div|le|leq|leqslant|ge|geq|geqslant|neq|ne|mid|nmid|to|rightarrow|Rightarrow|mapsto|iff|implies|in|notin|subset|subseteq|supset|supseteq|cup|cap|setminus|emptyset|varnothing|forall|exists|land|lor|neg|circ|deg|angle|triangle|because|therefore|langle|rangle)/g,function(_,n){var m={lambda:"λ",alpha:"α",beta:"β",gamma:"γ",delta:"δ",theta:"θ",pi:"π",sigma:"σ",omega:"ω",mu:"μ",nu:"ν",phi:"φ",psi:"ψ",rho:"ρ",tau:"τ",epsilon:"ε",varepsilon:"ε",nmid:"∤",mid:"∣",ne:"≠",infty:"∞",partial:"∂",nabla:"∇",sum:"Σ",prod:"Π",int:"∫",pm:"±",mp:"∓",times:"×",cdot:"·",div:"÷",le:"≤",leq:"≤",leqslant:"≤",ge:"≥",geq:"≥",geqslant:"≥",neq:"≠",to:"→",rightarrow:"→",Rightarrow:"⇒",mapsto:"↦",iff:"⇔",implies:"⇒",in:"∈",notin:"∉",subset:"⊂",subseteq:"⊆",supset:"⊃",supseteq:"⊇",cup:"∪",cap:"∩",setminus:"∖",emptyset:"∅",varnothing:"∅",forall:"∀",exists:"∃",land:"∧",lor:"∨",neg:"¬",circ:"∘",deg:"deg",angle:"∠",triangle:"△",because:"∵",therefore:"∴",langle:"⟨",rangle:"⟩"};return m[n]||n;});
  s=s.replace(/\\[,;:!]/g," ").replace(/\\/g," ");
  s=s.replace(/\^\{\*\}/g,"*").replace(/\^\*/g,"*");
  s=s.replace(/\^\{([^{}]+)\}/g,function(_,v){var o="";for(var i=0;i<v.length;i++)o+=finalDocxSup(v.charAt(i));return o||("^("+v+")");});
@@ -804,11 +804,19 @@ function finalPaperDocxDocumentXml(p) {
   body += finalDocxPara('参考答案与解析', { bold: true, size: 28, align: 'center', after: 180 });
   p.items.forEach(function (it, i) {
     var answer = String(it.answer || '').trim();
-    var answerLine = it.correct ? ('答案：' + it.correct + (answer ? '．' + answer : '')) : (answer || '暂无答案');
+    var answerLine;
+    if (it.correct) {
+      var letter = String(it.correct);
+      var already = new RegExp('^\\s*' + letter + '\\s*[．.、]').test(answer);
+      answerLine = '答案：' + (already ? answer : letter + (answer ? '．' + answer : ''));
+    } else {
+      answerLine = answer || '暂无答案';
+    }
     body += finalDocxPara((i + 1) + '．' + answerLine, { size: 21, after: 70 });
     if (String(it.standardSolution || '').trim()) {
       body += finalDocxPara('标准解答：', { bold: true, size: 20, after: 30 });
-      body += finalDocxPara(String(it.standardSolution).trim(), { size: 20, after: 70 });
+      var solText = String(it.standardSolution).trim().replace(/^((?:解|证明|答)[：:])\s*\n+/, '$1\n');
+      body += finalDocxPara(solText, { size: 20, after: 70 });
     }
     if (String(it.detailedAnalysis || '').trim()) {
       body += finalDocxPara('详细解析：', { bold: true, size: 20, after: 30 });

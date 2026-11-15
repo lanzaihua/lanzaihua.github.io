@@ -139,6 +139,8 @@ function serveStatic(req, res) {
   });
 }
 
+const SYNC_MAX_BYTES = 64 * 1024 * 1024;
+
 function readBody(req, res, cb, maxBytes) {
   const limit = maxBytes || 6 * 1024 * 1024;
   let size = 0;
@@ -725,7 +727,7 @@ const server = http.createServer(function (req, res) {
         return json(res, 500, { error: 'write failed' });
       }
       return json(res, 200, { rev: cur.rev + 1, updatedAt: readState().updatedAt });
-    }, 8 * 1024 * 1024);
+    }, SYNC_MAX_BYTES);
   }
 
   if (req.method !== 'GET' && req.method !== 'HEAD') {
