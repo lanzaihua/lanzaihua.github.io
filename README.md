@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.15-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.15--39d56abb-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.15--24fd5bfd-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -35,7 +35,7 @@
 
 | 适合 | 现在包含 | 数据方式 |
 |---|---|---|
-| 大学高代、数分、解几、西经的错题整理与考前复习 | **118** 张解答模板 · **8350** 道考研同型题 + **590** 道教材课后习题 + **223** 道习题集题 · 统一笔记库 | 默认 localStorage；可导出 / 导入 JSON 备份 |
+| 大学高代、数分、解几、西经的错题整理与考前复习 | **118** 张解答模板 · **8350** 道考研同型题 + **885** 道教材课后习题 + **416** 道习题集题 · 统一笔记库 | 默认 localStorage；可导出 / 导入 JSON 备份 |
 
 ## 四个科目
 
@@ -62,8 +62,8 @@
 
 - 118 张模板按科目和章节组织，顶部章节目录可直接跳转。
 - 模板固定四段：识别特征 / 首选方法 / 步骤骨架 / 易错点。
-- 8350 道考研同型题 + 590 道教材课后习题 + 223 道习题集题，可以展开查看标准解答、详细解析、答案、解题要点和易错点。
-- 模板、题库、错题条目都支持复制 Markdown 源码；题库由 8350 道考研同型题、590 道教材课后题与 223 道习题集题组成。其中 8250 道为按每章 1–5★ 各 10 客观 + 10 填空 + 10 主观配置的基础题，100 道为西经配套题；590 道教材课后与 223 道习题集为补充，不占该配额。
+- 8350 道考研同型题 + 885 道教材课后习题 + 416 道习题集题，可以展开查看标准解答、详细解析、答案、解题要点和易错点。
+- 模板、题库、错题条目都支持复制 Markdown 源码；题库由 8350 道考研同型题、885 道教材课后题与 416 道习题集题组成。其中 8250 道为按每章 1–5★ 各 10 客观 + 10 填空 + 10 主观配置的基础题，100 道为西经配套题；590 道教材课后与 223 道习题集为补充，不占该配额。
 
 ### 统一笔记库
 
@@ -153,7 +153,7 @@
 
 **31 项 · 31 组**
 
-本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，98 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，手机操作按钮三列、窄桌面不再被挤压，390 / 820 / 1440 实测无大段空白与文字截断，并补真浏览器布局门禁。本块随 GitHub Pages 与 v2026.11.15 Release 发布。31 项 / 31 组。
+本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，106 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，手机操作按钮三列、窄桌面不再被挤压，390 / 820 / 1440 实测无大段空白与文字截断，并补真浏览器布局门禁。本块随 GitHub Pages 与 v2026.11.15 Release 发布。31 项 / 31 组。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -921,7 +921,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、8 视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 98 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
+| `tests/` | 106 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 
