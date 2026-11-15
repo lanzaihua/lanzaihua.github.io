@@ -22,15 +22,27 @@ function git(argv) {
 function localDate() {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai' }).format(new Date());
 }
-function parseRemote() {
-  const url = git(['remote', 'get-url', 'origin']);
-  const m = url.match(/https:\/\/([^@]+)@github\.com\/([^/]+)\/(.+?)(?:\.git)?$/);
+function parseRemoteUrl(url, env) {
+  // 兼容两种 checkout：origin 内嵌 token（本地），或纯 https URL + GITHUB_TOKEN（Actions）。
+  const m = url.match(/^https:\/\/(?:([^@/]+)@)?github\.com\/([^/]+)\/(.+?)(?:\.git)?$/);
   if (!m) return null;
-  let token = m[1];
+  let token = m[1] || '';
   if (token.startsWith('x-access-token:')) token = token.split(':', 2)[1];
-  if (!token || token === 'x-access-token') token = process.env.GITHUB_TOKEN || process.env.DSH_ACCOUNT_TOKEN || '';
+  if (!token || token === 'x-access-token') token = (env && (env.GITHUB_TOKEN || env.DSH_ACCOUNT_TOKEN)) || '';
   return { token, owner: m[2], repo: m[3] };
 }
+function parseRemote() {
+  return parseRemoteUrl(git(['remote', 'get-url', 'origin']), process.env);
+}
+function selfTest() {
+  const assert = require('assert');
+  assert.deepStrictEqual(parseRemoteUrl('https://github.com/o/r.git', { GITHUB_TOKEN: 'env-token' }), { token: 'env-token', owner: 'o', repo: 'r' });
+  assert.deepStrictEqual(parseRemoteUrl('https://x-access-token:pat@github.com/o/r.git', {}), { token: 'pat', owner: 'o', repo: 'r' });
+  assert.deepStrictEqual(parseRemoteUrl('https://github.com/o/r', {}), { token: '', owner: 'o', repo: 'r' });
+  assert.strictEqual(parseRemoteUrl('https://gitlab.com/o/r.git', { GITHUB_TOKEN: 'x' }), null);
+  console.log('verify-release self-test PASS');
+}
+
 async function api(token, p) {
   const res = await fetch('https://api.github.com/repos/' + parseRemote().owner + '/' + parseRemote().repo + p, {
     headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'User-Agent': 'dsh-release-check' }
@@ -40,6 +52,7 @@ async function api(token, p) {
 }
 
 (async () => {
+  if (args.includes('--self-test')) { selfTest(); return; }
   const status = git(['status', '--porcelain']);
   if (status && !allowDirty) problems.push('工作区不干净：先提交或 stash，再发布');
   try { git(['fetch', '--quiet', 'origin', 'main']); } catch (e) { notes.push('无法 fetch origin/main：' + e.message); }
