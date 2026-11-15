@@ -480,6 +480,8 @@ languageRow +
       '<input id="syncToken" value="' + attr(sync.token) + '" placeholder="留空表示不使用" class="sync-token-input"></div>' +
     '<div class="setting-row"><div><div class="st">服务器</div><div class="sd">' + (sync.available ? '已连接 /api/state；数据写入 data/state.json' : '未连接 server.js：数据只在本机；启动后刷新页面即可同步') + '</div></div>' +
       '<span class="chip">' + (sync.available ? 'ONLINE' : 'LOCAL') + '</span></div>' +
+    '<div class="setting-row"><div><div class="st">本机容量</div><div class="sd" id="storageCapacityText">' + esc(typeof storageCapacityLabel === 'function' ? storageCapacityLabel() : 'IndexedDB 主存储') + '</div></div>' +
+      '<button class="btn btn-xs" data-act="request-persist" type="button">申请持久化</button></div>' +
     '<div class="setting-row"><div><div class="st">数据备份</div><div class="sd">导出为 JSON，可导入到另一台设备；不依赖服务器</div></div>' +
       '<div class="multi-actions"><button class="btn btn-xs" data-act="export-state" type="button">导出</button>' +
       '<button class="btn btn-xs" data-act="import-state" type="button">导入</button></div></div>' +

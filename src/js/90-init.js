@@ -525,6 +525,15 @@ function handleAction(act, el) {
       }
       break;
     }
+    case 'request-persist': {
+      if (typeof storageRequestPersist !== 'function') { toast('当前浏览器不支持持久化申请'); break; }
+      storageRequestPersist().then(function (ok) {
+        toast(ok ? '浏览器已授予持久化存储，清理缓存时不会自动删除错题本' : '浏览器未授予持久化；数据仍保存在本机，建议定期导出备份');
+        var capEl = qs('#storageCapacityText');
+        if (capEl && typeof storageCapacityLabel === 'function') capEl.textContent = storageCapacityLabel();
+      });
+      break;
+    }
     case 'pull-sync': {
       var tok2 = qs('#syncToken');
       if (tok2) { sync.token = tok2.value.trim(); safeStorage.set(TOKEN_KEY, sync.token); }

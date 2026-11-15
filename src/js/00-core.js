@@ -219,14 +219,33 @@ function storageRequestPersist() {
 
 function storageCapacityChars() {
   // 只要浏览器支持 IndexedDB，就不再受 localStorage 的 4MB 限制：
-  // 有配额估算就按配额留 20% 余量，没有就退到 512MB 的防失控硬上限。
+  // 有配额估算就按配额留 20% 余量，没有就退到 1GB 的防失控硬上限。
   if (!storageIdb.supported) return 4 * 1024 * 1024;
   if (storageQuota.quota > 0) {
-    // 浏览器配额就是上限：留 20% 余量后全部可用，不再叠加自设的 4MB/512MB 上限。
+    // 浏览器配额就是上限：留 20% 余量后全部可用，不再叠加自设的 4MB/1GB 上限。
     var room = Math.max(8 * 1024 * 1024, storageQuota.quota - storageQuota.usage);
     return Math.floor(room * 0.8);
   }
   return STORAGE_GUARD_CHARS;
+}
+
+function storageFormatBytes(n) {
+  n = Number(n) || 0;
+  if (n >= 1024 * 1024 * 1024) return (n / (1024 * 1024 * 1024)).toFixed(n >= 10 * 1024 * 1024 * 1024 ? 0 : 1) + ' GB';
+  if (n >= 1024 * 1024) return Math.max(1, Math.round(n / (1024 * 1024))) + ' MB';
+  return Math.max(0, Math.round(n / 1024)) + ' KB';
+}
+
+function storageCapacityLabel() {
+  if (!storageIdb.supported) return '浏览器存储（localStorage）约 4 MB';
+  var text = 'IndexedDB 主存储 · 可用约 ' + storageFormatBytes(storageCapacityChars());
+  if (storageQuota.quota > 0) {
+    text += '（浏览器配额 ' + storageFormatBytes(storageQuota.quota);
+    if (storageQuota.usage > 0) text += '，已用 ' + storageFormatBytes(storageQuota.usage);
+    text += '）';
+  }
+  if (storageQuota.persisted) text += ' · 已申请持久化';
+  return text;
 }
 
 function storageQueueIdbWrite(raw, quiet) {
@@ -1588,7 +1607,9 @@ function persistLocal(quiet) {
     wroteLS = safeStorage.set(STORAGE_KEY, rawOut, { silent: true });
   } else {
     lsMirrorStale = true;
-    safeStorage.memory[STORAGE_KEY] = rawOut;
+    // 大状态已经由 IndexedDB 持久化，不能在内存里再留一份完整副本；
+    // 1GB 级数据留两份会直接触发标签页 OOM。旧的小镜像等 IDB 写成功后再释放。
+    delete safeStorage.memory[STORAGE_KEY];
   }
   var queued = storageQueueIdbWrite(rawOut, quiet);
   if (queued) {

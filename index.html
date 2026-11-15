@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.15-d69e81b9";</script>
+<script>window.__BUILD_ID__="2026.11.15-a0366581";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -13227,14 +13227,33 @@ function storageRequestPersist() {
 
 function storageCapacityChars() {
   // 只要浏览器支持 IndexedDB，就不再受 localStorage 的 4MB 限制：
-  // 有配额估算就按配额留 20% 余量，没有就退到 512MB 的防失控硬上限。
+  // 有配额估算就按配额留 20% 余量，没有就退到 1GB 的防失控硬上限。
   if (!storageIdb.supported) return 4 * 1024 * 1024;
   if (storageQuota.quota > 0) {
-    // 浏览器配额就是上限：留 20% 余量后全部可用，不再叠加自设的 4MB/512MB 上限。
+    // 浏览器配额就是上限：留 20% 余量后全部可用，不再叠加自设的 4MB/1GB 上限。
     var room = Math.max(8 * 1024 * 1024, storageQuota.quota - storageQuota.usage);
     return Math.floor(room * 0.8);
   }
   return STORAGE_GUARD_CHARS;
+}
+
+function storageFormatBytes(n) {
+  n = Number(n) || 0;
+  if (n >= 1024 * 1024 * 1024) return (n / (1024 * 1024 * 1024)).toFixed(n >= 10 * 1024 * 1024 * 1024 ? 0 : 1) + ' GB';
+  if (n >= 1024 * 1024) return Math.max(1, Math.round(n / (1024 * 1024))) + ' MB';
+  return Math.max(0, Math.round(n / 1024)) + ' KB';
+}
+
+function storageCapacityLabel() {
+  if (!storageIdb.supported) return '浏览器存储（localStorage）约 4 MB';
+  var text = 'IndexedDB 主存储 · 可用约 ' + storageFormatBytes(storageCapacityChars());
+  if (storageQuota.quota > 0) {
+    text += '（浏览器配额 ' + storageFormatBytes(storageQuota.quota);
+    if (storageQuota.usage > 0) text += '，已用 ' + storageFormatBytes(storageQuota.usage);
+    text += '）';
+  }
+  if (storageQuota.persisted) text += ' · 已申请持久化';
+  return text;
 }
 
 function storageQueueIdbWrite(raw, quiet) {
@@ -14596,7 +14615,9 @@ function persistLocal(quiet) {
     wroteLS = safeStorage.set(STORAGE_KEY, rawOut, { silent: true });
   } else {
     lsMirrorStale = true;
-    safeStorage.memory[STORAGE_KEY] = rawOut;
+    // 大状态已经由 IndexedDB 持久化，不能在内存里再留一份完整副本；
+    // 1GB 级数据留两份会直接触发标签页 OOM。旧的小镜像等 IDB 写成功后再释放。
+    delete safeStorage.memory[STORAGE_KEY];
   }
   var queued = storageQueueIdbWrite(rawOut, quiet);
   if (queued) {
@@ -18835,6 +18856,8 @@ languageRow +
       '<input id="syncToken" value="' + attr(sync.token) + '" placeholder="留空表示不使用" class="sync-token-input"></div>' +
     '<div class="setting-row"><div><div class="st">服务器</div><div class="sd">' + (sync.available ? '已连接 /api/state；数据写入 data/state.json' : '未连接 server.js：数据只在本机；启动后刷新页面即可同步') + '</div></div>' +
       '<span class="chip">' + (sync.available ? 'ONLINE' : 'LOCAL') + '</span></div>' +
+    '<div class="setting-row"><div><div class="st">本机容量</div><div class="sd" id="storageCapacityText">' + esc(typeof storageCapacityLabel === 'function' ? storageCapacityLabel() : 'IndexedDB 主存储') + '</div></div>' +
+      '<button class="btn btn-xs" data-act="request-persist" type="button">申请持久化</button></div>' +
     '<div class="setting-row"><div><div class="st">数据备份</div><div class="sd">导出为 JSON，可导入到另一台设备；不依赖服务器</div></div>' +
       '<div class="multi-actions"><button class="btn btn-xs" data-act="export-state" type="button">导出</button>' +
       '<button class="btn btn-xs" data-act="import-state" type="button">导入</button></div></div>' +
@@ -23066,7 +23089,7 @@ var UPDATE_LOG = [{
   "items": [
     {
       "group": "本机存储扩容",
-      "text": "错题与笔记改由 IndexedDB 主存（sanke-cuotiben-store），localStorage 只留 3MB 镜像与版本元数据；容量按浏览器配额留 20% 余量动态计算，不再受旧 4MB 字符预算限制，超限告警与导出备份仍保留。6MB 状态实测写入、刷新恢复均正常。"
+      "text": "错题与笔记改由 IndexedDB 主存（sanke-cuotiben-store），localStorage 只留 3MB 镜像与版本元数据；容量按浏览器配额留 20% 余量动态计算，不再受旧 4MB 字符预算限制，超限告警与导出备份仍保留。Chromium 实测配额 10.77GB、可用容量 8.6GB；设置页显示实时容量并可申请持久化。6MB 状态实测写入、刷新恢复均正常。"
     },
     {
       "group": "题库分片",
@@ -37324,6 +37347,15 @@ function handleAction(act, el) {
       } else {
         pushSync(true);
       }
+      break;
+    }
+    case 'request-persist': {
+      if (typeof storageRequestPersist !== 'function') { toast('当前浏览器不支持持久化申请'); break; }
+      storageRequestPersist().then(function (ok) {
+        toast(ok ? '浏览器已授予持久化存储，清理缓存时不会自动删除错题本' : '浏览器未授予持久化；数据仍保存在本机，建议定期导出备份');
+        var capEl = qs('#storageCapacityText');
+        if (capEl && typeof storageCapacityLabel === 'function') capEl.textContent = storageCapacityLabel();
+      });
       break;
     }
     case 'pull-sync': {

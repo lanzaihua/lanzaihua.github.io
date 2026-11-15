@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.15-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.15--d69e81b9-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.15--a0366581-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -157,7 +157,7 @@
 
 | 分组 | 本次更新 |
 |---|---|
-| **本机存储扩容** | 错题与笔记改由 IndexedDB 主存（sanke-cuotiben-store），localStorage 只留 3MB 镜像与版本元数据；容量按浏览器配额留 20% 余量动态计算，不再受旧 4MB 字符预算限制，超限告警与导出备份仍保留。6MB 状态实测写入、刷新恢复均正常。 |
+| **本机存储扩容** | 错题与笔记改由 IndexedDB 主存（sanke-cuotiben-store），localStorage 只留 3MB 镜像与版本元数据；容量按浏览器配额留 20% 余量动态计算，不再受旧 4MB 字符预算限制，超限告警与导出备份仍保留。Chromium 实测配额 10.77GB、可用容量 8.6GB；设置页显示实时容量并可申请持久化。6MB 状态实测写入、刷新恢复均正常。 |
 | **题库分片** | Pages 版把题库拆成 bank-index.json 加四科分片，加载器先读 index、并行补齐缺失科目并写入按科目的 IndexedDB 缓存；分片失败自动回退单文件 bank.json。首访四科 2046/3523/1199/2883，二次进入零题库请求，断一片仍完整。 |
 | **习题录入** | 按学科 skill 录入《高等代数习题精选精解》192 题（ch01–ch10，跳过 OCR 残缺与重复题）、《数学分析上作业集》69 题与 ChatGPT 数学题 1 题；新题沿用 GA-B/MA-TX 编号、逐题补标准解答、易错点与 sympy 验算记录。 |
 | **全库复核** | 全库 9651 题查重与严格 QA 通过：题干归一化重复 0、id 唯一、分类与题型匹配、客观题恰四选项且答案字母一致；修掉 9 道客观题缺 correct、3 处反斜杠转义损坏与公式定界符断行。 |
@@ -897,7 +897,7 @@
 - Markdown 由 marked 解析，数学公式由 Temml 渲染。
 - 无前端框架运行时依赖，打开 HTML 即可使用。
 - 可选 Node 后端负责静态服务、状态同步和 AI 代理。
-- 错题、笔记与设置存浏览器 localStorage；题库分片缓存在 IndexedDB，可通过页面导出 / 导入迁移。
+- 错题、笔记与设置以 IndexedDB 为主存（localStorage 只留小镜像），题库分片也缓存在 IndexedDB；可通过页面导出 / 导入迁移。
 
 
 ## 源码、构建与开源

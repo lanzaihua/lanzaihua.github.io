@@ -62,6 +62,8 @@
 
 - 主存储改为 IndexedDB `sanke-cuotiben-store/state`；localStorage 只保留 ≤3MB 镜像与 `sanke-cuotiben-meta-v2` 版本元数据。
 - 容量按 `navigator.storage.estimate()` 的剩余配额留 20% 余量动态计算；不再使用固定 4MB 字符预算。无配额估算时回退 1GB 防失控上限。
+- Edge/Chromium 实测：配额 10,773,220,035B（约 10.77GB），页面可用容量 8.59GB；设置页新增「本机容量」与「申请持久化」。
+- 大状态不再在 `safeStorage.memory` 保留第二份完整副本，避免 1GB 级数据把标签页撑到 OOM；回归已断言。
 - Playwright 真机验证：导入 6MB 状态后 IDB 写入 6.29MB、localStorage 只剩 107B meta、告警横幅 0；刷新后条目仍在。
 - 服务端 `PUT /api/state` 上限 8MB → 64MB，9MB 写入回归通过。
 

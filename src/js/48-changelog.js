@@ -110,7 +110,7 @@ var UPDATE_LOG = [{
   "items": [
     {
       "group": "本机存储扩容",
-      "text": "错题与笔记改由 IndexedDB 主存（sanke-cuotiben-store），localStorage 只留 3MB 镜像与版本元数据；容量按浏览器配额留 20% 余量动态计算，不再受旧 4MB 字符预算限制，超限告警与导出备份仍保留。6MB 状态实测写入、刷新恢复均正常。"
+      "text": "错题与笔记改由 IndexedDB 主存（sanke-cuotiben-store），localStorage 只留 3MB 镜像与版本元数据；容量按浏览器配额留 20% 余量动态计算，不再受旧 4MB 字符预算限制，超限告警与导出备份仍保留。Chromium 实测配额 10.77GB、可用容量 8.6GB；设置页显示实时容量并可申请持久化。6MB 状态实测写入、刷新恢复均正常。"
     },
     {
       "group": "题库分片",

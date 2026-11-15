@@ -85,6 +85,7 @@ test('large state goes to IndexedDB, not localStorage', async () => {
   const meta = JSON.parse(r.values.get(META));
   assert.equal(meta.backend, 'idb');
   assert.equal(r.values.has(KEY), false, 'localStorage mirror is released once IDB holds the state');
+  assert.equal(Object.prototype.hasOwnProperty.call(r.ctx.safeStorage.memory, KEY), false, 'large state must not keep a second full copy in memory');
 });
 
 test('small state is still mirrored to localStorage for compatibility', async () => {
@@ -132,6 +133,8 @@ test('capacity helper lifts the old 4MB ceiling when IndexedDB is available', ()
   assert.ok(withIdb.ctx.storageCapacityChars() > 100 * 1024 * 1024);
   withIdb.ctx.storageQuota.quota = 8 * 1024 * 1024 * 1024;
   assert.ok(withIdb.ctx.storageCapacityChars() > 1024 * 1024 * 1024, '浏览器配额大于 1GB 时不应被自设上限截断');
+  assert.match(withIdb.ctx.storageCapacityLabel(), /GB/, 'settings should show the real GB-scale capacity');
+  assert.ok(withIdb.ctx.storageCapacityLabel().includes('IndexedDB'), 'capacity label names the IndexedDB backend');
   const legacy = runtime({});
   assert.equal(legacy.ctx.storageCapacityChars(), 4 * 1024 * 1024);
 });
