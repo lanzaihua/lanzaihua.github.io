@@ -206,20 +206,37 @@ function knowledgeSearchQuestionExcerpt(text, max) {
   var s = String(text || '').replace(/\s+/g, ' ').trim();
   if (s.length <= max) return s;
   var cut = s.slice(0, max);
-  // 摘录不能停在行内公式中间：落单的 $ 会让前半截 LaTeX 原样显示。
-  // 数未转义的 $，奇数说明截断点落在公式内部，退回到该公式开头。
-  var dollars = 0;
-  for (var i = 0; i < cut.length; i++) {
-    if (cut[i] !== '$') continue;
-    var bs = 0;
-    for (var k = i - 1; k >= 0 && cut[k] === '\\'; k--) bs++;
-    if (bs % 2 === 0) dollars++;
+  // 摘录不能停在公式中间：落单的 $ / $$ 或未闭合的 \begin{...} 都会被原样显示。
+  // 先把截断点退回完整的公式边界；若整段摘录几乎都是公式，宁可只显示标题也不吐出源码。
+  function openMathDelimiter(t) {
+    var i = 0, mode = '', start = -1;
+    while (i < t.length) {
+      if (t[i] === '\\') { i += 2; continue; }
+      if (t.slice(i, i + 2) === '$$') {
+        if (mode === '$$') { mode = ''; start = -1; }
+        else if (!mode) { mode = '$$'; start = i; }
+        i += 2; continue;
+      }
+      if (t[i] === '$') {
+        if (mode === '$') { mode = ''; start = -1; }
+        else if (!mode) { mode = '$'; start = i; }
+        i += 1; continue;
+      }
+      i += 1;
+    }
+    return start;
   }
-  if (dollars % 2 === 1) {
-    var open = cut.lastIndexOf('$');
-    if (open > 0) cut = cut.slice(0, open);
+  var open = openMathDelimiter(cut);
+  if (open >= 0) cut = open > 0 ? cut.slice(0, open) : '';
+  var begin = cut.lastIndexOf('\\begin{');
+  if (begin >= 0) {
+    var tail = cut.slice(begin);
+    var envEnd = tail.indexOf('\\end{');
+    if (envEnd < 0) cut = begin > 0 ? cut.slice(0, begin) : '';
   }
-  cut = cut.replace(/\\[A-Za-z]*$/, '').replace(/[\s，。；：、,.;:]+$/, '');
+  // 截断点落在命令/参数中间时，连同残缺命令一起去掉。
+  cut = cut.replace(/\\[A-Za-z]*(?:\{[^{}]*\})?$/, '').replace(/[\s，。；：、,.;:]+$/, '');
+  if (!cut) return '';
   return cut + '…';
 }
 

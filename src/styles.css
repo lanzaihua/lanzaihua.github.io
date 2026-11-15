@@ -9484,3 +9484,68 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .exam-title .exam-title-sep { display: none; }
   .exam-title .exam-title-date { display: block; }
 }
+
+/* 2026-11-16: 知识点面板的教材表格在手机上必须完整可读，不能只露出前三列。 */
+@media (max-width: 760px) {
+  .kb-answer .table-wrap { overflow-x: visible !important; margin: 8px 0; }
+  .kb-answer .table-wrap > table {
+    display: table !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed !important;
+    font-size: 11px !important;
+  }
+  .kb-answer .table-wrap > table th,
+  .kb-answer .table-wrap > table td {
+    padding: 6px 5px !important;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+  }
+  .kb-answer .table-wrap > table th:nth-child(1),
+  .kb-answer .table-wrap > table td:nth-child(1) { width: 16% !important; }
+  .kb-answer .table-wrap > table th:nth-child(2),
+  .kb-answer .table-wrap > table td:nth-child(2) { width: 30% !important; }
+  .kb-answer .table-wrap > table th:nth-child(3),
+  .kb-answer .table-wrap > table td:nth-child(3) { width: 26% !important; }
+  .kb-answer .table-wrap > table th:nth-child(4),
+  .kb-answer .table-wrap > table td:nth-child(4) { width: 28% !important; }
+  .kb-answer .table-wrap > table .math-inline-scroll { max-width: 100% !important; }
+}
+
+/* 2026-11-16: 手机上把知识点表格堆叠成带列名的卡片，四列不再挤成一条。 */
+@media (max-width: 760px) {
+  .kb-answer .table-wrap:has(table.has-col-labels) {
+    overflow: visible !important;
+    border: 0 !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 8px 0 !important;
+  }
+  .kb-answer table.has-col-labels { display: block !important; width: 100% !important; min-width: 0 !important; border: 0 !important; background: transparent !important; }
+  .kb-answer table.has-col-labels thead { display: none !important; }
+  .kb-answer table.has-col-labels tbody { display: grid !important; gap: 8px !important; }
+  .kb-answer table.has-col-labels tr { display: block !important; border: 1px solid var(--line) !important; border-radius: 10px !important; background: var(--surface) !important; padding: 8px 10px !important; }
+  .kb-answer table.has-col-labels td { display: block !important; width: auto !important; border: 0 !important; padding: 4px 0 !important; font-size: 12px !important; line-height: 1.7 !important; }
+  .kb-answer table.has-col-labels td::before { content: attr(data-label); display: inline-block; min-width: 5.2em; margin-right: 8px; color: var(--muted); font-size: 10px !important; letter-spacing: .04em; white-space: nowrap; vertical-align: 1px; }
+  .kb-answer table.has-col-labels td > .math-inline-scroll { max-width: 100% !important; }
+}
+
+/* 知识点表格里的长公式在单元格内横向滚动，不把卡片撑破。 */
+@media (max-width: 760px) {
+  .kb-answer table.has-col-labels td .math-inline-scroll {
+    display: inline-block !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    vertical-align: baseline !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .kb-answer table.has-col-labels td .math-inline-scroll math { font-size: .9em !important; }
+}
+
+
+/* 2026-11-16: 手机上知识点面板不再内嵌滚动，整页滚动时表格与题目不会被 56dvh 截断。 */
+@media (max-width: 760px) {
+  .kb-answer-body { max-height: none !important; overflow: visible !important; }
+}

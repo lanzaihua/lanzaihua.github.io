@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.16-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.16--ecf68196-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.16--435abceb-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -165,7 +165,7 @@
 | **发布校验** | 新增 verify:release 与 Release 发布时自动运行的 release-check：工作区干净、HEAD 与 origin/main 一致、当天 tag、Release 资产、Pages 部署提交、线上 BUILD_ID 全部对齐；docs/RELEASE.md 固化十步清单，避免本地领先或漏推 tag。 |
 | **模拟卷编辑** | 修「我的模拟卷」编辑卡：头部改为显式 CSS Grid（标题 \| 时长 \| 计数 \| 操作），手机标题整行、时长与题数一行、六个按钮 auto-fit 网格；按钮 height:auto，不再用固定高度裁字。18 个宽度（320–1440）真浏览器门禁断言标题不截断、按钮文字不越界、标签间距 ≤40px、头部高度不超上限，CI 每次构建自动跑 qa:paper；同时删除 58/60 两份重复的旧编辑卡实现。 |
 | **筛选留白** | 题库筛选栏在桌面原本是 inline 流，控件间只剩空白字符，1097px 笔记本宽度下挤成一排；改为桌面 Grid + 可换行字段区（1301px 起四列、其余 2–3 列），手机保持两列折叠，清空与题数不再贴边。新增 qa:filters 在 22 个宽度（320–1920）断言间距 ≥8px、互不重叠、不越界、文字不裁，CI 与 qa:paper 同批执行。 |
-| **公式基线** | 全库公式管线修复：矩阵行分隔符后接 n/r 不再被误当换行，跨行 $$ 不再拆成行内公式，HTML 标签正则不再吞掉数学小于号，A_k 两侧竖线不再误判表格；知识点摘录遇到公式中间会回退，模拟考标题日期不再断成 2026- / 11-16。新增 9651 题全库渲染审计 qa:render，qa:formulas 扩到知识点与模拟考，均 0 残留。 |
+| **公式基线** | 全库公式管线修复：矩阵行分隔符后接 n/r 不再被误当换行，跨行 $$ 不再拆成行内公式，HTML 标签正则不再吞掉数学小于号，A_k 两侧竖线不再误判表格；知识点摘录遇到公式中间会回退，笔记摘要不再露 $ 与 \frac，模拟考标题日期不再断成 2026- / 11-16。知识点教材表在手机上堆叠成带列名的卡片，四列不再只露前三列；新增 9651 题全库渲染审计 qa:render，qa:formulas 扩到错题详情、题库、模拟卷、知识点表格与模拟考共 12 个面，桌面与 390 宽均 0 残留。 |
 | **卡片留白** | 设置页每个分区是带描边的圆角卡片，但标题和行内容离左边框只有 1px；改为 18px 内边距，手机 16/14px，相邻分区留 10px，行内容与标题重新对齐。 |
 | **期末行距** | 复习计划行、复习材料行、我的模拟卷说明、模拟考入口、上次模拟考卡片统一 20px 左右内边距；长标题与按钮不再顶到卡片边缘。 |
 | **复习名称** | 每日计划不再使用 FX-AI-mvz8... 或 GA-B0001 这类内部编号，改为题目标题（最多 14 字后截断）；空标题回退为「题库题 / 错题」，长计划文本允许两行。 |

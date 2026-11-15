@@ -394,6 +394,17 @@ function sanitizeMarkdownHtml(html) {
     });
   }
   walk(root.content);
+  // 表格单元格带上列名，手机上可堆叠成卡片；桌面端仍按原表格显示。
+  root.content.querySelectorAll('table').forEach(function (table) {
+    var heads = Array.prototype.map.call(table.querySelectorAll('thead th'), function (th) { return String(th.textContent || '').trim(); });
+    if (heads.length < 2) return;
+    table.classList.add('has-col-labels');
+    Array.prototype.forEach.call(table.querySelectorAll('tbody tr'), function (tr) {
+      Array.prototype.forEach.call(tr.children, function (cell, i) {
+        if (cell.tagName === 'TD' && heads[i]) cell.setAttribute('data-label', heads[i]);
+      });
+    });
+  });
   var output = document.createElement('div');
   output.appendChild(root.content.cloneNode(true));
   return output.innerHTML;
@@ -691,7 +702,7 @@ function renderMarkdown(src) {
   // 行内公式与紧跟的中文标点绑成不可拆分的尾串，避免“公式在行末、逗号掉到下一行”。
   // 只包裹紧邻的单个公式；禁止跨过其它 span 去吞掉整段文字，否则整句会变成
   // 一个 inline-block 的 math-tail，既不能换行，又会压到相邻卡片上。
-  html = html.replace(/(<span class="math-inline-scroll">(?:(?!<\/?span\b)[\s\S])*?<\/span>)([，。；：、])/g, '<span class="math-tail">$1$2</span>');
+  html = html.replace(/(<span class="math-inline-scroll(?: has-matrix)?">(?:(?!<\/?span\b)[\s\S])*?<\/span>)([，。；：、])/g, '<span class="math-tail">$1$2</span>');
   html = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
   // 属性清洗已由 sanitizeMarkdownHtml 按 DOM 完成；这里不能再跑 on* 正则，
   // 否则会把正文里的 &lt;img ... onerror=...&gt; 文字当成属性删掉。
@@ -953,7 +964,7 @@ function refreshInlineMathWidths(root) {
     wrap.classList.toggle('has-matrix', !!wrap.querySelector('mtable'));
     var host = wrap.closest('p, li, td, th, .exam-qbody, .exam-opt, .exam-result-q, .entry-body, .md') || wrap.parentElement;
     if (!host || !host.clientWidth) return;
-    if (wrap.getBoundingClientRect().width > host.clientWidth + 2) {
+    if (wrap.getBoundingClientRect().width > host.clientWidth + 2 || wrap.scrollWidth > wrap.clientWidth + 2) {
       wrap.classList.add('is-wide');
       wrap.setAttribute('title', '左右滑动查看完整公式');
       wrap.setAttribute('aria-label', '公式较长，可左右滑动查看');

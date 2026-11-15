@@ -1147,7 +1147,8 @@ test('3.3 final planning labels, AI state copy and numbering examples stay align
 });
 
 test('exam title keeps dates whole and knowledge excerpts never cut a formula',()=>{
-  const r=runtime(); r.run('59-exam.js');
+  const {parseHTML}=require('linkedom');const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.run('59-exam.js');
   const title=r.ctx.finalExamTitleHtml('高等代数 · 标准题库期末模拟考 · 2026-11-16');
   assert.match(title,/exam-title-date">2026-11-16/);
   assert.equal(title.includes('2026-<'),false);
@@ -1159,4 +1160,32 @@ test('exam title keeps dates whole and knowledge excerpts never cut a formula',(
   const out=r.ctx.knowledgeSearchQuestionExcerpt(src, 30);
   assert.equal((out.match(/\$/g)||[]).length % 2,0,out);
   assert.equal(/\\[A-Za-z]*$/.test(out),false,out);
+  // 公式被截断时也不能把半截公式吐给用户；宁可只留公式前的文字。
+  const display=String.raw`$$P(x)=\begin{vmatrix}1&x&x^2\\ 1&a_1&a_1^2\end{vmatrix},$$ 设 $a_1$ 互不相同。`;
+  const out2=r.ctx.knowledgeSearchQuestionExcerpt(display, 40);
+  assert.equal(out2.includes('$$'),false,out2);
+  assert.equal(out2.includes('\\begin'),false,out2);
+  assert.equal(/\\[A-Za-z]*$/.test(out2),false,out2);
+  // 矩阵/分段公式后面的中文标点必须跟在同一行，不能单独掉到下一行。
+  r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  const cases=String.raw`设 $f(x)=\begin{cases}1,&x>0\\0,&x\le0\end{cases}$；`;
+  const html=r.ctx.renderMarkdown(cases);
+  assert.match(html,/class="math-tail"/);
+  // 表格单元格带列名，手机端才能堆叠成卡片。
+  const table=r.ctx.renderMarkdown('| 题型 | 方法 |\n| --- | --- |\n| 逆序数 | 直接算 |');
+  assert.match(table,/has-col-labels/);
+  assert.match(table,/data-label="题型"/);
+
+  // 门禁本身也要防止被删掉：后续改动必须继续覆盖手机题库、错题详情、模拟卷、知识点表格。
+  const qa = read('tools/qa-formulas.js');
+  for (const token of ['knowledge-mobile', 'bank-mobile', 'entry-mobile', 'paper', 'table outside panel', 'formula clipped']) {
+    assert.ok(qa.includes(token), '公式门禁缺少 ' + token);
+  }
+  assert.ok(css.includes('.kb-answer table.has-col-labels'), '手机端知识点表格必须堆叠');
+  assert.ok(css.includes('attr(data-label)'), '堆叠表格必须显示列名');
+  assert.ok(css.includes('.kb-answer-body { max-height: none !important; overflow: visible !important; }'), '手机端知识点面板必须整页滚动');
+  assert.ok(read('src/js/10-markdown.js').includes("setAttribute('data-label'"));
+  assert.ok(read('src/js/57-knowledge-search.js').includes('function openMathDelimiter'));
+  assert.ok(read('src/js/49-notes.js').includes('plainText(n.body)'), '笔记摘要必须用纯文本');
 });

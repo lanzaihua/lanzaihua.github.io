@@ -496,7 +496,7 @@ function noteLibraryEmptyHtml() {
 
 function noteKbCardsHtml(notes) {
   return notes.map(function (n) {
-    var body = String(n.body || '').replace(/[#>*_\x60\[\]()!-]+/g, ' ').replace(/\s+/g, ' ').trim();
+    var body = (typeof plainText === 'function' ? plainText(n.body) : String(n.body || '')).replace(/\s+/g, ' ').trim();
     var tags = kbTagsOf(n.body).slice(0, 3);
     return '<button class="note-kb-card" data-act="kb-note" data-id="' + attr(n.id) + '" data-title="' + attr(n.title || '未命名笔记') + '" data-search="' + attr(((n.title || '') + ' ' + String(n.body || '')).toLowerCase()) + '" type="button">' +
       '<span class="note-kb-top"><span class="note-kb-mark">MD</span><span class="note-kb-type">知识笔记</span></span>' +

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.16-ecf68196";</script>
+<script>window.__BUILD_ID__="2026.11.16-435abceb";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9508,6 +9508,71 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .exam-title .exam-title-date { display: block; }
 }
 
+/* 2026-11-16: 知识点面板的教材表格在手机上必须完整可读，不能只露出前三列。 */
+@media (max-width: 760px) {
+  .kb-answer .table-wrap { overflow-x: visible !important; margin: 8px 0; }
+  .kb-answer .table-wrap > table {
+    display: table !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed !important;
+    font-size: 11px !important;
+  }
+  .kb-answer .table-wrap > table th,
+  .kb-answer .table-wrap > table td {
+    padding: 6px 5px !important;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+  }
+  .kb-answer .table-wrap > table th:nth-child(1),
+  .kb-answer .table-wrap > table td:nth-child(1) { width: 16% !important; }
+  .kb-answer .table-wrap > table th:nth-child(2),
+  .kb-answer .table-wrap > table td:nth-child(2) { width: 30% !important; }
+  .kb-answer .table-wrap > table th:nth-child(3),
+  .kb-answer .table-wrap > table td:nth-child(3) { width: 26% !important; }
+  .kb-answer .table-wrap > table th:nth-child(4),
+  .kb-answer .table-wrap > table td:nth-child(4) { width: 28% !important; }
+  .kb-answer .table-wrap > table .math-inline-scroll { max-width: 100% !important; }
+}
+
+/* 2026-11-16: 手机上把知识点表格堆叠成带列名的卡片，四列不再挤成一条。 */
+@media (max-width: 760px) {
+  .kb-answer .table-wrap:has(table.has-col-labels) {
+    overflow: visible !important;
+    border: 0 !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 8px 0 !important;
+  }
+  .kb-answer table.has-col-labels { display: block !important; width: 100% !important; min-width: 0 !important; border: 0 !important; background: transparent !important; }
+  .kb-answer table.has-col-labels thead { display: none !important; }
+  .kb-answer table.has-col-labels tbody { display: grid !important; gap: 8px !important; }
+  .kb-answer table.has-col-labels tr { display: block !important; border: 1px solid var(--line) !important; border-radius: 10px !important; background: var(--surface) !important; padding: 8px 10px !important; }
+  .kb-answer table.has-col-labels td { display: block !important; width: auto !important; border: 0 !important; padding: 4px 0 !important; font-size: 12px !important; line-height: 1.7 !important; }
+  .kb-answer table.has-col-labels td::before { content: attr(data-label); display: inline-block; min-width: 5.2em; margin-right: 8px; color: var(--muted); font-size: 10px !important; letter-spacing: .04em; white-space: nowrap; vertical-align: 1px; }
+  .kb-answer table.has-col-labels td > .math-inline-scroll { max-width: 100% !important; }
+}
+
+/* 知识点表格里的长公式在单元格内横向滚动，不把卡片撑破。 */
+@media (max-width: 760px) {
+  .kb-answer table.has-col-labels td .math-inline-scroll {
+    display: inline-block !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    vertical-align: baseline !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .kb-answer table.has-col-labels td .math-inline-scroll math { font-size: .9em !important; }
+}
+
+
+/* 2026-11-16: 手机上知识点面板不再内嵌滚动，整页滚动时表格与题目不会被 56dvh 截断。 */
+@media (max-width: 760px) {
+  .kb-answer-body { max-height: none !important; overflow: visible !important; }
+}
+
 </style>
 </head>
 <body>
@@ -15685,6 +15750,17 @@ function sanitizeMarkdownHtml(html) {
     });
   }
   walk(root.content);
+  // 表格单元格带上列名，手机上可堆叠成卡片；桌面端仍按原表格显示。
+  root.content.querySelectorAll('table').forEach(function (table) {
+    var heads = Array.prototype.map.call(table.querySelectorAll('thead th'), function (th) { return String(th.textContent || '').trim(); });
+    if (heads.length < 2) return;
+    table.classList.add('has-col-labels');
+    Array.prototype.forEach.call(table.querySelectorAll('tbody tr'), function (tr) {
+      Array.prototype.forEach.call(tr.children, function (cell, i) {
+        if (cell.tagName === 'TD' && heads[i]) cell.setAttribute('data-label', heads[i]);
+      });
+    });
+  });
   var output = document.createElement('div');
   output.appendChild(root.content.cloneNode(true));
   return output.innerHTML;
@@ -15982,7 +16058,7 @@ function renderMarkdown(src) {
   // 行内公式与紧跟的中文标点绑成不可拆分的尾串，避免“公式在行末、逗号掉到下一行”。
   // 只包裹紧邻的单个公式；禁止跨过其它 span 去吞掉整段文字，否则整句会变成
   // 一个 inline-block 的 math-tail，既不能换行，又会压到相邻卡片上。
-  html = html.replace(/(<span class="math-inline-scroll">(?:(?!<\/?span\b)[\s\S])*?<\/span>)([，。；：、])/g, '<span class="math-tail">$1$2</span>');
+  html = html.replace(/(<span class="math-inline-scroll(?: has-matrix)?">(?:(?!<\/?span\b)[\s\S])*?<\/span>)([，。；：、])/g, '<span class="math-tail">$1$2</span>');
   html = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
   // 属性清洗已由 sanitizeMarkdownHtml 按 DOM 完成；这里不能再跑 on* 正则，
   // 否则会把正文里的 &lt;img ... onerror=...&gt; 文字当成属性删掉。
@@ -16244,7 +16320,7 @@ function refreshInlineMathWidths(root) {
     wrap.classList.toggle('has-matrix', !!wrap.querySelector('mtable'));
     var host = wrap.closest('p, li, td, th, .exam-qbody, .exam-opt, .exam-result-q, .entry-body, .md') || wrap.parentElement;
     if (!host || !host.clientWidth) return;
-    if (wrap.getBoundingClientRect().width > host.clientWidth + 2) {
+    if (wrap.getBoundingClientRect().width > host.clientWidth + 2 || wrap.scrollWidth > wrap.clientWidth + 2) {
       wrap.classList.add('is-wide');
       wrap.setAttribute('title', '左右滑动查看完整公式');
       wrap.setAttribute('aria-label', '公式较长，可左右滑动查看');
@@ -23273,7 +23349,7 @@ var UPDATE_LOG = [{
   "items": [
     {
       "group": "公式基线",
-      "text": "全库公式管线修复：矩阵行分隔符后接 n/r 不再被误当换行，跨行 $$ 不再拆成行内公式，HTML 标签正则不再吞掉数学小于号，A_k 两侧竖线不再误判表格；知识点摘录遇到公式中间会回退，模拟考标题日期不再断成 2026- / 11-16。新增 9651 题全库渲染审计 qa:render，qa:formulas 扩到知识点与模拟考，均 0 残留。"
+      "text": "全库公式管线修复：矩阵行分隔符后接 n/r 不再被误当换行，跨行 $$ 不再拆成行内公式，HTML 标签正则不再吞掉数学小于号，A_k 两侧竖线不再误判表格；知识点摘录遇到公式中间会回退，笔记摘要不再露 $ 与 \frac，模拟考标题日期不再断成 2026- / 11-16。知识点教材表在手机上堆叠成带列名的卡片，四列不再只露前三列；新增 9651 题全库渲染审计 qa:render，qa:formulas 扩到错题详情、题库、模拟卷、知识点表格与模拟考共 12 个面，桌面与 390 宽均 0 残留。"
     },
     {
       "group": "本机存储扩容",
@@ -26728,7 +26804,7 @@ function noteLibraryEmptyHtml() {
 
 function noteKbCardsHtml(notes) {
   return notes.map(function (n) {
-    var body = String(n.body || '').replace(/[#>*_\x60\[\]()!-]+/g, ' ').replace(/\s+/g, ' ').trim();
+    var body = (typeof plainText === 'function' ? plainText(n.body) : String(n.body || '')).replace(/\s+/g, ' ').trim();
     var tags = kbTagsOf(n.body).slice(0, 3);
     return '<button class="note-kb-card" data-act="kb-note" data-id="' + attr(n.id) + '" data-title="' + attr(n.title || '未命名笔记') + '" data-search="' + attr(((n.title || '') + ' ' + String(n.body || '')).toLowerCase()) + '" type="button">' +
       '<span class="note-kb-top"><span class="note-kb-mark">MD</span><span class="note-kb-type">知识笔记</span></span>' +
@@ -32396,20 +32472,37 @@ function knowledgeSearchQuestionExcerpt(text, max) {
   var s = String(text || '').replace(/\s+/g, ' ').trim();
   if (s.length <= max) return s;
   var cut = s.slice(0, max);
-  // 摘录不能停在行内公式中间：落单的 $ 会让前半截 LaTeX 原样显示。
-  // 数未转义的 $，奇数说明截断点落在公式内部，退回到该公式开头。
-  var dollars = 0;
-  for (var i = 0; i < cut.length; i++) {
-    if (cut[i] !== '$') continue;
-    var bs = 0;
-    for (var k = i - 1; k >= 0 && cut[k] === '\\'; k--) bs++;
-    if (bs % 2 === 0) dollars++;
+  // 摘录不能停在公式中间：落单的 $ / $$ 或未闭合的 \begin{...} 都会被原样显示。
+  // 先把截断点退回完整的公式边界；若整段摘录几乎都是公式，宁可只显示标题也不吐出源码。
+  function openMathDelimiter(t) {
+    var i = 0, mode = '', start = -1;
+    while (i < t.length) {
+      if (t[i] === '\\') { i += 2; continue; }
+      if (t.slice(i, i + 2) === '$$') {
+        if (mode === '$$') { mode = ''; start = -1; }
+        else if (!mode) { mode = '$$'; start = i; }
+        i += 2; continue;
+      }
+      if (t[i] === '$') {
+        if (mode === '$') { mode = ''; start = -1; }
+        else if (!mode) { mode = '$'; start = i; }
+        i += 1; continue;
+      }
+      i += 1;
+    }
+    return start;
   }
-  if (dollars % 2 === 1) {
-    var open = cut.lastIndexOf('$');
-    if (open > 0) cut = cut.slice(0, open);
+  var open = openMathDelimiter(cut);
+  if (open >= 0) cut = open > 0 ? cut.slice(0, open) : '';
+  var begin = cut.lastIndexOf('\\begin{');
+  if (begin >= 0) {
+    var tail = cut.slice(begin);
+    var envEnd = tail.indexOf('\\end{');
+    if (envEnd < 0) cut = begin > 0 ? cut.slice(0, begin) : '';
   }
-  cut = cut.replace(/\\[A-Za-z]*$/, '').replace(/[\s，。；：、,.;:]+$/, '');
+  // 截断点落在命令/参数中间时，连同残缺命令一起去掉。
+  cut = cut.replace(/\\[A-Za-z]*(?:\{[^{}]*\})?$/, '').replace(/[\s，。；：、,.;:]+$/, '');
+  if (!cut) return '';
   return cut + '…';
 }
 
