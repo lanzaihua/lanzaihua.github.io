@@ -15,6 +15,7 @@ const LIMITS = { fcp: 8000, dcl: 12000, load: 16000, bankSwitch: 6000, heapMB: 7
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e && e.message || e)));
+  await page.route('**/api/state', (r) => r.abort());
   await page.goto(URL_BASE + '?v=' + Date.now() + '#/home', { waitUntil: 'load', timeout: 60000 });
   await page.waitForTimeout(500);
   const timing = await page.evaluate(function () {

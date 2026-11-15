@@ -40,6 +40,7 @@ function limitFor(width) {
         isMobile: width < 700,
         hasTouch: width < 700,
       });
+      await page.route('**/api/state', (r) => r.abort());
       await page.goto(BASE + '/#/final', { waitUntil: 'networkidle', timeout: 120000 });
       await page.waitForTimeout(350);
       if (!(await page.locator('.final-editor-head').count())) {

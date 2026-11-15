@@ -35,6 +35,8 @@ test('malformed static URL returns 400; sibling traversal returns 403; service s
     assert.equal(missing.status,404,'missing asset must be 404');
     assert.notEqual(missing.body,'TEST HOME','missing asset must not fall back to home');
     assert.match(missing.headers['x-content-type-options']||'',/nosniff/);
+    assert.match(missing.headers['content-security-policy']||'',/default-src 'self'/);
+    assert.match(missing.headers['content-security-policy']||'',/frame-ancestors 'none'/);
     const manifest=await request(port,'/manifest.webmanifest');
     assert.equal(manifest.status,200);
     assert.match(manifest.headers['content-type']||'',/application\/manifest\+json/);
@@ -42,6 +44,10 @@ test('malformed static URL returns 400; sibling traversal returns 403; service s
     assert.match(js.headers['content-type']||'',/text\/javascript/);
     const health=await request(port,'/api/health');
     assert.equal(health.status,200,'loopback health stays available without token');
+    const badHost=await request(port,'/api/state',{headers:{Host:'evil.example'}});
+    assert.equal(badHost.status,421,'unknown Host must not reach local state');
+    const simple=await request(port,'/api/solve',{method:'POST',headers:{'Content-Type':'text/plain','Content-Length':2},body:'{}'});
+    assert.equal(simple.status,415,'cross-site simple POST must be rejected before AI work');
   } finally {await stopChild(child);fs.rmSync(temporary,{recursive:true,force:true});}
 });
 
@@ -138,4 +144,16 @@ test('corrupt server state fails closed, is backed up, and cannot be overwritten
     assert.equal(fs.readFileSync(backup,'utf8'),corrupt);
     assert.equal(fs.readFileSync(path.join(temporary,'data','state.json'),'utf8'),corrupt,'original corrupt file must remain untouched');
   } finally {await stopChild(child);fs.rmSync(temporary,{recursive:true,force:true});}
+});
+
+test('server keeps fenced JSON parsing and sanitized upstream errors', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'server.js'), 'utf8');
+  assert.ok(!/json\)\?s\*/.test(src), 'fence regex must use \\s, not literal s');
+  assert.ok(src.includes("replace(/^```(?:json)?\\s*/i"), 'opening fence must accept whitespace');
+  assert.ok(src.includes("replace(/```\\s*$/i"), 'closing fence must accept whitespace');
+  assert.ok(!src.includes('body.slice(0, 500) + '), 'upstream body must only go to logs');
+  assert.ok(!src.includes('detail: cur.error'), 'state error must not expose raw exception');
+  const headers = fs.readFileSync(path.join(ROOT, '_headers'), 'utf8');
+  assert.match(headers, /Content-Security-Policy: default-src 'self'/);
+  assert.match(headers, /frame-ancestors 'none'/);
 });

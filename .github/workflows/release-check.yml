@@ -20,6 +20,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Rebuild pages artifact for live build id comparison
+        run: node build.js --pages
       - name: Verify release, tag, Pages build and live build id
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

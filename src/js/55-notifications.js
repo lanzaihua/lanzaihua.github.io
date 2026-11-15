@@ -436,7 +436,9 @@ function initNotifications() {
     notifAdd('欢迎使用四科错题本', '题目、模板、题库和笔记都保存在本机；设置里可以导出备份。', 'tip');
     state.notifWelcomed = true;
   }
-  if (state.notifVersion || state.notifBuildId || state.notifUpdateItems || state.notifReviewDate || state.notifWelcomed) markDirty();
+  // 欢迎语与“今天已提醒”只属于本机 UI 状态，不能把全新本机标记为有未同步改动。
+  if (state.notifVersion || state.notifBuildId || state.notifUpdateItems) markDirty();
+  else persistLocal();
   renderNotifications();
   renderNotificationBadge();
 }

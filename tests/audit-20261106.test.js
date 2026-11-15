@@ -102,3 +102,28 @@ test('inline code keeps LaTeX literal and blank underscores render', () => {
   const blank = ctx.renderMarkdown('$a_n=____$');
   assert.ok(!blank.includes('math-raw'), blank);
 });
+
+test('AI results must be complete before auto-save', () => {
+  const {ctx} = runtime();
+  ctx.aiState.wrongOn = false;
+  const good = {
+    question: '求 $x$。',
+    standardSolution: '解：$x=1$。',
+    detailedAnalysis: '移项。',
+    answer: '$x=1$',
+    variants: [{q: '求 $y$。', a: '$y=2$'}],
+    templateTitle: '一元一次方程',
+    templateNotes: {features: '一次', method: '移项', skeleton: '移项、合并', pitfalls: '符号'}
+  };
+  assert.deepEqual(Array.from(ctx.aiResultIssues(good)), []);
+  assert.equal(ctx.aiShouldAutoSave({result: good}), true);
+
+  const noQuestion = Object.assign({}, good, {question: ''});
+  assert.ok(ctx.aiResultIssues(noQuestion).includes('原题题干'));
+
+  const halfVariant = Object.assign({}, good, {variants: [{q: '求 $y$。', a: ''}]});
+  assert.ok(ctx.aiResultIssues(halfVariant).includes('变式题的题目与答案'));
+
+  assert.equal(ctx.aiShouldAutoSave({result: Object.assign({}, good, {needsClarification: true})}), false);
+  assert.equal(ctx.aiShouldAutoSave({result: noQuestion}), false);
+});

@@ -1,7 +1,12 @@
 node_modules/
 /source.zip
+/SHA256SUMS
+/导出/
 data/state.json
 *.tmp
 __pycache__/
 *.pyc
 .pytest_cache/
+dist/
+dist-pages/
+debug/

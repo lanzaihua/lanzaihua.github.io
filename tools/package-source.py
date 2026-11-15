@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parent.parent
 EXPORT_DIR = ROOT / "导出"
 STATIC_FILES = [
     "index.html", "404.html", "favicon.svg", "manifest.webmanifest",
-    "robots.txt", "sitemap.xml", "sw.js", "_headers",
+    "robots.txt", "sitemap.xml", "sw.js", "skills.js", "_headers", ".nojekyll",
 ]
 ROOT_FILES = [
     ".gitattributes", ".gitignore", ".nojekyll", "404.html", "AUDIT_REPORT.md", "AUDIT_REPORT_2026-11-14.md", "CHANGELOG.md", "WARM_ACADEMIC_3_REPORT.md", "WARM_ACADEMIC_3_1_REPORT.md", "WARM_ACADEMIC_3_DESIGN.md", "UI_UX_3_DESIGN.md",
@@ -89,12 +89,14 @@ def build_static(target: Path):
     missing = [name for name in STATIC_FILES if not (base / name).is_file()]
     if missing:
         raise FileNotFoundError("dist-pages 缺少文件: " + ", ".join(missing))
-    entries = [(base / name, name) for name in STATIC_FILES]
+    entries = [(base / name, name) for name in STATIC_FILES if (base / name).is_file()]
     bank = base / "data" / "bank.json"
     if not bank.is_file():
         raise FileNotFoundError("dist-pages 缺少外部题库: data/bank.json")
     # Pages 版首页只含界面，题库必须和 index.html 一起打包，否则解压后题库为空。
     entries.append((bank, "data/bank.json"))
+    for shard in sorted((base / "data").glob("bank-*.json")):
+        entries.append((shard, "data/" + shard.name))
     return write_zip(target, entries, compresslevel=6)
 
 

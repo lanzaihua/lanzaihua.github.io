@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.16-435abceb";</script>
+<script>window.__BUILD_ID__="2026.11.16-e96da543";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9573,6 +9573,21 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .kb-answer-body { max-height: none !important; overflow: visible !important; }
 }
 
+/* audit 2026-11: long entry titles must wrap inside the card */
+.entry-title, .entry-titlewrap, .entry-title * { overflow-wrap: anywhere !important; word-break: break-word !important; min-width: 0 !important; }
+
+/* audit 2026-11: mobile main is a flex/grid child; auto width + auto margins shrink-to-fit and clip notes */
+@media (max-width: 900px) {
+  .main { width: 100% !important; max-width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; align-self: stretch !important; }
+  .note-toolbar, .note-workspace, .note-board { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
+  .note-canvas { max-width: 100% !important; }
+}
+
+/* audit 2026-11: a wide formula plus punctuation must not force the viewport wider */
+.math-tail { max-width: 100%; }
+.math-tail:has(.is-wide) { white-space: normal; }
+@media (max-width: 480px) { .math-tail { white-space: normal; } }
+
 </style>
 </head>
 <body>
@@ -15121,6 +15136,19 @@ function setSyncState(mode, detail) {
   renderSyncStatus();
 }
 
+function syncToast(msg, meta) {
+  var hasMirror = typeof notifMirrorSuppressed !== 'undefined';
+  var prev = hasMirror ? notifMirrorSuppressed : false;
+  if (hasMirror) notifMirrorSuppressed = true;
+  try { toast(msg, meta); } finally { if (hasMirror) notifMirrorSuppressed = prev; }
+}
+
+function localHasContent() {
+  if (!state || !state.entries) return false;
+  if ((state.notes || []).length) return true;
+  return SUBJECTS.some(function (s) { return (state.entries[s.id] || []).length > 0; });
+}
+
 async function initSync() {
   if (PAGES) {
     setSyncState('local', 'GitHub Pages 静态版 · 本机保存');
@@ -15144,7 +15172,7 @@ async function initSync() {
     sync.available = true;
     if (healthInfo && healthInfo.stateCorrupted) {
       setSyncState('conflict', '本地数据文件损坏，已保留原始副本');
-      toast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
+      syncToast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
       if (typeof render === 'function') render();
       return;
     }
@@ -15159,7 +15187,7 @@ async function initSync() {
       try { stateError = await res.json(); } catch (e) {}
       if (stateError && stateError.code === 'STATE_CORRUPTED') {
         setSyncState('conflict', '本地数据文件损坏，已保留原始副本');
-        toast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
+        syncToast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
         if (typeof render === 'function') render();
         return;
       }
@@ -15169,10 +15197,19 @@ async function initSync() {
     var remote = await res.json();
     sync.baseRev = Number.isFinite(state.syncBaseRev) ? state.syncBaseRev : Number(remote.rev || 0);
     if (remote && remote.state && remote.state.entries) {
+      // 全新本机（没有错题、没有笔记）首次连接：先接收云端，绝不拿空状态覆盖远端。
+      if (isFreshLocal && !localHasContent()) {
+        subjectMigrationPending = false;
+        adoptRemote(remote, false, true);
+        sync.lastSync = remote.updatedAt;
+        setSyncState('online', remote.rev != null ? ('rev ' + remote.rev) : '');
+        syncToast('已载入云端最新版本');
+        return;
+      }
       var unsynced = state.syncDirty === true || (!isFreshLocal && state.syncBaseRev == null && state.updatedAt !== remote.state.updatedAt);
       if (unsynced && (!Number.isFinite(state.syncBaseRev) || Number(remote.rev || 0) !== state.syncBaseRev)) {
         setSyncState('conflict', '本机改动与云端版本需要合并');
-        toast('本机与云端都有数据，已保留本机内容；请先导出备份，再手动拉取并合并');
+        syncToast('本机与云端都有数据，已保留本机内容；请先导出备份，再手动拉取并合并');
         return;
       }
       if (unsynced) {
@@ -15184,10 +15221,10 @@ async function initSync() {
       var remoteTime = new Date(remote.state.updatedAt || 0).getTime();
       if (isFreshLocal) {
         adoptRemote(remote, false);
-        toast('已载入云端最新版本');
+        syncToast('已载入云端最新版本');
       } else if (remoteTime > localTime && (state.rev || 0) <= (remote.rev || 0)) {
         adoptRemote(remote, false);
-        toast('已载入云端最新版本');
+        syncToast('已载入云端最新版本');
       } else if (remoteTime === localTime && (remote.rev || 0) > (state.rev || 0)) {
         state.rev = remote.rev;
         persistLocal();
@@ -15207,7 +15244,7 @@ async function initSync() {
   renderSyncStatus();
 }
 
-function adoptRemote(remote, skipRender) {
+function adoptRemote(remote, skipRender, skipMigrationPush) {
   if (!remote || !remote.state) return;
   var st = migrateState(remote.state);
   st.rev = remote.rev || st.rev || 0;
@@ -15216,13 +15253,19 @@ function adoptRemote(remote, skipRender) {
   sync.baseRev = st.syncBaseRev;
   st.updatedAt = remote.updatedAt || st.updatedAt;
   var theme = state.prefs ? state.prefs.theme : 'auto';
+  var routeView = state.activeView;
+  var routeSubject = state.activeSubject;
   state = st;
+  if (routeView) {
+    state.activeView = routeView;
+    state.activeSubject = routeSubject;
+  }
   isFreshLocal = false;
   state.prefs = state.prefs || {};
   state.prefs.theme = theme;
   var migratedKeys = subjectMigrationPending;
   persistLocal();
-  if (migratedKeys) schedulePush(1000);
+  if (migratedKeys && !skipMigrationPush) schedulePush(1000);
   applyTheme();
   if (!skipRender && typeof render === 'function') render();
 }
@@ -15236,7 +15279,7 @@ function schedulePush(delay) {
 
 async function pushSync(manual) {
   if (!sync.available) {
-    if (manual) toast('当前没有连接同步服务，数据只在本机');
+    if (manual) syncToast('当前没有连接同步服务，数据只在本机');
     return;
   }
   if (sync.busy) { sync.pending = true; return; }
@@ -15256,24 +15299,24 @@ async function pushSync(manual) {
         if (res.status === 409) {
           state.syncDirty = true;
           setSyncState('conflict', '云端与本机存在冲突');
-          toast('同步冲突：已保留本机改动。请先导出本机备份，再拉取并合并云端数据');
+          syncToast('同步冲突：已保留本机改动。请先导出本机备份，再拉取并合并云端数据');
           return;
         }
         if (res.status === 401) {
           setSyncState('locked', '需要访问口令');
-          toast('同步服务需要访问口令，请在设置里填写');
+          syncToast('同步服务需要访问口令，请在设置里填写');
           return;
         }
         if (res.status === 413) {
           setSyncState('error', '同步数据过大');
-          toast('同步数据超过服务端上限：请删除笔记里的图片或导出备份后精简，再重试');
+          syncToast('同步数据超过服务端上限：请删除笔记里的图片或导出备份后精简，再重试');
           return;
         }
         if (res.status >= 400 && res.status < 500) {
           var detail = '';
           try { var err = await res.json(); detail = err && err.error ? String(err.error) : ''; } catch (e2) {}
           setSyncState('error', '同步被拒绝');
-          toast('同步被拒绝（HTTP ' + res.status + '）' + (detail ? '：' + detail : ''));
+          syncToast('同步被拒绝（HTTP ' + res.status + '）' + (detail ? '：' + detail : ''));
           return;
         }
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -15286,7 +15329,7 @@ async function pushSync(manual) {
         persistLocal();
         sync.lastSync = data.updatedAt;
         setSyncState('online', 'rev ' + data.rev);
-        if (manual) toast('已同步到云端 · rev ' + data.rev);
+        if (manual) syncToast('已同步到云端 · rev ' + data.rev);
         return;
       } catch (e) {
         lastErr = e;
@@ -15296,7 +15339,7 @@ async function pushSync(manual) {
     throw lastErr || new Error('push failed');
   } catch (e) {
     setSyncState('offline', '同步失败，稍后重试');
-    if (manual) toast('同步失败：' + (e.message || e));
+    if (manual) syncToast('同步失败：' + (e.message || e));
   } finally {
     sync.busy = false;
     renderSyncStatus();
@@ -15306,7 +15349,7 @@ async function pushSync(manual) {
 
 async function pullSync(manual) {
   if (!sync.available) {
-    if (manual) toast('未连接同步服务');
+    if (manual) syncToast('未连接同步服务');
     return;
   }
   try {
@@ -15314,13 +15357,13 @@ async function pullSync(manual) {
     if (res.status === 401) { setSyncState('locked', '需要访问口令'); return; }
     if (!res.ok) throw new Error('pull failed');
     var remote = await res.json();
-    if (!remote.state || !remote.state.entries) { if (manual) toast('云端还没有数据'); return; }
+    if (!remote.state || !remote.state.entries) { if (manual) syncToast('云端还没有数据'); return; }
     if (state.syncDirty || sync.mode === 'conflict') {
       if (manual && typeof confirmDialog === 'function') {
         confirmDialog('用云端数据替换本机内容？', '本机存在未同步改动。请先导出备份；继续将载入云端数据，之后可以再合并刚才的备份。', function () {
           adoptRemote(remote, false);
           setSyncState('online', 'rev ' + remote.rev);
-          toast('已载入云端数据，可导入本机备份并合并');
+          syncToast('已载入云端数据，可导入本机备份并合并');
         });
       } else setSyncState('conflict', '本机改动尚未同步');
       return;
@@ -15329,15 +15372,15 @@ async function pullSync(manual) {
     var remoteTime = new Date(remote.state.updatedAt || 0).getTime();
     if ((isFreshLocal && !(state.rev || 0)) || remoteTime > localTime) {
       adoptRemote(remote, false);
-      toast('已拉取云端最新版本');
+      syncToast('已拉取云端最新版本');
     } else if (manual) {
-      toast('云端没有比本地更新的版本');
+      syncToast('云端没有比本地更新的版本');
     }
     sync.lastSync = remote.updatedAt;
     setSyncState('online', 'rev ' + remote.rev);
   } catch (e) {
     setSyncState('offline', '拉取失败');
-    if (manual) toast('拉取失败');
+    if (manual) syncToast('拉取失败');
   }
 }
 
@@ -18629,6 +18672,7 @@ function gotoTemplate(templateId) {
 /* =========================================================
    40-editor — 编辑器、设置、导入导出
    ========================================================= */
+var IMPORT_MAX_CHARS = 512 * 1024 * 1024;
 function errorTypesFor(subjectId) {
   if (subjectId === 'xijing') return ['概念', '计算', '方法选择', '条件漏用', '表述'];
   if (subjectId === 'jieji') return ['概念', '公式', '计算', '思路', '审题'];
@@ -19345,7 +19389,7 @@ function importStateFile(file) {
 function openImportPayload(text, fileName) {
   try {
     var raw = String(text);
-    if (raw.length > 30 * 1024 * 1024) throw new Error('备份文件超过 30MB，请先拆分或重新导出');
+    if (raw.length > IMPORT_MAX_CHARS) throw new Error('备份文件超过 ' + Math.round(IMPORT_MAX_CHARS / 1024 / 1024) + 'MB；本机容量仍可继续写入，但单次导入需要先拆分。');
     var parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('备份内容不是对象');
     var st = parsed.state ? parsed.state : parsed;
@@ -21827,10 +21871,12 @@ function renderAiError(err) {
 function aiResultIssues(r) {
   r = r || {};
   var issues = [];
+  if (!String(r.question || '').trim()) issues.push('原题题干');
   if (!String(r.standardSolution || '').trim()) issues.push('考试标准解答');
   if (!String(r.detailedAnalysis || '').trim()) issues.push('详细解析');
   if (!String(r.answer || '').trim()) issues.push('答案');
   if (!Array.isArray(r.variants) || !r.variants.length) issues.push('变式题');
+  else if (r.variants.some(function (v) { return !v || !String(v.q || '').trim() || !String(v.a || '').trim(); })) issues.push('变式题的题目与答案');
   if (!String(r.templateTitle || '').trim()) issues.push('同类型模板名称');
   var n = r.templateNotes || {};
   if (!String(n.features || '').trim() || !String(n.method || '').trim() || !String(n.skeleton || '').trim() || !String(n.pitfalls || '').trim()) {
@@ -21870,10 +21916,16 @@ function aiAutoSaveResult() {
   return e;
 }
 
+function aiShouldAutoSave(data) {
+  if (!data || !data.result) return false;
+  if (data.result.needsClarification) return false;
+  return aiResultIssues(data.result).length === 0;
+}
+
 function aiHandleResult(data, elapsedMs) {
   aiState.result = data;
   var issues = aiResultIssues(data && data.result);
-  if (!issues.length) aiAutoSaveResult();
+  if (aiShouldAutoSave(data)) aiAutoSaveResult();
   renderAiResult(data, elapsedMs, issues);
 }
 
@@ -21890,7 +21942,7 @@ function renderAiResult(data, elapsedMs, issues) {
   issues = issues || [];
   var warn = '';
   if (r.needsClarification) {
-    warn += '<div class="ai-warning"><b>题目信息可能不全：</b>' + esc(r.clarification || '模型认为题干或图片不够清楚。') + '。建议对照原题补全后再编辑。</div>';
+    warn += '<div class="ai-warning"><b>题目信息可能不全：</b>' + esc(r.clarification || '模型认为题干或图片不够清楚。') + '。本题暂未自动入库；请对照原题补全后再点「仍然入库」。</div>';
   }
   if (issues.length) {
     warn += '<div class="ai-warning"><b>缺少必需内容：</b>' + esc(issues.join('、')) + '。本题暂未自动入库；请重新生成，或点「仍然入库」后手动补全。</div>';
@@ -23238,9 +23290,25 @@ var UPDATE_LOG = [{
   "date": "2026-11-15",
   "title": "排版收口与稳定性加固",
   "historyTitle": "排版收口与稳定性加固",
-  "summary": "本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，113 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.16 Release 发布。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。113 项回归、严格 QA、站点一致性、8 视口、公式、无障碍、性能与拆包 QA 通过。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，操作按钮在手机改为三列且不裁切；390 / 820 / 1440 实测无大段空白、无文字截断。同日再修题库筛选栏：桌面从 inline 流改为 Grid + 可换行字段区，1301px 起四列、其余 2–3 列，手机保持两列折叠；新增 qa:filters 在 22 个宽度断言间距、重叠、越界与文字裁切，113 项回归。本块 33 项 / 33 组。",
-  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限；README 只展开最新一块，旧记录收进 details；GitHub Releases 同日只保留一条，不再加小版本后缀；同一天通知原地替换。四科 9651；又补备份键名、编号定位、复习确认、存储上限、同步重试、试卷导出与题库校准，113 项测试。另修「我的模拟卷」编辑卡标题截断与大段空白，并修题库筛选栏控件拥挤。本块 25 条要点。",
+  "summary": "本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，119 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.16 Release 发布。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。119 项回归、严格 QA、站点一致性、8 视口、公式、无障碍、性能与拆包 QA 通过。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，操作按钮在手机改为三列且不裁切；390 / 820 / 1440 实测无大段空白、无文字截断。同日再修题库筛选栏：桌面从 inline 流改为 Grid + 可换行字段区，1301px 起四列、其余 2–3 列，手机保持两列折叠；新增 qa:filters 在 22 个宽度断言间距、重叠、越界与文字裁切，119 项回归。本块 37 项 / 37 组。",
+  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限；README 只展开最新一块，旧记录收进 details；GitHub Releases 同日只保留一条，不再加小版本后缀；同一天通知原地替换。四科 9651；又补备份键名、编号定位、复习确认、存储上限、同步重试、试卷导出与题库校准，119 项测试。另修「我的模拟卷」编辑卡标题截断与大段空白，并修题库筛选栏控件拥挤。本块 37 条要点。",
   "notifyItems": [
+    {
+      "group": "同步首启",
+      "text": "全新本机首次连上云端时先采用远端状态，绝不再用空 entries 覆盖云端；欢迎通知与今天已提醒只写本机，冲突/失败提示不再反向标脏推送。新增 qa:sync 临时服务预置一条云端题，全新浏览器打开后断言 rev 不变、条目仍为 1、零 PUT。"
+    },
+    {
+      "group": "长标题与笔记",
+      "text": "错题标题任意位置可换行，160 个连续字母也不再伸出卡片；手机/平板 .main 改 100% 拉伸，去掉 flex 子项的 shrink-to-fit，笔记工具栏、画布与翻页回到视口内，390/768 不再右侧不可达。"
+    },
+    {
+      "group": "发布完整性",
+      "text": "source.zip 改为 git archive HEAD 全部 tracked 源码，静态包补 skills.js、_headers 与全部分片；release-check 对每个资产核对 SHA256SUMS，Pages 查询失败直接失败；CI 删除旧 Release hydration，新增产物 git diff 与 qa:pages。"
+    },
+    {
+      "group": "数据卫生",
+      "text": "新增 qa:latex 扫描双反斜杠命令、集合花括号丢失、重复选项与缺 correct；修 18 处 LaTeX 与 107 条缺失 correct，基线锁记录四科数量与题干摘要，题量或题干变化必须显式更新。"
+    },
     {
       "group": "公式基线",
       "text": "修复全库公式：跨行 $$、矩阵行分隔符、数学小于号与竖线不再被误判；知识点摘录不截断公式，模拟考标题日期不再断行。新增 9651 题渲染审计与知识点/模拟考公式门禁。"
@@ -23347,6 +23415,22 @@ var UPDATE_LOG = [{
     }
   ],
   "items": [
+    {
+      "group": "同步首启",
+      "text": "全新本机首次连上云端时先采用远端状态，绝不再用空 entries 覆盖云端；欢迎通知与今天已提醒只写本机，冲突/失败提示不再反向标脏推送。新增 qa:sync 临时服务预置一条云端题，全新浏览器打开后断言 rev 不变、条目仍为 1、零 PUT。"
+    },
+    {
+      "group": "长标题与笔记",
+      "text": "错题标题任意位置可换行，160 个连续字母也不再伸出卡片；手机/平板 .main 改 100% 拉伸，去掉 flex 子项的 shrink-to-fit，笔记工具栏、画布与翻页回到视口内，390/768 不再右侧不可达。"
+    },
+    {
+      "group": "发布完整性",
+      "text": "source.zip 改为 git archive HEAD 全部 tracked 源码，静态包补 skills.js、_headers 与全部分片；release-check 对每个资产核对 SHA256SUMS，Pages 查询失败直接失败；CI 删除旧 Release hydration，新增产物 git diff 与 qa:pages。"
+    },
+    {
+      "group": "数据卫生",
+      "text": "新增 qa:latex 扫描双反斜杠命令、集合花括号丢失、重复选项与缺 correct；修 18 处 LaTeX 与 107 条缺失 correct，基线锁记录四科数量与题干摘要，题量或题干变化必须显式更新。"
+    },
     {
       "group": "公式基线",
       "text": "全库公式管线修复：矩阵行分隔符后接 n/r 不再被误当换行，跨行 $$ 不再拆成行内公式，HTML 标签正则不再吞掉数学小于号，A_k 两侧竖线不再误判表格；知识点摘录遇到公式中间会回退，笔记摘要不再露 $ 与 \frac，模拟考标题日期不再断成 2026- / 11-16。知识点教材表在手机上堆叠成带列名的卡片，四列不再只露前三列；新增 9651 题全库渲染审计 qa:render，qa:formulas 扩到错题详情、题库、模拟卷、知识点表格与模拟考共 12 个面，桌面与 390 宽均 0 残留。"
@@ -23486,7 +23570,7 @@ var UPDATE_LOG = [{
   "title": "健壮性修复与发布",
   "historyTitle": "健壮性修复与发布",
   "summary": "本轮补存储、路由、缓存、错误边界与同步损坏保护：localStorage 不可写时改用内存副本并保留损坏原文备份，配额失败不再丢当前改动；直接访问 /gaodai 这类深链由 404 页还原到对应 hash；Service Worker 升到 v2，只缓存完整 200 响应、跳过 /api 与 Range；新增全局错误卡片、路由标题焦点与单一缓存 meta；服务端数据文件损坏时改为失败关闭，前端停止覆盖本地数据并提示保留原始副本。同时完成暖白学术界面精修：首页压缩到 1440×1000 首屏露出四科入口，错题空态改成三步引导，规范页加入字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；八视口门禁加入深链恢复、标题焦点与 44px 触控。四科 9163，86 项回归、严格 QA、站点一致性、8 视口真实交互、公式、无障碍与性能门禁通过；随后又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14 Release 发布。本块 25 项 / 25 组。",
-  "notifySummary": "本轮修存储、深链、缓存、错误边界和同步损坏保护：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控；服务端数据文件损坏时失败关闭，前端不再覆盖本地数据。同时完成暖白学术界面精修：首页首屏露出四科入口，错题空态改成三步引导，规范页加字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；题库 9163，86 项测试、8 视口、公式、无障碍与性能门禁通过；随后又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14 Release 发布。本块 25 条要点。",
+  "notifySummary": "本轮修存储、深链、缓存、错误边界和同步损坏保护：本机存储写不进去时改用内存副本并单独备份损坏原文，配额失败也不丢当前改动；直接打开 /gaodai 这类地址会由 404 页还原到对应页面；缓存升到 v2，只存完整 200、跳过 /api 与 Range；补全局错误卡片、路由标题焦点和 44px 触控；服务端数据文件损坏时失败关闭，前端不再覆盖本地数据。同时完成暖白学术界面精修：首页首屏露出四科入口，错题空态改成三步引导，规范页加字段速览与目录，题库补当前范围条，期末两个入口拆成先后阶段，统计中心补真实数据结论；题库 9163，86 项测试、8 视口、公式、无障碍与性能门禁通过；随后又补了 Windows 测试退出、1112px 触控、知识点面板键盘开合与 1440×1000 首屏间距。本块随 GitHub Pages 与 v2026.11.14 Release 发布。本块 37 条要点。",
   "notifyItems": [
     { "group": "存储降级", "text": "本机存储不可写或配额已满时，改动先落在内存副本并提示导出备份；后续写入恢复后自动回到 localStorage，不再出现「改了但没保存」却没有说明。" },
     { "group": "损坏备份", "text": "启动时读到损坏 JSON 会把原文另存为 key-corrupted-backup，保留原始存储不动，并提示先导出再恢复或清空。" },
@@ -32241,7 +32325,9 @@ function initNotifications() {
     notifAdd('欢迎使用四科错题本', '题目、模板、题库和笔记都保存在本机；设置里可以导出备份。', 'tip');
     state.notifWelcomed = true;
   }
-  if (state.notifVersion || state.notifBuildId || state.notifUpdateItems || state.notifReviewDate || state.notifWelcomed) markDirty();
+  // 欢迎语与“今天已提醒”只属于本机 UI 状态，不能把全新本机标记为有未同步改动。
+  if (state.notifVersion || state.notifBuildId || state.notifUpdateItems) markDirty();
+  else persistLocal();
   renderNotifications();
   renderNotificationBadge();
 }

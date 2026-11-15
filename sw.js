@@ -23,9 +23,14 @@ self.addEventListener('fetch', function (event) {
   if (url.pathname.indexOf('/api/') === 0) return;
   if (url.pathname.slice(-6) === '/sw.js') return;
   event.respondWith(fetch(req).then(function (res) {
-    if (res && res.status === 200 && !req.headers.get('range')) {
-      const copy = res.clone();
-      caches.open(CACHE).then(function (cache) { cache.put(req, copy); }).catch(function () {});
+    if (res && res.status === 200 && !req.headers.get('range') && req.mode !== 'no-cors') {
+      const type = String(res.headers.get('content-type') || '');
+      const cacheable = /^(text\/html|text\/css|text\/javascript|application\/javascript|application\/json|image\/|font\/)/i.test(type);
+      if (cacheable) {
+        const copy = res.clone();
+        const key = new Request(url.origin + url.pathname);
+        caches.open(CACHE).then(function (cache) { cache.put(key, copy); }).catch(function () {});
+      }
     }
     return res;
   }).catch(function () {

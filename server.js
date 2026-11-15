@@ -54,7 +54,8 @@ function securityHeaders(extra) {
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'no-referrer',
     'X-Frame-Options': 'DENY',
-    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' http: https:; font-src 'self' data:; media-src 'self' blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
   }, extra || {});
 }
 
@@ -106,6 +107,31 @@ function writeState(rev, state) {
 function authOk(req) {
   if (!TOKEN) return true;
   return req.headers['x-notebook-token'] === TOKEN;
+}
+
+function allowedHostNames() {
+  const names = new Set(['localhost', '127.0.0.1', '::1', '[::1]', os.hostname().toLowerCase()]);
+  if (HOST && HOST !== '0.0.0.0' && HOST !== '::') names.add(String(HOST).toLowerCase());
+  const nets = os.networkInterfaces();
+  Object.keys(nets).forEach(function (name) {
+    (nets[name] || []).forEach(function (info) {
+      if (info && info.address) names.add(String(info.address).toLowerCase());
+    });
+  });
+  return names;
+}
+
+function hostAllowed(req) {
+  const raw = String(req.headers.host || '');
+  if (!raw) return false;
+  let hostname;
+  try { hostname = new URL('http://' + raw).hostname; }
+  catch (e) { return false; }
+  return allowedHostNames().has(String(hostname).toLowerCase());
+}
+
+function jsonRequest(req) {
+  return /^application\/json\b/i.test(String(req.headers['content-type'] || ''));
 }
 
 function serveStatic(req, res) {
@@ -309,7 +335,7 @@ function repairJsonText(src) {
 
 function extractJson(text) {
   let s = String(text || '').trim();
-  s = s.replace(/^```(?:json)?s*/i, '').replace(/```s*$/i, '').trim();
+  s = s.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
   const a = s.indexOf('{');
   const b = s.lastIndexOf('}');
   if (a >= 0 && b > a) s = s.slice(a, b + 1);
@@ -364,15 +390,17 @@ function normalizeResult(raw) {
 }
 
 function aiUpstreamError(res, raw) {
-  let msg = '模型服务返回 ' + res.status;
-  try {
-    const j = JSON.parse(raw);
-    if (j.error && j.error.message) msg += '：' + j.error.message;
-    else if (j.message) msg += '：' + j.message;
-  } catch (e) { /* ignore */ }
+  const body = String(raw || '');
+  let msg = '模型服务返回 ' + res.status + '，请检查接口地址、API Key 与模型名';
   const err = new Error(msg);
   err.code = (res.status === 401 || res.status === 403) ? 'UPSTREAM_AUTH' : (res.status === 429 ? 'RATE_LIMIT' : 'UPSTREAM_ERROR');
-  if (err.code === 'UPSTREAM_ERROR' && /model[\s_-]*(not[\s_-]*found|does not exist|not available|not supported|unsupported|invalid)|invalid[\s_-]*model|unknown model/i.test(String(raw || '') + ' ' + err.message)) err.code = 'MODEL_UNAVAILABLE';
+  if (err.code === 'UPSTREAM_ERROR' && /model[\s_-]*(not[\s_-]*found|does not exist|not available|not supported|unsupported|invalid)|invalid[\s_-]*model|unknown model/i.test(body)) {
+    err.code = 'MODEL_UNAVAILABLE';
+    err.message = '当前模型不可用，请检查模型名或换用备用模型';
+  }
+  if (err.code === 'UPSTREAM_AUTH') err.message = '模型服务拒绝认证，请检查 API Key 与接口地址';
+  if (err.code === 'RATE_LIMIT') err.message = '模型服务限流，请稍后再试';
+  console.error('[ai] upstream status=' + res.status + ' body=' + body.slice(0, 500));
   err.status = res.status;
   return err;
 }
@@ -661,6 +689,9 @@ async function handleOcr(req, res) {
 
 const server = http.createServer(function (req, res) {
   const url = (req.url || '/').split('?')[0];
+  if (!hostAllowed(req)) {
+    return json(res, 421, { error: 'invalid host', code: 'BAD_HOST' });
+  }
   if (url.indexOf('/api/') === 0 && !authOk(req)) {
     return json(res, 401, { error: 'unauthorized' });
   }
@@ -670,7 +701,7 @@ const server = http.createServer(function (req, res) {
     return json(res, 200, {
       ok: true, rev: cur.rev, updatedAt: cur.updatedAt, token: !!TOKEN, lan: LAN,
       stateCorrupted: !!cur.corrupted,
-      stateBackup: cur.backupPath || null,
+      stateBackup: cur.backupPath ? path.basename(cur.backupPath) : null,
       ai: (function () { var c = envAiConfig(); return { configured: !!c.apiKey, model: c.model, protocol: c.protocol }; })()
     });
   }
@@ -681,10 +712,12 @@ const server = http.createServer(function (req, res) {
   }
 
   if (url === '/api/solve' && req.method === 'POST') {
+    if (!jsonRequest(req)) return json(res, 415, { error: 'application/json required', code: 'UNSUPPORTED_MEDIA_TYPE' });
     return handleSolve(req, res);
   }
 
   if (url === '/api/ocr' && req.method === 'POST') {
+    if (!jsonRequest(req)) return json(res, 415, { error: 'application/json required', code: 'UNSUPPORTED_MEDIA_TYPE' });
     return handleOcr(req, res);
   }
 
@@ -694,8 +727,7 @@ const server = http.createServer(function (req, res) {
       return json(res, 500, {
         error: '本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存',
         code: 'STATE_CORRUPTED',
-        backup: cur.backupPath || null,
-        detail: cur.error
+        backup: cur.backupPath ? path.basename(cur.backupPath) : null
       });
     }
     return json(res, 200, cur);
@@ -713,7 +745,7 @@ const server = http.createServer(function (req, res) {
         return json(res, 409, {
           error: '本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存',
           code: 'STATE_CORRUPTED',
-          backup: cur.backupPath || null
+          backup: cur.backupPath ? path.basename(cur.backupPath) : null
         });
       }
       const baseRev = Number(payload.baseRev || 0);
