@@ -53,6 +53,7 @@ for(const f of files){
     if(total%1000===0) process.stderr.write('.'+total+'\n');
   }
 }
-fs.writeFileSync('debug/bank-render-audit.json',JSON.stringify({total,byField,failures},null,2));
+fs.mkdirSync(path.join(ROOT,'debug'),{recursive:true});
+fs.writeFileSync(path.join(ROOT,'debug/bank-render-audit.json'),JSON.stringify({total,byField,failures},null,2));
 console.log(JSON.stringify({total,count:failures.length,byField,first:failures.slice(0,20)},null,2));
 process.exitCode=failures.length?1:0;
