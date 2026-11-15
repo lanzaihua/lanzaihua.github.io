@@ -47,7 +47,7 @@ body = '''四科错题本 v2026.11.15 · 题库扩充、本机存储扩容与编
 ## 验证
 - 回归测试 112 项通过；严格题库 QA（9651 唯一）；站点一致性 2046/3523/1199/2883。
 - 8 视口真实浏览器 failures 0；qa:paper 18 个宽度、qa:filters 22 个宽度均 0 failures；公式、无障碍、性能、拆包门禁通过。
-- Pages 构建 81b8f7d，线上 BUILD_ID 2026.11.15-ef0f7981。
+- Pages 构建由本次 main 提交触发，线上 BUILD_ID 2026.11.15-ef0f7981。
 
 完整记录见仓库 docs/VERIFICATION.md 与 docs/RELEASE.md。
 '''
