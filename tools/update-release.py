@@ -22,7 +22,7 @@ def api(path, method='GET', data=None, ctype='application/json'):
     with urllib.request.urlopen(req, timeout=300) as r:
         raw = r.read()
         return json.loads(raw.decode('utf-8')) if raw else {}
-body = '''四科错题本 v2026.11.16 · 公式渲染、知识点表格与跨端对齐修复
+body = r'''四科错题本 v2026.11.16 · 公式渲染、知识点表格与跨端对齐修复
 
 ## 本轮更新
 - 公式渲染根因修复：矩阵行分隔符 \ 后接变量 n（如 \n-1）不再被误判成转义换行；跨行 $$ 块先整体保护，避免中间行被补 $ 切成三段；HTML 标签正则收窄，数学里的 < 不再吞掉后续公式；表格保护改为只跳过真正以 | 收尾的整行，|A_k| 这类绝对值恢复成公式。
