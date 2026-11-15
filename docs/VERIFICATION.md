@@ -25,7 +25,7 @@
 - 严格题库 QA：problems 0、warnings 0；分类 10 类、章节 55、bucket 825。
 - 站点一致性：四科 2046 / 3523 / 1199 / 2883，更新记录 24 天。
 - 仓库语言门禁、Python 题库审计均通过。
-- 回归测试 109 项（新增存储 6 项、模拟卷编辑卡 3 项、DOCX 关系符与 deg 断言）。
+- 回归测试 112 项（新增存储 6 项、模拟卷编辑卡 3 项、筛选栏 3 项、DOCX 关系符与 deg 断言）。
 
 修复的真实数据缺陷：
 
@@ -81,7 +81,7 @@
 ## 9. 复现命令
 
 ```bash
-npm test                      # 109 项回归
+npm test                      # 112 项回归
 npm run check                 # 严格 QA + 站点一致性 + 语言门禁
 node build.js && node build.js --pages
 npm run prepare:pages && npm run verify:pages
@@ -90,5 +90,7 @@ npm run qa:formulas
 npm run qa:a11y
 npm run qa:perf
 PAGE_URL=http://127.0.0.1:4173/ node tools/qa-responsive.js
+PAGE_URL=http://127.0.0.1:4173/ node tools/qa-paper-editor.js
+PAGE_URL=http://127.0.0.1:4173/ node tools/qa-bank-filters.js
 PAGE_URL=http://127.0.0.1:4173/ node tools/qa-paper-editor.js   # 18 宽度模拟卷编辑卡
 ```

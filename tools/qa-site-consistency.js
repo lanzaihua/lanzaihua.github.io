@@ -170,6 +170,19 @@ const changelogMd = read(path.join(ROOT, 'CHANGELOG.md'));
 });
 add(!/releases\/download\/v\d{4}\.\d{2}\.\d{2}\/source\.zip/.test(readme), 'README 源码链接必须指向日期 Release，不再使用点分版本');
 
+// CHANGELOG.md 的最新一块必须与网页更新记录同步，避免同一日期在两处出现不同计数与条目。
+const clFirst = changelogMd.match(/^## ([^\n]+)\n\n(\d{4}-\d{2}-\d{2})\n\n\*\*(\d+) 项 · (\d+) 组\*\*/m);
+add(!clFirst, 'CHANGELOG.md 缺少最新更新块');
+if (clFirst) {
+  const clStart = changelogMd.indexOf(clFirst[0]);
+  const clEnd = changelogMd.indexOf('\n## ', clStart + clFirst[0].length);
+  const clBody = changelogMd.slice(clStart, clEnd < 0 ? undefined : clEnd);
+  const clItems = (clBody.match(/^- \*\*/gm) || []).length;
+  const latestGroups = new Set((latest.items || []).map((it) => it.group)).size;
+  add(clFirst[1].trim() !== latest.title || clFirst[2] !== latest.date, 'CHANGELOG.md 最新块标题/日期与更新记录不一致');
+  add(Number(clFirst[3]) !== (latest.items || []).length || Number(clFirst[4]) !== latestGroups || clItems !== (latest.items || []).length, 'CHANGELOG.md 最新块计数/条目与更新记录不一致');
+}
+
 // README 只展开最新一块，11-14 及更早全部收进 details。
 const updateStart = readme.indexOf('## 更新记录');
 const updateDetails = updateStart >= 0 ? readme.indexOf('<details>', updateStart) : -1;

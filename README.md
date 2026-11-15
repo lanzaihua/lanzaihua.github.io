@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.15-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.15--a0366581-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.15--ef0f7981-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -17,7 +17,7 @@
 <a href="#屏幕适配"><img src="https://img.shields.io/badge/DOCS-3%20DEVICES-475569?style=for-the-badge&labelColor=334155" alt="Three device classes"></a>
 </p>
 
-<p><b>联系</b> <a href="mailto:3554833568@qq.com">3554833568@qq.com</a> · <b>118</b> 解答模板 · <b>9163</b> 道题库 · <b>4</b> 科 · <b>内置中文</b> · <b>0</b> 注册</p>
+<p><b>联系</b> <a href="mailto:3554833568@qq.com">3554833568@qq.com</a> · <b>118</b> 解答模板 · <b>9651</b> 道题库 · <b>4</b> 科 · <b>内置中文</b> · <b>0</b> 注册</p>
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
@@ -63,7 +63,7 @@
 - 118 张模板按科目和章节组织，顶部章节目录可直接跳转。
 - 模板固定四段：识别特征 / 首选方法 / 步骤骨架 / 易错点。
 - 8350 道考研同型题 + 885 道教材课后习题 + 416 道习题集题，可以展开查看标准解答、详细解析、答案、解题要点和易错点。
-- 模板、题库、错题条目都支持复制 Markdown 源码；题库由 8350 道考研同型题、885 道教材课后题与 416 道习题集题组成。其中 8250 道为按每章 1–5★ 各 10 客观 + 10 填空 + 10 主观配置的基础题，100 道为西经配套题；590 道教材课后与 223 道习题集为补充，不占该配额。
+- 模板、题库、错题条目都支持复制 Markdown 源码；题库由 8350 道考研同型题、885 道教材课后题与 416 道习题集题组成。其中 8250 道为按每章 1–5★ 各 10 客观 + 10 填空 + 10 主观配置的基础题，100 道为西经配套题；885 道教材课后与 416 道习题集为补充，不占该配额。
 
 ### 统一笔记库
 
@@ -151,9 +151,9 @@
 
 ### 2026-11-15 · 排版收口与稳定性加固
 
-**31 项 · 31 组**
+**32 项 · 32 组**
 
-本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，109 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，手机操作按钮三列、窄桌面不再被挤压，390 / 820 / 1440 实测无大段空白与文字截断，并补 18 个宽度的真浏览器布局门禁。本块随 GitHub Pages 与 v2026.11.15 Release 发布。31 项 / 31 组。
+本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，112 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，手机操作按钮三列、窄桌面不再被挤压，390 / 820 / 1440 实测无大段空白与文字截断，并补 18 个宽度的真浏览器布局门禁。同日再修题库筛选栏：桌面从 inline 流改为 Grid + 可换行字段区，1301px 起四列、其余 2–3 列，手机保持两列折叠；新增 qa:filters 在 22 个宽度断言间距、重叠、越界与文字裁切。112 项回归。本块随 GitHub Pages 与 v2026.11.15 Release 发布。32 项 / 32 组。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -164,28 +164,29 @@
 | **导出复核** | 期末模拟卷 DOCX 经本机 Word 与 WPS 分别导出 PDF，逐页核对 5 页、1900 余字；修 \mid 显示成 mid、答案「B．B．」重复与「解：」后空行，回归测试锁定这三类导出缺陷。 |
 | **发布校验** | 新增 verify:release 与 Release 发布时自动运行的 release-check：工作区干净、HEAD 与 origin/main 一致、当天 tag、Release 资产、Pages 部署提交、线上 BUILD_ID 全部对齐；docs/RELEASE.md 固化十步清单，避免本地领先或漏推 tag。 |
 | **模拟卷编辑** | 修「我的模拟卷」编辑卡：头部改为显式 CSS Grid（标题 \| 时长 \| 计数 \| 操作），手机标题整行、时长与题数一行、六个按钮 auto-fit 网格；按钮 height:auto，不再用固定高度裁字。18 个宽度（320–1440）真浏览器门禁断言标题不截断、按钮文字不越界、标签间距 ≤40px、头部高度不超上限，CI 每次构建自动跑 qa:paper；同时删除 58/60 两份重复的旧编辑卡实现。 |
+| **筛选留白** | 题库筛选栏在桌面原本是 inline 流，控件间只剩空白字符，1097px 笔记本宽度下挤成一排；改为桌面 Grid + 可换行字段区（1301px 起四列、其余 2–3 列），手机保持两列折叠，清空与题数不再贴边。新增 qa:filters 在 22 个宽度（320–1920）断言间距 ≥8px、互不重叠、不越界、文字不裁，CI 与 qa:paper 同批执行。 |
 | **卡片留白** | 设置页每个分区是带描边的圆角卡片，但标题和行内容离左边框只有 1px；改为 18px 内边距，手机 16/14px，相邻分区留 10px，行内容与标题重新对齐。 |
 | **期末行距** | 复习计划行、复习材料行、我的模拟卷说明、模拟考入口、上次模拟考卡片统一 20px 左右内边距；长标题与按钮不再顶到卡片边缘。 |
 | **复习名称** | 每日计划不再使用 FX-AI-mvz8... 或 GA-B0001 这类内部编号，改为题目标题（最多 14 字后截断）；空标题回退为「题库题 / 错题」，长计划文本允许两行。 |
 | **材料序号** | 复习材料左侧改 01/02 序号，标题最多两行并带 title 提示；原始 ID 不再逐字换行挤压正文，类型与移除按钮仍保持右对齐。 |
 | **AI 文案** | 「AI 出题开考」按 aiConfigReady() 显示「按章节生成新题 · 已配置 AI」或「需配置 API」，不再出现设置页已配置、期末页仍说需配置的矛盾。 |
 | **规范编号** | 规范页题库示例由 GA-001 改为 GA-B0001（高代）、MA-0001（数分），与题库实际编号一致，不再把不存在的编号当示例。 |
-| **防复发** | 回归测试扩展到 99 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头、深链、备份键名、编号定位、复习确认、存储上限、同步重试与 DOCX 选项解析断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。 |
+| **防复发** | 回归测试扩展到 112 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头、深链、备份键名、编号定位、复习确认、存储上限、同步重试、DOCX 选项解析、模拟卷编辑卡与筛选栏断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。 |
 | **存储回读** | localStorage.setItem 后立即回读比对，静默失败或配额满就降级到内存并提示；错误卡片新增「导出备份」，不再出现「显示已保存但刷新丢失」。 |
 | **题库拆包** | Pages 版首页从 15.2MB 降到 3.0MB，9651 道题移到 data/bank.json（12.3MB），首屏不再解析整库；dist 仍保留单文件离线版，两种构建号一致。 |
 | **索引缓存** | 首次进入题库后按四科写入 IndexedDB，构建号变化自动换新；网络失败回退上一版缓存，读不到才提示题库加载失败，错题与笔记仍可用。 |
 | **深链兜底** | 404 改为 /?spa_redirect=… 再还原 hash，不依赖 sessionStorage；清空会话存储也能回到原页，未知路径才回首页。 |
 | **缓存边界** | 移除强制 Cache-Control meta；Service Worker 缓存名绑定构建号、注册带 ?v=，仍只缓存 200 非 Range，跳过 /api 与自身脚本。 |
 | **AI 与焦点** | AI 状态响应不是 JSON 时按未配置处理并说明原因；筛选重渲染后焦点回原控件，弹窗关闭落到 body 时回页面标题。 |
-| **发布门禁** | CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 99 项。 |
+| **发布门禁** | CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 112 项。 |
 | **Cloudflare 缓存** | 新增 Cloudflare Pages _headers 与迁移文档：HTML 立即校验、题库 1 小时 + stale-while-revalidate、安全头；当前仍由 GitHub Pages 提供，未声称已切换。 |
 | **记录归并** | README 只展开最新一块，2026-11-14 及更早 23 个版本收进 details；GitHub Releases 同一天只保留一条，标签统一为 v2026.11.15 / v2026.11.14，不再给同一天加小版本后缀；网页、CHANGELOG、README 与 Release 共用同一份摘要。 |
 | **通知去重** | 同一天记录再修改时，原地替换已有更新通知的标题与正文，保留首次时间与已读状态，不再追加补充或生成第二条；旧版同日重复通知在启动时按日期合并，更新记录与通知标题统一为日期加标题。 |
 | **备份键名** | backupSafeState / backupSafeLibraries 不再递归匹配键名删除，只清 state.sync.token 与 AI 配置顶层凭据；blocks[].key、附件 key 与 prefs.apiNoticeDismissed 全部保留，导入后解答块、选项格式和复习块恢复正常。 |
 | **编号定位** | 所有 #entry- / #bank- / #tpl- 查询改用 document.getElementById；编号含空格、括号、点时不再触发 DOMException，编辑保存后的定位、滚动与高亮都能继续执行。 |
 | **复习确认** | toggleReview 在取消已打卡节点时先计算后续已完成节点，有则弹出确认并说明会同时清除的条数；确认时才级联删除，无后续记录仍保持一键取消。 |
-| **存储上限** | persistLocal 写盘前按 4MB 字符预算拦截，超限显示固定横幅与导出备份/重试按钮，并注册 beforeunload；笔记图片、PDF 页、扫描页、封面与答卷图逐张走 noteImageFits，超限直接拒绝并提示。 |
-| **同步重试** | pushSync 改为最多三次真实退避（800ms/1600ms），只重试网络错误与 5xx；409/401/413 与其它 4xx 立即返回并显示原因，413 文案指向删除笔记图片；服务端 PUT /api/state 上限由 6MB 放宽到 8MB。 |
+| **存储上限** | persistLocal 写盘前按当前浏览器配额计算可用容量，超限显示固定横幅与导出备份/重试按钮，并注册 beforeunload；笔记图片、PDF 页、扫描页、封面与答卷图逐张走 noteImageFits，超限直接拒绝并提示。 |
+| **同步重试** | pushSync 改为最多三次真实退避（800ms/1600ms），只重试网络错误与 5xx；409/401/413 与其它 4xx 立即返回并显示原因，413 文案指向删除笔记图片；服务端 PUT /api/state 上限由 8MB 放宽到 64MB。 |
 | **试卷导出** | 拆出 finalPaperDocxDocumentXml：客观题按 key．text 输出四选项，答案区改「参考答案与解析」并附标准解答、详细解析、解题要点、易错点；debug/test-paper.docx 经 Word/WPS 打开，均为 2 页。 |
 | **题库校准** | 21 道 answer 等于题干的解析几何题改为「证明成立（详见标准解答）」，10 道占位答案补成具体结论；四科 options 缺失/null 统一为 []，30 处 ^{} 改为 ^{\prime} 并重写 27 组重复干扰项；QA 新增 options 数组与空上标检查。 |
 
@@ -921,7 +922,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、8 视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 109 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
+| `tests/` | 112 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 

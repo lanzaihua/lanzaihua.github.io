@@ -26,7 +26,8 @@
     "qa:a11y": "node tools/qa-a11y.js",
     "qa:size": "node tools/qa-size.js",
     "qa:pages": "node tools/qa-pages.js",
-    "qa:paper": "node tools/qa-paper-editor.js"
+    "qa:paper": "node tools/qa-paper-editor.js",
+    "qa:filters": "node tools/qa-bank-filters.js"
   },
   "devDependencies": {
     "axe-core": "^4.14.0",
