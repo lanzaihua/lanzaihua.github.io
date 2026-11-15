@@ -79319,7 +79319,7 @@
         "$$\\to\\left(\\begin{array}{ccc|ccc}1&1&-1&1&-1&1\\\\0&2&2&1&1&0\\\\0&0&3&2&3&0\\end{array}\\right)\\to\\left(\\begin{array}{ccc|ccc}1&0&0&\\frac{11}6&\\frac12&1\\\\0&1&0&-\\frac16&-\\frac12&0\\\\0&0&1&\\frac23&1&0\\end{array}\\right).$$",
         "故",
         "$$X=\\begin{pmatrix}\\frac{11}6&\\frac12&1\\\\-\\frac16&-\\frac12&0\\\\ \\frac23&1&0\\end{pmatrix}.$$",
-        "验证 $AX=B$：第 1 行 $\\left(\\frac{11}6-\\frac16-\\frac23,\\ \\frac12-\\frac12-1,\\ 1\\rightight)=(1,-1,1)$；第 2 行 $2\\left(-\\frac16,-\\frac12,0\\rightight)+2\\left(\\frac23,1,0\\rightight)=(1,1,0)$；第 3 行 $\\left(\\frac{11}6+\\frac16,\\ \\frac12+\\frac12,\\ 1\\rightight)=(2,1,1)$。三行恰为 $B$ 的三行，故 $X$ 正确。"
+        "验证 $AX=B$：第 1 行 $\\left(\\frac{11}6-\\frac16-\\frac23,\\ \\frac12-\\frac12-1,\\ 1\\right)=(1,-1,1)$；第 2 行 $2\\left(-\\frac16,-\\frac12,0\\right)+2\\left(\\frac23,1,0\\right)=(1,1,0)$；第 3 行 $\\left(\\frac{11}6+\\frac16,\\ \\frac12+\\frac12,\\ 1\\right)=(2,1,1)$。三行恰为 $B$ 的三行，故 $X$ 正确。"
       ],
       "difficulty": 3,
       "tags": [
@@ -79329,7 +79329,7 @@
       ],
       "source": "教材课后习题（第四章 矩阵）· 习题 23(2)",
       "relatedEntries": [],
-      "standardSolution": "解：$|A|=1\\cdot(2\\cdot0+2\\cdot1)-1\\cdot(0\\cdot0-2\\cdot1)+(-1)\\cdot(0\\cdot(-1)-2\\cdot1)=2+2+2=6\\ne0$，故 $A$ 可逆，$X=A^{-1}B$。\n用 $(A\\mid B)\\to(E\\mid A^{-1}B)$ 只作行变换：\n$$\\left(\\begin{array}{ccc|ccc}1&1&-1&1&-1&1\\\\0&2&2&1&1&0\\\\1&-1&0&2&1&1\\end{array}\\right)\\to\\left(\\begin{array}{ccc|ccc}1&1&-1&1&-1&1\\\\0&2&2&1&1&0\\\\0&-2&1&1&2&0\\end{array}\\right)$$\n$$\\to\\left(\\begin{array}{ccc|ccc}1&1&-1&1&-1&1\\\\0&2&2&1&1&0\\\\0&0&3&2&3&0\\end{array}\\right)\\to\\left(\\begin{array}{ccc|ccc}1&0&0&\\frac{11}6&\\frac12&1\\\\0&1&0&-\\frac16&-\\frac12&0\\\\0&0&1&\\frac23&1&0\\end{array}\\right).$$\n故\n$$X=\\begin{pmatrix}\\frac{11}6&\\frac12&1\\\\-\\frac16&-\\frac12&0\\\\ \\frac23&1&0\\end{pmatrix}.$$\n验证 $AX=B$：第 1 行 $\\left(\\frac{11}6-\\frac16-\\frac23,\\ \\frac12-\\frac12-1,\\ 1\\rightight)=(1,-1,1)$；第 2 行 $2\\left(-\\frac16,-\\frac12,0\\rightight)+2\\left(\\frac23,1,0\\rightight)=(1,1,0)$；第 3 行 $\\left(\\frac{11}6+\\frac16,\\ \\frac12+\\frac12,\\ 1\\rightight)=(2,1,1)$。三行恰为 $B$ 的三行，故 $X$ 正确。",
+      "standardSolution": "解：$|A|=1\\cdot(2\\cdot0+2\\cdot1)-1\\cdot(0\\cdot0-2\\cdot1)+(-1)\\cdot(0\\cdot(-1)-2\\cdot1)=2+2+2=6\\ne0$，故 $A$ 可逆，$X=A^{-1}B$。\n用 $(A\\mid B)\\to(E\\mid A^{-1}B)$ 只作行变换：\n$$\\left(\\begin{array}{ccc|ccc}1&1&-1&1&-1&1\\\\0&2&2&1&1&0\\\\1&-1&0&2&1&1\\end{array}\\right)\\to\\left(\\begin{array}{ccc|ccc}1&1&-1&1&-1&1\\\\0&2&2&1&1&0\\\\0&-2&1&1&2&0\\end{array}\\right)$$\n$$\\to\\left(\\begin{array}{ccc|ccc}1&1&-1&1&-1&1\\\\0&2&2&1&1&0\\\\0&0&3&2&3&0\\end{array}\\right)\\to\\left(\\begin{array}{ccc|ccc}1&0&0&\\frac{11}6&\\frac12&1\\\\0&1&0&-\\frac16&-\\frac12&0\\\\0&0&1&\\frac23&1&0\\end{array}\\right).$$\n故\n$$X=\\begin{pmatrix}\\frac{11}6&\\frac12&1\\\\-\\frac16&-\\frac12&0\\\\ \\frac23&1&0\\end{pmatrix}.$$\n验证 $AX=B$：第 1 行 $\\left(\\frac{11}6-\\frac16-\\frac23,\\ \\frac12-\\frac12-1,\\ 1\\right)=(1,-1,1)$；第 2 行 $2\\left(-\\frac16,-\\frac12,0\\right)+2\\left(\\frac23,1,0\\right)=(1,1,0)$；第 3 行 $\\left(\\frac{11}6+\\frac16,\\ \\frac12+\\frac12,\\ 1\\right)=(2,1,1)$。三行恰为 $B$ 的三行，故 $X$ 正确。",
       "detailedAnalysis": "矩阵方程 $AX=B$（$A$ 可逆）的唯一解法是 $X=A^{-1}B$，实操上对 $(A\\mid B)$ 作行变换最省。不要\"先把 $X$ 设成 9 个未知数再解 9 元方程组\"，也不要右乘 $A^{-1}$（$AX=B\\Rightarrow X=A^{-1}B$ 是左乘）。",
       "verification": "",
       "pitfalls": [
@@ -94214,9 +94214,9 @@
         "实矩阵"
       ],
       "pitfalls": [
-        "把复相似标准形 $\\\\operatorname{diag}(i,-i)$ 当成实相似标准形",
+        "把复相似标准形 $\\operatorname{diag}(i,-i)$ 当成实相似标准形",
         "未说明 $A$ 不是数量矩阵",
-        "把友矩阵写成 $\\\\begin{pmatrix}0&1\\\\\\\\-1&0\\\\end{pmatrix}$ 而符号相反"
+        "把友矩阵写成 $\\begin{pmatrix}0&1\\\\-1&0\\end{pmatrix}$ 而符号相反"
       ],
       "options": [],
       "correct": "",
@@ -94356,8 +94356,8 @@
       ],
       "pitfalls": [
         "只用单个公共特征向量代替一组基",
-        "未证 $B$ 保持 $V_\\\\lambda$ 不变",
-        "忽略 $B|_{V_\\\\lambda}$ 的最小多项式无重根"
+        "未证 $B$ 保持 $V_\\lambda$ 不变",
+        "忽略 $B|_{V_\\lambda}$ 的最小多项式无重根"
       ],
       "options": [],
       "correct": "",

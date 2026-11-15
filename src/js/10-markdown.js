@@ -17,6 +17,10 @@ function cleanMathSource(tex) {
   t = t.replace(/\\frac\{([^{}]*[\u4e00-\u9fa5][^{}]*)\}\{([^{}]*[\u4e00-\u9fa5][^{}]*)\}/g, function (m, a, b) {
     return '\\frac{\\text{' + a + '}}{\\text{' + b + '}}';
   });
+  // Temml 不支持 \\tag{...}：保留编号，排成公式末尾的 (1)，避免整条公式回退成源码。
+  t = t.replace(/\\tag\*?\{([^{}]*)\}/g, function (m, label) {
+    return '\\quad\\text{(' + String(label).replace(/[{}]/g, '') + ')}';
+  });
   // 修复教材/OCR 简写与 Unicode 数学符号。
   var supMap = {'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
   var subMap = {'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','ₐ':'a','ₑ':'e','ₒ':'o','ₓ':'x','ₕ':'h','ₖ':'k','ₗ':'l','ₘ':'m','ₙ':'n','ₚ':'p','ₛ':'s','ₜ':'t'};
@@ -37,10 +41,13 @@ function cleanMathSource(tex) {
   t = t.replace(/≠/g, '\\ne ').replace(/≤/g, '\\le ').replace(/≥/g, '\\ge ').replace(/⇔|⟺/g, '\\Leftrightarrow ').replace(/⇒/g, '\\Rightarrow ').replace(/→/g, '\\to ').replace(/∈/g, '\\in ').replace(/∉/g, '\\notin ').replace(/±/g, '\\pm ').replace(/×/g, '\\times ').replace(/·/g, '\\cdot ').replace(/∞/g, '\\infty ').replace(/Δ/g, '\\Delta ').replace(/∑/g, '\\sum ').replace(/∫/g, '\\int ');
   t = t.replace(/−/g, '-');
   t = t.replace(/Σ/g, '\\sum ').replace(/Π/g, '\\prod ');
+  // 先把 liminf/limsup 换成哨兵，避免下面的单算子归一化把 inf/sup 拆走。
+  t = t.replace(/\bliminf\b/g, '\uE010').replace(/\blimsup\b/g, '\uE011');
   // 教材里常把 lim/max/min 直接写成英文。用 \\lim 等标准算子，保留上下限位置；
   // lcm 没有对应算子，退回 \\operatorname。
   t = t.replace(/(^|[^\\A-Za-z])(sup|inf|lim|max|min|det|dim|ker|deg|gcd)(?=\s*(?:_|\^|[\(\[]|[A-Za-z]))/g, '$1\\$2 ');
   t = t.replace(/(^|[^\\A-Za-z])lcm(?=\s*(?:_|\^|[\(\[]|[A-Za-z]))/g, '$1\\operatorname{lcm}');
+  t = t.replace(/\uE010/g, '\\operatorname{lim\\,inf}').replace(/\uE011/g, '\\operatorname{lim\\,sup}');
   t = t.replace(/\\not\s*\\iff/g, '\\not\\Leftrightarrow');
   t = t.replace(/₀/g, '_0').replace(/₁/g, '_1').replace(/₂/g, '_2').replace(/₃/g, '_3').replace(/₄/g, '_4').replace(/₅/g, '_5').replace(/₆/g, '_6').replace(/₇/g, '_7').replace(/₈/g, '_8').replace(/₉/g, '_9');
   t = t.replace(/ₐ/g, '_a').replace(/ₑ/g, '_e').replace(/ₒ/g, '_o').replace(/ₓ/g, '_x').replace(/ₕ/g, '_h').replace(/ₖ/g, '_k').replace(/ₗ/g, '_l').replace(/ₘ/g, '_m').replace(/ₙ/g, '_n').replace(/ₚ/g, '_p').replace(/ₛ/g, '_s').replace(/ₜ/g, '_t');
@@ -70,13 +77,9 @@ function wrapBareMathFragmentsLine(src) {
   var text = String(src || '');
   if (!text) return text;
   // Markdown 表格行交给 marked 处理；管道符不是公式边界，不能把单元格间的 | 2–4 包成公式。
-  if (/^\s*\|/.test(text)) return text;
-  var store = [];
-  var protectedRe = /\$\$[\s\S]*?\$\$|\$[^$\n]*\$|\uE000C\d+\uE001|\`\`\`[\s\S]*?\`\`\`|\`[^\`]*\`|<\/?[^>]+>|&lt;[\s\S]*?&gt;/g;
-  text = text.replace(protectedRe, function (m) {
-    store.push(m);
-    return '\uE000F' + (store.length - 1) + '\uE001';
-  });
+  // 但行首的 | 也可能是绝对值/行列式（如 |A_k| 有界），只有整行以 | 收尾时才按表格跳过。
+  if (/^\s*\|.*\|\s*$/.test(text)) return text;
+  var protectedRe = /\$\$[\s\S]*?\$\$|\$[^$\n]*\$|\uE000[CFD]\d+\uE001|\x60\x60\x60[\s\S]*?\x60\x60\x60|\x60[^\x60]*\x60|<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s[^<>]*)?\/?>|&lt;[\s\S]*?&gt;/g;
   var markerRe = /[\\^_=<>\/\-∫∑∏√λΛ−×·|←→±≤≥⁰¹²³⁴⁵⁶⁷⁸⁹₀₁₂₃₄₅₆₇₈₉]/;
   function wrapChunk(chunk) {
     if (!chunk || /https?:\/\//.test(chunk)) return chunk;
@@ -89,18 +92,16 @@ function wrapBareMathFragmentsLine(src) {
     if (core.length < 2 || !markerRe.test(core)) return chunk;
     // 星标、章节号这类标题元信息不是公式，尤其不能把“ · 2★”渲染成 ⋅ 2 ★。
     if (/[★☆]/.test(core)) return chunk;
-    if (core.indexOf('\uE000F') >= 0) return chunk;
     // 已转义的 HTML 片段（&lt;...&gt;）不是公式，避免把标签属性逐字符排成斜体。
     if (/&(?:[a-zA-Z][a-zA-Z0-9]{1,8}|#\d{1,6}|#x[0-9a-fA-F]{1,6});/.test(core)) return chunk;
     if (/^\s*#{1,6}\s/.test(core) || /^\s*[-*+]\s/.test(core) || /\d{4}[-/]\d{1,2}[-/]\d{1,2}/.test(core)) return chunk;
     // 题库编号（GA-B0001 / MA-0001）不是公式，避免连字符被排成减号。
     if (/^[A-Z]{1,4}-[A-Z]?\d+[A-Za-z0-9-]*$/.test(core)) return chunk;
-    if (/[#*\`>]/.test(core)) return chunk;
+    if (/[#*\x60>]/.test(core)) return chunk;
     // 单独一个 LaTeX 命令（如 \frac、\dfrac）缺少参数，不能当成完整行内公式；
     // 否则 Temml 解析失败会把源码原样吐回正文。
     if (/^\\[A-Za-z]+$/.test(core)) return chunk;
-    // Markdown 表格整行保留：管道符不是公式边界，表格交给 marked 渲染。
-    if (/^\s*\|.*\|\s*$/.test(core)) return chunk;
+    // 表格分隔行保留；整行表格已在函数入口按“以 | 收尾”跳过。
     if (/^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?\s*$/.test(core)) return chunk;
     if (/\[[^\]]*\]\([^)]*\)/.test(core)) return chunk;
     if (/^[\s\-−=+*\/×·|]+$/.test(core)) return chunk;
@@ -119,20 +120,38 @@ function wrapBareMathFragmentsLine(src) {
     if (/^\d+(?:\s+\/\s+\d+)+$/.test(core)) return chunk;
     return m[1] + label + '$' + core + '$' + m[3];
   }
-  text = text.replace(/[^\u4e00-\u9fa5，。；：、！？（）《》“”‘’\n]+/g, function (chunk) {
-    return wrapChunk(chunk);
-  });
-  return text.replace(/\uE000F(\d+)\uE001/g, function (m, i) {
-    return store[+i];
-  });
+  function wrapPlain(segment) {
+    return segment.replace(/[^\u4e00-\u9fa5，。；：、！？（）《》“”‘’\n]+/g, function (chunk) {
+      return wrapChunk(chunk);
+    });
+  }
+  // 逐个保护公式/代码/HTML 片段，只对片段之间的纯文本补 $...$。
+  // 关键：不把整个区间塞进一个带占位符的 chunk，否则占位符两侧的裸公式会被一起跳过。
+  var out = '', last = 0, m;
+  while ((m = protectedRe.exec(text))) {
+    out += wrapPlain(text.slice(last, m.index)) + m[0];
+    last = protectedRe.lastIndex;
+  }
+  out += wrapPlain(text.slice(last));
+  return out;
 }
 
 function wrapBareMathFragments(src) {
   var text = String(src || '');
   if (!text) return text;
-  return text.split('\n').map(function (line) {
+  // 块级公式可以跨行；逐行扫描前先把完整的 $$...$$ 保护起来，
+  // 否则中间行会被当成裸 LaTeX 补上 $，把同一个公式切成三段。
+  var blocks = [];
+  text = text.replace(/\$\$[\s\S]*?\$\$/g, function (m) {
+    blocks.push(m);
+    return '\uE000D' + (blocks.length - 1) + '\uE001';
+  });
+  text = text.split('\n').map(function (line) {
     return wrapBareMathFragmentsLine(line);
   }).join('\n');
+  return text.replace(/\uE000D(\d+)\uE001/g, function (m, i) {
+    return blocks[+i] == null ? m : blocks[+i];
+  });
 }
 
 function normalizeMathDelims(src) {
@@ -154,7 +173,7 @@ function wrapBareLatex(src) {
     listMarks.push(mark);
     return lead + indent + '\uE000L\uE001';
   });
-  var parts = s.split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$|```[\s\S]*?```|`[^`]*`|<\/?[^>]+>|\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\])/);
+  var parts = s.split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$|```[\s\S]*?```|`[^`]*`|<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s[^<>]*)?\/?>|\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\])/);
   for (var i = 0; i < parts.length; i++) {
     if (i % 2 === 1) continue;
     var t = parts[i];
@@ -162,7 +181,7 @@ function wrapBareLatex(src) {
     // 把一整段裸 LaTeX（含数字、括号、运算符）包成一个公式，而不是把每个命令分别包起来。
     // \text{中文} 必须整体匹配，否则会在“在/连续”处被拆成 \text{ 残片。
     // 反斜杠不放进普通字符类，保证每个命令都从 \ 开始被完整识别。
-    var runRe = /((?:\\frac\{[^{}]*\}\{[^{}]*\}|\\text\{[^{}]*\}|\\mathrm\{[^{}]*\}|\\operatorname\{[^{}]*\}|\\mbox\{[^{}]*\}|\\[A-Za-z]+|[0-9A-Za-z{}\[\]()_^=+\-*/. ,\u0370-\u03ff\u00b2\u00b3\u00b9\u2070-\u209f\u2100-\u214f\u2190-\u22ff\u00b1\u00b7\u00d7\u221e])+)/g;
+    var runRe = /((?:\\frac\{[^{}]*\}\{[^{}]*\}|\\text\{[^{}]*\}|\\mathrm\{[^{}]*\}|\\operatorname\{[^{}]*\}|\\mbox\{[^{}]*\}|\\[A-Za-z]+|[0-9A-Za-z{}\[\]()_^=+\-*/. ,<>\u0370-\u03ff\u00b2\u00b3\u00b9\u2070-\u209f\u2100-\u214f\u2190-\u22ff\u00b1\u00b7\u00d7\u221e])+)/g;
     t = t.replace(runRe, function (m) {
       var raw = m;
       m = m.trim();
@@ -199,7 +218,7 @@ function mathifyPlainText(src) {
   if (!s) return '';
   // 先保护 HTML/转义标签，避免把 <img src=x ...> 里的 = 当成公式。
   var guards = [];
-  s = s.replace(/&lt;[\s\S]*?&gt;|<\/?[^>]+>/g, function (m) {
+  s = s.replace(/&lt;[\s\S]*?&gt;|<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s[^<>]*)?\/?>/g, function (m) {
     guards.push(m);
     return '\uE000G' + (guards.length - 1) + '\uE001';
   });
@@ -314,8 +333,16 @@ function normalizeMarkdownTypography(src) {
 
 function normalizeEscapedLineBreaks(src) {
   var s = String(src == null ? '' : src);
-  // AI 返回的文本偶尔保留字面量 \n / \r；只还原不在 LaTeX 命令中的转义，避免把 \nabla 变成换行。
-  s = s.replace(/\\+n(?![A-Za-z])/g, '\n').replace(/\\+r(?![A-Za-z])/g, '\n').replace(/\r\n?/g, '\n');
+  // AI 返回的文本偶尔保留字面量 \n / \r；只还原真正的单反斜杠转义。
+  // 关键：LaTeX 矩阵的行分隔符 \\ 后面紧跟变量 n（如 \\n-1）时是“换行 + n”，
+  // 不是转义换行。旧实现按任意长度反斜杠匹配，会把这一行吃掉，导致矩阵缺行、
+  // 行内公式跨行断裂，最终留下裸 a_{ij}=... 与落单的 $。
+  // 反斜杠个数为奇数时，最后一个才是转义；偶数个说明是 LaTeX 行分隔符，必须保留。
+  s = s.replace(/(\\+)([nr])(?![A-Za-z])/g, function (m, slashes, ch) {
+    if (slashes.length % 2 === 0) return m;
+    return slashes.slice(0, -1) + '\n';
+  });
+  s = s.replace(/\r\n?/g, '\n');
   return s;
 }
 function normalizeMathMarkup(src) {
@@ -588,6 +615,11 @@ function formatOptionParagraphs(html) {
   );
 }
 
+function inlineMathHtml(tex) {
+  var html = renderMath(tex, false);
+  return '<span class="math-inline-scroll' + (html.indexOf('<mtable') >= 0 ? ' has-matrix' : '') + '">' + html + '</span>';
+}
+
 function renderMarkdown(src) {
   if (!src) return '';
   var codeSeg = extractCodeSegments(src);
@@ -647,12 +679,12 @@ function renderMarkdown(src) {
     var q = store[+i];
     if (!q) return m;
     if (q.display) return '<div class="math-display">' + renderMath(q.tex, true) + '</div>';
-    return '<p><span class="math-inline-scroll">' + renderMath(q.tex, false) + '</span></p>';
+    return '<p>' + inlineMathHtml(q.tex) + '</p>';
   });
   html = html.replace(/\uE000M(\d+)\uE001/g, function (m, i) {
     var q = store[+i];
     if (!q) return m;
-    if (!q.display) return '<span class="math-inline-scroll">' + renderMath(q.tex, false) + '</span>';
+    if (!q.display) return inlineMathHtml(q.tex);
     return renderMath(q.tex, q.display);
   });
   html = html.replace(/<table>/g, '<div class="table-wrap"><table>').replace(/<\/table>/g, '</table></div>');
@@ -918,6 +950,7 @@ function refreshInlineMathWidths(root) {
   var scope = root || document;
   scope.querySelectorAll('.math-inline-scroll').forEach(function (wrap) {
     wrap.classList.remove('is-wide');
+    wrap.classList.toggle('has-matrix', !!wrap.querySelector('mtable'));
     var host = wrap.closest('p, li, td, th, .exam-qbody, .exam-opt, .exam-result-q, .entry-body, .md') || wrap.parentElement;
     if (!host || !host.clientWidth) return;
     if (wrap.getBoundingClientRect().width > host.clientWidth + 2) {

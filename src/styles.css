@@ -9461,3 +9461,26 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   }
 }
 
+
+/* 2026-11-16: 行内矩阵会让 24px 行盒装不下 48px 的公式，文字压到矩阵中部并
+   与上下行重叠。矩阵公式改用 inline-block + middle：行盒随公式增高，正文
+   与矩阵垂直居中；只有超宽时才转为横向滚动。 */
+.math-inline-scroll.has-matrix:not(.is-wide) {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  line-height: normal !important;
+  max-width: 100% !important;
+}
+.math-inline-scroll.has-matrix:not(.is-wide) math {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  line-height: normal !important;
+}
+
+/* 2026-11-16: 考试标题中的日期必须整段换行，不能断成 2026- / 11-16。 */
+.exam-title { text-wrap: pretty; }
+.exam-title-date { white-space: nowrap; }
+@media (max-width: 480px) {
+  .exam-title .exam-title-sep { display: none; }
+  .exam-title .exam-title-date { display: block; }
+}

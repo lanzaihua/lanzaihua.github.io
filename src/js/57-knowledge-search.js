@@ -205,7 +205,22 @@ function knowledgeSearchQuestionHits(subject, query) {
 function knowledgeSearchQuestionExcerpt(text, max) {
   var s = String(text || '').replace(/\s+/g, ' ').trim();
   if (s.length <= max) return s;
-  return s.slice(0, max) + '…';
+  var cut = s.slice(0, max);
+  // 摘录不能停在行内公式中间：落单的 $ 会让前半截 LaTeX 原样显示。
+  // 数未转义的 $，奇数说明截断点落在公式内部，退回到该公式开头。
+  var dollars = 0;
+  for (var i = 0; i < cut.length; i++) {
+    if (cut[i] !== '$') continue;
+    var bs = 0;
+    for (var k = i - 1; k >= 0 && cut[k] === '\\'; k--) bs++;
+    if (bs % 2 === 0) dollars++;
+  }
+  if (dollars % 2 === 1) {
+    var open = cut.lastIndexOf('$');
+    if (open > 0) cut = cut.slice(0, open);
+  }
+  cut = cut.replace(/\\[A-Za-z]*$/, '').replace(/[\s，。；：、,.;:]+$/, '');
+  return cut + '…';
 }
 
 function knowledgeSearchQuestionsHtml(a) {

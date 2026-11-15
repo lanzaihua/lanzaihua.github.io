@@ -121,6 +121,14 @@ test('Markdown strips executable tags, URL schemes and attributes; preserves Mar
   assert.equal(malformedDoc.textContent.includes('\\mathrm'), false, malformedHtml);
   assert.ok(malformedDoc.querySelectorAll('math').length >= 4, malformedHtml);
   assert.match(r.ctx.renderMarkdown('由 $H^T=H$ 与 $X^TX=1$ 得 $H^2=E$。'), /<math/);
+  // LaTeX 矩阵行分隔符 \\ 后紧跟 n/r（如 \\n-1）不能被当成字面量换行。
+  const det = r.ctx.renderMarkdown("计算 $D_{n}=\\begin{vmatrix}0&1\\\\n-1&n-2\\end{vmatrix}$，即 $a_{ij}=|i-j|$。");
+  const detDoc = document.createElement('div'); detDoc.innerHTML = det;
+  assert.equal(detDoc.querySelectorAll('.math-raw,.temml-error').length, 0, det);
+  assert.equal(detDoc.textContent.includes('$'), false, det);
+  assert.equal(detDoc.textContent.includes('a_{ij}'), false, det);
+  assert.ok(detDoc.querySelectorAll('math').length >= 2, det);
+  assert.ok(detDoc.querySelector('mtable'), det);
   const bankTitle = r.ctx.renderMarkdown('概念辨析题 · 需求、供给和均衡价格 · 2★');
   assert.equal(bankTitle.includes('<math'), false, bankTitle);
   assert.match(bankTitle, /2★/);
@@ -886,9 +894,9 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('885 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('416 道习题集'),'习题集 current count');
   assert.ok(md.includes('9651'),'bank total');
-  assert.ok(md.includes('112 项回归测试'),'current test count');
+  assert.ok(md.includes('113 项回归测试'),'current test count');
   assert.ok(!md.includes('92 项回归测试')&&!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
-  assert.ok(md.includes('v2026.11.15 Release'),'current release link');
+  assert.ok(md.includes('v2026.11.16 Release'),'current release link');
   assert.equal(/\bv?\d{4}\.\d{2}\.\d{2}\.\d+\b/.test(md),false,'README must not keep dotted release versions');
   const updateAt=md.indexOf('## 更新记录');
   const detailsAt=md.indexOf('<details>',updateAt);
@@ -1136,4 +1144,19 @@ test('3.3 final planning labels, AI state copy and numbering examples stay align
   assert.doesNotMatch(finalUi, /materials\.map\(function \(m\) \{ return m\.code; \}\)/);
   assert.match(finalUi, /aiConfigReady\(\)\) \? '按章节生成新题 · 已配置 AI'/);
   assert.match(finalUi, /pad\(i \+ 1, 2\)/);
+});
+
+test('exam title keeps dates whole and knowledge excerpts never cut a formula',()=>{
+  const r=runtime(); r.run('59-exam.js');
+  const title=r.ctx.finalExamTitleHtml('高等代数 · 标准题库期末模拟考 · 2026-11-16');
+  assert.match(title,/exam-title-date">2026-11-16/);
+  assert.equal(title.includes('2026-<'),false);
+  const css=read('src/styles.css');
+  assert.match(css,/\.exam-title-date\s*\{[^}]*white-space:\s*nowrap/);
+  assert.match(css,/@media \(max-width: 480px\)[\s\S]{0,160}\.exam-title \.exam-title-date\s*\{\s*display:\s*block/);
+  r.run('57-knowledge-search.js');
+  const src='证明$D_{n}=\\begin{vmatrix}0&1\\\\n-1&n-2\\end{vmatrix}$，即 $a_{ij}=|i-j|$。';
+  const out=r.ctx.knowledgeSearchQuestionExcerpt(src, 30);
+  assert.equal((out.match(/\$/g)||[]).length % 2,0,out);
+  assert.equal(/\\[A-Za-z]*$/.test(out),false,out);
 });

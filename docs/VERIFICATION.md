@@ -25,7 +25,9 @@
 - 严格题库 QA：problems 0、warnings 0；分类 10 类、章节 55、bucket 825。
 - 站点一致性：四科 2046 / 3523 / 1199 / 2883，更新记录 24 天。
 - 仓库语言门禁、Python 题库审计均通过。
-- 回归测试 112 项（新增存储 6 项、模拟卷编辑卡 3 项、筛选栏 3 项、DOCX 关系符与 deg 断言）。
+- 回归测试 113 项（新增存储 6 项、模拟卷编辑卡 3 项、筛选栏 3 项、公式管线/知识点摘录/考试标题日期 1 项、DOCX 关系符与 deg 断言）。
+- 全库公式渲染审计：9651 题的 question/answer/standardSolution/detailedAnalysis/points/pitfalls/solution/options 共 0 个 `.math-raw`、`.temml-error`、merror、裸 `$`、裸 LaTeX 或裸上下标。`npm run check` 末尾自动执行 `node tools/audit-rendered-bank.js`，失败即退出 1。
+- 真浏览器公式 QA 覆盖总览、错题、模板、题库、规范、期末、知识点面板与标准题库模拟考，均 0 残留、0 横向溢出。
 
 修复的真实数据缺陷：
 
@@ -75,18 +77,19 @@
 
 ## 8. 发布链
 
-- 本地 `main` 与 `origin/main` 内容一致；Release v2026.11.15 资产齐全；Pages 构建成功；open PR 0。
+- 本地 `main` 与 `origin/main` 内容一致；Release v2026.11.16 资产齐全；Pages 构建成功；open PR 0。
 - 新增 `tools/verify-release.js` 与每日 `release-check.yml`：工作区干净、HEAD=origin/main、当天 tag、Release 资产、Pages commit、线上 BUILD_ID 全部对齐。
 
 ## 9. 复现命令
 
 ```bash
-npm test                      # 112 项回归
-npm run check                 # 严格 QA + 站点一致性 + 语言门禁
+npm test                      # 113 项回归
+npm run check                 # 严格 QA + 站点一致性 + 语言门禁 + 全库公式渲染审计
 node build.js && node build.js --pages
 npm run prepare:pages && npm run verify:pages
 node tools/qa-pages.js        # 拆包/缓存/回退真浏览器
-npm run qa:formulas
+npm run qa:formulas           # 6 路由 + 知识点 + 模拟考
+npm run qa:render             # 9651 题全库公式渲染审计（check 已包含）
 npm run qa:a11y
 npm run qa:perf
 PAGE_URL=http://127.0.0.1:4173/ node tools/qa-responsive.js

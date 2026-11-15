@@ -1560,6 +1560,11 @@ function finalExamTotalScore(mock) {
   return Math.min(100, Math.round(total * 10) / 10);
 }
 
+function finalExamTitleHtml(title) {
+  var s = esc(title || '期末模拟考');
+  return s.replace(/\s*·\s*(\d{4}-\d{2}-\d{2})\s*$/, ' <span class="exam-title-sep">·</span> <span class="exam-title-date">$1</span>');
+}
+
 function finalExamPaperHtml(mock) {
   if (mock.status === 'generating') {
     return finalExamGeneratingHtml();
@@ -1568,7 +1573,7 @@ function finalExamPaperHtml(mock) {
   var answered = finalExamAnsweredCount(mock);
   var qs = mock.questions.map(function (q, i) { return finalExamQuestionHtml(q, i, mock); }).join('');
   return '<div class="exam-shell">' +
-    '<div class="exam-sticky"><header class="exam-top" title="点击展开 / 收起考试信息，向下拖动可展开" aria-label="考试信息栏"><div><p class="eyebrow">FINAL MOCK EXAM</p><h1 class="exam-title">' + esc(mock.title) + '</h1><p class="exam-sub">' + (mock.examSource === 'standard' ? '标准题库组卷；交卷后按标准答案批改，不使用 AI 批改。' : '交卷后由 AI 批改；未配置 AI 时按标准答案批改。') + '</p></div>' +
+    '<div class="exam-sticky"><header class="exam-top" title="点击展开 / 收起考试信息，向下拖动可展开" aria-label="考试信息栏"><div><p class="eyebrow">FINAL MOCK EXAM</p><h1 class="exam-title">' + finalExamTitleHtml(mock.title) + '</h1><p class="exam-sub">' + (mock.examSource === 'standard' ? '标准题库组卷；交卷后按标准答案批改，不使用 AI 批改。' : '交卷后由 AI 批改；未配置 AI 时按标准答案批改。') + '</p></div>' +
       '<div class="exam-clock"><span>剩余时间</span><b id="finalExamClock" data-no-i18n>' + finalFormatClock(finalExamRemain(mock)) + '</b><small>' + mock.duration + ' 分钟 · 满分 <span id="finalExamTotalScore" data-no-i18n>' + finalExamTotalScore(mock) + '</span></small></div>' +
       '<div class="exam-side"><span id="finalExamAnswered" data-no-i18n>' + finalExamLabel('已答', '已答') + ' ' + answered + ' / ' + mock.questions.length + '</span><button class="btn btn-primary" id="finalExamSubmitBtn" data-act="final-submit-exam" data-no-i18n type="button"' + (early ? '' : ' disabled') + '>' + finalExamLabel(early ? '提前交卷' : '开考 30 分钟后可交', early ? '提前交卷' : '开考 30 分钟后可交') + '</button><button class="linkish" data-act="final-exam-exit" type="button">暂时离开</button></div></header></div>' +
     '<nav class="exam-cardnav" aria-label="答题卡"><span class="exam-cardnav-label">答题卡</span><div class="exam-cardnav-list">' +

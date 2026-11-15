@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.15-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.15--ef0f7981-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.16-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.16--a90914e9-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -151,9 +151,9 @@
 
 ### 2026-11-15 · 排版收口与稳定性加固
 
-**32 项 · 32 组**
+**33 项 · 33 组**
 
-本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，112 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，手机操作按钮三列、窄桌面不再被挤压，390 / 820 / 1440 实测无大段空白与文字截断，并补 18 个宽度的真浏览器布局门禁。同日再修题库筛选栏：桌面从 inline 流改为 Grid + 可换行字段区，1301px 起四列、其余 2–3 列，手机保持两列折叠；新增 qa:filters 在 22 个宽度断言间距、重叠、越界与文字裁切。112 项回归。本块随 GitHub Pages 与 v2026.11.15 Release 发布。32 项 / 32 组。
+本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，113 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，手机操作按钮三列、窄桌面不再被挤压，390 / 820 / 1440 实测无大段空白与文字截断，并补 18 个宽度的真浏览器布局门禁。同日再修题库筛选栏：桌面从 inline 流改为 Grid + 可换行字段区，1301px 起四列、其余 2–3 列，手机保持两列折叠；新增 qa:filters 在 22 个宽度断言间距、重叠、越界与文字裁切。113 项回归。本块随 GitHub Pages 与 v2026.11.16 Release 发布。33 项 / 33 组。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -165,20 +165,21 @@
 | **发布校验** | 新增 verify:release 与 Release 发布时自动运行的 release-check：工作区干净、HEAD 与 origin/main 一致、当天 tag、Release 资产、Pages 部署提交、线上 BUILD_ID 全部对齐；docs/RELEASE.md 固化十步清单，避免本地领先或漏推 tag。 |
 | **模拟卷编辑** | 修「我的模拟卷」编辑卡：头部改为显式 CSS Grid（标题 \| 时长 \| 计数 \| 操作），手机标题整行、时长与题数一行、六个按钮 auto-fit 网格；按钮 height:auto，不再用固定高度裁字。18 个宽度（320–1440）真浏览器门禁断言标题不截断、按钮文字不越界、标签间距 ≤40px、头部高度不超上限，CI 每次构建自动跑 qa:paper；同时删除 58/60 两份重复的旧编辑卡实现。 |
 | **筛选留白** | 题库筛选栏在桌面原本是 inline 流，控件间只剩空白字符，1097px 笔记本宽度下挤成一排；改为桌面 Grid + 可换行字段区（1301px 起四列、其余 2–3 列），手机保持两列折叠，清空与题数不再贴边。新增 qa:filters 在 22 个宽度（320–1920）断言间距 ≥8px、互不重叠、不越界、文字不裁，CI 与 qa:paper 同批执行。 |
+| **公式基线** | 全库公式管线修复：矩阵行分隔符后接 n/r 不再被误当换行，跨行 $$ 不再拆成行内公式，HTML 标签正则不再吞掉数学小于号，A_k 两侧竖线不再误判表格；知识点摘录遇到公式中间会回退，模拟考标题日期不再断成 2026- / 11-16。新增 9651 题全库渲染审计 qa:render，qa:formulas 扩到知识点与模拟考，均 0 残留。 |
 | **卡片留白** | 设置页每个分区是带描边的圆角卡片，但标题和行内容离左边框只有 1px；改为 18px 内边距，手机 16/14px，相邻分区留 10px，行内容与标题重新对齐。 |
 | **期末行距** | 复习计划行、复习材料行、我的模拟卷说明、模拟考入口、上次模拟考卡片统一 20px 左右内边距；长标题与按钮不再顶到卡片边缘。 |
 | **复习名称** | 每日计划不再使用 FX-AI-mvz8... 或 GA-B0001 这类内部编号，改为题目标题（最多 14 字后截断）；空标题回退为「题库题 / 错题」，长计划文本允许两行。 |
 | **材料序号** | 复习材料左侧改 01/02 序号，标题最多两行并带 title 提示；原始 ID 不再逐字换行挤压正文，类型与移除按钮仍保持右对齐。 |
 | **AI 文案** | 「AI 出题开考」按 aiConfigReady() 显示「按章节生成新题 · 已配置 AI」或「需配置 API」，不再出现设置页已配置、期末页仍说需配置的矛盾。 |
 | **规范编号** | 规范页题库示例由 GA-001 改为 GA-B0001（高代）、MA-0001（数分），与题库实际编号一致，不再把不存在的编号当示例。 |
-| **防复发** | 回归测试扩展到 112 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头、深链、备份键名、编号定位、复习确认、存储上限、同步重试、DOCX 选项解析、模拟卷编辑卡与筛选栏断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。 |
+| **防复发** | 回归测试扩展到 113 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头、深链、备份键名、编号定位、复习确认、存储上限、同步重试、DOCX 选项解析、模拟卷编辑卡与筛选栏断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。 |
 | **存储回读** | localStorage.setItem 后立即回读比对，静默失败或配额满就降级到内存并提示；错误卡片新增「导出备份」，不再出现「显示已保存但刷新丢失」。 |
 | **题库拆包** | Pages 版首页从 15.2MB 降到 3.0MB，9651 道题移到 data/bank.json（12.3MB），首屏不再解析整库；dist 仍保留单文件离线版，两种构建号一致。 |
 | **索引缓存** | 首次进入题库后按四科写入 IndexedDB，构建号变化自动换新；网络失败回退上一版缓存，读不到才提示题库加载失败，错题与笔记仍可用。 |
 | **深链兜底** | 404 改为 /?spa_redirect=… 再还原 hash，不依赖 sessionStorage；清空会话存储也能回到原页，未知路径才回首页。 |
 | **缓存边界** | 移除强制 Cache-Control meta；Service Worker 缓存名绑定构建号、注册带 ?v=，仍只缓存 200 非 Range，跳过 /api 与自身脚本。 |
 | **AI 与焦点** | AI 状态响应不是 JSON 时按未配置处理并说明原因；筛选重渲染后焦点回原控件，弹窗关闭落到 body 时回页面标题。 |
-| **发布门禁** | CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 112 项。 |
+| **发布门禁** | CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 113 项。 |
 | **Cloudflare 缓存** | 新增 Cloudflare Pages _headers 与迁移文档：HTML 立即校验、题库 1 小时 + stale-while-revalidate、安全头；当前仍由 GitHub Pages 提供，未声称已切换。 |
 | **记录归并** | README 只展开最新一块，2026-11-14 及更早 23 个版本收进 details；GitHub Releases 同一天只保留一条，标签统一为 v2026.11.15 / v2026.11.14，不再给同一天加小版本后缀；网页、CHANGELOG、README 与 Release 共用同一份摘要。 |
 | **通知去重** | 同一天记录再修改时，原地替换已有更新通知的标题与正文，保留首次时间与已读状态，不再追加补充或生成第二条；旧版同日重复通知在启动时按日期合并，更新记录与通知标题统一为日期加标题。 |
@@ -903,12 +904,12 @@
 
 ## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.15 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.15/source.zip) 提供。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.16 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.16/source.zip) 提供。
 
 ### 仓库与许可证
 
 - **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
-- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.15/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.15/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
+- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.16/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.16/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
 - **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
 - **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
 - **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
@@ -922,7 +923,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、8 视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 112 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
+| `tests/` | 113 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 
