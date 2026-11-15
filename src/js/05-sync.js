@@ -137,41 +137,57 @@ async function pushSync(manual) {
   sync.busy = true;
   renderSyncStatus();
   try {
-    var attempts = 0;
-    while (attempts < 3) {
-      attempts++;
-      var sentUpdatedAt = state.updatedAt;
-      var body = JSON.stringify({ baseRev: Number.isFinite(sync.baseRev) ? sync.baseRev : (Number.isFinite(state.syncBaseRev) ? state.syncBaseRev : 0), state: state });
-      var res = await fetch('/api/state', {
-        method: 'PUT',
-        headers: apiHeaders({ 'Content-Type': 'application/json' }),
-        body: body
-      });
-      if (res.status === 409) {
-        var cur = await res.json();
-        state.syncDirty = true;
-        setSyncState('conflict', '云端与本机存在冲突');
-        toast('同步冲突：已保留本机改动。请先导出本机备份，再拉取并合并云端数据');
-        break;
+    var lastErr = null;
+    for (var attempt = 0; attempt < 3; attempt++) {
+      try {
+        var sentUpdatedAt = state.updatedAt;
+        var body = JSON.stringify({ baseRev: Number.isFinite(sync.baseRev) ? sync.baseRev : (Number.isFinite(state.syncBaseRev) ? state.syncBaseRev : 0), state: state });
+        var res = await fetch('/api/state', {
+          method: 'PUT',
+          headers: apiHeaders({ 'Content-Type': 'application/json' }),
+          body: body
+        });
+        if (res.status === 409) {
+          state.syncDirty = true;
+          setSyncState('conflict', '云端与本机存在冲突');
+          toast('同步冲突：已保留本机改动。请先导出本机备份，再拉取并合并云端数据');
+          return;
+        }
+        if (res.status === 401) {
+          setSyncState('locked', '需要访问口令');
+          toast('同步服务需要访问口令，请在设置里填写');
+          return;
+        }
+        if (res.status === 413) {
+          setSyncState('error', '同步数据过大');
+          toast('同步数据超过服务端上限：请删除笔记里的图片或导出备份后精简，再重试');
+          return;
+        }
+        if (res.status >= 400 && res.status < 500) {
+          var detail = '';
+          try { var err = await res.json(); detail = err && err.error ? String(err.error) : ''; } catch (e2) {}
+          setSyncState('error', '同步被拒绝');
+          toast('同步被拒绝（HTTP ' + res.status + '）' + (detail ? '：' + detail : ''));
+          return;
+        }
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var data = await res.json();
+        sync.baseRev = Number(data.rev);
+        state.syncBaseRev = sync.baseRev;
+        state.rev = data.rev;
+        if (state.updatedAt === sentUpdatedAt) { state.updatedAt = data.updatedAt || state.updatedAt; state.syncDirty = false; }
+        else { state.syncDirty = true; sync.pending = true; }
+        persistLocal();
+        sync.lastSync = data.updatedAt;
+        setSyncState('online', 'rev ' + data.rev);
+        if (manual) toast('已同步到云端 · rev ' + data.rev);
+        return;
+      } catch (e) {
+        lastErr = e;
+        if (attempt < 2) await new Promise(function (r) { setTimeout(r, 800 * (attempt + 1)); });
       }
-      if (res.status === 401) {
-        setSyncState('locked', '需要访问口令');
-        toast('同步服务需要访问口令，请在设置里填写');
-        break;
-      }
-      if (!res.ok) throw new Error('push failed');
-      var data = await res.json();
-      sync.baseRev = Number(data.rev);
-      state.syncBaseRev = sync.baseRev;
-      state.rev = data.rev;
-      if (state.updatedAt === sentUpdatedAt) { state.updatedAt = data.updatedAt || state.updatedAt; state.syncDirty = false; }
-      else { state.syncDirty = true; sync.pending = true; }
-      persistLocal();
-      sync.lastSync = data.updatedAt;
-      setSyncState('online', 'rev ' + data.rev);
-      if (manual) toast('已同步到云端 · rev ' + data.rev);
-      break;
     }
+    throw lastErr || new Error('push failed');
   } catch (e) {
     setSyncState('offline', '同步失败，稍后重试');
     if (manual) toast('同步失败：' + (e.message || e));

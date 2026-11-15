@@ -91,7 +91,7 @@ test('oversized request body is rejected and the server stays alive',async()=>{
   const child=spawn(process.execPath,['server.js'],{cwd:temporary,env:{...process.env,PORT:String(port),HOST:'127.0.0.1',NOTEBOOK_TOKEN:''},stdio:['ignore','pipe','pipe']});
   try {
     await new Promise((resolve,reject)=>{let logs='';const timer=setTimeout(()=>reject(Error('server startup timeout: '+logs)),5000);child.stdout.on('data',d=>{logs+=d;if(logs.includes('本机:')){clearTimeout(timer);resolve();}});child.on('exit',c=>{clearTimeout(timer);reject(Error('server exited '+c));});});
-    const huge='x'.repeat(7*1024*1024);
+    const huge='x'.repeat(9*1024*1024);
     let status=0;
     try { const res=await request(port,'/api/state',{method:'PUT',headers:{'Content-Type':'application/json','Content-Length':Buffer.byteLength(huge)},body:huge}); status=res.status; } catch (e) { /* socket may close after 413 */ }
     assert.ok(status===413||status===0,'expected 413, got '+status);

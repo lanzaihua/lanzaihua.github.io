@@ -1402,7 +1402,7 @@ function aiOpenSaved() {
   ui.open[e.id] = true;
   location.hash = '#/' + subjectRouteId(e.subject) + '/entries';
   render();
-  var card = qs('#entry-' + e.id);
+  var card = document.getElementById('entry-' + e.id);
   if (card) card.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
@@ -1424,7 +1424,7 @@ function aiSaveDirect() {
   location.hash = '#/' + subjectRouteId(e.subject) + '/entries';
   render();
   toast('已保存 · ' + e.code);
-  var card = qs('#entry-' + e.id);
+  var card = document.getElementById('entry-' + e.id);
   if (card) card.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 

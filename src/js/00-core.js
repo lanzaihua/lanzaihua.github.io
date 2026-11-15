@@ -1275,6 +1275,43 @@ if (typeof window !== 'undefined' && window.addEventListener) {
   });
 }
 
+var storageUnsaved = false;
+var STORAGE_GUARD_CHARS = 4 * 1024 * 1024;
+
+function storageGuardBanner(show) {
+  if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+  var el = document.getElementById('storageGuardBanner');
+  if (!show) { if (el && el.parentNode) el.parentNode.removeChild(el); return; }
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'storageGuardBanner';
+    el.className = 'storage-guard-banner';
+    el.setAttribute('role', 'alert');
+    el.innerHTML = '<div><b>改动尚未保存到本机</b><span>本机存储空间不足。刷新或关闭页面会丢失这些改动，请先导出备份，再删除不需要的笔记图片。</span></div><div class="storage-guard-actions"><button type="button" class="btn btn-primary" data-storage-guard="export">导出备份</button><button type="button" class="btn" data-storage-guard="retry">重试保存</button></div>';
+    el.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest('[data-storage-guard]') : null;
+      if (!btn) return;
+      if (btn.getAttribute('data-storage-guard') === 'export') {
+        if (typeof exportState === 'function') exportState();
+        else if (typeof toast === 'function') toast('请到「设置与同步」导出备份');
+      } else {
+        persistLocal(false);
+        if (typeof toast === 'function') toast(storageUnsaved ? '仍然无法保存：请先导出备份并精简内容' : '已恢复保存');
+      }
+    });
+    (document.body || document.documentElement).appendChild(el);
+  }
+}
+
+if (typeof window !== 'undefined' && window.addEventListener) {
+  window.addEventListener('beforeunload', function (e) {
+    if (!storageUnsaved) return;
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  });
+}
+
 function persistLocal(quiet) {
   if (storageRecoveryBlocked) {
     if (typeof toast === 'function') toast('原始数据需要恢复，当前改动未保存；请先恢复有效备份');
@@ -1290,18 +1327,31 @@ function persistLocal(quiet) {
     } catch (mergeErr) { /* keep local; still write */ }
   }
   var rawOut = JSON.stringify(state);
+  if (rawOut.length > STORAGE_GUARD_CHARS) {
+    storageUnsaved = true;
+    storageGuardBanner(true);
+    if (!persistQuotaWarned) {
+      persistQuotaWarned = true;
+      try { if (typeof toast === 'function') toast('本机存储接近上限：这次改动没有写盘，请先导出备份，再删除笔记图片', { title: '未保存' }); } catch (err) { /* boot */ }
+    }
+    return false;
+  }
   var wrote = safeStorage.set(STORAGE_KEY, rawOut, { silent: true });
   if (!wrote) {
+    storageUnsaved = true;
+    storageGuardBanner(true);
     if (!persistQuotaWarned) {
       persistQuotaWarned = true;
       if (!quiet) {
-        try { if (typeof toast === 'function') toast('本机存储已满：当前改动只保留在内存中；请先导出备份，再删除不需要的笔记'); } catch (err) { /* boot */ }
+        try { if (typeof toast === 'function') toast('本机存储已满：当前改动只保留在内存中；请先导出备份，再删除不需要的笔记', { title: '未保存' }); } catch (err) { /* boot */ }
       }
     }
     return false;
   }
   lastWrittenRaw = rawOut;
   persistQuotaWarned = false;
+  storageUnsaved = false;
+  storageGuardBanner(false);
   subjectMigrationPending = false;
   return true;
 }

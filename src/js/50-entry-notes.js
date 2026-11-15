@@ -539,7 +539,7 @@ function openSyncedEntry(entryId) {
   updateHash();
   render();
   setTimeout(function () {
-    var el = qs('#entry-' + e.id);
+    var el = document.getElementById('entry-' + e.id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 80);
 }

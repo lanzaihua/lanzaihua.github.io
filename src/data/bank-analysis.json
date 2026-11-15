@@ -28637,7 +28637,7 @@
         },
         {
           "key": "B",
-          "text": "$(u\\pm v)^{}=u^{}\\pm v^{}$"
+          "text": "$(u\\pm v)^{\\prime}=u^{\\prime}\\mp v^{\\prime}$"
         },
         {
           "key": "C",
@@ -28695,7 +28695,7 @@
         },
         {
           "key": "B",
-          "text": "$(uv)^{}=u^{}v+uv^{}$"
+          "text": "$(uv)^{\\prime}=u^{\\prime}v-uv^{\\prime}$"
         },
         {
           "key": "C",
@@ -28815,7 +28815,7 @@
         },
         {
           "key": "C",
-          "text": "$(f\\circ g)^{}(x)=f^{}(g(x))g^{}(x)$"
+          "text": "$(f\\circ g)^{\\prime}(x)=f^{\\prime}(g(x))$"
         },
         {
           "key": "D",
@@ -28869,7 +28869,7 @@
         },
         {
           "key": "B",
-          "text": "$(f^{-1})^{}(y)=\\frac{1}{f^{}(x)},y=f(x)$"
+          "text": "$(f^{-1})^{\\prime}(y)=\\frac{1}{f(x)},\\ y=f(x)$"
         },
         {
           "key": "C",
@@ -28931,7 +28931,7 @@
         },
         {
           "key": "C",
-          "text": "$(x^{\\alpha})^{}=\\alpha x^{\\alpha-1}$"
+          "text": "$(x^{\\alpha})^{\\prime}=\\alpha x^{\\alpha}$"
         },
         {
           "key": "D",
@@ -28989,7 +28989,7 @@
         },
         {
           "key": "C",
-          "text": "$(\\sin x)^{}=\\cos x$"
+          "text": "$(\\sin x)^{\\prime}=-\\cos x$"
         },
         {
           "key": "D",
@@ -29043,7 +29043,7 @@
         },
         {
           "key": "B",
-          "text": "$(e^x)^{}=e^x$"
+          "text": "$(e^x)^{\\prime}=xe^{x-1}$"
         },
         {
           "key": "C",
@@ -29105,7 +29105,7 @@
         },
         {
           "key": "C",
-          "text": "$(\\ln x)^{}=\\frac1x$"
+          "text": "$(\\ln x)^{\\prime}=\\frac{1}{x\\ln x}$"
         },
         {
           "key": "D",
@@ -29159,7 +29159,7 @@
         },
         {
           "key": "B",
-          "text": "$dy=f^{}(x_0)\\,dx$"
+          "text": "$dy=f(x_0)\\,dx$"
         },
         {
           "key": "C",
@@ -29221,7 +29221,7 @@
         },
         {
           "key": "C",
-          "text": "$dy=f^{}(u)\\,du$"
+          "text": "$dy=f(u)\\,du$"
         },
         {
           "key": "D",
@@ -30088,7 +30088,7 @@
         },
         {
           "key": "B",
-          "text": "$(u\\pm v)^{}=u^{}\\pm v^{}$"
+          "text": "$(u\\pm v)^{\\prime}=u^{\\prime}\\mp v^{\\prime}$"
         },
         {
           "key": "C",
@@ -30149,7 +30149,7 @@
         },
         {
           "key": "C",
-          "text": "$(uv)^{}=u^{}v+uv^{}$"
+          "text": "$(uv)^{\\prime}=u^{\\prime}v-uv^{\\prime}$"
         },
         {
           "key": "D",
@@ -35436,7 +35436,7 @@
         },
         {
           "key": "D",
-          "text": "$f\\text{在}x_0\\text{取极值且可导}=f^{}(x_0)=0$"
+          "text": "$f\\text{在}x_0\\text{取极值且可导}=f(x_0)=0$"
         }
       ],
       "correct": "C",
@@ -35668,7 +35668,7 @@
         },
         {
           "key": "D",
-          "text": "$f^{}(x)=0(x\\in I)=f\\text{在}I\\text{上为常数}$"
+          "text": "$f(x)=0(x\\in I)=f\\text{在}I\\text{上为常数}$"
         }
       ],
       "correct": "B",
@@ -35726,7 +35726,7 @@
         },
         {
           "key": "D",
-          "text": "$f^{}(x)>0(x\\in I)=f\\text{在}I\\text{上严格增}$"
+          "text": "$f^{\\prime}(x)<0(x\\in I)=f\\text{在}I\\text{上严格增}$"
         }
       ],
       "correct": "C",
@@ -35784,7 +35784,7 @@
         },
         {
           "key": "D",
-          "text": "$f^{}(x_0)=0,f^{}(x_0)>0=f\\text{在}x_0\\text{取极小值}$"
+          "text": "$f^{\\prime}(x_0)=0,f^{\\prime}(x_0)>0=f\\text{在}x_0\\text{取极小值}$"
         }
       ],
       "correct": "A",
@@ -35838,7 +35838,7 @@
         },
         {
           "key": "C",
-          "text": "$f^{}(x)>0(x\\in I)=f\\text{的图像为凹弧（下凸）}$"
+          "text": "$f^{\\prime}(x)>0(x\\in I)=f\\text{的图像为凹弧（下凸）}$"
         },
         {
           "key": "D",
@@ -35900,7 +35900,7 @@
         },
         {
           "key": "D",
-          "text": "$x_0\\text{为拐点横坐标}=f^{}(x_0)=0\\text{或}f^{}(x_0)\\text{不存在}$"
+          "text": "$x_0\\text{为拐点横坐标}=f^{\\prime}(x_0)=0\\text{或}f^{\\prime}(x_0)\\text{不存在}$"
         }
       ],
       "correct": "C",
@@ -36248,7 +36248,7 @@
         },
         {
           "key": "D",
-          "text": "$\\lim\\frac{f(x)}{g(x)}=\\lim\\frac{f^{}(x)}{g^{}(x)}$"
+          "text": "$\\lim\\frac{f(x)}{g(x)}=\\lim\\frac{f^{\\prime}(x)}{g(x)}$"
         }
       ],
       "correct": "B",
@@ -36890,7 +36890,7 @@
         },
         {
           "key": "D",
-          "text": "$f\\text{在}x_0\\text{取极值且可导}=f^{}(x_0)=0$"
+          "text": "$f\\text{在}x_0\\text{取极值且可导}=f(x_0)=0$"
         }
       ],
       "correct": "B",
@@ -37114,7 +37114,7 @@
         },
         {
           "key": "C",
-          "text": "$f^{}(x)=0(x\\in I)=f\\text{在}I\\text{上为常数}$"
+          "text": "$f(x)=0(x\\in I)=f\\text{在}I\\text{上为常数}$"
         },
         {
           "key": "D",
@@ -49362,7 +49362,7 @@
         },
         {
           "key": "C",
-          "text": "$F\\text{是}f\\text{在}I\\text{上的原函数}=F^{}(x)=f(x)(x\\in I)$"
+          "text": "$F\\text{是}f\\text{在}I\\text{上的原函数}=F(x)=f(x)(x\\in I)$"
         },
         {
           "key": "D",
@@ -49416,11 +49416,11 @@
         },
         {
           "key": "B",
-          "text": "$\\int f(x)\\,dx=F(x)+C,F^{}=f$"
+          "text": "$\\int f(x)\\,dx=F(x)+C,F=f$"
         },
         {
           "key": "C",
-          "text": "$\\int f(x)\\,dx=F(x)+C,F^{\\prime}=f+1$"
+          "text": "$\\int f(x)\\,dx=F(x)+C,F=f^{\\prime}$"
         },
         {
           "key": "D",
@@ -50000,7 +50000,7 @@
         },
         {
           "key": "C",
-          "text": "$\\int f(\\varphi(x))\\varphi^{}(x)\\,dx=\\int f(u)\\,du,u=\\varphi(x)$"
+          "text": "$\\int f(\\varphi(x))\\varphi(x)\\,dx=\\int f(u)\\,du,u=\\varphi(x)$"
         },
         {
           "key": "D",
@@ -50820,7 +50820,7 @@
         },
         {
           "key": "D",
-          "text": "$F\\text{是}f\\text{在}I\\text{上的原函数}=F^{}(x)=f(x)(x\\in I)$"
+          "text": "$F\\text{是}f\\text{在}I\\text{上的原函数}=F(x)=f(x)(x\\in I)$"
         }
       ],
       "correct": "C",
@@ -50873,7 +50873,7 @@
         },
         {
           "key": "C",
-          "text": "$\\int f(x)\\,dx=F(x)+C,F^{}=f$"
+          "text": "$\\int f(x)\\,dx=F(x)+C,F=f^{\\prime}$"
         },
         {
           "key": "D",
@@ -56791,7 +56791,7 @@
         },
         {
           "key": "C",
-          "text": "$\\int_a^bf(x)\\,dx=F(b)-F(a),F^{}=f$"
+          "text": "$\\int_a^bf(x)\\,dx=F(b)-F(a),F=f^{\\prime}$"
         },
         {
           "key": "D",
@@ -56849,7 +56849,7 @@
         },
         {
           "key": "C",
-          "text": "$\\int_a^bf(x)\\,dx=\\int_\\alpha^\\beta f(\\varphi(t))\\varphi^{}(t)\\,dt$"
+          "text": "$\\int_a^bf(x)\\,dx=\\int_\\alpha^\\beta f(\\varphi(t))\\varphi(t)\\,dt$"
         },
         {
           "key": "D",
@@ -70895,7 +70895,7 @@
         },
         {
           "key": "C",
-          "text": "$\\int_a^{+\\infty}f(x)\\,dx=\\int_\\alpha^\\beta f(\\varphi(t))\\varphi^{}(t)\\,dt$"
+          "text": "$\\int_a^{+\\infty}f(x)\\,dx=\\int_\\alpha^\\beta f(\\varphi(t))\\varphi(t)\\,dt$"
         },
         {
           "key": "D",
@@ -84535,7 +84535,7 @@
         },
         {
           "key": "C",
-          "text": "$f_n^{}\\rightrightarrows g,f_n\\text{逐点收敛于}f=f^{}=g$"
+          "text": "$f_n^{\\prime}\\rightrightarrows g,f_n\\text{逐点收敛于}f=f^{\\prime}\\ne g$"
         },
         {
           "key": "D",
@@ -162567,7 +162567,8 @@
       "templateTitle": "重要极限",
       "verification": "",
       "category": "计算题",
-      "examOrigin": "教材课后习题"
+      "examOrigin": "教材课后习题",
+      "options": []
     },
     {
       "id": "MA-TX071",
@@ -162601,7 +162602,8 @@
       "templateTitle": "幂指函数求导",
       "verification": "",
       "category": "计算题",
-      "examOrigin": "教材课后习题"
+      "examOrigin": "教材课后习题",
+      "options": []
     },
     {
       "id": "MA-TX072",
@@ -162636,7 +162638,8 @@
       "templateTitle": "分部积分",
       "verification": "",
       "category": "计算题",
-      "examOrigin": "教材课后习题"
+      "examOrigin": "教材课后习题",
+      "options": []
     }
   ]
 }

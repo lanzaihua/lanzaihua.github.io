@@ -9232,3 +9232,12 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 
 .fatal-error .fatal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .fatal-error .fatal-actions .btn{min-height:44px}
+
+/* Storage guard: persistent unsaved-data banner (2026-11-15). */
+.storage-guard-banner{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:9000;display:flex;align-items:center;gap:16px;max-width:min(880px,calc(100vw - 28px));padding:14px 16px;border:1px solid #b23a26;border-left:6px solid #b23a26;border-radius:12px;background:#fffaf3;color:#29241d;box-shadow:0 18px 44px rgba(41,36,29,.18);font-size:13px;line-height:1.6}
+.storage-guard-banner b{display:block;font-size:14px;margin-bottom:2px;color:#8f2f1f}
+.storage-guard-banner span{display:block;color:#5d5a52}
+.storage-guard-actions{display:flex;gap:8px;flex-shrink:0}
+.storage-guard-actions .btn{min-height:40px;white-space:nowrap}
+@media (max-width:640px){.storage-guard-banner{left:12px;right:12px;bottom:12px;transform:none;flex-direction:column;align-items:stretch;gap:10px}.storage-guard-actions{justify-content:flex-end}}
+

@@ -785,21 +785,45 @@ function finalDocxPara(text, opts) {
   var pPr = '<w:spacing' + (opts.before != null ? ' w:before="' + opts.before + '"' : '') + ' w:after="' + (opts.after == null ? 100 : opts.after) + '" w:line="' + (opts.line || 320) + '" w:lineRule="auto"/>' + (opts.indent ? '<w:ind w:left="' + opts.indent + '"' + (opts.hanging ? ' w:hanging="' + opts.hanging + '"' : '') + '/>' : '') + (opts.align ? '<w:jc w:val="' + opts.align + '"/>' : '');
   return '<w:p><w:pPr>' + pPr + '</w:pPr>' + finalDocxRichRuns(text, rPr) + '</w:p>';
 }
-function finalPaperDocxBlob(p) {
+function finalPaperDocxDocumentXml(p) {
   var body = finalDocxPara(p.title, { bold: true, size: 32, align: 'center', after: 120 }) +
     finalDocxPara('考试时长：' + p.duration + ' 分钟　总分：100 分　题量：' + p.items.length + ' 题', { align: 'center', size: 20, after: 240 });
   p.items.forEach(function (it, i) {
     body += finalDocxPara((i + 1) + '．（' + it.score + ' 分）' + (it.title || ''), { bold: true, size: 23, after: 60 });
-    body += finalDocxPara(it.question || '', { size: 21, after: 100 });
+    body += finalDocxPara(it.question || '', { size: 21, after: 80 });
+    var opts = Array.isArray(it.options) ? it.options : [];
+    opts.forEach(function (opt, j) {
+      var key = opt && opt.key ? String(opt.key) : String.fromCharCode(65 + j);
+      var text = opt && opt.text != null ? opt.text : opt;
+      body += finalDocxPara(key + '．' + String(text == null ? '' : text), { size: 21, after: 35, indent: 240, hanging: 240 });
+    });
     body += finalDocxPara('答题区', { size: 18, after: 40 });
     body += finalDocxPara(' ', { size: 21, after: 200 });
   });
   body += '<w:p><w:r><w:br w:type="page"/></w:r></w:p>';
-  body += finalDocxPara('参考答案', { bold: true, size: 28, align: 'center', after: 180 });
+  body += finalDocxPara('参考答案与解析', { bold: true, size: 28, align: 'center', after: 180 });
   p.items.forEach(function (it, i) {
-    body += finalDocxPara((i + 1) + '．' + (it.answer || '暂无答案'), { size: 21, after: 120 });
+    var answer = String(it.answer || '').trim();
+    var answerLine = it.correct ? ('答案：' + it.correct + (answer ? '．' + answer : '')) : (answer || '暂无答案');
+    body += finalDocxPara((i + 1) + '．' + answerLine, { size: 21, after: 70 });
+    if (String(it.standardSolution || '').trim()) {
+      body += finalDocxPara('标准解答：', { bold: true, size: 20, after: 30 });
+      body += finalDocxPara(String(it.standardSolution).trim(), { size: 20, after: 70 });
+    }
+    if (String(it.detailedAnalysis || '').trim()) {
+      body += finalDocxPara('详细解析：', { bold: true, size: 20, after: 30 });
+      body += finalDocxPara(String(it.detailedAnalysis).trim(), { size: 20, after: 70 });
+    }
+    var points = Array.isArray(it.points) ? it.points.filter(function (x) { return String(x || '').trim(); }) : [];
+    if (points.length) body += finalDocxPara('解题要点：' + points.join('；'), { size: 20, after: 50 });
+    var pitfalls = Array.isArray(it.pitfalls) ? it.pitfalls.filter(function (x) { return String(x || '').trim(); }) : [];
+    if (pitfalls.length) body += finalDocxPara('易错点：' + pitfalls.join('；'), { size: 20, after: 50 });
   });
-  var documentXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><w:body>' + body + '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>';
+  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><w:body>' + body + '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>';
+}
+
+function finalPaperDocxBlob(p) {
+  var documentXml = finalPaperDocxDocumentXml(p);
   var stylesXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="SimSun" w:eastAsia="SimSun" w:hAnsi="SimSun"/></w:rPr></w:rPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style></w:styles>';
   var contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>';
   var rootRels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';

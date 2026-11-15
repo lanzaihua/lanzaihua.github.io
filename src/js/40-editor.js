@@ -326,7 +326,7 @@ function saveEditor() {
   ui.open[e.id] = true;
   location.hash = '#/' + subjectRouteId(subjectId) + '/entries';
   render();
-  var el = qs('#entry-' + e.id);
+  var el = document.getElementById('entry-' + e.id);
   if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
@@ -559,16 +559,15 @@ function saveUserName() {
 
 function backupSafeState() {
   var copy = deepClone(state);
-  var blocked = /^(api.*|ai.*|autoAi|aiAuto|model|protocol|baseUrl|dshToken|accessToken|token|key)$/i;
-  function scrub(value) {
-    if (!value || typeof value !== 'object') return;
-    if (Array.isArray(value)) { value.forEach(scrub); return; }
-    Object.keys(value).forEach(function (k) {
-      if (blocked.test(k)) { delete value[k]; return; }
-      scrub(value[k]);
-    });
+  // Only remove credential-shaped fields at known containers. A recursive
+  // blacklist used to delete every block's `key` (original/standard/...),
+  // which silently corrupted the backup itself.
+  ['apiKey', 'dshToken', 'accessToken', 'syncToken'].forEach(function (k) { delete copy[k]; });
+  if (copy.sync && typeof copy.sync === 'object') { delete copy.sync.token; delete copy.sync.apiKey; }
+  if (copy.ai && typeof copy.ai === 'object') { delete copy.ai.apiKey; delete copy.ai.token; }
+  if (copy.prefs && typeof copy.prefs === 'object') {
+    delete copy.prefs.apiKey; delete copy.prefs.dshToken; delete copy.prefs.accessToken;
   }
-  scrub(copy);
   SUBJECTS.forEach(function (s) {
     ((copy.entries && copy.entries[s.id]) || []).forEach(function (e) {
       if (!e || typeof e !== 'object') return;
@@ -585,16 +584,8 @@ function backupSafeState() {
 
 function backupSafeLibraries(libs) {
   var copy = deepClone(libs);
-  var blocked = /^(api.*|ai.*|autoAi|aiAuto|model|protocol|baseUrl|dshToken|accessToken|token|key)$/i;
-  function scrub(value) {
-    if (!value || typeof value !== 'object') return;
-    if (Array.isArray(value)) { value.forEach(scrub); return; }
-    Object.keys(value).forEach(function (k) {
-      if (blocked.test(k)) { delete value[k]; return; }
-      scrub(value[k]);
-    });
-  }
-  scrub(copy);
+  // Libraries are content, not configuration: never strip nested `key` fields.
+  ['apiKey', 'dshToken', 'accessToken', 'syncToken'].forEach(function (k) { delete copy[k]; });
   return copy;
 }
 

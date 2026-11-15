@@ -345,7 +345,7 @@ function handleAction(act, el) {
       var id = el.getAttribute('data-bank-id');
       ui.bankOpen[id] = !ui.bankOpen[id];
       render();
-      var bankEl = qs('#bank-' + id);
+      var bankEl = document.getElementById('bank-' + id);
       if (bankEl) bankEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       if (typeof decorateMathScrollers === 'function') setTimeout(function () { decorateMathScrollers(bankEl); }, 30);
       break;
@@ -705,7 +705,7 @@ document.addEventListener('input', function (e) {
     updateHomeVisibility();
     var m = String(location.hash).match(/[?&]e=([^&]+)/);
     if (m) {
-      var el = qs('#entry-' + decodeURIComponent(m[1]));
+      var el = document.getElementById('entry-' + decodeURIComponent(m[1]));
       if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
     focusRouteHeading();
@@ -901,7 +901,7 @@ async function boot() {
     if (typeof startAutoAi === 'function') startAutoAi();
     var m = String(location.hash).match(/[?&]e=([^&]+)/);
     if (m) {
-      var el = qs('#entry-' + decodeURIComponent(m[1]));
+      var el = document.getElementById('entry-' + decodeURIComponent(m[1]));
       if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
   });

@@ -725,7 +725,7 @@ const server = http.createServer(function (req, res) {
         return json(res, 500, { error: 'write failed' });
       }
       return json(res, 200, { rev: cur.rev + 1, updatedAt: readState().updatedAt });
-    });
+    }, 8 * 1024 * 1024);
   }
 
   if (req.method !== 'GET' && req.method !== 'HEAD') {

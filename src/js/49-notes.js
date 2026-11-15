@@ -1248,7 +1248,9 @@ async function noteReplaceImageFile(file, subjectId) {
     var w = item.w;
     var h = w * page.width * (img.height / img.width) / page.height;
     if (h > 0.55) { h = 0.55; w = h * page.height * (img.width / img.height) / page.width; }
-    item.src = c.toDataURL('image/jpeg', 0.86);
+    var replaced = c.toDataURL('image/jpeg', 0.86);
+    if (!noteImageFits(replaced, '图片')) return;
+    item.src = replaced;
     item.alt = file.name || '插入的图片';
     item.w = w;
     item.h = h;
@@ -1404,6 +1406,7 @@ async function noteInsertImageFile(file, subjectId) {
     ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
     ctx.drawImage(img, 0, 0, c.width, c.height);
     var src = c.toDataURL('image/jpeg', 0.86);
+    if (!noteImageFits(src, '图片')) return;
     var w = 0.45;
     var h = w * page.width * (img.height / img.width) / page.height;
     if (h > 0.42) { h = 0.42; w = h * page.height * (img.width / img.height) / page.width; }
@@ -2012,7 +2015,9 @@ async function noteScanSave() {
       page.width = NOTE_SCAN_W;
       page.height = NOTE_SCAN_H;
       page.paper = 'white';
-      page.background = canvas.toDataURL('image/jpeg', 0.9);
+      var scanBg = canvas.toDataURL('image/jpeg', 0.9);
+      if (!noteImageFits(scanBg, '扫描页')) break;
+      page.background = scanBg;
       page.thumb = noteMakeThumb(canvas);
       page.updatedAt = nowIso();
       created.push(page);
@@ -2079,7 +2084,9 @@ async function noteScanA4File(file, subjectId) {
     page.width = W;
     page.height = H;
     page.paper = 'white';
-    page.background = c.toDataURL('image/jpeg', 0.86);
+    var scanBgOne = c.toDataURL('image/jpeg', 0.86);
+    if (!noteImageFits(scanBgOne, '扫描页')) return;
+    page.background = scanBgOne;
     page.thumb = noteMakeThumb(c);
     page.updatedAt = nowIso();
     ui.noteLibrary = false;
@@ -2218,7 +2225,9 @@ function noteCoverCropApply() {
   if (!s) return;
   var canvas = document.createElement('canvas');
   noteCoverCropDrawTo(canvas);
-  ui.noteCoverImage = canvas.toDataURL('image/jpeg', 0.82);
+  var cover = canvas.toDataURL('image/jpeg', 0.82);
+  if (!noteImageFits(cover, '封面')) return;
+  ui.noteCoverImage = cover;
   ui.noteCoverPick = 'custom';
   ui.noteCoverCrop = null;
   var dlg = qs('#noteCoverCropDialog');
@@ -3177,6 +3186,17 @@ function noteBusyText(text) {
   if (t && text) t.textContent = text;
 }
 
+function noteStateBytes() {
+  try { return JSON.stringify(state).length; } catch (e) { return 0; }
+}
+
+function noteImageFits(dataUrl, what) {
+  var size = noteStateBytes();
+  if (size + String(dataUrl || '').length <= STORAGE_GUARD_CHARS) return true;
+  toast('本机存储空间不足：这张' + (what || '图片') + '没有写入。请先到「设置与同步」导出备份，再删除不需要的笔记图片', { title: '未保存' });
+  return false;
+}
+
 function noteMakeThumb(canvas) {
   var t = document.createElement('canvas');
   var w = 124;
@@ -3210,7 +3230,9 @@ async function noteImportImage(file, subjectId) {
   var page = noteNewPage(file.name.replace(/\.[^.]+$/, '') || '图片笔记');
   page.width = w;
   page.height = h;
-  page.background = c.toDataURL('image/jpeg', 0.82);
+  var bg = c.toDataURL('image/jpeg', 0.82);
+  if (!noteImageFits(bg, '图片页')) return null;
+  page.background = bg;
   page.thumb = noteMakeThumb(c);
   return page;
 }
@@ -3268,7 +3290,9 @@ async function noteImportPdf(file, subjectId) {
     var page = noteNewPage('PDF 第 ' + i + ' 页');
     page.width = c.width;
     page.height = c.height;
-    page.background = c.toDataURL('image/jpeg', 0.84);
+    var pdfBg = c.toDataURL('image/jpeg', 0.84);
+    if (!noteImageFits(pdfBg, 'PDF 页')) break;
+    page.background = pdfBg;
     page.thumb = noteMakeThumb(c);
     added.push(page);
     noteBusyProgress(i, count, '已转换 PDF 第 ' + i + ' / ' + count + ' 页');
@@ -3314,6 +3338,7 @@ async function noteImportFiles(files, subjectId) {
         } else if (/^image\//.test(file.type) || /\.(png|jpe?g|webp|gif|bmp)$/i.test(file.name)) {
           noteBusyText('正在处理 ' + file.name + '…');
           var imgPage = await noteImportImage(file, subjectId);
+          if (!imgPage) continue;
           if (targetBook) {
             var ipages = targetBook.pages || (targetBook.pages = []);
             imgPage.title = '第 ' + (ipages.length + 1) + ' 页';

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.15-eec22ffa";</script>
+<script>window.__BUILD_ID__="2026.11.15-090d72a2";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9256,6 +9256,15 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 .fatal-error .fatal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .fatal-error .fatal-actions .btn{min-height:44px}
 
+/* Storage guard: persistent unsaved-data banner (2026-11-15). */
+.storage-guard-banner{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:9000;display:flex;align-items:center;gap:16px;max-width:min(880px,calc(100vw - 28px));padding:14px 16px;border:1px solid #b23a26;border-left:6px solid #b23a26;border-radius:12px;background:#fffaf3;color:#29241d;box-shadow:0 18px 44px rgba(41,36,29,.18);font-size:13px;line-height:1.6}
+.storage-guard-banner b{display:block;font-size:14px;margin-bottom:2px;color:#8f2f1f}
+.storage-guard-banner span{display:block;color:#5d5a52}
+.storage-guard-actions{display:flex;gap:8px;flex-shrink:0}
+.storage-guard-actions .btn{min-height:40px;white-space:nowrap}
+@media (max-width:640px){.storage-guard-banner{left:12px;right:12px;bottom:12px;transform:none;flex-direction:column;align-items:stretch;gap:10px}.storage-guard-actions{justify-content:flex-end}}
+
+
 </style>
 </head>
 <body>
@@ -14174,6 +14183,43 @@ if (typeof window !== 'undefined' && window.addEventListener) {
   });
 }
 
+var storageUnsaved = false;
+var STORAGE_GUARD_CHARS = 4 * 1024 * 1024;
+
+function storageGuardBanner(show) {
+  if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+  var el = document.getElementById('storageGuardBanner');
+  if (!show) { if (el && el.parentNode) el.parentNode.removeChild(el); return; }
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'storageGuardBanner';
+    el.className = 'storage-guard-banner';
+    el.setAttribute('role', 'alert');
+    el.innerHTML = '<div><b>改动尚未保存到本机</b><span>本机存储空间不足。刷新或关闭页面会丢失这些改动，请先导出备份，再删除不需要的笔记图片。</span></div><div class="storage-guard-actions"><button type="button" class="btn btn-primary" data-storage-guard="export">导出备份</button><button type="button" class="btn" data-storage-guard="retry">重试保存</button></div>';
+    el.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest('[data-storage-guard]') : null;
+      if (!btn) return;
+      if (btn.getAttribute('data-storage-guard') === 'export') {
+        if (typeof exportState === 'function') exportState();
+        else if (typeof toast === 'function') toast('请到「设置与同步」导出备份');
+      } else {
+        persistLocal(false);
+        if (typeof toast === 'function') toast(storageUnsaved ? '仍然无法保存：请先导出备份并精简内容' : '已恢复保存');
+      }
+    });
+    (document.body || document.documentElement).appendChild(el);
+  }
+}
+
+if (typeof window !== 'undefined' && window.addEventListener) {
+  window.addEventListener('beforeunload', function (e) {
+    if (!storageUnsaved) return;
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  });
+}
+
 function persistLocal(quiet) {
   if (storageRecoveryBlocked) {
     if (typeof toast === 'function') toast('原始数据需要恢复，当前改动未保存；请先恢复有效备份');
@@ -14189,18 +14235,31 @@ function persistLocal(quiet) {
     } catch (mergeErr) { /* keep local; still write */ }
   }
   var rawOut = JSON.stringify(state);
+  if (rawOut.length > STORAGE_GUARD_CHARS) {
+    storageUnsaved = true;
+    storageGuardBanner(true);
+    if (!persistQuotaWarned) {
+      persistQuotaWarned = true;
+      try { if (typeof toast === 'function') toast('本机存储接近上限：这次改动没有写盘，请先导出备份，再删除笔记图片', { title: '未保存' }); } catch (err) { /* boot */ }
+    }
+    return false;
+  }
   var wrote = safeStorage.set(STORAGE_KEY, rawOut, { silent: true });
   if (!wrote) {
+    storageUnsaved = true;
+    storageGuardBanner(true);
     if (!persistQuotaWarned) {
       persistQuotaWarned = true;
       if (!quiet) {
-        try { if (typeof toast === 'function') toast('本机存储已满：当前改动只保留在内存中；请先导出备份，再删除不需要的笔记'); } catch (err) { /* boot */ }
+        try { if (typeof toast === 'function') toast('本机存储已满：当前改动只保留在内存中；请先导出备份，再删除不需要的笔记', { title: '未保存' }); } catch (err) { /* boot */ }
       }
     }
     return false;
   }
   lastWrittenRaw = rawOut;
   persistQuotaWarned = false;
+  storageUnsaved = false;
+  storageGuardBanner(false);
   subjectMigrationPending = false;
   return true;
 }
@@ -14550,41 +14609,57 @@ async function pushSync(manual) {
   sync.busy = true;
   renderSyncStatus();
   try {
-    var attempts = 0;
-    while (attempts < 3) {
-      attempts++;
-      var sentUpdatedAt = state.updatedAt;
-      var body = JSON.stringify({ baseRev: Number.isFinite(sync.baseRev) ? sync.baseRev : (Number.isFinite(state.syncBaseRev) ? state.syncBaseRev : 0), state: state });
-      var res = await fetch('/api/state', {
-        method: 'PUT',
-        headers: apiHeaders({ 'Content-Type': 'application/json' }),
-        body: body
-      });
-      if (res.status === 409) {
-        var cur = await res.json();
-        state.syncDirty = true;
-        setSyncState('conflict', '云端与本机存在冲突');
-        toast('同步冲突：已保留本机改动。请先导出本机备份，再拉取并合并云端数据');
-        break;
+    var lastErr = null;
+    for (var attempt = 0; attempt < 3; attempt++) {
+      try {
+        var sentUpdatedAt = state.updatedAt;
+        var body = JSON.stringify({ baseRev: Number.isFinite(sync.baseRev) ? sync.baseRev : (Number.isFinite(state.syncBaseRev) ? state.syncBaseRev : 0), state: state });
+        var res = await fetch('/api/state', {
+          method: 'PUT',
+          headers: apiHeaders({ 'Content-Type': 'application/json' }),
+          body: body
+        });
+        if (res.status === 409) {
+          state.syncDirty = true;
+          setSyncState('conflict', '云端与本机存在冲突');
+          toast('同步冲突：已保留本机改动。请先导出本机备份，再拉取并合并云端数据');
+          return;
+        }
+        if (res.status === 401) {
+          setSyncState('locked', '需要访问口令');
+          toast('同步服务需要访问口令，请在设置里填写');
+          return;
+        }
+        if (res.status === 413) {
+          setSyncState('error', '同步数据过大');
+          toast('同步数据超过服务端上限：请删除笔记里的图片或导出备份后精简，再重试');
+          return;
+        }
+        if (res.status >= 400 && res.status < 500) {
+          var detail = '';
+          try { var err = await res.json(); detail = err && err.error ? String(err.error) : ''; } catch (e2) {}
+          setSyncState('error', '同步被拒绝');
+          toast('同步被拒绝（HTTP ' + res.status + '）' + (detail ? '：' + detail : ''));
+          return;
+        }
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var data = await res.json();
+        sync.baseRev = Number(data.rev);
+        state.syncBaseRev = sync.baseRev;
+        state.rev = data.rev;
+        if (state.updatedAt === sentUpdatedAt) { state.updatedAt = data.updatedAt || state.updatedAt; state.syncDirty = false; }
+        else { state.syncDirty = true; sync.pending = true; }
+        persistLocal();
+        sync.lastSync = data.updatedAt;
+        setSyncState('online', 'rev ' + data.rev);
+        if (manual) toast('已同步到云端 · rev ' + data.rev);
+        return;
+      } catch (e) {
+        lastErr = e;
+        if (attempt < 2) await new Promise(function (r) { setTimeout(r, 800 * (attempt + 1)); });
       }
-      if (res.status === 401) {
-        setSyncState('locked', '需要访问口令');
-        toast('同步服务需要访问口令，请在设置里填写');
-        break;
-      }
-      if (!res.ok) throw new Error('push failed');
-      var data = await res.json();
-      sync.baseRev = Number(data.rev);
-      state.syncBaseRev = sync.baseRev;
-      state.rev = data.rev;
-      if (state.updatedAt === sentUpdatedAt) { state.updatedAt = data.updatedAt || state.updatedAt; state.syncDirty = false; }
-      else { state.syncDirty = true; sync.pending = true; }
-      persistLocal();
-      sync.lastSync = data.updatedAt;
-      setSyncState('online', 'rev ' + data.rev);
-      if (manual) toast('已同步到云端 · rev ' + data.rev);
-      break;
     }
+    throw lastErr || new Error('push failed');
   } catch (e) {
     setSyncState('offline', '同步失败，稍后重试');
     if (manual) toast('同步失败：' + (e.message || e));
@@ -17029,7 +17104,7 @@ function setMastery(entryId, value) {
     var open = ui.open[e.id];
     ui.open[e.id] = open;
     render();
-    var card = qs('#entry-' + e.id);
+    var card = document.getElementById('entry-' + e.id);
     if (card) card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   } else {
     render();
@@ -17055,7 +17130,7 @@ function removeReviewLogDay(block, day) {
   block.md = String(block.md || '').replace(re, '').replace(/\n{3,}/g, '\n\n').trim();
 }
 
-function toggleReview(entryId, day) {
+function toggleReview(entryId, day, force) {
   var e = findEntry(state.activeSubject, entryId);
   if (!e) return;
   var wasOn = !!e.review[day];
@@ -17077,6 +17152,21 @@ function toggleReview(entryId, day) {
     }
     if (!reviewCanOpenDay(e, day)) {
       toast('请按顺序完成前面的复习节点', { title: '复习顺序提示', detail: '题目：' + e.code + ' · ' + (e.summary || ''), kind: 'review' });
+      return;
+    }
+  }
+  if (wasOn && !force) {
+    var planForConfirm = reviewPlanKeys(e);
+    var confirmedLater = planForConfirm.slice(planForConfirm.indexOf(day) + 1).filter(function (d) { return e.review[d]; });
+    if (confirmedLater.length) {
+      confirmDialog(
+        '取消打卡会清除后续记录',
+        '取消「' + reviewDayLabel(day) + '」后，后面已完成的 ' + confirmedLater.length + ' 个复习节点（' +
+          confirmedLater.map(reviewDayLabel).join('、') + '）也会一起清除，无法撤销。是否继续？',
+        function () { toggleReview(entryId, day, true); },
+        true,
+        '确认取消打卡'
+      );
       return;
     }
   }
@@ -17112,14 +17202,14 @@ function toggleReview(entryId, day) {
   touchEntry(e);
   markDirty();
   render();
-  var card = qs('#entry-' + e.id);
+  var card = document.getElementById('entry-' + e.id);
   if (card) card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
 function toggleEntry(entryId) {
   ui.open[entryId] = !ui.open[entryId];
   render();
-  var card = qs('#entry-' + entryId);
+  var card = document.getElementById('entry-' + entryId);
   if (card && ui.open[entryId]) card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
@@ -17819,7 +17909,7 @@ function jumpToEntry(entryId) {
   persistLocal();
   location.hash = '#/' + subjectRouteId(state.activeSubject) + '/entries';
   render();
-  var el = qs('#entry-' + entryId);
+  var el = document.getElementById('entry-' + entryId);
   if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 function gotoBank(templateId) {
@@ -17842,7 +17932,7 @@ function openBankItem(bankId) {
   persistLocal();
   location.hash = '#/' + subjectRouteId(state.activeSubject) + '/bank';
   render();
-  var el = qs('#bank-' + bankId);
+  var el = document.getElementById('bank-' + bankId);
   if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 function gotoTemplate(templateId) {
@@ -17852,7 +17942,7 @@ function gotoTemplate(templateId) {
   persistLocal();
   location.hash = '#/' + subjectRouteId(state.activeSubject) + '/templates';
   render();
-  var el = qs('#tpl-' + templateId);
+  var el = document.getElementById('tpl-' + templateId);
   if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
@@ -18186,7 +18276,7 @@ function saveEditor() {
   ui.open[e.id] = true;
   location.hash = '#/' + subjectRouteId(subjectId) + '/entries';
   render();
-  var el = qs('#entry-' + e.id);
+  var el = document.getElementById('entry-' + e.id);
   if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
@@ -18419,16 +18509,15 @@ function saveUserName() {
 
 function backupSafeState() {
   var copy = deepClone(state);
-  var blocked = /^(api.*|ai.*|autoAi|aiAuto|model|protocol|baseUrl|dshToken|accessToken|token|key)$/i;
-  function scrub(value) {
-    if (!value || typeof value !== 'object') return;
-    if (Array.isArray(value)) { value.forEach(scrub); return; }
-    Object.keys(value).forEach(function (k) {
-      if (blocked.test(k)) { delete value[k]; return; }
-      scrub(value[k]);
-    });
+  // Only remove credential-shaped fields at known containers. A recursive
+  // blacklist used to delete every block's `key` (original/standard/...),
+  // which silently corrupted the backup itself.
+  ['apiKey', 'dshToken', 'accessToken', 'syncToken'].forEach(function (k) { delete copy[k]; });
+  if (copy.sync && typeof copy.sync === 'object') { delete copy.sync.token; delete copy.sync.apiKey; }
+  if (copy.ai && typeof copy.ai === 'object') { delete copy.ai.apiKey; delete copy.ai.token; }
+  if (copy.prefs && typeof copy.prefs === 'object') {
+    delete copy.prefs.apiKey; delete copy.prefs.dshToken; delete copy.prefs.accessToken;
   }
-  scrub(copy);
   SUBJECTS.forEach(function (s) {
     ((copy.entries && copy.entries[s.id]) || []).forEach(function (e) {
       if (!e || typeof e !== 'object') return;
@@ -18445,16 +18534,8 @@ function backupSafeState() {
 
 function backupSafeLibraries(libs) {
   var copy = deepClone(libs);
-  var blocked = /^(api.*|ai.*|autoAi|aiAuto|model|protocol|baseUrl|dshToken|accessToken|token|key)$/i;
-  function scrub(value) {
-    if (!value || typeof value !== 'object') return;
-    if (Array.isArray(value)) { value.forEach(scrub); return; }
-    Object.keys(value).forEach(function (k) {
-      if (blocked.test(k)) { delete value[k]; return; }
-      scrub(value[k]);
-    });
-  }
-  scrub(copy);
+  // Libraries are content, not configuration: never strip nested `key` fields.
+  ['apiKey', 'dshToken', 'accessToken', 'syncToken'].forEach(function (k) { delete copy[k]; });
   return copy;
 }
 
@@ -21319,7 +21400,7 @@ function aiOpenSaved() {
   ui.open[e.id] = true;
   location.hash = '#/' + subjectRouteId(e.subject) + '/entries';
   render();
-  var card = qs('#entry-' + e.id);
+  var card = document.getElementById('entry-' + e.id);
   if (card) card.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
@@ -21341,7 +21422,7 @@ function aiSaveDirect() {
   location.hash = '#/' + subjectRouteId(e.subject) + '/entries';
   render();
   toast('已保存 · ' + e.code);
-  var card = qs('#entry-' + e.id);
+  var card = document.getElementById('entry-' + e.id);
   if (card) card.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 
@@ -22477,8 +22558,8 @@ var UPDATE_LOG = [{
   "date": "2026-11-15",
   "title": "排版收口与稳定性加固",
   "historyTitle": "排版收口与稳定性加固",
-  "summary": "本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9163，93 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.15 Release 发布。17 项 / 17 组。",
-  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限；README 只展开最新一块，旧记录收进 details；GitHub Releases 同日只保留一条，不再加小版本后缀；同一天通知原地替换。四科 9163，93 项测试。本块 17 条要点。",
+  "summary": "本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9163，98 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.15 Release 发布。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。98 项回归、严格 QA、站点一致性、8 视口、公式、无障碍、性能与拆包 QA 通过。本块 24 项 / 24 组。",
+  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限；README 只展开最新一块，旧记录收进 details；GitHub Releases 同日只保留一条，不再加小版本后缀；同一天通知原地替换。四科 9163；又补备份键名、编号定位、复习确认、存储上限、同步重试、试卷导出与题库校准，98 项测试。本块 24 条要点。",
   "notifyItems": [
     {
       "group": "卡片留白",
@@ -22506,7 +22587,7 @@ var UPDATE_LOG = [{
     },
     {
       "group": "防复发",
-      "text": "回归测试扩展到 93 项，覆盖计划标题、材料序号、AI 文案、规范示例、静默存储、拆包体积与深链；1440/390 截图复核贴边与长标题。"
+      "text": "回归测试扩展到 98 项，覆盖计划标题、材料序号、AI 文案、规范示例、静默存储、拆包体积、深链、备份键名、编号定位、复习确认、存储上限、同步重试与 DOCX 选项解析；1440/390 截图复核贴边与长标题。"
     },
     {
       "group": "存储回读",
@@ -22534,7 +22615,7 @@ var UPDATE_LOG = [{
     },
     {
       "group": "发布门禁",
-      "text": "CI 先构建 Pages 再发布，新增真浏览器门禁验证拆包加载、二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 93 项。"
+      "text": "CI 先构建 Pages 再发布，新增真浏览器门禁验证拆包加载、二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 98 项。"
     },
     {
       "group": "Cloudflare 缓存",
@@ -22547,6 +22628,34 @@ var UPDATE_LOG = [{
     {
       "group": "通知去重",
       "text": "同一天记录再修改时，原地替换已有更新通知的标题与正文，保留首次时间与已读状态，不再追加补充或生成第二条；旧版同日重复通知在启动时按日期合并。"
+    },
+    {
+      "group": "备份键名",
+      "text": "导出备份不再递归删除所有名为 key 的字段，内容块的 original/standard 等标识完整保留；只清同步令牌与 AI 密钥这些已知凭据，导入后解答、选项和复习块不再错位。"
+    },
+    {
+      "group": "编号定位",
+      "text": "错题、题库与模板按编号定位改用 getElementById，编号里带空格、括号或点时不再抛异常中断操作，定位与滚动都能正常完成。"
+    },
+    {
+      "group": "复习确认",
+      "text": "取消复习打卡前先提示会连带清除后面已完成的节点，确认后才执行；没有后续记录时仍直接取消，避免误删整段复习进度。"
+    },
+    {
+      "group": "存储上限",
+      "text": "本机存储写入前先按 4MB 预算检查，超限不写盘并在底部常驻提示导出备份；笔记插图、PDF 页、扫描与答卷图逐张检查容量，超限直接拒绝而不是悄悄丢改动。"
+    },
+    {
+      "group": "同步重试",
+      "text": "同步推送改为真实三次退避重试，只对网络错误和 5xx 重试；413 明确提示删除笔记图片或精简数据，4xx 带状态与原因，不再把拒绝伪装成网络失败。"
+    },
+    {
+      "group": "试卷导出",
+      "text": "模拟考 DOCX 补上客观题 A/B/C/D 选项与参考答案、标准解答、详细解析、解题要点、易错点；导出样例已用 Word 与 WPS 打开核对，页数与文字完整。"
+    },
+    {
+      "group": "题库校准",
+      "text": "修 31 道解析几何失效答案，统一四科 options 为数组，补回 30 处丢失撇号的空上标，并重写 27 组重复干扰项；严格 QA 新增 options 与空上标门禁，题库仍为 9163。"
     }
   ],
   "items": [
@@ -22576,7 +22685,7 @@ var UPDATE_LOG = [{
     },
     {
       "group": "防复发",
-      "text": "回归测试扩展到 93 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头与深链断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。"
+      "text": "回归测试扩展到 98 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头、深链、备份键名、编号定位、复习确认、存储上限、同步重试与 DOCX 选项解析断言；1440/390 截图复核设置页与期末复习，卡片内边距和长标题不再贴边。"
     },
     {
       "group": "存储回读",
@@ -22604,7 +22713,7 @@ var UPDATE_LOG = [{
     },
     {
       "group": "发布门禁",
-      "text": "CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 93 项。"
+      "text": "CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 98 项。"
     },
     {
       "group": "Cloudflare 缓存",
@@ -22617,6 +22726,34 @@ var UPDATE_LOG = [{
     {
       "group": "通知去重",
       "text": "同一天记录再修改时，原地替换已有更新通知的标题与正文，保留首次时间与已读状态，不再追加补充或生成第二条；旧版同日重复通知在启动时按日期合并，更新记录与通知标题统一为日期加标题。"
+    },
+    {
+      "group": "备份键名",
+      "text": "backupSafeState / backupSafeLibraries 不再递归匹配键名删除，只清 state.sync.token 与 AI 配置顶层凭据；blocks[].key、附件 key 与 prefs.apiNoticeDismissed 全部保留，导入后解答块、选项格式和复习块恢复正常。"
+    },
+    {
+      "group": "编号定位",
+      "text": "所有 #entry- / #bank- / #tpl- 查询改用 document.getElementById；编号含空格、括号、点时不再触发 DOMException，编辑保存后的定位、滚动与高亮都能继续执行。"
+    },
+    {
+      "group": "复习确认",
+      "text": "toggleReview 在取消已打卡节点时先计算后续已完成节点，有则弹出确认并说明会同时清除的条数；确认时才级联删除，无后续记录仍保持一键取消。"
+    },
+    {
+      "group": "存储上限",
+      "text": "persistLocal 写盘前按 4MB 字符预算拦截，超限显示固定横幅与导出备份/重试按钮，并注册 beforeunload；笔记图片、PDF 页、扫描页、封面与答卷图逐张走 noteImageFits，超限直接拒绝并提示。"
+    },
+    {
+      "group": "同步重试",
+      "text": "pushSync 改为最多三次真实退避（800ms/1600ms），只重试网络错误与 5xx；409/401/413 与其它 4xx 立即返回并显示原因，413 文案指向删除笔记图片；服务端 PUT /api/state 上限由 6MB 放宽到 8MB。"
+    },
+    {
+      "group": "试卷导出",
+      "text": "拆出 finalPaperDocxDocumentXml：客观题按 key．text 输出四选项，答案区改「参考答案与解析」并附标准解答、详细解析、解题要点、易错点；debug/test-paper.docx 经 Word/WPS 打开，均为 2 页。"
+    },
+    {
+      "group": "题库校准",
+      "text": "21 道 answer 等于题干的解析几何题改为「证明成立（详见标准解答）」，10 道占位答案补成具体结论；四科 options 缺失/null 统一为 []，30 处 ^{} 改为 ^{\prime} 并重写 27 组重复干扰项；QA 新增 options 数组与空上标检查。"
     }
   ]
 },
@@ -26695,7 +26832,9 @@ async function noteReplaceImageFile(file, subjectId) {
     var w = item.w;
     var h = w * page.width * (img.height / img.width) / page.height;
     if (h > 0.55) { h = 0.55; w = h * page.height * (img.width / img.height) / page.width; }
-    item.src = c.toDataURL('image/jpeg', 0.86);
+    var replaced = c.toDataURL('image/jpeg', 0.86);
+    if (!noteImageFits(replaced, '图片')) return;
+    item.src = replaced;
     item.alt = file.name || '插入的图片';
     item.w = w;
     item.h = h;
@@ -26851,6 +26990,7 @@ async function noteInsertImageFile(file, subjectId) {
     ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
     ctx.drawImage(img, 0, 0, c.width, c.height);
     var src = c.toDataURL('image/jpeg', 0.86);
+    if (!noteImageFits(src, '图片')) return;
     var w = 0.45;
     var h = w * page.width * (img.height / img.width) / page.height;
     if (h > 0.42) { h = 0.42; w = h * page.height * (img.width / img.height) / page.width; }
@@ -27459,7 +27599,9 @@ async function noteScanSave() {
       page.width = NOTE_SCAN_W;
       page.height = NOTE_SCAN_H;
       page.paper = 'white';
-      page.background = canvas.toDataURL('image/jpeg', 0.9);
+      var scanBg = canvas.toDataURL('image/jpeg', 0.9);
+      if (!noteImageFits(scanBg, '扫描页')) break;
+      page.background = scanBg;
       page.thumb = noteMakeThumb(canvas);
       page.updatedAt = nowIso();
       created.push(page);
@@ -27526,7 +27668,9 @@ async function noteScanA4File(file, subjectId) {
     page.width = W;
     page.height = H;
     page.paper = 'white';
-    page.background = c.toDataURL('image/jpeg', 0.86);
+    var scanBgOne = c.toDataURL('image/jpeg', 0.86);
+    if (!noteImageFits(scanBgOne, '扫描页')) return;
+    page.background = scanBgOne;
     page.thumb = noteMakeThumb(c);
     page.updatedAt = nowIso();
     ui.noteLibrary = false;
@@ -27665,7 +27809,9 @@ function noteCoverCropApply() {
   if (!s) return;
   var canvas = document.createElement('canvas');
   noteCoverCropDrawTo(canvas);
-  ui.noteCoverImage = canvas.toDataURL('image/jpeg', 0.82);
+  var cover = canvas.toDataURL('image/jpeg', 0.82);
+  if (!noteImageFits(cover, '封面')) return;
+  ui.noteCoverImage = cover;
   ui.noteCoverPick = 'custom';
   ui.noteCoverCrop = null;
   var dlg = qs('#noteCoverCropDialog');
@@ -28624,6 +28770,17 @@ function noteBusyText(text) {
   if (t && text) t.textContent = text;
 }
 
+function noteStateBytes() {
+  try { return JSON.stringify(state).length; } catch (e) { return 0; }
+}
+
+function noteImageFits(dataUrl, what) {
+  var size = noteStateBytes();
+  if (size + String(dataUrl || '').length <= STORAGE_GUARD_CHARS) return true;
+  toast('本机存储空间不足：这张' + (what || '图片') + '没有写入。请先到「设置与同步」导出备份，再删除不需要的笔记图片', { title: '未保存' });
+  return false;
+}
+
 function noteMakeThumb(canvas) {
   var t = document.createElement('canvas');
   var w = 124;
@@ -28657,7 +28814,9 @@ async function noteImportImage(file, subjectId) {
   var page = noteNewPage(file.name.replace(/\.[^.]+$/, '') || '图片笔记');
   page.width = w;
   page.height = h;
-  page.background = c.toDataURL('image/jpeg', 0.82);
+  var bg = c.toDataURL('image/jpeg', 0.82);
+  if (!noteImageFits(bg, '图片页')) return null;
+  page.background = bg;
   page.thumb = noteMakeThumb(c);
   return page;
 }
@@ -28715,7 +28874,9 @@ async function noteImportPdf(file, subjectId) {
     var page = noteNewPage('PDF 第 ' + i + ' 页');
     page.width = c.width;
     page.height = c.height;
-    page.background = c.toDataURL('image/jpeg', 0.84);
+    var pdfBg = c.toDataURL('image/jpeg', 0.84);
+    if (!noteImageFits(pdfBg, 'PDF 页')) break;
+    page.background = pdfBg;
     page.thumb = noteMakeThumb(c);
     added.push(page);
     noteBusyProgress(i, count, '已转换 PDF 第 ' + i + ' / ' + count + ' 页');
@@ -28761,6 +28922,7 @@ async function noteImportFiles(files, subjectId) {
         } else if (/^image\//.test(file.type) || /\.(png|jpe?g|webp|gif|bmp)$/i.test(file.name)) {
           noteBusyText('正在处理 ' + file.name + '…');
           var imgPage = await noteImportImage(file, subjectId);
+          if (!imgPage) continue;
           if (targetBook) {
             var ipages = targetBook.pages || (targetBook.pages = []);
             imgPage.title = '第 ' + (ipages.length + 1) + ' 页';
@@ -29376,7 +29538,7 @@ function openSyncedEntry(entryId) {
   updateHash();
   render();
   setTimeout(function () {
-    var el = qs('#entry-' + e.id);
+    var el = document.getElementById('entry-' + e.id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 80);
 }
@@ -32667,21 +32829,45 @@ function finalDocxPara(text, opts) {
   var pPr = '<w:spacing' + (opts.before != null ? ' w:before="' + opts.before + '"' : '') + ' w:after="' + (opts.after == null ? 100 : opts.after) + '" w:line="' + (opts.line || 320) + '" w:lineRule="auto"/>' + (opts.indent ? '<w:ind w:left="' + opts.indent + '"' + (opts.hanging ? ' w:hanging="' + opts.hanging + '"' : '') + '/>' : '') + (opts.align ? '<w:jc w:val="' + opts.align + '"/>' : '');
   return '<w:p><w:pPr>' + pPr + '</w:pPr>' + finalDocxRichRuns(text, rPr) + '</w:p>';
 }
-function finalPaperDocxBlob(p) {
+function finalPaperDocxDocumentXml(p) {
   var body = finalDocxPara(p.title, { bold: true, size: 32, align: 'center', after: 120 }) +
     finalDocxPara('考试时长：' + p.duration + ' 分钟　总分：100 分　题量：' + p.items.length + ' 题', { align: 'center', size: 20, after: 240 });
   p.items.forEach(function (it, i) {
     body += finalDocxPara((i + 1) + '．（' + it.score + ' 分）' + (it.title || ''), { bold: true, size: 23, after: 60 });
-    body += finalDocxPara(it.question || '', { size: 21, after: 100 });
+    body += finalDocxPara(it.question || '', { size: 21, after: 80 });
+    var opts = Array.isArray(it.options) ? it.options : [];
+    opts.forEach(function (opt, j) {
+      var key = opt && opt.key ? String(opt.key) : String.fromCharCode(65 + j);
+      var text = opt && opt.text != null ? opt.text : opt;
+      body += finalDocxPara(key + '．' + String(text == null ? '' : text), { size: 21, after: 35, indent: 240, hanging: 240 });
+    });
     body += finalDocxPara('答题区', { size: 18, after: 40 });
     body += finalDocxPara(' ', { size: 21, after: 200 });
   });
   body += '<w:p><w:r><w:br w:type="page"/></w:r></w:p>';
-  body += finalDocxPara('参考答案', { bold: true, size: 28, align: 'center', after: 180 });
+  body += finalDocxPara('参考答案与解析', { bold: true, size: 28, align: 'center', after: 180 });
   p.items.forEach(function (it, i) {
-    body += finalDocxPara((i + 1) + '．' + (it.answer || '暂无答案'), { size: 21, after: 120 });
+    var answer = String(it.answer || '').trim();
+    var answerLine = it.correct ? ('答案：' + it.correct + (answer ? '．' + answer : '')) : (answer || '暂无答案');
+    body += finalDocxPara((i + 1) + '．' + answerLine, { size: 21, after: 70 });
+    if (String(it.standardSolution || '').trim()) {
+      body += finalDocxPara('标准解答：', { bold: true, size: 20, after: 30 });
+      body += finalDocxPara(String(it.standardSolution).trim(), { size: 20, after: 70 });
+    }
+    if (String(it.detailedAnalysis || '').trim()) {
+      body += finalDocxPara('详细解析：', { bold: true, size: 20, after: 30 });
+      body += finalDocxPara(String(it.detailedAnalysis).trim(), { size: 20, after: 70 });
+    }
+    var points = Array.isArray(it.points) ? it.points.filter(function (x) { return String(x || '').trim(); }) : [];
+    if (points.length) body += finalDocxPara('解题要点：' + points.join('；'), { size: 20, after: 50 });
+    var pitfalls = Array.isArray(it.pitfalls) ? it.pitfalls.filter(function (x) { return String(x || '').trim(); }) : [];
+    if (pitfalls.length) body += finalDocxPara('易错点：' + pitfalls.join('；'), { size: 20, after: 50 });
   });
-  var documentXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><w:body>' + body + '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>';
+  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"><w:body>' + body + '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>';
+}
+
+function finalPaperDocxBlob(p) {
+  var documentXml = finalPaperDocxDocumentXml(p);
   var stylesXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="SimSun" w:eastAsia="SimSun" w:hAnsi="SimSun"/></w:rPr></w:rPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style></w:styles>';
   var contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>';
   var rootRels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
@@ -36529,7 +36715,7 @@ function handleAction(act, el) {
       var id = el.getAttribute('data-bank-id');
       ui.bankOpen[id] = !ui.bankOpen[id];
       render();
-      var bankEl = qs('#bank-' + id);
+      var bankEl = document.getElementById('bank-' + id);
       if (bankEl) bankEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       if (typeof decorateMathScrollers === 'function') setTimeout(function () { decorateMathScrollers(bankEl); }, 30);
       break;
@@ -36889,7 +37075,7 @@ document.addEventListener('input', function (e) {
     updateHomeVisibility();
     var m = String(location.hash).match(/[?&]e=([^&]+)/);
     if (m) {
-      var el = qs('#entry-' + decodeURIComponent(m[1]));
+      var el = document.getElementById('entry-' + decodeURIComponent(m[1]));
       if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
     focusRouteHeading();
@@ -37085,7 +37271,7 @@ async function boot() {
     if (typeof startAutoAi === 'function') startAutoAi();
     var m = String(location.hash).match(/[?&]e=([^&]+)/);
     if (m) {
-      var el = qs('#entry-' + decodeURIComponent(m[1]));
+      var el = document.getElementById('entry-' + decodeURIComponent(m[1]));
       if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
   });

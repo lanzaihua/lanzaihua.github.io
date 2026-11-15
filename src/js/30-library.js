@@ -692,7 +692,7 @@ function jumpToEntry(entryId) {
   persistLocal();
   location.hash = '#/' + subjectRouteId(state.activeSubject) + '/entries';
   render();
-  var el = qs('#entry-' + entryId);
+  var el = document.getElementById('entry-' + entryId);
   if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 function gotoBank(templateId) {
@@ -715,7 +715,7 @@ function openBankItem(bankId) {
   persistLocal();
   location.hash = '#/' + subjectRouteId(state.activeSubject) + '/bank';
   render();
-  var el = qs('#bank-' + bankId);
+  var el = document.getElementById('bank-' + bankId);
   if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 function gotoTemplate(templateId) {
@@ -725,6 +725,6 @@ function gotoTemplate(templateId) {
   persistLocal();
   location.hash = '#/' + subjectRouteId(state.activeSubject) + '/templates';
   render();
-  var el = qs('#tpl-' + templateId);
+  var el = document.getElementById('tpl-' + templateId);
   if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }

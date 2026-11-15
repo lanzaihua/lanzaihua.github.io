@@ -77,6 +77,7 @@ for (const q of all) {
   if (!['choice','fill','subjective'].includes(q.type)) fail(q.id, '非法 type');
   if (!CATS.includes(q.category)) fail(q.id, '非法 category');
   if (!q.title || !q.question || !q.answer || !q.standardSolution || !q.detailedAnalysis) fail(q.id, '缺少核心字段');
+  if (!Array.isArray(q.options)) fail(q.id, 'options 缺失或为 null（统一用空数组）');
   if (!Array.isArray(q.points) || !q.points.length) fail(q.id, 'points 为空');
   if (!Array.isArray(q.pitfalls) || !q.pitfalls.length) fail(q.id, 'pitfalls 为空');
   if (!/考研|真题|同型|教材课后|习题集/.test(String(q.source || ''))) fail(q.id, '来源既不是考研/真题/同型/教材课后/习题集');
@@ -131,6 +132,7 @@ if (q.type === 'subjective' && !/^(解|证明|答)[：:]/.test(String(q.standard
     if (!field) continue;
     const fieldText = String(field);
     if (/(^|[^\\])\\[0-9]/.test(fieldText)) fail(q.id, '数学文本含单反斜杠数字');
+    if (/\^\{\s*\}/.test(fieldText)) fail(q.id, '数学文本含空上标 ^{}（撇号丢失）');
     if (/\\\\\\[A-Za-z](?![A-Za-z])/.test(fieldText)) fail(q.id, '数学文本含三反斜杠非法命令');
     if (/(.{8,80})\s+\1$/.test(fieldText)) fail(q.id, '解答末尾整句重复');
     if (/\\nee/.test(fieldText)) fail(q.id, '数学文本含损坏的 \\nee');

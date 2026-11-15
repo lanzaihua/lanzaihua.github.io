@@ -365,7 +365,7 @@ function setMastery(entryId, value) {
     var open = ui.open[e.id];
     ui.open[e.id] = open;
     render();
-    var card = qs('#entry-' + e.id);
+    var card = document.getElementById('entry-' + e.id);
     if (card) card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   } else {
     render();
@@ -391,7 +391,7 @@ function removeReviewLogDay(block, day) {
   block.md = String(block.md || '').replace(re, '').replace(/\n{3,}/g, '\n\n').trim();
 }
 
-function toggleReview(entryId, day) {
+function toggleReview(entryId, day, force) {
   var e = findEntry(state.activeSubject, entryId);
   if (!e) return;
   var wasOn = !!e.review[day];
@@ -413,6 +413,21 @@ function toggleReview(entryId, day) {
     }
     if (!reviewCanOpenDay(e, day)) {
       toast('请按顺序完成前面的复习节点', { title: '复习顺序提示', detail: '题目：' + e.code + ' · ' + (e.summary || ''), kind: 'review' });
+      return;
+    }
+  }
+  if (wasOn && !force) {
+    var planForConfirm = reviewPlanKeys(e);
+    var confirmedLater = planForConfirm.slice(planForConfirm.indexOf(day) + 1).filter(function (d) { return e.review[d]; });
+    if (confirmedLater.length) {
+      confirmDialog(
+        '取消打卡会清除后续记录',
+        '取消「' + reviewDayLabel(day) + '」后，后面已完成的 ' + confirmedLater.length + ' 个复习节点（' +
+          confirmedLater.map(reviewDayLabel).join('、') + '）也会一起清除，无法撤销。是否继续？',
+        function () { toggleReview(entryId, day, true); },
+        true,
+        '确认取消打卡'
+      );
       return;
     }
   }
@@ -448,13 +463,13 @@ function toggleReview(entryId, day) {
   touchEntry(e);
   markDirty();
   render();
-  var card = qs('#entry-' + e.id);
+  var card = document.getElementById('entry-' + e.id);
   if (card) card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
 function toggleEntry(entryId) {
   ui.open[entryId] = !ui.open[entryId];
   render();
-  var card = qs('#entry-' + entryId);
+  var card = document.getElementById('entry-' + entryId);
   if (card && ui.open[entryId]) card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
