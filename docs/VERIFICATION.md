@@ -88,5 +88,5 @@ npm run qa:formulas
 npm run qa:a11y
 npm run qa:perf
 PAGE_URL=http://127.0.0.1:4173/ node tools/qa-responsive.js
-PAGE_URL=http://127.0.0.1:4173/ node tools/qa-paper-editor.js   # 15 宽度模拟卷编辑卡
+PAGE_URL=http://127.0.0.1:4173/ node tools/qa-paper-editor.js   # 18 宽度模拟卷编辑卡
 ```

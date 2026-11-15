@@ -19,12 +19,13 @@
 const { launchChromium } = require('./browser');
 
 const BASE = process.argv[2] || process.env.PAGE_URL || process.env.BASE_URL || 'http://127.0.0.1:4173';
-const WIDTHS = [320, 360, 390, 414, 480, 540, 600, 700, 768, 834, 900, 1024, 1112, 1280, 1440];
+const WIDTHS = [320, 360, 390, 414, 480, 540, 600, 700, 768, 834, 900, 918, 1024, 1112, 1200, 1280, 1360, 1440];
 
 function limitFor(width) {
   if (width <= 480) return 280;
   if (width <= 700) return 240;
   if (width <= 1100) return 130;
+  if (width <= 1359) return 120;
   return 80;
 }
 
@@ -101,11 +102,18 @@ function limitFor(width) {
           };
         });
         const meta = head.querySelector('.final-editor-meta');
+        const metaRect = meta ? meta.getBoundingClientRect() : null;
+        const actionsRect = head.querySelector('.final-editor-actions').getBoundingClientRect();
         return {
           docScrollW: document.documentElement.scrollWidth,
           innerW: window.innerWidth,
           headW: Math.round(hr.width),
           headH: Math.round(hr.height),
+          headScrollW: head.scrollWidth,
+          headClientW: head.clientWidth,
+          headRight: hr.right,
+          metaRight: metaRect ? metaRect.right : null,
+          actionsRight: actionsRect.right,
           display: getComputedStyle(head).display,
           labels,
           buttons,
@@ -119,6 +127,15 @@ function limitFor(width) {
       }
       if (data.headH > limitFor(width)) {
         failures.push(width + 'px / 编辑卡头部过高 ' + data.headH + 'px（上限 ' + limitFor(width) + '）');
+      }
+      if (data.headScrollW > data.headClientW + 1) {
+        failures.push(width + 'px / 编辑卡头部内部横向溢出 ' + data.headScrollW + ' > ' + data.headClientW);
+      }
+      if (data.actionsRight > data.headRight + 1) {
+        failures.push(width + 'px / 操作区越出编辑卡 ' + Math.round(data.actionsRight) + ' > ' + Math.round(data.headRight));
+      }
+      if (data.metaRight !== null && data.metaRight > data.headRight + 1) {
+        failures.push(width + 'px / 题数信息越出编辑卡 ' + Math.round(data.metaRight) + ' > ' + Math.round(data.headRight));
       }
       const title = data.labels[0];
       if (!title) {

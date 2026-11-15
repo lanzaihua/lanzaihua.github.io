@@ -30,7 +30,9 @@ test('跨端门禁被 package 与 CI 同时引用', () => {
   const ci = read('.github/workflows/quality.yml');
   assert.match(ci, /npm run qa:paper/);
   const gate = read('tools/qa-paper-editor.js');
-  assert.match(gate, /320, 360, 390, 414, 480, 540, 600, 700, 768, 834, 900, 1024, 1112, 1280, 1440/);
+  assert.match(gate, /320, 360, 390, 414, 480, 540, 600, 700, 768, 834, 900, 918, 1024, 1112, 1200, 1280, 1360, 1440/);
   assert.match(gate, /按钮文字越界/);
+  assert.match(gate, /编辑卡头部内部横向溢出/);
+  assert.match(gate, /操作区越出编辑卡/);
   assert.match(gate, /卷名输入框内容被截断/);
 });
