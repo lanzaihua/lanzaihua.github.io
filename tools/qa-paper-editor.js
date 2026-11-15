@@ -103,6 +103,12 @@ function limitFor(width) {
         });
         const meta = head.querySelector('.final-editor-meta');
         const metaRect = meta ? meta.getBoundingClientRect() : null;
+        let metaTextRight = null;
+        if (meta && meta.firstChild && meta.firstChild.nodeType === 3) {
+          const mr = document.createRange();
+          mr.selectNodeContents(meta.firstChild);
+          metaTextRight = mr.getBoundingClientRect().right;
+        }
         const actionsRect = head.querySelector('.final-editor-actions').getBoundingClientRect();
         return {
           docScrollW: document.documentElement.scrollWidth,
@@ -113,6 +119,7 @@ function limitFor(width) {
           headClientW: head.clientWidth,
           headRight: hr.right,
           metaRight: metaRect ? metaRect.right : null,
+          metaTextRight,
           actionsRight: actionsRect.right,
           display: getComputedStyle(head).display,
           labels,
@@ -136,6 +143,9 @@ function limitFor(width) {
       }
       if (data.metaRight !== null && data.metaRight > data.headRight + 1) {
         failures.push(width + 'px / 题数信息越出编辑卡 ' + Math.round(data.metaRight) + ' > ' + Math.round(data.headRight));
+      }
+      if (data.metaTextRight !== null && data.metaTextRight > data.headRight - 2) {
+        failures.push(width + 'px / 题数信息贴住编辑卡边缘 ' + Math.round(data.metaTextRight) + ' / ' + Math.round(data.headRight));
       }
       const title = data.labels[0];
       if (!title) {
