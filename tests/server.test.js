@@ -153,3 +153,10 @@ test('server keeps fenced JSON parsing and sanitized upstream errors', () => {
   assert.match(headers, /Content-Security-Policy: default-src 'self'/);
   assert.match(headers, /frame-ancestors 'none'/);
 });
+
+test('sync QA copies server library modules', () => {
+  const sync = fs.readFileSync(path.join(ROOT, 'tools/qa-sync.js'), 'utf8');
+  assert.match(sync, /cpSync\(path\.join\(ROOT, 'lib'\)/, 'qa-sync must copy lib/ next to the spawned server');
+  const src = fs.readFileSync(path.join(ROOT, 'server.js'), 'utf8');
+  assert.match(src, /require\('\.\/lib\/ai-http'\)/, 'server must load the pinned AI HTTP client');
+});

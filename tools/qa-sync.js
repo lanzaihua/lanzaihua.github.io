@@ -11,6 +11,7 @@ async function main() {
   fs.writeFileSync(path.join(temp, 'package.json'), '{"type":"commonjs"}');
   fs.copyFileSync(path.join(ROOT, 'server.js'), path.join(temp, 'server.js'));
   fs.copyFileSync(path.join(ROOT, 'skills.js'), path.join(temp, 'skills.js'));
+  fs.cpSync(path.join(ROOT, 'lib'), path.join(temp, 'lib'), { recursive: true });
   fs.cpSync(path.join(ROOT, 'dist'), path.join(temp, 'dist'), { recursive: true });
   const h = require('node:http');
   const reserve = h.createServer(); await new Promise(r => reserve.listen(0, '127.0.0.1', r));
