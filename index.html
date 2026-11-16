@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.16-e96da543";</script>
+<script>window.__BUILD_ID__="2026.11.16-e2d677e6";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -19111,7 +19111,7 @@ function openSettings() {
     '</div>' +
 languageRow +
 '<div class="settings-section"><div class="settings-section-head"><span class="settings-section-title">AI与智能录入</span><span class="settings-section-note">AI</span></div>' +
-    '<div class="setting-row ai-config-row"><div class="ai-config-head"><div><div class="st">在线 AI 服务</div><div class="sd">支持 OpenAI、DeepSeek、Google Gemini、Anthropic、xAI Grok、通义千问、Moonshot Kimi、DeepSeek Harness 等厂商接口。API Key 只保存在本机浏览器，不写入错题数据；纯静态页需要接口允许浏览器跨域。</div></div><span class="chip ' + (aiReadyNow ? 'chip-ok' : '') + '">' + (aiReadyNow ? '已配置' : '未配置') + '</span></div>' +
+    '<div class="setting-row ai-config-row"><div class="ai-config-head"><div><div class="st">在线 AI 服务</div><div class="sd">支持 OpenAI、DeepSeek、Google Gemini、Anthropic、xAI Grok、通义千问、Moonshot Kimi、DeepSeek Harness 等厂商接口。API Key 加密后只保存在本机浏览器（IndexedDB），不写入错题数据；纯静态页需要接口允许浏览器跨域。</div></div><span class="chip ' + (aiReadyNow ? 'chip-ok' : '') + '">' + (aiReadyNow ? '已配置' : '未配置') + '</span></div>' +
       '<div class="ai-config-grid">' +
         '<label class="field full"><span>协议</span>' +
           '<div class="model-combo protocol-combo">' +
@@ -20605,6 +20605,142 @@ function aiProtocolLabel(protocol) {
   return aiProtocolPreset(protocol).label;
 }
 
+var AI_SECRET_DB = 'sanke-ai-secrets-v1';
+var AI_SECRET_KEY_STORE = 'keys';
+var AI_SECRET_VALUE_STORE = 'secrets';
+var AI_KEY_CACHE = '';
+
+function aiKeyCacheValue() { return AI_KEY_CACHE || ''; }
+
+function aiSecretSupported() {
+  return typeof indexedDB !== 'undefined' && !!indexedDB &&
+    typeof crypto !== 'undefined' && !!crypto && !!crypto.subtle &&
+    typeof crypto.subtle.encrypt === 'function' && typeof crypto.subtle.decrypt === 'function';
+}
+
+function aiSecretOpenDb() {
+  return new Promise(function (resolve, reject) {
+    if (!aiSecretSupported()) { reject(new Error('浏览器不支持加密存储')); return; }
+    var req;
+    try { req = indexedDB.open(AI_SECRET_DB, 1); }
+    catch (e) { reject(e); return; }
+    req.onupgradeneeded = function () {
+      var db = req.result;
+      if (!db.objectStoreNames.contains(AI_SECRET_KEY_STORE)) db.createObjectStore(AI_SECRET_KEY_STORE);
+      if (!db.objectStoreNames.contains(AI_SECRET_VALUE_STORE)) db.createObjectStore(AI_SECRET_VALUE_STORE);
+    };
+    req.onsuccess = function () { resolve(req.result); };
+    req.onerror = function () { reject(req.error || new Error('无法打开加密存储')); };
+    req.onblocked = function () { reject(new Error('加密存储被其他页面占用')); };
+  });
+}
+
+function aiSecretGet(store, key) {
+  return aiSecretOpenDb().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction(store, 'readonly');
+      var req = tx.objectStore(store).get(key);
+      req.onsuccess = function () { resolve(req.result); };
+      req.onerror = function () { reject(req.error || new Error('读取加密数据失败')); };
+    });
+  });
+}
+
+function aiSecretPut(store, key, value) {
+  return aiSecretOpenDb().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).put(value, key);
+      tx.oncomplete = function () { resolve(true); };
+      tx.onerror = function () { reject(tx.error || new Error('写入加密数据失败')); };
+      tx.onabort = function () { reject(tx.error || new Error('写入加密数据被中止')); };
+    });
+  });
+}
+
+function aiSecretDelete(store, key) {
+  return aiSecretOpenDb().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).delete(key);
+      tx.oncomplete = function () { resolve(true); };
+      tx.onerror = function () { reject(tx.error || new Error('删除加密数据失败')); };
+    });
+  });
+}
+
+async function aiSecretCryptoKey() {
+  var existing = await aiSecretGet(AI_SECRET_KEY_STORE, 'current');
+  if (existing) return existing;
+  var key = await crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  await aiSecretPut(AI_SECRET_KEY_STORE, 'current', key);
+  return key;
+}
+
+async function aiSecretStoreKey(plain) {
+  if (!aiSecretSupported()) throw new Error('浏览器不支持加密存储');
+  var key = await aiSecretCryptoKey();
+  var iv = crypto.getRandomValues(new Uint8Array(12));
+  var encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, new TextEncoder().encode(String(plain)));
+  await aiSecretPut(AI_SECRET_VALUE_STORE, 'current', { v: 1, iv: Array.from(iv), data: Array.from(new Uint8Array(encrypted)) });
+}
+
+async function aiSecretLoadKey() {
+  if (!aiSecretSupported()) return '';
+  var record = await aiSecretGet(AI_SECRET_VALUE_STORE, 'current');
+  if (!record || record.v !== 1 || !Array.isArray(record.iv) || !Array.isArray(record.data)) return '';
+  var key = await aiSecretCryptoKey();
+  var plain = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv: new Uint8Array(record.iv) },
+    key,
+    new Uint8Array(record.data)
+  );
+  return new TextDecoder().decode(plain);
+}
+
+function aiSecretDeleteKey() {
+  return Promise.all([
+    aiSecretDelete(AI_SECRET_VALUE_STORE, 'current'),
+    aiSecretDelete(AI_SECRET_KEY_STORE, 'current')
+  ]).catch(function () { return false; });
+}
+
+function aiWriteConfigMeta(cfg, keyStored) {
+  safeStorage.setJSON(AI_CONFIG_KEY, {
+    protocol: cfg.protocol,
+    baseUrl: cfg.baseUrl,
+    model: cfg.model,
+    savedAt: cfg.savedAt || nowIso(),
+    keyStored: !!keyStored
+  });
+}
+
+async function aiHydrateKey() {
+  AI_KEY_CACHE = '';
+  var cfg = safeStorage.getJSON(AI_CONFIG_KEY, null);
+  var legacy = '';
+  try { legacy = safeStorage.get('sanke-dsh-token') || ''; } catch (e) { legacy = ''; }
+  if ((!cfg || typeof cfg !== 'object') && legacy) {
+    cfg = { protocol: 'dsh', baseUrl: AI_PROTOCOL_PRESETS.dsh.baseUrl, model: AI_PROTOCOL_PRESETS.dsh.model, apiKey: legacy };
+  }
+  if (!cfg || typeof cfg !== 'object') return;
+  if (legacy) safeStorage.remove('sanke-dsh-token');
+  if (cfg.apiKey) {
+    // Migrate the old plaintext record on first boot after the upgrade.
+    AI_KEY_CACHE = String(cfg.apiKey);
+    try {
+      await aiSecretStoreKey(AI_KEY_CACHE);
+      aiWriteConfigMeta(cfg, true);
+    } catch (e) {
+      aiWriteConfigMeta(cfg, false);
+    }
+    return;
+  }
+  if (!cfg.keyStored) return;
+  try { AI_KEY_CACHE = await aiSecretLoadKey(); }
+  catch (e) { AI_KEY_CACHE = ''; }
+}
+
 function aiConfig() {
   var cfg = safeStorage.getJSON(AI_CONFIG_KEY, null);
   if (!cfg || typeof cfg !== 'object') {
@@ -20625,7 +20761,7 @@ function aiConfig() {
     protocol: AI_PROTOCOL_PRESETS[cfg.protocol] ? cfg.protocol : 'openai',
     baseUrl: String(cfg.baseUrl || preset.baseUrl).trim(),
     model: String(cfg.model || preset.model).trim(),
-    apiKey: String(cfg.apiKey || '').trim()
+    apiKey: String(AI_KEY_CACHE || cfg.apiKey || '').trim()
   };
 }
 
@@ -20687,13 +20823,25 @@ function aiSaveConfig(cfg) {
     apiKey: String(cfg.apiKey || '').trim(),
     savedAt: nowIso()
   };
-  safeStorage.setJSON(AI_CONFIG_KEY, next);
+  AI_KEY_CACHE = next.apiKey;
+  aiWriteConfigMeta(next, false);
+  if (next.apiKey) {
+    aiSecretStoreKey(next.apiKey).then(function () {
+      aiWriteConfigMeta(next, true);
+    }).catch(function () {
+      aiWriteConfigMeta(next, false);
+      if (typeof toast === 'function') toast('当前浏览器不能加密保存 API Key；Key 只在本次会话使用，刷新后需重新填写');
+    });
+  }
   if (next.protocol === 'dsh' && typeof setDshToken === 'function') setDshToken(next.apiKey);
   return next;
 }
 
 function aiClearConfig() {
+  AI_KEY_CACHE = '';
   safeStorage.remove(AI_CONFIG_KEY);
+  safeStorage.remove('sanke-dsh-token');
+  aiSecretDeleteKey();
   if (typeof clearDshToken === 'function') clearDshToken();
 }
 
@@ -22190,12 +22338,9 @@ var DSH_MODEL = 'deepseek-flash';
 var DSH_TIMEOUT_MS = 240000;
 var SKILL_PACKS_STATE = { data: null, promise: null };
 
-function dshToken() { return safeStorage.get(DSH_TOKEN_KEY) || ''; }
-function setDshToken(v) {
-  if (v) safeStorage.set(DSH_TOKEN_KEY, v);
-  else safeStorage.remove(DSH_TOKEN_KEY);
-}
-function clearDshToken() { setDshToken(''); }
+function dshToken() { return (typeof aiKeyCacheValue === 'function') ? aiKeyCacheValue() : ''; }
+function setDshToken(v) { /* 44-ai-config 以不可导出的 AES-GCM 密钥把 Key 存进 IndexedDB */ }
+function clearDshToken() { /* 44-ai-config 的 aiClearConfig 同时删除密文与密钥 */ }
 
 function b64ToBytes(b64) {
   var bin = atob(String(b64 || ''));
@@ -23290,8 +23435,8 @@ var UPDATE_LOG = [{
   "date": "2026-11-15",
   "title": "排版收口与稳定性加固",
   "historyTitle": "排版收口与稳定性加固",
-  "summary": "本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，119 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.16 Release 发布。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。119 项回归、严格 QA、站点一致性、8 视口、公式、无障碍、性能与拆包 QA 通过。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，操作按钮在手机改为三列且不裁切；390 / 820 / 1440 实测无大段空白、无文字截断。同日再修题库筛选栏：桌面从 inline 流改为 Grid + 可换行字段区，1301px 起四列、其余 2–3 列，手机保持两列折叠；新增 qa:filters 在 22 个宽度断言间距、重叠、越界与文字裁切，119 项回归。本块 37 项 / 37 组。",
-  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限；README 只展开最新一块，旧记录收进 details；GitHub Releases 同日只保留一条，不再加小版本后缀；同一天通知原地替换。四科 9651；又补备份键名、编号定位、复习确认、存储上限、同步重试、试卷导出与题库校准，119 项测试。另修「我的模拟卷」编辑卡标题截断与大段空白，并修题库筛选栏控件拥挤。本块 37 条要点。",
+  "summary": "本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，125 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.16 Release 发布。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。125 项回归、严格 QA、站点一致性、8 视口、公式、无障碍、性能与拆包 QA 通过。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，操作按钮在手机改为三列且不裁切；390 / 820 / 1440 实测无大段空白、无文字截断。同日再修题库筛选栏：桌面从 inline 流改为 Grid + 可换行字段区，1301px 起四列、其余 2–3 列，手机保持两列折叠；新增 qa:filters 在 22 个宽度断言间距、重叠、越界与文字裁切，125 项回归。本块 38 项 / 38 组。",
+  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限；README 只展开最新一块，旧记录收进 details；GitHub Releases 同日只保留一条，不再加小版本后缀；同一天通知原地替换。四科 9651；又补备份键名、编号定位、复习确认、存储上限、同步重试、试卷导出与题库校准，125 项测试。另修「我的模拟卷」编辑卡标题截断与大段空白，并修题库筛选栏控件拥挤。本块 38 条要点。",
   "notifyItems": [
     {
       "group": "同步首启",
@@ -23412,6 +23557,10 @@ var UPDATE_LOG = [{
     {
       "group": "题库校准",
       "text": "修 31 道解析几何失效答案，统一四科 options 为数组，补回 30 处丢失撇号的空上标，并重写 27 组重复干扰项；严格 QA 新增 options 与空上标门禁，题库仍为 9163。"
+    },
+    {
+      "group": "审计收口",
+      "text": "五项遗留风险收口：21 道解析几何占位答案补成具体结论，22 组跨题型同题干拆成不同变式，525 处「答案：」尾注与权威答案对齐；AI 上游改为解析一次后固定 IP 请求，API Key 改 AES-GCM 存 IndexedDB，localStorage 不再留明文。新增 qa:bank-consistency 与 ai-http/ai-secret 回归，125 项测试。"
     }
   ],
   "items": [
@@ -23562,6 +23711,10 @@ var UPDATE_LOG = [{
     {
       "group": "题库校准",
       "text": "21 道 answer 等于题干的解析几何题改为「证明成立（详见标准解答）」，10 道占位答案补成具体结论；四科 options 缺失/null 统一为 []，30 处 ^{} 改为 ^{\\prime} 并重写 27 组重复干扰项；QA 新增 options 数组与空上标检查。"
+    },
+    {
+      "group": "审计收口",
+      "text": "五项遗留风险收口：21 道解析几何占位答案补成具体结论，22 组跨题型同题干拆成不同变式，525 处「答案：」尾注与权威答案对齐；AI 上游改为解析一次后固定 IP 请求，API Key 改 AES-GCM 存 IndexedDB，localStorage 不再留明文。新增 qa:bank-consistency 与 ai-http/ai-secret 回归，125 项测试。"
     }
   ]
 },
@@ -38085,6 +38238,7 @@ async function boot() {
     }
   } catch (e) { /* file:// */ }
   await storageHydrate();
+  if (typeof aiHydrateKey === 'function') await aiHydrateKey();
   storageEstimate().then(function () { return storageRequestPersist(); });
   await loadBankData();
   if (window.__BANK_LOAD_ERROR__) {

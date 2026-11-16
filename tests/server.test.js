@@ -3,6 +3,7 @@ const {test}=require('node:test');const assert=require('node:assert/strict');
 const http=require('node:http');const fs=require('node:fs');const path=require('node:path');const os=require('node:os');const {spawn}=require('node:child_process');
 const ROOT=path.join(__dirname,'..');
 function isolatePackage(dir){fs.writeFileSync(path.join(dir,'package.json'),'{"type":"commonjs"}');}
+function copyServer(dir){fs.copyFileSync(path.join(ROOT,'server.js'),path.join(dir,'server.js'));fs.copyFileSync(path.join(ROOT,'skills.js'),path.join(dir,'skills.js'));fs.cpSync(path.join(ROOT,'lib'),path.join(dir,'lib'),{recursive:true});isolatePackage(dir);}
 async function stopChild(child){if(!child||child.exitCode!==null||child.signalCode!==null)return;const done=new Promise(r=>child.once('exit',r));child.kill();await done;}
 function request(port,p,opts) {
   opts=opts||{};
@@ -17,8 +18,7 @@ function request(port,p,opts) {
 }
 test('malformed static URL returns 400; sibling traversal returns 403; service stays alive',async()=>{
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'notebook-server-test-'));
-  fs.copyFileSync(path.join(ROOT,'server.js'),path.join(temporary,'server.js'));
-  fs.copyFileSync(path.join(ROOT,'skills.js'),path.join(temporary,'skills.js'));isolatePackage(temporary);
+  copyServer(temporary);
   fs.mkdirSync(path.join(temporary,'dist'));fs.writeFileSync(path.join(temporary,'dist','index.html'),'TEST HOME');
   fs.writeFileSync(path.join(temporary,'dist','manifest.webmanifest'),'{}');
   fs.writeFileSync(path.join(temporary,'dist','app.js'),'window.x=1;');
@@ -53,8 +53,7 @@ test('malformed static URL returns 400; sibling traversal returns 403; service s
 
 test('non-loopback binding without token requires auth for all API routes',async()=>{
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'notebook-server-auth-'));
-  fs.copyFileSync(path.join(ROOT,'server.js'),path.join(temporary,'server.js'));
-  fs.copyFileSync(path.join(ROOT,'skills.js'),path.join(temporary,'skills.js'));isolatePackage(temporary);
+  copyServer(temporary);
   fs.mkdirSync(path.join(temporary,'dist'));fs.writeFileSync(path.join(temporary,'dist','index.html'),'HOME');
   const reserve=http.createServer();await new Promise(r=>reserve.listen(0,'127.0.0.1',r));const port=reserve.address().port;await new Promise(r=>reserve.close(r));
   const child=spawn(process.execPath,['server.js'],{cwd:temporary,env:{...process.env,PORT:String(port),HOST:'0.0.0.0',NOTEBOOK_TOKEN:''},stdio:['ignore','pipe','pipe']});
@@ -73,8 +72,7 @@ test('server rejects private AI base URLs before making any upstream request',as
   await new Promise(r=>target.listen(0,'127.0.0.1',r));
   const targetPort=target.address().port;
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'notebook-server-ssrf-'));
-  fs.copyFileSync(path.join(ROOT,'server.js'),path.join(temporary,'server.js'));
-  fs.copyFileSync(path.join(ROOT,'skills.js'),path.join(temporary,'skills.js'));isolatePackage(temporary);
+  copyServer(temporary);
   fs.mkdirSync(path.join(temporary,'dist'));fs.writeFileSync(path.join(temporary,'dist','index.html'),'HOME');
   const reserve=http.createServer();await new Promise(r=>reserve.listen(0,'127.0.0.1',r));const port=reserve.address().port;await new Promise(r=>reserve.close(r));
   const child=spawn(process.execPath,['server.js'],{cwd:temporary,env:{...process.env,PORT:String(port),HOST:'127.0.0.1',NOTEBOOK_TOKEN:'',SOLVE_MAX_PER_HOUR:'60'},stdio:['ignore','pipe','pipe']});
@@ -90,8 +88,7 @@ test('server rejects private AI base URLs before making any upstream request',as
 
 test('large state is accepted; oversized solve body is still read and rejected as bad JSON',async()=>{
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'notebook-server-body-'));
-  fs.copyFileSync(path.join(ROOT,'server.js'),path.join(temporary,'server.js'));
-  fs.copyFileSync(path.join(ROOT,'skills.js'),path.join(temporary,'skills.js'));isolatePackage(temporary);
+  copyServer(temporary);
   fs.mkdirSync(path.join(temporary,'dist'));fs.writeFileSync(path.join(temporary,'dist','index.html'),'HOME');
   const reserve=http.createServer();await new Promise(r=>reserve.listen(0,'127.0.0.1',r));const port=reserve.address().port;await new Promise(r=>reserve.close(r));
   const child=spawn(process.execPath,['server.js'],{cwd:temporary,env:{...process.env,PORT:String(port),HOST:'127.0.0.1',NOTEBOOK_TOKEN:''},stdio:['ignore','pipe','pipe']});
@@ -119,8 +116,7 @@ test('large state is accepted; oversized solve body is still read and rejected a
 
 test('corrupt server state fails closed, is backed up, and cannot be overwritten',async()=>{
   const temporary=fs.mkdtempSync(path.join(os.tmpdir(),'notebook-server-corrupt-'));
-  fs.copyFileSync(path.join(ROOT,'server.js'),path.join(temporary,'server.js'));
-  fs.copyFileSync(path.join(ROOT,'skills.js'),path.join(temporary,'skills.js'));isolatePackage(temporary);
+  copyServer(temporary);
   fs.mkdirSync(path.join(temporary,'dist'));fs.writeFileSync(path.join(temporary,'dist','index.html'),'HOME');
   fs.mkdirSync(path.join(temporary,'data'));
   const corrupt='{ this is not valid json';

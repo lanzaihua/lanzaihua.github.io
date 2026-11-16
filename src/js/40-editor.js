@@ -440,7 +440,7 @@ function openSettings() {
     '</div>' +
 languageRow +
 '<div class="settings-section"><div class="settings-section-head"><span class="settings-section-title">AI与智能录入</span><span class="settings-section-note">AI</span></div>' +
-    '<div class="setting-row ai-config-row"><div class="ai-config-head"><div><div class="st">在线 AI 服务</div><div class="sd">支持 OpenAI、DeepSeek、Google Gemini、Anthropic、xAI Grok、通义千问、Moonshot Kimi、DeepSeek Harness 等厂商接口。API Key 只保存在本机浏览器，不写入错题数据；纯静态页需要接口允许浏览器跨域。</div></div><span class="chip ' + (aiReadyNow ? 'chip-ok' : '') + '">' + (aiReadyNow ? '已配置' : '未配置') + '</span></div>' +
+    '<div class="setting-row ai-config-row"><div class="ai-config-head"><div><div class="st">在线 AI 服务</div><div class="sd">支持 OpenAI、DeepSeek、Google Gemini、Anthropic、xAI Grok、通义千问、Moonshot Kimi、DeepSeek Harness 等厂商接口。API Key 加密后只保存在本机浏览器（IndexedDB），不写入错题数据；纯静态页需要接口允许浏览器跨域。</div></div><span class="chip ' + (aiReadyNow ? 'chip-ok' : '') + '">' + (aiReadyNow ? '已配置' : '未配置') + '</span></div>' +
       '<div class="ai-config-grid">' +
         '<label class="field full"><span>协议</span>' +
           '<div class="model-combo protocol-combo">' +

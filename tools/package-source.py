@@ -32,7 +32,7 @@ ROOT_FILES = [
     "package-lock.json", "package.json", "robots.txt", "server.js",
     "sitemap.xml", "skills.js", "sw.js", "_headers",
 ]
-SOURCE_DIRS = [".github", "assets", "skills", "src", "tests", "tools"]
+SOURCE_DIRS = [".github", "assets", "lib", "skills", "src", "tests", "tools"]
 SKIP_DIR_NAMES = {
     "node_modules", "__pycache__", ".git", "dist", "dist-pages", "debug",
     "备份", "导出", "截图仓库", "screenshots",

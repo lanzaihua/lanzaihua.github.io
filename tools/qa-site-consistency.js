@@ -52,7 +52,7 @@ add(!/\.fatal-error\s*\{/.test(styles) || !/min-height:\s*44px/.test(styles), '�
 add((read(path.join(SRC, 'index.template.html')).match(/http-equiv="Cache-Control"/g) || []).length > 0, 'HTML 仍有 Cache-Control meta，会强制绕过缓存重复下载 15MB');
 add(!/getItem\(key\)\s*!==\s*str/.test(coreJs), 'safeStorage 没有回读校验，静默写入失败会被当成成功');
 const server = read(path.join(ROOT, 'server.js'));
-add(!/function assertSafeAiBaseUrl/.test(server), 'server.js 缺少 AI 上游 SSRF 防护');
+add(!/function resolveSafeAiBaseUrl/.test(server) || !/requestJson\(/.test(server) || /fetch\(aiEndpoint/.test(server), 'server.js 缺少 AI 上游 SSRF 防护或未固定 DNS');
 add(!/req\.destroy\(\)/.test(server), 'server.js 超大请求体没有中止连接');
 add(!/application\/manifest\+json/.test(server), 'server.js 缺少 webmanifest MIME');
 add(/writeHead\([^)]*200[^)]*\)[\s\S]{0,120}index\.html/.test(server), 'server.js 可能仍把缺失静态资源回退成首页 200');

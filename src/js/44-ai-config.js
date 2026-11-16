@@ -477,6 +477,142 @@ function aiProtocolLabel(protocol) {
   return aiProtocolPreset(protocol).label;
 }
 
+var AI_SECRET_DB = 'sanke-ai-secrets-v1';
+var AI_SECRET_KEY_STORE = 'keys';
+var AI_SECRET_VALUE_STORE = 'secrets';
+var AI_KEY_CACHE = '';
+
+function aiKeyCacheValue() { return AI_KEY_CACHE || ''; }
+
+function aiSecretSupported() {
+  return typeof indexedDB !== 'undefined' && !!indexedDB &&
+    typeof crypto !== 'undefined' && !!crypto && !!crypto.subtle &&
+    typeof crypto.subtle.encrypt === 'function' && typeof crypto.subtle.decrypt === 'function';
+}
+
+function aiSecretOpenDb() {
+  return new Promise(function (resolve, reject) {
+    if (!aiSecretSupported()) { reject(new Error('浏览器不支持加密存储')); return; }
+    var req;
+    try { req = indexedDB.open(AI_SECRET_DB, 1); }
+    catch (e) { reject(e); return; }
+    req.onupgradeneeded = function () {
+      var db = req.result;
+      if (!db.objectStoreNames.contains(AI_SECRET_KEY_STORE)) db.createObjectStore(AI_SECRET_KEY_STORE);
+      if (!db.objectStoreNames.contains(AI_SECRET_VALUE_STORE)) db.createObjectStore(AI_SECRET_VALUE_STORE);
+    };
+    req.onsuccess = function () { resolve(req.result); };
+    req.onerror = function () { reject(req.error || new Error('无法打开加密存储')); };
+    req.onblocked = function () { reject(new Error('加密存储被其他页面占用')); };
+  });
+}
+
+function aiSecretGet(store, key) {
+  return aiSecretOpenDb().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction(store, 'readonly');
+      var req = tx.objectStore(store).get(key);
+      req.onsuccess = function () { resolve(req.result); };
+      req.onerror = function () { reject(req.error || new Error('读取加密数据失败')); };
+    });
+  });
+}
+
+function aiSecretPut(store, key, value) {
+  return aiSecretOpenDb().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).put(value, key);
+      tx.oncomplete = function () { resolve(true); };
+      tx.onerror = function () { reject(tx.error || new Error('写入加密数据失败')); };
+      tx.onabort = function () { reject(tx.error || new Error('写入加密数据被中止')); };
+    });
+  });
+}
+
+function aiSecretDelete(store, key) {
+  return aiSecretOpenDb().then(function (db) {
+    return new Promise(function (resolve, reject) {
+      var tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).delete(key);
+      tx.oncomplete = function () { resolve(true); };
+      tx.onerror = function () { reject(tx.error || new Error('删除加密数据失败')); };
+    });
+  });
+}
+
+async function aiSecretCryptoKey() {
+  var existing = await aiSecretGet(AI_SECRET_KEY_STORE, 'current');
+  if (existing) return existing;
+  var key = await crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  await aiSecretPut(AI_SECRET_KEY_STORE, 'current', key);
+  return key;
+}
+
+async function aiSecretStoreKey(plain) {
+  if (!aiSecretSupported()) throw new Error('浏览器不支持加密存储');
+  var key = await aiSecretCryptoKey();
+  var iv = crypto.getRandomValues(new Uint8Array(12));
+  var encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, new TextEncoder().encode(String(plain)));
+  await aiSecretPut(AI_SECRET_VALUE_STORE, 'current', { v: 1, iv: Array.from(iv), data: Array.from(new Uint8Array(encrypted)) });
+}
+
+async function aiSecretLoadKey() {
+  if (!aiSecretSupported()) return '';
+  var record = await aiSecretGet(AI_SECRET_VALUE_STORE, 'current');
+  if (!record || record.v !== 1 || !Array.isArray(record.iv) || !Array.isArray(record.data)) return '';
+  var key = await aiSecretCryptoKey();
+  var plain = await crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv: new Uint8Array(record.iv) },
+    key,
+    new Uint8Array(record.data)
+  );
+  return new TextDecoder().decode(plain);
+}
+
+function aiSecretDeleteKey() {
+  return Promise.all([
+    aiSecretDelete(AI_SECRET_VALUE_STORE, 'current'),
+    aiSecretDelete(AI_SECRET_KEY_STORE, 'current')
+  ]).catch(function () { return false; });
+}
+
+function aiWriteConfigMeta(cfg, keyStored) {
+  safeStorage.setJSON(AI_CONFIG_KEY, {
+    protocol: cfg.protocol,
+    baseUrl: cfg.baseUrl,
+    model: cfg.model,
+    savedAt: cfg.savedAt || nowIso(),
+    keyStored: !!keyStored
+  });
+}
+
+async function aiHydrateKey() {
+  AI_KEY_CACHE = '';
+  var cfg = safeStorage.getJSON(AI_CONFIG_KEY, null);
+  var legacy = '';
+  try { legacy = safeStorage.get('sanke-dsh-token') || ''; } catch (e) { legacy = ''; }
+  if ((!cfg || typeof cfg !== 'object') && legacy) {
+    cfg = { protocol: 'dsh', baseUrl: AI_PROTOCOL_PRESETS.dsh.baseUrl, model: AI_PROTOCOL_PRESETS.dsh.model, apiKey: legacy };
+  }
+  if (!cfg || typeof cfg !== 'object') return;
+  if (legacy) safeStorage.remove('sanke-dsh-token');
+  if (cfg.apiKey) {
+    // Migrate the old plaintext record on first boot after the upgrade.
+    AI_KEY_CACHE = String(cfg.apiKey);
+    try {
+      await aiSecretStoreKey(AI_KEY_CACHE);
+      aiWriteConfigMeta(cfg, true);
+    } catch (e) {
+      aiWriteConfigMeta(cfg, false);
+    }
+    return;
+  }
+  if (!cfg.keyStored) return;
+  try { AI_KEY_CACHE = await aiSecretLoadKey(); }
+  catch (e) { AI_KEY_CACHE = ''; }
+}
+
 function aiConfig() {
   var cfg = safeStorage.getJSON(AI_CONFIG_KEY, null);
   if (!cfg || typeof cfg !== 'object') {
@@ -497,7 +633,7 @@ function aiConfig() {
     protocol: AI_PROTOCOL_PRESETS[cfg.protocol] ? cfg.protocol : 'openai',
     baseUrl: String(cfg.baseUrl || preset.baseUrl).trim(),
     model: String(cfg.model || preset.model).trim(),
-    apiKey: String(cfg.apiKey || '').trim()
+    apiKey: String(AI_KEY_CACHE || cfg.apiKey || '').trim()
   };
 }
 
@@ -559,13 +695,25 @@ function aiSaveConfig(cfg) {
     apiKey: String(cfg.apiKey || '').trim(),
     savedAt: nowIso()
   };
-  safeStorage.setJSON(AI_CONFIG_KEY, next);
+  AI_KEY_CACHE = next.apiKey;
+  aiWriteConfigMeta(next, false);
+  if (next.apiKey) {
+    aiSecretStoreKey(next.apiKey).then(function () {
+      aiWriteConfigMeta(next, true);
+    }).catch(function () {
+      aiWriteConfigMeta(next, false);
+      if (typeof toast === 'function') toast('当前浏览器不能加密保存 API Key；Key 只在本次会话使用，刷新后需重新填写');
+    });
+  }
   if (next.protocol === 'dsh' && typeof setDshToken === 'function') setDshToken(next.apiKey);
   return next;
 }
 
 function aiClearConfig() {
+  AI_KEY_CACHE = '';
   safeStorage.remove(AI_CONFIG_KEY);
+  safeStorage.remove('sanke-dsh-token');
+  aiSecretDeleteKey();
   if (typeof clearDshToken === 'function') clearDshToken();
 }
 

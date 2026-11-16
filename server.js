@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const dns = require('dns').promises;
 const net = require('net');
 const { loadSkillBundle, buildSystemPrompt, SUBJECT_NAMES } = require('./skills');
+const { requestJson } = require('./lib/ai-http');
 
 const ROOT = __dirname;
 const DIST = path.join(ROOT, 'dist');
@@ -434,7 +435,7 @@ function isPrivateAddress(address) {
   return true;
 }
 
-async function assertSafeAiBaseUrl(baseUrl) {
+async function resolveSafeAiBaseUrl(baseUrl) {
   let u;
   try { u = new URL(String(baseUrl || '')); }
   catch (e) { const err = new Error('AI 接口地址格式不正确'); err.code = 'UNSAFE_AI_URL'; throw err; }
@@ -444,26 +445,31 @@ async function assertSafeAiBaseUrl(baseUrl) {
   if (u.username || u.password) {
     const err = new Error('AI 接口地址不能包含账号密码'); err.code = 'UNSAFE_AI_URL'; throw err;
   }
-  if (process.env.ALLOW_PRIVATE_AI_BASE_URL === '1') return;
-  const host = u.hostname.toLowerCase();
-  if (host === 'localhost' || /\.localhost$/.test(host) || host === 'metadata.google.internal') {
+  const allowPrivate = process.env.ALLOW_PRIVATE_AI_BASE_URL === '1';
+  const host = u.hostname.toLowerCase().replace(/^\[|\]$/g, '');
+  if (!allowPrivate && (host === 'localhost' || /\.localhost$/.test(host) || host === 'metadata.google.internal')) {
     const err = new Error('AI 接口地址不能指向本机或元数据服务'); err.code = 'UNSAFE_AI_URL'; throw err;
   }
-  let addresses;
-  if (net.isIP(host)) addresses = [host];
+  let rows;
+  if (net.isIP(host)) rows = [{ address: host, family: net.isIP(host) }];
   else {
-    try { addresses = (await dns.lookup(host, { all: true })).map(function (x) { return x.address; }); }
+    try { rows = await dns.lookup(host, { all: true }); }
     catch (e) { const err = new Error('AI 接口域名无法解析'); err.code = 'UNSAFE_AI_URL'; throw err; }
   }
-  if (!addresses.length || addresses.some(isPrivateAddress)) {
+  if (!rows.length) {
+    const err = new Error('AI 接口域名无法解析'); err.code = 'UNSAFE_AI_URL'; throw err;
+  }
+  if (!allowPrivate && rows.some(function (x) { return isPrivateAddress(x.address); })) {
     const err = new Error('AI 接口地址不能指向内网、回环或元数据地址'); err.code = 'UNSAFE_AI_URL'; throw err;
   }
+  // Pin the first validated address.  requestJson forces every connection for
+  // this request through it, so a second DNS answer cannot redirect the POST.
+  return { address: rows[0].address, family: rows[0].family || (net.isIPv6(rows[0].address) ? 6 : 4) };
 }
 
 async function postAiJson(cfg, payload) {
-  await assertSafeAiBaseUrl(cfg.baseUrl);
-  const controller = new AbortController();
-  const timer = setTimeout(function () { controller.abort(); }, SOLVE_TIMEOUT_MS);
+  const endpoint = aiEndpointServer(cfg);
+  const pinned = await resolveSafeAiBaseUrl(endpoint);
   const headers = { 'content-type': 'application/json' };
   if (isOpenAiServerProtocol(cfg.protocol)) headers['authorization'] = 'Bearer ' + cfg.apiKey;
   else if (cfg.protocol === 'anthropic') {
@@ -473,19 +479,18 @@ async function postAiJson(cfg, payload) {
     headers['x-dsh-auth-token'] = cfg.apiKey;
     headers['anthropic-version'] = '2023-06-01';
   }
-  try {
-    const res = await fetch(aiEndpointServer(cfg), {
-      method: 'POST', headers: headers, body: JSON.stringify(payload), signal: controller.signal, redirect: 'error'
-    });
-    const raw = await res.text();
-    if (!res.ok) throw aiUpstreamError(res, raw);
-    try { return JSON.parse(raw); } catch (e) {
-      const pe = new Error('模型返回了无法解析的内容');
-      pe.code = 'PARSE_ERROR';
-      throw pe;
-    }
-  } finally {
-    clearTimeout(timer);
+  const res = await requestJson(endpoint, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(payload),
+    timeoutMs: SOLVE_TIMEOUT_MS,
+    resolveHost: async function () { return pinned; }
+  });
+  if (!res.ok) throw aiUpstreamError(res, res.body);
+  try { return JSON.parse(res.body); } catch (e) {
+    const pe = new Error('模型返回了无法解析的内容');
+    pe.code = 'PARSE_ERROR';
+    throw pe;
   }
 }
 
@@ -496,7 +501,6 @@ async function callSolveApi(subject, text, hint, images, wrongText, wrongImages,
     err.code = 'NO_AI_KEY';
     throw err;
   }
-  await assertSafeAiBaseUrl(cfg.baseUrl);
   const skillBundle = loadSkillBundle(subject, text, hint);
   const languageNames = { 'zh-CN': '简体中文', 'zh-TW': '繁體中文', 'en': 'English', 'fr': 'French', 'de': 'German', 'ja': 'Japanese', 'ko': 'Korean', 'pt': 'Portuguese', 'ru': 'Russian', 'es': 'Spanish' };
   const targetLanguage = languageNames[language] || '简体中文';
@@ -559,7 +563,7 @@ async function callSolveApi(subject, text, hint, images, wrongText, wrongImages,
 }
 
 function solveError(res, e) {
-  if (e && e.name === 'AbortError') return json(res, 504, { error: '生成超时，请重试或把题目拆小一点', code: 'TIMEOUT' });
+  if (e && (e.name === 'AbortError' || e.code === 'TIMEOUT')) return json(res, 504, { error: '生成超时，请重试或把题目拆小一点', code: 'TIMEOUT' });
   const code = (e && e.code) || 'SOLVE_FAILED';
   if (code === 'SKILL_MISSING') return json(res, 503, { error: (e && e.message) || '找不到对应科目技能', code: code });
   if (code === 'NO_CREDENTIAL' || code === 'NO_AI_KEY') return json(res, 503, { error: '服务端没有配置 AI 模型服务；可设置 AI_API_KEY / AI_BASE_URL / AI_MODEL，或在页面设置里填写后由请求携带', code: 'NO_AI_KEY' });
