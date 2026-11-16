@@ -575,6 +575,10 @@ document.addEventListener('click', function (e) {
   else if (act === 'final-chapter') { e.preventDefault(); finalPaperToggleChapter(el.getAttribute('data-chapter')); }
   else if (act === 'final-section') { e.preventDefault(); finalPaperToggleSection(el.getAttribute('data-section')); }
   else if (act === 'final-smart-scores') { e.preventDefault(); finalPaperSmartScores(); }
+  else if (act === 'final-picker-select-all') { e.preventDefault(); finalPickerToggleAll(); }
+  else if (act === 'final-picker-clear') { e.preventDefault(); finalPickerClear(); }
+  else if (act === 'final-picker-add') { e.preventDefault(); finalPickerAdd(); }
+  else if (act === 'final-picker-new') { e.preventDefault(); finalPickerNew(); }
   else if (act === 'final-paper-draw-toggle') { e.preventDefault(); var f = finalPaperFindItem(Number(el.getAttribute('data-index'))); if (f) { f.item.drawMode = !f.item.drawMode; render(); } }
   else if (act === 'final-paper-draw-clear') { e.preventDefault(); var c = finalPaperFindItem(Number(el.getAttribute('data-index'))); if (c) { c.item.draw = ''; c.paper.updatedAt = nowIso(); markDirty(); render(); } }
   else if (act === 'final-paper-image-clear') { e.preventDefault(); var g = finalPaperFindItem(Number(el.getAttribute('data-index'))); if (g) { g.item.image = ''; g.paper.updatedAt = nowIso(); markDirty(); render(); } }
@@ -584,6 +588,9 @@ document.addEventListener('change', function (e) {
   if (!t || !t.getAttribute) return;
   var idx = t.getAttribute('data-paper-image');
   if (idx != null && t.files && t.files[0]) finalPaperSetImage(Number(idx), t.files[0]);
+  var pickId = t.getAttribute('data-paper-picker');
+  if (pickId) { var map = finalPickerCheckedMap(); if (t.checked) map[pickId] = true; else delete map[pickId]; render(); return; }
+  if (t.hasAttribute('data-paper-picker-chapter')) { ui.finalPickerChapter = t.value || ''; render(); return; }
 });
 var finalPaperPointer = null;
 document.addEventListener('pointerdown', function (e) {

@@ -2622,7 +2622,7 @@ document.addEventListener('click', function (e) {
   var el = e.target.closest ? e.target.closest('[data-act]') : null;
   if (!el) return;
   var act = el.getAttribute('data-act');
-  if (act === 'final-subject') { e.preventDefault(); finalData().subject = el.getAttribute('data-subject') || finalSubject(); ui.finalPaperId = ''; markDirty(); render(); }
+  if (act === 'final-subject') { e.preventDefault(); finalData().subject = el.getAttribute('data-subject') || finalSubject(); ui.finalPaperId = ''; ui.finalPickerChecked = {}; ui.finalPickerChapter = ''; markDirty(); render(); }
   else if (act === 'final-section') { e.preventDefault(); ui.finalSection = el.getAttribute('data-section') === 'exam' ? 'exam' : 'paper'; render(); }
   else if (act === 'final-start-exam') { e.preventDefault(); finalStartExam(); }
   else if (act === 'final-ai-exam') { e.preventDefault(); finalStartAiExam(); }

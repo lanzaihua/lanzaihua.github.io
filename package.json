@@ -29,6 +29,7 @@
     "qa:sync": "node tools/qa-sync.js",
     "qa:paper": "node tools/qa-paper-editor.js",
     "qa:filters": "node tools/qa-bank-filters.js",
+    "qa:final": "node tools/qa-final-review.js",
     "qa:render": "node tools/audit-rendered-bank.js",
     "qa:baseline": "node tools/check-bank-baseline.js",
     "qa:latex": "node tools/qa-bank-latex.js",

@@ -89,6 +89,8 @@ function finalResolveItem(it) {
       pitfalls: Array.isArray(b.pitfalls) ? b.pitfalls.slice() : [],
       options: Array.isArray(b.options) ? b.options.slice() : [],
       correct: String(b.correct || ''),
+      templateId: String(b.templateId || ''),
+      pointKeys: Array.isArray(b.pointKeys) ? b.pointKeys.slice() : [],
       questionType: b.type === 'choice' ? 'choice' : b.type === 'fill' ? 'fill' : 'subjective'
     };
   }
@@ -115,6 +117,125 @@ function finalSelectedSections(subject) {
   var secs = chapterSectionsFor(subject, chs[0]);
   return arr.filter(function (x) { return secs.indexOf(x) >= 0; });
 }
+function finalAllChapters(subject) {
+  var out = [], seen = {};
+  function add(ch) {
+    ch = String(ch || '').trim();
+    if (!ch || seen[ch]) return;
+    seen[ch] = true;
+    out.push(ch);
+  }
+  bankOf(subject).forEach(function (b) { add(b && b.chapter); });
+  templatesOf(subject).forEach(function (t) { add(t && t.chapter); });
+  return out;
+}
+function finalPlanChapters(subject) {
+  var all = finalAllChapters(subject);
+  var sel = finalSelectedChapters(subject);
+  if (!sel.length) return all;
+  var picked = all.filter(function (ch) { return sel.indexOf(ch) >= 0; });
+  return picked.length ? picked : all;
+}
+function finalPlanTemplateSection(t, labels) {
+  if (!t || !Array.isArray(t.sections)) return '';
+  var keys = Array.isArray(labels) ? labels : [];
+  for (var i = 0; i < keys.length; i++) {
+    for (var j = 0; j < t.sections.length; j++) {
+      var sec = t.sections[j];
+      if (sec && String(sec.label || '').indexOf(keys[i]) >= 0 && String(sec.md || '').trim()) {
+        return String(sec.md).trim();
+      }
+    }
+  }
+  return '';
+}
+function finalPlanTemplateFor(subject, chapter, example) {
+  var list = templatesOf(subject).filter(function (t) { return t && t.chapter === chapter; });
+  if (!list.length) return null;
+  if (example && example.templateId) {
+    var hit = list.filter(function (t) { return t.id === example.templateId; })[0];
+    if (hit) return hit;
+  }
+  return list.slice().sort(function (a, b) {
+    var sa = (finalPlanTemplateSection(a, ['标准步骤', '步骤骨架', '解题步骤', '步骤']) ? 5 : 0) + (finalPlanTemplateSection(a, ['易错点', '易错']) ? 3 : 0);
+    var sb = (finalPlanTemplateSection(b, ['标准步骤', '步骤骨架', '解题步骤', '步骤']) ? 5 : 0) + (finalPlanTemplateSection(b, ['易错点', '易错']) ? 3 : 0);
+    return sb - sa;
+  })[0];
+}
+function finalPlanExampleScore(m) {
+  var score = 0;
+  if (m.questionType === 'subjective') score += 30;
+  if (m.standardSolution) score += 20;
+  if (m.detailedAnalysis) score += 20;
+  if (m.templateId) score += 10;
+  score += (Number(m.stars) || 2) * 2;
+  var qLen = String(m.question || '').length;
+  if (qLen >= 40 && qLen <= 260) score += 5;
+  return score;
+}
+function finalPlanExamplesFor(subject, chapter) {
+  var all = bankOf(subject).filter(function (b) { return b && b.chapter === chapter; }).map(function (b) {
+    return finalResolveItem({ type: 'bank', subject: subject, id: b.id, key: finalItemKey(subject, 'bank', b.id) });
+  }).filter(Boolean);
+  function rank(list) {
+    return list.slice().sort(function (a, b) {
+      return (finalPlanExampleScore(b) - finalPlanExampleScore(a)) || String(a.id).localeCompare(String(b.id));
+    });
+  }
+  var strong = rank(all.filter(function (m) { return m.standardSolution && m.detailedAnalysis; }));
+  var withSolution = rank(all.filter(function (m) { return m.standardSolution; }));
+  var picked = [], used = {};
+  function take(list, need) {
+    for (var i = 0; i < list.length && picked.length < need; i++) {
+      if (!used[list[i].key]) { used[list[i].key] = true; picked.push(list[i]); }
+    }
+  }
+  take(strong, 2);
+  if (picked.length < 2) take(withSolution, 2);
+  if (picked.length < 2) take(rank(all), 2);
+  return picked;
+}
+function finalPlanPlain(md, max) {
+  var s = typeof plainText === 'function' ? plainText(md) : String(md || '').replace(/\$[^$]*\$/g, ' ');
+  s = String(s || '').replace(/\s+/g, ' ').trim();
+  max = Number(max) || 140;
+  if (s.length > max) s = s.slice(0, max - 1) + '…';
+  return s;
+}
+function finalPlanMemoryList(template, example) {
+  var list = [];
+  var identify = finalPlanTemplateSection(template, ['识别特征', '适用条件', '识别', '题型']);
+  var method = finalPlanTemplateSection(template, ['首选方法', '标准步骤', '步骤骨架', '解题步骤', '步骤', '方法']);
+  var pitfalls = finalPlanTemplateSection(template, ['易错点', '易错', '陷阱', '注意']);
+  if (identify) list.push('先认题型：' + finalPlanPlain(identify, 110));
+  if (method) list.push('考场起手：' + finalPlanPlain(method, 150));
+  if (pitfalls) list.push('交卷前查：' + finalPlanPlain(pitfalls, 120));
+  if (example && Array.isArray(example.points) && example.points.length) {
+    list.push('本题要点：' + example.points.map(function (x) { return finalPlanPlain(x, 42); }).filter(Boolean).slice(0, 3).join(' / '));
+  }
+  if (!list.length) list.push('先口述模板的识别特征与第一步，再独立重做例题，最后对照标准解答补步骤。');
+  return list.slice(0, 4);
+}
+function finalPlanModule(subject, chapter) {
+  var tpls = templatesOf(subject).filter(function (t) { return t && t.chapter === chapter; });
+  var examples = finalPlanExamplesFor(subject, chapter);
+  var template = finalPlanTemplateFor(subject, chapter, examples[0]);
+  var kps = tpls.map(function (t) { return String(t.title || '').trim(); }).filter(Boolean).slice(0, 4);
+  if (!kps.length) kps = chapterSectionsFor(subject, chapter).slice(0, 4);
+  if (!kps.length) kps = [chapter];
+  return {
+    chapter: chapter,
+    templates: tpls,
+    template: template,
+    examples: examples,
+    pointKeys: kps,
+    memory: finalPlanMemoryList(template, examples[0])
+  };
+}
+function finalPlanModules(subject) {
+  return finalPlanChapters(subject).map(function (chapter) { return finalPlanModule(subject, chapter); });
+}
+
 function finalMaterialsForChapters(subject) {
   var all = finalMaterialsForSubject(subject);
   var sel = finalSelectedChapters(subject);
@@ -125,12 +246,10 @@ function finalMaterialsForChapters(subject) {
   return out;
 }
 function finalChapterFilterHtml(subject) {
-  var all = finalMaterialsForSubject(subject);
-  if (!all.length) return '';
-  var chapters = [];
-  all.forEach(function (m) { if (m.chapter && chapters.indexOf(m.chapter) < 0) chapters.push(m.chapter); });
+  var chapters = finalAllChapters(subject);
+  if (!chapters.length) return '';
   var sel = finalSelectedChapters(subject);
-  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
+  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><span class="fcf-count">已选 ' + sel.length + ' 章</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
     chapters.map(function (c) { return '<button class="fcf-chip' + (sel.indexOf(c) >= 0 ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="' + attr(c) + '" type="button">' + esc(c) + '</button>'; }).join('') + '</div>';
   if (sel.length !== 1) return main;
   var secs = chapterSectionsFor(subject, sel[0]);
@@ -187,6 +306,8 @@ function finalPlanData() {
   var total = Math.max(0, finalDaysBetween(today, exam));
   var materials = finalSortedMaterials();
   var labels = materials.map(function (m) { return finalPlanLabel(m, 14); });
+  var modules = finalPlanModules(finalSubject());
+  var moduleCount = modules.length;
   var p1 = Math.ceil(total * 0.45);
   var p2 = Math.ceil(total * 0.35);
   var days = [];
@@ -194,21 +315,88 @@ function finalPlanData() {
     var d = finalAddDays(today, i);
     var phase = i < p1 ? 0 : (i < p1 + p2 ? 1 : 2);
     var focus = '';
-    var c1 = labels.length ? labels[i % labels.length] : '';
-    var c2 = labels.length ? labels[(i + 1) % labels.length] : '';
-    if (phase === 0) focus = labels.length ? '回看 ' + c1 + (c2 && c2 !== c1 ? ' · ' + c2 : '') + '，整理公式与错因' : '整理错题本，补全公式与模板';
-    if (phase === 1) focus = labels.length ? '限时重做 ' + c1 + (c2 && c2 !== c1 ? ' · ' + c2 : '') + '，再做变式' : '按章节做变式题，记录卡点';
-    if (phase === 2) focus = (i === total - 1) ? '考前最后一轮：只看错题标题、公式和易错点' : (i % 2 === 0 ? '限时模拟卷 · ' + fe.duration + ' 分钟' : (labels.length ? '错题清单回看 ' + c1 + ' · ' + c2 : '回看错题清单与模板'));
-    days.push({ date: d, key: finalDateKey(d), phase: phase, focus: focus, done: !!fe.done[finalDateKey(d)] });
+    var module = moduleCount ? modules[i % moduleCount] : null;
+    var example = module && module.examples.length ? module.examples[i % module.examples.length] : null;
+    var chapter = module ? module.chapter : '';
+    var dayTemplate = module && module.templates.length ? module.templates[i % module.templates.length] : (module ? module.template : null);
+    var templateName = dayTemplate ? String(dayTemplate.title || '').trim() : '';
+    var code = example ? example.code : '';
+    if (phase === 0) {
+      focus = chapter
+        ? '知识点 ' + chapter + (templateName ? ' · ' + templateName : '') + '；先口述模板，再独立做例题' + (code ? ' ' + code : '')
+        : (labels.length ? '回看 ' + labels[i % labels.length] + '，整理公式与错因' : '整理错题本，补全公式与模板');
+    }
+    if (phase === 1) {
+      focus = chapter
+        ? '限时重做 ' + chapter + (code ? ' · 例题 ' + code : '') + '；按模板起手，做完对照标准解答'
+        : (labels.length ? '限时重做 ' + labels[i % labels.length] + '，再做变式' : '按章节做变式题，记录卡点');
+    }
+    if (phase === 2) {
+      focus = (i === total - 1)
+        ? '考前最后一轮：只看 ' + (chapter || '错题') + ' 的模板、公式与易错点'
+        : (chapter ? '错题回看 ' + chapter + (code ? ' · 例题 ' + code : '') + '；只看卡点与易错点' : '回看错题清单与模板');
+    }
+    days.push({ date: d, key: finalDateKey(d), phase: phase, focus: focus, chapter: chapter, moduleIndex: module ? i % moduleCount : -1, exampleCode: code, done: !!fe.done[finalDateKey(d)] });
   }
-  return { empty: false, past: false, today: today, exam: exam, total: total, days: days, phases: [p1, p2, Math.max(0, total - p1 - p2)], materials: materials, duration: fe.duration };
+  var dailyMinutes = Math.max(45, Math.min(120, Math.round((Number(fe.duration) || 120) * 0.5 / 5) * 5));
+  return { empty: false, past: false, today: today, exam: exam, total: total, days: days, phases: [p1, p2, Math.max(0, total - p1 - p2)], materials: materials, modules: modules, chapters: finalPlanChapters(finalSubject()), dailyMinutes: dailyMinutes, duration: fe.duration };
 }
 
+function finalPlanExampleHtml(example, template) {
+  if (!example) return '<div class="final-plan-note">本章题库暂无完整例题；先按上面的模板口述步骤，再回题库做一道同类题。</div>';
+  var options = '';
+  if (example.questionType === 'choice' && example.options.length) {
+    options = '<div class="fpe-options">' + example.options.map(function (o, i) {
+      var key = typeof o === 'object' && o ? String(o.key || 'ABCD'.charAt(i)) : 'ABCD'.charAt(i);
+      var text = typeof o === 'object' && o ? String(o.text || o.label || '') : String(o || '');
+      return '<div class="fpe-opt' + (String(example.correct || '').toUpperCase() === key.toUpperCase() ? ' is-correct' : '') + '"><b>' + esc(key) + '．</b><span class="md">' + renderMarkdown(text) + '</span></div>';
+    }).join('') + '</div>';
+  }
+  var detail = '';
+  if (example.standardSolution) detail += '<section><h5>考试标准解答</h5><div class="md">' + renderMarkdown(example.standardSolution) + '</div></section>';
+  var steps = finalPlanTemplateSection(template, ['标准步骤', '步骤骨架', '解题步骤', '步骤', '首选方法', '方法']);
+  if (steps) detail += '<section><h5>答题模板' + (template && template.title ? ' · ' + esc(template.title) : '') + '</h5><div class="md">' + renderMarkdown(steps) + '</div></section>';
+  if (example.detailedAnalysis) detail += '<section><h5>详细解析</h5><div class="md">' + renderMarkdown(example.detailedAnalysis) + '</div></section>';
+  if (example.pitfalls.length) detail += '<section><h5>易错点</h5><ul class="fpe-pitfalls">' + example.pitfalls.map(function (x) { return '<li>' + renderInline(x) + '</li>'; }).join('') + '</ul></section>';
+  return '<article class="fpe-item">' +
+    '<div class="fpe-head"><span class="fpe-code">' + esc(example.code || '') + '</span><b>' + renderInline(example.title || '例题') + '</b></div>' +
+    '<div class="md fpe-question">' + renderMarkdown(stripTypePrefix(example.question || '')) + '</div>' + options +
+    '<div class="fpe-answer"><b>答案 / 结论</b><div class="md">' + renderMarkdown(example.answer || '见标准解答') + '</div></div>' +
+    (detail ? '<details class="fpe-detail"><summary>展开考试标准解答、答题模板、详细解析与易错点</summary><div class="fpe-detail-body">' + detail + '</div></details>' : '') +
+  '</article>';
+}
+function finalPlanTemplateListHtml(m) {
+  if (!m || !m.templates.length) return '<div class="final-plan-note">模板库暂无本章模板；先按标准解答的步骤顺序口述一遍。</div>';
+  var items = m.templates.map(function (t, i) {
+    var steps = finalPlanTemplateSection(t, ['标准步骤', '步骤骨架', '解题步骤', '步骤', '首选方法', '方法']);
+    var pitfalls = finalPlanTemplateSection(t, ['易错点', '易错', '陷阱']);
+    return '<details class="fpm-tpl"' + (i === 0 ? ' open' : '') + '>' +
+      '<summary><span class="fpm-tpl-id">' + esc(t.id || '') + '</span><b>' + renderInline(t.title || '答题模板') + '</b></summary>' +
+      '<div class="fpm-tpl-body"><div class="md">' + renderMarkdown(steps || '模板暂无步骤说明；按标准解答的顺序口述一遍。') + '</div>' +
+        (pitfalls ? '<div class="fpm-tpl-pitfall"><b>易错点</b><div class="md">' + renderMarkdown(pitfalls) + '</div></div>' : '') +
+      '</div></details>';
+  }).join('');
+  return '<div class="fpm-templates"><h4>答题模板（' + m.templates.length + ' 个，展开看步骤）</h4>' + items + '</div>';
+}
+function finalPlanModuleHtml(m, index) {
+  if (!m) return '';
+  var chips = m.pointKeys.map(function (x) { return '<span class="fpm-chip">' + renderInline(x) + '</span>'; }).join('');
+  var memory = m.memory.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('');
+  var examples = m.examples.length ? m.examples.map(function (ex) { return finalPlanExampleHtml(ex, m.template); }).join('') : '<div class="final-plan-note">本章暂无完整例题，先按模板复述步骤。</div>';
+  return '<details class="final-plan-module"' + (index === 0 ? ' open' : '') + '>' +
+    '<summary><span class="fpm-index">' + pad(index + 1, 2) + '</span><span class="fpm-title">' + esc(m.chapter) + '</span><span class="fpm-meta">' + m.pointKeys.length + ' 个知识点 · ' + m.templates.length + ' 个模板 · ' + m.examples.length + ' 道例题</span></summary>' +
+    '<div class="fpm-body">' +
+      '<div class="fpm-kps"><span class="fpm-label">知识点</span><span class="fpm-chips">' + chips + '</span></div>' +
+      '<div class="fpm-memory"><h4>记忆与考场用法</h4><ul>' + memory + '</ul></div>' +
+      finalPlanTemplateListHtml(m) +
+      '<div class="fpm-examples"><h4>本章例题</h4>' + examples + '</div>' +
+    '</div>' +
+  '</details>';
+}
 function finalPlanHtml() {
-  var fe = finalData();
   var data = finalPlanData();
   if (data.empty) {
-    return '<div class="final-empty"><b>先设定考试日期</b><p>日期确定后，系统会从今天开始拆分三个阶段，并把选入的题目排进每天的任务。</p></div>';
+    return '<div class="final-empty"><b>先设定考试日期</b><p>日期确定后，系统会按所选章节拆分三个阶段，并把知识点、模板和例题排进每天的任务。</p></div>';
   }
   if (data.past) {
     return '<div class="final-empty is-warn"><b>考试日期已经过去</b><p>把日期改到今天或之后，复习计划会重新生成。</p></div>';
@@ -216,6 +404,8 @@ function finalPlanHtml() {
   var phaseCards = FINAL_PHASES.map(function (p, i) {
     return '<div class="final-phase"><span class="fp-k">0' + (i + 1) + '</span><b>' + p.label + '</b><small>' + p.hint + '</small><em>' + (data.phases[i] || 0) + ' 天</em></div>';
   }).join('');
+  var modules = (data.modules || []).map(finalPlanModuleHtml).join('');
+  var modulesHtml = modules ? '<div class="final-plan-modules"><div class="final-plan-modules-head"><h3>章节重点与例题</h3><span>' + data.chapters.length + ' 章 · 每章含知识点、模板与 1–2 道例题</span></div>' + modules + '</div>' : '';
   var rows = data.days.map(function (d) {
     return '<div class="final-day' + (d.done ? ' is-done' : '') + '">' +
       '<span class="fd-date">' + pad(d.date.getMonth() + 1, 2) + '.' + pad(d.date.getDate(), 2) + '<small>周' + '日一二三四五六'.charAt(d.date.getDay()) + '</small></span>' +
@@ -224,9 +414,12 @@ function finalPlanHtml() {
       '<label class="fd-check"><input type="checkbox" data-final-task="' + d.key + '"' + (d.done ? ' checked' : '') + '><span>完成</span></label>' +
     '</div>';
   }).join('');
+  var emptyDays = data.days.length ? '' : '<div class="final-plan-note">今天就是考试日：只看章节模板、错题标题和易错点。</div>';
   return '<div class="final-count-banner"><b>' + data.total + '</b><span>天复习窗口</span><small>' + finalDateKey(data.today) + ' → ' + finalDateKey(data.exam) + '</small></div>' +
     '<div class="final-phase-grid">' + phaseCards + '</div>' +
-    '<div class="final-day-list">' + rows + '<div class="final-day is-exam"><span class="fd-date">' + pad(data.exam.getMonth() + 1, 2) + '.' + pad(data.exam.getDate(), 2) + '<small>考试</small></span><span class="fd-phase">考试日</span><span class="fd-focus">带齐证件与文具，按模拟卷节奏答题</span><span class="fd-check">—</span></div></div>';
+    '<div class="final-plan-usage"><b>每天怎么用</b><ol><li>先用 10 分钟口述当天章节的答题模板。</li><li>用 ' + data.dailyMinutes + ' 分钟独立做例题，不翻答案。</li><li>对照考试标准解答和详细解析，补上跳过的步骤。</li><li>把卡点写成一句错因；考前一天只看模板与错因。</li></ol></div>' +
+    modulesHtml +
+    '<div class="final-plan-schedule"><h3>每日安排</h3><div class="final-day-list">' + emptyDays + rows + '<div class="final-day is-exam"><span class="fd-date">' + pad(data.exam.getMonth() + 1, 2) + '.' + pad(data.exam.getDate(), 2) + '<small>考试</small></span><span class="fd-phase">考试日</span><span class="fd-focus">带齐证件与文具，按模拟卷节奏答题</span><span class="fd-check">—</span></div></div></div>';
 }
 function finalSubject() { return finalData().subject || state.activeSubject || 'gaodai'; }
 function finalSubjectTabsHtml(showNote) {
@@ -488,6 +681,135 @@ function finalPaperImportAdd(kind, id) {
   render();
   toast('已插入模拟卷');
 }
+function finalPickerChapter(subject) {
+  var all = finalAllChapters(subject);
+  var ch = ui.finalPickerChapter || '';
+  if (ch && all.indexOf(ch) < 0) ch = '';
+  if (!ch) {
+    var sel = finalSelectedChapters(subject);
+    if (sel.length === 1 && all.indexOf(sel[0]) >= 0) ch = sel[0];
+  }
+  ui.finalPickerChapter = ch;
+  return ch;
+}
+function finalPickerCheckedMap() {
+  if (!ui.finalPickerChecked || typeof ui.finalPickerChecked !== 'object') ui.finalPickerChecked = {};
+  return ui.finalPickerChecked;
+}
+function finalPickerResolve(subject, id) {
+  var b = bankOf(subject).filter(function (x) { return x.id === id; })[0];
+  if (!b) return null;
+  return finalResolveItem({ type: 'bank', subject: subject, id: b.id, key: finalItemKey(subject, 'bank', b.id) });
+}
+function finalPickerMaterials(subject) {
+  var ch = finalPickerChapter(subject);
+  return bankOf(subject).filter(function (b) { return b && (!ch || b.chapter === ch); }).map(function (b) {
+    return finalResolveItem({ type: 'bank', subject: subject, id: b.id, key: finalItemKey(subject, 'bank', b.id) });
+  }).filter(Boolean).slice(0, 60);
+}
+function finalPickerSelectedIds() {
+  var map = finalPickerCheckedMap();
+  return Object.keys(map).filter(function (id) { return !!map[id]; });
+}
+function finalPickerHtml(p) {
+  var subject = finalSubject();
+  var all = finalAllChapters(subject);
+  if (!all.length) return '';
+  var chapter = finalPickerChapter(subject);
+  var list = finalPickerMaterials(subject);
+  var used = {};
+  if (p) (p.items || []).forEach(function (it) { if (it && it.key) used[it.key] = true; });
+  var map = finalPickerCheckedMap();
+  var selected = finalPickerSelectedIds().length;
+  var chapterOptions = '<option value="">全部章节</option>' + all.map(function (c) {
+    return '<option value="' + attr(c) + '"' + (c === chapter ? ' selected' : '') + '>' + esc(c) + '</option>';
+  }).join('');
+  var rows = list.map(function (m) {
+    var checked = !!map[m.id];
+    var already = !!used[m.key];
+    return '<label class="fp-row' + (already ? ' is-used' : '') + '">' +
+      '<input type="checkbox" data-paper-picker="' + attr(m.id) + '"' + (checked ? ' checked' : '') + (already ? ' disabled' : '') + '>' +
+      '<span class="fpr-code">' + esc(m.code || '') + '</span>' +
+      '<span class="fpr-main"><b>' + renderInline(m.title || '题库题') + '</b><small>' + esc(m.chapter || '') + ' · ' + esc(m.questionType === 'choice' ? '客观题' : m.questionType === 'fill' ? '填空题' : '主观题') + '</small></span>' +
+      '<span class="fpr-state">' + (already ? '已在卷中' : '可加入') + '</span>' +
+    '</label>';
+  }).join('');
+  return '<div class="final-picker" id="finalPaperPicker">' +
+    '<div class="final-picker-head"><div><h3>题库选题</h3><p>按章节筛选，勾选题目后加入当前卷，或直接用所选新建一张 100 分卷。</p></div><span class="final-picker-count">已选 ' + selected + ' 题 · 本页 ' + list.length + ' 题</span></div>' +
+    '<div class="final-picker-controls">' +
+      '<label class="final-picker-field"><span>章节</span><select class="select select-sm" data-paper-picker-chapter>' + chapterOptions + '</select></label>' +
+      '<button class="btn btn-xs" data-act="final-picker-select-all" type="button">全选本页</button>' +
+      '<button class="btn btn-xs" data-act="final-picker-clear" type="button">清空勾选</button>' +
+      '<button class="btn btn-xs btn-primary" data-act="final-picker-add" type="button"' + (!p || !selected ? ' disabled' : '') + '>加入当前卷</button>' +
+      '<button class="btn btn-xs" data-act="final-picker-new" type="button"' + (!selected ? ' disabled' : '') + '>用所选新建卷</button>' +
+    '</div>' +
+    '<div class="final-picker-list">' + (rows || '<div class="final-plan-note">当前章节没有可选题；换一个章节试试。</div>') + '</div>' +
+  '</div>';
+}
+function finalPickerToggleAll() {
+  var subject = finalSubject();
+  var list = finalPickerMaterials(subject);
+  var map = finalPickerCheckedMap();
+  var allChecked = list.length && list.every(function (m) { return !!map[m.id]; });
+  list.forEach(function (m) { if (allChecked) delete map[m.id]; else map[m.id] = true; });
+  render();
+}
+function finalPickerClear() {
+  ui.finalPickerChecked = {};
+  render();
+}
+function finalPickerAdd() {
+  var p = finalActivePaper();
+  if (!p) { toast('先创建一张模拟卷'); return; }
+  var subject = finalSubject();
+  var ids = finalPickerSelectedIds();
+  if (!ids.length) { toast('先勾选题目'); return; }
+  var added = 0;
+  ids.forEach(function (id) {
+    var m = finalPickerResolve(subject, id);
+    if (!m) return;
+    if (p.items.some(function (x) { return x.key === m.key; })) return;
+    p.items.push(finalPaperMaterialItem(m));
+    added++;
+  });
+  if (!added) { toast('所选题都已经在卷子里'); return; }
+  p.updatedAt = nowIso();
+  ui.finalPickerChecked = {};
+  markDirty();
+  render();
+  toast('已加入 ' + added + ' 题；可在卷内调整顺序和分值');
+}
+function finalPickerNew() {
+  var subject = finalSubject();
+  var ids = finalPickerSelectedIds();
+  if (!ids.length) { toast('先勾选题目'); return; }
+  var fe = finalData();
+  var items = [], chapters = [];
+  ids.forEach(function (id) {
+    var m = finalPickerResolve(subject, id);
+    if (!m) return;
+    items.push(finalPaperMaterialItem(m));
+    if (m.chapter && chapters.indexOf(m.chapter) < 0) chapters.push(m.chapter);
+  });
+  if (!items.length) { toast('所选题不存在'); return; }
+  finalSmartScoreItems(items, 100);
+  var p = {
+    id: 'paper-' + Date.now().toString(36),
+    subject: subject,
+    title: subjectOf(subject).name + ' · 章节选题卷 · ' + (fe.date || finalDateKey(new Date())) + (chapters.length ? ' · ' + chapters.join(' / ') : ''),
+    duration: Number(fe.duration) || 120,
+    createdAt: nowIso(),
+    updatedAt: nowIso(),
+    items: items
+  };
+  fe.papers.unshift(p);
+  ui.finalPaperId = p.id;
+  ui.finalPickerChecked = {};
+  markDirty();
+  render();
+  toast('已用所选 ' + items.length + ' 题新建模拟卷');
+}
+
 function finalDeletePaper() {
   var fe = finalData();
   var p = finalActivePaper();
@@ -614,7 +936,7 @@ function finalPapersHtml() {
   return '<div class="final-paper-head"><div><h2>我的模拟卷</h2><p>' + esc(subjectOf(finalSubject()).name) + ' · 按考试时长自动选题，材料为空时从标准题库抽题；一张卷只含一个科目，可自由编辑与导出。</p></div><div class="final-paper-head-actions"><button class="btn btn-primary" data-act="final-generate-paper" type="button">生成模拟卷</button></div></div>' +
     finalSubjectTabsHtml() + finalChapterFilterHtml(finalSubject()) +
     '<p class="final-paper-hint">模拟卷用于编辑、保存和导出；需要限时考试请切到「模拟考」。</p>' +
-    finalPaperChipsHtml() + (p ? finalPaperEditorHtml(p) : '<div class="final-empty"><b>当前科目还没有模拟卷</b><p>先点「生成模拟卷」；也可以从错题或题库插入题目。</p></div>') + finalPaperImportHtml();
+    finalPickerHtml(p) + finalPaperChipsHtml() + (p ? finalPaperEditorHtml(p) : '<div class="final-empty"><b>当前科目还没有模拟卷</b><p>先点「生成模拟卷」；也可以在题库选题里勾选后新建卷。</p></div>') + finalPaperImportHtml();
 }
 
 function finalSectionTabsHtml() {

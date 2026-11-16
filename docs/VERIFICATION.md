@@ -25,7 +25,8 @@
 - 严格题库 QA：problems 0、warnings 0；分类 10 类、章节 55、bucket 825。
 - 站点一致性：四科 2046 / 3523 / 1199 / 2883，更新记录 24 天。
 - 仓库语言门禁、Python 题库审计均通过。
-- 回归测试 126 项（新增存储 6 项、模拟卷编辑卡 3 项、筛选栏 3 项、公式管线/知识点摘录/考试标题日期 1 项、DOCX 关系符与 deg 断言）。
+- 回归测试 129 项（新增存储 6 项、模拟卷编辑卡 3 项、筛选栏 3 项、公式管线/知识点摘录/考试标题日期 1 项、DOCX 关系符与 deg 断言）。
+- 期末复习：章节筛选不依赖已加入材料；复习计划按考试日期列出每章知识点、全部答题模板与 2 道例题（标准解答/模板/详细解析/易错点），每日计划轮换模板；按章节选题可加入当前卷或新建 100 分卷。qa:final 在 390/768/1440 断言这些路径与无横向溢出。
 - 全库公式渲染审计：9651 题的 question/answer/standardSolution/detailedAnalysis/points/pitfalls/solution/options 共 0 个 `.math-raw`、`.temml-error`、merror、裸 `$`、裸 LaTeX 或裸上下标。`npm run check` 末尾自动执行 `node tools/audit-rendered-bank.js`，失败即退出 1。
 - 真浏览器公式 QA 覆盖 12 个面：总览、错题列表、错题详情、手机端错题、模板、题库、手机端题库、规范、期末、模拟卷、知识点面板（桌面与 390 宽）与标准题库模拟考，均 0 残留、0 横向溢出。
 - 知识点教材表在 390 宽不再只露前三列：渲染时为每个 `td` 写入列名 `data-label`，CSS 在 760px 以下隐藏 `thead`、把每行堆叠成带列名的卡片；长公式在单元格内横向滚动。
@@ -84,7 +85,8 @@
 ## 9. 复现命令
 
 ```bash
-npm test                      # 126 项回归
+npm test                      # 129 项回归
+npm run qa:final              # 期末复习章节选题、模板清单、例题与三端布局
 npm run check                 # 严格 QA + 站点一致性 + 语言门禁 + 全库公式渲染审计
 node build.js && node build.js --pages
 npm run prepare:pages && npm run verify:pages

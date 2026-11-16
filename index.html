@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.16-e281c36b";</script>
+<script>window.__BUILD_ID__="2026.11.16-848764e1";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9587,6 +9587,113 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 .math-tail { max-width: 100%; }
 .math-tail:has(.is-wide) { white-space: normal; }
 @media (max-width: 480px) { .math-tail { white-space: normal; } }
+
+/* 2026-11-16: 期末复习计划按章节给出知识点、模板、例题与标准解答；题库选题器支持批量组卷。 */
+.fcf-count { margin-left: 2px; color: var(--faint); font-size: 9.5px; white-space: nowrap; }
+.final-plan-usage { margin: 0 0 14px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 10px; background: color-mix(in srgb, var(--surface-2) 55%, transparent); }
+.final-plan-usage > b { display: block; margin-bottom: 5px; font-family: var(--font-serif); font-size: 13px; }
+.final-plan-usage ol { margin: 0; padding-left: 18px; display: grid; gap: 3px; color: var(--muted); font-size: 11px; line-height: 1.65; }
+.final-plan-modules { margin: 0 0 14px; }
+.final-plan-modules-head, .final-plan-schedule > h3 { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0 0 8px; }
+.final-plan-modules-head h3, .final-plan-schedule > h3 { margin: 0; font-family: var(--font-serif); font-size: 14px; font-weight: 600; }
+.final-plan-modules-head span { color: var(--faint); font-size: 10px; }
+.final-plan-module { border: 1px solid var(--line); border-radius: 11px; background: var(--surface); margin-bottom: 8px; overflow: hidden; }
+.final-plan-module > summary { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto 14px; align-items: center; gap: 8px; padding: 10px 12px; cursor: pointer; list-style: none; background: color-mix(in srgb, var(--surface-2) 38%, transparent); }
+.final-plan-module > summary::-webkit-details-marker { display: none; }
+.final-plan-module > summary::after { content: '+'; justify-self: end; color: var(--faint); font: 400 15px/1 var(--font-mono); }
+.final-plan-module[open] > summary::after { content: '−'; }
+.fpm-index { color: var(--accent-deep); font: 400 10px/1.4 var(--font-mono); }
+.fpm-title { min-width: 0; font-size: 12.5px; font-weight: 600; overflow-wrap: anywhere; }
+.fpm-meta { min-width: 0; color: var(--faint); font-size: 9.5px; line-height: 1.35; text-align: right; }
+.fpm-body { display: grid; gap: 12px; padding: 12px; border-top: 1px solid var(--line); }
+.fpm-kps { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+.fpm-label { flex: 0 0 auto; color: var(--faint); font-size: 9.5px; letter-spacing: .08em; padding-top: 3px; }
+.fpm-chips { display: flex; flex-wrap: wrap; gap: 5px; min-width: 0; }
+.fpm-chip { max-width: 100%; padding: 3px 8px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-2); color: var(--ink-soft); font-size: 10px; line-height: 1.45; overflow-wrap: anywhere; }
+.fpm-memory h4, .fpm-template h4, .fpm-templates h4, .fpm-examples h4 { margin: 0 0 5px; font-size: 10.5px; font-weight: 600; letter-spacing: .03em; color: var(--accent-deep); }
+.fpm-templates { display: grid; gap: 7px; min-width: 0; }
+.fpm-tpl { min-width: 0; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.fpm-tpl > summary { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 8px 10px; cursor: pointer; list-style: none; }
+.fpm-tpl > summary::-webkit-details-marker { display: none; }
+.fpm-tpl > summary::after { content: '+'; flex: 0 0 auto; margin-left: auto; color: var(--faint); font: 600 14px/1 var(--font-mono); }
+.fpm-tpl[open] > summary::after { content: '−'; }
+.fpm-tpl-id { flex: 0 0 auto; color: var(--faint); font: 400 9px/1.4 var(--font-mono); }
+.fpm-tpl > summary b { min-width: 0; font-size: 11.5px; font-weight: 600; color: var(--ink-soft); overflow-wrap: anywhere; }
+.fpm-tpl-body { display: grid; gap: 8px; padding: 0 10px 10px; }
+.fpm-tpl-body .md { min-width: 0; font-size: 11.5px; line-height: 1.75; color: var(--ink-soft); }
+.fpm-tpl-pitfall { min-width: 0; padding: 8px 9px; border-left: 2px solid var(--accent); border-radius: 0 6px 6px 0; background: color-mix(in srgb, var(--accent-soft) 38%, var(--surface)); }
+.fpm-tpl-pitfall > b { display: block; margin-bottom: 4px; font-size: 10px; color: var(--accent-deep); }
+.fpm-tpl-pitfall .md { font-size: 11px; }
+.fpm-memory ul { margin: 0; padding-left: 17px; display: grid; gap: 3px; color: var(--muted); font-size: 11px; line-height: 1.65; }
+.fpm-template { min-width: 0; padding: 10px 11px; border-left: 2px solid var(--accent); border-radius: 0 8px 8px 0; background: color-mix(in srgb, var(--accent-soft) 42%, var(--surface)); }
+.fpm-template .md, .fpe-question .md, .fpe-detail .md, .fpe-answer .md { min-width: 0; font-size: 11.5px; line-height: 1.75; color: var(--ink-soft); }
+.fpm-template .md > :first-child, .fpe-question .md > :first-child, .fpe-detail .md > :first-child, .fpe-answer .md > :first-child { margin-top: 0; }
+.fpm-template .md > :last-child, .fpe-question .md > :last-child, .fpe-detail .md > :last-child, .fpe-answer .md > :last-child { margin-bottom: 0; }
+.fpm-examples { display: grid; gap: 10px; }
+.fpe-item { min-width: 0; padding: 10px 11px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); }
+.fpe-head { display: flex; align-items: baseline; gap: 7px; min-width: 0; margin-bottom: 5px; }
+.fpe-code { flex: 0 0 auto; color: var(--faint); font: 400 9.5px/1.4 var(--font-mono); }
+.fpe-head b { font-size: 11.5px; overflow-wrap: anywhere; }
+.fpe-question { color: var(--ink); }
+.fpe-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; margin: 7px 0; }
+.fpe-opt { display: flex; gap: 5px; min-width: 0; padding: 6px 8px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); font-size: 11px; line-height: 1.6; }
+.fpe-opt b { flex: 0 0 auto; color: var(--accent-deep); }
+.fpe-opt .md { min-width: 0; }
+.fpe-opt .md p { margin: 0; }
+.fpe-opt.is-correct { border-color: var(--accent); background: color-mix(in srgb, var(--accent-soft) 55%, var(--surface)); }
+.fpe-answer { margin-top: 6px; padding: 7px 9px; border-radius: 7px; background: color-mix(in srgb, var(--surface-2) 60%, transparent); }
+.fpe-answer > b { display: block; margin-bottom: 2px; color: var(--accent-deep); font-size: 9.5px; letter-spacing: .04em; }
+.fpe-detail { margin-top: 7px; border-top: 1px dashed var(--line); padding-top: 6px; }
+.fpe-detail > summary { color: var(--accent-deep); font-size: 10px; cursor: pointer; }
+.fpe-detail-body { display: grid; gap: 9px; margin-top: 7px; }
+.fpe-detail-body h5 { margin: 0 0 3px; font-size: 10px; letter-spacing: .04em; color: var(--ink); }
+.fpe-pitfalls { margin: 0; padding-left: 17px; color: var(--muted); font-size: 11px; line-height: 1.65; }
+.final-plan-note { margin: 6px 0; color: var(--faint); font-size: 10.5px; line-height: 1.65; }
+.final-plan-schedule { min-width: 0; }
+.final-picker { margin: 10px 0 12px; padding: 12px 13px; border: 1px solid var(--line-strong); border-radius: 12px; background: color-mix(in srgb, var(--surface-2) 38%, var(--surface)); }
+.final-picker-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
+.final-picker-head h3 { margin: 0; font-family: var(--font-serif); font-size: 16px; font-weight: 600; }
+.final-picker-head p { margin: 3px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.final-picker-count { flex: 0 0 auto; color: var(--faint); font-size: 10px; white-space: nowrap; padding-top: 3px; }
+.final-picker-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 7px 8px; margin-bottom: 9px; }
+.final-picker-field { display: grid; gap: 3px; min-width: 160px; }
+.final-picker-field > span { color: var(--faint); font-size: 9px; letter-spacing: .08em; }
+.final-picker-field .select { width: 100%; min-width: 0; }
+.final-picker-controls .btn { flex: 0 0 auto; min-height: 34px; white-space: nowrap; }
+.final-picker-list { display: grid; gap: 4px; max-height: 420px; overflow-y: auto; padding-right: 3px; }
+.fp-row { display: grid; grid-template-columns: 18px 66px minmax(0, 1fr) auto; align-items: center; gap: 7px; min-width: 0; padding: 6px 7px; border: 1px solid transparent; border-radius: 7px; cursor: pointer; }
+.fp-row:hover { border-color: var(--line); background: var(--surface); }
+.fp-row.is-used { opacity: .55; cursor: default; }
+.fp-row input { accent-color: var(--accent); width: 14px; height: 14px; }
+.fpr-code { color: var(--faint); font: 400 9px/1.4 var(--font-mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fpr-main { display: grid; gap: 1px; min-width: 0; }
+.fpr-main b { font-size: 11px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fpr-main small { color: var(--faint); font-size: 9px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fpr-state { color: var(--faint); font-size: 9px; white-space: nowrap; }
+@media (max-width: 760px) {
+  .final-plan-usage { padding: 10px 11px; }
+  .final-plan-module > summary { grid-template-columns: 26px minmax(0, 1fr) auto 14px; padding: 9px 10px; }
+  .fpm-meta { font-size: 9px; }
+  .fpm-body { padding: 10px; gap: 10px; }
+  .fpm-kps { display: grid; gap: 3px; }
+  .fpm-label { padding-top: 0; }
+  .fpe-options { grid-template-columns: minmax(0, 1fr); }
+  .final-picker { padding: 10px; }
+  .final-picker-head { display: grid; gap: 3px; }
+  .final-picker-count { padding-top: 0; }
+  .final-picker-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+  .final-picker-field { grid-column: 1 / -1; min-width: 0; }
+  .final-picker-controls .btn { width: 100%; min-height: 38px; white-space: normal; }
+  .fp-row { grid-template-columns: 18px minmax(0, 1fr) auto; gap: 6px; }
+  .fpr-code { display: none; }
+  .fpr-main b, .fpr-main small { white-space: normal; overflow: visible; overflow-wrap: anywhere; }
+  .final-day { grid-template-columns: 48px 64px minmax(0, 1fr) 48px; gap: 7px; }
+}
+
+/* prevent a long display formula from widening the example card / clipping its text */
+.fpm-body > *, .fpm-examples > *, .fpe-detail-body > *, .fpe-options > *, .fpm-body .md { min-width: 0; }
+.fpe-detail-body .md, .fpe-detail-body p, .fpe-detail-body li, .fpm-template .md { min-width: 0; overflow-wrap: anywhere; }
+.fpe-detail-body .math-display, .fpe-detail-body math[display="block"], .fpe-detail-body .tml-display { max-width: 100%; }
 
 </style>
 </head>
@@ -23435,8 +23542,8 @@ var UPDATE_LOG = [{
   "date": "2026-11-15",
   "title": "排版收口与稳定性加固",
   "historyTitle": "排版收口与稳定性加固",
-  "summary": "本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，126 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.16 Release 发布。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。126 项回归、严格 QA、站点一致性、8 视口、公式、无障碍、性能与拆包 QA 通过。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，操作按钮在手机改为三列且不裁切；390 / 820 / 1440 实测无大段空白、无文字截断。同日再修题库筛选栏：桌面从 inline 流改为 Grid + 可换行字段区，1301px 起四列、其余 2–3 列，手机保持两列折叠；新增 qa:filters 在 22 个宽度断言间距、重叠、越界与文字裁切，126 项回归。本块 38 项 / 38 组。",
-  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限；README 只展开最新一块，旧记录收进 details；GitHub Releases 同日只保留一条，不再加小版本后缀；同一天通知原地替换。四科 9651；又补备份键名、编号定位、复习确认、存储上限、同步重试、试卷导出与题库校准，126 项测试。另修「我的模拟卷」编辑卡标题截断与大段空白，并修题库筛选栏控件拥挤。本块 38 条要点。",
+  "summary": "本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，129 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.16 Release 发布。同日完善期末复习：按章节直接选题组卷，复习计划按考试日期列出每章知识点、全部答题模板与例题，每日计划轮换模板。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。129 项回归、严格 QA、站点一致性、8 视口、公式、无障碍、性能与拆包 QA 通过。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，操作按钮在手机改为三列且不裁切；390 / 820 / 1440 实测无大段空白、无文字截断。同日再修题库筛选栏：桌面从 inline 流改为 Grid + 可换行字段区，1301px 起四列、其余 2–3 列，手机保持两列折叠；新增 qa:filters 在 22 个宽度断言间距、重叠、越界与文字裁切，129 项回归。本块 39 项 / 39 组。",
+  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限；README 只展开最新一块，旧记录收进 details；GitHub Releases 同日只保留一条，不再加小版本后缀；同一天通知原地替换。四科 9651；又补备份键名、编号定位、复习确认、存储上限、同步重试、试卷导出与题库校准，129 项测试。另修「我的模拟卷」编辑卡标题截断与大段空白，并修题库筛选栏控件拥挤；另补期末复习按章节选题与复习计划模板/例题。本块 39 条要点。",
   "notifyItems": [
     {
       "group": "同步首启",
@@ -23560,7 +23667,11 @@ var UPDATE_LOG = [{
     },
     {
       "group": "审计收口",
-      "text": "五项遗留风险收口：21 道解析几何占位答案补成具体结论，22 组跨题型同题干拆成不同变式，525 处「答案：」尾注与权威答案对齐；AI 上游改为解析一次后固定 IP 请求，API Key 改 AES-GCM 存 IndexedDB，localStorage 不再留明文。新增 qa:bank-consistency 与 ai-http/ai-secret 回归，126 项测试。"
+      "text": "五项遗留风险收口：21 道解析几何占位答案补成具体结论，22 组跨题型同题干拆成不同变式，525 处「答案：」尾注与权威答案对齐；AI 上游改为解析一次后固定 IP 请求，API Key 改 AES-GCM 存 IndexedDB，localStorage 不再留明文。新增 qa:bank-consistency 与 ai-http/ai-secret 回归，129 项测试。"
+    },
+    {
+      "group": "期末复习",
+      "text": "期末复习新增按章节选题器：不用先把题加入材料，直接按章节筛选题库、勾选后加入当前卷或用所选新建 100 分卷。复习计划按考试日期拆分阶段，每章列出知识点、全部答题模板（可展开看步骤与易错点）、2 道例题（考试标准解答/答题模板/详细解析/易错点），每日计划轮换模板与例题；新增 qa:final 在 390/768/1440 断言章节筛选、模板清单、例题展开与选题建卷。"
     }
   ],
   "items": [
@@ -23714,7 +23825,11 @@ var UPDATE_LOG = [{
     },
     {
       "group": "审计收口",
-      "text": "五项遗留风险收口：21 道解析几何占位答案补成具体结论，22 组跨题型同题干拆成不同变式，525 处「答案：」尾注与权威答案对齐；AI 上游改为解析一次后固定 IP 请求，API Key 改 AES-GCM 存 IndexedDB，localStorage 不再留明文。新增 qa:bank-consistency 与 ai-http/ai-secret 回归，126 项测试。"
+      "text": "五项遗留风险收口：21 道解析几何占位答案补成具体结论，22 组跨题型同题干拆成不同变式，525 处「答案：」尾注与权威答案对齐；AI 上游改为解析一次后固定 IP 请求，API Key 改 AES-GCM 存 IndexedDB，localStorage 不再留明文。新增 qa:bank-consistency 与 ai-http/ai-secret 回归，129 项测试。"
+    },
+    {
+      "group": "期末复习",
+      "text": "期末复习新增按章节选题器：不用先把题加入材料，直接按章节筛选题库、勾选后加入当前卷或用所选新建 100 分卷。复习计划按考试日期拆分阶段，每章列出知识点、全部答题模板（可展开看步骤与易错点）、2 道例题（考试标准解答/答题模板/详细解析/易错点），每日计划轮换模板与例题；新增 qa:final 在 390/768/1440 断言章节筛选、模板清单、例题展开与选题建卷。"
     }
   ]
 },
@@ -33130,6 +33245,8 @@ function finalResolveItem(it) {
       pitfalls: Array.isArray(b.pitfalls) ? b.pitfalls.slice() : [],
       options: Array.isArray(b.options) ? b.options.slice() : [],
       correct: String(b.correct || ''),
+      templateId: String(b.templateId || ''),
+      pointKeys: Array.isArray(b.pointKeys) ? b.pointKeys.slice() : [],
       questionType: b.type === 'choice' ? 'choice' : b.type === 'fill' ? 'fill' : 'subjective'
     };
   }
@@ -33156,6 +33273,125 @@ function finalSelectedSections(subject) {
   var secs = chapterSectionsFor(subject, chs[0]);
   return arr.filter(function (x) { return secs.indexOf(x) >= 0; });
 }
+function finalAllChapters(subject) {
+  var out = [], seen = {};
+  function add(ch) {
+    ch = String(ch || '').trim();
+    if (!ch || seen[ch]) return;
+    seen[ch] = true;
+    out.push(ch);
+  }
+  bankOf(subject).forEach(function (b) { add(b && b.chapter); });
+  templatesOf(subject).forEach(function (t) { add(t && t.chapter); });
+  return out;
+}
+function finalPlanChapters(subject) {
+  var all = finalAllChapters(subject);
+  var sel = finalSelectedChapters(subject);
+  if (!sel.length) return all;
+  var picked = all.filter(function (ch) { return sel.indexOf(ch) >= 0; });
+  return picked.length ? picked : all;
+}
+function finalPlanTemplateSection(t, labels) {
+  if (!t || !Array.isArray(t.sections)) return '';
+  var keys = Array.isArray(labels) ? labels : [];
+  for (var i = 0; i < keys.length; i++) {
+    for (var j = 0; j < t.sections.length; j++) {
+      var sec = t.sections[j];
+      if (sec && String(sec.label || '').indexOf(keys[i]) >= 0 && String(sec.md || '').trim()) {
+        return String(sec.md).trim();
+      }
+    }
+  }
+  return '';
+}
+function finalPlanTemplateFor(subject, chapter, example) {
+  var list = templatesOf(subject).filter(function (t) { return t && t.chapter === chapter; });
+  if (!list.length) return null;
+  if (example && example.templateId) {
+    var hit = list.filter(function (t) { return t.id === example.templateId; })[0];
+    if (hit) return hit;
+  }
+  return list.slice().sort(function (a, b) {
+    var sa = (finalPlanTemplateSection(a, ['标准步骤', '步骤骨架', '解题步骤', '步骤']) ? 5 : 0) + (finalPlanTemplateSection(a, ['易错点', '易错']) ? 3 : 0);
+    var sb = (finalPlanTemplateSection(b, ['标准步骤', '步骤骨架', '解题步骤', '步骤']) ? 5 : 0) + (finalPlanTemplateSection(b, ['易错点', '易错']) ? 3 : 0);
+    return sb - sa;
+  })[0];
+}
+function finalPlanExampleScore(m) {
+  var score = 0;
+  if (m.questionType === 'subjective') score += 30;
+  if (m.standardSolution) score += 20;
+  if (m.detailedAnalysis) score += 20;
+  if (m.templateId) score += 10;
+  score += (Number(m.stars) || 2) * 2;
+  var qLen = String(m.question || '').length;
+  if (qLen >= 40 && qLen <= 260) score += 5;
+  return score;
+}
+function finalPlanExamplesFor(subject, chapter) {
+  var all = bankOf(subject).filter(function (b) { return b && b.chapter === chapter; }).map(function (b) {
+    return finalResolveItem({ type: 'bank', subject: subject, id: b.id, key: finalItemKey(subject, 'bank', b.id) });
+  }).filter(Boolean);
+  function rank(list) {
+    return list.slice().sort(function (a, b) {
+      return (finalPlanExampleScore(b) - finalPlanExampleScore(a)) || String(a.id).localeCompare(String(b.id));
+    });
+  }
+  var strong = rank(all.filter(function (m) { return m.standardSolution && m.detailedAnalysis; }));
+  var withSolution = rank(all.filter(function (m) { return m.standardSolution; }));
+  var picked = [], used = {};
+  function take(list, need) {
+    for (var i = 0; i < list.length && picked.length < need; i++) {
+      if (!used[list[i].key]) { used[list[i].key] = true; picked.push(list[i]); }
+    }
+  }
+  take(strong, 2);
+  if (picked.length < 2) take(withSolution, 2);
+  if (picked.length < 2) take(rank(all), 2);
+  return picked;
+}
+function finalPlanPlain(md, max) {
+  var s = typeof plainText === 'function' ? plainText(md) : String(md || '').replace(/\$[^$]*\$/g, ' ');
+  s = String(s || '').replace(/\s+/g, ' ').trim();
+  max = Number(max) || 140;
+  if (s.length > max) s = s.slice(0, max - 1) + '…';
+  return s;
+}
+function finalPlanMemoryList(template, example) {
+  var list = [];
+  var identify = finalPlanTemplateSection(template, ['识别特征', '适用条件', '识别', '题型']);
+  var method = finalPlanTemplateSection(template, ['首选方法', '标准步骤', '步骤骨架', '解题步骤', '步骤', '方法']);
+  var pitfalls = finalPlanTemplateSection(template, ['易错点', '易错', '陷阱', '注意']);
+  if (identify) list.push('先认题型：' + finalPlanPlain(identify, 110));
+  if (method) list.push('考场起手：' + finalPlanPlain(method, 150));
+  if (pitfalls) list.push('交卷前查：' + finalPlanPlain(pitfalls, 120));
+  if (example && Array.isArray(example.points) && example.points.length) {
+    list.push('本题要点：' + example.points.map(function (x) { return finalPlanPlain(x, 42); }).filter(Boolean).slice(0, 3).join(' / '));
+  }
+  if (!list.length) list.push('先口述模板的识别特征与第一步，再独立重做例题，最后对照标准解答补步骤。');
+  return list.slice(0, 4);
+}
+function finalPlanModule(subject, chapter) {
+  var tpls = templatesOf(subject).filter(function (t) { return t && t.chapter === chapter; });
+  var examples = finalPlanExamplesFor(subject, chapter);
+  var template = finalPlanTemplateFor(subject, chapter, examples[0]);
+  var kps = tpls.map(function (t) { return String(t.title || '').trim(); }).filter(Boolean).slice(0, 4);
+  if (!kps.length) kps = chapterSectionsFor(subject, chapter).slice(0, 4);
+  if (!kps.length) kps = [chapter];
+  return {
+    chapter: chapter,
+    templates: tpls,
+    template: template,
+    examples: examples,
+    pointKeys: kps,
+    memory: finalPlanMemoryList(template, examples[0])
+  };
+}
+function finalPlanModules(subject) {
+  return finalPlanChapters(subject).map(function (chapter) { return finalPlanModule(subject, chapter); });
+}
+
 function finalMaterialsForChapters(subject) {
   var all = finalMaterialsForSubject(subject);
   var sel = finalSelectedChapters(subject);
@@ -33166,12 +33402,10 @@ function finalMaterialsForChapters(subject) {
   return out;
 }
 function finalChapterFilterHtml(subject) {
-  var all = finalMaterialsForSubject(subject);
-  if (!all.length) return '';
-  var chapters = [];
-  all.forEach(function (m) { if (m.chapter && chapters.indexOf(m.chapter) < 0) chapters.push(m.chapter); });
+  var chapters = finalAllChapters(subject);
+  if (!chapters.length) return '';
   var sel = finalSelectedChapters(subject);
-  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
+  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><span class="fcf-count">已选 ' + sel.length + ' 章</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
     chapters.map(function (c) { return '<button class="fcf-chip' + (sel.indexOf(c) >= 0 ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="' + attr(c) + '" type="button">' + esc(c) + '</button>'; }).join('') + '</div>';
   if (sel.length !== 1) return main;
   var secs = chapterSectionsFor(subject, sel[0]);
@@ -33228,6 +33462,8 @@ function finalPlanData() {
   var total = Math.max(0, finalDaysBetween(today, exam));
   var materials = finalSortedMaterials();
   var labels = materials.map(function (m) { return finalPlanLabel(m, 14); });
+  var modules = finalPlanModules(finalSubject());
+  var moduleCount = modules.length;
   var p1 = Math.ceil(total * 0.45);
   var p2 = Math.ceil(total * 0.35);
   var days = [];
@@ -33235,21 +33471,88 @@ function finalPlanData() {
     var d = finalAddDays(today, i);
     var phase = i < p1 ? 0 : (i < p1 + p2 ? 1 : 2);
     var focus = '';
-    var c1 = labels.length ? labels[i % labels.length] : '';
-    var c2 = labels.length ? labels[(i + 1) % labels.length] : '';
-    if (phase === 0) focus = labels.length ? '回看 ' + c1 + (c2 && c2 !== c1 ? ' · ' + c2 : '') + '，整理公式与错因' : '整理错题本，补全公式与模板';
-    if (phase === 1) focus = labels.length ? '限时重做 ' + c1 + (c2 && c2 !== c1 ? ' · ' + c2 : '') + '，再做变式' : '按章节做变式题，记录卡点';
-    if (phase === 2) focus = (i === total - 1) ? '考前最后一轮：只看错题标题、公式和易错点' : (i % 2 === 0 ? '限时模拟卷 · ' + fe.duration + ' 分钟' : (labels.length ? '错题清单回看 ' + c1 + ' · ' + c2 : '回看错题清单与模板'));
-    days.push({ date: d, key: finalDateKey(d), phase: phase, focus: focus, done: !!fe.done[finalDateKey(d)] });
+    var module = moduleCount ? modules[i % moduleCount] : null;
+    var example = module && module.examples.length ? module.examples[i % module.examples.length] : null;
+    var chapter = module ? module.chapter : '';
+    var dayTemplate = module && module.templates.length ? module.templates[i % module.templates.length] : (module ? module.template : null);
+    var templateName = dayTemplate ? String(dayTemplate.title || '').trim() : '';
+    var code = example ? example.code : '';
+    if (phase === 0) {
+      focus = chapter
+        ? '知识点 ' + chapter + (templateName ? ' · ' + templateName : '') + '；先口述模板，再独立做例题' + (code ? ' ' + code : '')
+        : (labels.length ? '回看 ' + labels[i % labels.length] + '，整理公式与错因' : '整理错题本，补全公式与模板');
+    }
+    if (phase === 1) {
+      focus = chapter
+        ? '限时重做 ' + chapter + (code ? ' · 例题 ' + code : '') + '；按模板起手，做完对照标准解答'
+        : (labels.length ? '限时重做 ' + labels[i % labels.length] + '，再做变式' : '按章节做变式题，记录卡点');
+    }
+    if (phase === 2) {
+      focus = (i === total - 1)
+        ? '考前最后一轮：只看 ' + (chapter || '错题') + ' 的模板、公式与易错点'
+        : (chapter ? '错题回看 ' + chapter + (code ? ' · 例题 ' + code : '') + '；只看卡点与易错点' : '回看错题清单与模板');
+    }
+    days.push({ date: d, key: finalDateKey(d), phase: phase, focus: focus, chapter: chapter, moduleIndex: module ? i % moduleCount : -1, exampleCode: code, done: !!fe.done[finalDateKey(d)] });
   }
-  return { empty: false, past: false, today: today, exam: exam, total: total, days: days, phases: [p1, p2, Math.max(0, total - p1 - p2)], materials: materials, duration: fe.duration };
+  var dailyMinutes = Math.max(45, Math.min(120, Math.round((Number(fe.duration) || 120) * 0.5 / 5) * 5));
+  return { empty: false, past: false, today: today, exam: exam, total: total, days: days, phases: [p1, p2, Math.max(0, total - p1 - p2)], materials: materials, modules: modules, chapters: finalPlanChapters(finalSubject()), dailyMinutes: dailyMinutes, duration: fe.duration };
 }
 
+function finalPlanExampleHtml(example, template) {
+  if (!example) return '<div class="final-plan-note">本章题库暂无完整例题；先按上面的模板口述步骤，再回题库做一道同类题。</div>';
+  var options = '';
+  if (example.questionType === 'choice' && example.options.length) {
+    options = '<div class="fpe-options">' + example.options.map(function (o, i) {
+      var key = typeof o === 'object' && o ? String(o.key || 'ABCD'.charAt(i)) : 'ABCD'.charAt(i);
+      var text = typeof o === 'object' && o ? String(o.text || o.label || '') : String(o || '');
+      return '<div class="fpe-opt' + (String(example.correct || '').toUpperCase() === key.toUpperCase() ? ' is-correct' : '') + '"><b>' + esc(key) + '．</b><span class="md">' + renderMarkdown(text) + '</span></div>';
+    }).join('') + '</div>';
+  }
+  var detail = '';
+  if (example.standardSolution) detail += '<section><h5>考试标准解答</h5><div class="md">' + renderMarkdown(example.standardSolution) + '</div></section>';
+  var steps = finalPlanTemplateSection(template, ['标准步骤', '步骤骨架', '解题步骤', '步骤', '首选方法', '方法']);
+  if (steps) detail += '<section><h5>答题模板' + (template && template.title ? ' · ' + esc(template.title) : '') + '</h5><div class="md">' + renderMarkdown(steps) + '</div></section>';
+  if (example.detailedAnalysis) detail += '<section><h5>详细解析</h5><div class="md">' + renderMarkdown(example.detailedAnalysis) + '</div></section>';
+  if (example.pitfalls.length) detail += '<section><h5>易错点</h5><ul class="fpe-pitfalls">' + example.pitfalls.map(function (x) { return '<li>' + renderInline(x) + '</li>'; }).join('') + '</ul></section>';
+  return '<article class="fpe-item">' +
+    '<div class="fpe-head"><span class="fpe-code">' + esc(example.code || '') + '</span><b>' + renderInline(example.title || '例题') + '</b></div>' +
+    '<div class="md fpe-question">' + renderMarkdown(stripTypePrefix(example.question || '')) + '</div>' + options +
+    '<div class="fpe-answer"><b>答案 / 结论</b><div class="md">' + renderMarkdown(example.answer || '见标准解答') + '</div></div>' +
+    (detail ? '<details class="fpe-detail"><summary>展开考试标准解答、答题模板、详细解析与易错点</summary><div class="fpe-detail-body">' + detail + '</div></details>' : '') +
+  '</article>';
+}
+function finalPlanTemplateListHtml(m) {
+  if (!m || !m.templates.length) return '<div class="final-plan-note">模板库暂无本章模板；先按标准解答的步骤顺序口述一遍。</div>';
+  var items = m.templates.map(function (t, i) {
+    var steps = finalPlanTemplateSection(t, ['标准步骤', '步骤骨架', '解题步骤', '步骤', '首选方法', '方法']);
+    var pitfalls = finalPlanTemplateSection(t, ['易错点', '易错', '陷阱']);
+    return '<details class="fpm-tpl"' + (i === 0 ? ' open' : '') + '>' +
+      '<summary><span class="fpm-tpl-id">' + esc(t.id || '') + '</span><b>' + renderInline(t.title || '答题模板') + '</b></summary>' +
+      '<div class="fpm-tpl-body"><div class="md">' + renderMarkdown(steps || '模板暂无步骤说明；按标准解答的顺序口述一遍。') + '</div>' +
+        (pitfalls ? '<div class="fpm-tpl-pitfall"><b>易错点</b><div class="md">' + renderMarkdown(pitfalls) + '</div></div>' : '') +
+      '</div></details>';
+  }).join('');
+  return '<div class="fpm-templates"><h4>答题模板（' + m.templates.length + ' 个，展开看步骤）</h4>' + items + '</div>';
+}
+function finalPlanModuleHtml(m, index) {
+  if (!m) return '';
+  var chips = m.pointKeys.map(function (x) { return '<span class="fpm-chip">' + renderInline(x) + '</span>'; }).join('');
+  var memory = m.memory.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('');
+  var examples = m.examples.length ? m.examples.map(function (ex) { return finalPlanExampleHtml(ex, m.template); }).join('') : '<div class="final-plan-note">本章暂无完整例题，先按模板复述步骤。</div>';
+  return '<details class="final-plan-module"' + (index === 0 ? ' open' : '') + '>' +
+    '<summary><span class="fpm-index">' + pad(index + 1, 2) + '</span><span class="fpm-title">' + esc(m.chapter) + '</span><span class="fpm-meta">' + m.pointKeys.length + ' 个知识点 · ' + m.templates.length + ' 个模板 · ' + m.examples.length + ' 道例题</span></summary>' +
+    '<div class="fpm-body">' +
+      '<div class="fpm-kps"><span class="fpm-label">知识点</span><span class="fpm-chips">' + chips + '</span></div>' +
+      '<div class="fpm-memory"><h4>记忆与考场用法</h4><ul>' + memory + '</ul></div>' +
+      finalPlanTemplateListHtml(m) +
+      '<div class="fpm-examples"><h4>本章例题</h4>' + examples + '</div>' +
+    '</div>' +
+  '</details>';
+}
 function finalPlanHtml() {
-  var fe = finalData();
   var data = finalPlanData();
   if (data.empty) {
-    return '<div class="final-empty"><b>先设定考试日期</b><p>日期确定后，系统会从今天开始拆分三个阶段，并把选入的题目排进每天的任务。</p></div>';
+    return '<div class="final-empty"><b>先设定考试日期</b><p>日期确定后，系统会按所选章节拆分三个阶段，并把知识点、模板和例题排进每天的任务。</p></div>';
   }
   if (data.past) {
     return '<div class="final-empty is-warn"><b>考试日期已经过去</b><p>把日期改到今天或之后，复习计划会重新生成。</p></div>';
@@ -33257,6 +33560,8 @@ function finalPlanHtml() {
   var phaseCards = FINAL_PHASES.map(function (p, i) {
     return '<div class="final-phase"><span class="fp-k">0' + (i + 1) + '</span><b>' + p.label + '</b><small>' + p.hint + '</small><em>' + (data.phases[i] || 0) + ' 天</em></div>';
   }).join('');
+  var modules = (data.modules || []).map(finalPlanModuleHtml).join('');
+  var modulesHtml = modules ? '<div class="final-plan-modules"><div class="final-plan-modules-head"><h3>章节重点与例题</h3><span>' + data.chapters.length + ' 章 · 每章含知识点、模板与 1–2 道例题</span></div>' + modules + '</div>' : '';
   var rows = data.days.map(function (d) {
     return '<div class="final-day' + (d.done ? ' is-done' : '') + '">' +
       '<span class="fd-date">' + pad(d.date.getMonth() + 1, 2) + '.' + pad(d.date.getDate(), 2) + '<small>周' + '日一二三四五六'.charAt(d.date.getDay()) + '</small></span>' +
@@ -33265,9 +33570,12 @@ function finalPlanHtml() {
       '<label class="fd-check"><input type="checkbox" data-final-task="' + d.key + '"' + (d.done ? ' checked' : '') + '><span>完成</span></label>' +
     '</div>';
   }).join('');
+  var emptyDays = data.days.length ? '' : '<div class="final-plan-note">今天就是考试日：只看章节模板、错题标题和易错点。</div>';
   return '<div class="final-count-banner"><b>' + data.total + '</b><span>天复习窗口</span><small>' + finalDateKey(data.today) + ' → ' + finalDateKey(data.exam) + '</small></div>' +
     '<div class="final-phase-grid">' + phaseCards + '</div>' +
-    '<div class="final-day-list">' + rows + '<div class="final-day is-exam"><span class="fd-date">' + pad(data.exam.getMonth() + 1, 2) + '.' + pad(data.exam.getDate(), 2) + '<small>考试</small></span><span class="fd-phase">考试日</span><span class="fd-focus">带齐证件与文具，按模拟卷节奏答题</span><span class="fd-check">—</span></div></div>';
+    '<div class="final-plan-usage"><b>每天怎么用</b><ol><li>先用 10 分钟口述当天章节的答题模板。</li><li>用 ' + data.dailyMinutes + ' 分钟独立做例题，不翻答案。</li><li>对照考试标准解答和详细解析，补上跳过的步骤。</li><li>把卡点写成一句错因；考前一天只看模板与错因。</li></ol></div>' +
+    modulesHtml +
+    '<div class="final-plan-schedule"><h3>每日安排</h3><div class="final-day-list">' + emptyDays + rows + '<div class="final-day is-exam"><span class="fd-date">' + pad(data.exam.getMonth() + 1, 2) + '.' + pad(data.exam.getDate(), 2) + '<small>考试</small></span><span class="fd-phase">考试日</span><span class="fd-focus">带齐证件与文具，按模拟卷节奏答题</span><span class="fd-check">—</span></div></div></div>';
 }
 function finalSubject() { return finalData().subject || state.activeSubject || 'gaodai'; }
 function finalSubjectTabsHtml(showNote) {
@@ -33529,6 +33837,135 @@ function finalPaperImportAdd(kind, id) {
   render();
   toast('已插入模拟卷');
 }
+function finalPickerChapter(subject) {
+  var all = finalAllChapters(subject);
+  var ch = ui.finalPickerChapter || '';
+  if (ch && all.indexOf(ch) < 0) ch = '';
+  if (!ch) {
+    var sel = finalSelectedChapters(subject);
+    if (sel.length === 1 && all.indexOf(sel[0]) >= 0) ch = sel[0];
+  }
+  ui.finalPickerChapter = ch;
+  return ch;
+}
+function finalPickerCheckedMap() {
+  if (!ui.finalPickerChecked || typeof ui.finalPickerChecked !== 'object') ui.finalPickerChecked = {};
+  return ui.finalPickerChecked;
+}
+function finalPickerResolve(subject, id) {
+  var b = bankOf(subject).filter(function (x) { return x.id === id; })[0];
+  if (!b) return null;
+  return finalResolveItem({ type: 'bank', subject: subject, id: b.id, key: finalItemKey(subject, 'bank', b.id) });
+}
+function finalPickerMaterials(subject) {
+  var ch = finalPickerChapter(subject);
+  return bankOf(subject).filter(function (b) { return b && (!ch || b.chapter === ch); }).map(function (b) {
+    return finalResolveItem({ type: 'bank', subject: subject, id: b.id, key: finalItemKey(subject, 'bank', b.id) });
+  }).filter(Boolean).slice(0, 60);
+}
+function finalPickerSelectedIds() {
+  var map = finalPickerCheckedMap();
+  return Object.keys(map).filter(function (id) { return !!map[id]; });
+}
+function finalPickerHtml(p) {
+  var subject = finalSubject();
+  var all = finalAllChapters(subject);
+  if (!all.length) return '';
+  var chapter = finalPickerChapter(subject);
+  var list = finalPickerMaterials(subject);
+  var used = {};
+  if (p) (p.items || []).forEach(function (it) { if (it && it.key) used[it.key] = true; });
+  var map = finalPickerCheckedMap();
+  var selected = finalPickerSelectedIds().length;
+  var chapterOptions = '<option value="">全部章节</option>' + all.map(function (c) {
+    return '<option value="' + attr(c) + '"' + (c === chapter ? ' selected' : '') + '>' + esc(c) + '</option>';
+  }).join('');
+  var rows = list.map(function (m) {
+    var checked = !!map[m.id];
+    var already = !!used[m.key];
+    return '<label class="fp-row' + (already ? ' is-used' : '') + '">' +
+      '<input type="checkbox" data-paper-picker="' + attr(m.id) + '"' + (checked ? ' checked' : '') + (already ? ' disabled' : '') + '>' +
+      '<span class="fpr-code">' + esc(m.code || '') + '</span>' +
+      '<span class="fpr-main"><b>' + renderInline(m.title || '题库题') + '</b><small>' + esc(m.chapter || '') + ' · ' + esc(m.questionType === 'choice' ? '客观题' : m.questionType === 'fill' ? '填空题' : '主观题') + '</small></span>' +
+      '<span class="fpr-state">' + (already ? '已在卷中' : '可加入') + '</span>' +
+    '</label>';
+  }).join('');
+  return '<div class="final-picker" id="finalPaperPicker">' +
+    '<div class="final-picker-head"><div><h3>题库选题</h3><p>按章节筛选，勾选题目后加入当前卷，或直接用所选新建一张 100 分卷。</p></div><span class="final-picker-count">已选 ' + selected + ' 题 · 本页 ' + list.length + ' 题</span></div>' +
+    '<div class="final-picker-controls">' +
+      '<label class="final-picker-field"><span>章节</span><select class="select select-sm" data-paper-picker-chapter>' + chapterOptions + '</select></label>' +
+      '<button class="btn btn-xs" data-act="final-picker-select-all" type="button">全选本页</button>' +
+      '<button class="btn btn-xs" data-act="final-picker-clear" type="button">清空勾选</button>' +
+      '<button class="btn btn-xs btn-primary" data-act="final-picker-add" type="button"' + (!p || !selected ? ' disabled' : '') + '>加入当前卷</button>' +
+      '<button class="btn btn-xs" data-act="final-picker-new" type="button"' + (!selected ? ' disabled' : '') + '>用所选新建卷</button>' +
+    '</div>' +
+    '<div class="final-picker-list">' + (rows || '<div class="final-plan-note">当前章节没有可选题；换一个章节试试。</div>') + '</div>' +
+  '</div>';
+}
+function finalPickerToggleAll() {
+  var subject = finalSubject();
+  var list = finalPickerMaterials(subject);
+  var map = finalPickerCheckedMap();
+  var allChecked = list.length && list.every(function (m) { return !!map[m.id]; });
+  list.forEach(function (m) { if (allChecked) delete map[m.id]; else map[m.id] = true; });
+  render();
+}
+function finalPickerClear() {
+  ui.finalPickerChecked = {};
+  render();
+}
+function finalPickerAdd() {
+  var p = finalActivePaper();
+  if (!p) { toast('先创建一张模拟卷'); return; }
+  var subject = finalSubject();
+  var ids = finalPickerSelectedIds();
+  if (!ids.length) { toast('先勾选题目'); return; }
+  var added = 0;
+  ids.forEach(function (id) {
+    var m = finalPickerResolve(subject, id);
+    if (!m) return;
+    if (p.items.some(function (x) { return x.key === m.key; })) return;
+    p.items.push(finalPaperMaterialItem(m));
+    added++;
+  });
+  if (!added) { toast('所选题都已经在卷子里'); return; }
+  p.updatedAt = nowIso();
+  ui.finalPickerChecked = {};
+  markDirty();
+  render();
+  toast('已加入 ' + added + ' 题；可在卷内调整顺序和分值');
+}
+function finalPickerNew() {
+  var subject = finalSubject();
+  var ids = finalPickerSelectedIds();
+  if (!ids.length) { toast('先勾选题目'); return; }
+  var fe = finalData();
+  var items = [], chapters = [];
+  ids.forEach(function (id) {
+    var m = finalPickerResolve(subject, id);
+    if (!m) return;
+    items.push(finalPaperMaterialItem(m));
+    if (m.chapter && chapters.indexOf(m.chapter) < 0) chapters.push(m.chapter);
+  });
+  if (!items.length) { toast('所选题不存在'); return; }
+  finalSmartScoreItems(items, 100);
+  var p = {
+    id: 'paper-' + Date.now().toString(36),
+    subject: subject,
+    title: subjectOf(subject).name + ' · 章节选题卷 · ' + (fe.date || finalDateKey(new Date())) + (chapters.length ? ' · ' + chapters.join(' / ') : ''),
+    duration: Number(fe.duration) || 120,
+    createdAt: nowIso(),
+    updatedAt: nowIso(),
+    items: items
+  };
+  fe.papers.unshift(p);
+  ui.finalPaperId = p.id;
+  ui.finalPickerChecked = {};
+  markDirty();
+  render();
+  toast('已用所选 ' + items.length + ' 题新建模拟卷');
+}
+
 function finalDeletePaper() {
   var fe = finalData();
   var p = finalActivePaper();
@@ -33655,7 +34092,7 @@ function finalPapersHtml() {
   return '<div class="final-paper-head"><div><h2>我的模拟卷</h2><p>' + esc(subjectOf(finalSubject()).name) + ' · 按考试时长自动选题，材料为空时从标准题库抽题；一张卷只含一个科目，可自由编辑与导出。</p></div><div class="final-paper-head-actions"><button class="btn btn-primary" data-act="final-generate-paper" type="button">生成模拟卷</button></div></div>' +
     finalSubjectTabsHtml() + finalChapterFilterHtml(finalSubject()) +
     '<p class="final-paper-hint">模拟卷用于编辑、保存和导出；需要限时考试请切到「模拟考」。</p>' +
-    finalPaperChipsHtml() + (p ? finalPaperEditorHtml(p) : '<div class="final-empty"><b>当前科目还没有模拟卷</b><p>先点「生成模拟卷」；也可以从错题或题库插入题目。</p></div>') + finalPaperImportHtml();
+    finalPickerHtml(p) + finalPaperChipsHtml() + (p ? finalPaperEditorHtml(p) : '<div class="final-empty"><b>当前科目还没有模拟卷</b><p>先点「生成模拟卷」；也可以在题库选题里勾选后新建卷。</p></div>') + finalPaperImportHtml();
 }
 
 function finalSectionTabsHtml() {
@@ -36662,7 +37099,7 @@ document.addEventListener('click', function (e) {
   var el = e.target.closest ? e.target.closest('[data-act]') : null;
   if (!el) return;
   var act = el.getAttribute('data-act');
-  if (act === 'final-subject') { e.preventDefault(); finalData().subject = el.getAttribute('data-subject') || finalSubject(); ui.finalPaperId = ''; markDirty(); render(); }
+  if (act === 'final-subject') { e.preventDefault(); finalData().subject = el.getAttribute('data-subject') || finalSubject(); ui.finalPaperId = ''; ui.finalPickerChecked = {}; ui.finalPickerChapter = ''; markDirty(); render(); }
   else if (act === 'final-section') { e.preventDefault(); ui.finalSection = el.getAttribute('data-section') === 'exam' ? 'exam' : 'paper'; render(); }
   else if (act === 'final-start-exam') { e.preventDefault(); finalStartExam(); }
   else if (act === 'final-ai-exam') { e.preventDefault(); finalStartAiExam(); }
@@ -37301,6 +37738,10 @@ document.addEventListener('click', function (e) {
   else if (act === 'final-chapter') { e.preventDefault(); finalPaperToggleChapter(el.getAttribute('data-chapter')); }
   else if (act === 'final-section') { e.preventDefault(); finalPaperToggleSection(el.getAttribute('data-section')); }
   else if (act === 'final-smart-scores') { e.preventDefault(); finalPaperSmartScores(); }
+  else if (act === 'final-picker-select-all') { e.preventDefault(); finalPickerToggleAll(); }
+  else if (act === 'final-picker-clear') { e.preventDefault(); finalPickerClear(); }
+  else if (act === 'final-picker-add') { e.preventDefault(); finalPickerAdd(); }
+  else if (act === 'final-picker-new') { e.preventDefault(); finalPickerNew(); }
   else if (act === 'final-paper-draw-toggle') { e.preventDefault(); var f = finalPaperFindItem(Number(el.getAttribute('data-index'))); if (f) { f.item.drawMode = !f.item.drawMode; render(); } }
   else if (act === 'final-paper-draw-clear') { e.preventDefault(); var c = finalPaperFindItem(Number(el.getAttribute('data-index'))); if (c) { c.item.draw = ''; c.paper.updatedAt = nowIso(); markDirty(); render(); } }
   else if (act === 'final-paper-image-clear') { e.preventDefault(); var g = finalPaperFindItem(Number(el.getAttribute('data-index'))); if (g) { g.item.image = ''; g.paper.updatedAt = nowIso(); markDirty(); render(); } }
@@ -37310,6 +37751,9 @@ document.addEventListener('change', function (e) {
   if (!t || !t.getAttribute) return;
   var idx = t.getAttribute('data-paper-image');
   if (idx != null && t.files && t.files[0]) finalPaperSetImage(Number(idx), t.files[0]);
+  var pickId = t.getAttribute('data-paper-picker');
+  if (pickId) { var map = finalPickerCheckedMap(); if (t.checked) map[pickId] = true; else delete map[pickId]; render(); return; }
+  if (t.hasAttribute('data-paper-picker-chapter')) { ui.finalPickerChapter = t.value || ''; render(); return; }
 });
 var finalPaperPointer = null;
 document.addEventListener('pointerdown', function (e) {
