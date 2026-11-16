@@ -106,3 +106,20 @@ test('paper DOCX renders relation symbols and does not duplicate answer letters'
   assert.equal(/解：<w:br\/><w:br\/>/.test(xml), false, '“解：”后不应有空行');
 });
 
+
+test('build removes stale debug pages and service worker avoids unbounded query caches', () => {
+  const build = read('build.js');
+  assert.ok(build.includes("['matrix-test.html', 'matrix-test-2.html']"));
+  assert.ok(build.includes("if (!splitBanks)"));
+  const sw = read('src/static/sw.js');
+  assert.ok(sw.includes('const cacheable'));
+  assert.ok(sw.includes('url.origin + url.pathname'));
+  assert.ok(!sw.includes("cache.put(req, copy)"));
+});
+
+test('long titles, notes editor and wide formulas stay inside phone and tablet viewports', () => {
+  const css = read('src/styles.css');
+  assert.ok(css.includes('.entry-title, .entry-titlewrap, .entry-title * { overflow-wrap: anywhere !important'), 'entry titles must wrap anywhere');
+  assert.ok(css.includes('.main { width: 100% !important; max-width: 100% !important; margin-left: 0 !important'), 'mobile main must stretch, not shrink-to-fit');
+  assert.ok(css.includes('.math-tail:has(.is-wide)'), 'wide formula tails must be allowed to wrap');
+});

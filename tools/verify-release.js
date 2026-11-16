@@ -59,9 +59,10 @@ async function api(token, p) {
   let head = '', remote = '';
   try { head = git(['rev-parse', 'HEAD']); remote = git(['rev-parse', 'origin/main']); } catch (e) { problems.push('读取 HEAD/origin/main 失败：' + e.message); }
   if (head && remote && head !== remote) problems.push('HEAD 与 origin/main 不一致：' + head.slice(0, 10) + ' vs ' + remote.slice(0, 10) + '（发布必须推送到 main）');
-  const tag = 'v' + localDate().replace(/-/g, '.');
   let tagsAtHead = [];
   try { tagsAtHead = git(['tag', '--points-at', 'HEAD']).split('\n').filter(Boolean); } catch (e) { /* ignore */ }
+  // 补发旧版本或隔日 dispatch 时优先使用 HEAD 上已有的版本 tag；没有时才要求当天 tag。
+  const tag = tagsAtHead.filter(function (t) { return /^v\d{4}\.\d{2}\.\d{2}$/.test(t); })[0] || ('v' + localDate().replace(/-/g, '.'));
   if (tagsAtHead.indexOf(tag) < 0) problems.push('HEAD 缺少当天 tag ' + tag + '（现有：' + (tagsAtHead.join(', ') || '无') + '）');
 
   if (online) {
@@ -71,14 +72,35 @@ async function api(token, p) {
     } else {
       try {
         const rel = await api(cfg.token, '/releases/tags/' + tag);
-        const names = new Set((rel.assets || []).map(function (a) { return a.name; }));
-        ['source.zip', 'SHA256SUMS'].forEach(function (n) { if (!names.has(n)) problems.push('Release ' + tag + ' 缺少资产 ' + n); });
-        if (!Array.from(names).some(function (n) { return /static.*\.zip$/.test(n); })) problems.push('Release ' + tag + ' 缺少静态站 zip');
+        const assets = new Map((rel.assets || []).map(function (a) { return [a.name, a]; }));
+        ['source.zip', 'SHA256SUMS'].forEach(function (n) { if (!assets.has(n)) problems.push('Release ' + tag + ' 缺少资产 ' + n); });
+        if (!Array.from(assets.keys()).some(function (n) { return /static.*\.zip$/.test(n); })) problems.push('Release ' + tag + ' 缺少静态站 zip');
+        const sumsAsset = assets.get('SHA256SUMS');
+        if (sumsAsset) {
+          const sumsRes = await fetch(sumsAsset.browser_download_url, { headers: { 'User-Agent': 'dsh-release-check' } });
+          if (!sumsRes.ok) problems.push('SHA256SUMS 下载失败 ' + sumsRes.status);
+          else {
+            const sums = new Map((await sumsRes.text()).split(/\r?\n/).filter(Boolean).map(function (line) {
+              const m = line.trim().match(/^([0-9a-f]{64})\s+\*?(.+)$/i);
+              return m ? [m[2], m[1].toLowerCase()] : null;
+            }).filter(Boolean));
+            for (const [name, expected] of sums) {
+              const asset = assets.get(name);
+              if (!asset) { problems.push('SHA256SUMS 列出的资产不存在：' + name); continue; }
+              const got = await fetch(asset.browser_download_url, { headers: { 'User-Agent': 'dsh-release-check' } });
+              if (!got.ok) { problems.push('资产下载失败 ' + name + ' ' + got.status); continue; }
+              const actual = require('crypto').createHash('sha256').update(Buffer.from(await got.arrayBuffer())).digest('hex');
+              if (actual !== expected) problems.push('资产摘要不一致：' + name + ' 期望 ' + expected.slice(0, 12) + ' 实际 ' + actual.slice(0, 12));
+              else notes.push('asset sha256 OK ' + name);
+            }
+          }
+        }
       } catch (e) { problems.push('Release ' + tag + ' 不存在或不可读：' + e.message); }
       try {
         const builds = await api(cfg.token, '/pages/builds/latest');
         if (builds && builds.commit && head && builds.commit !== head) problems.push('GitHub Pages 最新构建提交 ' + String(builds.commit).slice(0, 10) + ' 与 HEAD ' + head.slice(0, 10) + ' 不一致');
-      } catch (e) { notes.push('Pages builds API 不可用：' + e.message); }
+        if (!builds || !builds.commit) problems.push('GitHub Pages 最新构建没有 commit');
+      } catch (e) { problems.push('Pages builds API 不可用：' + e.message); }
       try {
         const res = await fetch('https://' + cfg.owner + '.github.io/', { headers: { 'User-Agent': 'dsh-release-check' } });
         const html = await res.text();

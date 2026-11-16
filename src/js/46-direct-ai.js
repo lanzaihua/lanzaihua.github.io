@@ -8,12 +8,9 @@ var DSH_MODEL = 'deepseek-flash';
 var DSH_TIMEOUT_MS = 240000;
 var SKILL_PACKS_STATE = { data: null, promise: null };
 
-function dshToken() { return safeStorage.get(DSH_TOKEN_KEY) || ''; }
-function setDshToken(v) {
-  if (v) safeStorage.set(DSH_TOKEN_KEY, v);
-  else safeStorage.remove(DSH_TOKEN_KEY);
-}
-function clearDshToken() { setDshToken(''); }
+function dshToken() { return (typeof aiKeyCacheValue === 'function') ? aiKeyCacheValue() : ''; }
+function setDshToken(v) { /* 44-ai-config 以不可导出的 AES-GCM 密钥把 Key 存进 IndexedDB */ }
+function clearDshToken() { /* 44-ai-config 的 aiClearConfig 同时删除密文与密钥 */ }
 
 function b64ToBytes(b64) {
   var bin = atob(String(b64 || ''));

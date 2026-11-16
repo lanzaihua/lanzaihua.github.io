@@ -73,6 +73,7 @@ async function visibleBox(page, selector) {
       isMobile: device.mobile,
       hasTouch: device.touch
     });
+    await context.route('**/api/state', (r) => r.abort());
     const page = await context.newPage();
     page.setDefaultTimeout(6000);
     console.error('device ' + device.name + ' start');
@@ -371,6 +372,13 @@ async function visibleBox(page, selector) {
       assert(!(await page.locator('.exam-chapter-card').count()), failures, device.name + ' / exam picker did not close');
     } else {
       failures.push(device.name + ' / standard exam start button missing');
+    }
+
+    // 若本次交互意外进入了答题页，先暂时离开，避免下一视口被考试锁屏污染。
+    const exitExam = page.locator('[data-act="final-exam-exit"]:visible').first();
+    if (await exitExam.count()) {
+      await exitExam.click();
+      await sleep(page, 220);
     }
 
     // 笔记：新建入口可点，编辑器可打开。

@@ -36419,7 +36419,7 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "解：\n1. 求导得 $f^{\\prime}(x)=3x^2+2>0$，对任意 $x\\in\\mathbb{R}$ 成立。\n2. 由导数符号与函数单调性的判据，$f$ 在 $\\mathbb{R}$ 上严格递增。\n\n答案：$f$ 在 $\\mathbb{R}$ 上严格增。",
+      "standardSolution": "解：\n1. 求导得 $f^{\\prime}(x)=3x^2+2>0$，对任意 $x\\in\\mathbb{R}$ 成立。\n2. 由导数符号与函数单调性的判据，$f$ 在 $\\mathbb{R}$ 上严格递增。\n\n答案：在 $\\mathbb{R}$ 上严格增。",
       "detailedAnalysis": "先求导，再说明导数在整个 $\\mathbb{R}$ 上为正，最后用“导数正推出严格增”的定理；不能只写导数式而跳过判据。",
       "templateTitle": "",
       "templateNotes": null,
@@ -43384,7 +43384,7 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "解：\n1. 求导得 $f^{\\prime}(x)=3x^2+3>0$，对任意 $x\\in\\mathbb{R}$ 成立。\n2. 由导数符号与函数单调性的判据，$f$ 在 $\\mathbb{R}$ 上严格递增。\n\n答案：$f$ 在 $\\mathbb{R}$ 上严格增。",
+      "standardSolution": "解：\n1. 求导得 $f^{\\prime}(x)=3x^2+3>0$，对任意 $x\\in\\mathbb{R}$ 成立。\n2. 由导数符号与函数单调性的判据，$f$ 在 $\\mathbb{R}$ 上严格递增。\n\n答案：在 $\\mathbb{R}$ 上严格增。",
       "detailedAnalysis": "先求导，再说明导数在整个 $\\mathbb{R}$ 上为正，最后用“导数正推出严格增”的定理；不能只写导数式而跳过判据。",
       "templateTitle": "",
       "templateNotes": null,
@@ -48139,7 +48139,7 @@
         "基本方法"
       ],
       "title": "计算题 · 上确界",
-      "question": "数集$S={2,3,-3,9,5}$的上确界，结果为（ ）。",
+      "question": "数集$S=\\{2,3,-3,9,5\\}$的上确界，结果为（ ）。",
       "answer": "D．$9$",
       "solution": [
         "有限数集的上确界就是最大元。"
@@ -48197,7 +48197,7 @@
         "基本方法"
       ],
       "title": "计算题 · 上确界",
-      "question": "数集$S={2,3,-3,9,5}$的上确界，答案：____。",
+      "question": "数集$S=\\{2,3,-3,9,5\\}$的上确界，答案：____。",
       "answer": "$9$",
       "solution": [
         "有限数集的上确界就是最大元。"
@@ -48238,7 +48238,7 @@
         "基本方法"
       ],
       "title": "计算题 · 上确界",
-      "question": "数集$S={2,3,-3,9,5}$的上确界，写出解答过程。",
+      "question": "数集$S=\\{2,3,-3,9,5\\}$的上确界，写出解答过程。",
       "answer": "$9$",
       "solution": [
         "有限数集的上确界就是最大元。"
@@ -75789,7 +75789,7 @@
         "命题真伪判断"
       ],
       "title": "概念辨析题 · 分部积分（反常积分）",
-      "question": "判断命题：$\\int_a^{+\\\\infty}u\\,dv=uv\\big|_a^{+\\\\infty}-\\int_a^{+\\\\infty}v\\,du$ 是否正确，并说明依据。",
+      "question": "判断命题：$\\int_a^{+\\infty}u\\,dv=uv\\big|_a^{+\\infty}-\\int_a^{+\\infty}v\\,du$ 是否正确，并说明依据。",
       "answer": "正确：广义积分分部积分（各项收敛时）。",
       "solution": [
         "正确等式为 $\\int_a^{+\\infty}u\\,dv=uv\\big|_a^{+\\infty}-\\int_a^{+\\infty}v\\,du$。",
@@ -75831,7 +75831,7 @@
         "命题真伪判断"
       ],
       "title": "概念辨析题 · 换元法（反常积分）",
-      "question": "判断命题：$\\int_a^{+\\\\infty}f(x)\\,dx=\\int_\\alpha^\\beta f(\\varphi(t))\\varphi^{\\prime}(t)\\,dt$ 是否正确，并说明依据。",
+      "question": "判断命题：$\\int_a^{+\\infty}f(x)\\,dx=\\int_\\alpha^\\beta f(\\varphi(t))\\varphi^{\\prime}(t)\\,dt$ 是否正确，并说明依据。",
       "answer": "错误：还需 $\\varphi$ 单调、连续可导，且积分上下限对应等条件。",
       "solution": [
         "正确等式为 $\\int_a^{+\\infty}f(x)\\,dx=\\int_\\alpha^\\beta f(\\varphi(t))\\varphi^{\\prime}(t)\\,dt$。",
@@ -75873,8 +75873,8 @@
         "命题真伪判断"
       ],
       "title": "概念辨析题 · 高斯积分",
-      "question": "判断命题：$\\int_0^{+\\\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$ 是否正确，并说明依据。",
-      "answer": "正确：Gaussian 积分 $\\int_0^{+\\\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$。",
+      "question": "判断命题：$\\int_0^{+\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$ 是否正确，并说明依据。",
+      "answer": "正确：Gaussian 积分 $\\int_0^{+\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$。",
       "solution": [
         "正确等式为 $\\int_0^{+\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$。",
         "所给写法改动了系数或符号，不能恒成立。",
@@ -75886,8 +75886,8 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "解：\n\nGaussian 积分 $\\int_0^{+\\\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$。\n\n答案：正确：Gaussian 积分 $\\int_0^{+\\\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$。",
-      "detailedAnalysis": "本题考查命题判断。Gaussian 积分 $\\int_0^{+\\\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$。",
+      "standardSolution": "解：\n\nGaussian 积分 $\\int_0^{+\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$。\n\n答案：正确：Gaussian 积分 $\\int_0^{+\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$。",
+      "detailedAnalysis": "本题考查命题判断。Gaussian 积分 $\\int_0^{+\\infty}e^{-x^2}\\,dx=\\frac{\\sqrt\\pi}{2}$。",
       "templateTitle": "",
       "templateNotes": null,
       "verification": "",
@@ -75958,7 +75958,7 @@
       ],
       "title": "概念辨析题 · 对数型无穷积分",
       "question": "判断命题：$\\int_1^{+\\infty}\\frac{\\ln x}{x^p}\\,dx\\text{当}p>1\\text{时收敛}$ 是否正确，并说明依据。",
-      "answer": "正确：$p>1$ 时 $\\int_1^{+\\\\infty}\\frac{\\ln x}{x^p}\\,dx$ 收敛。",
+      "answer": "正确：$p>1$ 时 $\\int_1^{+\\infty}\\frac{\\ln x}{x^p}\\,dx$ 收敛。",
       "solution": [
         "正确等式为 $\\int_1^{+\\infty}\\frac{\\ln x}{x^p}\\,dx=p>1\\text{ 收敛}$。",
         "所给写法改动了系数或符号，不能恒成立。",
@@ -75970,8 +75970,8 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "解：\n\n$p>1$ 时 $\\int_1^{+\\\\infty}\\frac{\\ln x}{x^p}\\,dx$ 收敛。\n\n答案：正确：$p>1$ 时 $\\int_1^{+\\\\infty}\\frac{\\ln x}{x^p}\\,dx$ 收敛。",
-      "detailedAnalysis": "本题考查命题判断。$p>1$ 时 $\\int_1^{+\\\\infty}\\frac{\\ln x}{x^p}\\,dx$ 收敛。",
+      "standardSolution": "解：\n\n$p>1$ 时 $\\int_1^{+\\infty}\\frac{\\ln x}{x^p}\\,dx$ 收敛。\n\n答案：正确：$p>1$ 时 $\\int_1^{+\\infty}\\frac{\\ln x}{x^p}\\,dx$ 收敛。",
+      "detailedAnalysis": "本题考查命题判断。$p>1$ 时 $\\int_1^{+\\infty}\\frac{\\ln x}{x^p}\\,dx$ 收敛。",
       "templateTitle": "",
       "templateNotes": null,
       "verification": "",
@@ -82838,7 +82838,7 @@
         "命题真伪判断"
       ],
       "title": "概念辨析题 · 积分判别法",
-      "question": "判断命题：$f\\downarrow0,\\ f\\text{非负连续}\\Rightarrow\\sum f(n)\\text{与}\\int_1^{+\\\\infty}f(x)\\,dx\\text{同敛散}$ 是否正确，并说明依据。",
+      "question": "判断命题：$f\\downarrow0,\\ f\\text{非负连续}\\Rightarrow\\sum f(n)\\text{与}\\int_1^{+\\infty}f(x)\\,dx\\text{同敛散}$ 是否正确，并说明依据。",
       "answer": "正确（单向）：非负连续且单调递减时的积分判别法。",
       "solution": [
         "正确等式为 $f\\downarrow0,\\ f\\text{ 非负连续}=\\sum f(n)\\text{与}\\int_1^{+\\infty}f(x)\\,dx\\text{ 同敛散}$。",
@@ -86014,7 +86014,7 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "解：\n交错级数满足莱布尼茨条件。前 $3$ 项对应 $n=1,2,3$，首个被略去的项是 $a_4=\\frac{1}{4+3}=\\frac17$。由莱布尼茨余项估计 $|R_3|\\le a_4=\\frac17$，故误差上界为 $\\frac17$。\n\n答案：$\\frac17$。",
+      "standardSolution": "解：\n交错级数满足莱布尼茨条件。前 $3$ 项对应 $n=1,2,3$，首个被略去的项是 $a_4=\\frac{1}{4+3}=\\frac17$。由莱布尼茨余项估计 $|R_3|\\le a_4=\\frac17$，故误差上界为 $\\frac17$。\n\n答案：$\\frac1{7}$",
       "detailedAnalysis": "本题考查交错级数的莱布尼茨余项估计。前 $3$ 项是 $n=1,2,3$，首个略去项为 $a_4=1/7$，故余项绝对值不超过 $1/7$；不要把首项 $a_1=1/4$ 当作余项界。",
       "templateTitle": "",
       "templateNotes": null,
@@ -163952,7 +163952,8 @@
       "verification": "",
       "category": "计算题",
       "examOrigin": "教材课后习题",
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "MA-TX071",
@@ -163987,7 +163988,8 @@
       "verification": "",
       "category": "计算题",
       "examOrigin": "教材课后习题",
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "MA-TX072",
@@ -164023,7 +164025,8 @@
       "verification": "",
       "category": "计算题",
       "examOrigin": "教材课后习题",
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "MA-TX073",

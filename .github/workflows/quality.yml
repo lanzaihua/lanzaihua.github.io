@@ -5,7 +5,7 @@ permissions:
 jobs:
   regression:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -16,31 +16,23 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci --ignore-scripts
-      - name: Hydrate omitted bank data and full skill chapters
-        run: |
-          # The public repo intentionally omits src/data (186MB) and full skill chapters;
-          # the release source.zip carries them. Keep code/tests from this checkout.
-          ok=0
-          for i in $(seq 1 12); do
-            if curl -fL --retry 2 --retry-delay 2 -o /tmp/source.zip https://github.com/lanzaihua/lanzaihua.github.io/releases/latest/download/source.zip; then
-              ok=1
-              break
-            fi
-            echo "source.zip not ready yet ($i/12), retrying in 10s..."
-            sleep 10
-          done
-          test "$ok" = "1"
-          unzip -oq /tmp/source.zip 'src/data/*' 'skills/*'
       - name: Unit, data, QA and repo-language gates
         run: npm run check
       - name: Install browser for real interaction tests
         run: npx playwright-core install --with-deps chromium
       - name: Build single-file and static-site artifacts
         run: npm run build && npm run build:pages && npm run prepare:pages
+      - name: Committed artifacts must match this build
+        run: |
+          git diff --exit-code -- index.html data 404.html favicon.svg manifest.webmanifest robots.txt sitemap.xml sw.js _headers .nojekyll
       - name: Verify published files match source build
         run: npm run verify:pages && npm run verify:build && npm run verify:skills
       - name: Page weight and split-bank gate
         run: npm run qa:size
+      - name: Split bank, IndexedDB cache and deep links
+        run: npm run qa:pages
+      - name: Fresh browser must never overwrite cloud state
+        run: npm run qa:sync
       - name: Real browser core flows on six viewports
         run: |
           node server.js > /tmp/notebook-server.log 2>&1 &

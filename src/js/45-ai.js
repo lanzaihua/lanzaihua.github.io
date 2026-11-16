@@ -1149,10 +1149,12 @@ function renderAiError(err) {
 function aiResultIssues(r) {
   r = r || {};
   var issues = [];
+  if (!String(r.question || '').trim()) issues.push('原题题干');
   if (!String(r.standardSolution || '').trim()) issues.push('考试标准解答');
   if (!String(r.detailedAnalysis || '').trim()) issues.push('详细解析');
   if (!String(r.answer || '').trim()) issues.push('答案');
   if (!Array.isArray(r.variants) || !r.variants.length) issues.push('变式题');
+  else if (r.variants.some(function (v) { return !v || !String(v.q || '').trim() || !String(v.a || '').trim(); })) issues.push('变式题的题目与答案');
   if (!String(r.templateTitle || '').trim()) issues.push('同类型模板名称');
   var n = r.templateNotes || {};
   if (!String(n.features || '').trim() || !String(n.method || '').trim() || !String(n.skeleton || '').trim() || !String(n.pitfalls || '').trim()) {
@@ -1192,10 +1194,16 @@ function aiAutoSaveResult() {
   return e;
 }
 
+function aiShouldAutoSave(data) {
+  if (!data || !data.result) return false;
+  if (data.result.needsClarification) return false;
+  return aiResultIssues(data.result).length === 0;
+}
+
 function aiHandleResult(data, elapsedMs) {
   aiState.result = data;
   var issues = aiResultIssues(data && data.result);
-  if (!issues.length) aiAutoSaveResult();
+  if (aiShouldAutoSave(data)) aiAutoSaveResult();
   renderAiResult(data, elapsedMs, issues);
 }
 
@@ -1212,7 +1220,7 @@ function renderAiResult(data, elapsedMs, issues) {
   issues = issues || [];
   var warn = '';
   if (r.needsClarification) {
-    warn += '<div class="ai-warning"><b>题目信息可能不全：</b>' + esc(r.clarification || '模型认为题干或图片不够清楚。') + '。建议对照原题补全后再编辑。</div>';
+    warn += '<div class="ai-warning"><b>题目信息可能不全：</b>' + esc(r.clarification || '模型认为题干或图片不够清楚。') + '。本题暂未自动入库；请对照原题补全后再点「仍然入库」。</div>';
   }
   if (issues.length) {
     warn += '<div class="ai-warning"><b>缺少必需内容：</b>' + esc(issues.join('、')) + '。本题暂未自动入库；请重新生成，或点「仍然入库」后手动补全。</div>';

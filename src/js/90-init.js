@@ -870,6 +870,7 @@ async function boot() {
     }
   } catch (e) { /* file:// */ }
   await storageHydrate();
+  if (typeof aiHydrateKey === 'function') await aiHydrateKey();
   storageEstimate().then(function () { return storageRequestPersist(); });
   await loadBankData();
   if (window.__BANK_LOAD_ERROR__) {

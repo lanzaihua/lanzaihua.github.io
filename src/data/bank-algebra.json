@@ -39353,8 +39353,8 @@
         "反例构造"
       ],
       "title": "反例与存在性题 · 反例构造 · 客观题",
-      "question": "下列子空间$U,V$中，$U\\cap V\\ne{0}$的是（　）。",
-      "answer": "A．$U={(x,y,0)},V={(0,y,z)}$",
+      "question": "下列子空间$U,V$中，$U\\cap V\\ne\\{0\\}$的是（　）。",
+      "answer": "A．$U=\\{(x,y,0)\\},V=\\{(0,y,z)\\}$",
       "solution": [
         "取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零。",
         "其余各项交集均为 $\\{0\\}$。"
@@ -39367,7 +39367,7 @@
       ],
       "source": "考研原创同型题（第六章 线性空间 · 反例与存在性题）",
       "relatedEntries": [],
-      "standardSolution": "解：\n\n取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零。\n\n其余各项交集均为 $\\{0\\}$。\n\n答案：A．$U={(x,y,0)},V={(0,y,z)}$",
+      "standardSolution": "解：\n\n取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零。\n\n其余各项交集均为 $\\{0\\}$。\n\n答案：A．$U=\\{(x,y,0)\\},V=\\{(0,y,z)\\}$",
       "detailedAnalysis": "本题考查反例构造、存在性判断。解题主线：取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零；其余各项交集均为 $\\{0\\}$。关键检查：只看坐标轴。",
       "templateTitle": "考研同型：反例与存在性题",
       "verification": "",
@@ -39382,19 +39382,19 @@
       "options": [
         {
           "key": "A",
-          "text": "$U={(x,y,0)},V={(0,y,z)}$"
+          "text": "$U=\\{(x,y,0)\\},V=\\{(0,y,z)\\}$"
         },
         {
           "key": "B",
-          "text": "$U={(x,0,0)},V={(0,y,0)}$"
+          "text": "$U=\\{(x,0,0)\\},V=\\{(0,y,0)\\}$"
         },
         {
           "key": "C",
-          "text": "$U={(x,0,0)},V={(0,0,z)}$"
+          "text": "$U=\\{(x,0,0)\\},V=\\{(0,0,z)\\}$"
         },
         {
           "key": "D",
-          "text": "$U={(x,y,0)},V={(0,0,z)}$"
+          "text": "$U=\\{(x,y,0)\\},V=\\{(0,0,z)\\}$"
         }
       ],
       "correct": "A",
@@ -39411,8 +39411,8 @@
         "反例构造"
       ],
       "title": "反例与存在性题 · 反例构造 · 填空题",
-      "question": "下列子空间$U,V$中，$U\\cap V\\ne{0}$的是____。",
-      "answer": "$U={(x,y,0)},V={(0,y,z)}$",
+      "question": "下列子空间$U,V$中，$U\\cap V\\ne\\{0\\}$的是____。",
+      "answer": "$U=\\{(x,y,0)\\},V=\\{(0,y,z)\\}$",
       "solution": [
         "取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零。",
         "其余各项交集均为 $\\{0\\}$。"
@@ -39425,7 +39425,7 @@
       ],
       "source": "考研原创同型题（第六章 线性空间 · 反例与存在性题）",
       "relatedEntries": [],
-      "standardSolution": "解：\n\n取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零。\n\n其余各项交集均为 $\\{0\\}$。\n\n答案：$U={(x,y,0)},V={(0,y,z)}$",
+      "standardSolution": "解：\n\n取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零。\n\n其余各项交集均为 $\\{0\\}$。\n\n答案：$U=\\{(x,y,0)\\},V=\\{(0,y,z)\\}$",
       "detailedAnalysis": "本题考查反例构造、存在性判断。解题主线：取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零；其余各项交集均为 $\\{0\\}$。关键检查：只看坐标轴。",
       "templateTitle": "考研同型：反例与存在性题",
       "verification": "",
@@ -39452,8 +39452,8 @@
         "反例构造"
       ],
       "title": "反例与存在性题 · 反例构造 · 主观题",
-      "question": "下列子空间$U,V$中，$U\\cap V\\ne{0}$的是？请给出例子并验证。",
-      "answer": "$U={(x,y,0)},V={(0,y,z)}$",
+      "question": "下列子空间$U,V$中，$U\\cap V\\ne\\{0\\}$的是？请给出例子并验证。",
+      "answer": "$U=\\{(x,y,0)\\},V=\\{(0,y,z)\\}$",
       "solution": [
         "取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零。",
         "其余各项交集均为 $\\{0\\}$。"
@@ -39466,7 +39466,7 @@
       ],
       "source": "考研原创同型题（第六章 线性空间 · 反例与存在性题）",
       "relatedEntries": [],
-      "standardSolution": "解：\n\n取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零。\n\n其余各项交集均为 $\\{0\\}$。\n\n答案：$U={(x,y,0)},V={(0,y,z)}$",
+      "standardSolution": "解：\n\n取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零。\n\n其余各项交集均为 $\\{0\\}$。\n\n答案：$U=\\{(x,y,0)\\},V=\\{(0,y,z)\\}$",
       "detailedAnalysis": "本题考查反例构造、存在性判断。解题主线：取 $y\\ne0$，$(0,y,0)\\in U\\cap V$，故交非零；其余各项交集均为 $\\{0\\}$。关键检查：只看坐标轴。",
       "templateTitle": "考研同型：反例与存在性题",
       "verification": "",
@@ -40777,10 +40777,10 @@
       ],
       "title": "反例与存在性题 · 反例构造 · 客观题",
       "question": "下列选项中，说明\"$U+V$中表示不唯一\"的是（　）。",
-      "answer": "C．$U={(x,0)},V={(x,y)}$ 且 $U\\subset V$",
+      "answer": "C．$U=\\{(x,0)\\},V=\\{(x,y)\\}$ 且 $U\\subset V$",
       "solution": [
-        "取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一。",
-        "故和不是直和。"
+        "取 $U\\subset V$ 且 $U\\neq\\{0\\}$，取非零 $u\\in U$。则 $u=u+0=0+u$，其中 $(u,0)$ 与 $(0,u)$ 是两种不同的表示。",
+        "故 $U+V$ 中表示不唯一，和不是直和。"
       ],
       "difficulty": 2,
       "tags": [
@@ -40790,10 +40790,10 @@
       ],
       "source": "考研原创同型题（第六章 线性空间 · 反例与存在性题）",
       "relatedEntries": [],
-      "standardSolution": "解：\n\n取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一。\n\n故和不是直和。\n\n答案：C．$U={(x,0)},V={(x,y)}$ 且 $U\\subset V$",
-      "detailedAnalysis": "本题考查反例构造、存在性判断。解题主线：取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一；故和不是直和。关键检查：没有构造两种表示。",
+      "standardSolution": "解：\n\n取 $U\\subset V$ 且 $U\\neq\\{0\\}$，取非零 $u\\in U$。则 $u=u+0=0+u$，其中 $(u,0)$ 与 $(0,u)$ 是两种不同的表示。\n\n故 $U+V$ 中表示不唯一，和不是直和。\n\n答案：C．$U=\\{(x,0)\\},V=\\{(x,y)\\}$ 且 $U\\subset V$",
+      "detailedAnalysis": "本题考查反例构造、存在性判断。解题主线：取 $U\\subset V$ 且 $U\\neq\\{0\\}$，再取非零 $u\\in U$；此时 $u=u+0=0+u$，而 $(u,0)$ 与 $(0,u)$ 是两个不同的有序表示。关键检查：必须取非零 $u$，否则 $0+0$ 只有一种表示；也要说明 $u\\in V$ 才能让 $u$ 出现在第二分量。",
       "templateTitle": "考研同型：反例与存在性题",
-      "verification": "",
+      "verification": "取 $U=\\{(x,0)\\}$、$V=\\{(x,y)\\}$、$u=(1,0)$，则 $(1,0)=(1,0)+(0,0)=(0,0)+(1,0)$，两种表示确实不同。",
       "pitfalls": [
         "没有构造两种表示"
       ],
@@ -40805,19 +40805,19 @@
       "options": [
         {
           "key": "A",
-          "text": "$U=V={0}$"
+          "text": "$U=V=\\{0\\}$"
         },
         {
           "key": "B",
-          "text": "$U={(x,0)},V={(0,y)}$"
+          "text": "$U=\\{(x,0)\\},V=\\{(0,y)\\}$"
         },
         {
           "key": "C",
-          "text": "$U={(x,0)},V={(x,y)}$且$U\\subset V$"
+          "text": "$U=\\{(x,0)\\},V=\\{(x,y)\\}$且$U\\subset V$"
         },
         {
           "key": "D",
-          "text": "$U={(0,0)},V=\\mathbb{R}^2$"
+          "text": "$U=\\{(0,0)\\},V=\\mathbb{R}^2$"
         }
       ],
       "correct": "C",
@@ -40835,7 +40835,7 @@
       ],
       "title": "反例与存在性题 · 反例构造 · 填空题",
       "question": "下列选项中，说明\"$U+V$中表示不唯一\"的是____。",
-      "answer": "$U={(x,0)},V={(x,y)}$ 且 $U\\subset V$",
+      "answer": "$U=\\{(x,0)\\},V=\\{(x,y)\\}$ 且 $U\\subset V$",
       "solution": [
         "取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一。",
         "故和不是直和。"
@@ -40848,7 +40848,7 @@
       ],
       "source": "考研原创同型题（第六章 线性空间 · 反例与存在性题）",
       "relatedEntries": [],
-      "standardSolution": "解：\n\n取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一。\n\n故和不是直和。\n\n答案：$U={(x,0)},V={(x,y)}$ 且 $U\\subset V$",
+      "standardSolution": "解：\n\n取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一。\n\n故和不是直和。\n\n答案：$U=\\{(x,0)\\},V=\\{(x,y)\\}$ 且 $U\\subset V$",
       "detailedAnalysis": "本题考查反例构造、存在性判断。解题主线：取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一；故和不是直和。关键检查：没有构造两种表示。",
       "templateTitle": "考研同型：反例与存在性题",
       "verification": "",
@@ -40876,7 +40876,7 @@
       ],
       "title": "反例与存在性题 · 反例构造 · 主观题",
       "question": "下列选项中，说明\"$U+V$中表示不唯一\"的是？请给出例子并验证。",
-      "answer": "$U={(x,0)},V={(x,y)}$ 且 $U\\subset V$",
+      "answer": "$U=\\{(x,0)\\},V=\\{(x,y)\\}$ 且 $U\\subset V$",
       "solution": [
         "取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一。",
         "故和不是直和。"
@@ -40889,7 +40889,7 @@
       ],
       "source": "考研原创同型题（第六章 线性空间 · 反例与存在性题）",
       "relatedEntries": [],
-      "standardSolution": "解：\n\n取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一。\n\n故和不是直和。\n\n答案：$U={(x,0)},V={(x,y)}$ 且 $U\\subset V$",
+      "standardSolution": "解：\n\n取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一。\n\n故和不是直和。\n\n答案：$U=\\{(x,0)\\},V=\\{(x,y)\\}$ 且 $U\\subset V$",
       "detailedAnalysis": "本题考查反例构造、存在性判断。解题主线：取 $U\\subset V$，则任意 $v\\in V$ 可同时写成 $0+v$ 与 $v+0$，表示不唯一；故和不是直和。关键检查：没有构造两种表示。",
       "templateTitle": "考研同型：反例与存在性题",
       "verification": "",
@@ -52245,7 +52245,7 @@
         },
         {
           "key": "C",
-          "text": "$\\lambda-\\lambda_0$"
+          "text": "$(\\lambda-\\lambda_0)^{k+1}$"
         },
         {
           "key": "D",
@@ -70616,7 +70616,7 @@
       "title": "教材习题 · 28(3) — 艾森斯坦 + 平移",
       "question": "证明 $f(x)=x^6+x^3+1$ 在 ℚ 上不可约。",
       "answer": "作平移 $x=y+1$，得 $g(y)=y^6+6y^5+15y^4+21y^3+18y^2+9y+3$；取 $p=3$，$3$ 整除除首项外的各系数而 $3\\nmid1$、$9\\nmid3$，由艾森斯坦判别法 $g(y)$ 在 $\\mathbb{Q}$ 上不可约；平移不改变可约性，故 $f(x)=x^6+x^3+1$ 在 $\\mathbb{Q}$ 上不可约。",
-      "standardSolution": "证明：\n1. 直接对 $f$ 找不到素数：常数项是 1，任何 $p$ 都不能满足「$p\\vert a_0$ 而 $p^2\\nmid a_0$」。\r\n2. 作平移 $x=y+1$。若 $f$ 有非常数分解，则 $f(y+1)$ 也有，故平移不改变可约性。\r\n3. 展开：$(y+1)^6+(y+1)^3+1=y^6+6y^5+15y^4+21y^3+18y^2+9y+3$。\r\n4. 取 $p=3$：$3\\nmid 1$；$3\\vert 6,15,21,18,9,3$；$9\\nmid 3$。由艾森斯坦，$g(y)$ 在 ℚ 上不可约，故 $f(x)$ 在 ℚ 上不可约。\n\n答案：证明 $f(x)=x^6+x^3+1$ 在 ℚ 上不可约。",
+      "standardSolution": "证明：\n1. 直接对 $f$ 找不到素数：常数项是 1，任何 $p$ 都不能满足「$p\\vert a_0$ 而 $p^2\\nmid a_0$」。\r\n2. 作平移 $x=y+1$。若 $f$ 有非常数分解，则 $f(y+1)$ 也有，故平移不改变可约性。\r\n3. 展开：$(y+1)^6+(y+1)^3+1=y^6+6y^5+15y^4+21y^3+18y^2+9y+3$。\r\n4. 取 $p=3$：$3\\nmid 1$；$3\\vert 6,15,21,18,9,3$；$9\\nmid 3$。由艾森斯坦，$g(y)$ 在 ℚ 上不可约，故 $f(x)$ 在 ℚ 上不可约。\n\n答案：作平移 $x=y+1$，得 $g(y)=y^6+6y^5+15y^4+21y^3+18y^2+9y+3$；取 $p=3$，$3$ 整除除首项外的各系数而 $3\\nmid1$、$9\\nmid3$，由艾森斯坦判别法 $g(y)$ 在 $\\mathbb{Q}$ 上不可约；平移不改变可约性，故 $f(x)=x^6+x^3+1$ 在 $\\mathbb{Q}$ 上不可约。",
       "detailedAnalysis": "关键一步：平移把常数项从 1 变成 3，制造出 $p=3$ 的三条条件。先看常数项能否被某素数整除一次而不能整除两次；不能就试 $x=y\\pm 1$。易错：① $(y+1)^6$ 系数 $1,6,15,20,15,6,1$ 加上 $(y+1)^3$ 的 $1,3,3,1$ 后 $y^3$ 系数是 $21$，别漏；② 要说明「平移保持可约性」，不能只写「令 $x=y+1$」；③ 证的是 $g(y)$ 不可约，再回推 $f(x)$。",
       "solution": [],
       "difficulty": 3,
@@ -70748,7 +70748,7 @@
       "title": "教材习题 · 18(2) — 三对角（友矩阵型）行列式",
       "question": "证明 $D_n=\\begin{vmatrix}x&0&\\cdots&0&a_0\\\\-1&x&\\cdots&0&a_1\\\\0&-1&\\ddots&\\vdots&\\vdots\\\\\\vdots&&\\ddots&x&a_{n-2}\\\\0&\\cdots&0&-1&x+a_{n-1}\\end{vmatrix}=x^n+a_{n-1}x^{n-1}+\\cdots+a_1x+a_0$。",
       "answer": "对 $n$ 归纳：$D_1=x+a_0$；按第 1 行展开得 $D_n=xD_{n-1}+(-1)^{1+n}a_0M_{1n}$，其中 $M_{1n}=(-1)^{n-1}$，故 $D_n=x^n+a_{n-1}x^{n-1}+\\cdots+a_1x+a_0$。",
-      "standardSolution": "证明：\n1. 对 $n$ 归纳。$n=1$：$D_1=\\vert x+a_0\\vert=x+a_0$，成立。\r\n2. 设结论对 $n-1$ 成立。按第 1 行展开，只有 $x$ 与 $a_0$ 非零：$D_n=xD_{n-1}+(-1)^{1+n}a_0M_{1n}$。\r\n3. 划去第 1 行第 1 列后仍是同型、低一阶、常数项为 $a_1,\\dots,a_{n-1}$ 的行列式，由归纳假设 $D_{n-1}=x^{n-1}+a_{n-1}x^{n-2}+\\cdots+a_1$。\r\n4. $M_{1n}$ 是上三角行列式，对角线全是 $-1$，故 $M_{1n}=(-1)^{n-1}$。\r\n5. 于是 $D_n=x(x^{n-1}+a_{n-1}x^{n-2}+\\cdots+a_1)+(-1)^{1+n}a_0(-1)^{n-1}=x^n+a_{n-1}x^{n-1}+\\cdots+a_1x+a_0$。\n\n答案：证明 $D_n=\\begin{vmatrix}x&0&\\cdots&0&a_0\\\\-1&x&\\cdots&0&a_1\\\\0&-1&\\ddots&\\vdots&\\vdots\\\\\\vdots&&\\ddots&x&a_{n-2}\\\\0&\\cdots&0&-1&x+a_{n-1}\\end{vmatrix}=x^n+a_{n-1}x^{n-1}+\\cdots+a_1x+a_0$。",
+      "standardSolution": "证明：\n1. 对 $n$ 归纳。$n=1$：$D_1=\\vert x+a_0\\vert=x+a_0$，成立。\r\n2. 设结论对 $n-1$ 成立。按第 1 行展开，只有 $x$ 与 $a_0$ 非零：$D_n=xD_{n-1}+(-1)^{1+n}a_0M_{1n}$。\r\n3. 划去第 1 行第 1 列后仍是同型、低一阶、常数项为 $a_1,\\dots,a_{n-1}$ 的行列式，由归纳假设 $D_{n-1}=x^{n-1}+a_{n-1}x^{n-2}+\\cdots+a_1$。\r\n4. $M_{1n}$ 是上三角行列式，对角线全是 $-1$，故 $M_{1n}=(-1)^{n-1}$。\r\n5. 于是 $D_n=x(x^{n-1}+a_{n-1}x^{n-2}+\\cdots+a_1)+(-1)^{1+n}a_0(-1)^{n-1}=x^n+a_{n-1}x^{n-1}+\\cdots+a_1x+a_0$。\n\n答案：对 $n$ 归纳：$D_1=x+a_0$；按第 1 行展开得 $D_n=xD_{n-1}+(-1)^{1+n}a_0M_{1n}$，其中 $M_{1n}=(-1)^{n-1}$，故 $D_n=x^n+a_{n-1}x^{n-1}+\\cdots+a_1x+a_0$。",
       "detailedAnalysis": "关键一步：按第 1 行展开后第一个余子式仍是「同型、低一阶」的 $D_{n-1}$，这是能用归纳的信号；$(-1)^{1+n}(-1)^{n-1}=+1$，$a_0$ 才能干净地落到常数项。易错：① $D_{n-1}$ 的常数项是 $a_1,\\dots,a_{n-1}$ 而非 $a_0,\\dots,a_{n-2}$（划掉的是第 1 列）；② 忘记 $M_{1n}$ 的符号；③ 只写「归纳可得」而不验证 $n=1$。",
       "solution": [],
       "difficulty": 3,
@@ -70878,7 +70878,7 @@
       "title": "教材习题 · 3.23 — 循环方程组：秩判据、特解与基础解系",
       "question": "$x_1-x_2=a_1,\\ x_2-x_3=a_2,\\ x_3-x_4=a_3,\\ x_4-x_5=a_4,\\ x_5-x_1=a_5$。证明有解 $\\iff\\sum_{i=1}^5a_i=0$，并求通解。",
       "answer": "方程组有解当且仅当 $\\sum_{i=1}^5 a_i=0$；此时通解为 $\\xi=\\eta_0+k\\eta_1$，其中 $\\eta_0=(a_1+a_2+a_3+a_4,\\ a_2+a_3+a_4,\\ a_3+a_4,\\ a_4,\\ 0)$，$\\eta_1=(1,1,1,1,1)$，$k\\in P$。",
-      "standardSolution": "证明：\n1. 五式相加，左端全部抵消，故 $\\sum a_i=0$ 是**必要**条件。\r\n2. 把第 1 行加到第 5 行，再把第 2、3、4 行依次加到第 5 行：\r\n$$\\left(\\begin{array}{ccccc|c}1&-1&0&0&0&a_1\\\\0&1&-1&0&0&a_2\\\\0&0&1&-1&0&a_3\\\\0&0&0&1&-1&a_4\\\\-1&0&0&0&1&a_5\\end{array}\\right)\\to\\left(\\begin{array}{ccccc|c}1&-1&0&0&0&a_1\\\\0&1&-1&0&0&a_2\\\\0&0&1&-1&0&a_3\\\\0&0&0&1&-1&a_4\\\\0&0&0&0&0&a_1+a_2+a_3+a_4+a_5\\end{array}\\right)$$\r\n3. 前四行无关，$r(A)=4$；故有解 $\\iff a_1+\\cdots+a_5=0$，此时 $r(A)=r(A\\mid b)=4$。\r\n4. 由前四式回代（$x_5$ 自由）：$x_4=x_5+a_4$，$x_3=x_5+a_3+a_4$，$x_2=x_5+a_2+a_3+a_4$，$x_1=x_5+a_1+a_2+a_3+a_4$。特解 $\\eta_0=(a_1+a_2+a_3+a_4,\\ a_2+a_3+a_4,\\ a_3+a_4,\\ a_4,\\ 0)$，基础解系 $\\eta_1=(1,1,1,1,1)$，通解 $\\xi=\\eta_0+k\\eta_1$。\n\n答案：$x_1-x_2=a_1,\\ x_2-x_3=a_2,\\ x_3-x_4=a_3,\\ x_4-x_5=a_4,\\ x_5-x_1=a_5$。证明有解 $\\iff\\sum_{i=1}^5a_i=0$，并求通解。",
+      "standardSolution": "证明：\n1. 五式相加，左端全部抵消，故 $\\sum a_i=0$ 是**必要**条件。\r\n2. 把第 1 行加到第 5 行，再把第 2、3、4 行依次加到第 5 行：\r\n$$\\left(\\begin{array}{ccccc|c}1&-1&0&0&0&a_1\\\\0&1&-1&0&0&a_2\\\\0&0&1&-1&0&a_3\\\\0&0&0&1&-1&a_4\\\\-1&0&0&0&1&a_5\\end{array}\\right)\\to\\left(\\begin{array}{ccccc|c}1&-1&0&0&0&a_1\\\\0&1&-1&0&0&a_2\\\\0&0&1&-1&0&a_3\\\\0&0&0&1&-1&a_4\\\\0&0&0&0&0&a_1+a_2+a_3+a_4+a_5\\end{array}\\right)$$\r\n3. 前四行无关，$r(A)=4$；故有解 $\\iff a_1+\\cdots+a_5=0$，此时 $r(A)=r(A\\mid b)=4$。\r\n4. 由前四式回代（$x_5$ 自由）：$x_4=x_5+a_4$，$x_3=x_5+a_3+a_4$，$x_2=x_5+a_2+a_3+a_4$，$x_1=x_5+a_1+a_2+a_3+a_4$。特解 $\\eta_0=(a_1+a_2+a_3+a_4,\\ a_2+a_3+a_4,\\ a_3+a_4,\\ a_4,\\ 0)$，基础解系 $\\eta_1=(1,1,1,1,1)$，通解 $\\xi=\\eta_0+k\\eta_1$。\n\n答案：方程组有解当且仅当 $\\sum_{i=1}^5 a_i=0$；此时通解为 $\\xi=\\eta_0+k\\eta_1$，其中 $\\eta_0=(a_1+a_2+a_3+a_4,\\ a_2+a_3+a_4,\\ a_3+a_4,\\ a_4,\\ 0)$，$\\eta_1=(1,1,1,1,1)$，$k\\in P$。",
       "detailedAnalysis": "关键一步：五行相加让左端归零——同时给出必要条件 $\\sum a_i=0$ 与第 5 行可被前四行表出。**看到「循环相消」就写下「右端之和等于零」**。易错：只验证必要性就收工；$\\sum a_i=0$ 时还须说明 $r(A)=4$；自由度别算成 $5-5=0$。",
       "solution": [],
       "difficulty": 3,
@@ -70975,7 +70975,7 @@
       "title": "教材习题 · 7(3) — 与一切矩阵可交换，必为数量矩阵",
       "question": "$E_{ij}$ 是 $(i,j)$ 元为 1、其余为 0 的 $n$ 阶矩阵，$A=(a_{ij})_{n\\times n}$。若 $A$ 与任意 $n$ 阶矩阵可交换，证明 $A=aE$。",
       "answer": "$A=aE$，其中 $a$ 为 $A$ 的对角元（全部相等）；反之 $aE$ 与任意矩阵可交换。",
-      "standardSolution": "证明：\n1. 用 $E_{ij}$ 把「可交换」译成元素方程：$AE_{ij}$ 只有第 $j$ 列非零且 $(AE_{ij})_{kj}=a_{ki}$；$E_{ij}A$ 只有第 $i$ 行非零且 $(E_{ij}A)_{il}=a_{jl}$。\r\n2. 比 $(k,j)\\ (k\\ne i)$：左为 $a_{ki}$、右为 0，得 $a_{ki}=0$；比 $(i,l)\\ (l\\ne j)$：左为 0、右为 $a_{jl}$，得 $a_{jl}=0$；比 $(i,j)$：得 $a_{ii}=a_{jj}$。\r\n3. 对每对 $i\\ne j$ 做一遍：非对角元全为 0、对角元全相等，故 $A=aE$；反之 $\\lambda E$ 与任何矩阵交换，证完。\n\n答案：$E_{ij}$ 是 $(i,j)$ 元为 1、其余为 0 的 $n$ 阶矩阵，$A=(a_{ij})_{n\\times n}$。若 $A$ 与任意 $n$ 阶矩阵可交换，证明 $A=aE$。",
+      "standardSolution": "证明：\n1. 用 $E_{ij}$ 把「可交换」译成元素方程：$AE_{ij}$ 只有第 $j$ 列非零且 $(AE_{ij})_{kj}=a_{ki}$；$E_{ij}A$ 只有第 $i$ 行非零且 $(E_{ij}A)_{il}=a_{jl}$。\r\n2. 比 $(k,j)\\ (k\\ne i)$：左为 $a_{ki}$、右为 0，得 $a_{ki}=0$；比 $(i,l)\\ (l\\ne j)$：左为 0、右为 $a_{jl}$，得 $a_{jl}=0$；比 $(i,j)$：得 $a_{ii}=a_{jj}$。\r\n3. 对每对 $i\\ne j$ 做一遍：非对角元全为 0、对角元全相等，故 $A=aE$；反之 $\\lambda E$ 与任何矩阵交换，证完。\n\n答案：$A=aE$，其中 $a$ 为 $A$ 的对角元（全部相等）；反之 $aE$ 与任意矩阵可交换。",
       "detailedAnalysis": "关键一步：$E_{ij}$ 是「只有一个位置亮着」的探针，乘一次就把 $A$ 的一行、一列单独拎出来；抽象命题里出现「任意矩阵」，第一反应就是代 $E_{ij}$。易错：只拿一个 $E_{12}$ 算完收工（只给了两行两列）；漏 $a_{ii}=a_{jj}$，只证出「$A$ 是对角矩阵」；不写「反之」那半句。",
       "solution": [],
       "difficulty": 3,
@@ -71008,7 +71008,7 @@
       "title": "教材习题 · 23(1) — 矩阵方程 $AX=B$",
       "question": "$A=\\begin{pmatrix}2&5\\\\1&3\\end{pmatrix}$，$B=\\begin{pmatrix}4&-6\\\\2&1\\end{pmatrix}$，求 $X$ 使 $AX=B$。",
       "answer": "$X=\\begin{pmatrix}2&-23\\\\0&8\\end{pmatrix}$。",
-      "standardSolution": "解：\n1. 判可逆：$|A|=2\\cdot3-5\\cdot1=1\\ne0$，故 $X=A^{-1}B$ 唯一。\r\n2. 不求 $A^{-1}$，直接对 $(A\\mid B)$ 作行变换：\r\n$$\\left(\\begin{array}{cc|cc}2&5&4&-6\\\\1&3&2&1\\end{array}\\right)\\to\\left(\\begin{array}{cc|cc}1&3&2&1\\\\0&-1&0&-8\\end{array}\\right)\\to\\left(\\begin{array}{cc|cc}1&0&2&-23\\\\0&1&0&8\\end{array}\\right).$$\r\n3. 左半变 $E$，右半即答案：$X=\\begin{pmatrix}2&-23\\\\0&8\\end{pmatrix}$。验算 $AX=B$。\r\n4. 三种方程对照：$AX=B\\Rightarrow X=A^{-1}B$；$XA=B\\Rightarrow X=BA^{-1}$；$AXB=C\\Rightarrow X=A^{-1}CB^{-1}$。**左乘右乘不能换序。**\n\n答案：$X=\\begin{pmatrix}2&-23\\\\0&8\\end{pmatrix}$。",
+      "standardSolution": "解：\n1. 判可逆：$|A|=2\\cdot3-5\\cdot1=1\\ne0$，故 $X=A^{-1}B$ 唯一。\r\n2. 不求 $A^{-1}$，直接对 $(A\\mid B)$ 作行变换：\r\n$$\\left(\\begin{array}{cc|cc}2&5&4&-6\\\\1&3&2&1\\end{array}\\right)\\to\\left(\\begin{array}{cc|cc}1&3&2&1\\\\0&-1&0&-8\\end{array}\\right)\\to\\left(\\begin{array}{cc|cc}1&0&2&-23\\\\0&1&0&8\\end{array}\\right).$$\r\n3. 左半变 $E$，右半即\n\n答案：$X=\\begin{pmatrix}2&-23\\\\0&8\\end{pmatrix}$。",
       "detailedAnalysis": "关键一步：$(A\\mid B)$ 左块化 $E$ 的全部行变换会自动作用到右块，等价于对 $B$ 左乘 $A^{-1}$；一次消元即得 $A^{-1}B$，比先求逆再乘少一半计算。易错：对 $XA=B$ 也写 $A^{-1}B$（应为 $BA^{-1}$）；先求逆再乘，多算易错；不验算——矩阵方程一错全错。",
       "solution": [],
       "difficulty": 3,
@@ -71074,7 +71074,7 @@
       "title": "教材习题 · 17+18 — 秩不等式的双侧夹",
       "question": "$A$ 为 $n$ 阶矩阵，$A^2=E$。证明 $r(A+E)+r(A-E)=n$。",
       "answer": "$r(A+E)+r(A-E)=n$：由 $(A+E)(A-E)=0$ 及 $r(X)+r(Y)\\le n$ 得上界，由 $n=r(2E)\\le r(A+E)+r(A-E)$ 得下界，故等号成立。",
-      "standardSolution": "证明：\n1. 引理（习题18）：$XY=0$ 且 $X,Y$ 为 $n$ 阶时 $r(X)+r(Y)\\le n$——因 $Y$ 的每列都是 $Xz=0$ 的解，$Y$ 的列空间落在 $X$ 的零空间内。\r\n2. 上界：$A^2=E\\Rightarrow(A+E)(A-E)=A^2-E=0$，由引理得 $r(A+E)+r(A-E)\\le n$。\r\n3. 下界：由 $r(X\\pm Y)\\le r(X)+r(Y)$（习题17的推论），$n=r(2E)=r\\big((A+E)-(A-E)\\big)\\le r(A+E)+r(A-E)$。\r\n4. 上下夹住，只能取等号。同款（补充题4）：$A^2=A\\Rightarrow A(A-E)=0$ 给上界，$r(A)+r(A-E)\\ge r(E)=n$ 给下界，故也为 $n$。\n\n答案：$A$ 为 $n$ 阶矩阵，$A^2=E$。证明 $r(A+E)+r(A-E)=n$。",
+      "standardSolution": "证明：\n1. 引理（习题18）：$XY=0$ 且 $X,Y$ 为 $n$ 阶时 $r(X)+r(Y)\\le n$——因 $Y$ 的每列都是 $Xz=0$ 的解，$Y$ 的列空间落在 $X$ 的零空间内。\r\n2. 上界：$A^2=E\\Rightarrow(A+E)(A-E)=A^2-E=0$，由引理得 $r(A+E)+r(A-E)\\le n$。\r\n3. 下界：由 $r(X\\pm Y)\\le r(X)+r(Y)$（习题17的推论），$n=r(2E)=r\\big((A+E)-(A-E)\\big)\\le r(A+E)+r(A-E)$。\r\n4. 上下夹住，只能取等号。同款（补充题4）：$A^2=A\\Rightarrow A(A-E)=0$ 给上界，$r(A)+r(A-E)\\ge r(E)=n$ 给下界，故也为 $n$。\n\n答案：$r(A+E)+r(A-E)=n$：由 $(A+E)(A-E)=0$ 及 $r(X)+r(Y)\\le n$ 得上界，由 $n=r(2E)\\le r(A+E)+r(A-E)$ 得下界，故等号成立。",
       "detailedAnalysis": "关键一步：一个等式要造两个不等式。乘积为零只送上界，下界必须来自「两矩阵之差是 $E$」。**证明秩等式 $=$ 找一次上界 $+$ 找一次下界。**。易错：下界写成 $r(A+E)+r(A-E)\\ge r(2A)$（白写）；忘 $(A+E)-(A-E)=2E\\ne0$；只给上界就宣布相等。",
       "solution": [],
       "difficulty": 3,
@@ -71107,7 +71107,7 @@
       "title": "教材习题 · 27 — 伴随矩阵的秩三分法",
       "question": "$A$ 为 $n$ 阶（$n\\ge2$）矩阵。证明 $|A^*|=|A|^{n-1}$，且\r\n$$r(A^*)=\\begin{cases}n,&r(A)=n,\\\\ 1,&r(A)=n-1,\\\\ 0,&r(A)\\le n-2.\\end{cases}$$",
       "answer": "$|A^*|=|A|^{n-1}$；且当 $r(A)=n$ 时 $r(A^*)=n$，当 $r(A)=n-1$ 时 $r(A^*)=1$，当 $r(A)\\le n-2$ 时 $r(A^*)=0$。",
-      "standardSolution": "证明：\n1. 一切从 $AA^*=A^*A=|A|E$ 出发。\r\n2. $r(A)=n$：$|A|\\ne0$，取行列式得 $|A||A^*|=|A|^n$，故 $|A^*|=|A|^{n-1}\\ne0$，$r(A^*)=n$。\r\n3. $r(A)=n-1$：有 $n-1$ 阶非零子式 $\\Rightarrow A^*\\ne0\\Rightarrow r(A^*)\\ge1$；又 $AA^*=0$ 给 $r(A)+r(A^*)\\le n\\Rightarrow r(A^*)\\le1$。故 $r(A^*)=1$，$|A^*|=0=|A|^{n-1}$。\r\n4. $r(A)\\le n-2$：任意 $n-1$ 行线性相关，所有 $n-1$ 阶子式为 0，$A^*=0$，$r(A^*)=0$。\r\n5. 二阶校验：$A=\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}$，$|A|=-2$、$A^*=\\begin{pmatrix}4&-2\\\\-3&1\\end{pmatrix}$，$|A^*|=-2$、$r(A^*)=2$；取 $A=\\begin{pmatrix}1&2\\\\2&4\\end{pmatrix}$（秩 1），$A^*=\\begin{pmatrix}4&-2\\\\-2&1\\end{pmatrix}$ 秩 1。延伸（补充题5）：$n\\ge3$ 时 $(A^*)^*=|A|^{n-2}A$。\n\n答案：$A$ 为 $n$ 阶（$n\\ge2$）矩阵。证明 $|A^*|=|A|^{n-1}$，且 $$r(A^*)=\\begin{cases}n,&r(A)=n,\\\\ 1,&r(A)=n-1,\\\\ 0,&r(A)\\le n-2.\\end{cases}$$。",
+      "standardSolution": "证明：\n1. 一切从 $AA^*=A^*A=|A|E$ 出发。\r\n2. $r(A)=n$：$|A|\\ne0$，取行列式得 $|A||A^*|=|A|^n$，故 $|A^*|=|A|^{n-1}\\ne0$，$r(A^*)=n$。\r\n3. $r(A)=n-1$：有 $n-1$ 阶非零子式 $\\Rightarrow A^*\\ne0\\Rightarrow r(A^*)\\ge1$；又 $AA^*=0$ 给 $r(A)+r(A^*)\\le n\\Rightarrow r(A^*)\\le1$。故 $r(A^*)=1$，$|A^*|=0=|A|^{n-1}$。\r\n4. $r(A)\\le n-2$：任意 $n-1$ 行线性相关，所有 $n-1$ 阶子式为 0，$A^*=0$，$r(A^*)=0$。\r\n5. 二阶校验：$A=\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}$，$|A|=-2$、$A^*=\\begin{pmatrix}4&-2\\\\-3&1\\end{pmatrix}$，$|A^*|=-2$、$r(A^*)=2$；取 $A=\\begin{pmatrix}1&2\\\\2&4\\end{pmatrix}$（秩 1），$A^*=\\begin{pmatrix}4&-2\\\\-2&1\\end{pmatrix}$ 秩 1。延伸（补充题5）：$n\\ge3$ 时 $(A^*)^*=|A|^{n-2}A$。\n\n答案：$|A^*|=|A|^{n-1}$；且当 $r(A)=n$ 时 $r(A^*)=n$，当 $r(A)=n-1$ 时 $r(A^*)=1$，当 $r(A)\\le n-2$ 时 $r(A^*)=0$。",
       "detailedAnalysis": "关键一步：$r(A)=n-1$ 这一档必须两头夹——非零子式给下界 1，$AA^*=0$ 给上界 1。这是「秩等于 1」最典型的出场：非零矩阵，乘积为零。易错：把 $A^*$ 的 $(i,j)$ 元写成 $A_{ij}$ 而非 $A_{ji}$（漏转置）；只写「$\\ge1$」或只写「$\\le1$」；结论只在 $n\\ge2$ 成立。",
       "solution": [],
       "difficulty": 3,
@@ -71209,7 +71209,7 @@
       "title": "教材习题 · 5 第15题 — $n\\sum x_i^2-(\\sum x_i)^2$ 半正定，秩 $n-1$",
       "question": "证明 $f=n\\sum_{i=1}^n x_i^2-\\big(\\sum_{i=1}^n x_i\\big)^2$ 半正定，并求惯性指数。",
       "answer": "$f=n\\sum x_i^2-\\big(\\sum x_i\\big)^2=\\sum_{i<j}(x_i-x_j)^2\\ge0$，故半正定；$r(A)=n-1$，正惯性指数 $p=n-1$，负惯性指数 $q=0$，规范形 $z_1^2+\\cdots+z_{n-1}^2$。",
-      "standardSolution": "证明：\n1. 用恒等式 $\\sum_{i<j}(x_i-x_j)^2=(n-1)\\sum x_i^2-2\\sum_{i<j}x_ix_j$。\r\n2. 又 $(\\sum x_i)^2=\\sum x_i^2+2\\sum_{i<j}x_ix_j$，消去交叉和即得\r\n   $$f=n\\sum x_i^2-\\Big(\\sum x_i\\Big)^2=\\sum_{i<j}(x_i-x_j)^2 .$$\r\n3. 右边是平方和，故 $f\\ge0$；等号成立 $\\iff$ 所有 $x_i$ 相等。取 $X=(1,\\dots,1)\\ne0$ 得 $f=0$，所以只是**半正定**。\r\n4. 定秩：$A=nE-J$（$J$ 为全 1 矩阵）。$AX=0\\iff nx_i=\\sum_j x_j\\ (\\forall i)\\iff$ 所有 $x_i$ 相等，故 $\\ker A=L\\big((1,\\dots,1)^{\\mathsf T}\\big)$ 是一维的。\r\n5. 于是 $r=n-1$，$p=n-1$，$q=0$；规范形 $z_1^2+\\cdots+z_{n-1}^2$。\n\n答案：证明 $f=n\\sum_{i=1}^n x_i^2-\\big(\\sum_{i=1}^n x_i\\big)^2$ 半正定，并求惯性指数。",
+      "standardSolution": "证明：\n1. 用恒等式 $\\sum_{i<j}(x_i-x_j)^2=(n-1)\\sum x_i^2-2\\sum_{i<j}x_ix_j$。\r\n2. 又 $(\\sum x_i)^2=\\sum x_i^2+2\\sum_{i<j}x_ix_j$，消去交叉和即得\r\n   $$f=n\\sum x_i^2-\\Big(\\sum x_i\\Big)^2=\\sum_{i<j}(x_i-x_j)^2 .$$\r\n3. 右边是平方和，故 $f\\ge0$；等号成立 $\\iff$ 所有 $x_i$ 相等。取 $X=(1,\\dots,1)\\ne0$ 得 $f=0$，所以只是**半正定**。\r\n4. 定秩：$A=nE-J$（$J$ 为全 1 矩阵）。$AX=0\\iff nx_i=\\sum_j x_j\\ (\\forall i)\\iff$ 所有 $x_i$ 相等，故 $\\ker A=L\\big((1,\\dots,1)^{\\mathsf T}\\big)$ 是一维的。\r\n5. 于是 $r=n-1$，$p=n-1$，$q=0$；规范形 $z_1^2+\\cdots+z_{n-1}^2$。\n\n答案：$f=n\\sum x_i^2-\\big(\\sum x_i\\big)^2=\\sum_{i<j}(x_i-x_j)^2\\ge0$，故半正定；$r(A)=n-1$，正惯性指数 $p=n-1$，负惯性指数 $q=0$，规范形 $z_1^2+\\cdots+z_{n-1}^2$。",
       "detailedAnalysis": "关键一步：恒等式一举两得——非负性（半正定）与等号集合（即零空间）同时读出，不必算特征值或行列式。求半正定二次型的秩，最快是“看它何时为 0、解出零空间维数”。易错：① 证完 $\\ge0$ 就说正定（在 $(1,\\dots,1)$ 处取 0）；② 用顺序主子式判半正定（$\\Delta_k\\ge0$ 不够）；③ 直接写“秩 $=n$”（本题 $|A|=0$）。",
       "solution": [],
       "difficulty": 3,
@@ -71242,7 +71242,7 @@
       "title": "教材习题 · 5 第9题 — 正定 $\\Rightarrow$ 任意主子式 $>0$",
       "question": "设 $A$ 为 $n$ 阶正定矩阵，证明 $A$ 的任一 $k$ 阶主子式大于 0。",
       "answer": "$A$ 的任一 $k$ 阶主子式（$1\\le k\\le n$）都大于 $0$：用置换矩阵把该主子阵移到左上角，合同变换保持正定，其前 $k$ 阶顺序主子式即为该主子式。",
-      "standardSolution": "证明：\n1. 取定指标 $i_1<\\cdots<i_k$。作排列矩阵 $P$，使 $X=PY$ 把 $x_{i_1},\\dots,x_{i_k}$ 排到最前面（$|P|=\\pm1$）。\r\n2. 则 $f=X^{\\mathsf T}AX=Y^{\\mathsf T}(P^{\\mathsf T}AP)Y$；$B=P^{\\mathsf T}AP$ 的左上角 $k\\times k$ 块，恰是 $A$ 取 $i_1,\\dots,i_k$ 行、同序号列的主子阵。\r\n3. **替换后仍正定**：$Y\\ne0\\implies X=PY\\ne0$（$P$ 可逆），故 $Y^{\\mathsf T}BY=X^{\\mathsf T}AX>0$。\r\n4. 正定矩阵的顺序主子式全 $>0$（定理6），故 $B$ 的前 $k$ 阶顺序主子式 $>0$，即所求主子式 $>0$。由 $k$ 与指标的任意性得证。∎\n\n答案：设 $A$ 为 $n$ 阶正定矩阵，证明 $A$ 的任一 $k$ 阶主子式大于 0。",
+      "standardSolution": "证明：\n1. 取定指标 $i_1<\\cdots<i_k$。作排列矩阵 $P$，使 $X=PY$ 把 $x_{i_1},\\dots,x_{i_k}$ 排到最前面（$|P|=\\pm1$）。\r\n2. 则 $f=X^{\\mathsf T}AX=Y^{\\mathsf T}(P^{\\mathsf T}AP)Y$；$B=P^{\\mathsf T}AP$ 的左上角 $k\\times k$ 块，恰是 $A$ 取 $i_1,\\dots,i_k$ 行、同序号列的主子阵。\r\n3. **替换后仍正定**：$Y\\ne0\\implies X=PY\\ne0$（$P$ 可逆），故 $Y^{\\mathsf T}BY=X^{\\mathsf T}AX>0$。\r\n4. 正定矩阵的顺序主子式全 $>0$（定理6），故 $B$ 的前 $k$ 阶顺序主子式 $>0$，即所求主子式 $>0$。由 $k$ 与指标的任意性得证。∎\n\n答案：$A$ 的任一 $k$ 阶主子式（$1\\le k\\le n$）都大于 $0$：用置换矩阵把该主子阵移到左上角，合同变换保持正定，其前 $k$ 阶顺序主子式即为该主子式。",
       "detailedAnalysis": "关键一步：第 3 步“可逆替换保持正定性”。正定的定义挂在 $X$ 上，换成 $Y$ 后必须重证“$Y\\ne0$ 时仍 $>0$”，靠的正是 $P$ 可逆（$Y\\ne0\\iff X\\ne0$）。漏这句，证明就断在这里。易错：① 直接用定理6 说“顺序主子式”——它只管原编号前 $k$ 个，一般主子式要先靠 $P$ 搬到左上角；② 写成 $PAP^{\\mathsf T}$（行列没同序，不是合同）；③ 忘证 $|P|\\ne0$、忘说明 $A$ 对称。",
       "solution": [],
       "difficulty": 3,
@@ -71275,7 +71275,7 @@
       "title": "教材习题 · 5 第12题 — $|A|<0\\Rightarrow$ 存在 $X\\ne0$ 使 $X^{\\mathsf T}AX<0$",
       "question": "设 $A$ 为 $n$ 阶实对称矩阵，$|A|<0$，证明存在实向量 $X\\ne0$ 使 $X^{\\mathsf T}AX<0$。",
       "answer": "存在 $X\\ne0$ 使 $X^{\\mathsf T}AX<0$：$|A|<0$ 时规范形中负平方项个数 $q$ 为奇数，特别 $q\\ge1$，取 $C^{\\mathsf T}AC$ 规范形中 $-1$ 对应的单位向量 $Y$，令 $X=CY\\ne0$ 即得 $X^{\\mathsf T}AX=-1$。",
-      "standardSolution": "证明：\n1. $|A|\\ne0\\Rightarrow r=n$。由惯性定理，存在可逆 $C$ 使 $C^{\\mathsf T}AC=\\operatorname{diag}(1,\\dots,1,-1,\\dots,-1)$（$q$ 个 $-1$）。\r\n2. 比较行列式：$|C^{\\mathsf T}AC|=|C|^2|A|$。左边 $=(-1)^q$，$|C|^2>0$，故 $(-1)^q$ 与 $|A|$ 同号；由 $|A|<0$ 得 $q$ 为奇数，特别 $q\\ge1$。\r\n3. 取 $Y=\\varepsilon_{p+1}$（第 $p+1$ 个单位向量），令 $X=CY$。$C$ 可逆且 $Y\\ne0$，故 $X\\ne0$，且 $X^{\\mathsf T}AX=Y^{\\mathsf T}(C^{\\mathsf T}AC)Y=-1<0$。∎\n\n答案：设 $A$ 为 $n$ 阶实对称矩阵，$|A|<0$，证明存在实向量 $X\\ne0$ 使 $X^{\\mathsf T}AX<0$。",
+      "standardSolution": "证明：\n1. $|A|\\ne0\\Rightarrow r=n$。由惯性定理，存在可逆 $C$ 使 $C^{\\mathsf T}AC=\\operatorname{diag}(1,\\dots,1,-1,\\dots,-1)$（$q$ 个 $-1$）。\r\n2. 比较行列式：$|C^{\\mathsf T}AC|=|C|^2|A|$。左边 $=(-1)^q$，$|C|^2>0$，故 $(-1)^q$ 与 $|A|$ 同号；由 $|A|<0$ 得 $q$ 为奇数，特别 $q\\ge1$。\r\n3. 取 $Y=\\varepsilon_{p+1}$（第 $p+1$ 个单位向量），令 $X=CY$。$C$ 可逆且 $Y\\ne0$，故 $X\\ne0$，且 $X^{\\mathsf T}AX=Y^{\\mathsf T}(C^{\\mathsf T}AC)Y=-1<0$。∎\n\n答案：存在 $X\\ne0$ 使 $X^{\\mathsf T}AX<0$：$|A|<0$ 时规范形中负平方项个数 $q$ 为奇数，特别 $q\\ge1$，取 $C^{\\mathsf T}AC$ 规范形中 $-1$ 对应的单位向量 $Y$，令 $X=CY\\ne0$ 即得 $X^{\\mathsf T}AX=-1$。",
       "detailedAnalysis": "关键一步：把“$|A|<0$”翻译成“$q$ 为奇数”。行列式本身不给方向，但它通过 $|C^{\\mathsf T}AC|=|C|^2|A|$ 锁住负号奇偶，从而保证规范形里至少有一个 $-1$——这是全题唯一的推理。易错：① 由 $|A|<0$ 断言负定（$\\operatorname{diag}(1,-1)$ 就是反例）；② 只证 $q\\ge1$ 而不会从奇偶入手（$|A|>0$ 且 $q=2$ 时也有负项，光看符号不行）；③ 忘说明 $X\\ne0$。",
       "solution": [],
       "difficulty": 3,
@@ -71341,7 +71341,7 @@
       "title": "教材习题 · 6 第4题 1) — 只用公理推出 $k0=0$",
       "question": "在线性空间中证明 $k0=0$（$k∈P$，左边的 $0$ 是零向量）。",
       "answer": "$k0=0$：由 $0=0+0$ 得 $k0=k(0+0)=k0+k0$，两边同加 $-(k0)$ 即得 $0=k0$。",
-      "standardSolution": "证明：\n（全程只用公理，不引用 $0α=0$，免得循环论证）：\r\n1. $0=0+0$（公理 3：零元）。\r\n2. 两边同乘 $k$：$k0=k(0+0)=k0+k0$（公理 6：分配律）。\r\n3. 两边同加 $-(k0)$（公理 4：负向量存在）：左边 $(k0)+(-(k0))=0$，右边 $(k0+k0)+(-(k0))=k0+(k0+(-(k0)))=k0+0=k0$。\r\n4. 故 $0=k0$，即 $k0=0$。∎\n\n答案：在线性空间中证明 $k0=0$（$k∈P$，左边的 $0$ 是零向量）。",
+      "standardSolution": "证明：\n（全程只用公理，不引用 $0α=0$，免得循环论证）：\r\n1. $0=0+0$（公理 3：零元）。\r\n2. 两边同乘 $k$：$k0=k(0+0)=k0+k0$（公理 6：分配律）。\r\n3. 两边同加 $-(k0)$（公理 4：负向量存在）：左边 $(k0)+(-(k0))=0$，右边 $(k0+k0)+(-(k0))=k0+(k0+(-(k0)))=k0+0=k0$。\r\n4. 故 $0=k0$，即 $k0=0$。∎\n\n答案：$k0=0$：由 $0=0+0$ 得 $k0=k(0+0)=k0+k0$，两边同加 $-(k0)$ 即得 $0=k0$。",
       "detailedAnalysis": "关键一步：用 $0=0+0$ 造出 $k0=k0+k0$，再用\"两边加同一个负元\"把多余的一项消掉——全程只碰公理 3、4、6，不碰任何\"显然\"。这类题的难点不是数学，是**不许用待证的结论**。易错：① 一上来就说\"零乘任何向量得零\"（那正是要证的）；② 把数域的 $k·0=0$ 与向量的 $k0=0$ 混为一谈；③ 用分配律时把 $k(0+0)$ 拆成 $k0+0$（错，应是 $k0+k0$）。",
       "solution": [],
       "difficulty": 3,
@@ -71473,7 +71473,7 @@
       "title": "教材习题 · 6 第19题 — 直和分解 $Pⁿ=V₁\\oplus V₂$",
       "question": "$V₁$ 是 $x₁+x₂+…+xₙ=0$ 的解空间，$V₂$ 是 $x₁=x₂=…=xₙ$ 的解空间。证明 $Pⁿ=V₁\\oplus V₂$。",
       "answer": "$P^n=V_1\\oplus V_2$：$\\dim V_1=n-1$，$\\dim V_2=1$，$V_1\\cap V_2=\\{0\\}$；且任一 $x=(t_1,\\dots,t_n)$ 可分解为 $(x-\\bar t(1,\\dots,1))+\\bar t(1,\\dots,1)$，其中 $\\bar t=\\frac1n\\sum t_i$。",
-      "standardSolution": "证明：\n1. 两者都是齐次方程组的解空间，故是子空间；$\\dim V₁=n-1$（一个非零方程），$\\dim V₂=1$（由 $(1,…,1)$ 张成）。\r\n2. **和为全空间**（构造）：任取 $x=(t₁,…,tₙ)$，记 $\\bar t=\\frac1n\\sum tᵢ$，则 $x=(x-\\bar t\\,(1,…,1))+\\bar t\\,(1,…,1)$；第一项各分量之和 $=\\sum tᵢ-n\\bar t=0$，属 $V₁$；第二项属 $V₂$。\r\n3. **交为零**：若 $x∈V₁∩V₂$，则 $x=t(1,…,1)$ 且 $nt=0$，故 $t=0$。\r\n4. 两条件齐备，故 $Pⁿ=V₁\\oplus V₂$（也可只用维数公式：$n-1+1=n$ 且交为 $0$）。\n\n答案：$V₁$ 是 $x₁+x₂+…+xₙ=0$ 的解空间，$V₂$ 是 $x₁=x₂=…=xₙ$ 的解空间。证明 $Pⁿ=V₁\\oplus V₂$。",
+      "standardSolution": "证明：\n1. 两者都是齐次方程组的解空间，故是子空间；$\\dim V₁=n-1$（一个非零方程），$\\dim V₂=1$（由 $(1,…,1)$ 张成）。\r\n2. **和为全空间**（构造）：任取 $x=(t₁,…,tₙ)$，记 $\\bar t=\\frac1n\\sum tᵢ$，则 $x=(x-\\bar t\\,(1,…,1))+\\bar t\\,(1,…,1)$；第一项各分量之和 $=\\sum tᵢ-n\\bar t=0$，属 $V₁$；第二项属 $V₂$。\r\n3. **交为零**：若 $x∈V₁∩V₂$，则 $x=t(1,…,1)$ 且 $nt=0$，故 $t=0$。\r\n4. 两条件齐备，故 $Pⁿ=V₁\\oplus V₂$（也可只用维数公式：$n-1+1=n$ 且交为 $0$）。\n\n答案：$P^n=V_1\\oplus V_2$：$\\dim V_1=n-1$，$\\dim V_2=1$，$V_1\\cap V_2=\\{0\\}$；且任一 $x=(t_1,\\dots,t_n)$ 可分解为 $(x-\\bar t(1,\\dots,1))+\\bar t(1,\\dots,1)$，其中 $\\bar t=\\frac1n\\sum t_i$。",
       "detailedAnalysis": "关键一步：直和要**两条都证**——和等于全空间、交为零。第 2 步的分解不是凑的：要让各分量和为 $0$，就得减去平均值 $\\bar t$，这就是\"往和为零的超平面上投影\"。易错：① 只证 $V₁∩V₂=\\{0\\}$ 就宣称直和（还得知道 $V₁+V₂=Pⁿ$，用维数凑也行）；② 把 $V₂$ 的基写成 $(1,0,…,0)$（那不是 $V₂$ 的元素）；③ 说\"因为 $V₁∪V₂=Pⁿ$\"——并集根本不是子空间。",
       "solution": [],
       "difficulty": 3,
@@ -71539,7 +71539,7 @@
       "title": "教材习题 · 7 第21题 — 微分变换：特征多项式 $λ^n$，为什么永不对角",
       "question": "在 $P[x]ₙ$ 中 $\\mathscr{D}f=f'$。求 $\\mathscr{D}$ 在基 $1,x,…,x^{n-1}$ 下的矩阵与特征多项式；证明它在任何基下都不是对角形。",
       "answer": "在基 $1,x,\\dots,x^{n-1}$ 下 $\\mathscr{D}$ 的矩阵为 $D=(d_{ij})$，其中 $d_{i+1,i}=i\\ (1\\le i\\le n-1)$、其余为 $0$；特征多项式 $\\det(\\lambda E-D)=\\lambda^n$。由于 $\\dim\\ker D=n-r(D)=1$，$n>1$ 时只有 1 个线性无关特征向量，故在任何基下都不能对角化。",
-      "standardSolution": "证明：\n1. 取 $ε_i=x^{i-1}$：$\\mathscr{D}ε₁=0$，$\\mathscr{D}ε_i=(i-1)ε_{i-1}\\ (i≥2)$，故矩阵 $D$ 只有上对角 $1,2,…,n-1$。\r\n2. $D$ 上三角且对角为 $0$，故 $\\det(λE-D)=λ^n$，唯一特征值 $0$。\r\n3. 特征向量解 $DX=0$：$\\dim V₀=n-r(D)=n-(n-1)=1$。\r\n4. 对角化要求 $n$ 个线性无关特征向量，而 $n>1$ 时只有 1 个，矛盾。\n\n答案：在 $P[x]ₙ$ 中 $\\mathscr{D}f=f'$。求 $\\mathscr{D}$ 在基 $1,x,…,x^{n-1}$ 下的矩阵与特征多项式；证明它在任何基下都不是对角形。",
+      "standardSolution": "证明：\n1. 取 $ε_i=x^{i-1}$：$\\mathscr{D}ε₁=0$，$\\mathscr{D}ε_i=(i-1)ε_{i-1}\\ (i≥2)$，故矩阵 $D$ 只有上对角 $1,2,…,n-1$。\r\n2. $D$ 上三角且对角为 $0$，故 $\\det(λE-D)=λ^n$，唯一特征值 $0$。\r\n3. 特征向量解 $DX=0$：$\\dim V₀=n-r(D)=n-(n-1)=1$。\r\n4. 对角化要求 $n$ 个线性无关特征向量，而 $n>1$ 时只有 1 个，矛盾。\n\n答案：在基 $1,x,\\dots,x^{n-1}$ 下 $\\mathscr{D}$ 的矩阵为 $D=(d_{ij})$，其中 $d_{i+1,i}=i\\ (1\\le i\\le n-1)$、其余为 $0$；特征多项式 $\\det(\\lambda E-D)=\\lambda^n$。由于 $\\dim\\ker D=n-r(D)=1$，$n>1$ 时只有 1 个线性无关特征向量，故在任何基下都不能对角化。",
       "detailedAnalysis": "关键一步：$D$ 幂零，$\\dim V₀$ 由秩直接读出。对角化看的是**特征子空间够不够维数**，与特征值是什么无关（$\\mathrm{diag}(0,…,0)$ 就是对角形）。易错：① 上对角是 $1,2,…,n-1$（$(x^k)'=kx^{k-1}$）；② 漏 $n>1$（$n=1$ 时 $D=0$）；③ 未说明\"对角化与基无关\"。",
       "solution": [],
       "difficulty": 3,
@@ -71770,7 +71770,7 @@
       "title": "教材习题 · 4 — $A$ 与 $A^{\\mathsf T}$ 相似：转置不动行列式因子",
       "question": "$A$ 是数域 $P$ 上 $n$ 阶矩阵，证明 $A\\sim A^{\\mathsf T}$。",
       "answer": "$A\\sim A^{\\mathsf T}$：因 $\\lambda E-A^{\\mathsf T}=(\\lambda E-A)^{\\mathsf T}$，二者的各级行列式因子相同，故特征矩阵等价，从而相似。",
-      "standardSolution": "证明：\n1. 由定理7，只需证 $\\lambda E-A$ 与 $\\lambda E-A^{\\mathsf T}$ 等价。\r\n2. 但 $\\lambda E-A^{\\mathsf T}=(\\lambda E-A)^{\\mathsf T}$。转置把 $k$ 阶子式一一对应成 $k$ 阶子式，且值不变（行列式转置不变）。\r\n3. 故各级行列式因子相同 $\\Rightarrow$ 等价 $\\Rightarrow A\\sim A^{\\mathsf T}$。\n\n答案：$A$ 是数域 $P$ 上 $n$ 阶矩阵，证明 $A\\sim A^{\\mathsf T}$。",
+      "standardSolution": "证明：\n1. 由定理7，只需证 $\\lambda E-A$ 与 $\\lambda E-A^{\\mathsf T}$ 等价。\r\n2. 但 $\\lambda E-A^{\\mathsf T}=(\\lambda E-A)^{\\mathsf T}$。转置把 $k$ 阶子式一一对应成 $k$ 阶子式，且值不变（行列式转置不变）。\r\n3. 故各级行列式因子相同 $\\Rightarrow$ 等价 $\\Rightarrow A\\sim A^{\\mathsf T}$。\n\n答案：$A\\sim A^{\\mathsf T}$：因 $\\lambda E-A^{\\mathsf T}=(\\lambda E-A)^{\\mathsf T}$，二者的各级行列式因子相同，故特征矩阵等价，从而相似。",
       "detailedAnalysis": "关键一步：别构造 $P$。全部力量在\"转置保持所有子式的值\"。凡\"证明相似\"而 $P$ 不明显，一律走不变因子。易错：① 硬造 $P$；② 只说\"特征多项式相同\"——那只给 $D_n$，不够；③ 忘引定理7。",
       "solution": [],
       "difficulty": 3,
@@ -72004,7 +72004,7 @@
       "title": "教材习题 · 13 — 反称的等价刻画（极化）与\"每向量迷向\"",
       "question": "设数域特征 $\\ne2$，证明 $f$ 反称 $\\iff$ 对一切 $\\alpha\\in V$ 有 $f(\\alpha,\\alpha)=0$。",
       "answer": "$f$ 反称 $\\iff$ 对一切 $\\alpha\\in V$ 有 $f(\\alpha,\\alpha)=0$：充分性由 $0=f(\\alpha+\\beta,\\alpha+\\beta)=f(\\alpha,\\beta)+f(\\beta,\\alpha)$ 得 $f(\\alpha,\\beta)=-f(\\beta,\\alpha)$。",
-      "standardSolution": "证明：\n1. 必要性：反称给 $f(\\alpha,\\alpha)=-f(\\alpha,\\alpha)$，即 $2f(\\alpha,\\alpha)=0$；特征 $\\ne2$ 得 $f(\\alpha,\\alpha)=0$。\r\n2. 充分性（极化）：对任意 $\\alpha,\\beta$ 把 $f$ 用在 $\\alpha+\\beta$ 上：\r\n$$0=f(\\alpha+\\beta,\\alpha+\\beta)=f(\\alpha,\\alpha)+f(\\alpha,\\beta)+f(\\beta,\\alpha)+f(\\beta,\\beta)=f(\\alpha,\\beta)+f(\\beta,\\alpha).$$\r\n3. 故 $f(\\alpha,\\beta)=-f(\\beta,\\alpha)$，$f$ 反称。\r\n4. 推论：反称函数在任何基下度量矩阵对角元全为 0，每个向量都迷向——辛空间\"没有长度\"的代数根源。\n\n答案：设数域特征 $\\ne2$，证明 $f$ 反称 $\\iff$ 对一切 $\\alpha\\in V$ 有 $f(\\alpha,\\alpha)=0$。",
+      "standardSolution": "证明：\n1. 必要性：反称给 $f(\\alpha,\\alpha)=-f(\\alpha,\\alpha)$，即 $2f(\\alpha,\\alpha)=0$；特征 $\\ne2$ 得 $f(\\alpha,\\alpha)=0$。\r\n2. 充分性（极化）：对任意 $\\alpha,\\beta$ 把 $f$ 用在 $\\alpha+\\beta$ 上：\r\n$$0=f(\\alpha+\\beta,\\alpha+\\beta)=f(\\alpha,\\alpha)+f(\\alpha,\\beta)+f(\\beta,\\alpha)+f(\\beta,\\beta)=f(\\alpha,\\beta)+f(\\beta,\\alpha).$$\r\n3. 故 $f(\\alpha,\\beta)=-f(\\beta,\\alpha)$，$f$ 反称。\r\n4. 推论：反称函数在任何基下度量矩阵对角元全为 0，每个向量都迷向——辛空间\"没有长度\"的代数根源。\n\n答案：$f$ 反称 $\\iff$ 对一切 $\\alpha\\in V$ 有 $f(\\alpha,\\alpha)=0$：充分性由 $0=f(\\alpha+\\beta,\\alpha+\\beta)=f(\\alpha,\\beta)+f(\\beta,\\alpha)$ 得 $f(\\alpha,\\beta)=-f(\\beta,\\alpha)$。",
       "detailedAnalysis": "关键一步：第 2 步的展开是全部要害：它把\"对角信息\"$f(\\alpha+\\beta,\\alpha+\\beta)$ 换成\"交叉信息\"$f(\\alpha,\\beta)+f(\\beta,\\alpha)$。看到\"对一切 $\\alpha$ 有某二次条件\"，条件反射写这个展开。易错：① 必要性丢掉\"特征 $\\ne2$\"；② 展开漏 $f(\\beta,\\alpha)$；③ 把\"对某个 $\\alpha$ 成立\"当成\"对一切 $\\alpha$\"。",
       "solution": [],
       "difficulty": 3,
@@ -72093,7 +72093,8 @@
       "verification": "",
       "category": "计算题",
       "examOrigin": "教材课后习题",
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-TX049",
@@ -72128,7 +72129,8 @@
       "verification": "",
       "category": "计算题",
       "examOrigin": "教材课后习题",
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-TX050",
@@ -72164,7 +72166,8 @@
       "verification": "",
       "category": "计算题",
       "examOrigin": "教材课后习题",
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-9001",
@@ -72204,7 +72207,8 @@
         "行列式的定义",
         "不同行不同列"
       ],
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-9002",
@@ -72244,7 +72248,8 @@
         "行列式展开",
         "多项式系数"
       ],
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-9003",
@@ -72284,7 +72289,8 @@
         "排列的奇偶性",
         "行列式定义"
       ],
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-9004",
@@ -72324,7 +72330,8 @@
         "范德蒙德行列式",
         "多项式根与次数"
       ],
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-9005",
@@ -72364,7 +72371,8 @@
         "行列式的性质",
         "化三角形法"
       ],
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-9006",
@@ -72404,7 +72412,8 @@
         "克拉默法则",
         "四阶行列式计算"
       ],
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-9007",
@@ -72446,7 +72455,8 @@
         "范德蒙德行列式",
         "插值多项式"
       ],
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-9008",
@@ -72488,7 +72498,8 @@
         "三次插值",
         "实际应用"
       ],
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "id": "GA-9009",
@@ -72530,7 +72541,8 @@
         "循环置换",
         "置换符号"
       ],
-      "options": []
+      "options": [],
+      "correct": ""
     },
     {
       "subject": "gaodai",
@@ -85419,7 +85431,7 @@
         "1. 设 $\\lambda$ 是 $A$ 的任一特征值，$A\\xi=\\lambda\\xi$（$\\xi\\ne0$）。由 $A^2=A$，",
         "$$\\lambda^2\\xi=A^2\\xi=A\\xi=\\lambda\\xi,\\qquad (\\lambda^2-\\lambda)\\xi=0,$$",
         "故 $\\lambda=0$ 或 $\\lambda=1$。",
-        "2. 因 $A$ 实对称，存在正交矩阵 $T$ 使 $T^{-1}AT=\\operatorname{diag}(\\lambda_1,\\dots,\\lambda_n)$，其中每个 $\\lambda_i\\in{0,1}$。",
+        "2. 因 $A$ 实对称，存在正交矩阵 $T$ 使 $T^{-1}AT=\\operatorname{diag}(\\lambda_1,\\dots,\\lambda_n)$，其中每个 $\\lambda_i\\in\\{0,1\\}$。",
         "3. 把等于 $1$ 的特征值排在前面（即重排 $T$ 的列），得",
         "$$T^{-1}AT=\\operatorname{diag}(1,\\dots,1,0,\\dots,0).$$",
         "4. 相似不改变迹，故 $1$ 的个数等于 $\\operatorname{tr}A$，这与\"$1$ 的重数\"一致。"
@@ -85433,7 +85445,7 @@
       ],
       "source": "教材课后习题（第九章 欧几里得空间）· 习题 22",
       "relatedEntries": [],
-      "standardSolution": "证明：\n1. 设 $\\lambda$ 是 $A$ 的任一特征值，$A\\xi=\\lambda\\xi$（$\\xi\\ne0$）。由 $A^2=A$，\n$$\\lambda^2\\xi=A^2\\xi=A\\xi=\\lambda\\xi,\\qquad (\\lambda^2-\\lambda)\\xi=0,$$\n故 $\\lambda=0$ 或 $\\lambda=1$。\n2. 因 $A$ 实对称，存在正交矩阵 $T$ 使 $T^{-1}AT=\\operatorname{diag}(\\lambda_1,\\dots,\\lambda_n)$，其中每个 $\\lambda_i\\in{0,1}$。\n3. 把等于 $1$ 的特征值排在前面（即重排 $T$ 的列），得\n$$T^{-1}AT=\\operatorname{diag}(1,\\dots,1,0,\\dots,0).$$\n4. 相似不改变迹，故 $1$ 的个数等于 $\\operatorname{tr}A$，这与\"$1$ 的重数\"一致。",
+      "standardSolution": "证明：\n1. 设 $\\lambda$ 是 $A$ 的任一特征值，$A\\xi=\\lambda\\xi$（$\\xi\\ne0$）。由 $A^2=A$，\n$$\\lambda^2\\xi=A^2\\xi=A\\xi=\\lambda\\xi,\\qquad (\\lambda^2-\\lambda)\\xi=0,$$\n故 $\\lambda=0$ 或 $\\lambda=1$。\n2. 因 $A$ 实对称，存在正交矩阵 $T$ 使 $T^{-1}AT=\\operatorname{diag}(\\lambda_1,\\dots,\\lambda_n)$，其中每个 $\\lambda_i\\in\\{0,1\\}$。\n3. 把等于 $1$ 的特征值排在前面（即重排 $T$ 的列），得\n$$T^{-1}AT=\\operatorname{diag}(1,\\dots,1,0,\\dots,0).$$\n4. 相似不改变迹，故 $1$ 的个数等于 $\\operatorname{tr}A$，这与\"$1$ 的重数\"一致。",
       "detailedAnalysis": "关键：先用 $A^2=A$ 把特征值锁在 $\\{0,1\\}$，再借实对称性正交对角化——两步各管一半，缺一不可。易错：① 由 $A^2=A$ 直接断言 $A=\\operatorname{diag}(1,\\dots,0)$（还需正交相似）；② 忘记 $A$ 实对称才有正交对角化（一般幂等矩阵只能相似于对角形）；③ 忘记对角形中 $1$ 的个数就是特征值 $1$ 的重数。",
       "verification": "",
       "pitfalls": [
@@ -85580,7 +85592,7 @@
         "$$|\\alpha-\\xi|^2=|(\\alpha-\\beta)+(\\beta-\\xi)|^2=|\\alpha-\\beta|^2+|\\beta-\\xi|^2+2(\\alpha-\\beta,\\beta-\\xi)=|\\alpha-\\beta|^2+|\\beta-\\xi|^2 .$$",
         "故 $|\\alpha-\\xi|^2\\ge|\\alpha-\\beta|^2$，即 $|\\alpha-\\xi|\\ge|\\alpha-\\beta|$。",
         "2. 充分性。设 $\\beta\\in V_1$ 满足：对任意 $\\xi\\in V_1$ 有 $|\\alpha-\\beta|\\le|\\alpha-\\xi|$。又设 $\\beta_0$ 是 $\\alpha$ 在 $V_1$ 上的内射影（存在且唯一）。",
-        "3. 由必要性，$\\beta_0$ 也满足同样的极小性：$|\\alpha-\\beta_0|\\le|\\alpha-\\\\xi|$ 对一切 $\\xi\\in V_1$。取 $\\xi=\\beta$ 得",
+        "3. 由必要性，$\\beta_0$ 也满足同样的极小性：$|\\alpha-\\beta_0|\\le|\\alpha-\\xi|$ 对一切 $\\xi\\in V_1$。取 $\\xi=\\beta$ 得",
         "$$|\\alpha-\\beta_0|\\le|\\alpha-\\beta| .$$",
         "4. 另一方面，把题设的极小性用在 $\\xi=\\beta_0$ 上，得 $|\\alpha-\\beta|\\le|\\alpha-\\beta_0|$。两式合并得 $|\\alpha-\\beta|=|\\alpha-\\beta_0|$。",
         "5. 由 $\\alpha-\\beta_0\\perp V_1$ 及 $\\beta-\\beta_0\\in V_1$，同第 1 步的展开得",
@@ -85596,7 +85608,7 @@
       ],
       "source": "教材课后习题（第九章 欧几里得空间）· 习题 25",
       "relatedEntries": [],
-      "standardSolution": "证明：\n1. 必要性。设 $\\beta$ 是 $\\alpha$ 在 $V_1$ 上的内射影，即 $\\beta\\in V_1$ 且 $\\alpha-\\beta\\perp V_1$。对任意 $\\xi\\in V_1$，因 $\\beta-\\xi\\in V_1$，有 $(\\alpha-\\beta,\\beta-\\xi)=0$，于是\n$$|\\alpha-\\xi|^2=|(\\alpha-\\beta)+(\\beta-\\xi)|^2=|\\alpha-\\beta|^2+|\\beta-\\xi|^2+2(\\alpha-\\beta,\\beta-\\xi)=|\\alpha-\\beta|^2+|\\beta-\\xi|^2 .$$\n故 $|\\alpha-\\xi|^2\\ge|\\alpha-\\beta|^2$，即 $|\\alpha-\\xi|\\ge|\\alpha-\\beta|$。\n2. 充分性。设 $\\beta\\in V_1$ 满足：对任意 $\\xi\\in V_1$ 有 $|\\alpha-\\beta|\\le|\\alpha-\\xi|$。又设 $\\beta_0$ 是 $\\alpha$ 在 $V_1$ 上的内射影（存在且唯一）。\n3. 由必要性，$\\beta_0$ 也满足同样的极小性：$|\\alpha-\\beta_0|\\le|\\alpha-\\\\xi|$ 对一切 $\\xi\\in V_1$。取 $\\xi=\\beta$ 得\n$$|\\alpha-\\beta_0|\\le|\\alpha-\\beta| .$$\n4. 另一方面，把题设的极小性用在 $\\xi=\\beta_0$ 上，得 $|\\alpha-\\beta|\\le|\\alpha-\\beta_0|$。两式合并得 $|\\alpha-\\beta|=|\\alpha-\\beta_0|$。\n5. 由 $\\alpha-\\beta_0\\perp V_1$ 及 $\\beta-\\beta_0\\in V_1$，同第 1 步的展开得\n$$|\\alpha-\\beta|^2=|(\\alpha-\\beta_0)+(\\beta_0-\\beta)|^2=|\\alpha-\\beta_0|^2+|\\beta_0-\\beta|^2 .$$\n与 $|\\alpha-\\beta|=|\\alpha-\\beta_0|$ 比较得 $|\\beta_0-\\beta|=0$，即 $\\beta=\\beta_0$，故 $\\beta$ 是内射影。",
+      "standardSolution": "证明：\n1. 必要性。设 $\\beta$ 是 $\\alpha$ 在 $V_1$ 上的内射影，即 $\\beta\\in V_1$ 且 $\\alpha-\\beta\\perp V_1$。对任意 $\\xi\\in V_1$，因 $\\beta-\\xi\\in V_1$，有 $(\\alpha-\\beta,\\beta-\\xi)=0$，于是\n$$|\\alpha-\\xi|^2=|(\\alpha-\\beta)+(\\beta-\\xi)|^2=|\\alpha-\\beta|^2+|\\beta-\\xi|^2+2(\\alpha-\\beta,\\beta-\\xi)=|\\alpha-\\beta|^2+|\\beta-\\xi|^2 .$$\n故 $|\\alpha-\\xi|^2\\ge|\\alpha-\\beta|^2$，即 $|\\alpha-\\xi|\\ge|\\alpha-\\beta|$。\n2. 充分性。设 $\\beta\\in V_1$ 满足：对任意 $\\xi\\in V_1$ 有 $|\\alpha-\\beta|\\le|\\alpha-\\xi|$。又设 $\\beta_0$ 是 $\\alpha$ 在 $V_1$ 上的内射影（存在且唯一）。\n3. 由必要性，$\\beta_0$ 也满足同样的极小性：$|\\alpha-\\beta_0|\\le|\\alpha-\\xi|$ 对一切 $\\xi\\in V_1$。取 $\\xi=\\beta$ 得\n$$|\\alpha-\\beta_0|\\le|\\alpha-\\beta| .$$\n4. 另一方面，把题设的极小性用在 $\\xi=\\beta_0$ 上，得 $|\\alpha-\\beta|\\le|\\alpha-\\beta_0|$。两式合并得 $|\\alpha-\\beta|=|\\alpha-\\beta_0|$。\n5. 由 $\\alpha-\\beta_0\\perp V_1$ 及 $\\beta-\\beta_0\\in V_1$，同第 1 步的展开得\n$$|\\alpha-\\beta|^2=|(\\alpha-\\beta_0)+(\\beta_0-\\beta)|^2=|\\alpha-\\beta_0|^2+|\\beta_0-\\beta|^2 .$$\n与 $|\\alpha-\\beta|=|\\alpha-\\beta_0|$ 比较得 $|\\beta_0-\\beta|=0$，即 $\\beta=\\beta_0$，故 $\\beta$ 是内射影。",
       "detailedAnalysis": "关键：两条不等式\"互相夹\"——题设给 $|\\alpha-\\beta|\\le|\\alpha-\\beta_0|$，必要性给反方向，于是长度相等；此时\"直角三角形\"的展开强制 $|\\beta-\\beta_0|=0$。这比直接验证 $\\alpha-\\beta\\perp V_1$ 干净得多，但必须已有内射影的存在唯一性。易错：① 必要性展开时忘掉交叉项因正交而为零；② 充分性只证 $|\\alpha-\\beta|=|\\alpha-\\beta_0|$ 就收尾，不推出 $\\beta=\\beta_0$；③ 把 $\\beta-\\xi$ 说成不在 $V_1$ 里。",
       "verification": "",
       "pitfalls": [
@@ -86547,10 +86559,10 @@
       ],
       "title": "有限个非零线性函数可同时在一个向量上非零",
       "question": "设 $V$ 是一个线性空间，$f_1,f_2,\\dots,f_s$ 是 $V^*$ 中非零向量，试证：存在 $\\alpha\\in V$，使\n$$f_i(\\alpha)\\ne0,\\qquad i=1,2,\\dots,s .$$",
-      "answer": "每个 $V_i={\\alpha\\mid f_i(\\alpha)=0}$ 是 $V$ 的真子空间，由\"有限个真子空间不能覆盖整个空间\"得 $\\alpha\\notin\\bigcup V_i$，即 $f_i(\\alpha)\\ne0$。",
+      "answer": "每个 $V_i=\\{\\alpha\\mid f_i(\\alpha)=0\\}$ 是 $V$ 的真子空间，由\"有限个真子空间不能覆盖整个空间\"得 $\\alpha\\notin\\bigcup V_i$，即 $f_i(\\alpha)\\ne0$。",
       "solution": [
         "证明：",
-        "1. 对每个 $i$，令 $V_i={\\alpha\\in V\\mid f_i(\\alpha)=0}$，即 $V_i=\\ker f_i$。因 $f_i$ 是线性函数，$V_i$ 是 $V$ 的子空间（零化子空间）。",
+        "1. 对每个 $i$，令 $V_i=\\{\\alpha\\in V\\mid f_i(\\alpha)=0\\}$，即 $V_i=\\ker f_i$。因 $f_i$ 是线性函数，$V_i$ 是 $V$ 的子空间（零化子空间）。",
         "2. 因 $f_i\\ne0$，存在 $\\beta_i\\in V$ 使 $f_i(\\beta_i)\\ne0$，故 $\\beta_i\\notin V_i$，即 $V_i\\ne V$：每个 $V_i$ 都是 $V$ 的真子空间。",
         "3. 由第六章补充题 5 的结论（及其解答后面的注）：数域 $P$ 上线性空间 $V$ 不能被有限个真子空间覆盖，即",
         "$$V\\ne V_1\\cup V_2\\cup\\cdots\\cup V_s .$$",
@@ -86566,7 +86578,7 @@
       ],
       "source": "教材课后习题（第十章 双线性函数与辛空间）· 习题 4",
       "relatedEntries": [],
-      "standardSolution": "证明：\n1. 对每个 $i$，令 $V_i={\\alpha\\in V\\mid f_i(\\alpha)=0}$，即 $V_i=\\ker f_i$。因 $f_i$ 是线性函数，$V_i$ 是 $V$ 的子空间（零化子空间）。\n2. 因 $f_i\\ne0$，存在 $\\beta_i\\in V$ 使 $f_i(\\beta_i)\\ne0$，故 $\\beta_i\\notin V_i$，即 $V_i\\ne V$：每个 $V_i$ 都是 $V$ 的真子空间。\n3. 由第六章补充题 5 的结论（及其解答后面的注）：数域 $P$ 上线性空间 $V$ 不能被有限个真子空间覆盖，即\n$$V\\ne V_1\\cup V_2\\cup\\cdots\\cup V_s .$$\n4. 故存在 $\\alpha\\in V$ 使 $\\alpha\\notin V_i$（$i=1,2,\\dots,s$），即\n$$f_i(\\alpha)\\ne0,\\qquad i=1,2,\\dots,s .$$",
+      "standardSolution": "证明：\n1. 对每个 $i$，令 $V_i=\\{\\alpha\\in V\\mid f_i(\\alpha)=0\\}$，即 $V_i=\\ker f_i$。因 $f_i$ 是线性函数，$V_i$ 是 $V$ 的子空间（零化子空间）。\n2. 因 $f_i\\ne0$，存在 $\\beta_i\\in V$ 使 $f_i(\\beta_i)\\ne0$，故 $\\beta_i\\notin V_i$，即 $V_i\\ne V$：每个 $V_i$ 都是 $V$ 的真子空间。\n3. 由第六章补充题 5 的结论（及其解答后面的注）：数域 $P$ 上线性空间 $V$ 不能被有限个真子空间覆盖，即\n$$V\\ne V_1\\cup V_2\\cup\\cdots\\cup V_s .$$\n4. 故存在 $\\alpha\\in V$ 使 $\\alpha\\notin V_i$（$i=1,2,\\dots,s$），即\n$$f_i(\\alpha)\\ne0,\\qquad i=1,2,\\dots,s .$$",
       "detailedAnalysis": "关键：把\"$f_i(\\alpha)\\ne0$\"翻译成\"$\\alpha$ 不落在 $V_i=\\ker f_i$ 里\"，于是问题变成\"有限个真子空间覆盖不了整个空间\"——这是第六章的结论，必须引用而不是重证。易错：① 忘记说明每个 $V_i$ 是真子空间（要用 $f_i\\ne0$）；② 只说\"取 $\\alpha$ 避开每个 $V_i$\"而不给出存在性依据；③ 把结论写成\"存在 $i$ 使 $f_i(\\alpha)\\ne0$\"（要的是全部 $i$）。",
       "verification": "",
       "pitfalls": [
@@ -86712,7 +86724,7 @@
         "2. 2) 记 $\\varphi(\\alpha)=\\alpha^*$。先证 $\\varphi$ 是线性的：由内积对第一个变量的线性性，",
         "$$(\\alpha+\\beta)^*(\\gamma)=(\\alpha+\\beta,\\gamma)=(\\alpha,\\gamma)+(\\beta,\\gamma)=(\\alpha^*+\\beta^*)(\\gamma),$$",
         "即 $\\varphi(\\alpha+\\beta)=\\varphi(\\alpha)+\\varphi(\\beta)$；又 $(k\\alpha)^*(\\gamma)=(k\\alpha,\\gamma)=k(\\alpha,\\gamma)=k\\alpha^*(\\gamma)$，即 $\\varphi(k\\alpha)=k\\varphi(\\alpha)$。",
-        "3. 再证 $\\varphi$ 是单射：若 $\\varphi(\\alpha)=0$，则对一切 $\\gamma\\in V$ 有 $(\\alpha,\\gamma)=0$，特别取 $\\gamma=\\alpha$ 得 $(\\alpha,\\alpha)=0$，由内积正定性 $\\alpha=0$。故 $\\ker\\varphi={0}$，$\\varphi$ 是单射。",
+        "3. 再证 $\\varphi$ 是单射：若 $\\varphi(\\alpha)=0$，则对一切 $\\gamma\\in V$ 有 $(\\alpha,\\gamma)=0$，特别取 $\\gamma=\\alpha$ 得 $(\\alpha,\\alpha)=0$，由内积正定性 $\\alpha=0$。故 $\\ker\\varphi=\\{0\\}$，$\\varphi$ 是单射。",
         "4. 因 $\\dim V=\\dim V^*=n$，单射的线性映射必是满射，故 $\\varphi$ 是双射，从而是 $V$ 到 $V^*$ 的同构。",
         "5. （满射也可直接构造：取标准正交基 $\\varepsilon_1,\\dots,\\varepsilon_n$ 及其对偶基 $f_1,\\dots,f_n$，则 $\\varphi(k_1\\varepsilon_1+\\dots+k_n\\varepsilon_n)=k_1f_1+\\dots+k_nf_n$，故 $\\varphi$ 满射。）"
       ],
@@ -86725,7 +86737,7 @@
       ],
       "source": "教材课后习题（第十章 双线性函数与辛空间）· 习题 7",
       "relatedEntries": [],
-      "standardSolution": "证明：\n1. 1) 对 $\\beta_1,\\beta_2\\in V$ 及 $k\\in P$，\n$$\\alpha^*(\\beta_1+\\beta_2)=(\\alpha,\\beta_1+\\beta_2)=(\\alpha,\\beta_1)+(\\alpha,\\beta_2)=\\alpha^*(\\beta_1)+\\alpha^*(\\beta_2),$$\n$$\\alpha^*(k\\beta)=(\\alpha,k\\beta)=k(\\alpha,\\beta)=k\\alpha^*(\\beta),$$\n故 $\\alpha^*\\in V^*$。\n2. 2) 记 $\\varphi(\\alpha)=\\alpha^*$。先证 $\\varphi$ 是线性的：由内积对第一个变量的线性性，\n$$(\\alpha+\\beta)^*(\\gamma)=(\\alpha+\\beta,\\gamma)=(\\alpha,\\gamma)+(\\beta,\\gamma)=(\\alpha^*+\\beta^*)(\\gamma),$$\n即 $\\varphi(\\alpha+\\beta)=\\varphi(\\alpha)+\\varphi(\\beta)$；又 $(k\\alpha)^*(\\gamma)=(k\\alpha,\\gamma)=k(\\alpha,\\gamma)=k\\alpha^*(\\gamma)$，即 $\\varphi(k\\alpha)=k\\varphi(\\alpha)$。\n3. 再证 $\\varphi$ 是单射：若 $\\varphi(\\alpha)=0$，则对一切 $\\gamma\\in V$ 有 $(\\alpha,\\gamma)=0$，特别取 $\\gamma=\\alpha$ 得 $(\\alpha,\\alpha)=0$，由内积正定性 $\\alpha=0$。故 $\\ker\\varphi={0}$，$\\varphi$ 是单射。\n4. 因 $\\dim V=\\dim V^*=n$，单射的线性映射必是满射，故 $\\varphi$ 是双射，从而是 $V$ 到 $V^*$ 的同构。\n5. （满射也可直接构造：取标准正交基 $\\varepsilon_1,\\dots,\\varepsilon_n$ 及其对偶基 $f_1,\\dots,f_n$，则 $\\varphi(k_1\\varepsilon_1+\\dots+k_n\\varepsilon_n)=k_1f_1+\\dots+k_nf_n$，故 $\\varphi$ 满射。）",
+      "standardSolution": "证明：\n1. 1) 对 $\\beta_1,\\beta_2\\in V$ 及 $k\\in P$，\n$$\\alpha^*(\\beta_1+\\beta_2)=(\\alpha,\\beta_1+\\beta_2)=(\\alpha,\\beta_1)+(\\alpha,\\beta_2)=\\alpha^*(\\beta_1)+\\alpha^*(\\beta_2),$$\n$$\\alpha^*(k\\beta)=(\\alpha,k\\beta)=k(\\alpha,\\beta)=k\\alpha^*(\\beta),$$\n故 $\\alpha^*\\in V^*$。\n2. 2) 记 $\\varphi(\\alpha)=\\alpha^*$。先证 $\\varphi$ 是线性的：由内积对第一个变量的线性性，\n$$(\\alpha+\\beta)^*(\\gamma)=(\\alpha+\\beta,\\gamma)=(\\alpha,\\gamma)+(\\beta,\\gamma)=(\\alpha^*+\\beta^*)(\\gamma),$$\n即 $\\varphi(\\alpha+\\beta)=\\varphi(\\alpha)+\\varphi(\\beta)$；又 $(k\\alpha)^*(\\gamma)=(k\\alpha,\\gamma)=k(\\alpha,\\gamma)=k\\alpha^*(\\gamma)$，即 $\\varphi(k\\alpha)=k\\varphi(\\alpha)$。\n3. 再证 $\\varphi$ 是单射：若 $\\varphi(\\alpha)=0$，则对一切 $\\gamma\\in V$ 有 $(\\alpha,\\gamma)=0$，特别取 $\\gamma=\\alpha$ 得 $(\\alpha,\\alpha)=0$，由内积正定性 $\\alpha=0$。故 $\\ker\\varphi=\\{0\\}$，$\\varphi$ 是单射。\n4. 因 $\\dim V=\\dim V^*=n$，单射的线性映射必是满射，故 $\\varphi$ 是双射，从而是 $V$ 到 $V^*$ 的同构。\n5. （满射也可直接构造：取标准正交基 $\\varepsilon_1,\\dots,\\varepsilon_n$ 及其对偶基 $f_1,\\dots,f_n$，则 $\\varphi(k_1\\varepsilon_1+\\dots+k_n\\varepsilon_n)=k_1f_1+\\dots+k_nf_n$，故 $\\varphi$ 满射。）",
       "detailedAnalysis": "关键：第 2 问要验三件事——线性、单射、维数相同（从而满射）；而\"单射\"只用到内积正定这一条公理，非常干净。注意这里的同构依赖内积：一般线性空间 $V$ 与 $V^*$ 同构只靠维数相等，但不能\"自然\"对应，欧氏空间靠内积才有这个典范映射。易错：① 只验线性不验单射；② 用\"维数相同\"直接说同构（必须线性 + 双射）；③ 把 $\\alpha^*(\\beta)=(\\alpha,\\beta)$ 写成 $(\\beta,\\alpha)$ 后与第 1 步的线性性冲突（应当是第一个变量固定、第二个变量线性）。",
       "verification": "",
       "pitfalls": [
@@ -86736,7 +86748,7 @@
       "points": [
         "线性函数的两条性质",
         "$\\varphi$ 是线性映射",
-        "$\\ker\\varphi={0}$ 与 $\\dim V=\\dim V^*$ 推出同构"
+        "$\\ker\\varphi=\\{0\\}$ 与 $\\dim V=\\dim V^*$ 推出同构"
       ],
       "examOrigin": "教材课后习题",
       "options": [],
@@ -86816,7 +86828,7 @@
         "用后 $n-r$ 个坐标函数刻画 $V_1$"
       ],
       "title": "零化子空间与子空间的对偶刻画",
-      "question": "设 $V$ 是数域 $P$ 上一个线性空间，$f_1,f_2,\\dots,f_k$ 是 $V$ 上 $k$ 个线性函数。\n1) 证明下列集合\n$$W={\\alpha\\in V\\mid f_i(\\alpha)=0,\\ 1\\le i\\le k}$$\n是 $V$ 的一个子空间（$W$ 称为线性函数 $f_1,\\dots,f_k$ 的零化子空间）；\n2) 证明：$V$ 的任一个子空间皆为某些线性函数的零化子空间。",
+      "question": "设 $V$ 是数域 $P$ 上一个线性空间，$f_1,f_2,\\dots,f_k$ 是 $V$ 上 $k$ 个线性函数。\n1) 证明下列集合\n$$W=\\{\\alpha\\in V\\mid f_i(\\alpha)=0,\\ 1\\le i\\le k\\}$$\n是 $V$ 的一个子空间（$W$ 称为线性函数 $f_1,\\dots,f_k$ 的零化子空间）；\n2) 证明：$V$ 的任一个子空间皆为某些线性函数的零化子空间。",
       "answer": "1) 由 $f_i(0)=0$ 与 $f_i$ 的线性性，$W$ 非空且对加法、数乘封闭；2) 取 $V_1$ 的基扩充为 $V$ 的基，定义 $g_i(\\varepsilon_j)=\\delta_{ij}$（$i=r+1,\\dots,n$），则 $V_1$ 恰是 $g_{r+1},\\dots,g_n$ 的零化子空间。",
       "solution": [
         "证明：",
@@ -87060,18 +87072,18 @@
         "用第 14 题把 $\\xi$ 写成 $K$ 中向量与 $K^\\perp$ 中向量之和"
       ],
       "title": "正交补是子空间及直和分解",
-      "question": "设 $V$ 与 $f(\\alpha,\\beta)$ 同上题，$K$ 是 $V$ 的一个子空间。令\n$$K^\\perp={\\alpha\\in V\\mid f(\\alpha,\\beta)=0,\\ \\forall\\beta\\in K} .$$\n1) 试证 $K^\\perp$ 是 $V$ 的子空间（$K^\\perp$ 称为 $K$ 的正交补）；\n2) 试证：如果 $K\\cap K^\\perp={0}$，则 $V=K\\oplus K^\\perp$。",
-      "answer": "1) $0\\in K^\\perp$，且对加法与数乘封闭；2) 由 $K\\cap K^\\perp={0}$ 知 $f|_K$ 非退化，对 $\\xi\\in V\\setminus K$ 用上题得 $\\xi=\\alpha+\\eta$（$\\alpha\\in K$，$\\eta\\in K^\\perp$），故 $V=K+K^\\perp$，再由交集为零得直和。",
+      "question": "设 $V$ 与 $f(\\alpha,\\beta)$ 同上题，$K$ 是 $V$ 的一个子空间。令\n$$K^\\perp=\\{\\alpha\\in V\\mid f(\\alpha,\\beta)=0,\\ \\forall\\beta\\in K\\} .$$\n1) 试证 $K^\\perp$ 是 $V$ 的子空间（$K^\\perp$ 称为 $K$ 的正交补）；\n2) 试证：如果 $K\\cap K^\\perp=\\{0\\}$，则 $V=K\\oplus K^\\perp$。",
+      "answer": "1) $0\\in K^\\perp$，且对加法与数乘封闭；2) 由 $K\\cap K^\\perp=\\{0\\}$ 知 $f|_K$ 非退化，对 $\\xi\\in V\\setminus K$ 用上题得 $\\xi=\\alpha+\\eta$（$\\alpha\\in K$，$\\eta\\in K^\\perp$），故 $V=K+K^\\perp$，再由交集为零得直和。",
       "solution": [
         "证明：",
         "1. 1) $f(0,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，故 $0\\in K^\\perp$。若 $\\alpha_1,\\alpha_2\\in K^\\perp$，$k\\in P$，则对一切 $\\beta\\in K$，",
         "$$f(\\alpha_1+\\alpha_2,\\beta)=f(\\alpha_1,\\beta)+f(\\alpha_2,\\beta)=0,\\qquad f(k\\alpha_1,\\beta)=kf(\\alpha_1,\\beta)=0,$$",
         "故 $\\alpha_1+\\alpha_2\\in K^\\perp$、$k\\alpha_1\\in K^\\perp$。所以 $K^\\perp$ 是 $V$ 的子空间。",
-        "2. 2) 若 $K=V$，则 $V=K$，而 $K^\\perp=V^\\perp$ 且 $K\\cap K^\\perp={0}$ 给出 $V^\\perp={0}$，故 $V=K\\oplus K^\\perp$ 成立。",
-        "3. 以下设 $K\\ne V$。由 $K\\cap K^\\perp={0}$ 知：若 $\\alpha\\in K$ 且 $f(\\alpha,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，则 $\\alpha\\in K^\\perp$，从而 $\\alpha=0$；即 $f$ 限制在 $K$ 上非退化。",
-        "4. 任取 $\\xi\\in V$。若 $\\xi\\in K$，则 $\\xi=\\xi+0\\in K+K^\\perp$。若 $\\xi\\notin K$，由第 14 题，存在 $0\\ne\\eta\\in K+L(\\xi)$ 使 $f(\\eta,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，即 $\\eta\\in K^\\perp$；又 $\\eta=\\alpha+c\\xi$（$\\alpha\\in K$，$c\\in P$）。若 $c=0$，则 $0\\ne\\eta=\\alpha\\in K$，于是 $\\eta\\in K\\cap K^\\perp={0}$，矛盾；故 $c\\ne0$，从而",
+        "2. 2) 若 $K=V$，则 $V=K$，而 $K^\\perp=V^\\perp$ 且 $K\\cap K^\\perp=\\{0\\}$ 给出 $V^\\perp=\\{0\\}$，故 $V=K\\oplus K^\\perp$ 成立。",
+        "3. 以下设 $K\\ne V$。由 $K\\cap K^\\perp=\\{0\\}$ 知：若 $\\alpha\\in K$ 且 $f(\\alpha,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，则 $\\alpha\\in K^\\perp$，从而 $\\alpha=0$；即 $f$ 限制在 $K$ 上非退化。",
+        "4. 任取 $\\xi\\in V$。若 $\\xi\\in K$，则 $\\xi=\\xi+0\\in K+K^\\perp$。若 $\\xi\\notin K$，由第 14 题，存在 $0\\ne\\eta\\in K+L(\\xi)$ 使 $f(\\eta,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，即 $\\eta\\in K^\\perp$；又 $\\eta=\\alpha+c\\xi$（$\\alpha\\in K$，$c\\in P$）。若 $c=0$，则 $0\\ne\\eta=\\alpha\\in K$，于是 $\\eta\\in K\\cap K^\\perp=\\{0\\}$，矛盾；故 $c\\ne0$，从而",
         "$$\\xi=\\frac{1}{c}(\\eta-\\alpha)=\\Big(-\\frac{1}{c}\\alpha\\Big)+\\frac{1}{c}\\eta\\in K+K^\\perp .$$",
-        "5. 因此 $V\\subseteq K+K^\\perp$，又 $K,K^\\perp\\subseteq V$，故 $V=K+K^\\perp$；再由 $K\\cap K^\\perp={0}$ 得",
+        "5. 因此 $V\\subseteq K+K^\\perp$，又 $K,K^\\perp\\subseteq V$，故 $V=K+K^\\perp$；再由 $K\\cap K^\\perp=\\{0\\}$ 得",
         "$$V=K\\oplus K^\\perp .$$"
       ],
       "difficulty": 2,
@@ -87083,8 +87095,8 @@
       ],
       "source": "教材课后习题（第十章 双线性函数与辛空间）· 习题 15",
       "relatedEntries": [],
-      "standardSolution": "证明：\n1. 1) $f(0,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，故 $0\\in K^\\perp$。若 $\\alpha_1,\\alpha_2\\in K^\\perp$，$k\\in P$，则对一切 $\\beta\\in K$，\n$$f(\\alpha_1+\\alpha_2,\\beta)=f(\\alpha_1,\\beta)+f(\\alpha_2,\\beta)=0,\\qquad f(k\\alpha_1,\\beta)=kf(\\alpha_1,\\beta)=0,$$\n故 $\\alpha_1+\\alpha_2\\in K^\\perp$、$k\\alpha_1\\in K^\\perp$。所以 $K^\\perp$ 是 $V$ 的子空间。\n2. 2) 若 $K=V$，则 $V=K$，而 $K^\\perp=V^\\perp$ 且 $K\\cap K^\\perp={0}$ 给出 $V^\\perp={0}$，故 $V=K\\oplus K^\\perp$ 成立。\n3. 以下设 $K\\ne V$。由 $K\\cap K^\\perp={0}$ 知：若 $\\alpha\\in K$ 且 $f(\\alpha,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，则 $\\alpha\\in K^\\perp$，从而 $\\alpha=0$；即 $f$ 限制在 $K$ 上非退化。\n4. 任取 $\\xi\\in V$。若 $\\xi\\in K$，则 $\\xi=\\xi+0\\in K+K^\\perp$。若 $\\xi\\notin K$，由第 14 题，存在 $0\\ne\\eta\\in K+L(\\xi)$ 使 $f(\\eta,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，即 $\\eta\\in K^\\perp$；又 $\\eta=\\alpha+c\\xi$（$\\alpha\\in K$，$c\\in P$）。若 $c=0$，则 $0\\ne\\eta=\\alpha\\in K$，于是 $\\eta\\in K\\cap K^\\perp={0}$，矛盾；故 $c\\ne0$，从而\n$$\\xi=\\frac{1}{c}(\\eta-\\alpha)=\\Big(-\\frac{1}{c}\\alpha\\Big)+\\frac{1}{c}\\eta\\in K+K^\\perp .$$\n5. 因此 $V\\subseteq K+K^\\perp$，又 $K,K^\\perp\\subseteq V$，故 $V=K+K^\\perp$；再由 $K\\cap K^\\perp={0}$ 得\n$$V=K\\oplus K^\\perp .$$",
-      "detailedAnalysis": "本题把第 14 题\"用起来\"：$\\xi\\notin K$ 时第 14 题给出的 $\\eta$ 必落在 $K^\\perp$，且其 $\\xi$ 系数 $c$ 非零（否则 $\\eta\\in K∩K^\\perp={0}$ 与 $\\eta\\ne0$ 矛盾），于是可解出 $\\xi$。注意第 2 问不需要 $f$ 在 $V$ 上非退化，只需 $K∩K^\\perp={0}$。易错：① 只验证 $K+K^\\perp\\subseteq V$ 而不验证反方向；② 没有排除 $c=0$；③ 把\"直和\"与\"和\"混为一谈，忘记用交集为零。",
+      "standardSolution": "证明：\n1. 1) $f(0,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，故 $0\\in K^\\perp$。若 $\\alpha_1,\\alpha_2\\in K^\\perp$，$k\\in P$，则对一切 $\\beta\\in K$，\n$$f(\\alpha_1+\\alpha_2,\\beta)=f(\\alpha_1,\\beta)+f(\\alpha_2,\\beta)=0,\\qquad f(k\\alpha_1,\\beta)=kf(\\alpha_1,\\beta)=0,$$\n故 $\\alpha_1+\\alpha_2\\in K^\\perp$、$k\\alpha_1\\in K^\\perp$。所以 $K^\\perp$ 是 $V$ 的子空间。\n2. 2) 若 $K=V$，则 $V=K$，而 $K^\\perp=V^\\perp$ 且 $K\\cap K^\\perp=\\{0\\}$ 给出 $V^\\perp=\\{0\\}$，故 $V=K\\oplus K^\\perp$ 成立。\n3. 以下设 $K\\ne V$。由 $K\\cap K^\\perp=\\{0\\}$ 知：若 $\\alpha\\in K$ 且 $f(\\alpha,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，则 $\\alpha\\in K^\\perp$，从而 $\\alpha=0$；即 $f$ 限制在 $K$ 上非退化。\n4. 任取 $\\xi\\in V$。若 $\\xi\\in K$，则 $\\xi=\\xi+0\\in K+K^\\perp$。若 $\\xi\\notin K$，由第 14 题，存在 $0\\ne\\eta\\in K+L(\\xi)$ 使 $f(\\eta,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，即 $\\eta\\in K^\\perp$；又 $\\eta=\\alpha+c\\xi$（$\\alpha\\in K$，$c\\in P$）。若 $c=0$，则 $0\\ne\\eta=\\alpha\\in K$，于是 $\\eta\\in K\\cap K^\\perp=\\{0\\}$，矛盾；故 $c\\ne0$，从而\n$$\\xi=\\frac{1}{c}(\\eta-\\alpha)=\\Big(-\\frac{1}{c}\\alpha\\Big)+\\frac{1}{c}\\eta\\in K+K^\\perp .$$\n5. 因此 $V\\subseteq K+K^\\perp$，又 $K,K^\\perp\\subseteq V$，故 $V=K+K^\\perp$；再由 $K\\cap K^\\perp=\\{0\\}$ 得\n$$V=K\\oplus K^\\perp .$$",
+      "detailedAnalysis": "本题把第 14 题\"用起来\"：$\\xi\\notin K$ 时第 14 题给出的 $\\eta$ 必落在 $K^\\perp$，且其 $\\xi$ 系数 $c$ 非零（否则 $\\eta\\in K∩K^\\perp=\\{0\\}$ 与 $\\eta\\ne0$ 矛盾），于是可解出 $\\xi$。注意第 2 问不需要 $f$ 在 $V$ 上非退化，只需 $K∩K^\\perp=\\{0\\}$。易错：① 只验证 $K+K^\\perp\\subseteq V$ 而不验证反方向；② 没有排除 $c=0$；③ 把\"直和\"与\"和\"混为一谈，忘记用交集为零。",
       "verification": "",
       "pitfalls": [
         "只证一个包含方向",
@@ -87093,7 +87105,7 @@
       ],
       "points": [
         "正交补对加法与数乘封闭",
-        "$K∩K^\\perp={0}\\Rightarrow f|_K$ 非退化",
+        "$K∩K^\\perp=\\{0\\}\\Rightarrow f|_K$ 非退化",
         "用第 14 题把 $\\xi$ 写成 $K$ 中向量与 $K^\\perp$ 中向量之和"
       ],
       "examOrigin": "教材课后习题",
@@ -87115,10 +87127,10 @@
       ],
       "title": "K 上非退化时的直和分解与退化性传递",
       "question": "设 $V$，$f(\\alpha,\\beta)$，$K$ 同上题，并设 $f(\\alpha,\\beta)$ 限制在 $K$ 上是非退化的。试证 $V=K\\oplus K^\\perp$，并证明 $f(\\alpha,\\beta)$ 在 $V$ 上非退化的充要条件是 $f(\\alpha,\\beta)$ 在 $K^\\perp$ 上非退化。",
-      "answer": "由 $f|_K$ 非退化得 $K\\cap K^\\perp={0}$，用第 15 题得直和；取 $K$ 与 $K^\\perp$ 的基合成 $V$ 的基，度量矩阵为 $\\operatorname{diag}(A,B)$，故 $|C|=|A||B|$，$|A|\\ne0$，于是 $|C|\\ne0\\iff|B|\\ne0$。",
+      "answer": "由 $f|_K$ 非退化得 $K\\cap K^\\perp=\\{0\\}$，用第 15 题得直和；取 $K$ 与 $K^\\perp$ 的基合成 $V$ 的基，度量矩阵为 $\\operatorname{diag}(A,B)$，故 $|C|=|A||B|$，$|A|\\ne0$，于是 $|C|\\ne0\\iff|B|\\ne0$。",
       "solution": [
         "证明：",
-        "1. $f|_K$ 非退化的含义是：若 $\\alpha\\in K$ 且 $f(\\alpha,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，则 $\\alpha=0$。因此 $K\\cap K^\\perp={0}$。由第 15 题第 2) 问，$V=K\\oplus K^\\perp$。",
+        "1. $f|_K$ 非退化的含义是：若 $\\alpha\\in K$ 且 $f(\\alpha,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，则 $\\alpha=0$。因此 $K\\cap K^\\perp=\\{0\\}$。由第 15 题第 2) 问，$V=K\\oplus K^\\perp$。",
         "2. 取 $K$ 的一组基 $\\varepsilon_1,\\dots,\\varepsilon_r$，$K^\\perp$ 的一组基 $\\eta_1,\\dots,\\eta_s$。因 $V=K\\oplus K^\\perp$，它们合起来是 $V$ 的一组基。对 $\\varepsilon_i\\in K$、$\\eta_j\\in K^\\perp$，由 $\\eta_j\\in K^\\perp$ 得 $f(\\eta_j,\\varepsilon_i)=0$，再由 $f$ 对称或反称得 $f(\\varepsilon_i,\\eta_j)=0$。",
         "3. 设 $f$ 在 $K$ 的基下的度量矩阵为 $A$（$r$ 阶），在 $K^\\perp$ 的基下的度量矩阵为 $B$（$s$ 阶），则由上一步，$f$ 在 $V$ 的这组基下的度量矩阵为分块对角矩阵",
         "$$C=\\begin{pmatrix}A&0\\\\0&B\\end{pmatrix},\\qquad |C|=|A|\\cdot|B| .$$",
@@ -87135,8 +87147,8 @@
       ],
       "source": "教材课后习题（第十章 双线性函数与辛空间）· 习题 16",
       "relatedEntries": [],
-      "standardSolution": "证明：\n1. $f|_K$ 非退化的含义是：若 $\\alpha\\in K$ 且 $f(\\alpha,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，则 $\\alpha=0$。因此 $K\\cap K^\\perp={0}$。由第 15 题第 2) 问，$V=K\\oplus K^\\perp$。\n2. 取 $K$ 的一组基 $\\varepsilon_1,\\dots,\\varepsilon_r$，$K^\\perp$ 的一组基 $\\eta_1,\\dots,\\eta_s$。因 $V=K\\oplus K^\\perp$，它们合起来是 $V$ 的一组基。对 $\\varepsilon_i\\in K$、$\\eta_j\\in K^\\perp$，由 $\\eta_j\\in K^\\perp$ 得 $f(\\eta_j,\\varepsilon_i)=0$，再由 $f$ 对称或反称得 $f(\\varepsilon_i,\\eta_j)=0$。\n3. 设 $f$ 在 $K$ 的基下的度量矩阵为 $A$（$r$ 阶），在 $K^\\perp$ 的基下的度量矩阵为 $B$（$s$ 阶），则由上一步，$f$ 在 $V$ 的这组基下的度量矩阵为分块对角矩阵\n$$C=\\begin{pmatrix}A&0\\\\0&B\\end{pmatrix},\\qquad |C|=|A|\\cdot|B| .$$\n4. 由 $f|_K$ 非退化知 $|A|\\ne0$，于是\n$$|C|\\ne0\\iff|B|\\ne0,$$\n即 $f$ 在 $V$ 上非退化 $\\iff f$ 在 $K^\\perp$ 上非退化。",
-      "detailedAnalysis": "关键有两处：① 用第 15 题把\"$f|_K$ 非退化\"翻译成\"$K∩K^\\perp={0}$\"，直接得到直和；② 正交补的定义使交叉块为零块，度量矩阵成为分块对角，从而退化性在 $K$ 与 $K^\\perp$ 之间\"互补\"。注意本题的结论是对 $K^\\perp$ 说的：$f$ 在 $V$ 上非退化 $\\iff f$ 在 $K^\\perp$ 上非退化（$K$ 上已非退化）。易错：① 把结论误写成\"$f$ 在 $K$ 上非退化 $\\iff f$ 在 $V$ 上非退化\"（$K$ 上非退化是前提，不是结论）；② 不说明交叉块为零就直接写分块对角；③ 用 $|C|=|A|+|B|$ 之类的错误公式。",
+      "standardSolution": "证明：\n1. $f|_K$ 非退化的含义是：若 $\\alpha\\in K$ 且 $f(\\alpha,\\beta)=0$ 对一切 $\\beta\\in K$ 成立，则 $\\alpha=0$。因此 $K\\cap K^\\perp=\\{0\\}$。由第 15 题第 2) 问，$V=K\\oplus K^\\perp$。\n2. 取 $K$ 的一组基 $\\varepsilon_1,\\dots,\\varepsilon_r$，$K^\\perp$ 的一组基 $\\eta_1,\\dots,\\eta_s$。因 $V=K\\oplus K^\\perp$，它们合起来是 $V$ 的一组基。对 $\\varepsilon_i\\in K$、$\\eta_j\\in K^\\perp$，由 $\\eta_j\\in K^\\perp$ 得 $f(\\eta_j,\\varepsilon_i)=0$，再由 $f$ 对称或反称得 $f(\\varepsilon_i,\\eta_j)=0$。\n3. 设 $f$ 在 $K$ 的基下的度量矩阵为 $A$（$r$ 阶），在 $K^\\perp$ 的基下的度量矩阵为 $B$（$s$ 阶），则由上一步，$f$ 在 $V$ 的这组基下的度量矩阵为分块对角矩阵\n$$C=\\begin{pmatrix}A&0\\\\0&B\\end{pmatrix},\\qquad |C|=|A|\\cdot|B| .$$\n4. 由 $f|_K$ 非退化知 $|A|\\ne0$，于是\n$$|C|\\ne0\\iff|B|\\ne0,$$\n即 $f$ 在 $V$ 上非退化 $\\iff f$ 在 $K^\\perp$ 上非退化。",
+      "detailedAnalysis": "关键有两处：① 用第 15 题把\"$f|_K$ 非退化\"翻译成\"$K∩K^\\perp=\\{0\\}$\"，直接得到直和；② 正交补的定义使交叉块为零块，度量矩阵成为分块对角，从而退化性在 $K$ 与 $K^\\perp$ 之间\"互补\"。注意本题的结论是对 $K^\\perp$ 说的：$f$ 在 $V$ 上非退化 $\\iff f$ 在 $K^\\perp$ 上非退化（$K$ 上已非退化）。易错：① 把结论误写成\"$f$ 在 $K$ 上非退化 $\\iff f$ 在 $V$ 上非退化\"（$K$ 上非退化是前提，不是结论）；② 不说明交叉块为零就直接写分块对角；③ 用 $|C|=|A|+|B|$ 之类的错误公式。",
       "verification": "",
       "pitfalls": [
         "把 $K$ 与 $K^\\perp$ 的退化性结论写反",
@@ -87144,7 +87156,7 @@
         "直和分解缺少交集为零"
       ],
       "points": [
-        "$f|_K$ 非退化 $\\iff K∩K^\\perp={0}$",
+        "$f|_K$ 非退化 $\\iff K∩K^\\perp=\\{0\\}$",
         "交叉块为零使度量矩阵分块对角",
         "$|C|=|A|\\cdot|B|$ 传递非退化性"
       ],
@@ -93399,7 +93411,7 @@
         "零空间"
       ],
       "pitfalls": [
-        "把 $\\\\beta^{\\\\mathrm T}\\\\alpha$ 当成向量",
+        "把 $\\beta^{\\\\mathrm T}\\alpha$ 当成向量",
         "漏掉 $A\\\\ne O$ 从而 $r(A)=1$ 的说明",
         "未处理某个 $b_i=0$ 时基础解系的写法"
       ],
@@ -93665,7 +93677,7 @@
         "值域",
         "不变子空间"
       ],
-      "verification": "用 sympy 取 $A=P\\operatorname{diag}(1,1,0)P^{-1}$，验证 $A^2=A$，且对任意 $\\\\alpha$ 有 $\\\\alpha-A\\\\alpha\\\\in\\\\ker A$。"
+      "verification": "用 sympy 取 $A=P\\operatorname{diag}(1,1,0)P^{-1}$，验证 $A^2=A$，且对任意 $\\alpha$ 有 $\\alpha-A\\alpha\\\\in\\\\ker A$。"
     },
     {
       "id": "GA-B1930",
@@ -93877,9 +93889,9 @@
         "线性无关"
       ],
       "pitfalls": [
-        "只用到 $\\\\beta\\\\in W$ 而未用 $\\\\sigma^j\\\\beta$",
+        "只用到 $\\beta\\\\in W$ 而未用 $\\\\sigma^j\\beta$",
         "忘记特征值互异保证范德蒙德行列式非零",
-        "未说明 $\\\\alpha_i$ 线性无关"
+        "未说明 $\\alpha_i$ 线性无关"
       ],
       "options": [],
       "correct": "",
@@ -93902,7 +93914,7 @@
         "范德蒙德矩阵",
         "线性无关"
       ],
-      "verification": "用 sympy 取 $\\\\sigma=\\operatorname{diag}(1,2,3)$、$W=L(e_1,e_2,e_3)$，验证 $\\\\beta=e_1+e_2+e_3$ 及 $\\\\sigma^j\\\\beta$ 的系数矩阵为可逆范德蒙德矩阵。"
+      "verification": "用 sympy 取 $\\\\sigma=\\operatorname{diag}(1,2,3)$、$W=L(e_1,e_2,e_3)$，验证 $\\beta=e_1+e_2+e_3$ 及 $\\\\sigma^j\\beta$ 的系数矩阵为可逆范德蒙德矩阵。"
     },
     {
       "id": "GA-B1935",
@@ -94430,7 +94442,7 @@
         "同时正交对角化",
         "可交换"
       ],
-      "verification": "用 sympy 取 $A=\\\\begin{pmatrix}2&1\\\\\\\\1&2\\\\end{pmatrix}$、$B=\\\\operatorname{diag}(1,3)$，验证 $AB$ 不对称；再取 $A=\\\\operatorname{diag}(1,2)$、$B=\\\\operatorname{diag}(3,4)$，$AB=\\\\operatorname{diag}(3,8)$ 正定。"
+      "verification": "用 sympy 取 $A=\\begin{pmatrix}2&1\\\\\\\\1&2\\end{pmatrix}$、$B=\\\\operatorname{diag}(1,3)$，验证 $AB$ 不对称；再取 $A=\\\\operatorname{diag}(1,2)$、$B=\\\\operatorname{diag}(3,4)$，$AB=\\\\operatorname{diag}(3,8)$ 正定。"
     },
     {
       "id": "GA-B1946",
@@ -94579,7 +94591,7 @@
         "核",
         "特征向量"
       ],
-      "verification": "用 sympy 取 $N=\\\\begin{pmatrix}0&1&0\\\\\\\\0&0&0\\\\\\\\0&0&0\\\\end{pmatrix}$，验证 $r(N)=1$、$N^2=O$，且非零列 $e_1\\\\in\\\\ker N$。"
+      "verification": "用 sympy 取 $N=\\begin{pmatrix}0&1&0\\\\\\\\0&0&0\\\\\\\\0&0&0\\end{pmatrix}$，验证 $r(N)=1$、$N^2=O$，且非零列 $e_1\\\\in\\\\ker N$。"
     },
     {
       "id": "GA-B1949",
@@ -94770,7 +94782,7 @@
         "最小多项式",
         "实线性变换"
       ],
-      "verification": "用 sympy 取 $A=\\\\operatorname{diag}(0,R)$、$R=\\\\begin{pmatrix}0&-1\\\\\\\\1&0\\\\end{pmatrix}$，验证 $A^3+A=O$ 且 $\\\\operatorname{tr}A=0$。"
+      "verification": "用 sympy 取 $A=\\\\operatorname{diag}(0,R)$、$R=\\begin{pmatrix}0&-1\\\\\\\\1&0\\end{pmatrix}$，验证 $A^3+A=O$ 且 $\\\\operatorname{tr}A=0$。"
     },
     {
       "id": "GA-B1953",
@@ -94964,7 +94976,7 @@
         "凯莱-哈密顿定理",
         "幂零矩阵"
       ],
-      "verification": "用 sympy 取 $A=\\\\begin{pmatrix}3&1&0\\\\\\\\-4&-1&0\\\\\\\\4&-8&-2\\\\end{pmatrix}$，其特征多项式为 $(\\\\lambda-1)^2(\\\\lambda+2)$，验证 $f(A)=O$。"
+      "verification": "用 sympy 取 $A=\\begin{pmatrix}3&1&0\\\\\\\\-4&-1&0\\\\\\\\4&-8&-2\\end{pmatrix}$，其特征多项式为 $(\\\\lambda-1)^2(\\\\lambda+2)$，验证 $f(A)=O$。"
     },
     {
       "id": "GA-B1957",

@@ -24,6 +24,7 @@ const seed = {
     }, seed);
     const routes = ['/', '/gaodai/overview', '/gaodai/entries', '/gaodai/bank', '/gaodai/templates', '/gaodai/guide', '/final', '/notes'];
     for (const route of routes) {
+      await page.route('**/api/state', (r) => r.abort());
       await page.goto(server.base + '/?v=' + Date.now() + '#' + route, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(600);
       await page.addScriptTag({ path: axePath });

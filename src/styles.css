@@ -9549,3 +9549,18 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 @media (max-width: 760px) {
   .kb-answer-body { max-height: none !important; overflow: visible !important; }
 }
+
+/* audit 2026-11: long entry titles must wrap inside the card */
+.entry-title, .entry-titlewrap, .entry-title * { overflow-wrap: anywhere !important; word-break: break-word !important; min-width: 0 !important; }
+
+/* audit 2026-11: mobile main is a flex/grid child; auto width + auto margins shrink-to-fit and clip notes */
+@media (max-width: 900px) {
+  .main { width: 100% !important; max-width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; align-self: stretch !important; }
+  .note-toolbar, .note-workspace, .note-board { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
+  .note-canvas { max-width: 100% !important; }
+}
+
+/* audit 2026-11: a wide formula plus punctuation must not force the viewport wider */
+.math-tail { max-width: 100%; }
+.math-tail:has(.is-wide) { white-space: normal; }
+@media (max-width: 480px) { .math-tail { white-space: normal; } }

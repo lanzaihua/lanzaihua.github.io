@@ -15,6 +15,19 @@ function setSyncState(mode, detail) {
   renderSyncStatus();
 }
 
+function syncToast(msg, meta) {
+  var hasMirror = typeof notifMirrorSuppressed !== 'undefined';
+  var prev = hasMirror ? notifMirrorSuppressed : false;
+  if (hasMirror) notifMirrorSuppressed = true;
+  try { toast(msg, meta); } finally { if (hasMirror) notifMirrorSuppressed = prev; }
+}
+
+function localHasContent() {
+  if (!state || !state.entries) return false;
+  if ((state.notes || []).length) return true;
+  return SUBJECTS.some(function (s) { return (state.entries[s.id] || []).length > 0; });
+}
+
 async function initSync() {
   if (PAGES) {
     setSyncState('local', 'GitHub Pages 静态版 · 本机保存');
@@ -38,7 +51,7 @@ async function initSync() {
     sync.available = true;
     if (healthInfo && healthInfo.stateCorrupted) {
       setSyncState('conflict', '本地数据文件损坏，已保留原始副本');
-      toast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
+      syncToast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
       if (typeof render === 'function') render();
       return;
     }
@@ -53,7 +66,7 @@ async function initSync() {
       try { stateError = await res.json(); } catch (e) {}
       if (stateError && stateError.code === 'STATE_CORRUPTED') {
         setSyncState('conflict', '本地数据文件损坏，已保留原始副本');
-        toast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
+        syncToast('本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存');
         if (typeof render === 'function') render();
         return;
       }
@@ -63,10 +76,19 @@ async function initSync() {
     var remote = await res.json();
     sync.baseRev = Number.isFinite(state.syncBaseRev) ? state.syncBaseRev : Number(remote.rev || 0);
     if (remote && remote.state && remote.state.entries) {
+      // 全新本机（没有错题、没有笔记）首次连接：先接收云端，绝不拿空状态覆盖远端。
+      if (isFreshLocal && !localHasContent()) {
+        subjectMigrationPending = false;
+        adoptRemote(remote, false, true);
+        sync.lastSync = remote.updatedAt;
+        setSyncState('online', remote.rev != null ? ('rev ' + remote.rev) : '');
+        syncToast('已载入云端最新版本');
+        return;
+      }
       var unsynced = state.syncDirty === true || (!isFreshLocal && state.syncBaseRev == null && state.updatedAt !== remote.state.updatedAt);
       if (unsynced && (!Number.isFinite(state.syncBaseRev) || Number(remote.rev || 0) !== state.syncBaseRev)) {
         setSyncState('conflict', '本机改动与云端版本需要合并');
-        toast('本机与云端都有数据，已保留本机内容；请先导出备份，再手动拉取并合并');
+        syncToast('本机与云端都有数据，已保留本机内容；请先导出备份，再手动拉取并合并');
         return;
       }
       if (unsynced) {
@@ -78,10 +100,10 @@ async function initSync() {
       var remoteTime = new Date(remote.state.updatedAt || 0).getTime();
       if (isFreshLocal) {
         adoptRemote(remote, false);
-        toast('已载入云端最新版本');
+        syncToast('已载入云端最新版本');
       } else if (remoteTime > localTime && (state.rev || 0) <= (remote.rev || 0)) {
         adoptRemote(remote, false);
-        toast('已载入云端最新版本');
+        syncToast('已载入云端最新版本');
       } else if (remoteTime === localTime && (remote.rev || 0) > (state.rev || 0)) {
         state.rev = remote.rev;
         persistLocal();
@@ -101,7 +123,7 @@ async function initSync() {
   renderSyncStatus();
 }
 
-function adoptRemote(remote, skipRender) {
+function adoptRemote(remote, skipRender, skipMigrationPush) {
   if (!remote || !remote.state) return;
   var st = migrateState(remote.state);
   st.rev = remote.rev || st.rev || 0;
@@ -110,13 +132,19 @@ function adoptRemote(remote, skipRender) {
   sync.baseRev = st.syncBaseRev;
   st.updatedAt = remote.updatedAt || st.updatedAt;
   var theme = state.prefs ? state.prefs.theme : 'auto';
+  var routeView = state.activeView;
+  var routeSubject = state.activeSubject;
   state = st;
+  if (routeView) {
+    state.activeView = routeView;
+    state.activeSubject = routeSubject;
+  }
   isFreshLocal = false;
   state.prefs = state.prefs || {};
   state.prefs.theme = theme;
   var migratedKeys = subjectMigrationPending;
   persistLocal();
-  if (migratedKeys) schedulePush(1000);
+  if (migratedKeys && !skipMigrationPush) schedulePush(1000);
   applyTheme();
   if (!skipRender && typeof render === 'function') render();
 }
@@ -130,7 +158,7 @@ function schedulePush(delay) {
 
 async function pushSync(manual) {
   if (!sync.available) {
-    if (manual) toast('当前没有连接同步服务，数据只在本机');
+    if (manual) syncToast('当前没有连接同步服务，数据只在本机');
     return;
   }
   if (sync.busy) { sync.pending = true; return; }
@@ -150,24 +178,24 @@ async function pushSync(manual) {
         if (res.status === 409) {
           state.syncDirty = true;
           setSyncState('conflict', '云端与本机存在冲突');
-          toast('同步冲突：已保留本机改动。请先导出本机备份，再拉取并合并云端数据');
+          syncToast('同步冲突：已保留本机改动。请先导出本机备份，再拉取并合并云端数据');
           return;
         }
         if (res.status === 401) {
           setSyncState('locked', '需要访问口令');
-          toast('同步服务需要访问口令，请在设置里填写');
+          syncToast('同步服务需要访问口令，请在设置里填写');
           return;
         }
         if (res.status === 413) {
           setSyncState('error', '同步数据过大');
-          toast('同步数据超过服务端上限：请删除笔记里的图片或导出备份后精简，再重试');
+          syncToast('同步数据超过服务端上限：请删除笔记里的图片或导出备份后精简，再重试');
           return;
         }
         if (res.status >= 400 && res.status < 500) {
           var detail = '';
           try { var err = await res.json(); detail = err && err.error ? String(err.error) : ''; } catch (e2) {}
           setSyncState('error', '同步被拒绝');
-          toast('同步被拒绝（HTTP ' + res.status + '）' + (detail ? '：' + detail : ''));
+          syncToast('同步被拒绝（HTTP ' + res.status + '）' + (detail ? '：' + detail : ''));
           return;
         }
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -180,7 +208,7 @@ async function pushSync(manual) {
         persistLocal();
         sync.lastSync = data.updatedAt;
         setSyncState('online', 'rev ' + data.rev);
-        if (manual) toast('已同步到云端 · rev ' + data.rev);
+        if (manual) syncToast('已同步到云端 · rev ' + data.rev);
         return;
       } catch (e) {
         lastErr = e;
@@ -190,7 +218,7 @@ async function pushSync(manual) {
     throw lastErr || new Error('push failed');
   } catch (e) {
     setSyncState('offline', '同步失败，稍后重试');
-    if (manual) toast('同步失败：' + (e.message || e));
+    if (manual) syncToast('同步失败：' + (e.message || e));
   } finally {
     sync.busy = false;
     renderSyncStatus();
@@ -200,7 +228,7 @@ async function pushSync(manual) {
 
 async function pullSync(manual) {
   if (!sync.available) {
-    if (manual) toast('未连接同步服务');
+    if (manual) syncToast('未连接同步服务');
     return;
   }
   try {
@@ -208,13 +236,13 @@ async function pullSync(manual) {
     if (res.status === 401) { setSyncState('locked', '需要访问口令'); return; }
     if (!res.ok) throw new Error('pull failed');
     var remote = await res.json();
-    if (!remote.state || !remote.state.entries) { if (manual) toast('云端还没有数据'); return; }
+    if (!remote.state || !remote.state.entries) { if (manual) syncToast('云端还没有数据'); return; }
     if (state.syncDirty || sync.mode === 'conflict') {
       if (manual && typeof confirmDialog === 'function') {
         confirmDialog('用云端数据替换本机内容？', '本机存在未同步改动。请先导出备份；继续将载入云端数据，之后可以再合并刚才的备份。', function () {
           adoptRemote(remote, false);
           setSyncState('online', 'rev ' + remote.rev);
-          toast('已载入云端数据，可导入本机备份并合并');
+          syncToast('已载入云端数据，可导入本机备份并合并');
         });
       } else setSyncState('conflict', '本机改动尚未同步');
       return;
@@ -223,15 +251,15 @@ async function pullSync(manual) {
     var remoteTime = new Date(remote.state.updatedAt || 0).getTime();
     if ((isFreshLocal && !(state.rev || 0)) || remoteTime > localTime) {
       adoptRemote(remote, false);
-      toast('已拉取云端最新版本');
+      syncToast('已拉取云端最新版本');
     } else if (manual) {
-      toast('云端没有比本地更新的版本');
+      syncToast('云端没有比本地更新的版本');
     }
     sync.lastSync = remote.updatedAt;
     setSyncState('online', 'rev ' + remote.rev);
   } catch (e) {
     setSyncState('offline', '拉取失败');
-    if (manual) toast('拉取失败');
+    if (manual) syncToast('拉取失败');
   }
 }
 

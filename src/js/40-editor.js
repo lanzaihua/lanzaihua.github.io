@@ -1,6 +1,7 @@
 /* =========================================================
    40-editor — 编辑器、设置、导入导出
    ========================================================= */
+var IMPORT_MAX_CHARS = 512 * 1024 * 1024;
 function errorTypesFor(subjectId) {
   if (subjectId === 'xijing') return ['概念', '计算', '方法选择', '条件漏用', '表述'];
   if (subjectId === 'jieji') return ['概念', '公式', '计算', '思路', '审题'];
@@ -439,7 +440,7 @@ function openSettings() {
     '</div>' +
 languageRow +
 '<div class="settings-section"><div class="settings-section-head"><span class="settings-section-title">AI与智能录入</span><span class="settings-section-note">AI</span></div>' +
-    '<div class="setting-row ai-config-row"><div class="ai-config-head"><div><div class="st">在线 AI 服务</div><div class="sd">支持 OpenAI、DeepSeek、Google Gemini、Anthropic、xAI Grok、通义千问、Moonshot Kimi、DeepSeek Harness 等厂商接口。API Key 只保存在本机浏览器，不写入错题数据；纯静态页需要接口允许浏览器跨域。</div></div><span class="chip ' + (aiReadyNow ? 'chip-ok' : '') + '">' + (aiReadyNow ? '已配置' : '未配置') + '</span></div>' +
+    '<div class="setting-row ai-config-row"><div class="ai-config-head"><div><div class="st">在线 AI 服务</div><div class="sd">支持 OpenAI、DeepSeek、Google Gemini、Anthropic、xAI Grok、通义千问、Moonshot Kimi、DeepSeek Harness 等厂商接口。API Key 加密后只保存在本机浏览器（IndexedDB），不写入错题数据；纯静态页需要接口允许浏览器跨域。</div></div><span class="chip ' + (aiReadyNow ? 'chip-ok' : '') + '">' + (aiReadyNow ? '已配置' : '未配置') + '</span></div>' +
       '<div class="ai-config-grid">' +
         '<label class="field full"><span>协议</span>' +
           '<div class="model-combo protocol-combo">' +
@@ -717,7 +718,7 @@ function importStateFile(file) {
 function openImportPayload(text, fileName) {
   try {
     var raw = String(text);
-    if (raw.length > 30 * 1024 * 1024) throw new Error('备份文件超过 30MB，请先拆分或重新导出');
+    if (raw.length > IMPORT_MAX_CHARS) throw new Error('备份文件超过 ' + Math.round(IMPORT_MAX_CHARS / 1024 / 1024) + 'MB；本机容量仍可继续写入，但单次导入需要先拆分。');
     var parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('备份内容不是对象');
     var st = parsed.state ? parsed.state : parsed;

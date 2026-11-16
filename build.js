@@ -53,6 +53,17 @@ if (fs.existsSync(dataDir)) {
     sourceTextFiles.push(path.join(dataDir, f));
   });
 }
+const skillsDir = path.join(ROOT, 'skills');
+if (fs.existsSync(skillsDir)) {
+  (function walkSkills(dir) {
+    fs.readdirSync(dir).forEach(function (name) {
+      const full = path.join(dir, name);
+      const stat = fs.statSync(full);
+      if (stat.isDirectory()) walkSkills(full);
+      else if (/\.(md|txt|json)$/.test(name)) sourceTextFiles.push(full);
+    });
+  })(skillsDir);
+}
 const encodingBroken = [];
 sourceTextFiles.forEach(function (file) {
   var text = read(file);
@@ -347,9 +358,19 @@ let html = template
   .replace('__BUILD_HASH__', buildId);
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
+// 清理历史调试页与旧外置题库，避免旧文件比新版 index.html 更早被访问。
+['matrix-test.html', 'matrix-test-2.html'].forEach(function (f) {
+  var stale = path.join(path.dirname(OUT), f);
+  if (fs.existsSync(stale)) fs.rmSync(stale, { force: true });
+});
+if (!splitBanks) {
+  var staleData = path.join(path.dirname(OUT), 'data');
+  if (fs.existsSync(staleData)) fs.rmSync(staleData, { recursive: true, force: true });
+}
 fs.writeFileSync(OUT, html, 'utf8');
 if (splitBanks) {
   const bankOut = path.join(path.dirname(OUT), 'data', 'bank.json');
+  fs.rmSync(path.dirname(bankOut), { recursive: true, force: true });
   fs.mkdirSync(path.dirname(bankOut), { recursive: true });
   fs.writeFileSync(bankOut, banksRaw, 'utf8');
   console.log('external bank: ' + bankOut + ' (' + (Buffer.byteLength(banksRaw) / 1024 / 1024).toFixed(1) + ' MB)');

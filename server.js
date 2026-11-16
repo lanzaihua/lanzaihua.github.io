@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const dns = require('dns').promises;
 const net = require('net');
 const { loadSkillBundle, buildSystemPrompt, SUBJECT_NAMES } = require('./skills');
+const { requestJson } = require('./lib/ai-http');
 
 const ROOT = __dirname;
 const DIST = path.join(ROOT, 'dist');
@@ -54,7 +55,8 @@ function securityHeaders(extra) {
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'no-referrer',
     'X-Frame-Options': 'DENY',
-    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' http: https:; font-src 'self' data:; media-src 'self' blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
   }, extra || {});
 }
 
@@ -106,6 +108,31 @@ function writeState(rev, state) {
 function authOk(req) {
   if (!TOKEN) return true;
   return req.headers['x-notebook-token'] === TOKEN;
+}
+
+function allowedHostNames() {
+  const names = new Set(['localhost', '127.0.0.1', '::1', '[::1]', os.hostname().toLowerCase()]);
+  if (HOST && HOST !== '0.0.0.0' && HOST !== '::') names.add(String(HOST).toLowerCase());
+  const nets = os.networkInterfaces();
+  Object.keys(nets).forEach(function (name) {
+    (nets[name] || []).forEach(function (info) {
+      if (info && info.address) names.add(String(info.address).toLowerCase());
+    });
+  });
+  return names;
+}
+
+function hostAllowed(req) {
+  const raw = String(req.headers.host || '');
+  if (!raw) return false;
+  let hostname;
+  try { hostname = new URL('http://' + raw).hostname; }
+  catch (e) { return false; }
+  return allowedHostNames().has(String(hostname).toLowerCase());
+}
+
+function jsonRequest(req) {
+  return /^application\/json\b/i.test(String(req.headers['content-type'] || ''));
 }
 
 function serveStatic(req, res) {
@@ -309,7 +336,7 @@ function repairJsonText(src) {
 
 function extractJson(text) {
   let s = String(text || '').trim();
-  s = s.replace(/^```(?:json)?s*/i, '').replace(/```s*$/i, '').trim();
+  s = s.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
   const a = s.indexOf('{');
   const b = s.lastIndexOf('}');
   if (a >= 0 && b > a) s = s.slice(a, b + 1);
@@ -364,15 +391,17 @@ function normalizeResult(raw) {
 }
 
 function aiUpstreamError(res, raw) {
-  let msg = '模型服务返回 ' + res.status;
-  try {
-    const j = JSON.parse(raw);
-    if (j.error && j.error.message) msg += '：' + j.error.message;
-    else if (j.message) msg += '：' + j.message;
-  } catch (e) { /* ignore */ }
+  const body = String(raw || '');
+  let msg = '模型服务返回 ' + res.status + '，请检查接口地址、API Key 与模型名';
   const err = new Error(msg);
   err.code = (res.status === 401 || res.status === 403) ? 'UPSTREAM_AUTH' : (res.status === 429 ? 'RATE_LIMIT' : 'UPSTREAM_ERROR');
-  if (err.code === 'UPSTREAM_ERROR' && /model[\s_-]*(not[\s_-]*found|does not exist|not available|not supported|unsupported|invalid)|invalid[\s_-]*model|unknown model/i.test(String(raw || '') + ' ' + err.message)) err.code = 'MODEL_UNAVAILABLE';
+  if (err.code === 'UPSTREAM_ERROR' && /model[\s_-]*(not[\s_-]*found|does not exist|not available|not supported|unsupported|invalid)|invalid[\s_-]*model|unknown model/i.test(body)) {
+    err.code = 'MODEL_UNAVAILABLE';
+    err.message = '当前模型不可用，请检查模型名或换用备用模型';
+  }
+  if (err.code === 'UPSTREAM_AUTH') err.message = '模型服务拒绝认证，请检查 API Key 与接口地址';
+  if (err.code === 'RATE_LIMIT') err.message = '模型服务限流，请稍后再试';
+  console.error('[ai] upstream status=' + res.status + ' body=' + body.slice(0, 500));
   err.status = res.status;
   return err;
 }
@@ -406,7 +435,7 @@ function isPrivateAddress(address) {
   return true;
 }
 
-async function assertSafeAiBaseUrl(baseUrl) {
+async function resolveSafeAiBaseUrl(baseUrl) {
   let u;
   try { u = new URL(String(baseUrl || '')); }
   catch (e) { const err = new Error('AI 接口地址格式不正确'); err.code = 'UNSAFE_AI_URL'; throw err; }
@@ -416,26 +445,31 @@ async function assertSafeAiBaseUrl(baseUrl) {
   if (u.username || u.password) {
     const err = new Error('AI 接口地址不能包含账号密码'); err.code = 'UNSAFE_AI_URL'; throw err;
   }
-  if (process.env.ALLOW_PRIVATE_AI_BASE_URL === '1') return;
-  const host = u.hostname.toLowerCase();
-  if (host === 'localhost' || /\.localhost$/.test(host) || host === 'metadata.google.internal') {
+  const allowPrivate = process.env.ALLOW_PRIVATE_AI_BASE_URL === '1';
+  const host = u.hostname.toLowerCase().replace(/^\[|\]$/g, '');
+  if (!allowPrivate && (host === 'localhost' || /\.localhost$/.test(host) || host === 'metadata.google.internal')) {
     const err = new Error('AI 接口地址不能指向本机或元数据服务'); err.code = 'UNSAFE_AI_URL'; throw err;
   }
-  let addresses;
-  if (net.isIP(host)) addresses = [host];
+  let rows;
+  if (net.isIP(host)) rows = [{ address: host, family: net.isIP(host) }];
   else {
-    try { addresses = (await dns.lookup(host, { all: true })).map(function (x) { return x.address; }); }
+    try { rows = await dns.lookup(host, { all: true }); }
     catch (e) { const err = new Error('AI 接口域名无法解析'); err.code = 'UNSAFE_AI_URL'; throw err; }
   }
-  if (!addresses.length || addresses.some(isPrivateAddress)) {
+  if (!rows.length) {
+    const err = new Error('AI 接口域名无法解析'); err.code = 'UNSAFE_AI_URL'; throw err;
+  }
+  if (!allowPrivate && rows.some(function (x) { return isPrivateAddress(x.address); })) {
     const err = new Error('AI 接口地址不能指向内网、回环或元数据地址'); err.code = 'UNSAFE_AI_URL'; throw err;
   }
+  // Pin the first validated address.  requestJson forces every connection for
+  // this request through it, so a second DNS answer cannot redirect the POST.
+  return { address: rows[0].address, family: rows[0].family || (net.isIPv6(rows[0].address) ? 6 : 4) };
 }
 
 async function postAiJson(cfg, payload) {
-  await assertSafeAiBaseUrl(cfg.baseUrl);
-  const controller = new AbortController();
-  const timer = setTimeout(function () { controller.abort(); }, SOLVE_TIMEOUT_MS);
+  const endpoint = aiEndpointServer(cfg);
+  const pinned = await resolveSafeAiBaseUrl(endpoint);
   const headers = { 'content-type': 'application/json' };
   if (isOpenAiServerProtocol(cfg.protocol)) headers['authorization'] = 'Bearer ' + cfg.apiKey;
   else if (cfg.protocol === 'anthropic') {
@@ -445,19 +479,18 @@ async function postAiJson(cfg, payload) {
     headers['x-dsh-auth-token'] = cfg.apiKey;
     headers['anthropic-version'] = '2023-06-01';
   }
-  try {
-    const res = await fetch(aiEndpointServer(cfg), {
-      method: 'POST', headers: headers, body: JSON.stringify(payload), signal: controller.signal, redirect: 'error'
-    });
-    const raw = await res.text();
-    if (!res.ok) throw aiUpstreamError(res, raw);
-    try { return JSON.parse(raw); } catch (e) {
-      const pe = new Error('模型返回了无法解析的内容');
-      pe.code = 'PARSE_ERROR';
-      throw pe;
-    }
-  } finally {
-    clearTimeout(timer);
+  const res = await requestJson(endpoint, {
+    method: 'POST',
+    headers: headers,
+    body: JSON.stringify(payload),
+    timeoutMs: SOLVE_TIMEOUT_MS,
+    resolveHost: async function () { return pinned; }
+  });
+  if (!res.ok) throw aiUpstreamError(res, res.body);
+  try { return JSON.parse(res.body); } catch (e) {
+    const pe = new Error('模型返回了无法解析的内容');
+    pe.code = 'PARSE_ERROR';
+    throw pe;
   }
 }
 
@@ -468,7 +501,9 @@ async function callSolveApi(subject, text, hint, images, wrongText, wrongImages,
     err.code = 'NO_AI_KEY';
     throw err;
   }
-  await assertSafeAiBaseUrl(cfg.baseUrl);
+  // Validate the AI endpoint before loading skills so an unsafe URL is always
+  // rejected with 400, even on hosts where the skill directory is missing.
+  await resolveSafeAiBaseUrl(cfg.baseUrl);
   const skillBundle = loadSkillBundle(subject, text, hint);
   const languageNames = { 'zh-CN': '简体中文', 'zh-TW': '繁體中文', 'en': 'English', 'fr': 'French', 'de': 'German', 'ja': 'Japanese', 'ko': 'Korean', 'pt': 'Portuguese', 'ru': 'Russian', 'es': 'Spanish' };
   const targetLanguage = languageNames[language] || '简体中文';
@@ -531,7 +566,7 @@ async function callSolveApi(subject, text, hint, images, wrongText, wrongImages,
 }
 
 function solveError(res, e) {
-  if (e && e.name === 'AbortError') return json(res, 504, { error: '生成超时，请重试或把题目拆小一点', code: 'TIMEOUT' });
+  if (e && (e.name === 'AbortError' || e.code === 'TIMEOUT')) return json(res, 504, { error: '生成超时，请重试或把题目拆小一点', code: 'TIMEOUT' });
   const code = (e && e.code) || 'SOLVE_FAILED';
   if (code === 'SKILL_MISSING') return json(res, 503, { error: (e && e.message) || '找不到对应科目技能', code: code });
   if (code === 'NO_CREDENTIAL' || code === 'NO_AI_KEY') return json(res, 503, { error: '服务端没有配置 AI 模型服务；可设置 AI_API_KEY / AI_BASE_URL / AI_MODEL，或在页面设置里填写后由请求携带', code: 'NO_AI_KEY' });
@@ -661,6 +696,9 @@ async function handleOcr(req, res) {
 
 const server = http.createServer(function (req, res) {
   const url = (req.url || '/').split('?')[0];
+  if (!hostAllowed(req)) {
+    return json(res, 421, { error: 'invalid host', code: 'BAD_HOST' });
+  }
   if (url.indexOf('/api/') === 0 && !authOk(req)) {
     return json(res, 401, { error: 'unauthorized' });
   }
@@ -670,7 +708,7 @@ const server = http.createServer(function (req, res) {
     return json(res, 200, {
       ok: true, rev: cur.rev, updatedAt: cur.updatedAt, token: !!TOKEN, lan: LAN,
       stateCorrupted: !!cur.corrupted,
-      stateBackup: cur.backupPath || null,
+      stateBackup: cur.backupPath ? path.basename(cur.backupPath) : null,
       ai: (function () { var c = envAiConfig(); return { configured: !!c.apiKey, model: c.model, protocol: c.protocol }; })()
     });
   }
@@ -681,10 +719,12 @@ const server = http.createServer(function (req, res) {
   }
 
   if (url === '/api/solve' && req.method === 'POST') {
+    if (!jsonRequest(req)) return json(res, 415, { error: 'application/json required', code: 'UNSUPPORTED_MEDIA_TYPE' });
     return handleSolve(req, res);
   }
 
   if (url === '/api/ocr' && req.method === 'POST') {
+    if (!jsonRequest(req)) return json(res, 415, { error: 'application/json required', code: 'UNSUPPORTED_MEDIA_TYPE' });
     return handleOcr(req, res);
   }
 
@@ -694,8 +734,7 @@ const server = http.createServer(function (req, res) {
       return json(res, 500, {
         error: '本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存',
         code: 'STATE_CORRUPTED',
-        backup: cur.backupPath || null,
-        detail: cur.error
+        backup: cur.backupPath ? path.basename(cur.backupPath) : null
       });
     }
     return json(res, 200, cur);
@@ -713,7 +752,7 @@ const server = http.createServer(function (req, res) {
         return json(res, 409, {
           error: '本地数据文件损坏，已保留原始副本；请先导出副本或恢复备份，再继续保存',
           code: 'STATE_CORRUPTED',
-          backup: cur.backupPath || null
+          backup: cur.backupPath ? path.basename(cur.backupPath) : null
         });
       }
       const baseRev = Number(payload.baseRev || 0);
