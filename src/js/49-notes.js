@@ -519,9 +519,9 @@ function noteKbEmptyHtml() {
 function noteTabsHtml(books, knowledge) {
   var current = ui.noteFilter === 'books' || ui.noteFilter === 'kb' ? ui.noteFilter : 'all';
   return '<div class="note-type-tabs" role="tablist" aria-label="笔记类型">' +
-    '<button class="note-type-tab' + (current === 'all' ? ' is-on' : '') + '" data-act="note-filter" data-filter="all" role="tab" aria-selected="' + (current === 'all') + '" type="button">全部 <span>' + (books.length + knowledge.length) + '</span></button>' +
-    '<button class="note-type-tab' + (current === 'books' ? ' is-on' : '') + '" data-act="note-filter" data-filter="books" role="tab" aria-selected="' + (current === 'books') + '" type="button">笔记本 <span>' + books.length + '</span></button>' +
-    '<button class="note-type-tab' + (current === 'kb' ? ' is-on' : '') + '" data-act="note-filter" data-filter="kb" role="tab" aria-selected="' + (current === 'kb') + '" type="button">知识笔记 <span>' + knowledge.length + '</span></button>' +
+    '<button class="note-type-tab' + (current === 'all' ? ' is-on' : '') + '" data-act="note-filter" data-filter="all" role="tab" aria-selected="' + (current === 'all') + '" type="button">全部内容 <span>' + (books.length + knowledge.length) + ' 项</span></button>' +
+    '<button class="note-type-tab' + (current === 'books' ? ' is-on' : '') + '" data-act="note-filter" data-filter="books" role="tab" aria-selected="' + (current === 'books') + '" type="button">笔记本 <span>' + books.length + ' 本</span></button>' +
+    '<button class="note-type-tab' + (current === 'kb' ? ' is-on' : '') + '" data-act="note-filter" data-filter="kb" role="tab" aria-selected="' + (current === 'kb') + '" type="button">知识笔记 <span>' + knowledge.length + ' 条</span></button>' +
   '</div>';
 }
 
@@ -585,7 +585,7 @@ function noteLibraryHtml() {
     ? ''
     : '<div class="note-library-top">' +
         '<label class="note-library-search"><span class="sr-only">搜索笔记</span><input id="noteLibrarySearch" type="search" value="' + attr(ui.noteQuery || '') + '" placeholder="搜索笔记本 / 知识笔记"></label>' +
-        '<span class="note-library-count">' + (batch ? '已选 ' + selectedCount + ' 本' : (books.length + knowledge.length) + ' 项') + '</span>' +
+        '<span class="note-library-count">' + (batch ? '已选 ' + selectedCount + ' 本' : books.length + ' 本 · ' + knowledge.length + ' 条') + '</span>' +
         (!batch && books.length ? '<button class="btn btn-xs note-batch-entry" data-act="note-batch" type="button">批量删除</button>' : '') +
       '</div>';
   var bookSection = '';
@@ -620,7 +620,7 @@ function noteLibraryHtml() {
   return '<section class="page-head note-library-head"><div>' +
       '<div class="page-kicker">笔记 / LIBRARY</div>' +
       '<h1 class="page-title">笔记库</h1>' +
-      '<p class="page-sub">' + (batch ? '勾选要删除的笔记本；删除后无法恢复，请确认。' : '手写笔记本与 Markdown 知识笔记放在同一处；可搜索、导入、扫描，并随 JSON 备份导出。') + '</p>' +
+      '<p class="page-sub">' + (batch ? '勾选要删除的笔记本；删除后无法恢复，请确认。' : '手写笔记本与 Markdown 知识笔记放在同一处；本机现有 <b>' + books.length + '</b> 本笔记本 · <b>' + noteTotalPages() + '</b> 页手写 · <b>' + knowledge.length + '</b> 条知识笔记，可搜索、导入、扫描，并随 JSON 备份导出。') + '</p>' +
     '</div><div class="page-actions">' + headActions + '</div></section>' +
     subjectJumpHtml('notes') +
     (batch ? '' : noteTabsHtml(books, knowledge)) +

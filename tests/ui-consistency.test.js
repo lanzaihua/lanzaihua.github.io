@@ -1,0 +1,47 @@
+'use strict';
+const test = require('node:test');
+const assert = require('node:assert');
+const fs = require('fs');
+const path = require('path');
+const vm = require('vm');
+
+const ROOT = path.resolve(__dirname, '..');
+const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
+
+test('visible copy uses the current storage backend and review facts', () => {
+  const library = read('src/js/30-library.js');
+  const stats = read('src/js/16-stats.js');
+  const editor = read('src/js/40-editor.js');
+  const direct = read('src/js/46-direct-ai.js');
+  assert.ok(!/D1 至 D365/.test(library), '规范页仍写 D1 至 D365，和 20–32 个节点矛盾');
+  assert.ok(/20–32/.test(library) && /D1 至 D1800/.test(library), '规范页缺少真实复习节点范围');
+  const shell = read('src/js/15-shell.js');
+  assert.ok(!/D365|D1\/3\/7\/15\/30/.test(library + shell), '当前界面仍残留旧的 D365 / D1-3-7-15-30 节奏');
+  assert.ok(/D1…D1800/.test(shell), '复习行没有显示 D1…D1800 的真实跨度');
+  assert.ok(!/数据默认保存在浏览器 localStorage/.test(library), '规范页仍把主存储写成 localStorage');
+  assert.ok(/IndexedDB/.test(library) && /IndexedDB/.test(stats), '规范或统计页没有写明 IndexedDB');
+  assert.ok(/AES-GCM/.test(editor) && /IndexedDB/.test(editor), '设置页密钥说明没有写明 AES-GCM / IndexedDB');
+  assert.ok(!/token 只存本机 localStorage/.test(direct), '直连 AI 注释仍写 localStorage');
+  assert.ok(!/内置 8825/.test(library), '题库注释仍是旧的 8825 题');
+  assert.ok(/本笔记本/.test(read('src/js/49-notes.js')) && /条知识笔记/.test(read('src/js/49-notes.js')), '笔记库没有统一本 / 条计数口径');
+  assert.ok(/\.hero-side-empty\b/.test(read('src/styles.css')), '总览空进度卡片缺少样式');
+});
+
+test('latest update block and README share the same date, counts and current facts', () => {
+  const changelog = read('src/js/48-changelog.js');
+  const sandbox = { window: {}, document: { addEventListener() {}, querySelector() { return null; }, querySelectorAll() { return []; }, getElementById() { return null; } }, console };
+  vm.runInNewContext(changelog + '\n;globalThis.__UPDATE_LOG__ = UPDATE_LOG;', sandbox, { filename: '48-changelog.js' });
+  const latest = sandbox.__UPDATE_LOG__[0];
+  const latestText = JSON.stringify(latest);
+  assert.strictEqual(latest.date, '2026-11-16');
+  assert.strictEqual(latest.title, '界面自洽与发布收口');
+  assert.strictEqual(latest.items.length, 18);
+  assert.ok(!/99 项|题库仍为 9163|1900 余字|v2026\.11\.15|证明成立（详见标准解答）|按 4MB 预算检查/.test(latestText), '最新更新块仍含旧的同日数值');
+  assert.ok(latest.notifyItems.every((it) => latest.items.some((row) => row.group === it.group)), '通知分组不在最新更新记录中');
+  const readme = read('README.md');
+  assert.ok(readme.includes('### 2026-11-16 · 界面自洽与发布收口'), 'README 最新更新块日期或标题不一致');
+  assert.ok(readme.includes('**18 项 · 18 组**'), 'README 最新更新块计数不一致');
+  assert.ok(readme.includes('默认 IndexedDB'), 'README 数据方式仍写 localStorage');
+  const changelogMd = read('CHANGELOG.md');
+  assert.ok(changelogMd.includes('## 界面自洽与发布收口\n\n2026-11-16\n\n**18 项 · 18 组**'), 'CHANGELOG 最新块未同步');
+});

@@ -894,10 +894,13 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('885 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('416 道习题集'),'习题集 current count');
   assert.ok(md.includes('9651'),'bank total');
-  assert.ok(md.includes('133 项回归测试'),'current test count');
+  assert.ok(md.includes('135 项回归测试'),'current test count');
   assert.ok(!md.includes('126 项回归测试')&&!md.includes('92 项回归测试')&&!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.16 Release'),'current release link');
   assert.equal(/\bv?\d{4}\.\d{2}\.\d{2}\.\d+\b/.test(md),false,'README must not keep dotted release versions');
+  const badgeColors = [...md.matchAll(/img\.shields\.io\/badge\/[^"]+?-([0-9A-F]{6})\?/g)].map((m) => m[1]);
+  assert.equal(badgeColors.length, 9, 'README has nine badges');
+  assert.equal(new Set(badgeColors).size, badgeColors.length, 'README badge colors must differ');
   const updateAt=md.indexOf('## 更新记录');
   const detailsAt=md.indexOf('<details>',updateAt);
   assert.ok(updateAt>=0&&detailsAt>updateAt,'README history must be folded');
@@ -1116,7 +1119,7 @@ test('3.1 home first screen, empty guide and mobile entry fixes stay wired', () 
   assert.match(css, /\.tabs\s*\{[^}]*order:\s*4[^}]*flex:\s*1 1 100%/s);
   assert.match(css, /\.cross-tabs\s*\{[^}]*order:\s*5[^}]*flex:\s*1 1 100%/s);
   assert.match(css, /\.kb-answer-body \.table-wrap\s*\{[^}]*overflow-x:\s*auto/s);
-  assert.match(css, /@media \(min-width: 1024px\)[\s\S]{0,260}\.home-subject\s*\{[^}]*padding-top:\s*12px/s);
+  assert.match(css, /@media \(min-width: 1024px\)[\s\S]{0,260}\.home-subject\s*\{[^}]*padding-top:\s*10px/s);
 });
 
 

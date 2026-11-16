@@ -22,9 +22,11 @@ def api(path, method='GET', data=None, ctype='application/json'):
     with urllib.request.urlopen(req, timeout=300) as r:
         raw = r.read()
         return json.loads(raw.decode('utf-8')) if raw else {}
-body = r'''四科错题本 v2026.11.16 · 期末复习按章节组卷与智能计划
+body = r'''四科错题本 v2026.11.16 · 界面自洽、期末复习与公式收口
 
-## 本轮更新
+## 2026-11-16 · 界面自洽与发布收口
+
+### 本轮更新
 - 公式渲染根因修复：矩阵行分隔符 \ 后接变量 n（如 \n-1）不再被误判成转义换行；跨行 $$ 块先整体保护，避免中间行被补 $ 切成三段；HTML 标签正则收窄，数学里的 < 不再吞掉后续公式；表格保护改为只跳过真正以 | 收尾的整行，|A_k| 这类绝对值恢复成公式。
 - 数学语言规范化：\tag{...} 保留编号并排成公式末尾；liminf / limsup 归一化后不再被拆成 lim inf；裸 LaTeX 识别加入 < 与 >，a_N>a-ε 整体进公式；全库 9651 题的 question / answer / standardSolution / detailedAnalysis / points / pitfalls / tags 逐项渲染审计 0 失败。
 - 知识点搜索：摘录不再截断在 $...$ 或 $$...$$ 中间，也不再把 \begin{vmatrix} 截成半截源码；截断点回退到完整公式边界，去掉尾部残缺命令与标点后再加省略号。
@@ -44,9 +46,10 @@ body = r'''四科错题本 v2026.11.16 · 期末复习按章节组卷与智能�
 - 新增 qa:bank-consistency、ai-http 与 ai-secret 回归；服务器先校验不安全 AI 地址再加载技能，qa:sync 复制 lib/。
 
 ## 验证
-- 回归测试 133 项通过；严格题库 QA 9651 唯一；全库渲染审计 0 失败；数学语言审计 104223 字段 0；站点一致性 2046 / 3523 / 1199 / 2883。
+- 回归测试 135 项通过；严格题库 QA 9651 唯一；全库渲染审计 0 失败；数学语言审计 104223 字段 0；站点一致性 2046 / 3523 / 1199 / 2883。
 - 公式门禁 14 个面全部 0（含 390 宽模拟考）；模拟卷编辑卡 18 个宽度、筛选栏 22 个宽度、8 视口真实浏览器均 0 failures；无障碍、性能、拆包与尺寸门禁通过；期末复习四科 10/23/6/16 章、390/768/1440 无横向溢出。
-- Pages 线上 BUILD_ID 2026.11.16-5a8044f2（以本次 tag 提交构建）。
+- 网页与 Release 共用 2026-11-16 一条记录、135 项测试与 BUILD_ID 2026.11.16-fc392865；同日不再追加小版本后缀。
+- Pages 线上 BUILD_ID 2026.11.16-fc392865（以本次 tag 提交构建）。
 
 完整记录见仓库 docs/VERIFICATION.md 与 docs/RELEASE.md。
 '''
@@ -55,7 +58,7 @@ try:
 except urllib.error.HTTPError as e:
     if e.code != 404:
         raise
-    rel = api('/releases', method='POST', data={'tag_name': TAG, 'name': '四科错题本 v2026.11.16 · 期末复习按章节组卷与智能计划', 'body': body, 'draft': False, 'prerelease': False})
+    rel = api('/releases', method='POST', data={'tag_name': TAG, 'name': '四科错题本 v2026.11.16 · 界面自洽、期末复习与公式收口', 'body': body, 'draft': False, 'prerelease': False})
     print('created release', rel['id'])
 for a in rel.get('assets', []):
     if a['name'] in ('source.zip', 'SHA256SUMS', STATIC):
@@ -67,5 +70,5 @@ for name in ['source.zip', STATIC, 'SHA256SUMS']:
     with urllib.request.urlopen(req, timeout=600) as r:
         a = json.loads(r.read().decode('utf-8'))
     print('uploaded', a['name'], a['size'])
-api('/releases/%d' % rel['id'], method='PATCH', data={'body': body, 'name': '四科错题本 v2026.11.16 · 期末复习按章节组卷与智能计划', 'target_commitish': 'main'})
+api('/releases/%d' % rel['id'], method='PATCH', data={'body': body, 'name': '四科错题本 v2026.11.16 · 界面自洽、期末复习与公式收口', 'target_commitish': 'main'})
 print('body updated')

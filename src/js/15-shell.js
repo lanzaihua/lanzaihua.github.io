@@ -136,7 +136,7 @@ function renderHomeWorkbench() {
     focusAction = '去题库挑题';
   } else if (t.unmastered > 0) {
     focusTitle = focus.subject.name + '还有 ' + focus.st.unmastered + ' 道未掌握';
-    focusNote = '按 1 / 3 / 7 天的节奏复习，先合上答案独立写一遍，再对照标准解答。';
+    focusNote = '按节点从 1 / 3 / 7 天起步，再逐步拉长到 D1800；先合上答案独立写一遍，再对照标准解答。';
   } else {
     focusTitle = '四科错题都已掌握';
     focusNote = '做一组限时模拟卷保持手感，或者从题库挑新题扩到错题本。';
@@ -328,7 +328,7 @@ function renderRail() {
       ? '<span class="sync-pill"><span class="sync-dot" data-sync-dot></span><span data-sync-text>' + (IS_GITHUB_PAGES ? 'GitHub Pages' : '静态版') + ' · 本机保存</span></span>' +
         '<br>数据只保存在本机浏览器；换设备请用设置里的导出/导入备份。'
       : '<span class="sync-pill"><span class="sync-dot" data-sync-dot></span><span data-sync-text>本机优先</span></span>' +
-        '<br>数据保存在本机浏览器；启动 server.js 后可自动同步。';
+        '<br>数据保存在本机浏览器；可导出备份，换设备再导入；本机运行 server.js 时可选同步。';
   }
 }
 
@@ -582,11 +582,15 @@ function viewOverview(subjectId) {
           '<button class="btn btn-primary" data-act="ai-open" data-subject="' + s.id + '" type="button">智能录入</button>' +
         '</div>' +
       '</div>' +
-      '<div class="hero-side">' +
-        '<div class="progress-label">掌握进度</div>' +
-        '<div class="progress-num">' + st.pct + '<small>%</small></div>' +
-        '<div class="progress-track"><i style="width:' + st.pct + '%"></i></div>' +
-        '<div class="hero-meta"><span>已掌握 ' + st.mastered + ' 题</span><span>未掌握 ' + st.unmastered + ' 题</span></div>' +
+      '<div class="hero-side' + (st.total ? '' : ' is-empty') + '">' +
+        (st.total
+          ? '<div class="progress-label">掌握进度</div>' +
+            '<div class="progress-num">' + st.pct + '<small>%</small></div>' +
+            '<div class="progress-track"><i style="width:' + st.pct + '%"></i></div>' +
+            '<div class="hero-meta"><span>已掌握 ' + st.mastered + ' 题</span><span>未掌握 ' + st.unmastered + ' 题</span></div>'
+          : '<div class="progress-label">掌握进度</div>' +
+            '<div class="hero-side-empty"><b>还没有错题</b><p>记下第一道错题后，这里会按已掌握 / 未掌握显示真实进度。</p>' +
+            '<button class="btn btn-primary" data-act="nav-view" data-view="bank" type="button">去题库挑一道</button></div>') +
       '</div>' +
     '</section>';
 
@@ -622,7 +626,7 @@ function sideInfoPanel(s, st) {
   return '<section class="panel"><div class="panel-head"><h2 class="panel-title">复习法</h2><span class="panel-sub">四科通用节奏</span></div>' +
     '<div class="panel-body"><ul class="timeline" style="list-style:none;padding:0;margin:0">' +
     '<li><time>当天</time><div>只看「考试标准解答」与「同类型模板」，确认现在会做。</div></li>' +
-    '<li><time class="review-day">D1/3/7/15/30</time><div>按复习行打卡；合上答案能独立写步骤，再做对变式，才算已掌握。</div></li>' +
+    '<li><time class="review-day">D1…D1800</time><div>按复习行打卡；合上答案能独立写步骤，再做对变式，才算已掌握。</div></li>' +
     '<li><time>考前</time><div>走「按章索引」，按知识要点刷，不按时间刷。</div></li>' +
     '</ul><p style="margin:14px 0 0"><button class="linkish linkish-action" data-act="nav-view" data-view="guide">查看本科规范与示范</button></p></div></section>';
 }

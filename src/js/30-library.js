@@ -280,7 +280,7 @@ function syncEntryToLibraries(e) {
 }
 
 function exportLibraryPayload() {
-  // 备份只导出用户自己新增的模板/题库题；内置 8825 题由页面代码随身携带，
+  // 备份只导出用户自己新增的模板/题库题；内置 9651 题由页面代码随身携带，
   // 写进备份会从数 MB 膨胀到十几 MB，导入时还会把旧内置题库回滚覆盖新版本。
   var templates = {};
   var bank = {};
@@ -642,20 +642,20 @@ function viewGuide(subjectId) {
   var conventions = decorateGuideTables(renderMarkdown(s.conventionsMd || ''));
   var example = s.exampleMd ? decorateGuideTables(renderMarkdown(s.exampleMd)) : '';
   var main = '<div class="guide-facts" aria-label="规范摘要">' +
-      '<div><b>5</b><span>必填字段</span><small>解答、解析、答案、要点、易错点</small></div>' +
+      '<div><b>05</b><span>必填字段</span><small>解答、解析、答案、要点、易错点</small></div>' +
       '<div><b>02</b><span>套编号</span><small>错题 A/M/G/E · 题库 GA/MA/GE/WE</small></div>' +
-      '<div><b>7</b><span>复习节点</span><small>D1 至 D365，按节奏解锁</small></div>' +
+      '<div><b>20–32</b><span>复习节点</span><small>D1 至 D1800，按节奏解锁</small></div>' +
       '<div><b>01</b><span>套写法</span><small>Markdown + LaTeX，网页统一渲染</small></div>' +
     '</div>' +
-    '<section class="panel guide-panel guide-fields" id="guide-fields"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">01 / FIELDS</span><h2 class="panel-title">条目规范与复习法</h2><p class="guide-panel-lead">一条错题先写全五件套，再按 1 / 3 / 7 天的节奏重做；下面的表格是四科共用的最低标准。</p></div><span class="panel-sub">统一适用四科</span></div>' +
+    '<section class="panel guide-panel guide-fields" id="guide-fields"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">01 / FIELDS</span><h2 class="panel-title">条目规范与复习法</h2><p class="guide-panel-lead">一条错题先写全五件套，再按 1 / 3 / 7 天起步，按节点一路排到 D1800；下面的表格是四科共用的最低标准。</p></div><span class="panel-sub">统一适用四科</span></div>' +
     '<div class="panel-body"><div class="md">' + conventions + '</div>' +
     '<p class="form-note">本页为四科统一规范；新增或修改只写入网页数据，不改写原始 Markdown 文件。</p></div></section>' +
     (example ? '<section class="panel guide-panel guide-example" id="guide-example"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">02 / EXAMPLE</span><h2 class="panel-title">格式示范</h2><p class="guide-panel-lead">不必逐字模仿，但字段顺序、公式写法和解答结构照这个来。</p></div><span class="panel-sub">照这个写</span></div><div class="panel-body"><div class="md">' + example + '</div></div></section>' : '') +
     '<section class="panel guide-panel guide-data" id="guide-data"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">03 / DATA</span><h2 class="panel-title">数据与维护</h2><p class="guide-panel-lead">数据默认留在本机；换设备或清缓存前，先导出 JSON 备份。</p></div></div><div class="panel-body"><div class="md">' +
       '<ul>' +
-      '<li>网页数据默认保存在浏览器 localStorage；用同一台设备打开即可继续编辑。</li>' +
+      '<li>网页数据默认保存在浏览器 IndexedDB；用同一台设备打开即可继续编辑。</li>' +
       '<li>换设备时：在「设置与同步」里导出 JSON，再到另一台设备导入。</li>' +
-      '<li>启动 <code>node server.js</code> 后，页面会自动把改动 PUT 到 <code>data/state.json</code>，手机和电脑同一 URL 就能共享。</li>' +
+      '<li>只有在自己的电脑上运行 <code>node server.js</code> 时，页面才会把改动 PUT 到 <code>data/state.json</code>，同一局域网的手机和电脑可共享；GitHub Pages 静态版没有这个接口。</li>' +
       '<li>条目里的 LaTeX 用 <code>$...$</code>（行内）或 <code>$$...$$</code>（独立公式）；网页统一用 Temml 渲染。</li>' +
       '</ul>' +
     '</div></div></section>';
@@ -669,7 +669,7 @@ function viewGuide(subjectId) {
     '<div class="guide-card"><span class="guide-card-kicker">五件套</span><h3>缺一不可</h3>' +
       '<ul class="guide-check"><li>考试标准解答过程</li><li>详细解析</li><li>答案</li><li>解题要点</li><li>易错点</li></ul></div>' +
     '<div class="guide-card"><span class="guide-card-kicker">复习节奏</span><h3>重做优先</h3>' +
-      '<div class="guide-days"><span>D1</span><span>D3</span><span>D7</span><span>D15</span><span>D30</span><span>D60</span><span>D365</span></div>' +
+      '<div class="guide-days"><span>D1</span><span>D3</span><span>D7</span><span>D15</span><span>D30</span><span>D60</span><span>D1800</span></div>' +
       '<p>按 1–5 星与内容难度生成 20–32 个节点，同星级会按错误类型、要点和变式数量再细分，最远 D1800；按录入与上一节点时间解锁，当天看一遍，之后遮住解答重写，变式也做对再标「已掌握」。</p></div>' +
     '<div class="guide-card"><span class="guide-card-kicker">编号前缀</span><h3>条目与题库分开</h3>' +
       '<div class="guide-prefix"><span><b>A</b>高代错题</span><span><b>M</b>数分错题</span><span><b>G</b>解几错题</span><span><b>E</b>西经错题</span></div><div class="guide-prefix" style="margin-top:8px"><span><b>GA</b>高代题库</span><span><b>MA</b>数分题库</span><span><b>GE</b>解几题库</span><span><b>WE</b>西经题库</span></div></div>' +

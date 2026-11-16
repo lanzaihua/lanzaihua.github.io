@@ -248,5 +248,5 @@ function viewStats() {
       '<section class="panel stats-panel"><div class="panel-head"><h2 class="panel-title">章节分布</h2><span class="panel-sub">错题最多的 8 章</span></div><div class="panel-body">' + statsChapterHtml(chapters) + '</div></section>' +
       '<section class="panel stats-panel stats-panel-wide"><div class="panel-head"><h2 class="panel-title">模拟考成绩</h2><span class="panel-sub">最近 6 次已交卷</span></div><div class="panel-body">' + statsExamHtml(exams) + '</div></section>' +
     '</div>' +
-    '<p class="stats-footnote">统计范围：本机 localStorage 中的错题、复习打卡、题库与模拟考记录。导出备份再导入不会重复计数。</p>';
+    '<p class="stats-footnote">统计范围：本机浏览器（IndexedDB）中的错题、复习打卡、题库与模拟考记录。导出备份再导入不会重复计数。</p>';
 }

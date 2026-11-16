@@ -462,7 +462,7 @@ languageRow +
         '</label>' +
         '<label class="field full"><span>API 地址（Base URL）</span><input id="aiBaseUrl" type="text" autocomplete="off" spellcheck="false" value="' + attr(aiCfg.baseUrl) + '" placeholder="https://api.openai.com/v1"></label>' +
         '<label class="field full"><span>API Key</span><input id="aiApiKey" type="password" autocomplete="off" spellcheck="false" value="" placeholder="' + (aiCfg.apiKey ? '已保存，留空表示不修改' : '粘贴 API Key') + '"></label>' +
-        '<p class="form-note" role="note">密钥只存本机 localStorage，导出备份会剔除；换设备需重新填写。</p>' +
+        '<p class="form-note" role="note">密钥经 AES-GCM 加密后只存本机 IndexedDB，导出备份会剔除；换设备需重新填写。</p>' +
       '</div>' +
       '<div class="ai-config-actions"><button class="btn btn-xs btn-primary" data-act="save-ai-config" type="button">保存 AI 设置</button>' +
         '<button class="btn btn-xs" data-act="clear-ai-config" type="button">清除</button>' +

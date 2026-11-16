@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.16-5a8044f2";</script>
+<script>window.__BUILD_ID__="2026.11.16-fc392865";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9079,12 +9079,12 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 .entry-empty-step em span { margin-left: 2px; }
 
 @media (min-width: 1024px) {
-  .home-inner { padding-top: 24px !important; }
+  .home-inner { padding-top: 20px !important; }
   .home-top { padding-bottom: 20px !important; margin-bottom: 26px !important; }
   .home-kicker { margin-bottom: 13px !important; }
   .home-title { font-size: clamp(42px, 4.2vw, 56px) !important; margin-bottom: 10px !important; }
-  .home-welcome-note { margin-bottom: 24px !important; }
-  .home-workbench { margin-bottom: 26px !important; }
+  .home-welcome-note { margin-bottom: 18px !important; }
+  .home-workbench { margin-bottom: 4px !important; }
   .hw-top > .hw-metric { padding-top: 15px !important; padding-bottom: 13px !important; }
   .hw-top > .hw-focus { padding-top: 15px !important; padding-bottom: 13px !important; }
   .hw-bottom { margin-top: 20px !important; }
@@ -9174,9 +9174,9 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 
 @media (min-width: 1024px) {
   .home-welcome-note { margin-bottom: 8px !important; }
-  .home-workbench { margin-bottom: 12px !important; }
-  .home-subjects-head { margin-top: 10px !important; margin-bottom: 6px !important; }
-  .home-subject { padding-top: 12px !important; padding-bottom: 12px !important; }
+  .home-workbench { margin-bottom: 4px !important; }
+  .home-subjects-head { margin-top: 4px !important; margin-bottom: 6px !important; padding-top: 6px !important; }
+  .home-subject { padding-top: 10px !important; padding-bottom: 10px !important; }
 }
 
 @media (min-width: 1024px) {
@@ -9708,6 +9708,72 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   display: inline-block !important;
   vertical-align: middle !important;
   line-height: normal !important;
+}
+
+/* 2026-11-16: 全站界面自洽与排版收口。
+   目标：统一页头/计数口径、空态进度、手机首页节奏，不改变已有功能。 */
+.hero-side.is-empty {
+  justify-content: flex-start !important;
+}
+.hero-side-empty {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  max-width: 28ch;
+  padding: 2px 0 4px;
+}
+.hero-side-empty b {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.hero-side-empty p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+.hero-side-empty .btn {
+  justify-self: start;
+  margin-top: 2px;
+}
+.note-library-head .page-sub b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.note-type-tabs {
+  gap: 6px !important;
+}
+.note-type-tab {
+  min-height: 34px;
+  padding: 7px 12px !important;
+  font-size: 11.5px !important;
+}
+.note-type-tab span {
+  font-size: 9.5px !important;
+  letter-spacing: .02em !important;
+}
+.note-library-count {
+  font-size: 10.5px !important;
+}
+.page-head .page-actions {
+  row-gap: 8px;
+}
+@media (max-width: 430px) {
+  .home-inner { padding-top: 14px !important; }
+  .home-top { padding-bottom: 10px !important; margin-bottom: 14px !important; }
+  .home-kicker { margin-bottom: 8px !important; }
+  .home-title { font-size: 34px !important; line-height: 1.06 !important; margin-bottom: 8px !important; }
+  .home-welcome-note { margin-bottom: 12px !important; font-size: 12.5px !important; line-height: 1.68 !important; }
+  .home-subjects-head { margin-top: 4px !important; margin-bottom: 4px !important; }
+  .home-subject { padding-top: 10px !important; padding-bottom: 10px !important; }
+  .home-subject .hs-desc { font-size: 10.5px !important; }
+  .page-head { margin-bottom: 18px !important; padding-bottom: 12px !important; }
+  .page-title { font-size: 27px !important; }
+  .page-sub { font-size: 12.5px !important; line-height: 1.72 !important; }
+  .hero-side-empty { max-width: none; }
+  .note-type-tab { padding: 7px 10px !important; }
 }
 
 </style>
@@ -16746,7 +16812,7 @@ function renderHomeWorkbench() {
     focusAction = '去题库挑题';
   } else if (t.unmastered > 0) {
     focusTitle = focus.subject.name + '还有 ' + focus.st.unmastered + ' 道未掌握';
-    focusNote = '按 1 / 3 / 7 天的节奏复习，先合上答案独立写一遍，再对照标准解答。';
+    focusNote = '按节点从 1 / 3 / 7 天起步，再逐步拉长到 D1800；先合上答案独立写一遍，再对照标准解答。';
   } else {
     focusTitle = '四科错题都已掌握';
     focusNote = '做一组限时模拟卷保持手感，或者从题库挑新题扩到错题本。';
@@ -16938,7 +17004,7 @@ function renderRail() {
       ? '<span class="sync-pill"><span class="sync-dot" data-sync-dot></span><span data-sync-text>' + (IS_GITHUB_PAGES ? 'GitHub Pages' : '静态版') + ' · 本机保存</span></span>' +
         '<br>数据只保存在本机浏览器；换设备请用设置里的导出/导入备份。'
       : '<span class="sync-pill"><span class="sync-dot" data-sync-dot></span><span data-sync-text>本机优先</span></span>' +
-        '<br>数据保存在本机浏览器；启动 server.js 后可自动同步。';
+        '<br>数据保存在本机浏览器；可导出备份，换设备再导入；本机运行 server.js 时可选同步。';
   }
 }
 
@@ -17192,11 +17258,15 @@ function viewOverview(subjectId) {
           '<button class="btn btn-primary" data-act="ai-open" data-subject="' + s.id + '" type="button">智能录入</button>' +
         '</div>' +
       '</div>' +
-      '<div class="hero-side">' +
-        '<div class="progress-label">掌握进度</div>' +
-        '<div class="progress-num">' + st.pct + '<small>%</small></div>' +
-        '<div class="progress-track"><i style="width:' + st.pct + '%"></i></div>' +
-        '<div class="hero-meta"><span>已掌握 ' + st.mastered + ' 题</span><span>未掌握 ' + st.unmastered + ' 题</span></div>' +
+      '<div class="hero-side' + (st.total ? '' : ' is-empty') + '">' +
+        (st.total
+          ? '<div class="progress-label">掌握进度</div>' +
+            '<div class="progress-num">' + st.pct + '<small>%</small></div>' +
+            '<div class="progress-track"><i style="width:' + st.pct + '%"></i></div>' +
+            '<div class="hero-meta"><span>已掌握 ' + st.mastered + ' 题</span><span>未掌握 ' + st.unmastered + ' 题</span></div>'
+          : '<div class="progress-label">掌握进度</div>' +
+            '<div class="hero-side-empty"><b>还没有错题</b><p>记下第一道错题后，这里会按已掌握 / 未掌握显示真实进度。</p>' +
+            '<button class="btn btn-primary" data-act="nav-view" data-view="bank" type="button">去题库挑一道</button></div>') +
       '</div>' +
     '</section>';
 
@@ -17232,7 +17302,7 @@ function sideInfoPanel(s, st) {
   return '<section class="panel"><div class="panel-head"><h2 class="panel-title">复习法</h2><span class="panel-sub">四科通用节奏</span></div>' +
     '<div class="panel-body"><ul class="timeline" style="list-style:none;padding:0;margin:0">' +
     '<li><time>当天</time><div>只看「考试标准解答」与「同类型模板」，确认现在会做。</div></li>' +
-    '<li><time class="review-day">D1/3/7/15/30</time><div>按复习行打卡；合上答案能独立写步骤，再做对变式，才算已掌握。</div></li>' +
+    '<li><time class="review-day">D1…D1800</time><div>按复习行打卡；合上答案能独立写步骤，再做对变式，才算已掌握。</div></li>' +
     '<li><time>考前</time><div>走「按章索引」，按知识要点刷，不按时间刷。</div></li>' +
     '</ul><p style="margin:14px 0 0"><button class="linkish linkish-action" data-act="nav-view" data-view="guide">查看本科规范与示范</button></p></div></section>';
 }
@@ -17620,7 +17690,7 @@ function viewStats() {
       '<section class="panel stats-panel"><div class="panel-head"><h2 class="panel-title">章节分布</h2><span class="panel-sub">错题最多的 8 章</span></div><div class="panel-body">' + statsChapterHtml(chapters) + '</div></section>' +
       '<section class="panel stats-panel stats-panel-wide"><div class="panel-head"><h2 class="panel-title">模拟考成绩</h2><span class="panel-sub">最近 6 次已交卷</span></div><div class="panel-body">' + statsExamHtml(exams) + '</div></section>' +
     '</div>' +
-    '<p class="stats-footnote">统计范围：本机 localStorage 中的错题、复习打卡、题库与模拟考记录。导出备份再导入不会重复计数。</p>';
+    '<p class="stats-footnote">统计范围：本机浏览器（IndexedDB）中的错题、复习打卡、题库与模拟考记录。导出备份再导入不会重复计数。</p>';
 }
 
 /* ---- 20-entries.js ---- */
@@ -18384,7 +18454,7 @@ function syncEntryToLibraries(e) {
 }
 
 function exportLibraryPayload() {
-  // 备份只导出用户自己新增的模板/题库题；内置 8825 题由页面代码随身携带，
+  // 备份只导出用户自己新增的模板/题库题；内置 9651 题由页面代码随身携带，
   // 写进备份会从数 MB 膨胀到十几 MB，导入时还会把旧内置题库回滚覆盖新版本。
   var templates = {};
   var bank = {};
@@ -18746,20 +18816,20 @@ function viewGuide(subjectId) {
   var conventions = decorateGuideTables(renderMarkdown(s.conventionsMd || ''));
   var example = s.exampleMd ? decorateGuideTables(renderMarkdown(s.exampleMd)) : '';
   var main = '<div class="guide-facts" aria-label="规范摘要">' +
-      '<div><b>5</b><span>必填字段</span><small>解答、解析、答案、要点、易错点</small></div>' +
+      '<div><b>05</b><span>必填字段</span><small>解答、解析、答案、要点、易错点</small></div>' +
       '<div><b>02</b><span>套编号</span><small>错题 A/M/G/E · 题库 GA/MA/GE/WE</small></div>' +
-      '<div><b>7</b><span>复习节点</span><small>D1 至 D365，按节奏解锁</small></div>' +
+      '<div><b>20–32</b><span>复习节点</span><small>D1 至 D1800，按节奏解锁</small></div>' +
       '<div><b>01</b><span>套写法</span><small>Markdown + LaTeX，网页统一渲染</small></div>' +
     '</div>' +
-    '<section class="panel guide-panel guide-fields" id="guide-fields"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">01 / FIELDS</span><h2 class="panel-title">条目规范与复习法</h2><p class="guide-panel-lead">一条错题先写全五件套，再按 1 / 3 / 7 天的节奏重做；下面的表格是四科共用的最低标准。</p></div><span class="panel-sub">统一适用四科</span></div>' +
+    '<section class="panel guide-panel guide-fields" id="guide-fields"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">01 / FIELDS</span><h2 class="panel-title">条目规范与复习法</h2><p class="guide-panel-lead">一条错题先写全五件套，再按 1 / 3 / 7 天起步，按节点一路排到 D1800；下面的表格是四科共用的最低标准。</p></div><span class="panel-sub">统一适用四科</span></div>' +
     '<div class="panel-body"><div class="md">' + conventions + '</div>' +
     '<p class="form-note">本页为四科统一规范；新增或修改只写入网页数据，不改写原始 Markdown 文件。</p></div></section>' +
     (example ? '<section class="panel guide-panel guide-example" id="guide-example"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">02 / EXAMPLE</span><h2 class="panel-title">格式示范</h2><p class="guide-panel-lead">不必逐字模仿，但字段顺序、公式写法和解答结构照这个来。</p></div><span class="panel-sub">照这个写</span></div><div class="panel-body"><div class="md">' + example + '</div></div></section>' : '') +
     '<section class="panel guide-panel guide-data" id="guide-data"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">03 / DATA</span><h2 class="panel-title">数据与维护</h2><p class="guide-panel-lead">数据默认留在本机；换设备或清缓存前，先导出 JSON 备份。</p></div></div><div class="panel-body"><div class="md">' +
       '<ul>' +
-      '<li>网页数据默认保存在浏览器 localStorage；用同一台设备打开即可继续编辑。</li>' +
+      '<li>网页数据默认保存在浏览器 IndexedDB；用同一台设备打开即可继续编辑。</li>' +
       '<li>换设备时：在「设置与同步」里导出 JSON，再到另一台设备导入。</li>' +
-      '<li>启动 <code>node server.js</code> 后，页面会自动把改动 PUT 到 <code>data/state.json</code>，手机和电脑同一 URL 就能共享。</li>' +
+      '<li>只有在自己的电脑上运行 <code>node server.js</code> 时，页面才会把改动 PUT 到 <code>data/state.json</code>，同一局域网的手机和电脑可共享；GitHub Pages 静态版没有这个接口。</li>' +
       '<li>条目里的 LaTeX 用 <code>$...$</code>（行内）或 <code>$$...$$</code>（独立公式）；网页统一用 Temml 渲染。</li>' +
       '</ul>' +
     '</div></div></section>';
@@ -18773,7 +18843,7 @@ function viewGuide(subjectId) {
     '<div class="guide-card"><span class="guide-card-kicker">五件套</span><h3>缺一不可</h3>' +
       '<ul class="guide-check"><li>考试标准解答过程</li><li>详细解析</li><li>答案</li><li>解题要点</li><li>易错点</li></ul></div>' +
     '<div class="guide-card"><span class="guide-card-kicker">复习节奏</span><h3>重做优先</h3>' +
-      '<div class="guide-days"><span>D1</span><span>D3</span><span>D7</span><span>D15</span><span>D30</span><span>D60</span><span>D365</span></div>' +
+      '<div class="guide-days"><span>D1</span><span>D3</span><span>D7</span><span>D15</span><span>D30</span><span>D60</span><span>D1800</span></div>' +
       '<p>按 1–5 星与内容难度生成 20–32 个节点，同星级会按错误类型、要点和变式数量再细分，最远 D1800；按录入与上一节点时间解锁，当天看一遍，之后遮住解答重写，变式也做对再标「已掌握」。</p></div>' +
     '<div class="guide-card"><span class="guide-card-kicker">编号前缀</span><h3>条目与题库分开</h3>' +
       '<div class="guide-prefix"><span><b>A</b>高代错题</span><span><b>M</b>数分错题</span><span><b>G</b>解几错题</span><span><b>E</b>西经错题</span></div><div class="guide-prefix" style="margin-top:8px"><span><b>GA</b>高代题库</span><span><b>MA</b>数分题库</span><span><b>GE</b>解几题库</span><span><b>WE</b>西经题库</span></div></div>' +
@@ -19308,7 +19378,7 @@ languageRow +
         '</label>' +
         '<label class="field full"><span>API 地址（Base URL）</span><input id="aiBaseUrl" type="text" autocomplete="off" spellcheck="false" value="' + attr(aiCfg.baseUrl) + '" placeholder="https://api.openai.com/v1"></label>' +
         '<label class="field full"><span>API Key</span><input id="aiApiKey" type="password" autocomplete="off" spellcheck="false" value="" placeholder="' + (aiCfg.apiKey ? '已保存，留空表示不修改' : '粘贴 API Key') + '"></label>' +
-        '<p class="form-note" role="note">密钥只存本机 localStorage，导出备份会剔除；换设备需重新填写。</p>' +
+        '<p class="form-note" role="note">密钥经 AES-GCM 加密后只存本机 IndexedDB，导出备份会剔除；换设备需重新填写。</p>' +
       '</div>' +
       '<div class="ai-config-actions"><button class="btn btn-xs btn-primary" data-act="save-ai-config" type="button">保存 AI 设置</button>' +
         '<button class="btn btn-xs" data-act="clear-ai-config" type="button">清除</button>' +
@@ -22505,7 +22575,7 @@ function aiRetry() {
 /* ---- 46-direct-ai.js ---- */
 /* =========================================================
    46-direct-ai — 纯静态页在线直连 DeepSeek Harness API
-   技能包在构建时 gzip 内联；token 只存本机 localStorage。
+   技能包在构建时 gzip 内联；token 加密后只存本机 IndexedDB。
    ========================================================= */
 var DSH_TOKEN_KEY = 'sanke-dsh-token';
 var DSH_API_URL = 'https://api.deepseek.com/anthropic/v1/messages';
@@ -23607,297 +23677,113 @@ function autoAiPendingCount() {
 var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_ID__) || '').match(/^(\d{4})\.(\d{2})\.(\d{2})/);
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [{
-  "date": "2026-11-15",
-  "title": "排版收口与稳定性加固",
-  "historyTitle": "排版收口与稳定性加固",
-  "summary": "本轮在上一轮排版收口基础上做全项目审计与加固：本机存储写入后回读校验，失败立即降级到内存并可从错误卡片导出备份；Pages 版把 15.2MB 单文件题库拆成 3.0MB 首页 + 12.3MB data/bank.json，首次进入题库后按科目写入 IndexedDB，构建号变化自动换新，断网回退上一版缓存；404 深链改用查询参数还原，Service Worker 缓存名绑定构建号并移除强制 Cache-Control meta；AI 状态非 JSON 有兜底，筛选和弹窗关闭后焦点回到控件或标题；CI 先构建 Pages 再发布，新增真浏览器拆包加载/二次缓存/深链门禁，首页超 4MB 或拆分不足 25% 阻止发布。四科 9651，133 项回归、严格 QA、8 视口、公式、无障碍、性能与拆包 QA 通过。同时收口发布记录与通知：README 只展开最新一块，11-14 及更早 23 个版本收进 details；GitHub Releases 同日只保留一条，不再给同一天加小版本后缀；同一天记录更新原地替换通知，不再追加补充。本块随 GitHub Pages 与 v2026.11.16 Release 发布。同日完善期末复习：按章节直接选题组卷，复习计划按考试日期列出每章知识点、全部答题模板与例题，每日计划轮换模板。同日修订又补一轮：备份保留内容块 key、编号查找不再抛异常、取消打卡前确认、存储超限阻断并常驻提示、同步真实退避与 413 文案、DOCX 导出补选项与解析、题库修 31 道失效答案并清理 30 处空上标与 27 组重复选项。133 项回归、严格 QA、站点一致性、8 视口、公式、无障碍、性能与拆包 QA 通过。同日再修「我的模拟卷」编辑卡：标题输入恢复整行，时长与「分钟」同行，操作按钮在手机改为三列且不裁切；390 / 820 / 1440 实测无大段空白、无文字截断。同日再修题库筛选栏：桌面从 inline 流改为 Grid + 可换行字段区，1301px 起四列、其余 2–3 列，手机保持两列折叠；新增 qa:filters 在 22 个宽度断言间距、重叠、越界与文字裁切，133 项回归。本块 39 项 / 39 组。",
-  "notifySummary": "本轮做全项目审计与加固：存储写入回读校验、失败可导出备份；Pages 题库拆包 15.2→3.0MB，首次进题库写入 IndexedDB、断网回退；404 深链查询参数还原、缓存名绑定构建号；AI 异常兜底与焦点恢复；CI 新增拆包真浏览器门禁和 4MB 体积上限；README 只展开最新一块，旧记录收进 details；GitHub Releases 同日只保留一条，不再加小版本后缀；同一天通知原地替换。四科 9651；又补备份键名、编号定位、复习确认、存储上限、同步重试、试卷导出与题库校准，133 项测试。另修「我的模拟卷」编辑卡标题截断与大段空白，并修题库筛选栏控件拥挤；另补期末复习按章节选题与复习计划模板/例题。本块 39 条要点。",
+  "date": "2026-11-16",
+  "title": "界面自洽与发布收口",
+  "historyTitle": "界面自洽与发布收口",
+  "summary": "本轮完成 2026-11-16 的界面自洽、排版收口与发布记录整理：规范页的复习节点统一为 20–32 个（D1–D1800），存储说明改为 IndexedDB，AI 密钥说明改为 AES-GCM；笔记库统一「本 / 页 / 条」计数，总览零错题时改为可行动空态，页头、按钮、卡片与手机首页节奏统一。题库保持 9651 题（2046 / 3523 / 1199 / 2883），查重、严格 QA、全库渲染与数学语言审计均为 0 问题；期末复习保留按章节组卷与含模板、例题、标准解答和详细解析的复习计划；模拟卷编辑卡、题库筛选栏、本机 IndexedDB 存储与题库分片继续由真浏览器门禁覆盖。README 只展开最新一块，历史版本折叠；GitHub Releases 同一天只保留一条。135 项回归测试、公式、无障碍、性能、8 视口与发布校验全部通过，本块随 GitHub Pages 与 v2026.11.16 Release 发布。",
+  "notifySummary": "本轮把全站文案与计数重新对齐：复习节点统一 20–32（D1–D1800），存储说明改 IndexedDB，密钥说明改 AES-GCM；笔记库统一本/页/条，总览零错题改可行动空态，手机首页节奏收紧。题库仍 9651，公式与数学语言门禁 0 残留；README 只展开最新一块，Release 同日只保留一条。135 项测试与 8 视口门禁通过。",
   "notifyItems": [
     {
-      "group": "同步首启",
-      "text": "全新本机首次连上云端时先采用远端状态，绝不再用空 entries 覆盖云端；欢迎通知与今天已提醒只写本机，冲突/失败提示不再反向标脏推送。新增 qa:sync 临时服务预置一条云端题，全新浏览器打开后断言 rev 不变、条目仍为 1、零 PUT。"
+      "group": "界面自洽",
+      "text": "规范页不再同时写 D1–D365 与 D1800；存储说明统一 IndexedDB，密钥说明统一 AES-GCM；题库注释同步 9651 题。"
     },
     {
-      "group": "长标题与笔记",
-      "text": "错题标题任意位置可换行，160 个连续字母也不再伸出卡片；手机/平板 .main 改 100% 拉伸，去掉 flex 子项的 shrink-to-fit，笔记工具栏、画布与翻页回到视口内，390/768 不再右侧不可达。"
+      "group": "笔记计数",
+      "text": "笔记库改为「X 本笔记本 · Y 页手写 · Z 条知识笔记」，页签显示全部内容 3 项 / 笔记本 0 本 / 知识笔记 3 条，不再混用项、条、笔记。"
     },
     {
-      "group": "发布完整性",
-      "text": "source.zip 改为 git archive HEAD 全部 tracked 源码，静态包补 skills.js、_headers 与全部分片；release-check 对每个资产核对 SHA256SUMS，Pages 查询失败直接失败；CI 删除旧 Release hydration，新增产物 git diff 与 qa:pages。"
+      "group": "总览空态",
+      "text": "还没有错题时不再显示巨大的 0% 进度卡，改为说明与「去题库挑一道」按钮；记下错题后恢复真实掌握进度。"
     },
     {
-      "group": "数据卫生",
-      "text": "新增 qa:latex 扫描双反斜杠命令、集合花括号丢失、重复选项与缺 correct；修 18 处 LaTeX 与 107 条缺失 correct，基线锁记录四科数量与题干摘要，题量或题干变化必须显式更新。"
-    },
-    {
-      "group": "公式基线",
-      "text": "修复全库公式：跨行 $$、矩阵行分隔符、数学小于号与竖线不再被误判；mathify 不再用正则猜等式边界，集合花括号与 \\max\\{N_1,N_2\\} 先保护再渲染，v1.2 与 B0001 保持正文；分式、根式、矩阵加 has-tall 行内块；知识点摘录不截断公式，模拟考标题日期不再断行。新增 9651 题渲染审计、104223 字段数学语言审计与 14 面公式门禁。"
-    },
-    {
-      "group": "筛选留白",
-      "text": "题库筛选栏在桌面原本是 inline 流，控件间只剩空白字符，1097px 笔记本宽度下挤成一排；改为桌面 Grid + 可换行字段区（1301px 起四列、其余 2–3 列），手机保持两列折叠，清空与题数不再贴边。新增 qa:filters 在 22 个宽度（320–1920）断言间距 ≥8px、互不重叠、不越界、文字不裁，CI 与 qa:paper 同批执行。"
-    },
-    {
-      "group": "卡片留白",
-      "text": "设置页分区标题和行内容原来离卡片边框只有 1px；现在分区 18px 内边距、手机 16/14px，行间留 10px，标题与正文不再贴边。"
-    },
-    {
-      "group": "期末行距",
-      "text": "复习计划、复习材料、我的模拟卷说明、模拟考入口与历史卡统一 20px 左右内边距，按钮和说明不再顶到卡片边缘。"
-    },
-    {
-      "group": "复习名称",
-      "text": "每日计划不再显示 FX-AI-... 或 GA-B0001 这类内部编号，改用题目标题（超长截断），计划一眼能读。"
-    },
-    {
-      "group": "材料序号",
-      "text": "复习材料左侧改 01/02 序号，标题最多两行自然换行；原始 ID 不再逐字换行挤压正文。"
-    },
-    {
-      "group": "AI 文案",
-      "text": "已配置 AI 时「AI 出题开考」显示「已配置 AI」，未配置才显示「需配置 API」，不再和设置页状态矛盾。"
-    },
-    {
-      "group": "规范编号",
-      "text": "规范页题库示例由不存在的 GA-001 改为实际的 GA-B0001、MA-0001，与题库编号一致。"
-    },
-    {
-      "group": "防复发",
-      "text": "回归测试扩展到 99 项，覆盖计划标题、材料序号、AI 文案、规范示例、静默存储、拆包体积、深链、备份键名、编号定位、复习确认、存储上限、同步重试、DOCX 选项解析与模拟卷编辑卡；1440/390/820 截图复核贴边、长标题与按钮裁切。"
-    },
-    {
-      "group": "存储回读",
-      "text": "本机存储写入后立刻回读，浏览器静默失败或配额满时降级到内存并提示；全局错误卡片可直接导出备份，不再把没写进去当成已保存。"
-    },
-    {
-      "group": "题库拆包",
-      "text": "Pages 版首页从 15.2MB 降到 3.0MB，题库独立为 data/bank.json；首屏不再解析 9163 道题，单文件离线版仍保留，两种构建号一致。"
-    },
-    {
-      "group": "索引缓存",
-      "text": "首次进题库按四科写入 IndexedDB，构建号变化自动换新；断网回退上一版缓存，读不到才提示题库加载失败，错题与笔记仍可用。"
-    },
-    {
-      "group": "深链兜底",
-      "text": "404 改用查询参数还原深链，不依赖 sessionStorage；清空会话存储也能回到原页，只有真正未知路径才回首页。"
-    },
-    {
-      "group": "缓存边界",
-      "text": "移除强制 Cache-Control meta；缓存名绑定构建号、注册带版本参数，仍只缓存完整 200、跳过 /api 与 Range。"
-    },
-    {
-      "group": "AI 与焦点",
-      "text": "AI 状态不是 JSON 时按未配置处理并说明；筛选后焦点回原控件，弹窗关闭丢焦点时回页面标题。"
-    },
-    {
-      "group": "发布门禁",
-      "text": "CI 先构建 Pages 再发布，新增真浏览器门禁验证拆包加载、二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 99 项。"
-    },
-    {
-      "group": "Cloudflare 缓存",
-      "text": "新增 Cloudflare Pages 缓存头与迁移文档；当前仍是 GitHub Pages，不把未上线的迁移写成已完成。"
-    },
-    {
-      "group": "记录归并",
-      "text": "README 只展开最新一块，2026-11-14 及更早 23 个版本收进 details；GitHub Releases 同一天只保留一条，标签统一为 v2026.11.15 / v2026.11.14，不再给同一天加小版本后缀。"
-    },
-    {
-      "group": "通知去重",
-      "text": "同一天记录再修改时，原地替换已有更新通知的标题与正文，保留首次时间与已读状态，不再追加补充或生成第二条；旧版同日重复通知在启动时按日期合并。"
-    },
-    {
-      "group": "备份键名",
-      "text": "导出备份不再递归删除所有名为 key 的字段，内容块的 original/standard 等标识完整保留；只清同步令牌与 AI 密钥这些已知凭据，导入后解答、选项和复习块不再错位。"
-    },
-    {
-      "group": "编号定位",
-      "text": "错题、题库与模板按编号定位改用 getElementById，编号里带空格、括号或点时不再抛异常中断操作，定位与滚动都能正常完成。"
-    },
-    {
-      "group": "复习确认",
-      "text": "取消复习打卡前先提示会连带清除后面已完成的节点，确认后才执行；没有后续记录时仍直接取消，避免误删整段复习进度。"
-    },
-    {
-      "group": "存储上限",
-      "text": "本机存储写入前先按 4MB 预算检查，超限不写盘并在底部常驻提示导出备份；笔记插图、PDF 页、扫描与答卷图逐张检查容量，超限直接拒绝而不是悄悄丢改动。"
-    },
-    {
-      "group": "同步重试",
-      "text": "同步推送改为真实三次退避重试，只对网络错误和 5xx 重试；413 明确提示删除笔记图片或精简数据，4xx 带状态与原因，不再把拒绝伪装成网络失败。"
-    },
-    {
-      "group": "试卷导出",
-      "text": "模拟考 DOCX 补上客观题 A/B/C/D 选项与参考答案、标准解答、详细解析、解题要点、易错点；导出样例已用 Word 与 WPS 打开核对，页数与文字完整。"
-    },
-    {
-      "group": "题库校准",
-      "text": "修 31 道解析几何失效答案，统一四科 options 为数组，补回 30 处丢失撇号的空上标，并重写 27 组重复干扰项；严格 QA 新增 options 与空上标门禁，题库仍为 9163。"
-    },
-    {
-      "group": "审计收口",
-      "text": "五项遗留风险收口：21 道解析几何占位答案补成具体结论，22 组跨题型同题干拆成不同变式，525 处「答案：」尾注与权威答案对齐；AI 上游改为解析一次后固定 IP 请求，API Key 改 AES-GCM 存 IndexedDB，localStorage 不再留明文。新增 qa:bank-consistency 与 ai-http/ai-secret 回归，133 项测试。"
+      "group": "页头与手机",
+      "text": "页头标题、说明、操作区和卡片间距统一；430px 以下收紧首页问候、标题与四科入口，长说明自然换行。"
     },
     {
       "group": "期末复习",
-      "text": "期末复习新增按章节选题器：不用先把题加入材料，直接按章节筛选题库、勾选后加入当前卷或用所选新建 100 分卷。复习计划按考试日期拆分阶段，每章列出知识点、全部答题模板（可展开看步骤与易错点）、2 道例题（考试标准解答/答题模板/详细解析/易错点），每日计划轮换模板与例题；新增 qa:final 在 390/768/1440 断言章节筛选、模板清单、例题展开与选题建卷。"
+      "text": "按章节直接筛选题库组卷，可加入当前卷或用所选新建 100 分卷；复习计划列出每章知识点、全部答题模板与例题的考试标准解答、答题模板、详细解析和易错点。"
+    },
+    {
+      "group": "记录合并",
+      "text": "README 只展开 2026-11-16 一块，历史版本全部折叠；网页、CHANGELOG 与 README 的日期、标题、项数和分组一致；Release 同一天只保留一条。"
+    },
+    {
+      "group": "防复发",
+      "text": "回归测试扩到 135 项，新增界面自洽与更新记录一致性断言；公式、数学语言、题库、拆包、8 视口、模拟卷编辑卡与筛选栏门禁继续在 CI 执行。"
     }
   ],
   "items": [
     {
-      "group": "同步首启",
-      "text": "全新本机首次连上云端时先采用远端状态，绝不再用空 entries 覆盖云端；欢迎通知与今天已提醒只写本机，冲突/失败提示不再反向标脏推送。新增 qa:sync 临时服务预置一条云端题，全新浏览器打开后断言 rev 不变、条目仍为 1、零 PUT。"
+      "group": "界面自洽",
+      "text": "规范页复习节点统一为 20–32 个（最远 D1–D1800），不再同时写 D1 至 D365 和 D1800；规范与统计页的存储说明改为 IndexedDB，设置页密钥说明改为 AES-GCM 加密后存 IndexedDB；题库注释同步 9651 题。"
     },
     {
-      "group": "长标题与笔记",
-      "text": "错题标题任意位置可换行，160 个连续字母也不再伸出卡片；手机/平板 .main 改 100% 拉伸，去掉 flex 子项的 shrink-to-fit，笔记工具栏、画布与翻页回到视口内，390/768 不再右侧不可达。"
+      "group": "笔记计数",
+      "text": "笔记库页头、页签与分区改用同一口径：X 本笔记本 · Y 页手写 · Z 条知识笔记；页签显示「全部内容 3 项 / 笔记本 0 本 / 知识笔记 3 条」，不再把「项」「条」「笔记」混用。"
     },
     {
-      "group": "发布完整性",
-      "text": "source.zip 改为 git archive HEAD 全部 tracked 源码，静态包补 skills.js、_headers 与全部分片；release-check 对每个资产核对 SHA256SUMS，Pages 查询失败直接失败；CI 删除旧 Release hydration，新增产物 git diff 与 qa:pages。"
+      "group": "总览空态",
+      "text": "总览在零错题时不再留一张巨大的 0% 进度卡，改为「还没有错题」说明与「去题库挑一道」按钮；有错题后仍显示真实掌握进度。"
     },
     {
-      "group": "数据卫生",
-      "text": "新增 qa:latex 扫描双反斜杠命令、集合花括号丢失、重复选项与缺 correct；修 18 处 LaTeX 与 107 条缺失 correct，基线锁记录四科数量与题干摘要，题量或题干变化必须显式更新。"
+      "group": "页头与手机",
+      "text": "统一页头标题、说明、操作区与卡片的间距和按钮高度；手机 430px 以下收紧首页问候、标题和四科入口节奏，长说明自然换行，不靠缩小正文硬塞。"
     },
     {
-      "group": "公式基线",
-      "text": "全库公式管线修复：矩阵行分隔符后接 n/r 不再被误当换行，跨行 $$ 不再拆成行内公式，HTML 标签正则不再吞掉数学小于号，A_k 两侧竖线不再误判表格；知识点摘录遇到公式中间会回退，笔记摘要不再露 $ 与 \frac，模拟考标题日期不再断成 2026- / 11-16。知识点教材表在手机上堆叠成带列名的卡片，四列不再只露前三列；新增 9651 题全库渲染审计 qa:render，qa:formulas 扩到错题详情、题库、模拟卷、知识点表格与模拟考共 12 个面，桌面与 390 宽均 0 残留。"
+      "group": "题库与来源",
+      "text": "题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不写「+ 习题集」；题库仍为 9651 题，四科 2046 / 3523 / 1199 / 2883，来源与筛选计数一致。"
     },
     {
-      "group": "本机存储扩容",
-      "text": "错题与笔记改由 IndexedDB 主存（sanke-cuotiben-store），localStorage 只留 3MB 镜像与版本元数据；容量按浏览器配额留 20% 余量动态计算，不再受旧 4MB 字符预算限制，超限告警与导出备份仍保留。Chromium 实测配额 10.77GB、可用容量 8.6GB；设置页显示实时容量并可申请持久化。6MB 状态实测写入、刷新恢复均正常。"
+      "group": "公式与渲染",
+      "text": "保留公式管线修复：矩阵行分隔符、跨行 $$、数学小于号、竖线与集合花括号不再被误判；分式、根式、矩阵加 has-tall；知识点摘录不截断公式。全库 9651 题渲染审计、104223 字段数学语言审计与 14 面公式门禁保持 0 残留。"
     },
     {
-      "group": "题库分片",
-      "text": "Pages 版把题库拆成 bank-index.json 加四科分片，加载器先读 index、并行补齐缺失科目并写入按科目的 IndexedDB 缓存；分片失败自动回退单文件 bank.json。首访四科 2046/3523/1199/2883，二次进入零题库请求，断一片仍完整。"
-    },
-    {
-      "group": "习题录入",
-      "text": "按学科 skill 录入《高等代数习题精选精解》192 题（ch01–ch10，跳过 OCR 残缺与重复题）、《数学分析上作业集》69 题与 ChatGPT 数学题 1 题；新题沿用 GA-B/MA-TX 编号、逐题补标准解答、易错点与 sympy 验算记录。"
-    },
-    {
-      "group": "全库复核",
-      "text": "全库 9651 题查重与严格 QA 通过：题干归一化重复 0、id 唯一、分类与题型匹配、客观题恰四选项且答案字母一致；修掉 9 道客观题缺 correct、3 处反斜杠转义损坏与公式定界符断行。"
-    },
-    {
-      "group": "导出复核",
-      "text": "期末模拟卷 DOCX 经本机 Word 与 WPS 分别导出 PDF，逐页核对 5 页、1900 余字；修 \\mid 显示成 mid、答案「B．B．」重复与「解：」后空行，回归测试锁定这三类导出缺陷。"
-    },
-    {
-      "group": "发布校验",
-      "text": "新增 verify:release 与每日 release-check：工作区干净、HEAD 与 origin/main 一致、当天 tag、Release 资产、Pages 部署提交、线上 BUILD_ID 全部对齐；docs/RELEASE.md 固化十步清单，避免本地领先或漏推 tag。"
-    },
-    {
-      "group": "模拟卷编辑",
-      "text": "修「我的模拟卷」编辑卡：头部改为显式 CSS Grid（标题、时长、计数、操作四列），手机标题整行、时长与题数一行、六个按钮 auto-fit 网格；按钮高度随文字增长，不再用固定高度裁字。18 个宽度（320–1440）真浏览器门禁断言标题不截断、按钮文字不越界、标签间距不超过 40px、头部高度不超上限，CI 自动运行 qa:paper；58/60 两份重复的旧实现已删除。"
-    },
-    {
-      "group": "筛选留白",
-      "text": "题库筛选栏在桌面原本是 inline 流，控件间只剩空白字符，1097px 笔记本宽度下挤成一排；改为桌面 Grid + 可换行字段区（1301px 起四列、其余 2–3 列），手机保持两列折叠，清空与题数不再贴边。新增 qa:filters 在 22 个宽度（320–1920）断言间距 ≥8px、互不重叠、不越界、文字不裁，CI 与 qa:paper 同批执行。"
-    },
-    {
-      "group": "卡片留白",
-      "text": "设置页每个分区是带描边的圆角卡片，但标题和行内容离左边框只有 1px；改为 18px 内边距，手机 16/14px，相邻分区留 10px，行内容与标题重新对齐。"
-    },
-    {
-      "group": "期末行距",
-      "text": "复习计划行、复习材料行、我的模拟卷说明、模拟考入口、上次模拟考卡片统一 20px 左右内边距；长标题与按钮不再顶到卡片边缘。"
-    },
-    {
-      "group": "复习名称",
-      "text": "每日计划不再使用 FX-AI-mvz8... 或 GA-B0001 这类内部编号，改为题目标题（最多 14 字后截断）；空标题回退为「题库题 / 错题」，长计划文本允许两行。"
-    },
-    {
-      "group": "材料序号",
-      "text": "复习材料左侧改 01/02 序号，标题最多两行并带 title 提示；原始 ID 不再逐字换行挤压正文，类型与移除按钮仍保持右对齐。"
-    },
-    {
-      "group": "AI 文案",
-      "text": "「AI 出题开考」按 aiConfigReady() 显示「按章节生成新题 · 已配置 AI」或「需配置 API」，不再出现设置页已配置、期末页仍说需配置的矛盾。"
-    },
-    {
-      "group": "规范编号",
-      "text": "规范页题库示例由 GA-001 改为 GA-B0001（高代）、MA-0001（数分），与题库实际编号一致，不再把不存在的编号当示例。"
-    },
-    {
-      "group": "防复发",
-      "text": "回归测试扩展到 99 项，新增 finalPlanLabel、材料序号、AI 动态文案、规范示例、静默存储、拆包体积、缓存头、深链、备份键名、编号定位、复习确认、存储上限、同步重试、DOCX 选项解析与模拟卷编辑卡布局断言；1440/390/820 截图复核设置页、期末复习与模拟卷编辑卡，卡片内边距、长标题和按钮不再贴边或被裁切。"
-    },
-    {
-      "group": "存储回读",
-      "text": "localStorage.setItem 后立即回读比对，静默失败或配额满就降级到内存并提示；错误卡片新增「导出备份」，不再出现「显示已保存但刷新丢失」。"
-    },
-    {
-      "group": "题库拆包",
-      "text": "Pages 版首页从 15.2MB 降到 3.0MB，9163 道题移到 data/bank.json（12.3MB），首屏不再解析整库；dist 仍保留单文件离线版，两种构建号一致。"
-    },
-    {
-      "group": "索引缓存",
-      "text": "首次进入题库后按四科写入 IndexedDB，构建号变化自动换新；网络失败回退上一版缓存，读不到才提示题库加载失败，错题与笔记仍可用。"
-    },
-    {
-      "group": "深链兜底",
-      "text": "404 改为 /?spa_redirect=… 再还原 hash，不依赖 sessionStorage；清空会话存储也能回到原页，未知路径才回首页。"
-    },
-    {
-      "group": "缓存边界",
-      "text": "移除强制 Cache-Control meta；Service Worker 缓存名绑定构建号、注册带 ?v=，仍只缓存 200 非 Range，跳过 /api 与自身脚本。"
-    },
-    {
-      "group": "AI 与焦点",
-      "text": "AI 状态响应不是 JSON 时按未配置处理并说明原因；筛选重渲染后焦点回原控件，弹窗关闭落到 body 时回页面标题。"
-    },
-    {
-      "group": "发布门禁",
-      "text": "CI 先 build:pages 再发布，新增真浏览器 qa:pages 验证拆包加载、IndexedDB 二次缓存与深链；首页超 4MB 或拆分不足 25% 阻止发布，回归 98 项。"
-    },
-    {
-      "group": "Cloudflare 缓存",
-      "text": "新增 Cloudflare Pages _headers 与迁移文档：HTML 立即校验、题库 1 小时 + stale-while-revalidate、安全头；当前仍由 GitHub Pages 提供，未声称已切换。"
-    },
-    {
-      "group": "记录归并",
-      "text": "README 只展开最新一块，2026-11-14 及更早 23 个版本收进 details；GitHub Releases 同一天只保留一条，标签统一为 v2026.11.15 / v2026.11.14，不再给同一天加小版本后缀；网页、CHANGELOG、README 与 Release 共用同一份摘要。"
-    },
-    {
-      "group": "通知去重",
-      "text": "同一天记录再修改时，原地替换已有更新通知的标题与正文，保留首次时间与已读状态，不再追加补充或生成第二条；旧版同日重复通知在启动时按日期合并，更新记录与通知标题统一为日期加标题。"
-    },
-    {
-      "group": "备份键名",
-      "text": "backupSafeState / backupSafeLibraries 不再递归匹配键名删除，只清 state.sync.token 与 AI 配置顶层凭据；blocks[].key、附件 key 与 prefs.apiNoticeDismissed 全部保留，导入后解答块、选项格式和复习块恢复正常。"
-    },
-    {
-      "group": "编号定位",
-      "text": "所有 #entry- / #bank- / #tpl- 查询改用 document.getElementById；编号含空格、括号、点时不再触发 DOMException，编辑保存后的定位、滚动与高亮都能继续执行。"
-    },
-    {
-      "group": "复习确认",
-      "text": "toggleReview 在取消已打卡节点时先计算后续已完成节点，有则弹出确认并说明会同时清除的条数；确认时才级联删除，无后续记录仍保持一键取消。"
-    },
-    {
-      "group": "存储上限",
-      "text": "persistLocal 写盘前按 4MB 字符预算拦截，超限显示固定横幅与导出备份/重试按钮，并注册 beforeunload；笔记图片、PDF 页、扫描页、封面与答卷图逐张走 noteImageFits，超限直接拒绝并提示。"
-    },
-    {
-      "group": "同步重试",
-      "text": "pushSync 改为最多三次真实退避（800ms/1600ms），只重试网络错误与 5xx；409/401/413 与其它 4xx 立即返回并显示原因，413 文案指向删除笔记图片；服务端 PUT /api/state 上限由 6MB 放宽到 8MB。"
-    },
-    {
-      "group": "试卷导出",
-      "text": "拆出 finalPaperDocxDocumentXml：客观题按 key．text 输出四选项，答案区改「参考答案与解析」并附标准解答、详细解析、解题要点、易错点；debug/test-paper.docx 经 Word/WPS 打开，均为 2 页。"
-    },
-    {
-      "group": "题库校准",
-      "text": "21 道 answer 等于题干的解析几何题改为「证明成立（详见标准解答）」，10 道占位答案补成具体结论；四科 options 缺失/null 统一为 []，30 处 ^{} 改为 ^{\\prime} 并重写 27 组重复干扰项；QA 新增 options 数组与空上标检查。"
-    },
-    {
-      "group": "审计收口",
-      "text": "五项遗留风险收口：21 道解析几何占位答案补成具体结论，22 组跨题型同题干拆成不同变式，525 处「答案：」尾注与权威答案对齐；AI 上游改为解析一次后固定 IP 请求，API Key 改 AES-GCM 存 IndexedDB，localStorage 不再留明文。新增 qa:bank-consistency 与 ai-http/ai-secret 回归，133 项测试。"
+      "group": "错题与长标题",
+      "text": "错题标题任意位置可换行，长英文串不再伸出卡片；手机和平板 .main 改 100% 拉伸，笔记工具栏、画布与翻页回到视口内。"
     },
     {
       "group": "期末复习",
-      "text": "期末复习新增按章节选题器：不用先把题加入材料，直接按章节筛选题库、勾选后加入当前卷或用所选新建 100 分卷。复习计划按考试日期拆分阶段，每章列出知识点、全部答题模板（可展开看步骤与易错点）、2 道例题（考试标准解答/答题模板/详细解析/易错点），每日计划轮换模板与例题；新增 qa:final 在 390/768/1440 断言章节筛选、模板清单、例题展开与选题建卷。"
+      "text": "期末复习按章节直接筛选题库组卷：可勾选加入当前卷，或用所选新建 100 分卷；复习计划按考试日期拆分，每章列出知识点、全部答题模板、例题（考试标准解答 / 答题模板 / 详细解析 / 易错点），每日计划轮换模板。"
+    },
+    {
+      "group": "模拟卷编辑",
+      "text": "「我的模拟卷」编辑卡改为显式 CSS Grid：标题整行、时长与题数一行、六个按钮按宽度自适应；18 个宽度真浏览器门禁断言标题不截断、按钮文字不越界、标签间距不超过 40px。"
+    },
+    {
+      "group": "筛选留白",
+      "text": "题库筛选栏桌面改为 Grid + 可换行字段区，1301px 起四列，其余 2–3 列；手机两列折叠。qa:filters 在 22 个宽度断言间距 ≥8px、互不重叠、不越界、文字不裁。"
+    },
+    {
+      "group": "本机存储",
+      "text": "错题与笔记由 IndexedDB 主存（sanke-cuotiben-store），localStorage 只留 3MB 镜像与版本元数据；容量按浏览器配额留 20% 余量动态计算，不再受旧 4MB 预算限制。Chromium 实测配额 10.77GB、可用 8.6GB，6MB 状态写入与刷新恢复正常。"
+    },
+    {
+      "group": "题库分片",
+      "text": "Pages 版题库拆成 bank-index.json 加四科分片，先读 index、并行补齐缺失科目并写入按科目的 IndexedDB 缓存；分片失败回退单文件 bank.json。首访四科计数完整，二次进入零题库请求。"
+    },
+    {
+      "group": "AI 与安全",
+      "text": "AI 上游解析一次后固定 IP 请求，禁止重定向并限制响应体；API Key 用 AES-GCM 存 IndexedDB，localStorage 不留明文；JSON 围栏解析、Host 校验、JSON Content-Type 与错误信息脱敏都有回归。"
+    },
+    {
+      "group": "数据审计",
+      "text": "题库查重 0、id 唯一、客观题四选项与答案一致；21 道解析几何占位答案补成具体结论，22 组跨题型同题干拆成不同变式，525 处「答案：」尾注与权威答案对齐；qa:latex、qa:bank-consistency 与基线锁接入质量门禁。"
+    },
+    {
+      "group": "导出验证",
+      "text": "期末模拟卷 DOCX 经本机 Word 与 WPS 分别导出 PDF，逐页核对 5 页；Word 2691 字、WPS 2484 字，标准解答、详细解析、解题要点、易错点齐全，无 \\frac、$$、U+FFFD、裸 mid 或「B．B．」。"
+    },
+    {
+      "group": "发布链",
+      "text": "source.zip 改为 git archive HEAD 全部 tracked 源码，静态包补 skills.js、_headers 与分片；release-check 逐资产核对 SHA256SUMS，Pages 查询失败直接失败；CI 删除旧 Release hydration，新增产物 git diff 与 qa:pages。"
+    },
+    {
+      "group": "记录合并",
+      "text": "README 只展开最新一块，2026-11-14 及更早版本全部收进 details；GitHub Releases 同一天只保留一条，不再给同日记录加 .3.2 一类小版本后缀；网页、CHANGELOG 与 README 共用同一份日期、标题、项数与分组。"
+    },
+    {
+      "group": "防复发",
+      "text": "回归测试扩展到 135 项，新增界面自洽与更新记录一致性断言；严格 QA、题库基线、公式、数学语言、拆包、8 视口、纸张编辑卡与筛选栏门禁全部接入 CI，关键检查失败禁止发布。"
     }
   ]
 },
@@ -27247,9 +27133,9 @@ function noteKbEmptyHtml() {
 function noteTabsHtml(books, knowledge) {
   var current = ui.noteFilter === 'books' || ui.noteFilter === 'kb' ? ui.noteFilter : 'all';
   return '<div class="note-type-tabs" role="tablist" aria-label="笔记类型">' +
-    '<button class="note-type-tab' + (current === 'all' ? ' is-on' : '') + '" data-act="note-filter" data-filter="all" role="tab" aria-selected="' + (current === 'all') + '" type="button">全部 <span>' + (books.length + knowledge.length) + '</span></button>' +
-    '<button class="note-type-tab' + (current === 'books' ? ' is-on' : '') + '" data-act="note-filter" data-filter="books" role="tab" aria-selected="' + (current === 'books') + '" type="button">笔记本 <span>' + books.length + '</span></button>' +
-    '<button class="note-type-tab' + (current === 'kb' ? ' is-on' : '') + '" data-act="note-filter" data-filter="kb" role="tab" aria-selected="' + (current === 'kb') + '" type="button">知识笔记 <span>' + knowledge.length + '</span></button>' +
+    '<button class="note-type-tab' + (current === 'all' ? ' is-on' : '') + '" data-act="note-filter" data-filter="all" role="tab" aria-selected="' + (current === 'all') + '" type="button">全部内容 <span>' + (books.length + knowledge.length) + ' 项</span></button>' +
+    '<button class="note-type-tab' + (current === 'books' ? ' is-on' : '') + '" data-act="note-filter" data-filter="books" role="tab" aria-selected="' + (current === 'books') + '" type="button">笔记本 <span>' + books.length + ' 本</span></button>' +
+    '<button class="note-type-tab' + (current === 'kb' ? ' is-on' : '') + '" data-act="note-filter" data-filter="kb" role="tab" aria-selected="' + (current === 'kb') + '" type="button">知识笔记 <span>' + knowledge.length + ' 条</span></button>' +
   '</div>';
 }
 
@@ -27313,7 +27199,7 @@ function noteLibraryHtml() {
     ? ''
     : '<div class="note-library-top">' +
         '<label class="note-library-search"><span class="sr-only">搜索笔记</span><input id="noteLibrarySearch" type="search" value="' + attr(ui.noteQuery || '') + '" placeholder="搜索笔记本 / 知识笔记"></label>' +
-        '<span class="note-library-count">' + (batch ? '已选 ' + selectedCount + ' 本' : (books.length + knowledge.length) + ' 项') + '</span>' +
+        '<span class="note-library-count">' + (batch ? '已选 ' + selectedCount + ' 本' : books.length + ' 本 · ' + knowledge.length + ' 条') + '</span>' +
         (!batch && books.length ? '<button class="btn btn-xs note-batch-entry" data-act="note-batch" type="button">批量删除</button>' : '') +
       '</div>';
   var bookSection = '';
@@ -27348,7 +27234,7 @@ function noteLibraryHtml() {
   return '<section class="page-head note-library-head"><div>' +
       '<div class="page-kicker">笔记 / LIBRARY</div>' +
       '<h1 class="page-title">笔记库</h1>' +
-      '<p class="page-sub">' + (batch ? '勾选要删除的笔记本；删除后无法恢复，请确认。' : '手写笔记本与 Markdown 知识笔记放在同一处；可搜索、导入、扫描，并随 JSON 备份导出。') + '</p>' +
+      '<p class="page-sub">' + (batch ? '勾选要删除的笔记本；删除后无法恢复，请确认。' : '手写笔记本与 Markdown 知识笔记放在同一处；本机现有 <b>' + books.length + '</b> 本笔记本 · <b>' + noteTotalPages() + '</b> 页手写 · <b>' + knowledge.length + '</b> 条知识笔记，可搜索、导入、扫描，并随 JSON 备份导出。') + '</p>' +
     '</div><div class="page-actions">' + headActions + '</div></section>' +
     subjectJumpHtml('notes') +
     (batch ? '' : noteTabsHtml(books, knowledge)) +

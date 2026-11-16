@@ -1,6 +1,6 @@
 /* =========================================================
    46-direct-ai — 纯静态页在线直连 DeepSeek Harness API
-   技能包在构建时 gzip 内联；token 只存本机 localStorage。
+   技能包在构建时 gzip 内联；token 加密后只存本机 IndexedDB。
    ========================================================= */
 var DSH_TOKEN_KEY = 'sanke-dsh-token';
 var DSH_API_URL = 'https://api.deepseek.com/anthropic/v1/messages';

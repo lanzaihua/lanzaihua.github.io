@@ -25,7 +25,7 @@
 - 严格题库 QA：problems 0、warnings 0；分类 10 类、章节 55、bucket 825。
 - 站点一致性：四科 2046 / 3523 / 1199 / 2883，更新记录 24 天。
 - 仓库语言门禁、Python 题库审计均通过。
-- 回归测试 133 项（新增存储 6 项、模拟卷编辑卡 3 项、筛选栏 3 项、公式管线/知识点摘录/考试标题日期 1 项、DOCX 关系符与 deg 断言）。
+- 回归测试 135 项（新增存储 6 项、模拟卷编辑卡 3 项、筛选栏 3 项、公式管线/知识点摘录/考试标题日期 1 项、DOCX 关系符与 deg 断言）。
 - 期末复习：章节筛选不依赖已加入材料；复习计划按考试日期列出每章知识点、全部答题模板与 2 道例题（标准解答/模板/详细解析/易错点），每日计划轮换模板；按章节选题可加入当前卷或新建 100 分卷。qa:final 在 390/768/1440 断言这些路径与无横向溢出。
 - 全库公式渲染审计：9651 题的 question/answer/standardSolution/detailedAnalysis/points/pitfalls/solution/options 共 0 个 `.math-raw`、`.temml-error`、merror、裸 `$`、裸 LaTeX 或裸上下标。`npm run check` 末尾自动执行 `node tools/audit-rendered-bank.js`。
 - 数学语言审计：104,223 个可见文本字段检查裸 `_`、`^`、`{}`、变量+数字、裸 `$` 与裸函数调用，当前 0；`qa:mathlang` 已接入 `npm run check`，失败即退出 1。
@@ -86,7 +86,7 @@
 ## 9. 复现命令
 
 ```bash
-npm test                      # 133 项回归
+npm test                      # 135 项回归
 npm run qa:final              # 期末复习章节选题、模板清单、例题与三端布局
 npm run check                 # 严格 QA + 站点一致性 + 语言门禁 + 全库公式渲染审计
 node build.js && node build.js --pages

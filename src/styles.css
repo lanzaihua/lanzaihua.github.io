@@ -9056,12 +9056,12 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 .entry-empty-step em span { margin-left: 2px; }
 
 @media (min-width: 1024px) {
-  .home-inner { padding-top: 24px !important; }
+  .home-inner { padding-top: 20px !important; }
   .home-top { padding-bottom: 20px !important; margin-bottom: 26px !important; }
   .home-kicker { margin-bottom: 13px !important; }
   .home-title { font-size: clamp(42px, 4.2vw, 56px) !important; margin-bottom: 10px !important; }
-  .home-welcome-note { margin-bottom: 24px !important; }
-  .home-workbench { margin-bottom: 26px !important; }
+  .home-welcome-note { margin-bottom: 18px !important; }
+  .home-workbench { margin-bottom: 4px !important; }
   .hw-top > .hw-metric { padding-top: 15px !important; padding-bottom: 13px !important; }
   .hw-top > .hw-focus { padding-top: 15px !important; padding-bottom: 13px !important; }
   .hw-bottom { margin-top: 20px !important; }
@@ -9151,9 +9151,9 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 
 @media (min-width: 1024px) {
   .home-welcome-note { margin-bottom: 8px !important; }
-  .home-workbench { margin-bottom: 12px !important; }
-  .home-subjects-head { margin-top: 10px !important; margin-bottom: 6px !important; }
-  .home-subject { padding-top: 12px !important; padding-bottom: 12px !important; }
+  .home-workbench { margin-bottom: 4px !important; }
+  .home-subjects-head { margin-top: 4px !important; margin-bottom: 6px !important; padding-top: 6px !important; }
+  .home-subject { padding-top: 10px !important; padding-bottom: 10px !important; }
 }
 
 @media (min-width: 1024px) {
@@ -9685,4 +9685,70 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   display: inline-block !important;
   vertical-align: middle !important;
   line-height: normal !important;
+}
+
+/* 2026-11-16: 全站界面自洽与排版收口。
+   目标：统一页头/计数口径、空态进度、手机首页节奏，不改变已有功能。 */
+.hero-side.is-empty {
+  justify-content: flex-start !important;
+}
+.hero-side-empty {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  max-width: 28ch;
+  padding: 2px 0 4px;
+}
+.hero-side-empty b {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.hero-side-empty p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+.hero-side-empty .btn {
+  justify-self: start;
+  margin-top: 2px;
+}
+.note-library-head .page-sub b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.note-type-tabs {
+  gap: 6px !important;
+}
+.note-type-tab {
+  min-height: 34px;
+  padding: 7px 12px !important;
+  font-size: 11.5px !important;
+}
+.note-type-tab span {
+  font-size: 9.5px !important;
+  letter-spacing: .02em !important;
+}
+.note-library-count {
+  font-size: 10.5px !important;
+}
+.page-head .page-actions {
+  row-gap: 8px;
+}
+@media (max-width: 430px) {
+  .home-inner { padding-top: 14px !important; }
+  .home-top { padding-bottom: 10px !important; margin-bottom: 14px !important; }
+  .home-kicker { margin-bottom: 8px !important; }
+  .home-title { font-size: 34px !important; line-height: 1.06 !important; margin-bottom: 8px !important; }
+  .home-welcome-note { margin-bottom: 12px !important; font-size: 12.5px !important; line-height: 1.68 !important; }
+  .home-subjects-head { margin-top: 4px !important; margin-bottom: 4px !important; }
+  .home-subject { padding-top: 10px !important; padding-bottom: 10px !important; }
+  .home-subject .hs-desc { font-size: 10.5px !important; }
+  .page-head { margin-bottom: 18px !important; padding-bottom: 12px !important; }
+  .page-title { font-size: 27px !important; }
+  .page-sub { font-size: 12.5px !important; line-height: 1.72 !important; }
+  .hero-side-empty { max-width: none; }
+  .note-type-tab { padding: 7px 10px !important; }
 }
