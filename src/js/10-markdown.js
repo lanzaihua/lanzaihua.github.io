@@ -23,14 +23,14 @@ function cleanMathSource(tex) {
   });
   // 修复教材/OCR 简写与 Unicode 数学符号。
   var supMap = {'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
-  var subMap = {'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','ₐ':'a','ₑ':'e','ₒ':'o','ₓ':'x','ₕ':'h','ₖ':'k','ₗ':'l','ₘ':'m','ₙ':'n','ₚ':'p','ₛ':'s','ₜ':'t'};
+  var subMap = {'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','ₐ':'a','ₑ':'e','ₒ':'o','ₓ':'x','ₕ':'h','ₖ':'k','ₗ':'l','ₘ':'m','ₙ':'n','ₚ':'p','ₛ':'s','ₜ':'t','ᵢ':'i','ⱼ':'j','ᵣ':'r','ᵤ':'u','ᵥ':'v','ᵦ':'β','ᵧ':'γ','ᵨ':'ρ','ᵩ':'φ','ᵪ':'χ'};
   function supDigits(s) { return s.split('').map(function (c) { return supMap[c] || ''; }).join(''); }
   function subDigits(s) { return s.split('').map(function (c) { return subMap[c] || ''; }).join(''); }
   t = t.replace(/_([A-Za-z0-9]+)₊_?([0-9A-Za-z]+)/g, '_{$1+$2}');
   t = t.replace(/_([A-Za-z0-9]+)₋_?([0-9A-Za-z]+)/g, '_{$1-$2}');
   t = t.replace(/([⁻⁺])([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, function (_, sign, digits) { return '^{' + (sign === '⁻' ? '-' : '+') + supDigits(digits) + '}'; });
   t = t.replace(/([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, function (digits) { return '^{' + supDigits(digits) + '}'; });
-  t = t.replace(/([₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜ]+)/g, function (digits) { return '_{' + subDigits(digits) + '}'; });
+  t = t.replace(/([₀₁₂₃₄₅₆₇₈₉ₐₑₒₓₕₖₗₘₙₚₛₜᵢⱼᵣᵤᵥᵦᵧᵨᵩᵪ]+)/g, function (digits) { return '_{' + subDigits(digits) + '}'; });
   t = t.replace(/₊/g, '+').replace(/₋/g, '-').replace(/⁻/g, '-').replace(/⁺/g, '+');
   t = t.replace(/([A-Za-z0-9)\]])\s*⁻\s*\^?\s*(\d+)/g, '$1^{-$2}');
   t = t.replace(/([A-Za-z])-\^(\d+)/g, '$1^{-$2}');
@@ -41,6 +41,9 @@ function cleanMathSource(tex) {
   t = t.replace(/≠/g, '\\ne ').replace(/≤/g, '\\le ').replace(/≥/g, '\\ge ').replace(/⇔|⟺/g, '\\Leftrightarrow ').replace(/⇒/g, '\\Rightarrow ').replace(/→/g, '\\to ').replace(/∈/g, '\\in ').replace(/∉/g, '\\notin ').replace(/±/g, '\\pm ').replace(/×/g, '\\times ').replace(/·/g, '\\cdot ').replace(/∞/g, '\\infty ').replace(/Δ/g, '\\Delta ').replace(/∑/g, '\\sum ').replace(/∫/g, '\\int ');
   t = t.replace(/−/g, '-');
   t = t.replace(/Σ/g, '\\sum ').replace(/Π/g, '\\prod ');
+  // Temml 不认 \big 系列尺寸命令与 \varlimsup/\varliminf，先归一化，避免整条公式回退成源码。
+  t = t.replace(/\\\|/g, '\\Vert ').replace(/\\\{/g, '\\lbrace ').replace(/\\\}/g, '\\rbrace ').replace(/\\[ \t]/g, '\\;');
+  t = t.replace(/\\[bB]igg?[lrm]?(?![A-Za-z])/g, '').replace(/\\varlimsup/g, '\\limsup').replace(/\\varliminf/g, '\\liminf');
   // 先把 liminf/limsup 换成哨兵，避免下面的单算子归一化把 inf/sup 拆走。
   t = t.replace(/\bliminf\b/g, '\uE010').replace(/\blimsup\b/g, '\uE011');
   // 教材里常把 lim/max/min 直接写成英文。用 \\lim 等标准算子，保留上下限位置；
@@ -217,7 +220,7 @@ function wrapBareLatex(src) {
     // 把一整段裸 LaTeX（含数字、括号、运算符）包成一个公式，而不是把每个命令分别包起来。
     // \text{中文} 必须整体匹配，否则会在“在/连续”处被拆成 \text{ 残片。
     // 反斜杠不放进普通字符类，保证每个命令都从 \ 开始被完整识别。
-    var runRe = /((?:\\frac\{[^{}]*\}\{[^{}]*\}|\\text\{[^{}]*\}|\\mathrm\{[^{}]*\}|\\operatorname\{[^{}]*\}|\\mbox\{[^{}]*\}|\\[A-Za-z]+|[0-9A-Za-z{}\[\]()_^=+\-*/. ,<>\u0370-\u03ff\u00b2\u00b3\u00b9\u2070-\u209f\u2100-\u214f\u2190-\u22ff\u00b1\u00b7\u00d7\u221e])+)/g;
+    var runRe = /((?:\\frac\{[^{}]*\}\{[^{}]*\}|\\text\{[^{}]*\}|\\mathrm\{[^{}]*\}|\\operatorname\{[^{}]*\}|\\mbox\{[^{}]*\}|\\[{}$%&#_|]|\\[,;:! \t]|\\[A-Za-z]+|[0-9A-Za-z{}\[\]()_^=+\-*/. ,<>!|':;\u0370-\u03ff\u00b2\u00b3\u00b9\u2070-\u209f\u1d62-\u1d6a\u2c7c\u2100-\u214f\u2190-\u22ff\u00b1\u00b7\u00d7\u221e])+)/g;
     t = t.replace(runRe, function (m) {
       var raw = m;
       m = m.trim();

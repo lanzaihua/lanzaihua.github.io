@@ -36,3 +36,13 @@ test('simple variable digits skip versions and long IDs', () => {
   const md = read('src/js/10-markdown.js');
   assert.ok(md.includes('(\\d{1,3})(?!\\.\\d)(?![A-Za-z0-9_])'), 'version v1.2 and IDs must stay text');
 });
+
+test('math pipeline normalizes sizing, bars and unicode subscripts inside formulas', () => {
+  const md = read('src/js/10-markdown.js');
+  assert.ok(md.includes('(?![A-Za-z])/g'), 'sizing commands must not eat bigcup/bigcap');
+  assert.ok(md.includes('\\u1d62-\\u1d6a'), 'unicode subscript letters must join the same math run');
+  assert.ok(md.includes("replace(/\\\\\\|/g, '\\\\Vert ')"), 'double bars must become Vert');
+  assert.ok(md.includes("replace(/\\\\\\{/g, '\\\\lbrace ')"), 'escaped braces must become lbrace');
+  const fin = read('src/js/58-final.js');
+  assert.ok(fin.includes("renderInline(d.point.memory)"), 'day memory must use the math renderer');
+});

@@ -43,6 +43,8 @@ function limitFor(width) {
       await page.route('**/api/state', (r) => r.abort());
       await page.goto(BASE + '/#/final', { waitUntil: 'networkidle', timeout: 120000 });
       await page.waitForTimeout(350);
+      const paperTab = page.locator('[data-act="final-section"][data-section="paper"]:visible').first();
+      if (await paperTab.count()) { await paperTab.click(); await page.waitForTimeout(250); }
       if (!(await page.locator('.final-editor-head').count())) {
         const generate = page.locator('[data-act="final-generate-paper"]:visible').first();
         if (await generate.count()) {

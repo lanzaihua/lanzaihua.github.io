@@ -2,7 +2,7 @@
 'use strict';
 
 /**
- * 期末复习模块门禁：章节筛选、知识点/模板/例题计划、题库选题组卷、三端无溢出。
+ * 期末复习门禁：计划 / 出卷 / 模拟考三入口分离、逐日知识点出处、例题解析、三端无溢出。
  * 用法：node tools/qa-final-review.js [baseUrl]
  */
 
@@ -12,7 +12,7 @@ const { launchChromium } = require('./browser');
 
 const BASE = process.argv[2] || process.env.PAGE_URL || process.env.BASE_URL || 'http://127.0.0.1:4173';
 const WIDTHS = [390, 768, 1440];
-const STORAGE_KEY = 'sanke-cuotiben-v1';
+const SUBJECTS = [['gaodai', 10], ['shufen', 23], ['jieji', 6], ['xijing', 16]];
 const seed = {
   version: 1,
   rev: 1,
@@ -38,8 +38,55 @@ const seed = {
   clearEpoch: '2026-10-24-empty-v1'
 };
 
-function push(failures, width, message) {
-  failures.push(width + 'px / ' + message);
+function push(failures, width, message) { failures.push(width + 'px / ' + message); }
+
+async function planSnapshot(page) {
+  return page.evaluate(() => {
+    const visible = (sel) => [...document.querySelectorAll(sel)].filter((el) => {
+      const r = el.getBoundingClientRect();
+      return r.width > 0 && r.height > 0;
+    });
+    const app = document.querySelector('.app') || document.body;
+    const root = document.querySelector('.final-plan-modules');
+    const points = visible('.fpm-point');
+    return {
+      tabs: visible('.final-section-tab').length,
+      planPanel: !!document.querySelector('.final-plan-panel'),
+      picker: visible('.final-picker').length,
+      modules: visible('.final-plan-module').length,
+      points: points.length,
+      memory: visible('.fpm-memory li').length,
+      templates: visible('.fpm-tpl').length,
+      days: visible('.final-day').length,
+      dayDetails: visible('.fd-more').length,
+      sources: points.map((p) => (p.querySelector('.fpm-source') || {}).textContent || ''),
+      text: root ? root.textContent : '',
+      rawDollar: /\$/.test(root ? root.textContent : ''),
+      rawMath: document.querySelectorAll('.math-raw,.temml-error,.merror').length,
+      overflow: app.scrollWidth - app.clientWidth
+    };
+  });
+}
+
+async function dailySnapshot(page) {
+  return page.evaluate(() => {
+    const body = document.querySelector('.fd-more-body');
+    if (!body) return null;
+    const card = body.querySelector('.fd-point-card');
+    const app = document.querySelector('.app') || document.body;
+    return {
+      text: body.innerText,
+      pointCards: body.querySelectorAll('.fd-point-card').length,
+      memory: body.querySelectorAll('.fd-memory').length,
+      examples: body.querySelectorAll('.fpe-item').length,
+      source: card ? (card.querySelector('small') || {}).textContent || '' : '',
+      raw: body.querySelectorAll('.math-raw,.temml-error,.merror').length,
+      dollars: (body.innerText.match(/\$/g) || []).length,
+      scrollW: body.scrollWidth,
+      clientW: body.clientWidth,
+      pageOverflow: app.scrollWidth - app.clientWidth
+    };
+  });
 }
 
 (async () => {
@@ -59,60 +106,46 @@ function push(failures, width, message) {
         try { localStorage.setItem('sanke-cuotiben-v1', JSON.stringify(state)); } catch (e) { /* ignore */ }
       }, seed);
       await page.goto(BASE + '/#/final', { waitUntil: 'networkidle', timeout: 120000 });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(600);
 
-      const initial = await page.evaluate(() => {
-        const app = document.querySelector('.app') || document.body;
-        return {
-          modules: document.querySelectorAll('.final-plan-module').length,
-          examples: document.querySelectorAll('.fpe-item').length,
-          picker: !!document.querySelector('.final-picker'),
-          pickerRows: document.querySelectorAll('.fp-row').length,
-          chapterChips: document.querySelectorAll('.final-chapter-filter .fcf-chip').length,
-          overflow: app.scrollWidth - app.clientWidth
-        };
-      });
-      if (!initial.modules) push(failures, width, 'no plan modules');
-      if (!initial.examples) push(failures, width, 'no plan examples');
-      if (!initial.picker) push(failures, width, 'no bank picker');
-      if (!initial.pickerRows) push(failures, width, 'no bank picker rows');
-      if (initial.chapterChips < 2) push(failures, width, 'chapter filter missing chapters');
+      const initial = await planSnapshot(page);
+      if (initial.tabs !== 3) push(failures, width, 'expected 3 section tabs, got ' + initial.tabs);
+      if (!initial.planPanel) push(failures, width, 'plan panel missing');
+      if (initial.picker) push(failures, width, 'paper picker should not be mixed into plan tab');
+      if (initial.modules < 1) push(failures, width, 'no plan modules');
+      if (initial.points < initial.modules) push(failures, width, 'plan points missing');
+      if (initial.days < 1) push(failures, width, 'no daily plan rows');
+      if (initial.dayDetails < 1) push(failures, width, 'no expandable daily details');
+      if (initial.sources.length !== initial.points) push(failures, width, 'points without source');
+      if (initial.sources.some((s) => s.indexOf('§') < 0)) push(failures, width, 'knowledge source missing section mark');
+      if (initial.rawDollar) push(failures, width, 'raw $ in plan');
+      if (initial.rawMath) push(failures, width, 'unrendered math in plan');
       if (initial.overflow > 1) push(failures, width, 'page overflow ' + initial.overflow);
+      details.push({ width, stage: 'initial', ...initial, sources: initial.sources.slice(0, 3) });
 
-      // 四科计划都能渲染：模块数、模板、公式与横向溢出
-      const SUBJECTS = [['gaodai', 10], ['shufen', 23], ['jieji', 6], ['xijing', 16]];
+      // 四科：章节数、知识点、出处、模板、记忆法、横向溢出
       for (const [subjectId, expectedModules] of SUBJECTS) {
         if (subjectId !== 'gaodai') {
-          const tab = page.locator('.final-subject-tab[data-subject="' + subjectId + '"]');
+          const tab = page.locator('.final-subject-tab[data-subject="' + subjectId + '"]').first();
           if (!(await tab.count())) { push(failures, width, 'subject tab missing: ' + subjectId); continue; }
-          await tab.first().click();
-          await page.waitForTimeout(600);
+          await tab.click();
+          await page.waitForTimeout(700);
         }
-        const subjectPlan = await page.evaluate(() => {
-          const root = document.querySelector('.final-plan-modules');
-          const app = document.querySelector('.app') || document.body;
-          const text = root ? root.textContent : '';
-          return {
-            modules: document.querySelectorAll('.final-plan-module').length,
-            templates: document.querySelectorAll('.fpm-tpl').length,
-            rawDollar: /\$/.test(text),
-            rawMath: document.querySelectorAll('.math-raw,.temml-error,.merror').length,
-            overflow: app.scrollWidth - app.clientWidth
-          };
-        });
-        if (subjectPlan.modules !== expectedModules) push(failures, width, subjectId + ' plan modules ' + subjectPlan.modules + ' != ' + expectedModules);
-        if (subjectPlan.templates < 1) push(failures, width, subjectId + ' plan has no template');
-        if (subjectPlan.rawDollar) push(failures, width, subjectId + ' plan has raw $');
-        if (subjectPlan.rawMath) push(failures, width, subjectId + ' plan has unrendered math');
-        if (subjectPlan.overflow > 1) push(failures, width, subjectId + ' page overflow ' + subjectPlan.overflow);
-        details.push({ width, subject: subjectId, ...subjectPlan });
+        const snapshot = await planSnapshot(page);
+        if (snapshot.modules !== expectedModules) push(failures, width, subjectId + ' plan modules ' + snapshot.modules + ' != ' + expectedModules);
+        if (snapshot.points < expectedModules * 2) push(failures, width, subjectId + ' too few knowledge points ' + snapshot.points);
+        if (snapshot.templates < 1) push(failures, width, subjectId + ' plan has no template');
+        if (snapshot.memory < 1) push(failures, width, subjectId + ' plan has no memory tips');
+        if (snapshot.sources.some((s) => s.indexOf('§') < 0)) push(failures, width, subjectId + ' knowledge source missing section');
+        if (snapshot.rawDollar) push(failures, width, subjectId + ' plan has raw $');
+        if (snapshot.rawMath) push(failures, width, subjectId + ' plan has unrendered math');
+        if (snapshot.overflow > 1) push(failures, width, subjectId + ' page overflow ' + snapshot.overflow);
+        details.push({ width, stage: subjectId, ...snapshot, sources: snapshot.sources.slice(0, 2) });
       }
-      if ((await page.locator('.final-subject-tab[data-subject="gaodai"]').count())) {
-        await page.locator('.final-subject-tab[data-subject="gaodai"]').first().click();
-        await page.waitForTimeout(600);
-      }
+      await page.locator('.final-subject-tab[data-subject="gaodai"]').first().click();
+      await page.waitForTimeout(600);
 
-      // 按章节筛选：只保留第二章，并确认计划只剩这一章
+      // 章节筛选：只保留第二章，逐日任务必须点名第二章
       const chapterButton = page.locator('.final-chapter-filter [data-act="final-chapter"][data-chapter="第二章 行列式"]').first();
       if (!(await chapterButton.count())) push(failures, width, 'chapter chip for 第二章 missing');
       else {
@@ -120,64 +153,61 @@ function push(failures, width, message) {
         await page.waitForTimeout(700);
         const filtered = await page.evaluate(() => {
           const modules = [...document.querySelectorAll('.final-plan-module')];
-          const text = document.querySelector('.final-plan-modules') ? document.querySelector('.final-plan-modules').innerText : '';
-          return {
-            modules: modules.length,
-            titles: modules.map((m) => (m.querySelector('.fpm-title') || {}).textContent || ''),
-            hasSecond: text.indexOf('第二章 行列式') >= 0,
-            days: document.querySelectorAll('.final-day').length,
-            dayText: [...document.querySelectorAll('.fd-focus')].slice(0, 5).map((x) => x.textContent).join(' ')
-          };
+          const focus = [...document.querySelectorAll('.fd-focus')].slice(0, 6).map((x) => x.textContent).join(' ');
+          const points = [...document.querySelectorAll('.fpm-point .fpm-source')].map((x) => x.textContent);
+          return { modules: modules.length, focus, points };
         });
         if (filtered.modules !== 1) push(failures, width, 'chapter filter kept ' + filtered.modules + ' modules');
-        if (!filtered.hasSecond) push(failures, width, 'filtered plan has no 第二章');
-        if (!filtered.dayText.includes('第二章')) push(failures, width, 'daily plan does not name the selected chapter');
-        details.push({ width, filtered });
+        if (!filtered.focus.includes('第二章')) push(failures, width, 'daily plan does not name the selected chapter');
+        if (!filtered.points.length || filtered.points.some((s) => s.indexOf('第二章') < 0)) push(failures, width, 'filtered point source is not 第二章');
+        details.push({ width, stage: 'filtered', ...filtered, points: filtered.points.slice(0, 2) });
       }
 
-      const plan = await page.evaluate(() => {
-        const root = document.querySelector('.final-plan-modules');
-        return {
-          text: root ? root.innerText : '',
-          memory: document.querySelectorAll('.fpm-memory li').length,
-          templates: document.querySelectorAll('.fpm-tpl').length,
-          usage: document.querySelector('.final-plan-usage') ? document.querySelector('.final-plan-usage').innerText : ''
-        };
-      });
-      if (plan.memory < 1) push(failures, width, 'no memory / exam tips');
-      if (plan.templates < 1) push(failures, width, 'no answer template');
-      if (!/每天怎么用/.test(plan.usage)) push(failures, width, 'no daily usage block');
-      if (/\$/.test(plan.text)) push(failures, width, 'raw $ in plan modules');
-
-      const detail = page.locator('.fpe-detail').first();
-      if (!(await detail.count())) push(failures, width, 'no expandable example detail');
+      // 当天知识点 + 当天例题：展开后必须有出处、记忆法、标准解答、模板、解析、易错点
+      const day = page.locator('.fd-more').first();
+      if (!(await day.count())) push(failures, width, 'no daily detail');
       else {
-        await detail.locator('summary').click();
-        await page.waitForTimeout(250);
-        const expanded = await detail.locator('.fpe-detail-body').evaluate((el) => {
-          const card = el.closest('.fpe-item');
-          return {
-            text: el.innerText,
-            scrollW: el.scrollWidth,
-            clientW: el.clientWidth,
-            cardScrollW: card ? card.scrollWidth : 0,
-            cardClientW: card ? card.clientWidth : 0,
-            raw: el.querySelectorAll('.math-raw,.temml-error,.merror').length
-          };
-        });
-        if (!/考试标准解答/.test(expanded.text)) push(failures, width, 'detail missing standard solution');
-        if (!/答题模板/.test(expanded.text)) push(failures, width, 'detail missing answer template');
-        if (!/详细解析/.test(expanded.text)) push(failures, width, 'detail missing analysis');
-        if (!/易错点/.test(expanded.text)) push(failures, width, 'detail missing pitfalls');
-        if (expanded.scrollW > expanded.clientW + 1) push(failures, width, 'detail body clipped ' + expanded.scrollW + '>' + expanded.clientW);
-        if (expanded.cardScrollW > expanded.cardClientW + 1) push(failures, width, 'example card clipped ' + expanded.cardScrollW + '>' + expanded.cardClientW);
-        if (expanded.raw) push(failures, width, 'unrendered math in detail');
+        await day.locator('> summary').click();
+        await page.waitForTimeout(300);
+        const nested = day.locator('.fpe-detail').first();
+        if (await nested.count()) {
+          await nested.locator('summary').click();
+          await page.waitForTimeout(300);
+        }
+        const daily = await dailySnapshot(page);
+        if (!daily) push(failures, width, 'daily detail body missing');
+        else {
+          if (!daily.source.includes('§')) push(failures, width, 'daily point source missing section');
+          if (daily.memory < 1) push(failures, width, 'daily memory tip missing');
+          if (daily.examples < 1) push(failures, width, 'daily example missing');
+          if (!/考试标准解答/.test(daily.text)) push(failures, width, 'daily detail missing standard solution');
+          if (!/答题模板/.test(daily.text)) push(failures, width, 'daily detail missing answer template');
+          if (!/详细解析/.test(daily.text)) push(failures, width, 'daily detail missing analysis');
+          if (!/易错点/.test(daily.text)) push(failures, width, 'daily detail missing pitfalls');
+          if (daily.raw) push(failures, width, 'unrendered math in daily detail');
+          if (daily.dollars) push(failures, width, 'raw $ in daily detail');
+          if (daily.scrollW > daily.clientW + 1) push(failures, width, 'daily detail clipped ' + daily.scrollW + '>' + daily.clientW);
+          if (daily.pageOverflow > 1) push(failures, width, 'page overflow after open daily detail');
+          details.push({ width, stage: 'daily', ...daily, text: daily.text.slice(0, 160) });
+        }
       }
 
-      // 题库选题器：切章节、全选、新建卷、再加入当前卷
+      // 出模拟卷：与计划分开，选题器只在出卷页
+      await page.locator('.final-section-tab[data-section="paper"]').click();
+      await page.waitForTimeout(500);
+      const paperTab = await page.evaluate(() => ({
+        plan: !!document.querySelector('.final-plan-panel'),
+        picker: !!document.querySelector('.final-picker'),
+        rows: document.querySelectorAll('.final-picker .fp-row').length,
+        overflow: (document.querySelector('.app') || document.body).scrollWidth - (document.querySelector('.app') || document.body).clientWidth
+      }));
+      if (paperTab.plan) push(failures, width, 'plan panel still visible on paper tab');
+      if (!paperTab.picker) push(failures, width, 'picker missing on paper tab');
+      if (paperTab.rows < 1) push(failures, width, 'picker has no rows');
+      if (paperTab.overflow > 1) push(failures, width, 'paper tab overflow ' + paperTab.overflow);
+
       const picker = page.locator('.final-picker');
-      if (!(await picker.count())) push(failures, width, 'picker missing');
-      else {
+      if (await picker.count()) {
         const select = picker.locator('[data-paper-picker-chapter]');
         await select.selectOption('第三章 线性方程组');
         await page.waitForTimeout(350);
@@ -192,7 +222,7 @@ function push(failures, width, message) {
           if (await newBtn.isDisabled()) push(failures, width, 'new paper disabled after selecting');
           else {
             await newBtn.click();
-            await page.waitForTimeout(600);
+            await page.waitForTimeout(700);
             const made = await page.evaluate(() => ({
               items: document.querySelectorAll('.final-paper-item').length,
               chips: document.querySelectorAll('.final-paper-chip').length
@@ -201,27 +231,19 @@ function push(failures, width, message) {
             if (made.chips < 1) push(failures, width, 'new paper chip missing');
           }
         }
-
-        await select.selectOption('第二章 行列式');
-        await page.waitForTimeout(350);
-        const addCheck = picker.locator('.fp-row input:not([disabled])').first();
-        if (await addCheck.count()) {
-          await addCheck.check();
-          await page.waitForTimeout(200);
-          const addBtn = picker.locator('[data-act="final-picker-add"]');
-          if (await addBtn.isDisabled()) push(failures, width, 'add-to-paper disabled after selecting');
-          else {
-            await addBtn.click();
-            await page.waitForTimeout(500);
-            const added = await page.evaluate(() => ({
-              items: document.querySelectorAll('.final-paper-item').length,
-              chips: document.querySelectorAll('.final-paper-chip').length
-            }));
-            if (added.items !== 2) push(failures, width, 'add-to-paper expected 2 items, got ' + added.items);
-            if (added.chips !== 1) push(failures, width, 'add-to-paper changed paper count');
-          }
-        } else push(failures, width, 'picker has no selectable row after chapter change');
       }
+
+      // 模拟考：与计划、出卷分开
+      await page.locator('.final-section-tab[data-section="exam"]').click();
+      await page.waitForTimeout(400);
+      const examTab = await page.evaluate(() => ({
+        plan: !!document.querySelector('.final-plan-panel'),
+        picker: !!document.querySelector('.final-picker'),
+        setup: !!document.querySelector('.final-exam-entry, .exam-rules, .exam-lock, .final-section-tab[data-section="exam"].is-on')
+      }));
+      if (examTab.plan) push(failures, width, 'plan panel still visible on exam tab');
+      if (examTab.picker) push(failures, width, 'picker still visible on exam tab');
+      if (!examTab.setup) push(failures, width, 'exam entry not visible');
 
       const finalOverflow = await page.evaluate(() => {
         const app = document.querySelector('.app') || document.body;

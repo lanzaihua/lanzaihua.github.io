@@ -114,6 +114,23 @@ Object.keys(bankChapterFile).forEach(function (subject) {
 });
 if (chapterIssues.length) throw new Error('章节覆盖不完整: ' + chapterIssues.join(' | '));
 
+// 期末复习计划：每章必须有来自学科 skill 的知识点，且每条都带教材章节/小节出处。
+const finalPlanKnowledge = JSON.parse(read(path.join(SRC, 'data', 'final-plan-knowledge.json')));
+const planIssues = [];
+Object.keys(expectedChapterCount).forEach(function (subject) {
+  var pack = finalPlanKnowledge.subjects && finalPlanKnowledge.subjects[subject];
+  var list = pack && Array.isArray(pack.chapters) ? pack.chapters : [];
+  if (list.length !== expectedChapterCount[subject]) planIssues.push(subject + ' 计划章节数 ' + list.length + ' ≠ ' + expectedChapterCount[subject]);
+  list.forEach(function (ch) {
+    if (!ch || !Array.isArray(ch.points) || !ch.points.length) { planIssues.push(subject + ' ' + (ch && ch.chapter) + ' 缺少知识点'); return; }
+    ch.points.forEach(function (p) {
+      if (!p || !p.name || !p.source) planIssues.push(subject + ' ' + ch.chapter + ' 知识点缺少出处');
+      else if (p.source.indexOf('§') < 0) planIssues.push(subject + ' ' + ch.chapter + ' 出处缺小节：' + p.name);
+    });
+  });
+});
+if (planIssues.length) throw new Error('期末复习计划数据不完整: ' + planIssues.slice(0, 8).join(' | '));
+
 const seed = JSON.parse(read(path.join(SRC, 'data', 'seed.json')));
 
 // 模拟考全站锁定：保留访问门禁与锁定页，防止后续改动把非考试界面重新暴露。
@@ -338,19 +355,21 @@ if (fs.existsSync(skillPackGzFile)) {
   skillPacksGz = zlib.gzipSync(Buffer.from(skillPacksRaw, 'utf8'), { level: 9 }).toString('base64');
 }
 const seedJson = escScript(JSON.stringify(seed));
+const finalPlanKnowledgeJson = escScript(JSON.stringify(finalPlanKnowledge));
 const banksRaw = JSON.stringify(banks);
 const splitBanks = PAGES;
 const banksJson = splitBanks ? '{}' : escScript(banksRaw);
 
 const packSignature = JSON.stringify(skillPacks.subjects);
 const buildDay = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai' }).format(new Date()).replace(/-/g, '.');
-const buildId = buildDay + '-' + crypto.createHash('sha1').update(template + app + styles + seedJson + banksRaw + packSignature).digest('hex').slice(0, 8);
+const buildId = buildDay + '-' + crypto.createHash('sha1').update(template + app + styles + seedJson + banksRaw + packSignature + finalPlanKnowledgeJson).digest('hex').slice(0, 8);
 
 let html = template
   .replace('__STYLES__', function () { return styles; })
   .replace('__PAGES_FLAG__', function () { return PAGES ? 'true' : 'false'; })
   .replace('__SKILLS_PACK_B64__', function () { return skillPacksGz; })
   .replace('__SEED_JSON__', function () { return seedJson; })
+  .replace('__FINAL_PLAN_KNOWLEDGE_JSON__', function () { return finalPlanKnowledgeJson; })
   .replace('__BANKS_JSON__', function () { return banksJson; })
   .replace('__MARKED__', function () { return escScript(marked); })
   .replace('__TEMML__', function () { return escScript(temml); })

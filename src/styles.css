@@ -9752,3 +9752,61 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .hero-side-empty { max-width: none; }
   .note-type-tab { padding: 7px 10px !important; }
 }
+
+
+/* 期末复习：计划 / 出卷 / 模拟考三入口，知识点出处与逐日任务 */
+.final-section-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+.final-plan-panel { overflow: visible; }
+.final-plan-toolbar { display: grid; gap: 10px; margin: 0 0 14px; min-width: 0; }
+.final-plan-toolbar .final-subject-tabs { margin: 0; }
+.final-plan-intro { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 10px 18px; margin: 0 0 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 11px; background: color-mix(in srgb, var(--surface-2) 58%, transparent); }
+.final-plan-intro > div { min-width: 0; flex: 1 1 320px; }
+.final-plan-intro b { display: block; margin: 3px 0 4px; font-family: var(--font-serif); font-size: 14px; color: var(--ink); }
+.final-plan-intro p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.final-plan-badge { display: inline-block; padding: 2px 8px; border: 1px solid color-mix(in srgb, var(--accent) 34%, var(--line)); border-radius: 999px; background: var(--accent-soft); color: var(--accent-deep); font-size: 9.5px; letter-spacing: .05em; }
+.final-plan-meta { flex: 0 0 auto; color: var(--faint); font-size: 10px; line-height: 1.6; text-align: right; }
+.final-plan-module .fpm-kps { display: grid; gap: 7px; }
+.final-plan-module .fpm-points { display: grid; gap: 7px; min-width: 0; }
+.fpm-point { min-width: 0; padding: 9px 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+.fpm-point-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; min-width: 0; }
+.fpm-point-head b { min-width: 0; color: var(--ink); font-size: 11.5px; line-height: 1.5; overflow-wrap: anywhere; }
+.fpm-point-head span { flex: 0 0 auto; color: var(--accent-deep); font: 400 9.5px/1.5 var(--font-mono); }
+.fpm-point .md { min-width: 0; margin: 4px 0 3px; color: var(--muted); font-size: 11px; line-height: 1.7; overflow-wrap: anywhere; }
+.fpm-point .md p { margin: 0; }
+.fpm-source { display: block; color: var(--faint); font-size: 9.5px; line-height: 1.55; overflow-wrap: anywhere; }
+.final-day-list { max-height: none !important; overflow: visible !important; padding-right: 0 !important; }
+.final-day { grid-template-columns: 54px 66px minmax(0, 1fr) 52px !important; align-items: start !important; }
+.fd-focus { display: grid; gap: 2px; min-width: 0; overflow-wrap: anywhere; }
+.fd-chapter { display: block; color: var(--ink); font-size: 11.5px; line-height: 1.5; }
+.fd-point { display: block; color: var(--ink-soft); font-size: 10.5px; line-height: 1.55; }
+.fd-task { display: block; margin-top: 1px; color: var(--muted); font-size: 11px; line-height: 1.65; }
+.fd-more { margin-top: 3px; }
+.fd-more > summary { color: var(--accent-deep); font-size: 10px; line-height: 1.6; cursor: pointer; }
+.fd-more-body { display: grid; gap: 9px; margin-top: 7px; padding-top: 7px; border-top: 1px dashed var(--line); }
+.fd-point-card { min-width: 0; padding: 9px 10px; border-left: 2px solid var(--accent); border-radius: 0 8px 8px 0; background: color-mix(in srgb, var(--accent-soft) 34%, var(--surface)); }
+.fd-point-card > b { display: block; color: var(--ink); font-size: 11.5px; line-height: 1.5; overflow-wrap: anywhere; }
+.fd-point-sec { display: block; margin: 2px 0 3px; color: var(--accent-deep); font: 400 9.5px/1.5 var(--font-mono); }
+.fd-point-card .md { min-width: 0; margin: 0 0 3px; color: var(--muted); font-size: 11px; line-height: 1.7; overflow-wrap: anywhere; }
+.fd-point-card .md p { margin: 0; }
+.fd-point-card small { display: block; color: var(--faint); font-size: 9.5px; line-height: 1.55; overflow-wrap: anywhere; }
+.fd-memory { margin-top: 7px; padding-top: 6px; border-top: 1px dashed var(--line); }
+.fd-memory b { display: block; margin-bottom: 2px; color: var(--accent-deep); font-size: 9.5px; letter-spacing: .04em; }
+.fd-memory p { margin: 0; color: var(--muted); font-size: 10.5px; line-height: 1.7; }
+.final-day .fpe-item { margin-top: 0; }
+.final-day .fpe-options { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 760px) {
+  .final-section-tabs { grid-template-columns: minmax(0, 1fr) !important; }
+  .final-plan-intro { padding: 10px 11px; }
+  .final-plan-meta { text-align: left; }
+  .final-day { grid-template-columns: 46px minmax(0, 1fr) 44px !important; gap: 5px 6px !important; }
+  .final-day .fd-date { grid-column: 1; grid-row: 1; }
+  .final-day .fd-phase { grid-column: 1; grid-row: 2; white-space: normal; }
+  .final-day .fd-focus { grid-column: 2; grid-row: 1 / span 2; }
+  .final-day .fd-check { grid-column: 3; grid-row: 1; justify-self: end; }
+  .final-day.is-exam .fd-check { grid-column: 3; }
+  .fpm-point { padding: 8px 9px; }
+}
+
+.final-day .fd-focus { display: grid !important; -webkit-line-clamp: unset !important; -webkit-box-orient: initial !important; overflow: visible !important; line-height: 1.5 !important; }
+.final-day .fd-focus > * { min-width: 0; }
+.final-day .fd-task { overflow-wrap: anywhere; }

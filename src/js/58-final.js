@@ -117,6 +117,20 @@ function finalSelectedSections(subject) {
   var secs = chapterSectionsFor(subject, chs[0]);
   return arr.filter(function (x) { return secs.indexOf(x) >= 0; });
 }
+var FINAL_PLAN_KNOWLEDGE = (typeof window !== 'undefined' && window.__FINAL_PLAN_KNOWLEDGE__) || { subjects: {} };
+function finalKnowledgeFor(subject, chapter) {
+  var pack = FINAL_PLAN_KNOWLEDGE && FINAL_PLAN_KNOWLEDGE.subjects ? FINAL_PLAN_KNOWLEDGE.subjects[subject] : null;
+  if (!pack || !Array.isArray(pack.chapters)) return { book: '', skill: '', points: [] };
+  var hit = pack.chapters.filter(function (c) { return c && c.chapter === chapter; })[0];
+  if (!hit || !Array.isArray(hit.points)) return { book: pack.book || '', skill: pack.skill || '', points: [] };
+  return { book: pack.book || '', skill: pack.skill || '', points: hit.points.slice() };
+}
+function finalPlanPointMatch(point, sections) {
+  if (!sections || !sections.length) return true;
+  var text = String((point && point.section) || '') + ' ' + String((point && point.source) || '');
+  return sections.some(function (s) { return s && text.indexOf(s) >= 0; });
+}
+
 function finalAllChapters(subject) {
   var out = [], seen = {};
   function add(ch) {
@@ -220,15 +234,24 @@ function finalPlanModule(subject, chapter) {
   var tpls = templatesOf(subject).filter(function (t) { return t && t.chapter === chapter; });
   var examples = finalPlanExamplesFor(subject, chapter);
   var template = finalPlanTemplateFor(subject, chapter, examples[0]);
-  var kps = tpls.map(function (t) { return String(t.title || '').trim(); }).filter(Boolean).slice(0, 4);
-  if (!kps.length) kps = chapterSectionsFor(subject, chapter).slice(0, 4);
-  if (!kps.length) kps = [chapter];
+  var knowledge = finalKnowledgeFor(subject, chapter);
+  var sections = finalSelectedChapters(subject).length === 1 ? finalSelectedSections(subject) : [];
+  var points = knowledge.points.filter(function (p) { return finalPlanPointMatch(p, sections); });
+  if (!points.length) points = knowledge.points.slice();
+  if (!points.length) {
+    points = tpls.map(function (t) {
+      return { name: String(t.title || '').trim(), detail: '本章模板：' + String(t.title || ''), section: '', source: chapter + ' · 模板库', memory: '' };
+    }).filter(function (p) { return p.name; }).slice(0, 4);
+  }
+  if (!points.length) points = [{ name: chapter, detail: '本章重点见题库与模板库。', section: '', source: chapter, memory: '' }];
   return {
     chapter: chapter,
     templates: tpls,
     template: template,
     examples: examples,
-    pointKeys: kps,
+    points: points,
+    pointKeys: points.map(function (p) { return p.name; }).slice(0, 6),
+    knowledge: knowledge,
     memory: finalPlanMemoryList(template, examples[0])
   };
 }
@@ -316,27 +339,38 @@ function finalPlanData() {
     var phase = i < p1 ? 0 : (i < p1 + p2 ? 1 : 2);
     var focus = '';
     var module = moduleCount ? modules[i % moduleCount] : null;
+    var round = Math.floor(i / Math.max(1, moduleCount));
     var example = module && module.examples.length ? module.examples[i % module.examples.length] : null;
     var chapter = module ? module.chapter : '';
-    var dayTemplate = module && module.templates.length ? module.templates[i % module.templates.length] : (module ? module.template : null);
+    var dayTemplate = module && module.templates.length ? module.templates[(i + phase) % module.templates.length] : (module ? module.template : null);
     var templateName = dayTemplate ? String(dayTemplate.title || '').trim() : '';
+    var point = module && module.points.length ? module.points[round % module.points.length] : null;
+    var pointName = point ? String(point.name || '').trim() : '';
+    var pointSection = point ? String(point.section || '').trim() : '';
     var code = example ? example.code : '';
     if (phase === 0) {
       focus = chapter
-        ? '知识点 ' + chapter + (templateName ? ' · ' + templateName : '') + '；先口述模板，再独立做例题' + (code ? ' ' + code : '')
+        ? (templateName ? '先口述「' + templateName + '」的识别特征与第一步' : '先口述本章模板的识别特征') + (code ? '，再做例题 ' + code : '')
         : (labels.length ? '回看 ' + labels[i % labels.length] + '，整理公式与错因' : '整理错题本，补全公式与模板');
     }
     if (phase === 1) {
       focus = chapter
-        ? '限时重做 ' + chapter + (code ? ' · 例题 ' + code : '') + '；按模板起手，做完对照标准解答'
+        ? '限时重做' + (code ? '例题 ' + code : '本章变式') + '；按模板起手，做完对照标准解答'
         : (labels.length ? '限时重做 ' + labels[i % labels.length] + '，再做变式' : '按章节做变式题，记录卡点');
     }
     if (phase === 2) {
       focus = (i === total - 1)
-        ? '考前最后一轮：只看 ' + (chapter || '错题') + ' 的模板、公式与易错点'
-        : (chapter ? '错题回看 ' + chapter + (code ? ' · 例题 ' + code : '') + '；只看卡点与易错点' : '回看错题清单与模板');
+        ? '考前最后一轮：只看模板、公式与易错点'
+        : (chapter ? '冲刺回看' + (code ? '例题 ' + code : '本章例题') + '；只看卡点与易错点' : '回看错题清单与模板');
     }
-    days.push({ date: d, key: finalDateKey(d), phase: phase, focus: focus, chapter: chapter, moduleIndex: module ? i % moduleCount : -1, exampleCode: code, done: !!fe.done[finalDateKey(d)] });
+    days.push({
+      date: d, key: finalDateKey(d), phase: phase, focus: focus,
+      chapter: chapter, moduleIndex: module ? i % moduleCount : -1,
+      point: point, pointIndex: point ? round % module.points.length : -1,
+      pointName: pointName, pointSection: pointSection, pointSource: point ? point.source : '',
+      template: dayTemplate, templateName: templateName,
+      example: example, exampleCode: code, done: !!fe.done[finalDateKey(d)]
+    });
   }
   var dailyMinutes = Math.max(45, Math.min(120, Math.round((Number(fe.duration) || 120) * 0.5 / 5) * 5));
   return { empty: false, past: false, today: today, exam: exam, total: total, days: days, phases: [p1, p2, Math.max(0, total - p1 - p2)], materials: materials, modules: modules, chapters: finalPlanChapters(finalSubject()), dailyMinutes: dailyMinutes, duration: fe.duration };
@@ -378,18 +412,26 @@ function finalPlanTemplateListHtml(m) {
   }).join('');
   return '<div class="fpm-templates"><h4>答题模板（' + m.templates.length + ' 个，展开看步骤）</h4>' + items + '</div>';
 }
+function finalPlanPointHtml(point) {
+  if (!point) return '';
+  return '<article class="fpm-point">' +
+    '<div class="fpm-point-head"><b>' + renderInline(point.name || '知识点') + '</b>' + (point.section ? '<span>' + esc(point.section) + '</span>' : '') + '</div>' +
+    (point.detail ? '<p class="md">' + renderInline(point.detail) + '</p>' : '') +
+    (point.source ? '<small class="fpm-source">出处：' + esc(point.source) + '</small>' : '') +
+  '</article>';
+}
 function finalPlanModuleHtml(m, index) {
   if (!m) return '';
-  var chips = m.pointKeys.map(function (x) { return '<span class="fpm-chip">' + renderInline(x) + '</span>'; }).join('');
+  var pointHtml = m.points.map(finalPlanPointHtml).join('');
   var memory = m.memory.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('');
   var examples = m.examples.length ? m.examples.map(function (ex) { return finalPlanExampleHtml(ex, m.template); }).join('') : '<div class="final-plan-note">本章暂无完整例题，先按模板复述步骤。</div>';
-  return '<details class="final-plan-module"' + (index === 0 ? ' open' : '') + '>' +
-    '<summary><span class="fpm-index">' + pad(index + 1, 2) + '</span><span class="fpm-title">' + esc(m.chapter) + '</span><span class="fpm-meta">' + m.pointKeys.length + ' 个知识点 · ' + m.templates.length + ' 个模板 · ' + m.examples.length + ' 道例题</span></summary>' +
+  return '<details class="final-plan-module"' + (index === 0 ? ' open' : '') + ' data-final-module="' + attr(m.chapter) + '">' +
+    '<summary><span class="fpm-index">' + pad(index + 1, 2) + '</span><span class="fpm-title">' + esc(m.chapter) + '</span><span class="fpm-meta">' + m.points.length + ' 个知识点 · ' + m.templates.length + ' 个模板 · ' + m.examples.length + ' 道例题</span></summary>' +
     '<div class="fpm-body">' +
-      '<div class="fpm-kps"><span class="fpm-label">知识点</span><span class="fpm-chips">' + chips + '</span></div>' +
+      '<div class="fpm-kps"><span class="fpm-label">知识点与出处</span><div class="fpm-points">' + pointHtml + '</div></div>' +
       '<div class="fpm-memory"><h4>记忆与考场用法</h4><ul>' + memory + '</ul></div>' +
       finalPlanTemplateListHtml(m) +
-      '<div class="fpm-examples"><h4>本章例题</h4>' + examples + '</div>' +
+      '<div class="fpm-examples"><h4>本章例题（含标准解答、模板、详细解析）</h4>' + examples + '</div>' +
     '</div>' +
   '</details>';
 }
@@ -405,17 +447,33 @@ function finalPlanHtml() {
     return '<div class="final-phase"><span class="fp-k">0' + (i + 1) + '</span><b>' + p.label + '</b><small>' + p.hint + '</small><em>' + (data.phases[i] || 0) + ' 天</em></div>';
   }).join('');
   var modules = (data.modules || []).map(finalPlanModuleHtml).join('');
-  var modulesHtml = modules ? '<div class="final-plan-modules"><div class="final-plan-modules-head"><h3>章节重点与例题</h3><span>' + data.chapters.length + ' 章 · 每章含知识点、模板与 1–2 道例题</span></div>' + modules + '</div>' : '';
+  var pointTotal = (data.modules || []).reduce(function (n, m) { return n + (m.points ? m.points.length : 0); }, 0);
+  var modulesHtml = modules ? '<div class="final-plan-modules"><div class="final-plan-modules-head"><h3>章节重点与例题</h3><span>' + data.chapters.length + ' 章 · ' + pointTotal + ' 个知识点 · 每章含模板与例题</span></div>' + modules + '</div>' : '';
   var rows = data.days.map(function (d) {
+    var detail = '';
+    if (d.point) {
+      detail += '<div class="fd-point-card"><b>' + renderInline(d.point.name || '知识点') + '</b>' +
+        (d.point.section ? '<span class="fd-point-sec">' + renderInline(d.point.section) + '</span>' : '') +
+        (d.point.detail ? '<p class="md">' + renderInline(d.point.detail) + '</p>' : '') +
+        (d.point.source ? '<small>出处：' + esc(d.point.source) + '</small>' : '') +
+        (d.point.memory ? '<div class="fd-memory"><b>记忆与考场用法</b><p>' + renderInline(d.point.memory) + '</p></div>' : '') +
+      '</div>';
+    }
+    detail += d.example ? finalPlanExampleHtml(d.example, d.template) : '<div class="final-plan-note">本章暂无完整例题；按模板口述步骤，再回题库做一道同类题。</div>';
     return '<div class="final-day' + (d.done ? ' is-done' : '') + '">' +
       '<span class="fd-date">' + pad(d.date.getMonth() + 1, 2) + '.' + pad(d.date.getDate(), 2) + '<small>周' + '日一二三四五六'.charAt(d.date.getDay()) + '</small></span>' +
       '<span class="fd-phase">' + FINAL_PHASES[d.phase].label + '</span>' +
-      '<span class="fd-focus">' + esc(d.focus) + '</span>' +
+      '<span class="fd-focus"><b class="fd-chapter">' + renderInline(d.chapter || '综合复习') + '</b>' +
+        '<span class="fd-point">' + renderInline(d.pointName || '本章重点') + (d.pointSection ? ' · ' + renderInline(d.pointSection) : '') + '</span>' +
+        '<span class="fd-task">' + renderInline(d.focus) + '</span>' +
+        '<details class="fd-more"><summary>展开当天知识点与例题</summary><div class="fd-more-body">' + detail + '</div></details>' +
+      '</span>' +
       '<label class="fd-check"><input type="checkbox" data-final-task="' + d.key + '"' + (d.done ? ' checked' : '') + '><span>完成</span></label>' +
     '</div>';
   }).join('');
   var emptyDays = data.days.length ? '' : '<div class="final-plan-note">今天就是考试日：只看章节模板、错题标题和易错点。</div>';
-  return '<div class="final-count-banner"><b>' + data.total + '</b><span>天复习窗口</span><small>' + finalDateKey(data.today) + ' → ' + finalDateKey(data.exam) + '</small></div>' +
+  return '<div class="final-plan-intro"><div><span class="final-plan-badge">智能排程</span><b>按所选章节与考试时间生成，具体到每一天</b><p>按章节权重、剩余天数与每日可用时间自动排程，不调用外部 API；知识点来自对应科目 skill，逐条标注教材章节与小节出处。</p></div><span class="final-plan-meta">' + data.chapters.length + ' 章 · ' + pointTotal + ' 个知识点 · 每天约 ' + data.dailyMinutes + ' 分钟</span></div>' +
+    '<div class="final-count-banner"><b>' + data.total + '</b><span>天复习窗口</span><small>' + finalDateKey(data.today) + ' → ' + finalDateKey(data.exam) + '</small></div>' +
     '<div class="final-phase-grid">' + phaseCards + '</div>' +
     '<div class="final-plan-usage"><b>每天怎么用</b><ol><li>先用 10 分钟口述当天章节的答题模板。</li><li>用 ' + data.dailyMinutes + ' 分钟独立做例题，不翻答案。</li><li>对照考试标准解答和详细解析，补上跳过的步骤。</li><li>把卡点写成一句错因；考前一天只看模板与错因。</li></ol></div>' +
     modulesHtml +
@@ -939,12 +997,17 @@ function finalPapersHtml() {
     finalPickerHtml(p) + finalPaperChipsHtml() + (p ? finalPaperEditorHtml(p) : '<div class="final-empty"><b>当前科目还没有模拟卷</b><p>先点「生成模拟卷」；也可以在题库选题里勾选后新建卷。</p></div>') + finalPaperImportHtml();
 }
 
+function finalSectionValue() {
+  var s = ui.finalSection;
+  return s === 'exam' || s === 'paper' ? s : 'plan';
+}
 function finalSectionTabsHtml() {
-  var section = ui.finalSection === 'exam' ? 'exam' : 'paper';
-  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>先出卷，再开考；两条入口互不替代。</p></div>' +
+  var section = finalSectionValue();
+  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>计划、出卷、开考三个入口分开；计划按章节与考试时间逐日排程。</p></div>' +
     '<div class="final-section-tabs" role="tablist" aria-label="期末复习模块">' +
-    '<button class="final-section-tab' + (section === 'paper' ? ' is-on' : '') + '" data-act="final-section" data-section="paper" role="tab" aria-selected="' + (section === 'paper') + '" type="button"><em>01</em><span class="final-tab-copy"><b>出模拟卷</b><span>选题、编辑、导出</span></span></button>' +
-    '<button class="final-section-tab' + (section === 'exam' ? ' is-on' : '') + '" data-act="final-section" data-section="exam" role="tab" aria-selected="' + (section === 'exam') + '" type="button"><em>02</em><span class="final-tab-copy"><b>进行模拟考</b><span>限时、标准/AI 批改、历史</span></span></button>' +
+    '<button class="final-section-tab' + (section === 'plan' ? ' is-on' : '') + '" data-act="final-section" data-section="plan" role="tab" aria-selected="' + (section === 'plan') + '" type="button"><em>01</em><span class="final-tab-copy"><b>复习计划</b><span>每日知识点、例题、记忆法</span></span></button>' +
+    '<button class="final-section-tab' + (section === 'paper' ? ' is-on' : '') + '" data-act="final-section" data-section="paper" role="tab" aria-selected="' + (section === 'paper') + '" type="button"><em>02</em><span class="final-tab-copy"><b>出模拟卷</b><span>选题、编辑、导出</span></span></button>' +
+    '<button class="final-section-tab' + (section === 'exam' ? ' is-on' : '') + '" data-act="final-section" data-section="exam" role="tab" aria-selected="' + (section === 'exam') + '" type="button"><em>03</em><span class="final-tab-copy"><b>进行模拟考</b><span>限时、标准/AI 批改、历史</span></span></button>' +
   '</div></div>';
 }
 
@@ -966,23 +1029,31 @@ function viewFinal() {
   var plan = finalPlanData();
   var count = plan.empty || plan.past ? '—' : String(plan.total);
   var countLabel = plan.empty ? '设定考试日期后开始' : (plan.past ? '日期已过，请修改' : '距离期末考试还有');
-  var section = ui.finalSection === 'exam' ? 'exam' : 'paper';
-  var setup = '<section class="final-setup card">' +
+  var section = finalSectionValue();
+  var setup = section === 'exam' ? '' : '<section class="final-setup card">' +
       '<div class="final-setup-fields"><label class="field"><span>期末考试日期</span><input class="input" type="date" data-final-field="date" value="' + attr(fe.date) + '"></label>' +
       '<label class="field"><span>考试时长（分钟）</span><input class="input" type="number" min="30" max="300" step="5" data-final-field="duration" value="' + attr(fe.duration) + '"></label>' +
-      '<span class="final-setup-hint">改日期或时长后，计划和组卷题数会同步更新。</span></div>' +
+      '<span class="final-setup-hint">改日期或时长后，复习计划和组卷题数会同步更新。</span></div>' +
       (plan.empty || plan.past
         ? '<div class="final-countdown is-empty"><span>' + esc(countLabel) + '</span></div>'
         : '<div class="final-countdown"><span>' + esc(countLabel) + '</span><b>' + esc(count) + '</b><em>天</em></div>') +
     '</section>';
-  var body = section === 'exam' ? finalExamStartPanelHtml() :
-    '<div class="final-grid">' +
-      '<section class="final-panel card"><div class="final-panel-head"><h2>复习计划</h2><span>' + (plan.empty ? '等待日期' : (plan.past ? '日期无效' : plan.total + ' 天 · 3 阶段')) + '</span></div>' + finalPlanHtml() + '</section>' +
-      '<section class="final-panel card"><div class="final-panel-head"><h2>复习材料</h2><span>' + finalMaterials().length + ' 题</span></div>' + finalMaterialsHtml() + '</section>' +
-    '</div>' +
-    '<section class="final-panel final-papers card">' + finalPapersHtml() + '</section>';
+  var body;
+  if (section === 'exam') {
+    body = finalExamStartPanelHtml();
+  } else if (section === 'paper') {
+    body = '<div class="final-grid">' +
+        '<section class="final-panel card"><div class="final-panel-head"><h2>复习材料</h2><span>' + finalMaterials().length + ' 题</span></div>' + finalMaterialsHtml() + '</section>' +
+        '<section class="final-panel card"><div class="final-panel-head"><h2>组卷说明</h2><span>按考试时长抽题</span></div><p class="final-paper-hint">先选章节和材料，再生成模拟卷；题目可编辑、保存、导出 DOCX / PDF。计划与模拟考在各自入口，不混在这张卷里。</p></section>' +
+      '</div>' +
+      '<section class="final-panel final-papers card">' + finalPapersHtml() + '</section>';
+  } else {
+    body = '<section class="final-panel card final-plan-panel"><div class="final-panel-head"><div><span class="final-kicker">SMART STUDY PLAN</span><h2>复习计划</h2></div><span>' + (plan.empty ? '等待日期' : (plan.past ? '日期无效' : plan.total + ' 天 · 3 阶段')) + '</span></div>' +
+      '<div class="final-plan-toolbar">' + finalSubjectTabsHtml() + finalChapterFilterHtml(finalSubject()) + '</div>' +
+      finalPlanHtml() + '</section>';
+  }
   return '<div class="final-page">' +
-    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">先定考试日期和时长，再安排复习节奏；把错题和题库题加入材料，生成可编辑、可导出的模拟卷，或进入限时模拟考。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
+    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">复习计划、出模拟卷、进行模拟考三个入口分开；计划按所选章节和考试时间逐日排程，每天给出知识点、出处、例题与记忆法。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
     subjectJumpHtml('final') + finalSectionTabsHtml() + setup + body +
     (ui.finalAiChaptersOpen && typeof finalExamChapterHtml === 'function' ? finalExamChapterHtml() : '') +
     (ui.examRulesOpen && typeof finalExamRulesHtml === 'function' ? finalExamRulesHtml() : '') +

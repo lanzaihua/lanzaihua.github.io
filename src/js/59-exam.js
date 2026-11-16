@@ -2623,7 +2623,7 @@ document.addEventListener('click', function (e) {
   if (!el) return;
   var act = el.getAttribute('data-act');
   if (act === 'final-subject') { e.preventDefault(); finalData().subject = el.getAttribute('data-subject') || finalSubject(); ui.finalPaperId = ''; ui.finalPickerChecked = {}; ui.finalPickerChapter = ''; markDirty(); render(); }
-  else if (act === 'final-section') { e.preventDefault(); ui.finalSection = el.getAttribute('data-section') === 'exam' ? 'exam' : 'paper'; render(); }
+  else if (act === 'final-section') { e.preventDefault(); var fsec = el.getAttribute('data-section'); ui.finalSection = fsec === 'exam' || fsec === 'paper' ? fsec : 'plan'; render(); }
   else if (act === 'final-start-exam') { e.preventDefault(); finalStartExam(); }
   else if (act === 'final-ai-exam') { e.preventDefault(); finalStartAiExam(); }
   else if (act === 'final-exam-history-view') { e.preventDefault(); finalExamHistoryView(el.getAttribute('data-id')); }

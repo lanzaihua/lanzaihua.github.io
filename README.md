@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.16-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.16--fc392865-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.16--38f617dd-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -153,7 +153,7 @@
 
 **18 项 · 18 组**
 
-本轮完成 2026-11-16 的界面自洽、排版收口与发布记录整理：规范页的复习节点统一为 20–32 个（D1–D1800），存储说明改为 IndexedDB，AI 密钥说明改为 AES-GCM；笔记库统一「本 / 页 / 条」计数，总览零错题时改为可行动空态，页头、按钮、卡片与手机首页节奏统一。题库保持 9651 题（2046 / 3523 / 1199 / 2883），查重、严格 QA、全库渲染与数学语言审计均为 0 问题；期末复习保留按章节组卷与含模板、例题、标准解答和详细解析的复习计划；模拟卷编辑卡、题库筛选栏、本机 IndexedDB 存储与题库分片继续由真浏览器门禁覆盖。README 只展开最新一块，历史版本折叠；GitHub Releases 同一天只保留一条。135 项回归测试、公式、无障碍、性能、8 视口与发布校验全部通过，本块随 GitHub Pages 与 v2026.11.16 Release 发布。
+本轮完成 2026-11-16 的界面自洽、排版收口与发布记录整理：规范页的复习节点统一为 20–32 个（D1–D1800），存储说明改为 IndexedDB，AI 密钥说明改为 AES-GCM；笔记库统一「本 / 页 / 条」计数，总览零错题时改为可行动空态，页头、按钮、卡片与手机首页节奏统一。题库保持 9651 题（2046 / 3523 / 1199 / 2883），查重、严格 QA、全库渲染与数学语言审计均为 0 问题；期末复习拆成复习计划 / 出模拟卷 / 进行模拟考三个入口，计划按所选章节与考试时间逐日排程，574 个知识点来自四科学科 skill 并逐条标注教材章节与小节，每章给出全部模板、记忆与考场用法和完整例题；模拟卷编辑卡、题库筛选栏、本机 IndexedDB 存储与题库分片继续由真浏览器门禁覆盖。README 只展开最新一块，历史版本折叠；GitHub Releases 同一天只保留一条。138 项回归测试、公式、无障碍、性能、8 视口与发布校验全部通过，本块随 GitHub Pages 与 v2026.11.16 Release 发布。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -164,7 +164,7 @@
 | **题库与来源** | 题库与总览的来源介绍按当前科目实际题源生成，没有习题集的科目不写「+ 习题集」；题库仍为 9651 题，四科 2046 / 3523 / 1199 / 2883，来源与筛选计数一致。 |
 | **公式与渲染** | 保留公式管线修复：矩阵行分隔符、跨行 $$、数学小于号、竖线与集合花括号不再被误判；分式、根式、矩阵加 has-tall；知识点摘录不截断公式。全库 9651 题渲染审计、104223 字段数学语言审计与 14 面公式门禁保持 0 残留。 |
 | **错题与长标题** | 错题标题任意位置可换行，长英文串不再伸出卡片；手机和平板 .main 改 100% 拉伸，笔记工具栏、画布与翻页回到视口内。 |
-| **期末复习** | 期末复习按章节直接筛选题库组卷：可勾选加入当前卷，或用所选新建 100 分卷；复习计划按考试日期拆分，每章列出知识点、全部答题模板、例题（考试标准解答 / 答题模板 / 详细解析 / 易错点），每日计划轮换模板。 |
+| **期末复习** | 复习计划、出模拟卷、进行模拟考拆成三个独立入口：计划按所选章节和考试时间逐日排程，574 个知识点来自四科学科 skill，逐条标注教材章节与小节，每章列全部模板、记忆与考场用法、完整例题（考试标准解答 / 答题模板 / 详细解析 / 易错点）；出卷页可按章节筛选题库组卷。 |
 | **模拟卷编辑** | 「我的模拟卷」编辑卡改为显式 CSS Grid：标题整行、时长与题数一行、六个按钮按宽度自适应；18 个宽度真浏览器门禁断言标题不截断、按钮文字不越界、标签间距不超过 40px。 |
 | **筛选留白** | 题库筛选栏桌面改为 Grid + 可换行字段区，1301px 起四列，其余 2–3 列；手机两列折叠。qa:filters 在 22 个宽度断言间距 ≥8px、互不重叠、不越界、文字不裁。 |
 | **本机存储** | 错题与笔记由 IndexedDB 主存（sanke-cuotiben-store），localStorage 只留 3MB 镜像与版本元数据；容量按浏览器配额留 20% 余量动态计算，不再受旧 4MB 预算限制。Chromium 实测配额 10.77GB、可用 8.6GB，6MB 状态写入与刷新恢复正常。 |
@@ -174,7 +174,7 @@
 | **导出验证** | 期末模拟卷 DOCX 经本机 Word 与 WPS 分别导出 PDF，逐页核对 5 页；Word 2691 字、WPS 2484 字，标准解答、详细解析、解题要点、易错点齐全，无 \frac、$$、U+FFFD、裸 mid 或「B．B．」。 |
 | **发布链** | source.zip 改为 git archive HEAD 全部 tracked 源码，静态包补 skills.js、_headers 与分片；release-check 逐资产核对 SHA256SUMS，Pages 查询失败直接失败；CI 删除旧 Release hydration，新增产物 git diff 与 qa:pages。 |
 | **记录合并** | README 只展开最新一块，2026-11-14 及更早版本全部收进 details；GitHub Releases 同一天只保留一条，不再给同日记录加小版本后缀；网页、CHANGELOG 与 README 共用同一份日期、标题、项数与分组。 |
-| **防复发** | 回归测试扩展到 135 项，新增界面自洽与更新记录一致性断言；严格 QA、题库基线、公式、数学语言、拆包、8 视口、纸张编辑卡与筛选栏门禁全部接入 CI，关键检查失败禁止发布。 |
+| **防复发** | 回归测试扩展到 138 项，新增计划知识点完整性、三入口分离与逐日例题断言；严格 QA、题库基线、公式、数学语言、拆包、8 视口、纸张编辑卡、筛选栏与期末复习门禁全部接入 CI，关键检查失败禁止发布。 |
 
 <img src="assets/v2/20261116-changelog.png" alt="网页内更新记录" width="820">
 
@@ -908,7 +908,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、8 视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 135 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
+| `tests/` | 138 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 
