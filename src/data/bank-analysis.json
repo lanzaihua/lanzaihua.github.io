@@ -4880,7 +4880,7 @@
         "公式记忆"
       ],
       "title": "公式填空题 · 复合函数的定义域",
-      "question": "复合函数$f\\circ g$的定义域为$\\{x\\mid x\\in D(g)$且 ____$\\}$。",
+      "question": "复合函数 $f\\circ g$ 的定义域为 $\\{x\\mid x\\in D(g)\\}$，其中要求 ____。",
       "answer": "$g(x)\\in D(f)$",
       "solution": [
         "内层函数的值必须落在外层函数的定义域内。"
@@ -26121,7 +26121,7 @@
       ],
       "title": "证明题 · 最值定理",
       "question": "请给出「最值定理」的完整证明，并说明每一步的依据。",
-      "answer": "证明：令 M=sup f([a,b])，取 xn 使 f(xn)→M，再由子列收敛到 x0，连续性得 f(x0)=M，最大值取到；最小值同理。",
+      "answer": "证明：令 $M=\\sup f([a,b])$，取 $x_n$ 使 $f(x_n)\\to M$，再由子列收敛到 $x_0$，连续性得 $f(x_0)=M$，最大值取到；最小值同理。",
       "solution": [],
       "difficulty": 1,
       "tags": [
@@ -26129,8 +26129,8 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "证明：f 在闭区间 [a,b] 上连续，故有界。若 f 无上界，则可取 xn∈[a,b] 使 f(xn)>n；由致密性定理，{xn} 有子列 xnk→x0∈[a,b]，连续性给出 f(xnk)→f(x0)，与 f(xnk)>nk→∞ 矛盾。故 f 有上界。令 M=sup f([a,b])，取 xn 使 f(xn)→M，再由子列收敛到 x0，连续性得 f(x0)=M，最大值取到；最小值同理。",
-      "detailedAnalysis": "证明思路：f 在闭区间 [a,b] 上连续，故有界。若 f 无上界，则可取 xn∈[a,b] 使 f(xn)>n；由致密性定理，{xn} 有子列 xnk→x0∈[a,b]，连续性给出 f(xnk)→f(x0)，与 f(xnk)>nk→∞ 矛盾。故 f 有上界。令 M=sup f([a,b])，取 xn 使 f(xn)→M，再由子列收敛到 x0，连续性得 f(x0)=M，最大值取到；最小值同理。\n\n关键点：每一步都必须引用定义、定理或已知条件；不能只写结论，也不能用特例代替一般证明。",
+      "standardSolution": "证明：$f$ 在闭区间 $[a,b]$ 上连续，故有界。若 $f$ 无上界，则可取 $x_n\\in[a,b]$ 使 $f(x_n)>n$；由致密性定理，$\\{x_n\\}$ 有子列 $x_{n_k}\\to x_0\\in[a,b]$，连续性给出 $f(x_{n_k})\\to f(x_0)$，与 $f(x_{n_k})>n_k\\to\\infty$ 矛盾。故 $f$ 有上界。令 $M=\\sup f([a,b])$，取 $x_n$ 使 $f(x_n)\\to M$，再由子列收敛到 $x_0$，连续性得 $f(x_0)=M$，最大值取到；最小值同理。",
+      "detailedAnalysis": "证明：$f$ 在闭区间 $[a,b]$ 上连续，故有界。若 $f$ 无上界，则可取 $x_n\\in[a,b]$ 使 $f(x_n)>n$；由致密性定理，$\\{x_n\\}$ 有子列 $x_{n_k}\\to x_0\\in[a,b]$，连续性给出 $f(x_{n_k})\\to f(x_0)$，与 $f(x_{n_k})>n_k\\to\\infty$ 矛盾。故 $f$ 有上界。令 $M=\\sup f([a,b])$，取 $x_n$ 使 $f(x_n)\\to M$，再由子列收敛到 $x_0$，连续性得 $f(x_0)=M$，最大值取到；最小值同理。 关键点：每一步都必须引用定义、定理或已知条件；不能只写结论，也不能用特例代替一般证明。",
       "templateTitle": "",
       "templateNotes": null,
       "verification": "",
@@ -26277,7 +26277,7 @@
       ],
       "title": "证明题 · Cantor 定理",
       "question": "请给出「Cantor 定理」的完整证明，并说明每一步的依据。",
-      "answer": "证明：f 在 [a,b] 上一致连续。",
+      "answer": "证明：$f$ 在 $[a,b]$ 上一致连续。",
       "solution": [],
       "difficulty": 4,
       "tags": [
@@ -26285,8 +26285,8 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "证明：若 f 在 [a,b] 上不一致连续，则存在 ε0>0，使得对每个 n 都有 xn,yn∈[a,b] 满足 |xn-yn|<1/n 而 |f(xn)-f(yn)|≥ε0。由致密性定理，{xn} 有子列 xnk→x0∈[a,b]；由 |xnk-ynk|<1/nk 得 ynk→x0。连续性给出 f(xnk)→f(x0)、f(ynk)→f(x0)，故 |f(xnk)-f(ynk)|→0，与 ≥ε0 矛盾。故 f 在 [a,b] 上一致连续。",
-      "detailedAnalysis": "证明思路：若 f 在 [a,b] 上不一致连续，则存在 ε0>0，使得对每个 n 都有 xn,yn∈[a,b] 满足 |xn-yn|<1/n 而 |f(xn)-f(yn)|≥ε0。由致密性定理，{xn} 有子列 xnk→x0∈[a,b]；由 |xnk-ynk|<1/nk 得 ynk→x0。连续性给出 f(xnk)→f(x0)、f(ynk)→f(x0)，故 |f(xnk)-f(ynk)|→0，与 ≥ε0 矛盾。故 f 在 [a,b] 上一致连续。\n\n关键点：每一步都必须引用定义、定理或已知条件；不能只写结论，也不能用特例代替一般证明。",
+      "standardSolution": "证明：若 $f$ 在 $[a,b]$ 上不一致连续，则存在 $\\varepsilon_0>0$，使得对每个 $n$ 都有 $x_n,y_n\\in[a,b]$ 满足 $|x_n-y_n|<1/n$ 而 $|f(x_n)-f(y_n)|\\ge\\varepsilon_0$。由致密性定理，$\\{x_n\\}$ 有子列 $x_{n_k}\\to x_0\\in[a,b]$；由 $|x_{n_k}-y_{n_k}|<1/n_k$ 得 $y_{n_k}\\to x_0$。连续性给出 $f(x_{n_k})\\to f(x_0)$、$f(y_{n_k})\\to f(x_0)$，故 $|f(x_{n_k})-f(y_{n_k})|\\to0$，与 $\\ge\\varepsilon_0$ 矛盾。故 $f$ 在 $[a,b]$ 上一致连续。",
+      "detailedAnalysis": "证明：若 $f$ 在 $[a,b]$ 上不一致连续，则存在 $\\varepsilon_0>0$，使得对每个 $n$ 都有 $x_n,y_n\\in[a,b]$ 满足 $|x_n-y_n|<1/n$ 而 $|f(x_n)-f(y_n)|\\ge\\varepsilon_0$。由致密性定理，$\\{x_n\\}$ 有子列 $x_{n_k}\\to x_0\\in[a,b]$；由 $|x_{n_k}-y_{n_k}|<1/n_k$ 得 $y_{n_k}\\to x_0$。连续性给出 $f(x_{n_k})\\to f(x_0)$、$f(y_{n_k})\\to f(x_0)$，故 $|f(x_{n_k})-f(y_{n_k})|\\to0$，与 $\\ge\\varepsilon_0$ 矛盾。故 $f$ 在 $[a,b]$ 上一致连续。 关键点：每一步都必须引用定义、定理或已知条件；不能只写结论，也不能用特例代替一般证明。",
       "templateTitle": "",
       "templateNotes": null,
       "verification": "",
@@ -33016,8 +33016,8 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "证明：设 f 在 x0 可导。由可导定义，差商 [f(x)-f(x0)]/(x-x0) 当 x→x0 时趋于 f′(x0)，故在 x0 的某去心邻域内有界。于是 f(x)-f(x0)=[(f(x)-f(x0))/(x-x0)](x-x0)→f′(x0)·0=0，即 f(x)→f(x0)，故 f 在 x0 连续。",
-      "detailedAnalysis": "证明思路：设 f 在 x0 可导。由可导定义，差商 [f(x)-f(x0)]/(x-x0) 当 x→x0 时趋于 f′(x0)，故在 x0 的某去心邻域内有界。于是 f(x)-f(x0)=[(f(x)-f(x0))/(x-x0)](x-x0)→f′(x0)·0=0，即 f(x)→f(x0)，故 f 在 x0 连续。\n\n关键点：每一步都必须引用定义、定理或已知条件；不能只写结论，也不能用特例代替一般证明。",
+      "standardSolution": "证明：设 $f$ 在 $x_0$ 可导。由可导定义，差商 $\\frac{f(x)-f(x_0)}{x-x_0}$ 当 $x\\to x_0$ 时趋于 $f'(x_0)$，故在 $x_0$ 的某去心邻域内有界。于是\n$$f(x)-f(x_0)=\\frac{f(x)-f(x_0)}{x-x_0}(x-x_0)\\to f'(x_0)\\cdot0=0,$$\n即 $f(x)\\to f(x_0)$，故 $f$ 在 $x_0$ 连续。",
+      "detailedAnalysis": "证明：设 $f$ 在 $x_0$ 可导。由可导定义，差商 $\\frac{f(x)-f(x_0)}{x-x_0}$ 当 $x\\to x_0$ 时趋于 $f'(x_0)$，故在 $x_0$ 的某去心邻域内有界。于是\n$$f(x)-f(x_0)=\\frac{f(x)-f(x_0)}{x-x_0}(x-x_0)\\to f'(x_0)\\cdot0=0,$$\n即 $f(x)\\to f(x_0)$，故 $f$ 在 $x_0$ 连续。 关键点：每一步都必须引用定义、定理或已知条件；不能只写结论，也不能用特例代替一般证明。",
       "templateTitle": "",
       "templateNotes": null,
       "verification": "",
@@ -40176,8 +40176,8 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "证明：设 f″>0。任取 x1<x2，由拉格朗日中值定理，存在 ξ 使 f′(x2)-f′(x1)=f″(ξ)(x2-x1)>0，故 f′ 严格增。固定 x0，对 x>x0 与 x<x0 分别用拉格朗日中值定理，可得割线斜率随 x 增大而增大，即曲线为下凸（凹弧）。",
-      "detailedAnalysis": "证明思路：设 f″>0。任取 x1<x2，由拉格朗日中值定理，存在 ξ 使 f′(x2)-f′(x1)=f″(ξ)(x2-x1)>0，故 f′ 严格增。固定 x0，对 x>x0 与 x<x0 分别用拉格朗日中值定理，可得割线斜率随 x 增大而增大，即曲线为下凸（凹弧）。\n\n关键点：每一步都必须引用定义、定理或已知条件；不能只写结论，也不能用特例代替一般证明。",
+      "standardSolution": "证明：设 $f''>0$。任取 $x_1<x_2$，由拉格朗日中值定理，存在 $\\xi$ 使\n$$f'(x_2)-f'(x_1)=f''(\\xi)(x_2-x_1)>0,$$\n故 $f'$ 严格增。固定 $x_0$，对 $x>x_0$ 与 $x<x_0$ 分别用拉格朗日中值定理，可得割线斜率随 $x$ 增大而增大，即曲线为下凸（凹弧）。",
+      "detailedAnalysis": "证明：设 $f''>0$。任取 $x_1<x_2$，由拉格朗日中值定理，存在 $\\xi$ 使\n$$f'(x_2)-f'(x_1)=f''(\\xi)(x_2-x_1)>0,$$\n故 $f'$ 严格增。固定 $x_0$，对 $x>x_0$ 与 $x<x_0$ 分别用拉格朗日中值定理，可得割线斜率随 $x$ 增大而增大，即曲线为下凸（凹弧）。 关键点：每一步都必须引用定义、定理或已知条件；不能只写结论，也不能用特例代替一般证明。",
       "templateTitle": "",
       "templateNotes": null,
       "verification": "",
@@ -40402,7 +40402,7 @@
       ],
       "title": "证明题 · 对数的麦克劳林展开",
       "question": "请给出「对数的麦克劳林展开」的完整证明，并说明每一步的依据。",
-      "answer": "证明：代入麦克劳林公式得 ln(1+x)=x-x²/2+x³/3-…+(-1)^{n-1}x^n/n+o(x^n)。",
+      "answer": "证明：代入麦克劳林公式得 $\\ln(1+x)=x-\\frac{x^2}{2}+\\frac{x^3}{3}-\\cdots+(-1)^{n-1}\\frac{x^n}{n}+o(x^n)$。",
       "solution": [],
       "difficulty": 5,
       "tags": [
@@ -40410,8 +40410,8 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "证明：ln(1+x) 的 k 阶导数为 (-1)^{k-1}(k-1)!/(1+x)^k，故在 0 处为 (-1)^{k-1}(k-1)!。代入麦克劳林公式得 ln(1+x)=x-x²/2+x³/3-…+(-1)^{n-1}x^n/n+o(x^n)。",
-      "detailedAnalysis": "证明思路：ln(1+x) 的 k 阶导数为 (-1)^{k-1}(k-1)!/(1+x)^k，故在 0 处为 (-1)^{k-1}(k-1)!。代入麦克劳林公式得 ln(1+x)=x-x²/2+x³/3-…+(-1)^{n-1}x^n/n+o(x^n)。\n\n关键点：每一步都必须引用定义、定理或已知条件；不能只写结论，也不能用特例代替一般证明。",
+      "standardSolution": "证明：$\\ln(1+x)$ 的 $k$ 阶导数为 $(-1)^{k-1}(k-1)!/(1+x)^k$，故在 $0$ 处为 $(-1)^{k-1}(k-1)!$。代入麦克劳林公式得 $\\ln(1+x)=x-\\frac{x^2}{2}+\\frac{x^3}{3}-\\cdots+(-1)^{n-1}\\frac{x^n}{n}+o(x^n)$。",
+      "detailedAnalysis": "证明：$\\ln(1+x)$ 的 $k$ 阶导数为 $(-1)^{k-1}(k-1)!/(1+x)^k$，故在 $0$ 处为 $(-1)^{k-1}(k-1)!$。代入麦克劳林公式得 $\\ln(1+x)=x-\\frac{x^2}{2}+\\frac{x^3}{3}-\\cdots+(-1)^{n-1}\\frac{x^n}{n}+o(x^n)$。 关键点：每一步都必须引用定义、定理或已知条件；不能只写结论，也不能用特例代替一般证明。",
       "templateTitle": "",
       "templateNotes": null,
       "verification": "",
@@ -142572,7 +142572,7 @@
       "question": "求$(2xy,x^2)$的势函数，分别用折线积分与凑微分两种方法，结果为（ ）。",
       "answer": "D．$x^2y$",
       "solution": [
-        "方法一：$u=\\int_0^x0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。"
+        "方法一：$u=\\int_0^x 0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。"
       ],
       "difficulty": 3,
       "tags": [
@@ -142580,7 +142580,7 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "方法一：$u=\\int_0^x0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。",
+      "standardSolution": "方法一：$u=\\int_0^x 0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。",
       "detailedAnalysis": "本题考查势函数的两种求法的基本方法，关键是按多解比较题的要求规范书写。",
       "templateTitle": "",
       "templateNotes": null,
@@ -142630,7 +142630,7 @@
       "question": "求$(2xy,x^2)$的势函数，分别用折线积分与凑微分两种方法，答案：____。",
       "answer": "$x^2y$",
       "solution": [
-        "方法一：$u=\\int_0^x0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。"
+        "方法一：$u=\\int_0^x 0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。"
       ],
       "difficulty": 3,
       "tags": [
@@ -142638,7 +142638,7 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "方法一：$u=\\int_0^x0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。",
+      "standardSolution": "方法一：$u=\\int_0^x 0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。",
       "detailedAnalysis": "本题考查势函数的两种求法的基本方法，关键是按多解比较题的要求规范书写。",
       "templateTitle": "",
       "templateNotes": null,
@@ -142671,7 +142671,7 @@
       "question": "求$(2xy,x^2)$的势函数，分别用折线积分与凑微分两种方法，写出解答过程。",
       "answer": "$x^2y$",
       "solution": [
-        "方法一：$u=\\int_0^x0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。"
+        "方法一：$u=\\int_0^x 0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。"
       ],
       "difficulty": 2,
       "tags": [
@@ -142679,7 +142679,7 @@
       ],
       "source": "考研原创同型题",
       "relatedEntries": [],
-      "standardSolution": "解：\n方法一：$u=\\int_0^x0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。",
+      "standardSolution": "解：\n方法一：$u=\\int_0^x 0\\,dx+\\int_0^yx^2dy=x^2y$；方法二：$2xy\\,dx+x^2dy=d(x^2y)$。",
       "detailedAnalysis": "本题考查势函数的两种求法的基本方法，关键是按多解比较题的要求规范书写。",
       "templateTitle": "",
       "templateNotes": null,

@@ -33,10 +33,13 @@ function collect(page, scope) {
       const t = n.nodeValue || '';
       if (!t.trim()) continue;
       const par = n.parentElement;
-      if (!par || par.closest('code,pre,textarea,script,style,.math-raw,.source-code,.md-copy')) continue;
+      if (!par || par.closest('code,pre,textarea,script,style,.math-raw,.source-code,.md-copy,math,.math-inline-scroll,.math-tail')) continue;
       if (t.indexOf('$') >= 0) bad.push('dollar: ' + t.trim().slice(0, 90));
       else if (/\\[A-Za-z]{2,}/.test(t)) bad.push('latex: ' + t.trim().slice(0, 90));
       else if (/[A-Za-z0-9][_^](?:\{?[A-Za-z0-9])/.test(t)) bad.push('bare: ' + t.trim().slice(0, 90));
+      else if (/(?:^|[^A-Za-z0-9-])(?:[a-z]|[A-Z]{2,3})\d+(?![A-Za-z0-9-])/.test(t)) bad.push('var-digit: ' + t.trim().slice(0, 90));
+      else if (/[{}]/.test(t)) bad.push('brace: ' + t.trim().slice(0, 90));
+      else if (/(?:^|[^A-Za-z])(?:ln|log|sin|cos|tan|lim|max|min|det|rank|dim|gcd)\s*[_({]/.test(t)) bad.push('func: ' + t.trim().slice(0, 90));
       else if (t.indexOf('\uFFFD') >= 0) bad.push('fffd: ' + t.trim().slice(0, 90));
     }
     // 知识点面板的表格必须完整落在面板内，不能只露出前几列。
@@ -52,6 +55,17 @@ function collect(page, scope) {
     root.querySelectorAll('.math-inline-scroll').forEach(function (wrap) {
       if (wrap.clientWidth > 4 && wrap.scrollWidth > wrap.clientWidth + 2 && getComputedStyle(wrap).overflowX === 'visible') {
         bad.push('formula clipped: ' + wrap.scrollWidth + '>' + wrap.clientWidth);
+      }
+      const math = wrap.querySelector('math');
+      if (!math || wrap.classList.contains('is-wide')) return;
+      const mr = math.getBoundingClientRect();
+      const wr = wrap.getBoundingClientRect();
+      const tall = mr.height > 26;
+      if (tall && !wrap.classList.contains('has-tall') && getComputedStyle(wrap).verticalAlign === 'baseline') {
+        bad.push('tall inline formula unmarked: ' + wr.height.toFixed(1) + '/' + mr.height.toFixed(1));
+      }
+      if (wrap.classList.contains('has-tall') && getComputedStyle(wrap).display === 'inline') {
+        bad.push('has-tall formula is not inline-block');
       }
     });
     return { bad: Array.from(new Set(bad)).slice(0, 8), broken, width: document.documentElement.scrollWidth - document.documentElement.clientWidth };
@@ -182,6 +196,13 @@ function collect(page, scope) {
     if (exam.broken) failures.push('exam broken formula: ' + exam.broken);
     if (exam.width > 1) failures.push('exam horizontal overflow: ' + exam.width);
     console.log('exam', JSON.stringify(exam));
+    await page.setViewportSize({ width: 390, height: 900 });
+    await page.waitForTimeout(400);
+    const examMobile = await collect(page, '.exam-shell');
+    if (examMobile.bad.length) failures.push('exam-mobile ' + examMobile.bad[0]);
+    if (examMobile.broken) failures.push('exam-mobile broken formula: ' + examMobile.broken);
+    if (examMobile.width > 1) failures.push('exam-mobile horizontal overflow: ' + examMobile.width);
+    console.log('exam-mobile', JSON.stringify(examMobile));
   } finally {
     await browser.close();
     await server.stop();

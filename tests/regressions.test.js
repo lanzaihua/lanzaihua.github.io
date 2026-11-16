@@ -894,7 +894,7 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('885 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('416 道习题集'),'习题集 current count');
   assert.ok(md.includes('9651'),'bank total');
-  assert.ok(md.includes('129 项回归测试'),'current test count');
+  assert.ok(md.includes('133 项回归测试'),'current test count');
   assert.ok(!md.includes('126 项回归测试')&&!md.includes('92 项回归测试')&&!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.16 Release'),'current release link');
   assert.equal(/\bv?\d{4}\.\d{2}\.\d{2}\.\d+\b/.test(md),false,'README must not keep dotted release versions');
@@ -1179,7 +1179,7 @@ test('exam title keeps dates whole and knowledge excerpts never cut a formula',(
 
   // 门禁本身也要防止被删掉：后续改动必须继续覆盖手机题库、错题详情、模拟卷、知识点表格。
   const qa = read('tools/qa-formulas.js');
-  for (const token of ['knowledge-mobile', 'bank-mobile', 'entry-mobile', 'paper', 'table outside panel', 'formula clipped']) {
+  for (const token of ['knowledge-mobile', 'bank-mobile', 'entry-mobile', 'paper', 'exam-mobile', 'tall inline formula unmarked', 'table outside panel', 'formula clipped']) {
     assert.ok(qa.includes(token), '公式门禁缺少 ' + token);
   }
   assert.ok(css.includes('.kb-answer table.has-col-labels'), '手机端知识点表格必须堆叠');

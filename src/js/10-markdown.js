@@ -59,6 +59,17 @@ function cleanMathSource(tex) {
   t = t.replace(/(^|[^A-Za-z0-9_])_{2,}/g, '$1\\underline{\\quad\\quad}');
   t = t.replace(/_{3,}/g, '\\underline{\\quad\\quad}');
   t = t.replace(/\\underline\{\\quad\\quad\}_{2,}/g, '\\underline{\\quad\\quad}');
+  // 公式内部也统一“变量+数字”的写法：x0 → x_{0}、MU1 → \mathrm{MU}_{1}。
+  // 否则同一段公式里会出现 x 与普通数字同高、下标丢失，跨端基线也不一致。
+  t = t.replace(/(^|[^A-Za-z0-9_\\])([A-Z]{1,3}|[a-z]|[\u03b1-\u03c9])(\d+)(?![A-Za-z0-9_])/g, function (m, pre, base, digits, offset, whole) {
+    if (base === 'D' || base === 'T') return m;
+    // \binom n2、\frac12 这类命令后面直接跟裸参数时，n2 不是变量 n 的下标；
+    // 归一化会把参数拆坏（n2 → n_{2}），直接跳过。
+    if (pre === '^' || pre === '_') return m;
+    if (/\\[A-Za-z]+\s*$/.test(whole.slice(0, offset))) return m;
+    if (/^[A-Z]{2,3}$/.test(base)) return pre + '\\mathrm{' + base + '}_{' + digits + '}';
+    return pre + base + '_{' + digits + '}';
+  });
   return t.trim();
 }
 
@@ -154,6 +165,31 @@ function wrapBareMathFragments(src) {
   });
 }
 
+function wrapSimpleVariableDigits(src) {
+  var text = String(src || '');
+  if (!text) return text;
+  // 只处理“单字母 + 数字”的简单变量（x0、x5、δ1、ε0）。这类写法没有
+  // LaTeX 标记，旧的裸公式扫描器会整段漏掉，于是变量留在正文字体里、
+  // 上下标字号与相邻公式不一致。这里补最后一层，且只在 $...$、代码、
+  // HTML 与链接之外生效。
+  var protectedRe = /\$\$[\s\S]*?\$\$|\$[^$\n]*\$|\uE000[CFD]\d+\uE001|\x60\x60\x60[\s\S]*?\x60\x60\x60|\x60[^\x60]*\x60|<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s[^<>]*)?\/?>|\[[^\]]*\]\([^)]*\)/g;
+  function wrapPlain(segment) {
+    if (!segment || /https?:\/\//.test(segment)) return segment;
+    return segment.replace(/(^|[^A-Za-z0-9_\\-])([A-Z]{1,3}|[a-z]|[\u03b1-\u03c9])(\d{1,3})(?!\.\d)(?![A-Za-z0-9_])/g, function (m, pre, base, digits) {
+      // D1…D365 是复习节点编号，T01 是模板编号，不能排成数学变量。
+      if (base === 'D' || base === 'T') return m;
+      if (/^[A-Z]{2,3}$/.test(base)) return pre + '$\\mathrm{' + base + '}_{' + digits + '}$';
+      return pre + '$' + base + '_{' + digits + '}$';
+    });
+  }
+  var out = '', last = 0, m;
+  while ((m = protectedRe.exec(text))) {
+    out += wrapPlain(text.slice(last, m.index)) + m[0];
+    last = protectedRe.lastIndex;
+  }
+  return out + wrapPlain(text.slice(last));
+}
+
 function normalizeMathDelims(src) {
   var t = String(src || '');
   t = t.replace(/\\\[([\s\S]*?)\\\]/g, function (m, tex) { return '$$' + tex + '$$'; });
@@ -216,33 +252,34 @@ function wrapBareLatex(src) {
 function mathifyPlainText(src) {
   var s = String(src || '');
   if (!s) return '';
-  // 先保护 HTML/转义标签，避免把 <img src=x ...> 里的 = 当成公式。
+  // 只做低风险替换：不猜公式边界，避免把 {a_n}、max{N1,N2} 拆成残片。
+  // 真正的行内公式交给 renderMarkdown() 的完整管线处理。
   var guards = [];
   s = s.replace(/&lt;[\s\S]*?&gt;|<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s[^<>]*)?\/?>/g, function (m) {
     guards.push(m);
     return '\uE000G' + (guards.length - 1) + '\uE001';
   });
-  // Do not bail out on raw LaTeX: wrapBareLatex() wraps it after this pass.
-  var parts = s.split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$|\uE000C\d+\uE001)/);
-  for (var x = 0; x < parts.length; x += 2) {
-    var eqs = [];
-    var seg = parts[x].replace(/(?<!\\)([A-Za-z0-9][A-Za-z0-9+\-*\/^_().{} ]{0,40}?)\s*=\s*([A-Za-z0-9+\-*\/^_().{} ]{1,50})/g, function (_, left, right) {
-      if (/https?:|www\./i.test(left + right)) return _;
-      eqs.push('$' + left.trim() + ' = ' + right.trim() + '$');
-      return '@@EQ' + (eqs.length - 1) + '@@';
-    });
-    seg = seg
-      .replace(/\bsqrt\s*\(([^()]*)\)/gi, function (_, v) { return '$' + '\\sqrt{' + v + '}' + '$'; })
-      .replace(/(^|[^A-Za-z0-9\\])([A-Za-z])\s*\^\s*\{?([A-Za-z0-9+\-]+)\}?/g, function (_, pre, base, exp) { return pre + '$' + base + '^{' + exp + '}' + '$'; })
-      .replace(/(^|[^A-Za-z0-9\\])([A-Za-z])\s*_\s*\{?([A-Za-z0-9+\-]+)\}?/g, function (_, pre, base, sub) { return pre + '$' + base + '_{' + sub + '}' + '$'; })
-      .replace(/([A-Za-z0-9])\s*(<=|>=|!=|->)\s*/g, function (_, left, op) { return left + '$' + (op === '<=' ? '\\le' : op === '>=' ? '\\ge' : op === '!=' ? '\\ne' : '\\to') + '$'; });
-    seg = seg.replace(/@@EQ(\d+)@@/g, function (_, n) { return eqs[+n] || ''; });
-    parts[x] = seg;
-  }
-  return parts.join('').replace(/\uE000G(\d+)\uE001/g, function (m, i) {
+  var sets = [];
+  s = s.replace(/\b(max|min|sup|inf)\s*\{([^{}\\]*)\}/g, function (m, fn, inner) {
+    sets.push('$\\' + fn + '\\{' + inner + '\\}$');
+    return '\uE000S' + (sets.length - 1) + '\uE001';
+  });
+  s = s.replace(/\{([^{}\\]*)\}/g, function (m, inner, offset, whole) {
+    var pre = whole.slice(0, offset);
+    if (/\\[A-Za-z]+\s*$/.test(pre)) return m;
+    if (!/_[A-Za-z0-9]|[,\uFF0C]|(^|[^0-9])0($|[^0-9])/.test(inner)) return m;
+    sets.push('$\\{' + inner + '\\}$');
+    return '\uE000S' + (sets.length - 1) + '\uE001';
+  });
+  s = s.replace(/\bsqrt\s*\(([^()]*)\)/gi, function (_, v) {
+    return '$\\sqrt{' + v + '}$';
+  });
+  s = s.replace(/\uE000S(\d+)\uE001/g, function (_, n) { return sets[+n] || ''; });
+  return s.replace(/\uE000G(\d+)\uE001/g, function (m, i) {
     return guards[+i] == null ? m : guards[+i];
   });
 }
+
 function canvasToWhiteDataUrl(canvas, type, quality) {
   if (!canvas || !canvas.width || !canvas.height) return canvas ? canvas.toDataURL(type || 'image/png') : '';
   var out = document.createElement('canvas');
@@ -628,7 +665,12 @@ function formatOptionParagraphs(html) {
 
 function inlineMathHtml(tex) {
   var html = renderMath(tex, false);
-  return '<span class="math-inline-scroll' + (html.indexOf('<mtable') >= 0 ? ' has-matrix' : '') + '">' + html + '</span>';
+  var hasMatrix = html.indexOf('<mtable') >= 0;
+  // 分式、根式、求和上下限与矩阵都比正文行盒高。只给矩阵加类会让这些公式
+  // 以正文 line-height 参与行盒，视觉上和上一行/下一行挤在一起。统一标成
+  // has-tall，交给同一套 inline-block + middle 规则撑开行盒。
+  var hasTall = /<(?:mtable|mfrac|msqrt|mroot|munderover|munder|mover)\b/.test(html);
+  return '<span class="math-inline-scroll' + (hasMatrix ? ' has-matrix' : '') + (hasTall ? ' has-tall' : '') + '">' + html + '</span>';
 }
 
 function renderMarkdown(src) {
@@ -663,6 +705,7 @@ function renderMarkdown(src) {
   src = wrapBareLatex(src);
   src = wrapBareOperatorMath(src);
   src = wrapBareMathFragments(src);
+  src = wrapSimpleVariableDigits(src);
   // mathifyPlainText 会把已经包好的 $...$ 里的 = 再次切开，保留定义供旧调用，但主渲染不再使用。
   src = normalizeMathDelims(src);
   src = wrapBareLatex(src);
@@ -702,7 +745,7 @@ function renderMarkdown(src) {
   // 行内公式与紧跟的中文标点绑成不可拆分的尾串，避免“公式在行末、逗号掉到下一行”。
   // 只包裹紧邻的单个公式；禁止跨过其它 span 去吞掉整段文字，否则整句会变成
   // 一个 inline-block 的 math-tail，既不能换行，又会压到相邻卡片上。
-  html = html.replace(/(<span class="math-inline-scroll(?: has-matrix)?">(?:(?!<\/?span\b)[\s\S])*?<\/span>)([，。；：、])/g, '<span class="math-tail">$1$2</span>');
+  html = html.replace(/(<span class="math-inline-scroll[^"]*">(?:(?!<\/?span\b)[\s\S])*?<\/span>)([，。；：、])/g, '<span class="math-tail">$1$2</span>');
   html = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
   // 属性清洗已由 sanitizeMarkdownHtml 按 DOM 完成；这里不能再跑 on* 正则，
   // 否则会把正文里的 &lt;img ... onerror=...&gt; 文字当成属性删掉。
@@ -962,6 +1005,7 @@ function refreshInlineMathWidths(root) {
   scope.querySelectorAll('.math-inline-scroll').forEach(function (wrap) {
     wrap.classList.remove('is-wide');
     wrap.classList.toggle('has-matrix', !!wrap.querySelector('mtable'));
+    wrap.classList.toggle('has-tall', !!wrap.querySelector('mtable, mfrac, msqrt, mroot, munderover, munder, mover'));
     var host = wrap.closest('p, li, td, th, .exam-qbody, .exam-opt, .exam-result-q, .entry-body, .md') || wrap.parentElement;
     if (!host || !host.clientWidth) return;
     if (wrap.getBoundingClientRect().width > host.clientWidth + 2 || wrap.scrollWidth > wrap.clientWidth + 2) {

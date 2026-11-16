@@ -560,6 +560,15 @@ function viewBank(subjectId) {
   return head + toolbar + resultbar + listHead + list;
 }
 
+function bankTitleHtml(title) {
+  var t = String(title || '');
+  if (!t) return '';
+  // 标题里可能含 s_{n−1}、x^d、A^2=E 这类数学写法。纯文本标题保持原样；
+  // 只有出现数学标记时才走行内渲染，避免把普通中文标题里的连字符排成减号。
+  if (/[$_^=]|\\[A-Za-z]/.test(t)) return renderInline(t);
+  return esc(t);
+}
+
 function renderBankItem(it) {
   var open = !!ui.bankOpen[it.id];
   var typeLabel = it.type === 'choice' ? '客观题' : it.type === 'fill' ? '填空题' : '主观题';
@@ -570,7 +579,7 @@ function renderBankItem(it) {
   return '<article class="bank-item' + (open ? ' is-open' : '') + '" id="bank-' + attr(it.id) + '">' +
     '<div class="bank-top">' +
       '<span class="bank-id">' + esc(it.id) + '</span>' +
-      '<h3 class="bank-title">' + esc(it.title) + '</h3>' +
+      '<h3 class="bank-title">' + bankTitleHtml(it.title) + '</h3>' +
       '<span class="bank-meta">' +
         (it.templateId ? '<span class="chip">' + esc(it.templateId) + '</span>' : '') +
         '<span class="chip chip-star">' + stars(it.difficulty) + '</span>' + (String(it.title || '').indexOf(typeLabel) >= 0 ? '' : '<span class="chip">' + esc(typeLabel) + '</span>') + '<span class="chip chip-exam">' + bankOriginLabel(it) + '</span>' +

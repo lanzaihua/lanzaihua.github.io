@@ -9671,3 +9671,18 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 .fpm-body > *, .fpm-examples > *, .fpe-detail-body > *, .fpe-options > *, .fpm-body .md { min-width: 0; }
 .fpe-detail-body .md, .fpe-detail-body p, .fpe-detail-body li, .fpm-template .md { min-width: 0; overflow-wrap: anywhere; }
 .fpe-detail-body .math-display, .fpe-detail-body math[display="block"], .fpe-detail-body .tml-display { max-width: 100%; }
+
+/* 2026-11-16: 分式/根式/求和/矩阵等高位行内公式会超出正文行盒，
+   仅靠 baseline 会让公式与上下行重叠。给 has-tall 与 has-matrix 同一套
+   inline-block + middle 规则，让行盒随公式增高，正文与公式垂直居中。 */
+.math-inline-scroll.has-tall:not(.is-wide) {
+  display: inline-block !important;
+  max-width: 100% !important;
+  vertical-align: middle !important;
+  line-height: normal !important;
+}
+.math-inline-scroll.has-tall:not(.is-wide) math {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  line-height: normal !important;
+}
