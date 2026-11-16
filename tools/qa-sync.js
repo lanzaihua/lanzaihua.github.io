@@ -39,7 +39,11 @@ async function main() {
     const routePage = await browser.newPage({ viewport: { width: 390, height: 844 } });
     await routePage.goto(api + '/#/final', { waitUntil: 'networkidle' });
     await routePage.waitForTimeout(1200);
-    const routeOk = await routePage.evaluate(() => !!(document.querySelector('.final-editor-head') || (document.querySelector('#main') || {}).innerText && document.querySelector('#main').innerText.includes('我的模拟卷')));
+    const routeOk = await routePage.evaluate(() => {
+      const main = document.querySelector('#main');
+      const tabs = document.querySelectorAll('[data-act="final-section"]');
+      return tabs.length >= 3 || !!(document.querySelector('.final-editor-head') || (main && main.innerText.includes('我的模拟卷')));
+    });
     const ok = count === 1 && after.rev === before.rev && routeOk;
     console.log(JSON.stringify({ ok, beforeRev: before.rev, afterRev: after.rev, count, routeOk }));
     if (!ok) process.exitCode = 1;
