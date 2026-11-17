@@ -871,6 +871,12 @@ function chapterNumberFromText(chapter) {
   return 0;
 }
 
+function chapterRangeText(subjectId) {
+  var list = chapterListFor(subjectId);
+  if (!list.length) return '';
+  return list.length + ' 章（' + list[0] + ' – ' + list[list.length - 1] + '）';
+}
+
 function chapterListFor(subjectId) {
   var meta = bookMetaFor(subjectId);
   if (meta && meta.chapters && meta.chapters.length) return meta.chapters.slice();

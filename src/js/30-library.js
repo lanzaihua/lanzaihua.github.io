@@ -407,7 +407,7 @@ function viewTemplates(subjectId) {
   var bookHint = bookLabelFor(subjectId);
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bookHint ? ' · ' + esc(bookHint) : '') + ' / PATTERNS</p>' +
     '<h1 class="page-title">模板库</h1>' +
-    '<p class="page-sub">每张卡是一类题的解法骨架：识别特征 → 方法 → 步骤 → 易错点。正文按 Markdown + LaTeX 渲染，展开后可复制 Markdown 文本。' + (bookHint ? '章节按' + esc(bookHint) + '第一章至第十章排序。' : '') + '</p></div>' +
+    '<p class="page-sub">每张卡是一类题的解法骨架：识别特征 → 方法 → 步骤 → 易错点。正文按 Markdown + LaTeX 渲染，展开后可复制 Markdown 文本。' + (bookHint ? '章节按' + esc(bookHint) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="bank" type="button">去题库</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
@@ -443,7 +443,6 @@ function viewTemplates(subjectId) {
     '<select class="select" data-template-filter="chapter" aria-label="按章节筛选模板">' + optionList(['all'].concat(tplChapters), tf.chapter, '全部章节') + '</select>' +
     (tf.chapter !== 'all' ? '<select class="select" data-template-filter="section" aria-label="按小节筛选模板">' + optionList(['all'].concat(tplSections), tf.section, '全部小节') + '</select>' : '') +
     '<button class="btn btn-xs filter-clear" data-act="clear-template-filters" type="button" title="' + (tplFiltersActive ? '清空模板筛选' : '当前没有可清空的筛选') + '"' + (tplFiltersActive ? '' : ' disabled') + '>清空筛选</button>' +
-    '</div>' +
     '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + tpls.length + ' / ' + allTpls.length + ' 张</span>' +
   '</div>';
 
@@ -490,7 +489,7 @@ function viewBank(subjectId) {
   var sourceDesc = originCounts.exercise > 0 ? '考研原创同型题、教材课后习题及配套习题集题' : '考研原创同型题与教材课后习题';
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bankBook ? ' · ' + esc(bankBook) : '') + ' / QUESTION BANK</p>' +
     '<h1 class="page-title">题库</h1>' +
-    '<p class="page-sub">' + esc(originIntro) + '：按考研大纲与教材章节整理的' + sourceDesc + '，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '第一章至第十章排序。' : '') + '</p></div>' +
+    '<p class="page-sub">' + esc(originIntro) + '：按考研大纲与教材章节整理的' + sourceDesc + '，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="templates" type="button">看模板</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
@@ -677,7 +676,7 @@ function viewGuide(subjectId) {
   var guideBook = bookLabelFor(subjectId);
   return '<div class="page-head guide-page-head"><div><p class="eyebrow">' + esc(s.name) + (guideBook ? ' · ' + esc(guideBook) : '') + ' / CONVENTIONS</p>' +
     '<h1 class="page-title">规范</h1>' +
-    '<p class="page-sub">四科统一使用同一套条目字段、编号规则、书写格式、复习节奏和维护约定。' + (guideBook ? '章节入口按' + esc(guideBook) + '第一章至第十章排列。' : '') + '</p></div></div>' +
+    '<p class="page-sub">四科统一使用同一套条目字段、编号规则、书写格式、复习节奏和维护约定。' + (guideBook ? '章节入口按' + esc(guideBook) + '目录排列，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div></div>' +
     '<div class="guide-layout"><div class="guide-main">' + main + '</div>' + aside + '</div>';
 }
 

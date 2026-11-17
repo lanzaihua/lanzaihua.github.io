@@ -30,6 +30,7 @@
     "qa:paper": "node tools/qa-paper-editor.js",
     "qa:filters": "node tools/qa-bank-filters.js",
     "qa:final": "node tools/qa-final-review.js",
+    "qa:polish": "node tools/qa-ui-polish.js",
     "data:plan": "node tools/build-final-plan-data.js",
     "qa:render": "node tools/audit-rendered-bank.js",
     "qa:mathlang": "node tools/audit-math-language.js",

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.17-7c7fe690";</script>
+<script>window.__BUILD_ID__="2026.11.17-99acc3cc";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9855,6 +9855,51 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 
 .fd-more-body { grid-template-columns: minmax(0, 1fr); }
 
+/* 2026-11-17 · 界面排版收口：折叠筛选不留空卡、模板筛选填充、笔记搜索对齐、
+   用户名输入与按钮内距统一，避免文字/按钮顶到卡片边框。 */
+.hero-meta span + span::before { content: none !important; margin-right: 0 !important; }
+.hero-meta { gap: 8px 16px !important; }
+.toolbar .filter-clear { padding-inline: 14px !important; min-width: 84px; }
+.toolbar.template-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 10px 12px; }
+.toolbar.template-filters .select { flex: 0 1 340px; width: auto; min-width: 190px; }
+.toolbar.template-filters .spacer { flex: 1 1 auto; margin-left: auto; }
+.toolbar.template-filters .count-note { flex: 0 0 auto; margin-left: auto; padding-left: 2px; }
+.note-library-top { max-width: none !important; margin: 18px 0 0 !important; }
+.note-library-top .note-library-search { max-width: 420px; }
+@media (max-width: 700px) {
+  body:not(.bank-filters-open) .toolbar.bank-filters {
+    display: flex !important; align-items: center !important; gap: 0 !important;
+    width: fit-content !important; max-width: 100% !important; padding: 0 !important; margin: 0 0 12px !important;
+    border: 0 !important; background: transparent !important; box-shadow: none !important;
+  }
+  body:not(.bank-filters-open) .toolbar.bank-filters .bank-filter-toggle {
+    min-height: 40px; padding: 0 14px;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+  }
+  .toolbar.template-filters {
+    display: grid !important; grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important; gap: 8px !important; padding: 10px 12px !important;
+  }
+  .toolbar.template-filters .select { width: 100%; min-width: 0; max-width: none; }
+  .toolbar.template-filters .spacer { display: none !important; }
+  .toolbar.template-filters .count-note { grid-column: 1 / -1; justify-self: end; margin-left: 0; }
+  .toolbar .filter-clear { min-height: 40px !important; padding-inline: 16px !important; }
+  .note-library-top { display: grid !important; grid-template-columns: minmax(0, 1fr) auto !important; gap: 8px 12px !important; }
+  .note-library-top .note-library-search { max-width: none; width: 100%; }
+  .note-library-top .note-library-count { justify-self: end; }
+  #settings .setting-row.setting-row-name { grid-template-columns: minmax(0, 1fr) !important; gap: 8px !important; }
+  #settings .setting-row-name .user-name-actions {
+    width: 100%; display: grid !important; grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center; gap: 8px;
+  }
+  #settings .setting-row-name .user-name-input { width: 100% !important; min-width: 0; }
+}
+@media (max-width: 520px) {
+  .hero .page-actions { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; gap: 8px; }
+  .hero .page-actions .btn { width: 100%; min-width: 0; padding: 0 10px; }
+  .hero-meta { gap: 6px 14px !important; }
+}
+
 </style>
 </head>
 <body>
@@ -10307,7 +10352,7 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
       <span class="apiwelcome-mark" aria-hidden="true"><span></span></span>
       <div>
         <p class="apiwelcome-lead">欢迎使用四科错题本。错题、模板、题库和笔记都可以直接使用，不需要先配置任何服务。</p>
-        <p class="apiwelcome-copy">如果你之后想用 AI 智能录入、题目翻译或自动补全，再到「设置与同步」里配置一个 API 服务就好。现在不配置也完全没关系。</p>
+        <p class="apiwelcome-copy">如果你之后想用 AI 智能录入、题目翻译、自动补全或个性化复习计划，再到「设置与同步」里配置一个 API 服务就好。现在不配置也完全没关系。</p>
       </div>
     </div>
     <div class="apiwelcome-list">
@@ -14369,6 +14414,12 @@ function chapterNumberFromText(chapter) {
   return 0;
 }
 
+function chapterRangeText(subjectId) {
+  var list = chapterListFor(subjectId);
+  if (!list.length) return '';
+  return list.length + ' 章（' + list[0] + ' – ' + list[list.length - 1] + '）';
+}
+
 function chapterListFor(subjectId) {
   var meta = bookMetaFor(subjectId);
   if (meta && meta.chapters && meta.chapters.length) return meta.chapters.slice();
@@ -17331,7 +17382,7 @@ function viewOverview(subjectId) {
           '<span>模板 ' + st.templates + '</span>' +
           '<span>题库 ' + st.bank + '</span>' +
           '<span>来源 ' + esc(subjectSourceLabel(s.sourceFile)) + '</span>' +
-          (bookLabelFor(s.id) ? '<span>教材 ' + esc(bookLabelFor(s.id)) + ' · 10 章</span>' : '') +
+          (bookLabelFor(s.id) && chapterListFor(s.id).length ? '<span>教材 ' + esc(bookLabelFor(s.id)) + ' · ' + chapterListFor(s.id).length + ' 章</span>' : '') +
         '</div>' +
         '<div class="page-actions" style="margin-top:18px">' +
           '<button class="btn" data-act="nav-view" data-view="entries" type="button">全部错题</button>' +
@@ -18663,7 +18714,7 @@ function viewTemplates(subjectId) {
   var bookHint = bookLabelFor(subjectId);
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bookHint ? ' · ' + esc(bookHint) : '') + ' / PATTERNS</p>' +
     '<h1 class="page-title">模板库</h1>' +
-    '<p class="page-sub">每张卡是一类题的解法骨架：识别特征 → 方法 → 步骤 → 易错点。正文按 Markdown + LaTeX 渲染，展开后可复制 Markdown 文本。' + (bookHint ? '章节按' + esc(bookHint) + '第一章至第十章排序。' : '') + '</p></div>' +
+    '<p class="page-sub">每张卡是一类题的解法骨架：识别特征 → 方法 → 步骤 → 易错点。正文按 Markdown + LaTeX 渲染，展开后可复制 Markdown 文本。' + (bookHint ? '章节按' + esc(bookHint) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="bank" type="button">去题库</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
@@ -18699,7 +18750,6 @@ function viewTemplates(subjectId) {
     '<select class="select" data-template-filter="chapter" aria-label="按章节筛选模板">' + optionList(['all'].concat(tplChapters), tf.chapter, '全部章节') + '</select>' +
     (tf.chapter !== 'all' ? '<select class="select" data-template-filter="section" aria-label="按小节筛选模板">' + optionList(['all'].concat(tplSections), tf.section, '全部小节') + '</select>' : '') +
     '<button class="btn btn-xs filter-clear" data-act="clear-template-filters" type="button" title="' + (tplFiltersActive ? '清空模板筛选' : '当前没有可清空的筛选') + '"' + (tplFiltersActive ? '' : ' disabled') + '>清空筛选</button>' +
-    '</div>' +
     '<span class="spacer"></span><span class="count-note" role="status" aria-live="polite">' + tpls.length + ' / ' + allTpls.length + ' 张</span>' +
   '</div>';
 
@@ -18746,7 +18796,7 @@ function viewBank(subjectId) {
   var sourceDesc = originCounts.exercise > 0 ? '考研原创同型题、教材课后习题及配套习题集题' : '考研原创同型题与教材课后习题';
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bankBook ? ' · ' + esc(bankBook) : '') + ' / QUESTION BANK</p>' +
     '<h1 class="page-title">题库</h1>' +
-    '<p class="page-sub">' + esc(originIntro) + '：按考研大纲与教材章节整理的' + sourceDesc + '，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '第一章至第十章排序。' : '') + '</p></div>' +
+    '<p class="page-sub">' + esc(originIntro) + '：按考研大纲与教材章节整理的' + sourceDesc + '，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="templates" type="button">看模板</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
@@ -18933,7 +18983,7 @@ function viewGuide(subjectId) {
   var guideBook = bookLabelFor(subjectId);
   return '<div class="page-head guide-page-head"><div><p class="eyebrow">' + esc(s.name) + (guideBook ? ' · ' + esc(guideBook) : '') + ' / CONVENTIONS</p>' +
     '<h1 class="page-title">规范</h1>' +
-    '<p class="page-sub">四科统一使用同一套条目字段、编号规则、书写格式、复习节奏和维护约定。' + (guideBook ? '章节入口按' + esc(guideBook) + '第一章至第十章排列。' : '') + '</p></div></div>' +
+    '<p class="page-sub">四科统一使用同一套条目字段、编号规则、书写格式、复习节奏和维护约定。' + (guideBook ? '章节入口按' + esc(guideBook) + '目录排列，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div></div>' +
     '<div class="guide-layout"><div class="guide-main">' + main + '</div>' + aside + '</div>';
 }
 
@@ -19433,7 +19483,7 @@ function openSettings() {
       '<div class="seg">' + THEME_ORDER.map(function (t) {
         return '<button data-act="set-theme" data-theme="' + t + '" aria-pressed="' + (theme === t) + '" type="button">' + THEME_LABEL[t] + '</button>';
       }).join('') + '</div></div>' +
-    '<div class="setting-row"><div><div class="st">你的称呼</div><div class="sd">只用于首页问候；留空就不显示名字</div></div>' +
+    '<div class="setting-row setting-row-name"><div><div class="st">你的称呼</div><div class="sd">只用于首页问候；留空就不显示名字</div></div>' +
       '<div class="multi-actions user-name-actions"><input id="userNameInput" class="user-name-input" type="text" maxlength="16" autocomplete="off" value="' + attr((state.prefs && state.prefs.userName) || '') + '" placeholder="例如：小林"><button class="btn btn-xs" data-act="save-user-name" type="button">保存</button></div></div>' +
     '</div>' +
 languageRow +
@@ -23760,10 +23810,10 @@ var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [{
   "date": "2026-11-17",
-  "title": "AI 个性复习计划",
-  "historyTitle": "AI 个性复习计划",
-  "summary": "本轮把期末复习计划接上用户已配置的 AI：复习计划页新增「用 AI 个性化」，模型按所选章节、考试日期与时长生成逐日学习单元，每个单元仍显示本地 574 个知识点中的具体条目、教材章节与小节出处、全部答题模板、完整例题（考试标准解答 / 答题模板 / 详细解析 / 易错点）以及记忆与考场用法。所有章节、知识点、模板 id 与题号都会回到本地题库校验，编造的章节或题号会被丢弃并回退本地；超时、未配置、非法 JSON 或公式不完整时保留本地计划。复习计划 / 出模拟卷 / 进行模拟考三个入口保持分开，AI 计划可一键恢复本地排程。139 项回归测试、四科三端 qa:final、公式、数学语言、题库与发布门禁全部通过，本块随 v2026.11.17 Release 发布。",
-  "notifySummary": "期末复习计划现在可以用你已配置的 AI 个性化：按章节、考试日期与时长生成逐日单元，知识点、模板、题号和出处都回本地题库校验；失败或未配置时继续用本地计划，随时可恢复。139 项测试与四科三端门禁通过。",
+  "title": "复习计划与排版收口",
+  "historyTitle": "复习计划与排版收口",
+  "summary": "本轮把期末复习计划接上用户已配置的 AI：复习计划页新增「用 AI 个性化」，模型按所选章节、考试日期与时长生成逐日学习单元，每个单元仍显示本地 574 个知识点中的具体条目、教材章节与小节出处、全部答题模板、完整例题（考试标准解答 / 答题模板 / 详细解析 / 易错点）以及记忆与考场用法。所有章节、知识点、模板 id 与题号都会回到本地题库校验，编造的章节或题号会被丢弃并回退本地；超时、未配置、非法 JSON 或公式不完整时保留本地计划。复习计划 / 出模拟卷 / 进行模拟考三个入口保持分开，AI 计划可一键恢复本地排程。同时处理界面排版：题库手机折叠筛选不再留下空卡，模板筛选计数回到栏内并加大清空按钮内距，笔记搜索与页签左对齐，总览手机操作改为 2×2，设置用户名输入填满整行，章节提示按科目实际章数生成（10 / 23 / 6 / 16 章），欢迎页补上 AI 个性化复习计划。141 项回归测试、四科三端 qa:final、公式、数学语言、题库与发布门禁全部通过，本块随 v2026.11.17 Release 发布。",
+  "notifySummary": "期末复习计划现在可以用你已配置的 AI 个性化：按章节、考试日期与时长生成逐日单元，知识点、模板、题号和出处都回本地题库校验；失败或未配置时继续用本地计划，随时可恢复。界面排版同步收口：折叠筛选不留空卡、模板计数归位、笔记搜索对齐、总览手机 2×2、设置输入填满、章节按实际章数生成。141 项测试与四科三端门禁通过。",
   "notifyItems": [
     {
       "group": "AI 排程",
@@ -23775,7 +23825,11 @@ var UPDATE_LOG = [{
     },
     {
       "group": "发布收口",
-      "text": "复习计划 / 出模拟卷 / 进行模拟考仍保持三个独立入口；qa:final 在 390 / 768 / 1440 与四科检查 AI 按钮、计划卡片、每日知识点和公式，139 项测试与发布校验全部通过。"
+      "text": "复习计划 / 出模拟卷 / 进行模拟考仍保持三个独立入口；qa:final 在 390 / 768 / 1440 与四科检查 AI 按钮、计划卡片、每日知识点和公式，141 项测试与发布校验全部通过。"
+    },
+    {
+      "group": "排版收口",
+      "text": "题库手机折叠筛选不再留下空卡，模板筛选计数回到栏内，笔记搜索与页签对齐，总览手机操作改为 2×2，设置用户名输入填满整行；章节提示按科目实际章数生成。qa:polish 在 390 / 768 / 1440 检查按钮文字、卡片内距、折叠筛选、搜索对齐与弹窗溢出，141 项测试通过。"
     }
   ],
   "items": [
@@ -23789,7 +23843,11 @@ var UPDATE_LOG = [{
     },
     {
       "group": "发布收口",
-      "text": "复习计划 / 出模拟卷 / 进行模拟考仍保持三个独立入口；tools/qa-final-review.js 在 390 / 768 / 1440 与四科检查 AI 按钮可见、文字不裁切、高度足够、计划卡片与每日知识点不溢出，并继续检查公式与数学语言。计划模块与每日详情改为按需渲染，数学分析 23 章切换从约 12 秒降到 1 秒内；移动端每日详情改用 minmax(0,1fr) 网格，长公式只在自身容器内滚动。回归测试增至 139 项，AI 计划校验、三端门禁、题库、公式与发布检查全部接入 CI。"
+      "text": "复习计划 / 出模拟卷 / 进行模拟考仍保持三个独立入口；tools/qa-final-review.js 在 390 / 768 / 1440 与四科检查 AI 按钮可见、文字不裁切、高度足够、计划卡片与每日知识点不溢出，并继续检查公式与数学语言。计划模块与每日详情改为按需渲染，数学分析 23 章切换从约 12 秒降到 1 秒内；移动端每日详情改用 minmax(0,1fr) 网格，长公式只在自身容器内滚动。回归测试增至 141 项，AI 计划校验、三端门禁、题库、公式与发布检查全部接入 CI。"
+    },
+    {
+      "group": "排版收口",
+      "text": "题库手机折叠筛选不再留 344×62 空卡，展开后字段与题卡保持整宽；模板筛选把计数收进栏内并加大清空按钮内距，章节下拉在桌面占 340px；笔记库搜索与页签左对齐，不再整体缩进 60px；总览手机四个操作改为 2×2，元信息去掉会落行首的伪元素分隔点；设置用户名输入填满整行，保存按钮不越界。章节提示不再写死第一章至第十章，按科目实际 10 / 23 / 6 / 16 章生成；欢迎页补上 AI 个性化复习计划。qa:polish 在 390 / 768 / 1440 检查按钮文字、卡片内距、折叠筛选、搜索对齐与弹窗溢出，回归测试增至 141 项。"
     }
   ]
 },

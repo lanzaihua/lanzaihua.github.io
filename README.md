@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.17-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.17--7c7fe690-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.17--99acc3cc-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -150,19 +150,20 @@
 
 ## 更新记录
 
-### 2026-11-17 · AI 个性复习计划
+### 2026-11-17 · 复习计划与排版收口
 
-**3 项 · 3 组**
+**4 项 · 4 组**
 
-本轮把期末复习计划接上用户已配置的 AI：复习计划页新增「用 AI 个性化」，模型按所选章节、考试日期与时长生成逐日学习单元；每个单元继续显示本地 574 个知识点中的具体条目、教材章节与小节出处、答题模板、完整例题（考试标准解答 / 答题模板 / 详细解析 / 易错点）以及记忆与考场用法。AI 返回的章节、知识点、模板 id 与题号都会回到本地题库校验，编造内容会被丢弃并回退本地；超时、未配置、非法 JSON 或公式不完整时保留本地计划，也可一键恢复本地排程。复习计划 / 出模拟卷 / 进行模拟考三个入口保持分开。139 项回归测试、四科三端 qa:final、公式、数学语言、题库与发布门禁全部通过，本块随 v2026.11.17 Release 发布。
+本轮把期末复习计划接上用户已配置的 AI：复习计划页新增「用 AI 个性化」，模型按所选章节、考试日期与时长生成逐日学习单元；每个单元继续显示本地 574 个知识点中的具体条目、教材章节与小节出处、答题模板、完整例题（考试标准解答 / 答题模板 / 详细解析 / 易错点）以及记忆与考场用法。AI 返回的章节、知识点、模板 id 与题号都会回到本地题库校验，编造内容会被丢弃并回退本地；超时、未配置、非法 JSON 或公式不完整时保留本地计划，也可一键恢复本地排程。复习计划 / 出模拟卷 / 进行模拟考三个入口保持分开。同时把全站排版收口：题库手机折叠筛选不再留下空卡，模板筛选计数回到栏内并加大清空按钮内距，笔记搜索与页签左对齐，总览手机操作改为 2×2，设置用户名输入填满整行，章节提示按科目实际章数生成（10 / 23 / 6 / 16 章），欢迎页补上 AI 个性化复习计划。141 项回归测试、四科三端 qa:final、公式、数学语言、题库与发布门禁全部通过，本块随 v2026.11.17 Release 发布。
 
 | 分组 | 本次更新 |
 |---|---|
 | **AI 排程** | 复习计划页新增「用 AI 个性化」：未配置时按钮禁用并提示去设置；配置后读取当前模型，把所选章节、考试日期、考试时长、574 个知识点、模板与例题摘要发给模型，生成按天执行的学习单元。每个单元仍展示本地知识点名称、教材章节与小节出处、模板、完整例题、当天任务和记忆与考场用法。 |
 | **本地校验** | AI 结果必须经过本地校验：章节必须在当前所选章节内，知识点按名称回填本地条目，模板 id 与题号必须存在，找不到的题号回退本地例题，缺失章节用本地模块补齐；含 HTML 标签、未闭合 $ 或非法 JSON 的字段被清空或拒绝。超时、未配置或无法解析时保留本地计划并显示可读原因，AI 计划写入本机 finalExam.aiPlan，可点「恢复本地排程」撤销。 |
-| **发布收口** | 复习计划 / 出模拟卷 / 进行模拟考仍保持三个独立入口；qa:final 在 390 / 768 / 1440 与四科检查 AI 按钮可见、文字不裁切、高度足够、计划卡片与每日知识点不溢出，并继续检查公式与数学语言。计划模块与每日详情改为按需渲染，数学分析 23 章切换从约 12 秒降到 1 秒内；移动端每日详情改用 minmax(0,1fr) 网格，长公式只在自身容器内滚动。回归测试增至 139 项，AI 计划校验、三端门禁、题库、公式与发布检查全部接入 CI。 |
+| **排版收口** | 题库手机折叠筛选不再留 344×62 空卡，展开后字段与题卡保持整宽；模板筛选把计数收进栏内并加大清空按钮内距，章节下拉在桌面占 340px；笔记库搜索与页签左对齐；总览手机四个操作改为 2×2，元信息去掉会落行首的伪元素点；设置用户名输入填满整行；章节提示按科目实际 10 / 23 / 6 / 16 章生成。qa:polish 三端检查按钮文字、卡片内距、折叠筛选、搜索对齐与弹窗溢出。 |
+| **发布收口** | 复习计划 / 出模拟卷 / 进行模拟考仍保持三个独立入口；qa:final 在 390 / 768 / 1440 与四科检查 AI 按钮可见、文字不裁切、高度足够、计划卡片与每日知识点不溢出，并继续检查公式与数学语言。计划模块与每日详情改为按需渲染，数学分析 23 章切换从约 12 秒降到 1 秒内；移动端每日详情改用 minmax(0,1fr) 网格，长公式只在自身容器内滚动。回归测试增至 141 项，AI 计划校验、三端门禁、题库、公式与发布检查全部接入 CI。 |
 
-<img src="assets/v2/20261117-changelog.png" alt="网页内 AI 复习计划更新记录" width="820">
+<img src="assets/v2/20261117-changelog.png" alt="网页内期末复习与排版收口更新记录" width="820">
 
 <details>
 <summary>历史更新 · 2026-11-16 及更早 · 24 个版本</summary>
@@ -924,7 +925,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、8 视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 139 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
+| `tests/` | 141 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 

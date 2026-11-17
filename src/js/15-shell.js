@@ -573,7 +573,7 @@ function viewOverview(subjectId) {
           '<span>模板 ' + st.templates + '</span>' +
           '<span>题库 ' + st.bank + '</span>' +
           '<span>来源 ' + esc(subjectSourceLabel(s.sourceFile)) + '</span>' +
-          (bookLabelFor(s.id) ? '<span>教材 ' + esc(bookLabelFor(s.id)) + ' · 10 章</span>' : '') +
+          (bookLabelFor(s.id) && chapterListFor(s.id).length ? '<span>教材 ' + esc(bookLabelFor(s.id)) + ' · ' + chapterListFor(s.id).length + ' 章</span>' : '') +
         '</div>' +
         '<div class="page-actions" style="margin-top:18px">' +
           '<button class="btn" data-act="nav-view" data-view="entries" type="button">全部错题</button>' +

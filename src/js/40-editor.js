@@ -435,7 +435,7 @@ function openSettings() {
       '<div class="seg">' + THEME_ORDER.map(function (t) {
         return '<button data-act="set-theme" data-theme="' + t + '" aria-pressed="' + (theme === t) + '" type="button">' + THEME_LABEL[t] + '</button>';
       }).join('') + '</div></div>' +
-    '<div class="setting-row"><div><div class="st">你的称呼</div><div class="sd">只用于首页问候；留空就不显示名字</div></div>' +
+    '<div class="setting-row setting-row-name"><div><div class="st">你的称呼</div><div class="sd">只用于首页问候；留空就不显示名字</div></div>' +
       '<div class="multi-actions user-name-actions"><input id="userNameInput" class="user-name-input" type="text" maxlength="16" autocomplete="off" value="' + attr((state.prefs && state.prefs.userName) || '') + '" placeholder="例如：小林"><button class="btn btn-xs" data-act="save-user-name" type="button">保存</button></div></div>' +
     '</div>' +
 languageRow +

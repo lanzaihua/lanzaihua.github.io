@@ -9,7 +9,7 @@
 3. `npm run build:pages`：生成 `dist-pages/`（首页 + `data/bank.json` + 四个科目分片 + `bank-index.json`）。
 4. `npm run prepare:pages`：把 Pages 构建、静态文件与题库分片复制到仓库根目录，并清理过期分片。
 5. `npm run verify:pages`、`verify:build`、`verify:skills`、`qa:size`。
-6. 真浏览器验收：`npm run qa:pages`、`qa:responsive`、`qa:paper`、`qa:filters`、`qa:formulas`、`qa:a11y`、`qa:perf`（除 qa:pages 自带服务外，其余用 `PAGE_URL=http://127.0.0.1:4173`）。
+6. 真浏览器验收：`npm run qa:pages`、`qa:responsive`、`qa:paper`、`qa:filters`、`qa:final`、`qa:polish`、`qa:formulas`、`qa:a11y`、`qa:perf`（除 qa:pages 自带服务外，其余用 `PAGE_URL=http://127.0.0.1:4173`）。
 7. `git diff --exit-code -- index.html data 404.html favicon.svg manifest.webmanifest robots.txt sitemap.xml sw.js _headers .nojekyll`，确认提交的产物与本次构建一致。
 8. 提交并推送到 `main`；**不要只把修复留在本地或分支上**。
 9. 打当天 tag：`git tag vYYYY.MM.DD && git push origin vYYYY.MM.DD`。
