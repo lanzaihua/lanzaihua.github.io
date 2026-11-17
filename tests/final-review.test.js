@@ -19,6 +19,7 @@ function finalContext() {
     SUBJECTS: [{ id: 'gaodai', name: '高等代数' }],
     SUBJ_BY_ID: { gaodai: { id: 'gaodai', name: '高等代数' } },
     toast() {}, qs() { return null; }, esc(s) { return String(s); }, attr(s) { return String(s); },
+    pad(n, w) { return String(n).padStart(w || 2, '0'); },
     renderMarkdown(s) { return '<div class="md">' + s + '</div>'; },
     renderInline(s) { return String(s); },
     markDirty() {}, nowIso() { return '2026-11-16T00:00:00+08:00'; }, normalizeStars(x) { return x || 3; },
@@ -113,6 +114,10 @@ test('计划与出卷、模拟考分开，逐日显示知识点与完整例题',
   assert.match(js, /fd-more/);
   assert.match(js, /fd-point-card/);
   assert.match(js, /finalPlanPointHtml/);
+  assert.match(js, /function finalPlanModuleBodyHtml/);
+  assert.match(js, /FINAL_PLAN_LAZY/);
+  assert.match(js, /data-final-lazy/);
+  assert.match(js, /finalPlanFillLazy/);
   assert.match(js, /__FINAL_PLAN_KNOWLEDGE__/);
   const build = read('build.js');
   assert.match(build, /final-plan-knowledge\.json/);
@@ -121,6 +126,7 @@ test('计划与出卷、模拟考分开，逐日显示知识点与完整例题',
   assert.match(css, /\.fpm-point \{/);
   assert.match(css, /\.fd-point-card \{/);
   assert.match(css, /\.fd-more-body \{/);
+  assert.ok(css.includes('grid-template-columns: minmax(0, 1fr)'), 'daily detail grid must use minmax(0,1fr)');
 });
 
 test('期末复习跨端门禁被 package 与 CI 同时引用', () => {
@@ -135,4 +141,44 @@ test('期末复习跨端门禁被 package 与 CI 同时引用', () => {
   assert.match(gate, /\.fpm-point/);
   assert.match(gate, /fd-more/);
   assert.match(gate, /章节筛选/);
+});
+
+test('AI 个性化计划只接受本地章节、模板与题号，非法条目会丢弃并回退', () => {
+  const ctx = finalContext();
+  ctx.bankOf = () => [{
+    id: 'GA-B0001', chapter: '第一章 多项式', title: '证明题', type: 'subjective', difficulty: 3,
+    question: '证明整除性质', answer: '结论成立', standardSolution: '证明：由定义直接得到。',
+    detailedAnalysis: '按定义展开。', points: ['整除定义'], pitfalls: ['不要漏掉零多项式'],
+    templateId: 'T-01-02', pointKeys: ['整除定义']
+  }];
+  ctx.templatesOf = () => [
+    { id: 'T-01-01', chapter: '第一章 多项式', title: '带余除法', sections: [{ label: '步骤骨架', md: '做带余除法' }] },
+    { id: 'T-01-02', chapter: '第一章 多项式', title: '整除判定', sections: [{ label: '标准步骤', md: '验证定义' }, { label: '易错点', md: '零多项式' }] }
+  ];
+  const future = new Date(Date.now() + 2 * 86400000);
+  ctx.state.finalExam = {
+    date: future.getFullYear() + '-' + String(future.getMonth() + 1).padStart(2, '0') + '-' + String(future.getDate()).padStart(2, '0'),
+    duration: 120, subject: 'gaodai', chapterSel: { gaodai: [] }, sectionSel: {}, items: [], papers: [], done: {}
+  };
+  const plan = ctx.finalAiNormalizePlan('gaodai', ['第一章 多项式'], {
+    units: [
+      { chapter: '第一章 多项式', point: '整除判定', templateId: 'T-01-02', exampleId: 'GA-B9999', task: '先做 $x_1$ 的例题', memory: '记住 $x_1$ 回代' },
+      { chapter: '不存在的章节', point: '编造知识点', exampleId: 'NOPE', task: '编造任务' },
+      { chapter: '第一章 多项式', point: '带余除法', exampleId: 'GA-B0001', task: '含未闭合 $ 的任务' }
+    ],
+    tips: ['先做会做的题', '<script>alert(1)</script>', '交卷前查符号']
+  }, 'deepseek-flash');
+  assert.equal(plan.units.length, 2, '未知章节必须丢弃');
+  assert.equal(plan.units[0].exampleId, 'GA-B0001', '不存在的题号必须回退到本地例题');
+  assert.equal(plan.units[0].templateId, 'T-01-02');
+  assert.equal(plan.units[1].task, '', '未闭合公式的任务必须清空');
+  assert.deepEqual(plan.tips, ['先做会做的题', '交卷前查符号']);
+  assert.equal(plan.model, 'deepseek-flash');
+
+  ctx.state.finalExam.aiPlan = plan;
+  const data = ctx.finalPlanData();
+  assert.equal(data.ai, plan);
+  assert.equal(data.days[0].ai, true);
+  assert.match(data.days[0].focus, /先做/);
+  assert.equal(data.days[0].example.id, 'GA-B0001');
 });

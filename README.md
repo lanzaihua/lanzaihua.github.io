@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.16-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.16--38f617dd-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.17-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.17--7c7fe690-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -85,7 +85,8 @@
 
 ### 期末复习
 
-- 设定考试日期和时长，自动拆成基础回顾、强化训练、冲刺模拟三段，并排进每日任务。
+- 复习计划 / 出模拟卷 / 进行模拟考三个入口分开：计划按所选章节和考试日期逐日排程，每天给出知识点与教材小节出处、全部答题模板、例题（标准解答 / 答题模板 / 详细解析 / 易错点）和记忆与考场用法。
+- 已配置 AI 时，可点「用 AI 个性化」让模型按当前章节、日期与时长重排每日学习单元；章节、模板与题号都会回到本地题库校验，失败或超时保留本地计划，也可一键恢复。
 - 错题和题库题可加入期末材料；模拟卷按时长和章节选题，分值按题型和难度智能分配（客观题单题不超过 7 分，主观题按难度加权，总分 100），可手动修改。
 - 卷子可在线改题、改答案、改分值、调顺序、补题或删题。
 - AI 批改的错误点、要点、易错点和用户作答统一按 Markdown + LaTeX 渲染；加入错题时保留完整选项、用户错选、作答与卡点，不再出现原始 $$...$$。手写图片以白底 PNG 随题发送并要求 AI 先转写再批改，未识别时保守复核。
@@ -149,6 +150,23 @@
 
 ## 更新记录
 
+### 2026-11-17 · AI 个性复习计划
+
+**3 项 · 3 组**
+
+本轮把期末复习计划接上用户已配置的 AI：复习计划页新增「用 AI 个性化」，模型按所选章节、考试日期与时长生成逐日学习单元；每个单元继续显示本地 574 个知识点中的具体条目、教材章节与小节出处、答题模板、完整例题（考试标准解答 / 答题模板 / 详细解析 / 易错点）以及记忆与考场用法。AI 返回的章节、知识点、模板 id 与题号都会回到本地题库校验，编造内容会被丢弃并回退本地；超时、未配置、非法 JSON 或公式不完整时保留本地计划，也可一键恢复本地排程。复习计划 / 出模拟卷 / 进行模拟考三个入口保持分开。139 项回归测试、四科三端 qa:final、公式、数学语言、题库与发布门禁全部通过，本块随 v2026.11.17 Release 发布。
+
+| 分组 | 本次更新 |
+|---|---|
+| **AI 排程** | 复习计划页新增「用 AI 个性化」：未配置时按钮禁用并提示去设置；配置后读取当前模型，把所选章节、考试日期、考试时长、574 个知识点、模板与例题摘要发给模型，生成按天执行的学习单元。每个单元仍展示本地知识点名称、教材章节与小节出处、模板、完整例题、当天任务和记忆与考场用法。 |
+| **本地校验** | AI 结果必须经过本地校验：章节必须在当前所选章节内，知识点按名称回填本地条目，模板 id 与题号必须存在，找不到的题号回退本地例题，缺失章节用本地模块补齐；含 HTML 标签、未闭合 $ 或非法 JSON 的字段被清空或拒绝。超时、未配置或无法解析时保留本地计划并显示可读原因，AI 计划写入本机 finalExam.aiPlan，可点「恢复本地排程」撤销。 |
+| **发布收口** | 复习计划 / 出模拟卷 / 进行模拟考仍保持三个独立入口；qa:final 在 390 / 768 / 1440 与四科检查 AI 按钮可见、文字不裁切、高度足够、计划卡片与每日知识点不溢出，并继续检查公式与数学语言。计划模块与每日详情改为按需渲染，数学分析 23 章切换从约 12 秒降到 1 秒内；移动端每日详情改用 minmax(0,1fr) 网格，长公式只在自身容器内滚动。回归测试增至 139 项，AI 计划校验、三端门禁、题库、公式与发布检查全部接入 CI。 |
+
+<img src="assets/v2/20261117-changelog.png" alt="网页内 AI 复习计划更新记录" width="820">
+
+<details>
+<summary>历史更新 · 2026-11-16 及更早 · 24 个版本</summary>
+
 ### 2026-11-16 · 界面自洽与发布收口
 
 **18 项 · 18 组**
@@ -178,8 +196,6 @@
 
 <img src="assets/v2/20261116-changelog.png" alt="网页内更新记录" width="820">
 
-<details>
-<summary>历史更新 · 2026-11-14 及更早 · 23 个版本</summary>
 
 ### 2026-11-14 · 健壮性修复与发布
 
@@ -889,12 +905,12 @@
 
 ## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.16 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.16/source.zip) 提供。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.17 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.17/source.zip) 提供。
 
 ### 仓库与许可证
 
 - **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
-- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.16/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.16/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
+- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.17/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.17/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
 - **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
 - **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
 - **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
@@ -908,7 +924,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、8 视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 138 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
+| `tests/` | 139 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 
