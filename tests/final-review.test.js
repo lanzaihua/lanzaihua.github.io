@@ -18,10 +18,12 @@ function finalContext() {
     state: { activeSubject: 'gaodai' },
     SUBJECTS: [{ id: 'gaodai', name: '高等代数' }],
     SUBJ_BY_ID: { gaodai: { id: 'gaodai', name: '高等代数' } },
+    subjectOf(id) { return ({ gaodai: { id: 'gaodai', name: '高等代数' } })[id] || { id: id, name: id }; },
     toast() {}, qs() { return null; }, esc(s) { return String(s); }, attr(s) { return String(s); },
     pad(n, w) { return String(n).padStart(w || 2, '0'); },
     renderMarkdown(s) { return '<div class="md">' + s + '</div>'; },
     renderInline(s) { return String(s); },
+    stripTypePrefix(s) { return String(s); },
     markDirty() {}, nowIso() { return '2026-11-16T00:00:00+08:00'; }, normalizeStars(x) { return x || 3; },
     entryTitle() { return ''; }, findEntry() { return null; }, bankOf() { return []; }, templatesOf() { return []; }, chapterSectionsFor() { return []; },
     aiConfigReady() { return false; }, setTimeout() {}, clearTimeout() {},
@@ -218,4 +220,100 @@ test('AI 个性化计划只接受本地章节、模板与题号，非法条目�
   assert.equal(data.days[0].ai, true);
   assert.match(data.days[0].focus, /先做/);
   assert.equal(data.days[0].example.id, 'GA-B0001');
+});
+
+
+test('AI 计划读取错题、模拟卷与模拟考，并可用个人错题当例题', () => {
+  const ctx = finalContext();
+  const bank = [{
+    id: 'GA-B0001', chapter: '第一章 多项式', section: '数域', title: '证明题', type: 'subjective', difficulty: 3,
+    question: '证明整除性质', answer: '结论成立', standardSolution: '证明：由定义直接得到。',
+    detailedAnalysis: '按定义展开。', points: ['整除定义'], pitfalls: ['不要漏掉零多项式'],
+    templateId: 'T-01-02', pointKeys: ['整除定义']
+  }];
+  const entries = [{
+    id: 'M-001', code: 'G-001', subject: 'gaodai', chapter: '第一章 多项式', section: '数域',
+    status: 'unmastered', summary: '数域判断', errorTypes: ['概念'], errorNote: '忘记先说明数域',
+    updatedAt: '2026-11-17T10:00:00+08:00',
+    blocks: [
+      { key: 'original', md: '判断 $\\{0,1\\}$ 是否构成数域' },
+      { key: 'standard', md: '证明：由数域定义逐条检查。' }
+    ]
+  }, {
+    id: 'M-002', code: 'G-002', subject: 'gaodai', chapter: '第一章 多项式', section: '数域',
+    status: 'mastered', summary: '整除性质', errorTypes: ['计算'], errorNote: '漏掉零多项式',
+    updatedAt: '2026-11-16T10:00:00+08:00',
+    blocks: [{ key: 'original', md: '证明整除性质' }, { key: 'standard', md: '证明：略。' }]
+  }];
+  ctx.bankOf = () => bank;
+  ctx.templatesOf = () => [
+    { id: 'T-01-01', chapter: '第一章 多项式', title: '带余除法', sections: [{ label: '步骤骨架', md: '做带余除法' }] },
+    { id: 'T-01-02', chapter: '第一章 多项式', title: '整除判定', sections: [{ label: '标准步骤', md: '验证定义' }, { label: '易错点', md: '零多项式' }] }
+  ];
+  ctx.entriesOf = () => entries;
+  ctx.findEntry = (subject, id) => entries.filter((e) => e.id === id)[0] || null;
+  ctx.entryTitle = (e) => e.summary;
+  ctx.chapterSectionsFor = () => ['数域', '一元多项式'];
+  const future = new Date(Date.now() + 2 * 86400000);
+  ctx.state.finalExam = {
+    date: future.getFullYear() + '-' + String(future.getMonth() + 1).padStart(2, '0') + '-' + String(future.getDate()).padStart(2, '0'),
+    duration: 120, subject: 'gaodai',
+    chapterSel: { gaodai: ['第一章 多项式'] }, sectionSel: { gaodai: ['数域'] },
+    items: [], done: {},
+    papers: [{
+      id: 'P1', subject: 'gaodai', title: '第一章自测卷', duration: 120, createdAt: '2026-11-17T09:00:00+08:00',
+      items: [{ code: 'GA-B0001', chapter: '第一章 多项式', section: '数域', score: 10 }]
+    }],
+    examHistory: [{
+      historyId: 'E1', subject: 'gaodai', title: '标准题库模拟考', status: 'submitted', createdAt: '2026-11-16T09:00:00+08:00',
+      result: { total: 78, questions: [{
+        id: 'GA-B0001', chapter: '第一章 多项式', section: '数域', title: '整除判定', question: '证明整除性质',
+        max: 10, score: 0, correct: false, userText: '只写了结论，漏掉数域前提', errorPoints: ['缺少数域前提']
+      }] }
+    }]
+  };
+  const personal = ctx.finalAiPersonalContext('gaodai', ['第一章 多项式'], ['数域']);
+  assert.equal(personal.stats.entries, 2);
+  assert.equal(personal.stats.unmastered, 1);
+  assert.equal(personal.stats.papers, 1);
+  assert.equal(personal.stats.exams, 1);
+  assert.equal(personal.stats.wrongQuestions, 1);
+  assert.match(personal.entries[0].errorNote, /数域/);
+  assert.match(personal.exams[0].wrong[0].userAnswer, /漏掉数域/);
+
+  const plan = ctx.finalAiNormalizePlan('gaodai', ['第一章 多项式'], ['数域'], {
+    units: [{
+      chapter: '第一章 多项式', point: '整除定义', templateId: 'T-01-02',
+      exampleKind: 'entry', exampleId: 'M-001', task: '先重做你的错题 $x_1$',
+      reason: '你在数域判断上漏过前提', memory: '先问在哪个域上'
+    }],
+    tips: ['先处理未掌握错题']
+  }, 'deepseek-flash', personal);
+  assert.equal(plan.units[0].exampleKind, 'entry');
+  assert.equal(plan.units[0].exampleId, 'M-001');
+  assert.match(plan.units[0].reason, /数域判断/);
+  assert.equal(plan.personal.entries, 2);
+  assert.match(ctx.finalAiPersonalSummary(plan), /2 道错题/);
+  assert.match(ctx.finalAiPersonalSummary(plan), /1 张模拟卷/);
+  assert.match(ctx.finalAiPersonalSummary(plan), /1 次模拟考/);
+
+  ctx.state.finalExam.aiPlan = plan;
+  const data = ctx.finalPlanData();
+  assert.equal(data.ai, plan);
+  assert.equal(data.days[0].exampleKind, 'entry');
+  assert.equal(data.days[0].example.type, 'entry');
+  assert.match(data.days[0].reason, /数域判断/);
+  assert.match(ctx.finalPlanExampleHtml(data.days[0].example, data.days[0].template), /来自你的错题库/);
+
+  const prompt = ctx.finalAiPlanPrompt(data);
+  assert.equal(prompt.personal.stats.entries, 2);
+  assert.equal(prompt.personal.stats.exams, 1);
+  assert.equal(prompt.bankIndex['第一章 多项式'].length, 1);
+  assert.equal(prompt.bankIndex['第一章 多项式'][0].id, 'GA-B0001');
+
+  const fallback = ctx.finalAiNormalizePlan('gaodai', ['第一章 多项式'], ['数域'], {
+    units: [{ chapter: '第一章 多项式', point: '整除定义', exampleKind: 'entry', exampleId: 'M-999' }]
+  }, 'deepseek-flash', personal);
+  assert.equal(fallback.units[0].exampleKind, 'bank', '不存在的个人错题必须回退到题库例题');
+  assert.equal(fallback.units[0].exampleId, 'GA-B0001');
 });

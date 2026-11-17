@@ -9970,3 +9970,15 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 @media (max-width: 520px) {
   .toolbar.template-filters .count-note { justify-self: start !important; }
 }
+
+
+/* 2026-11-18: AI plan reads local wrong entries and shows why a day is scheduled */
+.fpe-item.is-entry { border-left: 3px solid var(--accent, #b4552d); }
+.fpe-source { margin-left: auto; flex: 0 0 auto; padding: 2px 7px; border: 1px solid rgba(180, 85, 45, .28); border-radius: 999px; color: var(--accent, #b4552d); font-size: 10px; line-height: 1.5; white-space: nowrap; }
+.fd-ai-reason { margin: 0 0 10px; padding: 8px 10px; border-left: 2px solid rgba(180, 85, 45, .45); background: rgba(180, 85, 45, .06); border-radius: 0 6px 6px 0; }
+.fd-ai-reason b { display: block; margin-bottom: 2px; font-size: 10.5px; letter-spacing: .08em; color: var(--accent, #b4552d); }
+.fd-ai-reason p { margin: 0; font-size: 12.5px; line-height: 1.65; color: var(--ink-2, #5c5148); }
+@media (max-width: 560px) {
+  .fpe-source { margin-left: 0; }
+  .fpe-head { flex-wrap: wrap; row-gap: 4px; }
+}

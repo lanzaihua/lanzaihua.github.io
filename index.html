@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.18-4d06493f";</script>
+<script>window.__BUILD_ID__="2026.11.18-8f358a2f";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9992,6 +9992,18 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 
 @media (max-width: 520px) {
   .toolbar.template-filters .count-note { justify-self: start !important; }
+}
+
+
+/* 2026-11-18: AI plan reads local wrong entries and shows why a day is scheduled */
+.fpe-item.is-entry { border-left: 3px solid var(--accent, #b4552d); }
+.fpe-source { margin-left: auto; flex: 0 0 auto; padding: 2px 7px; border: 1px solid rgba(180, 85, 45, .28); border-radius: 999px; color: var(--accent, #b4552d); font-size: 10px; line-height: 1.5; white-space: nowrap; }
+.fd-ai-reason { margin: 0 0 10px; padding: 8px 10px; border-left: 2px solid rgba(180, 85, 45, .45); background: rgba(180, 85, 45, .06); border-radius: 0 6px 6px 0; }
+.fd-ai-reason b { display: block; margin-bottom: 2px; font-size: 10.5px; letter-spacing: .08em; color: var(--accent, #b4552d); }
+.fd-ai-reason p { margin: 0; font-size: 12.5px; line-height: 1.65; color: var(--ink-2, #5c5148); }
+@media (max-width: 560px) {
+  .fpe-source { margin-left: 0; }
+  .fpe-head { flex-wrap: wrap; row-gap: 4px; }
 }
 
 </style>
@@ -23904,10 +23916,10 @@ var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [{
   "date": "2026-11-18",
-  "title": "计划顺序与排版",
-  "historyTitle": "计划顺序与排版",
-  "summary": "本轮继续修界面排版与计划顺序，不改题目与业务逻辑。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明压缩为一行，保留本 / 页 / 条计数。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 继续覆盖 18 宽度与三端。143 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。",
-  "notifySummary": "计划顺序与排版再修：期末章节筛选的小节分组按教材章节顺序排列，模拟卷标题也按顺序；手机章节筛选标签单独一行，模板计数回左，笔记页头压成一行。qa:final 增加反序点击检查。143 项测试通过。",
+  "title": "计划顺序与智能读题",
+  "historyTitle": "计划顺序与智能读题",
+  "summary": "本轮继续修界面排版与计划顺序，并让 AI 计划读取本机真实记录。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明压缩为一行，保留本 / 页 / 条计数。AI 个性化计划现在会读取本机错题库、题库、模板库、模拟卷与已交卷模拟考，优先把薄弱章节和小节排进每日计划，允许直接用个人错题当例题，并在每天标注「为什么这样排」；所有题号与出处仍回本地校验。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 继续覆盖 18 宽度与三端。144 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。",
+  "notifySummary": "计划顺序与智能读题：期末小节分组按教材顺序排列，手机筛选标签单独一行，模板计数回左；AI 计划会读取本机错题、模拟卷与模拟考，优先薄弱章节，可用个人错题当例题。qa:final 增加反序点击检查，144 项测试通过。",
   "notifyItems": [
     {
       "group": "排版对齐",
@@ -23918,8 +23930,12 @@ var UPDATE_LOG = [{
       "text": "期末章节筛选的小节分组按教材章节顺序展开，不按点击顺序倒序；模拟卷标题章节同样按顺序。手机「章节 / 已选 N 章」独占一行，章节按钮从下一行开始。"
     },
     {
+      "group": "读题排程",
+      "text": "AI 个性化计划会读取本机错题库、题库、模板库、模拟卷与已交卷模拟考，优先薄弱章节和小节；可直接用个人错题当例题，并显示来源与排程理由。"
+    },
+    {
       "group": "防复发",
-      "text": "qa:final 先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 继续检查三端排版；143 项回归测试在 CI 执行。"
+      "text": "qa:final 先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 继续检查三端排版；144 项回归测试在 CI 执行。"
     }
   ],
   "items": [
@@ -23932,8 +23948,12 @@ var UPDATE_LOG = [{
       "text": "期末复习章节筛选的小节分组按教材章节顺序（第一→第六）生成，不再按点击顺序倒序；即使先点第四章、再点第一章，分组仍按第一、第二…排列。期末模拟卷标题里的章节也按同一顺序拼接。手机 ≤560px 时「章节 / 已选 N 章」独占一行，全部与各章按钮从下一行开始，避免标签、计数与按钮挤在同一行。"
     },
     {
+      "group": "读题排程",
+      "text": "AI 个性化计划会先读取本机的错题库、题库、模板库、模拟卷与已交卷模拟考：按所选章节与小节筛出真实错题、错因、模拟卷题号和模拟考错答，优先把薄弱章节排进每日计划；个人错题可直接作为当天例题，卡片标注「来自你的错题库」，每天另给一句「为什么这样排」。章节、模板和题号仍全部回到本地校验，缺失时回退本地例题或整章模块；含 HTML、未闭合公式或无法解析的返回不写入计划。测试新增读取记录、个人错题例题与非法题号回退三项断言，总数 144。"
+    },
+    {
       "group": "防复发",
-      "text": "qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 继续覆盖 18 个宽度、390/768/1440 的工作台行数、功能条间距、规范顺序、统计口径、笔记拆词、模板计数与筛选卡宽度；143 项回归测试与 CI 全部门禁。"
+      "text": "qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 继续覆盖 18 个宽度、390/768/1440 的工作台行数、功能条间距、规范顺序、统计口径、笔记拆词、模板计数与筛选卡宽度；144 项回归测试与 CI 全部门禁。"
     }
   ]
 },
@@ -33862,6 +33882,11 @@ function finalPlanExampleScore(m) {
 }
 function finalPlanExamplesFor(subject, chapter) {
   var all = bankOf(subject).filter(function (b) { return b && b.chapter === chapter; });
+  var sectionScope = finalSectionsForChapter(subject, chapter);
+  if (sectionScope.length) {
+    var scoped = all.filter(function (b) { return sectionScope.indexOf(finalAiSectionOf(subject, b)) >= 0; });
+    if (scoped.length) all = scoped;
+  }
   function rank(list) {
     return list.slice().sort(function (a, b) {
       return (finalPlanExampleScore(b) - finalPlanExampleScore(a)) || String(a.id).localeCompare(String(b.id));
@@ -33956,6 +33981,125 @@ function finalAiPlanFor(subject, chapters, sections) {
   if (plan.sig !== finalAiPlanSignature(subject, chapters, sections)) return null;
   return plan;
 }
+function finalAiSnippet(value, max) {
+  var s = String(value == null ? '' : value).replace(/<[^>]*>/g, ' ').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (s.indexOf('\uFFFD') >= 0) return '';
+  max = Number(max) || 120;
+  if (s.length > max) s = s.slice(0, max - 1) + '…';
+  return s;
+}
+function finalAiSectionOf(subject, item) {
+  if (typeof sectionForItem === 'function') {
+    try { return sectionForItem(subject, item); } catch (e) {}
+  }
+  return String((item && item.section) || '');
+}
+function finalAiScopeMatch(subject, chapter, item, chapters, sections) {
+  if (chapters && chapters.length && chapters.indexOf(chapter) < 0) return false;
+  if (!sections || !sections.length) return true;
+  return sections.indexOf(finalAiSectionOf(subject, item)) >= 0;
+}
+function finalAiPersonalContext(subject, chapters, sections) {
+  chapters = Array.isArray(chapters) ? chapters : [];
+  sections = Array.isArray(sections) ? sections : [];
+  var fe = finalData();
+  var allEntries = (typeof entriesOf === 'function' ? entriesOf(subject) : []).filter(function (e) {
+    return e && finalAiScopeMatch(subject, e.chapter || '', e, chapters, sections);
+  });
+  var unmastered = allEntries.filter(function (e) { return e.status !== 'mastered'; }).length;
+  var entries = allEntries.slice().sort(function (a, b) {
+    var am = a.status === 'mastered' ? 1 : 0, bm = b.status === 'mastered' ? 1 : 0;
+    return (am - bm) || String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || ''));
+  }).slice(0, 18).map(function (e) {
+    return {
+      id: String(e.id || ''),
+      code: String(e.code || ''),
+      chapter: String(e.chapter || ''),
+      section: finalAiSectionOf(subject, e),
+      title: finalAiSnippet(typeof entryTitle === 'function' ? entryTitle(e) : (e.summary || ''), 80),
+      question: finalAiSnippet(finalBlockMd(e, ['original', 'question']) || e.summary || '', 150),
+      errorTypes: (Array.isArray(e.errorTypes) ? e.errorTypes : []).slice(0, 4).map(function (x) { return finalAiSnippet(x, 20); }).filter(Boolean),
+      errorNote: finalAiSnippet(e.errorNote || '', 110),
+      status: e.status === 'mastered' ? 'mastered' : 'unmastered',
+      hasSolution: !!finalBlockMd(e, ['standard'])
+    };
+  });
+  var allPapers = (fe.papers || []).filter(function (p) {
+    return p && (p.subject || (p.items && p.items[0] && p.items[0].subject)) === subject;
+  });
+  var papers = allPapers.slice().sort(function (a, b) {
+    return String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || ''));
+  }).slice(0, 4).map(function (p) {
+    var rows = (p.items || []).filter(function (it) { return it && finalAiScopeMatch(subject, it.chapter || '', it, chapters, sections); });
+    var chaptersUsed = [];
+    rows.forEach(function (it) { if (it.chapter && chaptersUsed.indexOf(it.chapter) < 0) chaptersUsed.push(it.chapter); });
+    return {
+      title: finalAiSnippet(p.title || '模拟卷', 90),
+      duration: Number(p.duration) || 0,
+      createdAt: String(p.createdAt || ''),
+      itemCount: rows.length,
+      chapters: chaptersUsed,
+      items: rows.slice(0, 8).map(function (it) {
+        return { code: String(it.code || ''), chapter: String(it.chapter || ''), section: finalAiSectionOf(subject, it), score: Number(it.score) || 0 };
+      })
+    };
+  }).filter(function (p) { return p.itemCount > 0; });
+  var allExams = (fe.examHistory || []).filter(function (m) {
+    var sid = m && (m.subject || (m.questions && m.questions[0] && m.questions[0].subject));
+    return m && sid === subject && (m.status === 'submitted' || m.result);
+  });
+  var exams = allExams.slice().sort(function (a, b) {
+    return String(b.createdAt || b.startedAt || '').localeCompare(String(a.createdAt || a.startedAt || ''));
+  }).slice(0, 4).map(function (m) {
+    var qs = (m.result && Array.isArray(m.result.questions) ? m.result.questions : []);
+    var wrong = qs.filter(function (q) {
+      if (!q) return false;
+      if (!finalAiScopeMatch(subject, q.chapter || '', q, chapters, sections)) return false;
+      return !q.correct || Number(q.score) < Number(q.max) * 0.6;
+    });
+    return {
+      title: finalAiSnippet(m.title || '模拟考', 90),
+      date: String(m.createdAt || m.startedAt || ''),
+      score: Number(m.result && m.result.total) || 0,
+      total: Number(m.result && Array.isArray(m.result.questions) ? m.result.questions.reduce(function (s, q) { return s + (Number(q.max) || 0); }, 0) : 0),
+      questionCount: qs.length,
+      wrong: wrong.slice(0, 6).map(function (q) {
+        return {
+          code: String(q.id || ''),
+          chapter: String(q.chapter || ''),
+          section: finalAiSectionOf(subject, q),
+          title: finalAiSnippet(q.title || '', 70),
+          question: finalAiSnippet(q.question || '', 130),
+          userAnswer: finalAiSnippet(q.userChoice || q.userText || '', 100),
+          errorPoints: (Array.isArray(q.errorPoints) ? q.errorPoints : []).slice(0, 3).map(function (x) { return finalAiSnippet(x, 80); })
+        };
+      })
+    };
+  }).filter(function (m) { return m.wrong.length > 0; });
+  var wrongCount = 0;
+  exams.forEach(function (m) { wrongCount += m.wrong.length; });
+  return {
+    entries: entries,
+    papers: papers,
+    exams: exams,
+    stats: {
+      entries: allEntries.length,
+      unmastered: unmastered,
+      papers: allPapers.length,
+      exams: allExams.length,
+      wrongQuestions: wrongCount
+    }
+  };
+}
+function finalAiPersonalSummary(plan) {
+  var p = plan && plan.personal;
+  if (!p) return '';
+  var parts = [];
+  if (p.entries) parts.push(p.entries + ' 道错题');
+  if (p.papers) parts.push(p.papers + ' 张模拟卷');
+  if (p.exams) parts.push(p.exams + ' 次模拟考');
+  return parts.join(' · ');
+}
 function finalPlanFindPoint(module, name) {
   var points = module && Array.isArray(module.points) ? module.points : [];
   if (!points.length) return null;
@@ -33968,14 +34112,23 @@ function finalPlanFindPoint(module, name) {
   }
   return points[0];
 }
-function finalPlanFindExample(subject, chapter, id) {
+function finalPlanFindExample(subject, chapter, id, kind, sections) {
   id = String(id || '').trim();
   if (!id) return null;
-  var hit = bankOf(subject).filter(function (b) { return b && b.id === id && b.chapter === chapter; })[0];
+  if (kind === 'entry') {
+    var entry = (typeof findEntry === 'function') ? findEntry(subject, id) : null;
+    if (!entry || String(entry.chapter || '') !== chapter) return null;
+    if (sections && sections.length && sections.indexOf(finalAiSectionOf(subject, entry)) < 0) return null;
+    if (!finalBlockMd(entry, ['standard']) || !finalBlockMd(entry, ['original', 'question'])) return null;
+    return finalResolveItem({ type: 'entry', subject: subject, id: entry.id, key: finalItemKey(subject, 'entry', entry.id) });
+  }
+  var hit = bankOf(subject).filter(function (b) {
+    return b && b.id === id && b.chapter === chapter && (!sections || !sections.length || sections.indexOf(finalAiSectionOf(subject, b)) >= 0);
+  })[0];
   if (!hit) return null;
   return finalResolveItem({ type: 'bank', subject: subject, id: hit.id, key: finalItemKey(subject, 'bank', hit.id) });
 }
-function finalAiUnitResolve(subject, chapters, modules, raw) {
+function finalAiUnitResolve(subject, chapters, modules, raw, sections) {
   if (!raw || typeof raw !== 'object') return null;
   var chapter = String(raw.chapter || '').trim();
   if ((chapters || []).indexOf(chapter) < 0) return null;
@@ -33985,9 +34138,13 @@ function finalAiUnitResolve(subject, chapters, modules, raw) {
   var template = null;
   var templateId = String(raw.templateId || '').trim();
   if (templateId) template = module.templates.filter(function (t) { return t && t.id === templateId; })[0] || null;
-  var example = finalPlanFindExample(subject, chapter, raw.exampleId);
+  var exampleKind = raw.exampleKind === 'entry' ? 'entry' : 'bank';
+  var example = finalPlanFindExample(subject, chapter, raw.exampleId, exampleKind, sections);
+  if (!example) {
+    example = module.examples[0] || null;
+    exampleKind = 'bank';
+  }
   if (!template) template = (example && finalPlanTemplateFor(subject, chapter, example)) || module.template;
-  if (!example) example = module.examples[0] || null;
   var memory = finalAiCleanText(raw.memory, 220);
   if (point && memory) point = Object.assign({}, point, { memory: memory });
   return {
@@ -33999,23 +34156,25 @@ function finalAiUnitResolve(subject, chapters, modules, raw) {
     templateId: template ? String(template.id || '').trim() : '',
     template: template,
     exampleId: example ? String(example.id || '').trim() : '',
+    exampleKind: exampleKind,
     example: example,
     task: finalAiCleanText(raw.task || raw.focus, 240),
+    reason: finalAiCleanText(raw.reason || raw.why || '', 150),
     memory: memory
   };
 }
-function finalAiNormalizePlan(subject, chapters, sections, raw, model) {
+function finalAiNormalizePlan(subject, chapters, sections, raw, model, personal) {
   var list = raw && (Array.isArray(raw.units) ? raw.units : (Array.isArray(raw.days) ? raw.days : null));
   if (!list || !list.length) throw new Error('AI 没有返回可用的复习单元');
   var modules = {};
   chapters.forEach(function (chapter) { modules[chapter] = finalPlanModule(subject, chapter); });
   var units = [];
   list.slice(0, 120).forEach(function (item) {
-    var unit = finalAiUnitResolve(subject, chapters, modules, item);
+    var unit = finalAiUnitResolve(subject, chapters, modules, item, sections);
     if (!unit) return;
     units.push({
       chapter: unit.chapter, pointName: unit.pointName, templateId: unit.templateId,
-      exampleId: unit.exampleId, task: unit.task, memory: unit.memory
+      exampleId: unit.exampleId, exampleKind: unit.exampleKind, task: unit.task, reason: unit.reason, memory: unit.memory
     });
   });
   if (!units.length) throw new Error('AI 返回的章节或题号与本地题库不一致');
@@ -34032,20 +34191,23 @@ function finalAiNormalizePlan(subject, chapters, sections, raw, model) {
       pointName: point ? String(point.name || '').trim() : '',
       templateId: template ? String(template.id || '').trim() : '',
       exampleId: example ? String(example.id || '').trim() : '',
-      task: '', memory: ''
+      exampleKind: 'bank', task: '', reason: '', memory: ''
     });
     filled += 1;
   });
   var tips = (Array.isArray(raw.tips) ? raw.tips : []).map(function (x) { return finalAiCleanText(x, 160); }).filter(Boolean).slice(0, 6);
   var fe = finalData();
+  var ctx = personal || finalAiPersonalContext(subject, chapters, sections);
   return {
     v: 1, subject: subject, sig: finalAiPlanSignature(subject, chapters, sections),
     date: String(fe.date || ''), duration: Number(fe.duration) || 120,
     chapters: chapters.slice(), sections: sections.slice(), model: String(model || '').trim(), filled: filled,
-    units: units, tips: tips, createdAt: nowIso()
+    personal: ctx.stats, units: units, tips: tips, createdAt: nowIso()
   };
 }
 function finalAiPlanPrompt(data) {
+  var subjectId = finalSubject();
+  var sections = data.sections || [];
   var modules = (data.modules || []).map(function (m) {
     return {
       chapter: m.chapter,
@@ -34054,17 +34216,34 @@ function finalAiPlanPrompt(data) {
       examples: m.examples.map(function (e) { return { id: e.id, code: e.code || '', title: e.title || '' }; })
     };
   });
+  var bankIndex = {};
+  (data.chapters || []).forEach(function (chapter) {
+    var list = bankOf(subjectId).filter(function (b) {
+      return b && b.chapter === chapter && (!sections.length || sections.indexOf(finalAiSectionOf(subjectId, b)) >= 0);
+    }).slice().sort(function (a, b) {
+      return (finalPlanExampleScore(b) - finalPlanExampleScore(a)) || String(a.id).localeCompare(String(b.id));
+    });
+    bankIndex[chapter] = list.slice(0, 8).map(function (b) {
+      return {
+        id: String(b.id || ''), code: String(b.id || ''), title: finalAiSnippet(b.title || '', 80),
+        section: finalAiSectionOf(subjectId, b), type: String(b.type || ''),
+        hasSolution: !!String(b.standardSolution || '').trim()
+      };
+    });
+  });
   return {
-    subject: subjectOf(finalSubject()).name,
+    subject: subjectOf(subjectId).name,
     examDate: finalDateKey(data.exam),
     today: finalDateKey(data.today),
     totalDays: data.total,
     duration: data.duration,
     dailyMinutes: data.dailyMinutes,
     chapters: data.chapters,
-    sections: data.sections || [],
+    sections: sections,
     sectionsByChapter: data.sectionMap || {},
     modules: modules,
+    bankIndex: bankIndex,
+    personal: finalAiPersonalContext(subjectId, data.chapters, sections),
     unitCount: Math.min(data.total, 60)
   };
 }
@@ -34084,20 +34263,24 @@ async function finalAiGeneratePlan() {
   render();
   try {
     var systemPrompt = '你是大学数学与西方经济学教授，负责把期末复习排成逐日计划。只输出一个 JSON 对象，不要代码围栏、Markdown 标题或解释。' +
-      '你只能使用输入 chapters 中已有的章节、points 中已有的知识点名称、templates 中已有的模板 id、examples 中已有的例题 id；禁止编造新章节、新知识点、新题号或不存在的模板。' +
+      '你只能使用输入 chapters 中已有的章节、points 中已有的知识点名称、templates 中已有的模板 id、examples/bankIndex 中已有的题目 id；禁止编造新章节、新知识点、新题号或不存在的模板。' +
       'sections 是用户选中的小节，sectionsByChapter 给出每章选中的小节；points 已按小节筛选，禁止把未选小节的知识点排进计划。' +
+      'personal 是用户本机的真实记录：wrongEntries 是错题库（status=unmastered、errorTypes、errorNote 是错因），papers 是保存过的模拟卷，exams 是已交卷模拟考（wrong[].userAnswer 是当时的错答，errorPoints 是判分指出的缺口）。' +
+      '请优先把 personal 暴露的薄弱章节/知识点排进计划，并在 reason 里用一句中文说明依据（例如「你在第一章错题里两次漏掉数域前提」）；没有 personal 记录时按章节基础顺序排。' +
+      'exampleKind 可为 bank 或 entry：bank 时 exampleId 必须来自 examples 或 bankIndex；entry 时 exampleId 必须来自 personal.wrongEntries 且 hasSolution=true，表示直接用用户自己的错题当例题。找不到合适个人错题就用 bank。' +
       'units 是按天依次执行的学习单元，按从基础到冲刺排序，必须覆盖每个章节至少一次；unitCount 是希望返回的单元数。' +
       '每项 task 用一句可执行的考场化任务（例如「先口述……再独立做例题，最后对照标准解答补步骤」），每项 memory 用一句便于记忆、考场可直接调用的方法。' +
-      '所有数学公式必须用 $...$ 包裹，禁止裸写 x^2、x_1、sqrt(x)、<=、>=、->；禁止在 task/memory 中写 HTML 标签；不要输出答案或新题目。' +
-      '输出格式：{"units":[{"chapter":"原样章节名","point":"points 中的知识点名称","templateId":"templates 中的 id 或空串","exampleId":"examples 中的 id 或空串","task":"当天任务","memory":"记忆与考场用法"}],"tips":["最多 6 条通用提醒"]}';
-    var userText = JSON.stringify(finalAiPlanPrompt(data));
+      '所有数学公式必须用 $...$ 包裹，禁止裸写 x^2、x_1、sqrt(x)、<=、>=、->；禁止在 task/reason/memory 中写 HTML 标签；不要输出答案或新题目。' +
+      '输出格式：{"units":[{"chapter":"原样章节名","point":"points 中的知识点名称","templateId":"templates 中的 id 或空串","exampleKind":"bank 或 entry","exampleId":"对应来源的 id 或空串","task":"当天任务","reason":"个性化依据","memory":"记忆与考场用法"}],"tips":["最多 6 条通用提醒"]}';
+    var prompt = finalAiPlanPrompt(data);
+    var userText = JSON.stringify(prompt);
     var out = await finalAiJsonCall(systemPrompt, userText, [], 120000);
     var raw = out && out.parsed;
     if (!raw && out && Array.isArray(out.objects)) {
       raw = out.objects.filter(function (x) { return x && (Array.isArray(x.units) || Array.isArray(x.days)); })[0] || null;
     }
     if (!raw) throw new Error('AI 返回的格式不是可解析的 JSON');
-    var plan = finalAiNormalizePlan(subject, chapters, sections, raw, cfg.model);
+    var plan = finalAiNormalizePlan(subject, chapters, sections, raw, cfg.model, prompt.personal);
     finalData().aiPlan = plan;
     markDirty();
     render();
@@ -34247,7 +34430,7 @@ function finalPlanData() {
     modules.forEach(function (m) { aiModules[m.chapter] = m; });
     days.forEach(function (d, i) {
       var rawUnit = aiPlan.units[i % aiPlan.units.length];
-      var unit = finalAiUnitResolve(finalSubject(), planChapters, aiModules, rawUnit);
+      var unit = finalAiUnitResolve(finalSubject(), planChapters, aiModules, rawUnit, planSections);
       if (!unit || !unit.point) return;
       d.chapter = unit.chapter;
       d.point = unit.point;
@@ -34257,7 +34440,9 @@ function finalPlanData() {
       d.template = unit.template;
       d.templateName = unit.template ? String(unit.template.title || '').trim() : '';
       d.example = unit.example;
+      d.exampleKind = unit.exampleKind || 'bank';
       d.exampleCode = unit.example ? unit.example.code : '';
+      d.reason = unit.reason || '';
       if (unit.task) d.focus = unit.task;
       d.ai = true;
     });
@@ -34282,8 +34467,9 @@ function finalPlanExampleHtml(example, template) {
   if (steps) detail += '<section><h5>答题模板' + (template && template.title ? ' · ' + esc(template.title) : '') + '</h5><div class="md">' + renderMarkdown(steps) + '</div></section>';
   if (example.detailedAnalysis) detail += '<section><h5>详细解析</h5><div class="md">' + renderMarkdown(example.detailedAnalysis) + '</div></section>';
   if (example.pitfalls.length) detail += '<section><h5>易错点</h5><ul class="fpe-pitfalls">' + example.pitfalls.map(function (x) { return '<li>' + renderInline(x) + '</li>'; }).join('') + '</ul></section>';
-  return '<article class="fpe-item">' +
-    '<div class="fpe-head"><span class="fpe-code">' + esc(example.code || '') + '</span><b>' + renderInline(example.title || '例题') + '</b></div>' +
+  var source = example.type === 'entry' ? '<span class="fpe-source">来自你的错题库</span>' : '';
+  return '<article class="fpe-item' + (example.type === 'entry' ? ' is-entry' : '') + '">' +
+    '<div class="fpe-head"><span class="fpe-code">' + esc(example.code || '') + '</span><b>' + renderInline(example.title || '例题') + '</b>' + source + '</div>' +
     '<div class="md fpe-question">' + renderMarkdown(stripTypePrefix(example.question || '')) + '</div>' + options +
     '<div class="fpe-answer"><b>答案 / 结论</b><div class="md">' + renderMarkdown(example.answer || '见标准解答') + '</div></div>' +
     (detail ? '<details class="fpe-detail"><summary>展开考试标准解答、答题模板、详细解析与易错点</summary><div class="fpe-detail-body">' + detail + '</div></details>' : '') +
@@ -34345,6 +34531,7 @@ function finalPlanDayBodyHtml(d) {
       (d.point.memory ? '<div class="fd-memory"><b>记忆与考场用法</b><p>' + renderInline(d.point.memory) + '</p></div>' : '') +
     '</div>';
   }
+  if (d.reason) detail += '<div class="fd-ai-reason"><b>为什么这样排</b><p>' + renderInline(d.reason) + '</p></div>';
   detail += d.example ? finalPlanExampleHtml(d.example, d.template) : '<div class="final-plan-note">本章暂无完整例题；按模板口述步骤，再回题库做一道同类题。</div>';
   return detail;
 }
@@ -34396,14 +34583,15 @@ function finalPlanHtml() {
     (ai ? '<button class="btn btn-xs" data-act="final-ai-reset" type="button">恢复本地排程</button>' : '') +
   '</div>';
   var aiTips = ai && ai.tips && ai.tips.length ? '<ul>' + ai.tips.map(function (x) { return '<li>' + renderInline(x) + '</li>'; }).join('') + '</ul>' : '';
+  var aiPersonal = ai ? finalAiPersonalSummary(ai) : '';
   var aiNote = ai
-    ? '<div class="final-ai-note"><b>AI 个性化计划</b><span>' + esc(ai.model || '已配置模型') + ' · ' + (ai.sections && ai.sections.length ? ai.sections.length + ' 节 · ' : '') + ai.units.length + ' 个学习单元' + (ai.filled ? ' · 本地补齐 ' + ai.filled + ' 章' : '') + ' · 题号与出处已对照本地题库校验</span>' + aiTips + '</div>'
+    ? '<div class="final-ai-note"><b>AI 个性化计划</b><span>' + esc(ai.model || '已配置模型') + ' · ' + (ai.sections && ai.sections.length ? ai.sections.length + ' 节 · ' : '') + ai.units.length + ' 个学习单元' + (aiPersonal ? ' · 已读 ' + esc(aiPersonal) : '') + (ai.filled ? ' · 本地补齐 ' + ai.filled + ' 章' : '') + ' · 题号与出处已对照本地题库校验</span>' + aiTips + '</div>'
     : (ui.finalAiPlanError ? '<div class="final-ai-note is-warn"><b>AI 排程未完成</b><span>' + esc(ui.finalAiPlanError) + '；当前仍使用本地计划。</span></div>' : '');
   var introBadge = ai ? 'AI 个性化' : '智能排程';
   var introTitle = ai ? 'AI 已按你的章节与考试时间重排每天的学习单元' : '按所选章节与考试时间生成，具体到每一天';
   var introCopy = ai
-    ? '由 ' + esc(ai.model || '已配置模型') + ' 生成；每个单元的章节、知识点、模板与例题都在本地题库中校验，无法校验的条目会被丢弃，失败时自动保留本地计划。'
-    : '默认本地排程，不调用外部 API；配置 AI 后可让模型按你的章节、小节与考试时间个性化定制。知识点来自对应科目 skill，逐条标注教材章节与小节出处。';
+    ? '由 ' + esc(ai.model || '已配置模型') + ' 读取你的章节、错题、模拟卷与模拟考记录后生成；章节、知识点、模板与例题都在本地校验，无法校验的条目会被丢弃，失败时自动保留本地计划。'
+    : '默认本地排程，不调用外部 API；配置 AI 后可让模型读取你的错题、模拟卷与模拟考记录，按章节、小节与考试时间个性化定制。知识点来自对应科目 skill，逐条标注教材章节与小节出处。';
   return '<div class="final-plan-intro"><div><span class="final-plan-badge">' + esc(introBadge) + '</span><b>' + esc(introTitle) + '</b><p>' + esc(introCopy) + '</p></div><div class="final-plan-side"><span class="final-plan-meta">' + data.chapters.length + ' 章' + (data.sections.length ? ' · ' + data.sections.length + ' 节' : '') + ' · ' + pointTotal + ' 个知识点 · 每天约 ' + data.dailyMinutes + ' 分钟</span>' + aiActions + '</div></div>' + aiNote +
     '<div class="final-count-banner"><b>' + data.total + '</b><span>天复习窗口</span><small>' + finalDateKey(data.today) + ' → ' + finalDateKey(data.exam) + '</small></div>' +
     '<div class="final-phase-grid">' + phaseCards + '</div>' +
