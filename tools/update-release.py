@@ -22,20 +22,20 @@ def api(path, method='GET', data=None, ctype='application/json'):
     with urllib.request.urlopen(req, timeout=300) as r:
         raw = r.read()
         return json.loads(raw.decode('utf-8')) if raw else {}
-body = r'''## 四科错题本 v2026.11.18 · 排版与对齐细化
+body = r'''## 四科错题本 v2026.11.18 · 计划顺序与排版
 
-**2 项 · 2 组**
+**3 项 · 3 组**
 
 ### 本轮更新
-- 排版对齐：首页工作台说明在桌面保持单行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px。规范速览顺序统一为 01 套写法、02 套编号、05 必填字段、20–32 复习节点。笔记、题库、模板、错题与总览说明分别保护「知识笔记」「扫描」「标准解答」「易错点」「先自己写」「错题条目」等短语，三端不再把词组拆到两行。
-- 模板与统计：模板筛选在桌面收成 560px 单行，手机计数与清空按钮排在同一行；统计口径统一为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。
-- 防复发：qa:polish 新增首页工作台行数、功能条与页脚间距、规范速览顺序、统计口径、笔记拆词、模板计数排布与筛选卡宽度检查；在 18 个宽度、390 / 768 / 1440 的真实浏览器中执行，并接入 npm run qa:polish 与 CI。
+- 计划顺序：期末复习章节筛选的小节分组按教材章节顺序（第一→第六）生成，不再按点击顺序倒序；即使先点第四章、再点第一章，分组仍按第一、第二…排列。期末模拟卷标题里的章节也按同一顺序拼接。手机 ≤560px 时「章节 / 已选 N 章」独占一行，全部与各章按钮从下一行开始。
+- 排版对齐：首页工作台说明在桌面保持单行；功能条去掉重复分隔点并收紧页脚间距；规范速览统一 01/02/05/20–32；笔记、题库、模板、错题说明保护关键短语；模板筛选桌面 560px 单行，手机计数回到左侧、清空按钮留在右侧；笔记库页头压成一行；统计口径统一「最近 30 天」；期末计划科目说明不再说模拟卷。
+- 防复发：qa:final 先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机标签与按钮分行；qa:polish 覆盖 18 个宽度与三端排版；143 项回归测试与 CI 全部门禁。
 - 回归测试 143 项；更新记录新增 2026-11-18 独立一块，11-17 及更早历史折叠，Release 每个日期只保留一条。
 
 ### 验证
 - 回归测试 143 项通过；严格题库 QA 9651 唯一、problems 0 / warnings 0；全库渲染审计与 104223 字段数学语言审计 0 失败。
 - 公式门禁 14 个面、模拟卷编辑卡 18 个宽度、筛选栏 22 个宽度、期末复习四科三端、8 视口真实浏览器均 0 failures；无障碍、性能、拆包、尺寸与发布一致性门禁通过。
-- BUILD_ID 2026.11.18-39c5750a；GitHub Pages 与 Release 以同一提交构建。
+- BUILD_ID 2026.11.18-4d06493f；GitHub Pages 与 Release 以同一提交构建。
 
 完整记录见仓库 docs/VERIFICATION.md 与 docs/RELEASE.md。
 '''
@@ -44,7 +44,7 @@ try:
 except urllib.error.HTTPError as e:
     if e.code != 404:
         raise
-    rel = api('/releases', method='POST', data={'tag_name': TAG, 'name': '四科错题本 v2026.11.18 · 排版与对齐细化', 'body': body, 'draft': False, 'prerelease': False})
+    rel = api('/releases', method='POST', data={'tag_name': TAG, 'name': '四科错题本 v2026.11.18 · 计划顺序与排版', 'body': body, 'draft': False, 'prerelease': False})
     print('created release', rel['id'])
 for a in rel.get('assets', []):
     if a['name'] in ('source.zip', 'SHA256SUMS', STATIC):
@@ -56,5 +56,5 @@ for name in ['source.zip', STATIC, 'SHA256SUMS']:
     with urllib.request.urlopen(req, timeout=600) as r:
         a = json.loads(r.read().decode('utf-8'))
     print('uploaded', a['name'], a['size'])
-api('/releases/%d' % rel['id'], method='PATCH', data={'body': body, 'name': '四科错题本 v2026.11.18 · 排版与对齐细化', 'target_commitish': 'main'})
+api('/releases/%d' % rel['id'], method='PATCH', data={'body': body, 'name': '四科错题本 v2026.11.18 · 计划顺序与排版', 'target_commitish': 'main'})
 print('body updated')

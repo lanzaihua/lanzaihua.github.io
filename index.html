@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.18-39c5750a";</script>
+<script>window.__BUILD_ID__="2026.11.18-4d06493f";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9980,6 +9980,18 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .toolbar.template-filters .select { grid-column: 1 / -1; width: 100% !important; min-width: 0 !important; max-width: none !important; }
   .toolbar.template-filters .filter-clear { grid-column: 2; grid-row: 2; justify-self: end; margin: 0 !important; }
   .toolbar.template-filters .count-note { grid-column: 1; grid-row: 2; align-self: center; margin: 0 !important; text-align: left; }
+}
+
+/* 2026-11-18: chapter filter header owns its line on narrow screens */
+.final-chapter-filter:not(.final-section-filter) .fcf-break { display: none; }
+@media (max-width: 560px) {
+  .final-chapter-filter:not(.final-section-filter) { gap: 7px 8px !important; padding: 8px 0 4px !important; }
+  .final-chapter-filter:not(.final-section-filter) .fcf-break { display: block; flex: 0 0 100%; height: 0; margin: 0; }
+  .final-chapter-filter:not(.final-section-filter) .fcf-count { flex: 0 0 auto; margin: 0 0 0 2px; text-align: left; }
+}
+
+@media (max-width: 520px) {
+  .toolbar.template-filters .count-note { justify-self: start !important; }
 }
 
 </style>
@@ -23892,28 +23904,36 @@ var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [{
   "date": "2026-11-18",
-  "title": "排版与对齐细化",
-  "historyTitle": "排版与对齐细化",
-  "summary": "本轮只做界面排版与对齐，不改题目与业务逻辑。首页工作台说明在桌面保持单行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px；规范速览顺序统一为 01 套写法、02 套编号、05 必填字段、20–32 复习节点。笔记、题库、模板、错题与总览的说明分别保护「知识笔记」「扫描」「标准解答」「易错点」「先自己写」「错题条目」等短语，三端不再把词组拆到两行；模板筛选在桌面收成 560px 单行，手机计数与清空按钮排在同一行；统计口径统一为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。qa:polish 增加工作台行数、功能条与页脚间距、规范顺序、统计口径、笔记拆词与模板计数排布检查，143 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。",
-  "notifySummary": "界面排版再细化：首页工作台说明桌面单行、功能条与页脚间距收紧；规范速览统一 01/02/05/20–32；笔记、题库、模板、错题说明保护关键短语不拆行；模板筛选桌面单行、手机计数与清空同排；统计统一最近 30 天口径；期末计划科目说明不再说模拟卷。",
+  "title": "计划顺序与排版",
+  "historyTitle": "计划顺序与排版",
+  "summary": "本轮继续修界面排版与计划顺序，不改题目与业务逻辑。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明压缩为一行，保留本 / 页 / 条计数。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 继续覆盖 18 宽度与三端。143 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。",
+  "notifySummary": "计划顺序与排版再修：期末章节筛选的小节分组按教材章节顺序排列，模拟卷标题也按顺序；手机章节筛选标签单独一行，模板计数回左，笔记页头压成一行。qa:final 增加反序点击检查。143 项测试通过。",
   "notifyItems": [
     {
       "group": "排版对齐",
-      "text": "首页工作台说明桌面单行，功能条去掉重复点并收紧页脚间距；规范速览改为 01/02/05/20–32；笔记、题库、模板、错题说明保护关键短语不拆行；模板筛选桌面单行、手机计数与清空同排；统计统一最近 30 天口径；期末计划科目说明不再说模拟卷。"
+      "text": "首页工作台说明桌面单行、功能条与页脚间距收紧；规范速览统一 01/02/05/20–32；笔记、题库、模板、错题说明保护关键短语不拆行；模板筛选桌面单行、手机计数回到左侧；笔记页头压成一行；统计统一最近 30 天口径；期末计划科目说明不再说模拟卷。"
+    },
+    {
+      "group": "计划顺序",
+      "text": "期末章节筛选的小节分组按教材章节顺序展开，不按点击顺序倒序；模拟卷标题章节同样按顺序。手机「章节 / 已选 N 章」独占一行，章节按钮从下一行开始。"
     },
     {
       "group": "防复发",
-      "text": "qa:polish 增加工作台行数、功能条与页脚间距、规范顺序、统计口径、笔记拆词与模板计数排布检查；143 项回归测试与现有三端门禁继续在 CI 执行。"
+      "text": "qa:final 先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 继续检查三端排版；143 项回归测试在 CI 执行。"
     }
   ],
   "items": [
     {
       "group": "排版对齐",
-      "text": "首页工作台说明在桌面不再无故折成两行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px。规范速览顺序改为 01 套写法、02 套编号、05 必填字段、20–32 复习节点；笔记库说明保护「知识笔记」「扫描」与数量单位，题库、模板、错题、总览说明分别保护「标准解答」「易错点」「先自己写」「错题条目」，不再把词组拆到两行。模板筛选桌面收成 560px 单行，手机计数与清空按钮同排；统计口径改为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。"
+      "text": "首页工作台说明在桌面不再无故折成两行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px。规范速览顺序改为 01 套写法、02 套编号、05 必填字段、20–32 复习节点；笔记库说明保护「知识笔记」「扫描」与数量单位，题库、模板、错题、总览说明分别保护「标准解答」「易错点」「先自己写」「错题条目」，不再把词组拆到两行。模板筛选桌面收成 560px 单行，手机计数回到左侧、清空按钮留在右侧；笔记库页头说明压缩为一行，保留本 / 页 / 条计数；统计口径改为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。"
+    },
+    {
+      "group": "计划顺序",
+      "text": "期末复习章节筛选的小节分组按教材章节顺序（第一→第六）生成，不再按点击顺序倒序；即使先点第四章、再点第一章，分组仍按第一、第二…排列。期末模拟卷标题里的章节也按同一顺序拼接。手机 ≤560px 时「章节 / 已选 N 章」独占一行，全部与各章按钮从下一行开始，避免标签、计数与按钮挤在同一行。"
     },
     {
       "group": "防复发",
-      "text": "qa:polish 新增首页工作台行数、功能条与页脚间距、规范速览顺序、统计时间口径、笔记拆词、模板计数排布与筛选卡宽度检查；18 个宽度、390/768/1440 的真实浏览器检查接入 npm run qa:polish 与 CI，143 项回归测试继续覆盖更新记录、题库、公式与发布校验。"
+      "text": "qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 继续覆盖 18 个宽度、390/768/1440 的工作台行数、功能条间距、规范顺序、统计口径、笔记拆词、模板计数与筛选卡宽度；143 项回归测试与 CI 全部门禁。"
     }
   ]
 },
@@ -27757,7 +27777,7 @@ function noteLibraryHtml() {
   return '<section class="page-head note-library-head"><div>' +
       '<div class="page-kicker">笔记 / LIBRARY</div>' +
       '<h1 class="page-title">笔记库</h1>' +
-      '<p class="page-sub">' + (batch ? '勾选要删除的笔记本；删除后无法恢复，请确认。' : '<span class="page-nb">手写笔记本</span>与 <span class="page-nb">知识笔记</span>同处；本机现有 <span class="page-nb"><b>' + books.length + '</b> 本</span>、<span class="page-nb"><b>' + noteTotalPages() + '</b> 页手写</span>、<span class="page-nb"><b>' + knowledge.length + '</b> 条 <span class="page-nb">知识笔记</span></span>，可搜索、导入、<span class="page-nb">扫描</span>与备份。') + '</p>' +
+      '<p class="page-sub">' + (batch ? '勾选要删除的笔记本；删除后无法恢复，请确认。' : '<span class="page-nb">手写笔记本</span>与 <span class="page-nb">知识笔记</span>同处；现有 <span class="page-nb"><b>' + books.length + '</b> 本</span>、<span class="page-nb"><b>' + noteTotalPages() + '</b> 页手写</span>、<span class="page-nb"><b>' + knowledge.length + '</b> 条 <span class="page-nb">知识笔记</span></span>。') + '</p>' +
     '</div><div class="page-actions">' + headActions + '</div></section>' +
     subjectJumpHtml('notes') +
     (batch ? '' : noteTabsHtml(books, knowledge)) +
@@ -33791,6 +33811,11 @@ function finalAllChapters(subject) {
   templatesOf(subject).forEach(function (t) { add(t && t.chapter); });
   return out;
 }
+function finalOrderedSelectedChapters(subject) {
+  var all = finalAllChapters(subject);
+  var sel = finalSelectedChapters(subject);
+  return all.filter(function (ch) { return sel.indexOf(ch) >= 0; });
+}
 function finalPlanChapters(subject) {
   var all = finalAllChapters(subject);
   var sel = finalSelectedChapters(subject);
@@ -34109,10 +34134,10 @@ function finalChapterFilterHtml(subject) {
   var sel = finalSelectedChapters(subject);
   var chosen = finalSelectedSections(subject);
   var countText = sel.length ? ('已选 ' + sel.length + ' 章' + (chosen.length ? ' · ' + chosen.length + ' 节' : '')) : '全部章节';
-  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><span class="fcf-count">' + countText + '</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
+  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><span class="fcf-count">' + countText + '</span><span class="fcf-break" aria-hidden="true"></span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
     chapters.map(function (c) { return '<button class="fcf-chip' + (sel.indexOf(c) >= 0 ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="' + attr(c) + '" type="button">' + esc(c) + '</button>'; }).join('') + '</div>';
   if (!sel.length) return main;
-  var sectionGroups = sel.map(function (chapter) {
+  var sectionGroups = finalOrderedSelectedChapters(subject).map(function (chapter) {
     var secs = chapterSectionsFor(subject, chapter);
     if (!secs.length) return '';
     var picked = finalSectionsForChapter(subject, chapter);
@@ -34578,7 +34603,7 @@ function finalGeneratePaper() {
   var p = {
     id: 'paper-' + Date.now().toString(36),
     subject: subject,
-    title: subjectOf(subject).name + ' · 期末模拟卷 · ' + (fe.date || finalDateKey(new Date())) + (finalSelectedChapters(subject).length ? ' · ' + finalSelectedChapters(subject).join(' / ') : ''),
+    title: subjectOf(subject).name + ' · 期末模拟卷 · ' + (fe.date || finalDateKey(new Date())) + (finalOrderedSelectedChapters(subject).length ? ' · ' + finalOrderedSelectedChapters(subject).join(' / ') : ''),
     duration: duration,
     createdAt: nowIso(),
     updatedAt: nowIso(),

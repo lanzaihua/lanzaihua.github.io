@@ -76,20 +76,25 @@ test('多章可分别选小节，计划与 AI 签名都锁定到小节', () => {
   ctx.finalAllChapters = function () { return ['第一章 多项式', '第二章 行列式']; };
   ctx.state.finalExam = {
     date: '2026-12-20', duration: 120, subject: 'gaodai',
-    chapterSel: { gaodai: ['第一章 多项式', '第二章 行列式'] },
+    chapterSel: { gaodai: ['第二章 行列式', '第一章 多项式'] },
     sectionSel: { gaodai: ['数域', '排列'] },
     items: [], papers: [], done: {}
   };
   const html = ctx.finalChapterFilterHtml('gaodai');
   assert.match(html, /已选 2 章 · 2 节/);
   assert.equal((html.match(/data-section-chapter=/g) || []).length, 2, '每个已选大章都要有小节分组');
+  const js = read('src/js/58-final.js');
   assert.match(html, /小节 · 第一章 多项式/);
   assert.match(html, /小节 · 第二章 行列式/);
+  assert.ok(html.indexOf('小节 · 第一章 多项式') < html.indexOf('小节 · 第二章 行列式'), '小节分组应按教材章节顺序，而不是点击顺序');
+  assert.match(html, /class="fcf-break"/);
+  assert.match(read('src/styles.css'), /\.final-chapter-filter:not\(\.final-section-filter\) \.fcf-break/);
+  assert.match(js, /finalOrderedSelectedChapters\(subject\)\.map\(function \(chapter\)/);
+  assert.match(js, /finalOrderedSelectedChapters\(subject\)\.join\(' \/ '\)/);
   assert.match(html, /data-chapter="第一章 多项式"[^>]*data-section="数域"/);
   assert.match(html, /data-chapter="第二章 行列式"[^>]*data-section="排列"/);
   assert.deepEqual(ctx.finalSelectedSections('gaodai'), ['数域', '排列']);
   assert.deepEqual(ctx.finalSectionsForChapter('gaodai', '第一章 多项式'), ['数域']);
-  const js = read('src/js/58-final.js');
   assert.match(js, /function finalSectionsForChapter/);
   assert.match(js, /var sections = finalSectionsForChapter\(subject, chapter\)/);
   assert.match(js, /finalAiPlanSignature\(subject, chapters, sections\)/);

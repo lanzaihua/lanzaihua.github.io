@@ -9958,3 +9958,15 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .toolbar.template-filters .filter-clear { grid-column: 2; grid-row: 2; justify-self: end; margin: 0 !important; }
   .toolbar.template-filters .count-note { grid-column: 1; grid-row: 2; align-self: center; margin: 0 !important; text-align: left; }
 }
+
+/* 2026-11-18: chapter filter header owns its line on narrow screens */
+.final-chapter-filter:not(.final-section-filter) .fcf-break { display: none; }
+@media (max-width: 560px) {
+  .final-chapter-filter:not(.final-section-filter) { gap: 7px 8px !important; padding: 8px 0 4px !important; }
+  .final-chapter-filter:not(.final-section-filter) .fcf-break { display: block; flex: 0 0 100%; height: 0; margin: 0; }
+  .final-chapter-filter:not(.final-section-filter) .fcf-count { flex: 0 0 auto; margin: 0 0 0 2px; text-align: left; }
+}
+
+@media (max-width: 520px) {
+  .toolbar.template-filters .count-note { justify-self: start !important; }
+}

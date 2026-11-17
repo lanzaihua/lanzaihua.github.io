@@ -168,8 +168,8 @@ async function dailySnapshot(page) {
       const secondChapter = page.locator('.final-chapter-filter [data-act="final-chapter"][data-chapter="第二章 行列式"]').first();
       if (!(await firstChapter.count()) || !(await secondChapter.count())) push(failures, width, 'chapter chips for 第一章/第二章 missing');
       else {
-        await firstChapter.click({ timeout: 10000 });
         await secondChapter.click({ timeout: 10000 });
+        await firstChapter.click({ timeout: 10000 });
         await page.waitForTimeout(800);
         const multi = await page.evaluate(() => ({
           modules: [...document.querySelectorAll('.final-plan-module')].map((x) => x.getAttribute('data-final-module')),
@@ -180,6 +180,19 @@ async function dailySnapshot(page) {
         if (multi.modules.length !== 2) push(failures, width, 'two selected chapters should keep 2 modules, got ' + multi.modules.length);
         if (multi.groups.length !== 2) push(failures, width, 'each selected chapter needs its own section group, got ' + multi.groups.length);
         if (multi.groups.indexOf('第一章 多项式') < 0 || multi.groups.indexOf('第二章 行列式') < 0) push(failures, width, 'section groups missing a selected chapter');
+        if (multi.groups.indexOf('第一章 多项式') > multi.groups.indexOf('第二章 行列式')) push(failures, width, 'section groups follow click order instead of chapter order: ' + multi.groups.join(' > '));
+        if (width <= 560) {
+          const header = await page.evaluate(() => {
+            const f = document.querySelector('.final-chapter-filter:not(.final-section-filter)');
+            const label = f.querySelector('.fcf-label').getBoundingClientRect();
+            const count = f.querySelector('.fcf-count').getBoundingClientRect();
+            const chip = f.querySelector('[data-act="final-chapter"]').getBoundingClientRect();
+            return { labelY: label.y, countY: count.y, labelBottom: label.bottom, chipTop: chip.top };
+          });
+          if (Math.abs(header.labelY - header.countY) > 4) push(failures, width, 'chapter label and count split on narrow screens');
+          if (header.chipTop <= header.labelBottom + 2) push(failures, width, 'chapter chips should start on a new row on narrow screens');
+          details.push({ width, stage: 'chapter-header', ...header });
+        }
         if (!/2 章/.test(multi.meta)) push(failures, width, 'plan meta missing chapter count: ' + multi.meta);
         if (multi.overflow > 1) push(failures, width, 'page overflow with section groups ' + multi.overflow);
         details.push({ width, stage: 'multi-chapter', ...multi });

@@ -40,7 +40,7 @@ test('layout copy and CSS use real chapter counts and fill cramped controls', ()
   const notes = read('src/js/49-notes.js');
   assert.ok(notes.includes('<span class="page-nb">知识笔记</span>'), '笔记标题未保护「知识笔记」不被拆行');
   assert.ok(notes.includes('</b> 本</span>'), '笔记标题把数量与「本」拆开');
-  assert.ok(notes.includes('<span class="page-nb">扫描</span>'), '笔记标题未保护「扫描」不被拆行');
+  assert.ok(notes.includes('同处；现有 '), '笔记标题未压缩为一行');
   assert.ok(library.includes('<span class="page-nb">1 / 3 / 7 天起步</span>'), '规范说明未保护「起步」');
   assert.ok(read('src/js/16-stats.js').includes('最近 30 天学了多少'), '统计时间口径与 30 天卡片不一致');
   const entries = read('src/js/20-entries.js');

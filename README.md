@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.18-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.18--39c5750a-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.18--4d06493f-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -150,18 +150,19 @@
 
 ## 更新记录
 
-### 2026-11-18 · 排版与对齐细化
+### 2026-11-18 · 计划顺序与排版
 
-**2 项 · 2 组**
+**3 项 · 3 组**
 
-本轮只做界面排版与对齐，不改题目与业务逻辑。首页工作台说明在桌面保持单行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px；规范速览顺序统一为 01 套写法、02 套编号、05 必填字段、20–32 复习节点。笔记、题库、模板、错题与总览的说明分别保护「知识笔记」「扫描」「标准解答」「易错点」「先自己写」「错题条目」等短语，三端不再把词组拆到两行；模板筛选在桌面收成 560px 单行，手机计数与清空按钮排在同一行；统计口径统一为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。qa:polish 增加工作台行数、功能条与页脚间距、规范顺序、统计口径、笔记拆词与模板计数排布检查，143 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。
+本轮继续修界面排版与计划顺序，不改题目与业务逻辑。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明压缩为一行，保留本 / 页 / 条计数。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 继续覆盖 18 宽度与三端。143 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。
 
 | 分组 | 本次更新 |
 |---|---|
-| **排版对齐** | 首页工作台说明在桌面不再无故折成两行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px。规范速览顺序改为 01 套写法、02 套编号、05 必填字段、20–32 复习节点；笔记库说明保护「知识笔记」「扫描」与数量单位，题库、模板、错题、总览说明分别保护「标准解答」「易错点」「先自己写」「错题条目」，不再把词组拆到两行。模板筛选桌面收成 560px 单行，手机计数与清空按钮同排；统计口径改为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。 |
-| **防复发** | qa:polish 新增首页工作台行数、功能条与页脚间距、规范速览顺序、统计时间口径、笔记拆词、模板计数排布与筛选卡宽度检查；18 个宽度、390/768/1440 的真实浏览器检查接入 npm run qa:polish 与 CI，143 项回归测试继续覆盖更新记录、题库、公式与发布校验。 |
+| **排版对齐** | 首页工作台说明在桌面不再无故折成两行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px。规范速览顺序改为 01 套写法、02 套编号、05 必填字段、20–32 复习节点；笔记库说明保护「知识笔记」「扫描」与数量单位，题库、模板、错题、总览说明分别保护「标准解答」「易错点」「先自己写」「错题条目」，不再把词组拆到两行。模板筛选桌面收成 560px 单行，手机计数回到左侧、清空按钮留在右侧；笔记库页头说明压缩为一行，保留本 / 页 / 条计数；统计口径改为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。 |
+| **计划顺序** | 期末复习章节筛选的小节分组按教材章节顺序（第一→第六）生成，不再按点击顺序倒序；即使先点第四章、再点第一章，分组仍按第一、第二…排列。期末模拟卷标题里的章节也按同一顺序拼接。手机 ≤560px 时「章节 / 已选 N 章」独占一行，全部与各章按钮从下一行开始，避免标签、计数与按钮挤在同一行。 |
+| **防复发** | qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 继续覆盖 18 个宽度、390/768/1440 的工作台行数、功能条间距、规范顺序、统计口径、笔记拆词、模板计数与筛选卡宽度；143 项回归测试与 CI 全部门禁。 |
 
-<img src="assets/v2/20261118-changelog.png" alt="网页内排版与对齐细化更新记录" width="820">
+<img src="assets/v2/20261118-changelog.png" alt="网页内计划顺序与排版更新记录" width="820">
 
 <details>
 <summary>历史更新 · 2026-11-17 及更早 · 26 个版本</summary>

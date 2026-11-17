@@ -148,6 +148,11 @@ function finalAllChapters(subject) {
   templatesOf(subject).forEach(function (t) { add(t && t.chapter); });
   return out;
 }
+function finalOrderedSelectedChapters(subject) {
+  var all = finalAllChapters(subject);
+  var sel = finalSelectedChapters(subject);
+  return all.filter(function (ch) { return sel.indexOf(ch) >= 0; });
+}
 function finalPlanChapters(subject) {
   var all = finalAllChapters(subject);
   var sel = finalSelectedChapters(subject);
@@ -466,10 +471,10 @@ function finalChapterFilterHtml(subject) {
   var sel = finalSelectedChapters(subject);
   var chosen = finalSelectedSections(subject);
   var countText = sel.length ? ('已选 ' + sel.length + ' 章' + (chosen.length ? ' · ' + chosen.length + ' 节' : '')) : '全部章节';
-  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><span class="fcf-count">' + countText + '</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
+  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><span class="fcf-count">' + countText + '</span><span class="fcf-break" aria-hidden="true"></span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
     chapters.map(function (c) { return '<button class="fcf-chip' + (sel.indexOf(c) >= 0 ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="' + attr(c) + '" type="button">' + esc(c) + '</button>'; }).join('') + '</div>';
   if (!sel.length) return main;
-  var sectionGroups = sel.map(function (chapter) {
+  var sectionGroups = finalOrderedSelectedChapters(subject).map(function (chapter) {
     var secs = chapterSectionsFor(subject, chapter);
     if (!secs.length) return '';
     var picked = finalSectionsForChapter(subject, chapter);
@@ -935,7 +940,7 @@ function finalGeneratePaper() {
   var p = {
     id: 'paper-' + Date.now().toString(36),
     subject: subject,
-    title: subjectOf(subject).name + ' · 期末模拟卷 · ' + (fe.date || finalDateKey(new Date())) + (finalSelectedChapters(subject).length ? ' · ' + finalSelectedChapters(subject).join(' / ') : ''),
+    title: subjectOf(subject).name + ' · 期末模拟卷 · ' + (fe.date || finalDateKey(new Date())) + (finalOrderedSelectedChapters(subject).length ? ' · ' + finalOrderedSelectedChapters(subject).join(' / ') : ''),
     duration: duration,
     createdAt: nowIso(),
     updatedAt: nowIso(),
