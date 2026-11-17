@@ -78,12 +78,21 @@ function runtime(opts) {
 }
 
 const tick = () => new Promise(r => setTimeout(r, 10));
+async function waitFor(fn, timeout) {
+  const started = Date.now();
+  const limit = timeout || 3000;
+  while (Date.now() - started < limit) {
+    try { if (fn()) return true; } catch (e) {}
+    await tick();
+  }
+  return false;
+}
 
 test('AI key is encrypted in IndexedDB and never written to localStorage', async () => {
   const r = runtime();
   await r.ctx.aiHydrateKey();
   r.ctx.aiSaveConfig({ protocol: 'openai', baseUrl: 'https://api.openai.com/v1', model: 'gpt-6-sol', apiKey: 'sk-secret-value' });
-  await tick(); await tick();
+  assert.equal(await waitFor(() => { const m = JSON.parse(r.values.get(CONFIG_KEY) || '{}'); return m.keyStored === true; }), true, 'key must be stored');
   const meta = JSON.parse(r.values.get(CONFIG_KEY));
   assert.equal(meta.apiKey, undefined, 'metadata must not contain apiKey');
   assert.equal(meta.keyStored, true);
@@ -96,11 +105,11 @@ test('AI key survives a reload by decrypting IndexedDB', async () => {
   const first = runtime();
   await first.ctx.aiHydrateKey();
   first.ctx.aiSaveConfig({ protocol: 'openai', baseUrl: 'https://api.openai.com/v1', model: 'gpt-6-sol', apiKey: 'sk-reload' });
-  await tick(); await tick();
+  assert.equal(await waitFor(() => { const m = JSON.parse(first.values.get(CONFIG_KEY) || '{}'); return m.keyStored === true; }), true, 'key must be stored');
   const meta = JSON.parse(first.values.get(CONFIG_KEY));
   const second = runtime({ idb: first.idb, config: meta });
   await second.ctx.aiHydrateKey();
-  assert.equal(second.ctx.aiConfig().apiKey, 'sk-reload');
+  assert.equal(await waitFor(() => second.ctx.aiConfig().apiKey === 'sk-reload'), true, 'key must survive a reload');
 });
 
 test('legacy plaintext API key is migrated and removed from localStorage', async () => {
