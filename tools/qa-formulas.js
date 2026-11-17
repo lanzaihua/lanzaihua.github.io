@@ -51,6 +51,15 @@ function collect(page, scope) {
       if (box.right > host.right + 2 || box.left < host.left - 2) bad.push('table outside panel');
       if (table.scrollWidth > table.clientWidth + 2) bad.push('table clipped: ' + table.scrollWidth + '>' + table.clientWidth);
     });
+    // <summary> 应只含标题文字；出现公式或尖括号说明裸算子包装把 HTML 标签拆坏了。
+    root.querySelectorAll('summary').forEach(function (s) {
+      if (s.querySelector('math') || /[<>]/.test(s.textContent || '')) bad.push('summary contains markup');
+    });
+    // 矩阵行分隔符 \\ 后带空格时如果被误降成 \\;，每行首项前会多出一个分号。
+    root.querySelectorAll('mtr').forEach(function (tr) {
+      const cell = tr.querySelector('mtd');
+      if (cell && (cell.textContent || '').trim().charAt(0) === ';') bad.push('matrix row starts with semicolon');
+    });
     // 行内公式溢出但容器不可滚动时，右侧内容会被直接裁掉。
     root.querySelectorAll('.math-inline-scroll').forEach(function (wrap) {
       if (wrap.clientWidth > 4 && wrap.scrollWidth > wrap.clientWidth + 2 && getComputedStyle(wrap).overflowX === 'visible') {

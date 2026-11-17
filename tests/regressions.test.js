@@ -129,6 +129,17 @@ test('Markdown strips executable tags, URL schemes and attributes; preserves Mar
   assert.equal(detDoc.textContent.includes('a_{ij}'), false, det);
   assert.ok(detDoc.querySelectorAll('math').length >= 2, det);
   assert.ok(detDoc.querySelector('mtable'), det);
+  // 矩阵行分隔符 \\ 后带空格时，不能被降成“行分隔符 + 分号”，否则每行首项前会多一个 ;。
+  const spaced = r.ctx.renderMarkdown("$\\begin{vmatrix}1&1&1\\\\ a&b&c\\\\ a^2&b^2&c^2\\end{vmatrix}$");
+  const spacedDoc = document.createElement('div'); spacedDoc.innerHTML = spaced;
+  assert.equal(spacedDoc.querySelectorAll('.math-raw,.temml-error').length, 0, spaced);
+  assert.ok(spacedDoc.querySelector('mtable'), spaced);
+  assert.equal(Array.from(spacedDoc.querySelectorAll('mtr')).some(function (tr) { var cell = tr.querySelector('mtd'); return !!cell && (cell.textContent || '').trim().charAt(0) === ';'; }), false, spaced);
+  // <details>/<summary> 里的 details、summary 不能被裸算子包装成公式。
+  const fold = r.ctx.renderMarkdown('<details><summary>变式答案</summary>\n\n$(b-a)(c-a)(c-b)$\n\n</details>');
+  assert.match(fold, /<details><summary>变式答案<\/summary>/);
+  assert.equal(fold.includes('&lt;/details&gt;'), false, fold);
+  assert.equal(fold.includes('</$details>$'), false, fold);
   const bankTitle = r.ctx.renderMarkdown('概念辨析题 · 需求、供给和均衡价格 · 2★');
   assert.equal(bankTitle.includes('<math'), false, bankTitle);
   assert.match(bankTitle, /2★/);

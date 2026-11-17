@@ -42,7 +42,7 @@ function cleanMathSource(tex) {
   t = t.replace(/−/g, '-');
   t = t.replace(/Σ/g, '\\sum ').replace(/Π/g, '\\prod ');
   // Temml 不认 \big 系列尺寸命令与 \varlimsup/\varliminf，先归一化，避免整条公式回退成源码。
-  t = t.replace(/\\\|/g, '\\Vert ').replace(/\\\{/g, '\\lbrace ').replace(/\\\}/g, '\\rbrace ').replace(/\\[ \t]/g, '\\;');
+  t = t.replace(/\\\|/g, '\\Vert ').replace(/\\\{/g, '\\lbrace ').replace(/\\\}/g, '\\rbrace ').replace(/(\\+)[ \t]/g, function (m, slashes) { return slashes.length % 2 === 0 ? slashes + ' ' : slashes.slice(0, -1) + '\\;'; });
   t = t.replace(/\\[bB]igg?[lrm]?(?![A-Za-z])/g, '').replace(/\\varlimsup/g, '\\limsup').replace(/\\varliminf/g, '\\liminf');
   // 先把 liminf/limsup 换成哨兵，避免下面的单算子归一化把 inf/sup 拆走。
   t = t.replace(/\bliminf\b/g, '\uE010').replace(/\blimsup\b/g, '\uE011');
@@ -485,9 +485,11 @@ function restoreCodeSegments(html, store) {
 
 function wrapBareOperatorMath(src) {
   var s = String(src || '');
-  var parts = s.split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$|\uE000C\d+\uE001)/);
+  // HTML 标签里的 summary / details / max 等词不能被算子正则当成公式包起来。
+  var parts = s.split(/(\$\$[\s\S]*?\$\$|\$[^$\n]+\$|\uE000C\d+\uE001|<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s[^<>]*)?\/?>)/);
   var re = /(?<![$\\A-Za-z0-9_])((?:liminf|limsup|lim|sup|inf|max|min|det|dim|sum|prod)\s*(?:_\{[^{}]*\}|_[A-Za-z0-9]+)?(?:[A-Za-z0-9_^=+\-*/().,\[\]{}|<>→∈∞ ]|\\[A-Za-z]+)+)(?=[。，；：、\n]|$)/g;
-  for (var i = 0; i < parts.length; i += 2) {
+  for (var i = 0; i < parts.length; i++) {
+    if (!parts[i] || /^<\/?[A-Za-z]/.test(parts[i]) || /^\$/.test(parts[i]) || /^\uE000C/.test(parts[i])) continue;
     parts[i] = parts[i].replace(re, function (m) {
       if (/\s{2,}/.test(m) || m.length > 160) return m;
       return String.fromCharCode(36) + m.trim() + String.fromCharCode(36);

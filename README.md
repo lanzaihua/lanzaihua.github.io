@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.18-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.18--8f358a2f-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.18--c6765006-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -21,7 +21,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261116-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261118-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -113,18 +113,18 @@
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261116-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
-<td width="50%"><img src="assets/v2/20261116-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261118-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
+<td width="50%"><img src="assets/v2/20261118-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261116-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261116-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
+<td width="50%"><img src="assets/v2/20261118-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261118-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
-<p align="center"><img src="assets/v2/20261116-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
+<p align="center"><img src="assets/v2/20261118-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
 
-<p align="center"><img src="assets/v2/20261116-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
+<p align="center"><img src="assets/v2/20261118-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
@@ -152,16 +152,17 @@
 
 ### 2026-11-18 · 计划顺序与智能读题
 
-**4 项 · 4 组**
+**5 项 · 5 组**
 
-本轮继续修界面排版与计划顺序，不改题目内容，并让 AI 计划读取本机记录。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明压缩为一行，保留本 / 页 / 条计数。AI 个性化计划现在会读取本机错题库、题库、模板库、模拟卷与已交卷模拟考，优先把薄弱章节和小节排进每日计划，允许直接用个人错题当例题，并在每天标注「为什么这样排」；所有题号与出处仍回本地校验。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 继续覆盖 18 宽度与三端。144 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。
+本轮继续修界面排版与计划顺序，不改题目内容，并让 AI 计划读取本机记录。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明在桌面压缩为一行、手机两行，保留本 / 页 / 条计数。AI 个性化计划现在会读取本机错题库、题库、模板库、模拟卷与已交卷模拟考，优先把薄弱章节和小节排进每日计划，允许直接用个人错题当例题，并在每天标注「为什么这样排」；所有题号与出处仍回本地校验。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 继续覆盖 18 宽度与三端。规范页自测矩阵的行首分号与 details/summary 标签也一并修好：矩阵行分隔符后带空格不再被当成细空格，summary/details 里的算子词不再被包成公式。144 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。
 
 | 分组 | 本次更新 |
 |---|---|
-| **排版对齐** | 首页工作台说明在桌面不再无故折成两行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px。规范速览顺序改为 01 套写法、02 套编号、05 必填字段、20–32 复习节点；笔记库说明保护「知识笔记」「扫描」与数量单位，题库、模板、错题、总览说明分别保护「标准解答」「易错点」「先自己写」「错题条目」，不再把词组拆到两行。模板筛选桌面收成 560px 单行，手机计数回到左侧、清空按钮留在右侧；笔记库页头说明压缩为一行，保留本 / 页 / 条计数；统计口径改为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。 |
+| **排版对齐** | 首页工作台说明在桌面不再无故折成两行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px。规范速览顺序改为 01 套写法、02 套编号、05 必填字段、20–32 复习节点；笔记库说明保护「知识笔记」「扫描」与数量单位，题库、模板、错题、总览说明分别保护「标准解答」「易错点」「先自己写」「错题条目」，不再把词组拆到两行。模板筛选桌面收成 560px 单行，手机计数回到左侧、清空按钮留在右侧；笔记库页头说明在桌面压缩为一行、手机两行，保留本 / 页 / 条计数；统计口径改为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。 |
 | **计划顺序** | 期末复习章节筛选的小节分组按教材章节顺序（第一→第六）生成，不再按点击顺序倒序；即使先点第四章、再点第一章，分组仍按第一、第二…排列。期末模拟卷标题里的章节也按同一顺序拼接。手机 ≤560px 时「章节 / 已选 N 章」独占一行，全部与各章按钮从下一行开始，避免标签、计数与按钮挤在同一行。 |
 | **读题排程** | AI 个性化计划会先读取本机错题库、题库、模板库、模拟卷与已交卷模拟考：按所选章节与小节筛出真实错题、错因、模拟卷题号和模拟考错答，优先把薄弱章节排进每日计划；个人错题可直接作为当天例题，卡片标注「来自你的错题库」，每天另给一句「为什么这样排」。章节、模板和题号仍全部回到本地校验，缺失时回退本地例题或整章模块；含 HTML、未闭合公式或无法解析的返回不写入计划。144 项回归测试包含读取记录、个人错题例题与非法题号回退。 |
-| **防复发** | qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 继续覆盖 18 个宽度、390/768/1440 的工作台行数、功能条间距、规范顺序、统计口径、笔记拆词、模板计数与筛选卡宽度；144 项回归测试与 CI 全部门禁。 |
+| **公式细节** | 规范页「变式（自测）」的矩阵行分隔符后带空格时，不再被替换成细空格而在每行首项前多出一个分号；details/summary 里的 sum、det、dim 等算子词不再被包成公式，</summary> 与 </details> 不再被转义成裸文本，折叠块可以正常开合。qa:formulas 新增「summary 内不得出现公式或尖括号」与「mtr 首个 mtd 不得以分号开头」两项永久检查，14 个检查面全部通过。 |
+| **防复发** | qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 继续覆盖 18 个宽度、390/768/1440 的工作台行数、功能条间距、规范顺序、统计口径、笔记拆词、模板计数与筛选卡宽度；qa:formulas 增加矩阵行首与 summary 标签检查；144 项回归测试与 CI 全部门禁。 |
 
 <img src="assets/v2/20261118-changelog.png" alt="网页内计划顺序与智能读题更新记录" width="820">
 

@@ -36,7 +36,7 @@ test('latest update block and README share the same date, counts and current fac
   const latestText = JSON.stringify(latest);
   assert.strictEqual(latest.date, '2026-11-18');
   assert.strictEqual(latest.title, '计划顺序与智能读题');
-  assert.strictEqual(latest.items.length, 4);
+  assert.strictEqual(latest.items.length, 5);
   assert.ok(latest.items.some((row) => row.group === '计划顺序'), '最新更新块缺少计划顺序');
   assert.ok(latest.items.some((row) => row.group === '读题排程'), '最新更新块缺少读题排程');
   assert.ok(!/99 项|题库仍为 9163|1900 余字|v2026\.11\.15|证明成立（详见标准解答）|按 4MB 预算检查/.test(latestText), '最新更新块仍含旧的同日数值');
@@ -44,7 +44,8 @@ test('latest update block and README share the same date, counts and current fac
   const readme = read('README.md');
   assert.ok(readme.includes('### 2026-11-18 · 计划顺序与智能读题'), 'README 最新更新块日期或标题不一致');
   assert.ok(readme.includes('### 2026-11-17 · 复习计划与记录收口'), 'README 缺少 11-17 更新块');
-  assert.ok(readme.includes('**4 项 · 4 组**'), 'README 最新更新块计数不一致');
+  assert.ok(readme.includes('**5 项 · 5 组**'), 'README 最新更新块计数不一致');
+  assert.ok(readme.includes('**公式细节**'), 'README 最新更新块缺少公式细节');
   assert.ok(readme.includes('| **计划顺序** |'), 'README 最新更新块缺少计划顺序行');
   assert.ok(readme.includes('| **读题排程** |'), 'README 最新更新块缺少读题排程行');
   assert.ok(readme.includes('### 2026-11-15 · 题库扩充与稳定性加固'), 'README 缺少 11-15 更新块');
@@ -52,7 +53,7 @@ test('latest update block and README share the same date, counts and current fac
   assert.strictEqual(sandbox.__UPDATE_LOG__.filter((b) => b.date === '2026-11-15').length, 1, '11-15 更新块只能有一块');
   assert.ok(readme.includes('默认 IndexedDB'), 'README 数据方式仍写 localStorage');
   const changelogMd = read('CHANGELOG.md');
-  assert.ok(changelogMd.includes('## 计划顺序与智能读题\n\n2026-11-18\n\n**4 项 · 4 组**'), 'CHANGELOG 最新块未同步');
+  assert.ok(changelogMd.includes('## 计划顺序与智能读题\n\n2026-11-18\n\n**5 项 · 5 组**'), 'CHANGELOG 最新块未同步');
   assert.ok(changelogMd.includes('## 复习计划与记录收口\n\n2026-11-17\n\n**6 项 · 6 组**'), 'CHANGELOG 缺少 11-17 块');
   assert.ok(changelogMd.includes('## 题库扩充与稳定性加固\n\n2026-11-15\n\n**32 项 · 32 组**'), 'CHANGELOG 缺少 11-15 更新块');
 });
