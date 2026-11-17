@@ -59,6 +59,7 @@ test('UI polish gate is wired into scripts, CI and the current update block', ()
   const gate = read('tools/qa-ui-polish.js');
   assert.ok(gate.includes('const WIDTHS = [390, 768, 1440];'), '排版门禁没有覆盖手机/平板/桌面');
   assert.ok(gate.includes('async function reading('), '排版门禁没有检查正文换行与页脚间距');
+  assert.ok(gate.includes("waitForSelector('.hw-topbar p'"), '排版门禁没有等待线上首页骨架，慢加载会被误判');
   assert.ok(gate.includes('全部章节'), '排版门禁没有检查期末章节计数文案');
   assert.ok(gate.includes('知识笔记'), '排版门禁没有检查笔记标题拆词');
   assert.ok(gate.includes('最近 30 天'), '排版门禁没有检查统计口径');

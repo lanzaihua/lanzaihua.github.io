@@ -201,6 +201,8 @@ async function settings(page, width, failures) {
 
 async function reading(page, width, failures) {
   await visit(page, '#/', width, failures, '首页');
+  // 线上首访可能还在加载拆包题库或等待 Service Worker，先等首页骨架出现，避免把加载慢误判成缺页脚。
+  await page.waitForSelector('.hw-topbar p', { timeout: 8000 }).catch(() => {});
   const home = await page.evaluate(() => {
     const p = document.querySelector('.hw-topbar p');
     const nb = document.querySelector('.hw-nobreak');
