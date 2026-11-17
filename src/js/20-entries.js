@@ -88,7 +88,7 @@ function viewEntries(subjectId) {
   var entryBook = bookLabelFor(subjectId);
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (entryBook ? ' · ' + esc(entryBook) : '') + ' / ENTRIES</p>' +
     '<h1 class="page-title">错题</h1>' +
-    '<p class="page-sub">每道题上方都能直接标「已掌握 / 未掌握」；展开后可看标准解答、详细解析、模板和同类题，正文与公式按 Markdown 渲染，可复制 Markdown 文本。' + (entryBook ? '章节顺序以' + esc(entryBook) + '为准。' : '') + '</p></div>' +
+    '<p class="page-sub">每道题上方都能直接标「已掌握 / 未掌握」；展开后可看<span class="page-nb">标准解答</span>、详细解析、模板和同类题，正文与公式按 Markdown 渲染，可复制 Markdown 文本。' + (entryBook ? '章节顺序以' + esc(entryBook) + '为准。' : '') + '</p></div>' +
     (all.length ? '<div class="page-actions">' + entryCreateButtons(subjectId) + '</div>' : '') +
   '</div>';
 
@@ -102,7 +102,7 @@ function viewEntries(subjectId) {
         )
       : emptyState(
           '还没有错题',
-          '先记下第一道错题，或者从题库挑一道；三种方式都可以随时开始。',
+          '先记下第一道错题，或从题库挑一道开始。',
           entryEmptyGuide(subjectId)
         );
   } else {

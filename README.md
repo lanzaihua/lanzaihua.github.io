@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.17-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.17--a57990db-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.18-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.18--39c5750a-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -150,11 +150,27 @@
 
 ## 更新记录
 
+### 2026-11-18 · 排版与对齐细化
+
+**2 项 · 2 组**
+
+本轮只做界面排版与对齐，不改题目与业务逻辑。首页工作台说明在桌面保持单行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px；规范速览顺序统一为 01 套写法、02 套编号、05 必填字段、20–32 复习节点。笔记、题库、模板、错题与总览的说明分别保护「知识笔记」「扫描」「标准解答」「易错点」「先自己写」「错题条目」等短语，三端不再把词组拆到两行；模板筛选在桌面收成 560px 单行，手机计数与清空按钮排在同一行；统计口径统一为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。qa:polish 增加工作台行数、功能条与页脚间距、规范顺序、统计口径、笔记拆词与模板计数排布检查，143 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。
+
+| 分组 | 本次更新 |
+|---|---|
+| **排版对齐** | 首页工作台说明在桌面不再无故折成两行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px。规范速览顺序改为 01 套写法、02 套编号、05 必填字段、20–32 复习节点；笔记库说明保护「知识笔记」「扫描」与数量单位，题库、模板、错题、总览说明分别保护「标准解答」「易错点」「先自己写」「错题条目」，不再把词组拆到两行。模板筛选桌面收成 560px 单行，手机计数与清空按钮同排；统计口径改为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。 |
+| **防复发** | qa:polish 新增首页工作台行数、功能条与页脚间距、规范速览顺序、统计时间口径、笔记拆词、模板计数排布与筛选卡宽度检查；18 个宽度、390/768/1440 的真实浏览器检查接入 npm run qa:polish 与 CI，143 项回归测试继续覆盖更新记录、题库、公式与发布校验。 |
+
+<img src="assets/v2/20261118-changelog.png" alt="网页内排版与对齐细化更新记录" width="820">
+
+<details>
+<summary>历史更新 · 2026-11-17 及更早 · 26 个版本</summary>
+
 ### 2026-11-17 · 复习计划与记录收口
 
 **6 项 · 6 组**
 
-本轮把期末复习计划接上用户已配置的 AI：复习计划页新增「用 AI 个性化」，模型按所选章节、考试日期与时长生成逐日学习单元，每个单元仍显示本地 574 个知识点中的具体条目、教材章节与小节出处、全部答题模板、完整例题（考试标准解答 / 答题模板 / 详细解析 / 易错点）以及记忆与考场用法。所有章节、知识点、模板 id 与题号都会回到本地题库校验，编造的章节或题号会被丢弃并回退本地；超时、未配置、非法 JSON 或公式不完整时保留本地计划。复习计划 / 出模拟卷 / 进行模拟考三个入口保持分开，AI 计划可一键恢复本地排程。同时处理界面排版：题库手机折叠筛选不再留下空卡，模板筛选计数回到栏内并加大清空按钮内距，笔记搜索与页签左对齐，总览手机操作改为 2×2，设置用户名输入填满整行，章节提示按科目实际章数生成（10 / 23 / 6 / 16 章），欢迎页补上 AI 个性化复习计划。本轮进一步把期末计划的小节选择做实：选多个大章后每个大章都能单独选小节，计划模块、每日任务和 AI 排程都锁定到所选小节；574 个知识点逐条生成独立记忆钩子与考场用法。143 项回归测试、四科三端 qa:final、公式、数学语言、题库与发布门禁全部通过，更新记录也重新校准：补回 2026-11-15 的完整一块，把 11-16 重复记录的模拟卷编辑、筛选留白、本机存储与题库分片归回 11-15；README 只展开 11-17，历史 25 个版本折叠，Release 每个日期只保留一条。本块随 v2026.11.17 Release 发布。
+本轮把期末复习计划接上用户已配置的 AI：复习计划页新增「用 AI 个性化」，模型按所选章节、考试日期与时长生成逐日学习单元，每个单元仍显示本地 574 个知识点中的具体条目、教材章节与小节出处、全部答题模板、完整例题（考试标准解答 / 答题模板 / 详细解析 / 易错点）以及记忆与考场用法。所有章节、知识点、模板 id 与题号都会回到本地题库校验，编造的章节或题号会被丢弃并回退本地；超时、未配置、非法 JSON 或公式不完整时保留本地计划。复习计划 / 出模拟卷 / 进行模拟考三个入口保持分开，AI 计划可一键恢复本地排程。同时处理界面排版：题库手机折叠筛选不再留下空卡，模板筛选计数回到栏内并加大清空按钮内距，笔记搜索与页签左对齐，总览手机操作改为 2×2，设置用户名输入填满整行，章节提示按科目实际章数生成（10 / 23 / 6 / 16 章），欢迎页补上 AI 个性化复习计划。本轮进一步把期末计划的小节选择做实：选多个大章后每个大章都能单独选小节，计划模块、每日任务和 AI 排程都锁定到所选小节；574 个知识点逐条生成独立记忆钩子与考场用法。143 项回归测试、四科三端 qa:final、公式、数学语言、题库与发布门禁全部通过，更新记录也重新校准：补回 2026-11-15 的完整一块，把 11-16 重复记录的模拟卷编辑、筛选留白、本机存储与题库分片归回 11-15；本块发布时 README 只展开 11-17，历史 25 个版本折叠，Release 每个日期只保留一条。本块随 v2026.11.18 Release 发布。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -166,9 +182,6 @@
 | **记录补全** | 补回 2026-11-15 的完整更新块（32 项 / 32 组），把 11-16 里重复记录的模拟卷编辑、筛选留白、本机存储与题库分片归回 11-15；README 历史折叠改为 2026-11-16 及更早 25 个版本，Release 每个日期只保留一条；同日更新通知只追加本次新增内容，不再整段重复已经发过的要点。 |
 
 <img src="assets/v2/20261117-changelog.png" alt="网页内复习计划与记录收口更新记录" width="820">
-
-<details>
-<summary>历史更新 · 2026-11-16 及更早 · 25 个版本</summary>
 
 ### 2026-11-16 · 界面自洽与发布收口
 
@@ -942,12 +955,12 @@
 
 ## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.17 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.17/source.zip) 提供。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.18 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.18/source.zip) 提供。
 
 ### 仓库与许可证
 
 - **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
-- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.17/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.17/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
+- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.18/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.18/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
 - **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
 - **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
 - **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。

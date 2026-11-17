@@ -23,7 +23,8 @@ test('visible copy uses the current storage backend and review facts', () => {
   assert.ok(/AES-GCM/.test(editor) && /IndexedDB/.test(editor), '设置页密钥说明没有写明 AES-GCM / IndexedDB');
   assert.ok(!/token 只存本机 localStorage/.test(direct), '直连 AI 注释仍写 localStorage');
   assert.ok(!/内置 8825/.test(library), '题库注释仍是旧的 8825 题');
-  assert.ok(/本笔记本/.test(read('src/js/49-notes.js')) && /条知识笔记/.test(read('src/js/49-notes.js')), '笔记库没有统一本 / 条计数口径');
+  const notes = read('src/js/49-notes.js');
+  assert.ok(/<\/b> 本<\/span>/.test(notes) && /<\/b> 条 <span class="page-nb">知识笔记/.test(notes), '笔记库没有统一本 / 条计数口径');
   assert.ok(/\.hero-side-empty\b/.test(read('src/styles.css')), '总览空进度卡片缺少样式');
 });
 
@@ -33,16 +34,17 @@ test('latest update block and README share the same date, counts and current fac
   vm.runInNewContext(changelog + '\n;globalThis.__UPDATE_LOG__ = UPDATE_LOG;', sandbox, { filename: '48-changelog.js' });
   const latest = sandbox.__UPDATE_LOG__[0];
   const latestText = JSON.stringify(latest);
-  assert.strictEqual(latest.date, '2026-11-17');
-  assert.strictEqual(latest.title, '复习计划与记录收口');
-  assert.strictEqual(latest.items.length, 6);
+  assert.strictEqual(latest.date, '2026-11-18');
+  assert.strictEqual(latest.title, '排版与对齐细化');
+  assert.strictEqual(latest.items.length, 2);
   assert.ok(!/99 项|题库仍为 9163|1900 余字|v2026\.11\.15|证明成立（详见标准解答）|按 4MB 预算检查/.test(latestText), '最新更新块仍含旧的同日数值');
   assert.ok(latest.notifyItems.every((it) => latest.items.some((row) => row.group === it.group)), '通知分组不在最新更新记录中');
   const readme = read('README.md');
-  assert.ok(readme.includes('### 2026-11-17 · 复习计划与记录收口'), 'README 最新更新块日期或标题不一致');
-  assert.ok(readme.includes('**6 项 · 6 组**'), 'README 最新更新块计数不一致');
+  assert.ok(readme.includes('### 2026-11-18 · 排版与对齐细化'), 'README 最新更新块日期或标题不一致');
+  assert.ok(readme.includes('### 2026-11-17 · 复习计划与记录收口'), 'README 缺少 11-17 更新块');
+  assert.ok(readme.includes('**2 项 · 2 组**'), 'README 最新更新块计数不一致');
   assert.ok(readme.includes('### 2026-11-15 · 题库扩充与稳定性加固'), 'README 缺少 11-15 更新块');
-  assert.ok(/历史更新 · 2026-11-16 及更早 · 25 个版本/.test(readme), 'README 历史折叠版本数不是 25');
+  assert.ok(/历史更新 · 2026-11-17 及更早 · 26 个版本/.test(readme), 'README 历史折叠版本数不是 26');
   assert.strictEqual(sandbox.__UPDATE_LOG__.filter((b) => b.date === '2026-11-15').length, 1, '11-15 更新块只能有一块');
   assert.ok(readme.includes('默认 IndexedDB'), 'README 数据方式仍写 localStorage');
   const changelogMd = read('CHANGELOG.md');

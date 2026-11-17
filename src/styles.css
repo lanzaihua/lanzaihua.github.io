@@ -9884,3 +9884,77 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 .fpm-memory-tip{display:block!important;margin-top:6px!important;color:var(--muted)!important;font-size:10px!important;line-height:1.65!important;overflow-wrap:anywhere!important}
 .fpm-memory-tip b{color:var(--ink)!important;font-weight:600!important;margin-right:2px!important}
 @media(max-width:700px){.final-section-filter{gap:5px!important;padding-top:6px!important}.final-section-filter .fcf-chip{font-size:10px!important;padding:5px 9px!important}}
+
+/* 2026-11-17 · 排版收口：说明文字不无谓换行，首页功能条去双点，页脚与图标对齐 */
+.page-sub,
+.hw-topbar p,
+.home-welcome-note,
+.home-intro,
+.final-plan-intro p,
+.hero-desc { text-wrap: pretty; }
+
+@media (min-width: 761px) {
+  .hw-topbar > p { max-width: none !important; white-space: nowrap; text-align: right; }
+}
+@media (max-width: 760px) {
+  .hw-topbar > p { max-width: none !important; }
+}
+
+.home-features { gap: 4px 0 !important; }
+.home-features span { gap: 0 !important; }
+.home-features span:not(:last-child)::after { content: none !important; }
+.home-features span + span::before { margin: 0 8px !important; }
+.home-main { padding-bottom: 10px !important; }
+.home-foot { margin-top: 26px !important; }
+
+@media (max-width: 760px) {
+  .home-foot { grid-template-columns: minmax(0, 1fr) !important; gap: 8px !important; }
+  .home-foot-actions { justify-content: flex-start; gap: 6px 12px; }
+  .home-foot-actions > #homeFootNote { flex: 1 1 100%; }
+  .home-foot-actions .home-icon-group { margin-left: auto; }
+}
+
+.hw-topbar p .hw-nobreak { white-space: nowrap; }
+@media (max-width: 900px) {
+  .home-features { gap: 6px 14px !important; }
+  .home-features span + span::before { content: none !important; }
+}
+
+/* 短说明按行均衡，避免末行只剩两三个字 */
+.page-sub,
+.final-plan-intro p,
+.home-welcome-note,
+.home-intro,
+.hero-desc { text-wrap: balance; }
+
+.page-sub,
+.final-plan-intro p,
+.home-welcome-note,
+.home-intro,
+.hero-desc { text-wrap: pretty; }
+
+.final-subject-tabs > .final-subject-note {
+  margin: 0 0 0 auto !important; padding: 0 !important; align-self: center;
+  text-align: right; font-size: 10.5px !important; line-height: 1.45; max-width: 52ch;
+}
+@media (max-width: 760px) {
+  .final-subject-tabs > .final-subject-note { flex: 1 1 100%; margin: 2px 0 0 !important; text-align: left; }
+}
+
+.page-nb { white-space: nowrap; }
+
+.page-break-wide { display: none; }
+@media (min-width: 761px) { .page-break-wide { display: inline; } }
+
+@media (min-width: 761px) {
+  .toolbar.template-filters { width: 560px !important; max-width: 100% !important; }
+}
+
+.home-features span { white-space: nowrap; }
+
+@media (max-width: 520px) {
+  .toolbar.template-filters { display: grid !important; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; }
+  .toolbar.template-filters .select { grid-column: 1 / -1; width: 100% !important; min-width: 0 !important; max-width: none !important; }
+  .toolbar.template-filters .filter-clear { grid-column: 2; grid-row: 2; justify-self: end; margin: 0 !important; }
+  .toolbar.template-filters .count-note { grid-column: 1; grid-row: 2; align-self: center; margin: 0 !important; text-align: left; }
+}

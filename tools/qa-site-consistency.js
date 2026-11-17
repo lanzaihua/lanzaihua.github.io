@@ -192,7 +192,10 @@ add(updateStart < 0 || updateDetails < 0, 'README 没有把历史更新收进 de
 if (updateStart >= 0 && updateDetails > updateStart) {
   const visible = readme.slice(updateStart, updateDetails);
   add((visible.match(/^### \d{4}-\d{2}-\d{2}/gm) || []).length !== 1, 'README 更新记录只能展开最新一块');
-  add(!/<summary>历史更新 · 2026-11-16 及更早 · 25 个版本<\/summary>/.test(readme.slice(updateDetails, updateDetails + 120)), 'README 历史折叠标题必须是 2026-11-16 及更早 · 25 个版本');
+  const historyCount = new Set(dates).size - 1;
+  const prevDate = logs[1].date;
+  const historyTitle = '<summary>历史更新 · ' + prevDate + ' 及更早 · ' + historyCount + ' 个版本</summary>';
+  add(!readme.slice(updateDetails, updateDetails + 160).includes(historyTitle), 'README 历史折叠标题必须是 ' + historyTitle);
 }
 
 ['advanced-algebra', 'mathematical-analysis', 'analytic-geometry', 'western-economics'].forEach((s) => {

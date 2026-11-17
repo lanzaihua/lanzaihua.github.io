@@ -227,7 +227,7 @@ function viewStats() {
     '<div class="stats-hero-grid">' +
       '<div class="stats-hero-copy">' +
         '<h1 class="folio-title">学习统计</h1>' +
-        '<p class="folio-lede">把错题、复习、模拟考摊开看：哪些章节在反复出错，哪一科正在变稳，最近两周到底学了多少。数字只来自本机记录，不做估算。</p>' +
+        '<p class="folio-lede">把错题、复习、模拟考摊开看：哪些章节反复出错，哪一科在变稳，最近 30 天学了多少。<span class="page-nb">数字只来自本机记录，不做估算。</span></p>' +
       '</div>' +
       '<div class="stats-hero-figure"><span class="stats-figure-num">' + totals.total + '</span><span class="stats-figure-label">累计错题</span><span class="stats-figure-sub">' + totals.mastered + ' 已掌握 · ' + totals.unmastered + ' 待复习</span></div>' +
     '</div>' +

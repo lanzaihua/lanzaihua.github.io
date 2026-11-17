@@ -165,7 +165,7 @@ function renderHomeWorkbench() {
       '<i style="height:' + h + '%"></i><small>' + esc(day.short) + '</small></span>';
   }).join('');
   host.innerHTML =
-    '<div class="hw-topbar"><span>STUDY DESK · 今日工作台</span><p>四科进度、最近记录和复习节奏都在这一页；不用翻页，先决定今天做哪一件。</p></div>' +
+    '<div class="hw-topbar"><span>STUDY DESK · 今日工作台</span><p>四科进度、最近记录和复习节奏都在这一页；不用翻页，<span class="hw-nobreak">先决定今天做哪一件。</span></p></div>' +
     '<div class="hw-top">' +
       '<div class="hw-metric"><span>错题总数</span><b>' + t.total + '</b><small>四科合计</small></div>' +
       '<div class="hw-metric"><span>待复习</span><b>' + t.unmastered + '</b><small>尚未掌握</small></div>' +
@@ -567,7 +567,7 @@ function viewOverview(subjectId) {
       '<div>' +
         '<div class="hero-kicker"><span class="dot" style="background:var(--' + s.id + ')"></span> 第 ' + pad(SUBJECTS.indexOf(s) + 1, 2) + ' 科 / ' + esc(s.skill) + (bookShortFor(s.id) ? ' · ' + esc(bookShortFor(s.id)) : '') + '</div>' +
         '<h1 class="hero-title">' + esc(s.name) + '</h1>' +
-        '<p class="hero-desc">' + esc(s.tagline) + '。错题条目、模板库与考研同型/教材课后' + (hasExercise ? '/习题集' : '') + '题库都在这里，手机和电脑同一套交互。</p>' +
+        '<p class="hero-desc">' + esc(s.tagline) + '。<span class="page-nb">错题条目</span>、模板库与考研同型/教材课后' + (hasExercise ? '/习题集' : '') + '题库都在这里，手机和电脑同一套交互。</p>' +
         '<div class="hero-meta" style="margin-top:16px">' +
           (st.total ? '<span>最近更新 ' + esc(timeAgo(st.last)) + '</span>' : '<span>尚无错题</span>') +
           '<span>模板 ' + st.templates + '</span>' +

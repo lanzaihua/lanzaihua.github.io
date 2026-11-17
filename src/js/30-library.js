@@ -407,7 +407,7 @@ function viewTemplates(subjectId) {
   var bookHint = bookLabelFor(subjectId);
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bookHint ? ' · ' + esc(bookHint) : '') + ' / PATTERNS</p>' +
     '<h1 class="page-title">模板库</h1>' +
-    '<p class="page-sub">每张卡是一类题的解法骨架：识别特征 → 方法 → 步骤 → 易错点。正文按 Markdown + LaTeX 渲染，展开后可复制 Markdown 文本。' + (bookHint ? '章节按' + esc(bookHint) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
+    '<p class="page-sub">每张卡是一类题的解法骨架：识别特征 → 方法 → 步骤 → <span class="page-nb">易错点</span>。正文按 Markdown + LaTeX 渲染，展开后可复制 Markdown 文本。' + (bookHint ? '章节按' + esc(bookHint) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="bank" type="button">去题库</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
@@ -489,7 +489,7 @@ function viewBank(subjectId) {
   var sourceDesc = originCounts.exercise > 0 ? '考研原创同型题、教材课后习题及配套习题集题' : '考研原创同型题与教材课后习题';
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bankBook ? ' · ' + esc(bankBook) : '') + ' / QUESTION BANK</p>' +
     '<h1 class="page-title">题库</h1>' +
-    '<p class="page-sub">' + esc(originIntro) + '：按考研大纲与教材章节整理的' + sourceDesc + '，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
+    '<p class="page-sub">' + esc(originIntro) + '：按考研大纲与教材章节整理的' + sourceDesc + '，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。<span class="page-nb">先自己写</span>，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="templates" type="button">看模板</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
@@ -641,12 +641,12 @@ function viewGuide(subjectId) {
   var conventions = decorateGuideTables(renderMarkdown(s.conventionsMd || ''));
   var example = s.exampleMd ? decorateGuideTables(renderMarkdown(s.exampleMd)) : '';
   var main = '<div class="guide-facts" aria-label="规范摘要">' +
-      '<div><b>05</b><span>必填字段</span><small>解答、解析、答案、要点、易错点</small></div>' +
-      '<div><b>02</b><span>套编号</span><small>错题 A/M/G/E · 题库 GA/MA/GE/WE</small></div>' +
-      '<div><b>20–32</b><span>复习节点</span><small>D1 至 D1800，按节奏解锁</small></div>' +
       '<div><b>01</b><span>套写法</span><small>Markdown + LaTeX，网页统一渲染</small></div>' +
+      '<div><b>02</b><span>套编号</span><small>错题 A/M/G/E · 题库 GA/MA/GE/WE</small></div>' +
+      '<div><b>05</b><span>必填字段</span><small>解答、解析、答案、要点、易错点</small></div>' +
+      '<div><b>20–32</b><span>复习节点</span><small>D1 至 D1800，按节奏解锁</small></div>' +
     '</div>' +
-    '<section class="panel guide-panel guide-fields" id="guide-fields"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">01 / FIELDS</span><h2 class="panel-title">条目规范与复习法</h2><p class="guide-panel-lead">一条错题先写全五件套，再按 1 / 3 / 7 天起步，按节点一路排到 D1800；下面的表格是四科共用的最低标准。</p></div><span class="panel-sub">统一适用四科</span></div>' +
+    '<section class="panel guide-panel guide-fields" id="guide-fields"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">01 / FIELDS</span><h2 class="panel-title">条目规范与复习法</h2><p class="guide-panel-lead">一条错题先写全五件套，再按 <span class="page-nb">1 / 3 / 7 天起步</span>，按节点一路排到 D1800；下面的表格是<span class="page-nb">四科共用</span>的最低标准。</p></div><span class="panel-sub">统一适用四科</span></div>' +
     '<div class="panel-body"><div class="md">' + conventions + '</div>' +
     '<p class="form-note">本页为四科统一规范；新增或修改只写入网页数据，不改写原始 Markdown 文件。</p></div></section>' +
     (example ? '<section class="panel guide-panel guide-example" id="guide-example"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">02 / EXAMPLE</span><h2 class="panel-title">格式示范</h2><p class="guide-panel-lead">不必逐字模仿，但字段顺序、公式写法和解答结构照这个来。</p></div><span class="panel-sub">照这个写</span></div><div class="panel-body"><div class="md">' + example + '</div></div></section>' : '') +
@@ -676,7 +676,7 @@ function viewGuide(subjectId) {
   var guideBook = bookLabelFor(subjectId);
   return '<div class="page-head guide-page-head"><div><p class="eyebrow">' + esc(s.name) + (guideBook ? ' · ' + esc(guideBook) : '') + ' / CONVENTIONS</p>' +
     '<h1 class="page-title">规范</h1>' +
-    '<p class="page-sub">四科统一使用同一套条目字段、编号规则、书写格式、复习节奏和维护约定。' + (guideBook ? '章节入口按' + esc(guideBook) + '目录排列，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div></div>' +
+    '<p class="page-sub">四科共用同一套字段、编号、书写格式与复习约定。' + (guideBook ? '章节入口按' + esc(guideBook) + '目录排列，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div></div>' +
     '<div class="guide-layout"><div class="guide-main">' + main + '</div>' + aside + '</div>';
 }
 

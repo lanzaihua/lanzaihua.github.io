@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.17-a57990db";</script>
+<script>window.__BUILD_ID__="2026.11.18-39c5750a";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9908,6 +9908,80 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 .fpm-memory-tip b{color:var(--ink)!important;font-weight:600!important;margin-right:2px!important}
 @media(max-width:700px){.final-section-filter{gap:5px!important;padding-top:6px!important}.final-section-filter .fcf-chip{font-size:10px!important;padding:5px 9px!important}}
 
+/* 2026-11-17 · 排版收口：说明文字不无谓换行，首页功能条去双点，页脚与图标对齐 */
+.page-sub,
+.hw-topbar p,
+.home-welcome-note,
+.home-intro,
+.final-plan-intro p,
+.hero-desc { text-wrap: pretty; }
+
+@media (min-width: 761px) {
+  .hw-topbar > p { max-width: none !important; white-space: nowrap; text-align: right; }
+}
+@media (max-width: 760px) {
+  .hw-topbar > p { max-width: none !important; }
+}
+
+.home-features { gap: 4px 0 !important; }
+.home-features span { gap: 0 !important; }
+.home-features span:not(:last-child)::after { content: none !important; }
+.home-features span + span::before { margin: 0 8px !important; }
+.home-main { padding-bottom: 10px !important; }
+.home-foot { margin-top: 26px !important; }
+
+@media (max-width: 760px) {
+  .home-foot { grid-template-columns: minmax(0, 1fr) !important; gap: 8px !important; }
+  .home-foot-actions { justify-content: flex-start; gap: 6px 12px; }
+  .home-foot-actions > #homeFootNote { flex: 1 1 100%; }
+  .home-foot-actions .home-icon-group { margin-left: auto; }
+}
+
+.hw-topbar p .hw-nobreak { white-space: nowrap; }
+@media (max-width: 900px) {
+  .home-features { gap: 6px 14px !important; }
+  .home-features span + span::before { content: none !important; }
+}
+
+/* 短说明按行均衡，避免末行只剩两三个字 */
+.page-sub,
+.final-plan-intro p,
+.home-welcome-note,
+.home-intro,
+.hero-desc { text-wrap: balance; }
+
+.page-sub,
+.final-plan-intro p,
+.home-welcome-note,
+.home-intro,
+.hero-desc { text-wrap: pretty; }
+
+.final-subject-tabs > .final-subject-note {
+  margin: 0 0 0 auto !important; padding: 0 !important; align-self: center;
+  text-align: right; font-size: 10.5px !important; line-height: 1.45; max-width: 52ch;
+}
+@media (max-width: 760px) {
+  .final-subject-tabs > .final-subject-note { flex: 1 1 100%; margin: 2px 0 0 !important; text-align: left; }
+}
+
+.page-nb { white-space: nowrap; }
+
+.page-break-wide { display: none; }
+@media (min-width: 761px) { .page-break-wide { display: inline; } }
+
+@media (min-width: 761px) {
+  .toolbar.template-filters { width: 560px !important; max-width: 100% !important; }
+}
+
+.home-features span { white-space: nowrap; }
+
+@media (max-width: 520px) {
+  .toolbar.template-filters { display: grid !important; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 10px; }
+  .toolbar.template-filters .select { grid-column: 1 / -1; width: 100% !important; min-width: 0 !important; max-width: none !important; }
+  .toolbar.template-filters .filter-clear { grid-column: 2; grid-row: 2; justify-self: end; margin: 0 !important; }
+  .toolbar.template-filters .count-note { grid-column: 1; grid-row: 2; align-self: center; margin: 0 !important; text-align: left; }
+}
+
 </style>
 </head>
 <body>
@@ -16982,7 +17056,7 @@ function renderHomeWorkbench() {
       '<i style="height:' + h + '%"></i><small>' + esc(day.short) + '</small></span>';
   }).join('');
   host.innerHTML =
-    '<div class="hw-topbar"><span>STUDY DESK · 今日工作台</span><p>四科进度、最近记录和复习节奏都在这一页；不用翻页，先决定今天做哪一件。</p></div>' +
+    '<div class="hw-topbar"><span>STUDY DESK · 今日工作台</span><p>四科进度、最近记录和复习节奏都在这一页；不用翻页，<span class="hw-nobreak">先决定今天做哪一件。</span></p></div>' +
     '<div class="hw-top">' +
       '<div class="hw-metric"><span>错题总数</span><b>' + t.total + '</b><small>四科合计</small></div>' +
       '<div class="hw-metric"><span>待复习</span><b>' + t.unmastered + '</b><small>尚未掌握</small></div>' +
@@ -17384,7 +17458,7 @@ function viewOverview(subjectId) {
       '<div>' +
         '<div class="hero-kicker"><span class="dot" style="background:var(--' + s.id + ')"></span> 第 ' + pad(SUBJECTS.indexOf(s) + 1, 2) + ' 科 / ' + esc(s.skill) + (bookShortFor(s.id) ? ' · ' + esc(bookShortFor(s.id)) : '') + '</div>' +
         '<h1 class="hero-title">' + esc(s.name) + '</h1>' +
-        '<p class="hero-desc">' + esc(s.tagline) + '。错题条目、模板库与考研同型/教材课后' + (hasExercise ? '/习题集' : '') + '题库都在这里，手机和电脑同一套交互。</p>' +
+        '<p class="hero-desc">' + esc(s.tagline) + '。<span class="page-nb">错题条目</span>、模板库与考研同型/教材课后' + (hasExercise ? '/习题集' : '') + '题库都在这里，手机和电脑同一套交互。</p>' +
         '<div class="hero-meta" style="margin-top:16px">' +
           (st.total ? '<span>最近更新 ' + esc(timeAgo(st.last)) + '</span>' : '<span>尚无错题</span>') +
           '<span>模板 ' + st.templates + '</span>' +
@@ -17810,7 +17884,7 @@ function viewStats() {
     '<div class="stats-hero-grid">' +
       '<div class="stats-hero-copy">' +
         '<h1 class="folio-title">学习统计</h1>' +
-        '<p class="folio-lede">把错题、复习、模拟考摊开看：哪些章节在反复出错，哪一科正在变稳，最近两周到底学了多少。数字只来自本机记录，不做估算。</p>' +
+        '<p class="folio-lede">把错题、复习、模拟考摊开看：哪些章节反复出错，哪一科在变稳，最近 30 天学了多少。<span class="page-nb">数字只来自本机记录，不做估算。</span></p>' +
       '</div>' +
       '<div class="stats-hero-figure"><span class="stats-figure-num">' + totals.total + '</span><span class="stats-figure-label">累计错题</span><span class="stats-figure-sub">' + totals.mastered + ' 已掌握 · ' + totals.unmastered + ' 待复习</span></div>' +
     '</div>' +
@@ -17925,7 +17999,7 @@ function viewEntries(subjectId) {
   var entryBook = bookLabelFor(subjectId);
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (entryBook ? ' · ' + esc(entryBook) : '') + ' / ENTRIES</p>' +
     '<h1 class="page-title">错题</h1>' +
-    '<p class="page-sub">每道题上方都能直接标「已掌握 / 未掌握」；展开后可看标准解答、详细解析、模板和同类题，正文与公式按 Markdown 渲染，可复制 Markdown 文本。' + (entryBook ? '章节顺序以' + esc(entryBook) + '为准。' : '') + '</p></div>' +
+    '<p class="page-sub">每道题上方都能直接标「已掌握 / 未掌握」；展开后可看<span class="page-nb">标准解答</span>、详细解析、模板和同类题，正文与公式按 Markdown 渲染，可复制 Markdown 文本。' + (entryBook ? '章节顺序以' + esc(entryBook) + '为准。' : '') + '</p></div>' +
     (all.length ? '<div class="page-actions">' + entryCreateButtons(subjectId) + '</div>' : '') +
   '</div>';
 
@@ -17939,7 +18013,7 @@ function viewEntries(subjectId) {
         )
       : emptyState(
           '还没有错题',
-          '先记下第一道错题，或者从题库挑一道；三种方式都可以随时开始。',
+          '先记下第一道错题，或从题库挑一道开始。',
           entryEmptyGuide(subjectId)
         );
   } else {
@@ -18722,7 +18796,7 @@ function viewTemplates(subjectId) {
   var bookHint = bookLabelFor(subjectId);
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bookHint ? ' · ' + esc(bookHint) : '') + ' / PATTERNS</p>' +
     '<h1 class="page-title">模板库</h1>' +
-    '<p class="page-sub">每张卡是一类题的解法骨架：识别特征 → 方法 → 步骤 → 易错点。正文按 Markdown + LaTeX 渲染，展开后可复制 Markdown 文本。' + (bookHint ? '章节按' + esc(bookHint) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
+    '<p class="page-sub">每张卡是一类题的解法骨架：识别特征 → 方法 → 步骤 → <span class="page-nb">易错点</span>。正文按 Markdown + LaTeX 渲染，展开后可复制 Markdown 文本。' + (bookHint ? '章节按' + esc(bookHint) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="bank" type="button">去题库</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
@@ -18804,7 +18878,7 @@ function viewBank(subjectId) {
   var sourceDesc = originCounts.exercise > 0 ? '考研原创同型题、教材课后习题及配套习题集题' : '考研原创同型题与教材课后习题';
   var head = '<div class="page-head"><div><p class="eyebrow">' + esc(currentSubject().name) + (bankBook ? ' · ' + esc(bankBook) : '') + ' / QUESTION BANK</p>' +
     '<h1 class="page-title">题库</h1>' +
-    '<p class="page-sub">' + esc(originIntro) + '：按考研大纲与教材章节整理的' + sourceDesc + '，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。先自己写，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
+    '<p class="page-sub">' + esc(originIntro) + '：按考研大纲与教材章节整理的' + sourceDesc + '，涵盖计算、应用、综合、概念辨析、证明、公式填空等题型。题目、解答与公式按 Markdown 渲染，可复制 Markdown 文本。<span class="page-nb">先自己写</span>，再展开答案对照。' + (bankBook ? '章节按' + esc(bankBook) + '目录排序，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div>' +
     '<div class="page-actions"><button class="btn" data-act="nav-view" data-view="templates" type="button">看模板</button>' +
     entryCreateButtons(subjectId) + '</div></div>';
 
@@ -18956,12 +19030,12 @@ function viewGuide(subjectId) {
   var conventions = decorateGuideTables(renderMarkdown(s.conventionsMd || ''));
   var example = s.exampleMd ? decorateGuideTables(renderMarkdown(s.exampleMd)) : '';
   var main = '<div class="guide-facts" aria-label="规范摘要">' +
-      '<div><b>05</b><span>必填字段</span><small>解答、解析、答案、要点、易错点</small></div>' +
-      '<div><b>02</b><span>套编号</span><small>错题 A/M/G/E · 题库 GA/MA/GE/WE</small></div>' +
-      '<div><b>20–32</b><span>复习节点</span><small>D1 至 D1800，按节奏解锁</small></div>' +
       '<div><b>01</b><span>套写法</span><small>Markdown + LaTeX，网页统一渲染</small></div>' +
+      '<div><b>02</b><span>套编号</span><small>错题 A/M/G/E · 题库 GA/MA/GE/WE</small></div>' +
+      '<div><b>05</b><span>必填字段</span><small>解答、解析、答案、要点、易错点</small></div>' +
+      '<div><b>20–32</b><span>复习节点</span><small>D1 至 D1800，按节奏解锁</small></div>' +
     '</div>' +
-    '<section class="panel guide-panel guide-fields" id="guide-fields"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">01 / FIELDS</span><h2 class="panel-title">条目规范与复习法</h2><p class="guide-panel-lead">一条错题先写全五件套，再按 1 / 3 / 7 天起步，按节点一路排到 D1800；下面的表格是四科共用的最低标准。</p></div><span class="panel-sub">统一适用四科</span></div>' +
+    '<section class="panel guide-panel guide-fields" id="guide-fields"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">01 / FIELDS</span><h2 class="panel-title">条目规范与复习法</h2><p class="guide-panel-lead">一条错题先写全五件套，再按 <span class="page-nb">1 / 3 / 7 天起步</span>，按节点一路排到 D1800；下面的表格是<span class="page-nb">四科共用</span>的最低标准。</p></div><span class="panel-sub">统一适用四科</span></div>' +
     '<div class="panel-body"><div class="md">' + conventions + '</div>' +
     '<p class="form-note">本页为四科统一规范；新增或修改只写入网页数据，不改写原始 Markdown 文件。</p></div></section>' +
     (example ? '<section class="panel guide-panel guide-example" id="guide-example"><div class="panel-head"><div class="guide-panel-heading"><span class="guide-section-no">02 / EXAMPLE</span><h2 class="panel-title">格式示范</h2><p class="guide-panel-lead">不必逐字模仿，但字段顺序、公式写法和解答结构照这个来。</p></div><span class="panel-sub">照这个写</span></div><div class="panel-body"><div class="md">' + example + '</div></div></section>' : '') +
@@ -18991,7 +19065,7 @@ function viewGuide(subjectId) {
   var guideBook = bookLabelFor(subjectId);
   return '<div class="page-head guide-page-head"><div><p class="eyebrow">' + esc(s.name) + (guideBook ? ' · ' + esc(guideBook) : '') + ' / CONVENTIONS</p>' +
     '<h1 class="page-title">规范</h1>' +
-    '<p class="page-sub">四科统一使用同一套条目字段、编号规则、书写格式、复习节奏和维护约定。' + (guideBook ? '章节入口按' + esc(guideBook) + '目录排列，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div></div>' +
+    '<p class="page-sub">四科共用同一套字段、编号、书写格式与复习约定。' + (guideBook ? '章节入口按' + esc(guideBook) + '目录排列，共 ' + esc(chapterRangeText(subjectId)) + '。' : '') + '</p></div></div>' +
     '<div class="guide-layout"><div class="guide-main">' + main + '</div>' + aside + '</div>';
 }
 
@@ -23817,10 +23891,37 @@ function autoAiPendingCount() {
 var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_ID__) || '').match(/^(\d{4})\.(\d{2})\.(\d{2})/);
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
 var UPDATE_LOG = [{
+  "date": "2026-11-18",
+  "title": "排版与对齐细化",
+  "historyTitle": "排版与对齐细化",
+  "summary": "本轮只做界面排版与对齐，不改题目与业务逻辑。首页工作台说明在桌面保持单行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px；规范速览顺序统一为 01 套写法、02 套编号、05 必填字段、20–32 复习节点。笔记、题库、模板、错题与总览的说明分别保护「知识笔记」「扫描」「标准解答」「易错点」「先自己写」「错题条目」等短语，三端不再把词组拆到两行；模板筛选在桌面收成 560px 单行，手机计数与清空按钮排在同一行；统计口径统一为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。qa:polish 增加工作台行数、功能条与页脚间距、规范顺序、统计口径、笔记拆词与模板计数排布检查，143 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。",
+  "notifySummary": "界面排版再细化：首页工作台说明桌面单行、功能条与页脚间距收紧；规范速览统一 01/02/05/20–32；笔记、题库、模板、错题说明保护关键短语不拆行；模板筛选桌面单行、手机计数与清空同排；统计统一最近 30 天口径；期末计划科目说明不再说模拟卷。",
+  "notifyItems": [
+    {
+      "group": "排版对齐",
+      "text": "首页工作台说明桌面单行，功能条去掉重复点并收紧页脚间距；规范速览改为 01/02/05/20–32；笔记、题库、模板、错题说明保护关键短语不拆行；模板筛选桌面单行、手机计数与清空同排；统计统一最近 30 天口径；期末计划科目说明不再说模拟卷。"
+    },
+    {
+      "group": "防复发",
+      "text": "qa:polish 增加工作台行数、功能条与页脚间距、规范顺序、统计口径、笔记拆词与模板计数排布检查；143 项回归测试与现有三端门禁继续在 CI 执行。"
+    }
+  ],
+  "items": [
+    {
+      "group": "排版对齐",
+      "text": "首页工作台说明在桌面不再无故折成两行，末句用不可拆分短语保护；功能条去掉重复分隔点，并把功能条到页脚的 62px 空白收紧到 36px。规范速览顺序改为 01 套写法、02 套编号、05 必填字段、20–32 复习节点；笔记库说明保护「知识笔记」「扫描」与数量单位，题库、模板、错题、总览说明分别保护「标准解答」「易错点」「先自己写」「错题条目」，不再把词组拆到两行。模板筛选桌面收成 560px 单行，手机计数与清空按钮同排；统计口径改为「最近 30 天」，与「近 30 天复习」卡片一致；期末计划科目说明改为「复习计划只使用当前科目的章节与知识点」，不再沿用模拟卷文案。"
+    },
+    {
+      "group": "防复发",
+      "text": "qa:polish 新增首页工作台行数、功能条与页脚间距、规范速览顺序、统计时间口径、笔记拆词、模板计数排布与筛选卡宽度检查；18 个宽度、390/768/1440 的真实浏览器检查接入 npm run qa:polish 与 CI，143 项回归测试继续覆盖更新记录、题库、公式与发布校验。"
+    }
+  ]
+},
+{
   "date": "2026-11-17",
   "title": "复习计划与记录收口",
   "historyTitle": "复习计划与记录收口",
-  "summary": "本轮把期末复习计划接上用户已配置的 AI：复习计划页新增「用 AI 个性化」，模型按所选章节、考试日期与时长生成逐日学习单元，每个单元仍显示本地 574 个知识点中的具体条目、教材章节与小节出处、全部答题模板、完整例题（考试标准解答 / 答题模板 / 详细解析 / 易错点）以及记忆与考场用法。所有章节、知识点、模板 id 与题号都会回到本地题库校验，编造的章节或题号会被丢弃并回退本地；超时、未配置、非法 JSON 或公式不完整时保留本地计划。复习计划 / 出模拟卷 / 进行模拟考三个入口保持分开，AI 计划可一键恢复本地排程。同时处理界面排版：题库手机折叠筛选不再留下空卡，模板筛选计数回到栏内并加大清空按钮内距，笔记搜索与页签左对齐，总览手机操作改为 2×2，设置用户名输入填满整行，章节提示按科目实际章数生成（10 / 23 / 6 / 16 章），欢迎页补上 AI 个性化复习计划。本轮进一步把期末计划的小节选择做实：选多个大章后每个大章都能单独选小节，计划模块、每日任务和 AI 排程都锁定所选小节；574 个知识点逐条生成独立记忆钩子与考场用法。143 项回归测试、四科三端 qa:final、公式、数学语言、题库与发布门禁全部通过，更新记录也重新校准：补回 2026-11-15 的完整一块，把 11-16 重复记录的模拟卷编辑、筛选留白、本机存储与题库分片归回 11-15；README 只展开 11-17，历史 25 个版本折叠，Release 每个日期只保留一条。本块随 v2026.11.17 Release 发布。",
+  "summary": "本轮把期末复习计划接上用户已配置的 AI：复习计划页新增「用 AI 个性化」，模型按所选章节、考试日期与时长生成逐日学习单元，每个单元仍显示本地 574 个知识点中的具体条目、教材章节与小节出处、全部答题模板、完整例题（考试标准解答 / 答题模板 / 详细解析 / 易错点）以及记忆与考场用法。所有章节、知识点、模板 id 与题号都会回到本地题库校验，编造的章节或题号会被丢弃并回退本地；超时、未配置、非法 JSON 或公式不完整时保留本地计划。复习计划 / 出模拟卷 / 进行模拟考三个入口保持分开，AI 计划可一键恢复本地排程。同时处理界面排版：题库手机折叠筛选不再留下空卡，模板筛选计数回到栏内并加大清空按钮内距，笔记搜索与页签左对齐，总览手机操作改为 2×2，设置用户名输入填满整行，章节提示按科目实际章数生成（10 / 23 / 6 / 16 章），欢迎页补上 AI 个性化复习计划。本轮进一步把期末计划的小节选择做实：选多个大章后每个大章都能单独选小节，计划模块、每日任务和 AI 排程都锁定所选小节；574 个知识点逐条生成独立记忆钩子与考场用法。143 项回归测试、四科三端 qa:final、公式、数学语言、题库与发布门禁全部通过，更新记录也重新校准：补回 2026-11-15 的完整一块，把 11-16 重复记录的模拟卷编辑、筛选留白、本机存储与题库分片归回 11-15；本块发布时 README 只展开 11-17，历史 25 个版本折叠，Release 每个日期只保留一条。本块随 v2026.11.17 Release 发布。",
   "notifySummary": "期末复习计划现在可以用你已配置的 AI 个性化：按章节、考试日期与时长生成逐日单元，知识点、模板、题号和出处都回本地题库校验；失败或未配置时继续用本地计划，随时可恢复。界面排版同步收口：折叠筛选不留空卡、模板计数归位、笔记搜索对齐、总览手机 2×2、设置输入填满、章节按实际章数生成。更新记录同步补回 11-15 完整块，历史 25 个版本折叠，Release 每日期一条；143 项测试与四科三端门禁通过。 期末计划现在支持多章分别选小节，574 个知识点各有独立记忆钩子；143 项测试通过。",
   "notifyItems": [
     {
@@ -27656,7 +27757,7 @@ function noteLibraryHtml() {
   return '<section class="page-head note-library-head"><div>' +
       '<div class="page-kicker">笔记 / LIBRARY</div>' +
       '<h1 class="page-title">笔记库</h1>' +
-      '<p class="page-sub">' + (batch ? '勾选要删除的笔记本；删除后无法恢复，请确认。' : '手写笔记本与 Markdown 知识笔记放在同一处；本机现有 <b>' + books.length + '</b> 本笔记本 · <b>' + noteTotalPages() + '</b> 页手写 · <b>' + knowledge.length + '</b> 条知识笔记，可搜索、导入、扫描，并随 JSON 备份导出。') + '</p>' +
+      '<p class="page-sub">' + (batch ? '勾选要删除的笔记本；删除后无法恢复，请确认。' : '<span class="page-nb">手写笔记本</span>与 <span class="page-nb">知识笔记</span>同处；本机现有 <span class="page-nb"><b>' + books.length + '</b> 本</span>、<span class="page-nb"><b>' + noteTotalPages() + '</b> 页手写</span>、<span class="page-nb"><b>' + knowledge.length + '</b> 条 <span class="page-nb">知识笔记</span></span>，可搜索、导入、<span class="page-nb">扫描</span>与备份。') + '</p>' +
     '</div><div class="page-actions">' + headActions + '</div></section>' +
     subjectJumpHtml('notes') +
     (batch ? '' : noteTabsHtml(books, knowledge)) +
@@ -34007,7 +34108,7 @@ function finalChapterFilterHtml(subject) {
   if (!chapters.length) return '';
   var sel = finalSelectedChapters(subject);
   var chosen = finalSelectedSections(subject);
-  var countText = '已选 ' + sel.length + ' 章' + (chosen.length ? ' · ' + chosen.length + ' 节' : '');
+  var countText = sel.length ? ('已选 ' + sel.length + ' 章' + (chosen.length ? ' · ' + chosen.length + ' 节' : '')) : '全部章节';
   var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><span class="fcf-count">' + countText + '</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
     chapters.map(function (c) { return '<button class="fcf-chip' + (sel.indexOf(c) >= 0 ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="' + attr(c) + '" type="button">' + esc(c) + '</button>'; }).join('') + '</div>';
   if (!sel.length) return main;
@@ -34286,10 +34387,10 @@ function finalPlanHtml() {
     '<div class="final-plan-schedule"><h3>每日安排</h3><div class="final-day-list">' + emptyDays + rows + '<div class="final-day is-exam"><span class="fd-date">' + pad(data.exam.getMonth() + 1, 2) + '.' + pad(data.exam.getDate(), 2) + '<small>考试</small></span><span class="fd-phase">考试日</span><span class="fd-focus">带齐证件与文具，按模拟卷节奏答题</span><span class="fd-check">—</span></div></div></div>';
 }
 function finalSubject() { return finalData().subject || state.activeSubject || 'gaodai'; }
-function finalSubjectTabsHtml(showNote) {
+function finalSubjectTabsHtml(showNote, noteText) {
   return '<div class="final-subject-tabs" role="tablist" aria-label="模拟卷科目">' + SUBJECTS.map(function (s) {
     return '<button class="final-subject-tab' + (s.id === finalSubject() ? ' is-on' : '') + '" data-act="final-subject" data-subject="' + attr(s.id) + '" role="tab" aria-selected="' + (s.id === finalSubject()) + '" type="button">' + esc(s.name) + '</button>';
-  }).join('') + '</div>' + (showNote === false ? '' : '<p class="final-subject-note">一张模拟卷只使用一个科目的题目，不混合科目。</p>');
+  }).join('') + (showNote === false ? '' : '<span class="final-subject-note" role="presentation">' + esc(noteText || '一张模拟卷只使用一个科目的题目，不混合科目。') + '</span>') + '</div>';
 }
 
 function finalMaterialsHtml() {
@@ -34809,7 +34910,7 @@ function finalSectionValue() {
 }
 function finalSectionTabsHtml() {
   var section = finalSectionValue();
-  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>计划、出卷、开考三个入口分开；计划按章节与考试时间逐日排程。</p></div>' +
+  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>按顺序走：先排计划，再出卷，最后开考。</p></div>' +
     '<div class="final-section-tabs" role="tablist" aria-label="期末复习模块">' +
     '<button class="final-section-tab' + (section === 'plan' ? ' is-on' : '') + '" data-act="final-section" data-section="plan" role="tab" aria-selected="' + (section === 'plan') + '" type="button"><em>01</em><span class="final-tab-copy"><b>复习计划</b><span>每日知识点、例题、记忆法</span></span></button>' +
     '<button class="final-section-tab' + (section === 'paper' ? ' is-on' : '') + '" data-act="final-section" data-section="paper" role="tab" aria-selected="' + (section === 'paper') + '" type="button"><em>02</em><span class="final-tab-copy"><b>出模拟卷</b><span>选题、编辑、导出</span></span></button>' +
@@ -34855,11 +34956,11 @@ function viewFinal() {
       '<section class="final-panel final-papers card">' + finalPapersHtml() + '</section>';
   } else {
     body = '<section class="final-panel card final-plan-panel"><div class="final-panel-head"><div><span class="final-kicker">SMART STUDY PLAN</span><h2>复习计划</h2></div><span>' + (plan.empty ? '等待日期' : (plan.past ? '日期无效' : plan.total + ' 天 · 3 阶段')) + '</span></div>' +
-      '<div class="final-plan-toolbar">' + finalSubjectTabsHtml() + finalChapterFilterHtml(finalSubject()) + '</div>' +
+      '<div class="final-plan-toolbar">' + finalSubjectTabsHtml(true, '复习计划只使用当前科目的章节与知识点，不混合科目。') + finalChapterFilterHtml(finalSubject()) + '</div>' +
       finalPlanHtml() + '</section>';
   }
   return '<div class="final-page">' +
-    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">复习计划、出模拟卷、进行模拟考三个入口分开；计划按所选章节和考试时间逐日排程，每天给出知识点、出处、例题与记忆法。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
+    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">复习计划、出模拟卷、模拟考三个入口分开；<br class="page-break-wide">计划按章节与<span class="page-nb">考试时间</span>排程，每天给出知识点、出处、例题和<span class="page-nb">记忆法</span>。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
     subjectJumpHtml('final') + finalSectionTabsHtml() + setup + body +
     (ui.finalAiChaptersOpen && typeof finalExamChapterHtml === 'function' ? finalExamChapterHtml() : '') +
     (ui.examRulesOpen && typeof finalExamRulesHtml === 'function' ? finalExamRulesHtml() : '') +

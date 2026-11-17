@@ -620,7 +620,7 @@ function noteLibraryHtml() {
   return '<section class="page-head note-library-head"><div>' +
       '<div class="page-kicker">笔记 / LIBRARY</div>' +
       '<h1 class="page-title">笔记库</h1>' +
-      '<p class="page-sub">' + (batch ? '勾选要删除的笔记本；删除后无法恢复，请确认。' : '手写笔记本与 Markdown 知识笔记放在同一处；本机现有 <b>' + books.length + '</b> 本笔记本 · <b>' + noteTotalPages() + '</b> 页手写 · <b>' + knowledge.length + '</b> 条知识笔记，可搜索、导入、扫描，并随 JSON 备份导出。') + '</p>' +
+      '<p class="page-sub">' + (batch ? '勾选要删除的笔记本；删除后无法恢复，请确认。' : '<span class="page-nb">手写笔记本</span>与 <span class="page-nb">知识笔记</span>同处；本机现有 <span class="page-nb"><b>' + books.length + '</b> 本</span>、<span class="page-nb"><b>' + noteTotalPages() + '</b> 页手写</span>、<span class="page-nb"><b>' + knowledge.length + '</b> 条 <span class="page-nb">知识笔记</span></span>，可搜索、导入、<span class="page-nb">扫描</span>与备份。') + '</p>' +
     '</div><div class="page-actions">' + headActions + '</div></section>' +
     subjectJumpHtml('notes') +
     (batch ? '' : noteTabsHtml(books, knowledge)) +

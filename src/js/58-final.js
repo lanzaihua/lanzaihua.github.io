@@ -465,7 +465,7 @@ function finalChapterFilterHtml(subject) {
   if (!chapters.length) return '';
   var sel = finalSelectedChapters(subject);
   var chosen = finalSelectedSections(subject);
-  var countText = '已选 ' + sel.length + ' 章' + (chosen.length ? ' · ' + chosen.length + ' 节' : '');
+  var countText = sel.length ? ('已选 ' + sel.length + ' 章' + (chosen.length ? ' · ' + chosen.length + ' 节' : '')) : '全部章节';
   var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><span class="fcf-count">' + countText + '</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
     chapters.map(function (c) { return '<button class="fcf-chip' + (sel.indexOf(c) >= 0 ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="' + attr(c) + '" type="button">' + esc(c) + '</button>'; }).join('') + '</div>';
   if (!sel.length) return main;
@@ -744,10 +744,10 @@ function finalPlanHtml() {
     '<div class="final-plan-schedule"><h3>每日安排</h3><div class="final-day-list">' + emptyDays + rows + '<div class="final-day is-exam"><span class="fd-date">' + pad(data.exam.getMonth() + 1, 2) + '.' + pad(data.exam.getDate(), 2) + '<small>考试</small></span><span class="fd-phase">考试日</span><span class="fd-focus">带齐证件与文具，按模拟卷节奏答题</span><span class="fd-check">—</span></div></div></div>';
 }
 function finalSubject() { return finalData().subject || state.activeSubject || 'gaodai'; }
-function finalSubjectTabsHtml(showNote) {
+function finalSubjectTabsHtml(showNote, noteText) {
   return '<div class="final-subject-tabs" role="tablist" aria-label="模拟卷科目">' + SUBJECTS.map(function (s) {
     return '<button class="final-subject-tab' + (s.id === finalSubject() ? ' is-on' : '') + '" data-act="final-subject" data-subject="' + attr(s.id) + '" role="tab" aria-selected="' + (s.id === finalSubject()) + '" type="button">' + esc(s.name) + '</button>';
-  }).join('') + '</div>' + (showNote === false ? '' : '<p class="final-subject-note">一张模拟卷只使用一个科目的题目，不混合科目。</p>');
+  }).join('') + (showNote === false ? '' : '<span class="final-subject-note" role="presentation">' + esc(noteText || '一张模拟卷只使用一个科目的题目，不混合科目。') + '</span>') + '</div>';
 }
 
 function finalMaterialsHtml() {
@@ -1267,7 +1267,7 @@ function finalSectionValue() {
 }
 function finalSectionTabsHtml() {
   var section = finalSectionValue();
-  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>计划、出卷、开考三个入口分开；计划按章节与考试时间逐日排程。</p></div>' +
+  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>按顺序走：先排计划，再出卷，最后开考。</p></div>' +
     '<div class="final-section-tabs" role="tablist" aria-label="期末复习模块">' +
     '<button class="final-section-tab' + (section === 'plan' ? ' is-on' : '') + '" data-act="final-section" data-section="plan" role="tab" aria-selected="' + (section === 'plan') + '" type="button"><em>01</em><span class="final-tab-copy"><b>复习计划</b><span>每日知识点、例题、记忆法</span></span></button>' +
     '<button class="final-section-tab' + (section === 'paper' ? ' is-on' : '') + '" data-act="final-section" data-section="paper" role="tab" aria-selected="' + (section === 'paper') + '" type="button"><em>02</em><span class="final-tab-copy"><b>出模拟卷</b><span>选题、编辑、导出</span></span></button>' +
@@ -1313,11 +1313,11 @@ function viewFinal() {
       '<section class="final-panel final-papers card">' + finalPapersHtml() + '</section>';
   } else {
     body = '<section class="final-panel card final-plan-panel"><div class="final-panel-head"><div><span class="final-kicker">SMART STUDY PLAN</span><h2>复习计划</h2></div><span>' + (plan.empty ? '等待日期' : (plan.past ? '日期无效' : plan.total + ' 天 · 3 阶段')) + '</span></div>' +
-      '<div class="final-plan-toolbar">' + finalSubjectTabsHtml() + finalChapterFilterHtml(finalSubject()) + '</div>' +
+      '<div class="final-plan-toolbar">' + finalSubjectTabsHtml(true, '复习计划只使用当前科目的章节与知识点，不混合科目。') + finalChapterFilterHtml(finalSubject()) + '</div>' +
       finalPlanHtml() + '</section>';
   }
   return '<div class="final-page">' +
-    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">复习计划、出模拟卷、进行模拟考三个入口分开；计划按所选章节和考试时间逐日排程，每天给出知识点、出处、例题与记忆法。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
+    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">复习计划、出模拟卷、模拟考三个入口分开；<br class="page-break-wide">计划按章节与<span class="page-nb">考试时间</span>排程，每天给出知识点、出处、例题和<span class="page-nb">记忆法</span>。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
     subjectJumpHtml('final') + finalSectionTabsHtml() + setup + body +
     (ui.finalAiChaptersOpen && typeof finalExamChapterHtml === 'function' ? finalExamChapterHtml() : '') +
     (ui.examRulesOpen && typeof finalExamRulesHtml === 'function' ? finalExamRulesHtml() : '') +

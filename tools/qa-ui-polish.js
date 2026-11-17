@@ -112,14 +112,18 @@ async function templates(page, width, failures) {
     if (!t || !c || !n || !s) return null;
     const tr = t.getBoundingClientRect(), cr = c.getBoundingClientRect(), nr = n.getBoundingClientRect(), sr = s.getBoundingClientRect();
     const cs = getComputedStyle(c), ts = getComputedStyle(t);
-    return { inside: t.contains(n), padL: parseFloat(cs.paddingLeft), padR: parseFloat(cs.paddingRight), countGap: (tr.right - parseFloat(ts.paddingRight)) - nr.right, sw: sr.width, tw: tr.width, cw: cr.width };
+    return { inside: t.contains(n), padL: parseFloat(cs.paddingLeft), padR: parseFloat(cs.paddingRight), countGap: (tr.right - parseFloat(ts.paddingRight)) - nr.right, sw: sr.width, tw: tr.width, cw: cr.width, countLeft: nr.left, clearLeft: cr.left, sameRow: Math.abs((nr.top + nr.bottom) / 2 - (cr.top + cr.bottom) / 2) < 8, mainW: (document.querySelector('.main') || { clientWidth: tr.width }).clientWidth, mainInner: (function(){ var m=document.querySelector('.main'); if(!m) return tr.width; var ms=getComputedStyle(m); return m.clientWidth - (parseFloat(ms.paddingLeft)||0) - (parseFloat(ms.paddingRight)||0); })() };
   });
   if (!d) { push(failures, width, '模板库缺筛选栏控件'); return; }
   if (!d.inside) push(failures, width, '模板库计数不在筛选栏内');
   if (d.padL < 12 || d.padR < 12) push(failures, width, '模板库清空按钮内距过小 ' + d.padL + '/' + d.padR);
   if (d.cw < 78) push(failures, width, '模板库清空按钮过窄 ' + d.cw);
-  if (d.countGap < -1 || d.countGap > 20) push(failures, width, '模板库计数未贴右缘 gap=' + d.countGap.toFixed(1));
+  if (width > 520 && (d.countGap < -1 || d.countGap > 20)) push(failures, width, '模板库计数未贴右缘 gap=' + d.countGap.toFixed(1));
   if (d.sw < 180) push(failures, width, '模板库章节下拉过窄 ' + d.sw);
+  if (width >= 900 && d.tw > 640) push(failures, width, '模板库筛选栏在桌面留出大片空卡 ' + d.tw);
+  if (width <= 520 && d.tw < d.mainInner - 2) push(failures, width, '模板库筛选栏未铺满手机内容区 ' + d.tw + '/' + d.mainInner);
+  if (width <= 520 && !d.sameRow) push(failures, width, '模板库计数与清空按钮不在同一行');
+  if (width <= 520 && d.countLeft > d.clearLeft - 10) push(failures, width, '模板库手机计数未排在清空按钮左侧');
 }
 
 async function notes(page, width, failures) {
@@ -130,9 +134,24 @@ async function notes(page, width, failures) {
     const count = document.querySelector('.note-library-count');
     if (!input || !tab) return null;
     const ir = input.getBoundingClientRect(), tr = tab.getBoundingClientRect();
-    return { leftGap: ir.left - tr.left, iw: ir.width, countRight: count ? count.getBoundingClientRect().right : 0, vw: innerWidth };
+    function splitWord(sel, word) {
+      const root = document.querySelector(sel); if (!root) return false;
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let node;
+      while ((node = walker.nextNode())) {
+        const idx = node.nodeValue.indexOf(word);
+        if (idx < 0) continue;
+        const range = document.createRange(); range.setStart(node, idx); range.setEnd(node, idx + word.length);
+        const tops = new Set([...range.getClientRects()].filter(r => r.width > 0).map(r => Math.round(r.top)));
+        return tops.size > 1;
+      }
+      return false;
+    }
+    return { leftGap: ir.left - tr.left, iw: ir.width, countRight: count ? count.getBoundingClientRect().right : 0, vw: innerWidth, splitKnowledge: splitWord('.note-library-head .page-sub', '知识笔记'), splitScan: splitWord('.note-library-head .page-sub', '扫描') };
   });
   if (!d) { push(failures, width, '笔记库缺搜索或页签'); return; }
+  if (d.splitKnowledge) push(failures, width, '笔记库标题把「知识笔记」拆到两行');
+  if (d.splitScan) push(failures, width, '笔记库标题把「扫描」拆到两行');
   if (Math.abs(d.leftGap) > 2) push(failures, width, '笔记搜索与页签左缘错位 ' + d.leftGap.toFixed(1) + 'px');
   if (d.iw < 240) push(failures, width, '笔记搜索框过窄 ' + d.iw);
   if (d.countRight > d.vw) push(failures, width, '笔记计数越出视口');
@@ -180,6 +199,82 @@ async function settings(page, width, failures) {
   }
 }
 
+async function reading(page, width, failures) {
+  await visit(page, '#/', width, failures, '首页');
+  const home = await page.evaluate(() => {
+    const p = document.querySelector('.hw-topbar p');
+    const nb = document.querySelector('.hw-nobreak');
+    const feat = document.querySelector('.home-features');
+    const foot = document.querySelector('.home-foot');
+    if (!p || !feat || !foot) return null;
+    const range = document.createRange(); range.selectNodeContents(p);
+    const rows = [];
+    for (const r of range.getClientRects()) {
+      if (r.width <= 0) continue;
+      let row = rows.find((x) => Math.abs(x.t - r.top) < 10);
+      if (!row) rows.push((row = { t: r.top, l: r.left, r: r.right }));
+      else { row.l = Math.min(row.l, r.left); row.r = Math.max(row.r, r.right); }
+    }
+    return {
+      lines: Math.round(p.getBoundingClientRect().height / (parseFloat(getComputedStyle(p).lineHeight) || 21)),
+      lastLine: rows.length ? rows[rows.length - 1].r - rows[rows.length - 1].l : 0,
+      nbRects: nb ? nb.getClientRects().length : 0,
+      dot: getComputedStyle(document.querySelector('.home-features span:not(:last-child)'), '::after').content,
+      footGap: Math.round(foot.getBoundingClientRect().top - feat.getBoundingClientRect().bottom)
+    };
+  });
+  if (!home) { push(failures, width, '首页缺工作台或页脚'); return; }
+  if (width >= 761 && home.lines !== 1) push(failures, width, '首页工作台说明在桌面被无故换行，行数 ' + home.lines);
+  if (width <= 760 && home.lines > 2) push(failures, width, '首页工作台说明在手机超过两行，行数 ' + home.lines);
+  if (home.nbRects !== 1) push(failures, width, '首页说明末句仍被拆行 nbRects=' + home.nbRects);
+  if (home.lastLine < 80) push(failures, width, '首页说明末行过短 ' + home.lastLine.toFixed(1) + 'px');
+  if (home.dot && home.dot !== 'none' && home.dot !== 'normal' && home.dot !== '\"\"') push(failures, width, '首页功能条仍有重复分隔点');
+  if (home.footGap < 24 || home.footGap > 52) push(failures, width, '首页功能条与页脚间距异常 ' + home.footGap + 'px');
+
+  await visit(page, '#/gaodai/guide', width, failures, '规范');
+  const tiles = await page.evaluate(() => [...document.querySelectorAll('.guide-facts b')].map((b) => b.textContent.trim()));
+  if (tiles.join(',') !== '01,02,05,20–32') push(failures, width, '规范速览顺序不连贯：' + tiles.join(','));
+  const guideWord = await page.evaluate(() => { const s = document.querySelector('.guide-panel-lead .page-nb'); if (!s) return 0; return new Set([...s.getClientRects()].filter(r => r.width > 0).map(r => Math.round(r.top))).size; });
+  if (guideWord > 1) push(failures, width, '规范说明把「1 / 3 / 7 天起步」拆到两行');
+
+  await visit(page, '#/gaodai/stats', width, failures, '统计');
+  const lede = await page.evaluate(() => (document.querySelector('.folio-lede') || {}).textContent || '');
+  if (!lede.includes('最近 30 天') || lede.includes('最近两周')) push(failures, width, '统计说明的时间口径与「近 30 天」不一致');
+
+  await visit(page, '#/final', width, failures, '期末复习');
+  const plan = await page.evaluate(() => {
+    const note = document.querySelector('.final-subject-note');
+    const tabs = document.querySelector('.final-subject-tabs');
+    const count = document.querySelector('.fcf-count');
+    const sub = document.querySelector('.final-page .page-sub');
+    if (!note || !tabs || !count || !sub) return null;
+    const nr = note.getBoundingClientRect(), tr = tabs.getBoundingClientRect();
+    const range = document.createRange(); range.selectNodeContents(sub);
+    const rows = [];
+    for (const r of range.getClientRects()) {
+      if (r.width <= 0) continue;
+      let row = rows.find((x) => Math.abs(x.t - r.top) < 10);
+      if (!row) rows.push((row = { t: r.top, w: r.width }));
+      else row.w = Math.max(row.w, r.width);
+    }
+    const maxW = Math.max.apply(null, rows.map((x) => x.w));
+    return {
+      noteInTabs: note.parentElement === tabs,
+      noteOnRow: nr.top >= tr.top - 1 && nr.bottom <= tr.bottom + 1,
+      count: (count.textContent || '').trim(),
+      noteText: (note.textContent || '').trim(),
+      lines: rows.length,
+      lastRatio: rows.length ? rows[rows.length - 1].w / (maxW || 1) : 0
+    };
+  });
+  if (!plan) { push(failures, width, '期末复习缺科目/章节/说明'); return; }
+  if (!plan.noteInTabs) push(failures, width, '期末复习科目说明不在科目栏内，仍单独占一行');
+  if (plan.noteText !== '复习计划只使用当前科目的章节与知识点，不混合科目。') push(failures, width, '期末复习计划科目说明文不对题：' + plan.noteText);
+  if (width >= 761 && !plan.noteOnRow) push(failures, width, '期末复习科目说明在桌面未与科目同一行');
+  if (plan.count !== '全部章节') push(failures, width, '期末复习未选章节时计数文案不是「全部章节」：' + plan.count);
+  if (plan.lastRatio < 0.55) push(failures, width, '期末复习说明末行过短，末行/最长行 ' + plan.lastRatio.toFixed(2));
+}
+
 (async () => {
   const failures = [];
   const browser = await launchChromium();
@@ -189,6 +284,7 @@ async function settings(page, width, failures) {
       await context.addInitScript((s) => localStorage.setItem('sanke-cuotiben-v1', JSON.stringify(s)), seed);
       const page = await context.newPage();
       await page.route('**/api/state', (route) => route.abort());
+      await reading(page, width, failures);
       await bank(page, width, failures);
       await templates(page, width, failures);
       await notes(page, width, failures);
