@@ -754,6 +754,28 @@ test('same-date update reuses one notification and removes earlier duplicates',(
   assert.doesNotMatch(updates[0].title,/补充/);
 });
 
+test('same-date update appends only newly added notification items',()=>{
+  const r=runtime();r.run('55-notifications.js');
+  r.ctx.renderNotifications=()=>{};r.ctx.renderNotificationBadge=()=>{};r.ctx.markDirty=()=>{};
+  const oldItem={group:'A',text:'已经发过的内容'};
+  const newItem={group:'B',text:'本次新增的内容'};
+  const old={id:'u1',title:'网页已更新 · 2026-11-15 · 旧标题',body:'版本：2026-11-15 · 旧标题\n本次更新内容：\n1. 【A】已经发过的内容',kind:'update',read:true,time:'2026-11-15T08:00:00+08:00',updateSignature:'old',updateItems:[oldItem],updateSummary:'旧摘要'};
+  r.ctx.state.notifications=[old];
+  r.ctx.state.notifVersion='old';
+  r.ctx.state.notifWelcomed=true;
+  r.ctx.state.notifReviewDate='2026-11-15';
+  r.ctx.state.notifUpdateItems=[oldItem];
+  r.ctx.state.notifUpdateSummary='旧摘要';
+  r.ctx.state.notifNotifyItems=[oldItem];
+  r.ctx.UPDATE_LOG=[{date:'2026-11-15',title:'补充标题',summary:'新摘要',notifySummary:'新摘要',items:[oldItem,newItem],notifyItems:[oldItem,newItem]}];
+  r.ctx.initNotifications();
+  const updates=r.ctx.state.notifications.filter(n=>n.kind==='update');
+  assert.equal(updates.length,1,'同一天只能保留一条更新通知');
+  assert.equal(updates[0].body.match(/已经发过的内容/g).length,1,'已经发过的内容不能重复');
+  assert.match(updates[0].body,/同日补充/,'同日补充必须标出');
+  assert.match(updates[0].body,/本次新增的内容/,'本次新增必须进入通知');
+});
+
 test('home restores warm 2ea palette, daily greeting and welcome dialog',()=>{
   const css=read('src/styles.css');
   const tpl=read('src/index.template.html');
@@ -894,7 +916,7 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('885 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('416 道习题集'),'习题集 current count');
   assert.ok(md.includes('9651'),'bank total');
-  assert.ok(md.includes('141 项回归测试'),'current test count');
+  assert.ok(md.includes('142 项回归测试'),'current test count');
   assert.ok(!md.includes('126 项回归测试')&&!md.includes('92 项回归测试')&&!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.17 Release'),'current release link');
   assert.equal(/\bv?\d{4}\.\d{2}\.\d{2}\.\d+\b/.test(md),false,'README must not keep dotted release versions');

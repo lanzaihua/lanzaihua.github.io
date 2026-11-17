@@ -363,7 +363,7 @@ function initNotifications() {
         if (previousNotifyItems.length) {
           return !previousNotifyItems.some(function (p) { return p && (p.group || '更新') === group && String(p.text || '') === text; });
         }
-        return !previousItems.some(function (p) { return p && (p.group || '更新') === group; });
+        return !previousItems.some(function (p) { return p && (p.group || '更新') === group && String(p.text || '') === text; });
       })
     : [];
   var hasPreviousEdition = !!(previousNotifyItems.length || previousItems.length);
@@ -399,9 +399,19 @@ function initNotifications() {
       updateSummary: String(latest.notifySummary || latest.summary || '')
     };
     if (isSameDateRefresh) {
-      // 同一天只保留一条更新通知：原地替换标题与正文，保留原始时间、已读状态和 id。
+      // 同一天只保留一条更新通知：保留原时间、已读状态和 id，只追加本次新增条目。
       lastUpdate.title = updateTitle;
-      lastUpdate.body = upLines.join('\n');
+      var addItems = (delta.items || []).filter(function (it) {
+        var line = '【' + (it.group || '更新') + '】' + it.text;
+        return String(lastUpdate.body || '').indexOf(line) < 0;
+      });
+      if (addItems.length) {
+        var addLines = ['', '同日补充 · ' + String(nowIso()).slice(11, 16)];
+        addItems.forEach(function (it, i) {
+          addLines.push((i + 1) + '. 【' + (it.group || '更新') + '】' + it.text);
+        });
+        lastUpdate.body = String(lastUpdate.body || '').replace(/\s+$/, '') + '\n' + addLines.join('\n');
+      }
       lastUpdate.kind = 'update';
       Object.assign(lastUpdate, updateExtra);
       lastUpdate.time = lastUpdate.time || nowIso();

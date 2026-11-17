@@ -286,10 +286,10 @@ async function visibleBox(page, selector) {
     // 模拟卷编辑卡：标题不能截断，操作区不能压缩文字；三端都不出现大段空白。
     await goto(page, '#/final');
     const paperTab = page.locator('[data-act="final-section"][data-section="paper"]:visible').first();
-    if (await paperTab.count()) { await paperTab.click(); await sleep(page, 250); }
+    if (await paperTab.count()) { await paperTab.evaluate(function (el) { el.click(); }); await sleep(page, 300); }
     if (!(await page.locator('.final-editor-head').count())) {
       const generate = page.locator('[data-act="final-generate-paper"]:visible').first();
-      if (await generate.count()) { await generate.click(); await sleep(page, 900); }
+      if (await generate.count()) { await generate.evaluate(function (el) { el.click(); }); await sleep(page, 1100); }
     }
     if (await page.locator('.final-editor-head').count()) {
       item.interactions.paperEditor = await page.evaluate(function () {

@@ -13,7 +13,7 @@
 7. `git diff --exit-code -- index.html data 404.html favicon.svg manifest.webmanifest robots.txt sitemap.xml sw.js _headers .nojekyll`，确认提交的产物与本次构建一致。
 8. 提交并推送到 `main`；**不要只把修复留在本地或分支上**。
 9. 打当天 tag：`git tag vYYYY.MM.DD && git push origin vYYYY.MM.DD`。
-10. 生成 Release 资产：`python tools/make-release-assets.py`。`source.zip` 必须是 `git archive HEAD` 的完整 tracked 文件（含 `skills.js`、`assets/`、根静态文件），静态站 zip 必须含 `skills.js`、`_headers` 与全部题库分片；上传 `source.zip`、静态站 zip、`SHA256SUMS` 与更新记录截图。同一天只保留一条 Release。
+10. 生成 Release 资产：`python tools/make-release-assets.py`。`source.zip` 必须是 `git archive HEAD` 的完整 tracked 文件（含 `skills.js`、`assets/`、根静态文件），静态站 zip 必须含 `skills.js`、`_headers` 与全部题库分片；上传 `source.zip`、静态站 zip、`SHA256SUMS` 与更新记录截图。Release 标题、日期、项数与正文必须取同一天的 `UPDATE_LOG` 记录，不再另写一份；同一天只保留一条 Release，不加小版本后缀。
 11. `npm run verify:release -- --online`：检查 HEAD = origin/main、tag 指向 HEAD、Release 资产齐全、下载后 sha256 与 `SHA256SUMS` 一致、Pages 最新构建提交 = HEAD、线上 `BUILD_ID` 与本地 `dist-pages` 一致。
 12. 打开 https://lanzaihua.github.io/ 复核首页与题库；GitHub Actions 的 `Quality checks`、`release-check` 与 `pages build and deployment` 都必须为 success。
 

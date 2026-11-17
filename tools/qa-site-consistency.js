@@ -82,6 +82,8 @@ for (let i = 1; i < dates.length; i++) add(dates[i] > dates[i - 1], '更新记�
 const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai' }).format(new Date());
 dates.forEach((d) => add(d > today, '更新记录日期晚于今天：' + d));
 add(!dates.includes('2026-11-03'), '缺少 2026-11-03 更新记录');
+add(!dates.includes('2026-11-15'), '缺少 2026-11-15 更新记录');
+add(dates.filter((d) => d <= '2026-11-16').length !== 25, '2026-11-16 及更早的历史版本不是 25 个');
 add(/解几题库[^\n]*900/.test(changelog.slice(changelog.indexOf('2026-11-05'), changelog.indexOf('2026-11-04'))), '最新更新仍含解析几何 900 旧计数');
 add(!changelog.includes("title: '题库方案'"), '11-03 未改为题库方案，可能与 11-04 重建冲突');
 add(!changelog.includes("title: '题库与界面'"), '缺少 11-04 题库重建记录');
@@ -190,7 +192,7 @@ add(updateStart < 0 || updateDetails < 0, 'README 没有把历史更新收进 de
 if (updateStart >= 0 && updateDetails > updateStart) {
   const visible = readme.slice(updateStart, updateDetails);
   add((visible.match(/^### \d{4}-\d{2}-\d{2}/gm) || []).length !== 1, 'README 更新记录只能展开最新一块');
-  add(!/<summary>历史更新 · 2026-11-16 及更早 · \d+ 个版本<\/summary>/.test(readme.slice(updateDetails, updateDetails + 120)), 'README 历史折叠标题必须从 2026-11-16 及更早开始');
+  add(!/<summary>历史更新 · 2026-11-16 及更早 · 25 个版本<\/summary>/.test(readme.slice(updateDetails, updateDetails + 120)), 'README 历史折叠标题必须是 2026-11-16 及更早 · 25 个版本');
 }
 
 ['advanced-algebra', 'mathematical-analysis', 'analytic-geometry', 'western-economics'].forEach((s) => {

@@ -43,6 +43,14 @@ function selfTest() {
   console.log('verify-release self-test PASS');
 }
 
+function updateLogs() {
+  const vm = require('vm');
+  const source = fs.readFileSync(path.join(ROOT, 'src', 'js', '48-changelog.js'), 'utf8');
+  const sandbox = { window: {}, document: { addEventListener() {}, querySelector() { return null; }, querySelectorAll() { return []; }, getElementById() { return null; } }, console };
+  vm.runInNewContext(source + '\n;globalThis.__UPDATE_LOG__ = UPDATE_LOG;', sandbox, { filename: '48-changelog.js' });
+  return Array.isArray(sandbox.__UPDATE_LOG__) ? sandbox.__UPDATE_LOG__ : [];
+}
+
 async function api(token, p) {
   const res = await fetch('https://api.github.com/repos/' + parseRemote().owner + '/' + parseRemote().repo + p, {
     headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'User-Agent': 'dsh-release-check' }
@@ -72,6 +80,17 @@ async function api(token, p) {
     } else {
       try {
         const rel = await api(cfg.token, '/releases/tags/' + tag);
+        const relDate = tag.slice(1).replace(/\./g, '-');
+        const log = updateLogs().filter(function (b) { return b && b.date === relDate; })[0];
+        if (!log) problems.push('Release ' + tag + ' 找不到同一天的更新记录');
+        else {
+          const body = String(rel.body || '');
+          const count = Array.isArray(log.items) ? log.items.length : 0;
+          if (body.indexOf('## 四科错题本 ' + tag) !== 0) problems.push('Release ' + tag + ' 正文标题不是同一天记录');
+          if (body.indexOf(String(log.title || '')) < 0) problems.push('Release ' + tag + ' 正文缺少当天标题');
+          if (body.indexOf('**' + count + ' 项 · ' + count + ' 组**') < 0) problems.push('Release ' + tag + ' 正文项数与当天记录不一致');
+          if (/\.3\.2/.test(body)) problems.push('Release ' + tag + ' 正文仍含小版本后缀 .3.2');
+        }
         const assets = new Map((rel.assets || []).map(function (a) { return [a.name, a]; }));
         ['source.zip', 'SHA256SUMS'].forEach(function (n) { if (!assets.has(n)) problems.push('Release ' + tag + ' 缺少资产 ' + n); });
         if (!Array.from(assets.keys()).some(function (n) { return /static.*\.zip$/.test(n); })) problems.push('Release ' + tag + ' 缺少静态站 zip');
