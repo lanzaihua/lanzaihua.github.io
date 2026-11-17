@@ -163,22 +163,55 @@ async function dailySnapshot(page) {
       await page.locator('.final-subject-tab[data-subject="gaodai"]').first().click({ timeout: 10000 });
       await page.waitForTimeout(600);
 
-      // 章节筛选：只保留第二章，逐日任务必须点名第二章
-      const chapterButton = page.locator('.final-chapter-filter [data-act="final-chapter"][data-chapter="第二章 行列式"]').first();
-      if (!(await chapterButton.count())) push(failures, width, 'chapter chip for 第二章 missing');
+      // 多章 + 多小节：每个已选大章都能单独选小节，计划只排所选章节与小节
+      const firstChapter = page.locator('.final-chapter-filter [data-act="final-chapter"][data-chapter="第一章 多项式"]').first();
+      const secondChapter = page.locator('.final-chapter-filter [data-act="final-chapter"][data-chapter="第二章 行列式"]').first();
+      if (!(await firstChapter.count()) || !(await secondChapter.count())) push(failures, width, 'chapter chips for 第一章/第二章 missing');
       else {
-        await chapterButton.click({ timeout: 10000 });
-        await page.waitForTimeout(700);
-        const filtered = await page.evaluate(() => {
-          const modules = [...document.querySelectorAll('.final-plan-module')];
-          const focus = [...document.querySelectorAll('.fd-focus')].slice(0, 6).map((x) => x.textContent).join(' ');
-          const points = [...document.querySelectorAll('.fpm-point .fpm-source')].map((x) => x.textContent);
-          return { modules: modules.length, focus, points };
-        });
-        if (filtered.modules !== 1) push(failures, width, 'chapter filter kept ' + filtered.modules + ' modules');
-        if (!filtered.focus.includes('第二章')) push(failures, width, 'daily plan does not name the selected chapter');
-        if (!filtered.points.length || filtered.points.some((s) => s.indexOf('第二章') < 0)) push(failures, width, 'filtered point source is not 第二章');
-        details.push({ width, stage: 'filtered', ...filtered, points: filtered.points.slice(0, 2) });
+        await firstChapter.click({ timeout: 10000 });
+        await secondChapter.click({ timeout: 10000 });
+        await page.waitForTimeout(800);
+        const multi = await page.evaluate(() => ({
+          modules: [...document.querySelectorAll('.final-plan-module')].map((x) => x.getAttribute('data-final-module')),
+          groups: [...document.querySelectorAll('.final-section-filter')].map((x) => x.getAttribute('data-section-chapter')),
+          meta: (document.querySelector('.final-plan-meta') || {}).textContent || '',
+          overflow: (document.querySelector('.app') || document.body).scrollWidth - (document.querySelector('.app') || document.body).clientWidth
+        }));
+        if (multi.modules.length !== 2) push(failures, width, 'two selected chapters should keep 2 modules, got ' + multi.modules.length);
+        if (multi.groups.length !== 2) push(failures, width, 'each selected chapter needs its own section group, got ' + multi.groups.length);
+        if (multi.groups.indexOf('第一章 多项式') < 0 || multi.groups.indexOf('第二章 行列式') < 0) push(failures, width, 'section groups missing a selected chapter');
+        if (!/2 章/.test(multi.meta)) push(failures, width, 'plan meta missing chapter count: ' + multi.meta);
+        if (multi.overflow > 1) push(failures, width, 'page overflow with section groups ' + multi.overflow);
+        details.push({ width, stage: 'multi-chapter', ...multi });
+
+        const secButton = page.locator('.final-section-filter[data-section-chapter="第一章 多项式"] [data-act="final-section"][data-section="数域"]').first();
+        if (!(await secButton.count())) push(failures, width, 'section chip 数域 missing under 第一章');
+        else {
+          await secButton.click({ timeout: 10000 });
+          await page.waitForTimeout(700);
+          await page.evaluate(() => {
+            document.querySelectorAll('.final-plan-module').forEach((d) => { if (!d.open) { const sm = d.querySelector('summary'); if (sm) sm.click(); } });
+          });
+          await page.waitForTimeout(400);
+          const filtered = await page.evaluate(() => ({
+            modules: [...document.querySelectorAll('.final-plan-module')].map((m) => ({
+              chapter: m.getAttribute('data-final-module'),
+              sources: [...m.querySelectorAll('.fpm-point .fpm-source')].map((x) => x.textContent)
+            })),
+            meta: (document.querySelector('.final-plan-meta') || {}).textContent || '',
+            groups: [...document.querySelectorAll('.final-section-filter')].map((x) => x.getAttribute('data-section-chapter')),
+            focus: [...document.querySelectorAll('.fd-focus')].slice(0, 8).map((x) => x.textContent).join(' ')
+          }));
+          if (filtered.modules.length !== 2) push(failures, width, 'section filter kept ' + filtered.modules.length + ' modules');
+          if (filtered.groups.length !== 2) push(failures, width, 'section groups collapsed after selecting one');
+          if (!/2 章 · 1 节/.test(filtered.meta)) push(failures, width, 'plan meta missing selected section count: ' + filtered.meta);
+          const first = filtered.modules.filter((m) => m.chapter === '第一章 多项式')[0];
+          const second = filtered.modules.filter((m) => m.chapter === '第二章 行列式')[0];
+          if (!first || !first.sources.length || first.sources.some((x) => x.indexOf('§1.1') < 0)) push(failures, width, 'selected section did not restrict 第一章 points');
+          if (!second || !second.sources.length || second.sources.some((x) => x.indexOf('第二章') < 0)) push(failures, width, 'unrestricted chapter lost its points');
+          if (!filtered.focus.includes('第一章') || !filtered.focus.includes('第二章')) push(failures, width, 'daily plan does not cover both chapters');
+          details.push({ width, stage: 'multi-section', ...filtered, modules: filtered.modules.map((m) => ({ chapter: m.chapter, n: m.sources.length })) });
+        }
       }
 
       // 当天知识点 + 当天例题：展开后必须有出处、记忆法、标准解答、模板、解析、易错点

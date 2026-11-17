@@ -113,9 +113,14 @@ function finalSelectedSections(subject) {
   var arr = fe.sectionSel && fe.sectionSel[subject];
   arr = Array.isArray(arr) ? arr.filter(Boolean) : [];
   var chs = finalSelectedChapters(subject);
-  if (chs.length !== 1) return [];
-  var secs = chapterSectionsFor(subject, chs[0]);
-  return arr.filter(function (x) { return secs.indexOf(x) >= 0; });
+  if (!chs.length) return [];
+  var valid = [];
+  chs.forEach(function (ch) { valid = valid.concat(chapterSectionsFor(subject, ch)); });
+  return arr.filter(function (x) { return valid.indexOf(x) >= 0; });
+}
+function finalSectionsForChapter(subject, chapter) {
+  var all = chapterSectionsFor(subject, chapter);
+  return finalSelectedSections(subject).filter(function (x) { return all.indexOf(x) >= 0; });
 }
 var FINAL_PLAN_KNOWLEDGE = (typeof window !== 'undefined' && window.__FINAL_PLAN_KNOWLEDGE__) || { subjects: {} };
 function finalKnowledgeFor(subject, chapter) {
@@ -238,9 +243,9 @@ function finalPlanModule(subject, chapter) {
   var examples = finalPlanExamplesFor(subject, chapter);
   var template = finalPlanTemplateFor(subject, chapter, examples[0]);
   var knowledge = finalKnowledgeFor(subject, chapter);
-  var sections = finalSelectedChapters(subject).length === 1 ? finalSelectedSections(subject) : [];
+  var sections = finalSectionsForChapter(subject, chapter);
   var points = knowledge.points.filter(function (p) { return finalPlanPointMatch(p, sections); });
-  if (!points.length) points = knowledge.points.slice();
+  if (!points.length && !sections.length) points = knowledge.points.slice();
   if (!points.length) {
     points = tpls.map(function (t) {
       return { name: String(t.title || '').trim(), detail: '本章模板：' + String(t.title || ''), section: '', source: chapter + ' · 模板库', memory: '' };
@@ -272,15 +277,15 @@ function finalAiCleanText(value, max) {
   if (s.length > max) s = s.slice(0, max - 1) + '…';
   return s;
 }
-function finalAiPlanSignature(subject, chapters) {
+function finalAiPlanSignature(subject, chapters, sections) {
   var fe = finalData();
-  return [subject, String(fe.date || ''), String(Number(fe.duration) || 120), (chapters || []).join('|')].join('||');
+  return [subject, String(fe.date || ''), String(Number(fe.duration) || 120), (chapters || []).slice().sort().join('|'), (sections || []).slice().sort().join('|')].join('||');
 }
-function finalAiPlanFor(subject, chapters) {
+function finalAiPlanFor(subject, chapters, sections) {
   var fe = finalData();
   var plan = fe && fe.aiPlan;
   if (!plan || !Array.isArray(plan.units) || !plan.units.length) return null;
-  if (plan.sig !== finalAiPlanSignature(subject, chapters)) return null;
+  if (plan.sig !== finalAiPlanSignature(subject, chapters, sections)) return null;
   return plan;
 }
 function finalPlanFindPoint(module, name) {
@@ -331,7 +336,7 @@ function finalAiUnitResolve(subject, chapters, modules, raw) {
     memory: memory
   };
 }
-function finalAiNormalizePlan(subject, chapters, raw, model) {
+function finalAiNormalizePlan(subject, chapters, sections, raw, model) {
   var list = raw && (Array.isArray(raw.units) ? raw.units : (Array.isArray(raw.days) ? raw.days : null));
   if (!list || !list.length) throw new Error('AI 没有返回可用的复习单元');
   var modules = {};
@@ -366,9 +371,9 @@ function finalAiNormalizePlan(subject, chapters, raw, model) {
   var tips = (Array.isArray(raw.tips) ? raw.tips : []).map(function (x) { return finalAiCleanText(x, 160); }).filter(Boolean).slice(0, 6);
   var fe = finalData();
   return {
-    v: 1, subject: subject, sig: finalAiPlanSignature(subject, chapters),
+    v: 1, subject: subject, sig: finalAiPlanSignature(subject, chapters, sections),
     date: String(fe.date || ''), duration: Number(fe.duration) || 120,
-    chapters: chapters.slice(), model: String(model || '').trim(), filled: filled,
+    chapters: chapters.slice(), sections: sections.slice(), model: String(model || '').trim(), filled: filled,
     units: units, tips: tips, createdAt: nowIso()
   };
 }
@@ -389,6 +394,8 @@ function finalAiPlanPrompt(data) {
     duration: data.duration,
     dailyMinutes: data.dailyMinutes,
     chapters: data.chapters,
+    sections: data.sections || [],
+    sectionsByChapter: data.sectionMap || {},
     modules: modules,
     unitCount: Math.min(data.total, 60)
   };
@@ -402,6 +409,7 @@ async function finalAiGeneratePlan() {
   if (data.past) { toast('考试日期已经过去，请先改成今天或之后'); return; }
   var subject = finalSubject();
   var chapters = data.chapters.slice();
+  var sections = (data.sections || []).slice();
   var cfg = aiConfig();
   ui.finalAiPlanBusy = true;
   ui.finalAiPlanError = '';
@@ -409,6 +417,7 @@ async function finalAiGeneratePlan() {
   try {
     var systemPrompt = '你是大学数学与西方经济学教授，负责把期末复习排成逐日计划。只输出一个 JSON 对象，不要代码围栏、Markdown 标题或解释。' +
       '你只能使用输入 chapters 中已有的章节、points 中已有的知识点名称、templates 中已有的模板 id、examples 中已有的例题 id；禁止编造新章节、新知识点、新题号或不存在的模板。' +
+      'sections 是用户选中的小节，sectionsByChapter 给出每章选中的小节；points 已按小节筛选，禁止把未选小节的知识点排进计划。' +
       'units 是按天依次执行的学习单元，按从基础到冲刺排序，必须覆盖每个章节至少一次；unitCount 是希望返回的单元数。' +
       '每项 task 用一句可执行的考场化任务（例如「先口述……再独立做例题，最后对照标准解答补步骤」），每项 memory 用一句便于记忆、考场可直接调用的方法。' +
       '所有数学公式必须用 $...$ 包裹，禁止裸写 x^2、x_1、sqrt(x)、<=、>=、->；禁止在 task/memory 中写 HTML 标签；不要输出答案或新题目。' +
@@ -420,7 +429,7 @@ async function finalAiGeneratePlan() {
       raw = out.objects.filter(function (x) { return x && (Array.isArray(x.units) || Array.isArray(x.days)); })[0] || null;
     }
     if (!raw) throw new Error('AI 返回的格式不是可解析的 JSON');
-    var plan = finalAiNormalizePlan(subject, chapters, raw, cfg.model);
+    var plan = finalAiNormalizePlan(subject, chapters, sections, raw, cfg.model);
     finalData().aiPlan = plan;
     markDirty();
     render();
@@ -455,16 +464,21 @@ function finalChapterFilterHtml(subject) {
   var chapters = finalAllChapters(subject);
   if (!chapters.length) return '';
   var sel = finalSelectedChapters(subject);
-  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><span class="fcf-count">已选 ' + sel.length + ' 章</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
-    chapters.map(function (c) { return '<button class="fcf-chip' + (sel.indexOf(c) >= 0 ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="' + attr(c) + '" type="button">' + esc(c) + '</button>'; }).join('') + '</div>';
-  if (sel.length !== 1) return main;
-  var secs = chapterSectionsFor(subject, sel[0]);
-  if (!secs.length) return main;
   var chosen = finalSelectedSections(subject);
-  return main + '<div class="final-chapter-filter final-section-filter"><span class="fcf-label">小节</span><button class="fcf-chip' + (!chosen.length ? ' is-on' : '') + '" data-act="final-section" data-section="" type="button">全部小节</button>' +
-    secs.map(function (sec) { return '<button class="fcf-chip' + (chosen.indexOf(sec) >= 0 ? ' is-on' : '') + '" data-act="final-section" data-section="' + attr(sec) + '" type="button">' + esc(sec) + '</button>'; }).join('') + '</div>';
+  var countText = '已选 ' + sel.length + ' 章' + (chosen.length ? ' · ' + chosen.length + ' 节' : '');
+  var main = '<div class="final-chapter-filter"><span class="fcf-label">章节</span><span class="fcf-count">' + countText + '</span><button class="fcf-chip' + (!sel.length ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="" type="button">全部</button>' +
+    chapters.map(function (c) { return '<button class="fcf-chip' + (sel.indexOf(c) >= 0 ? ' is-on' : '') + '" data-act="final-chapter" data-chapter="' + attr(c) + '" type="button">' + esc(c) + '</button>'; }).join('') + '</div>';
+  if (!sel.length) return main;
+  var sectionGroups = sel.map(function (chapter) {
+    var secs = chapterSectionsFor(subject, chapter);
+    if (!secs.length) return '';
+    var picked = finalSectionsForChapter(subject, chapter);
+    return '<div class="final-chapter-filter final-section-filter" data-section-chapter="' + attr(chapter) + '"><span class="fcf-label">小节 · ' + esc(chapter) + '</span>' +
+      '<button class="fcf-chip' + (!picked.length ? ' is-on' : '') + '" data-act="final-section" data-chapter="' + attr(chapter) + '" data-section="" type="button">全部小节</button>' +
+      secs.map(function (sec) { return '<button class="fcf-chip' + (picked.indexOf(sec) >= 0 ? ' is-on' : '') + '" data-act="final-section" data-chapter="' + attr(chapter) + '" data-section="' + attr(sec) + '" type="button">' + esc(sec) + '</button>'; }).join('') + '</div>';
+  }).join('');
+  return main + sectionGroups;
 }
-
 function finalItemKey(subject, type, id) {
   return subject + ':' + type + ':' + id;
 }
@@ -556,7 +570,10 @@ function finalPlanData() {
     });
   }
   var planChapters = finalPlanChapters(finalSubject());
-  var aiPlan = finalAiPlanFor(finalSubject(), planChapters);
+  var planSections = finalSelectedSections(finalSubject());
+  var sectionMap = {};
+  planChapters.forEach(function (ch) { sectionMap[ch] = finalSectionsForChapter(finalSubject(), ch); });
+  var aiPlan = finalAiPlanFor(finalSubject(), planChapters, planSections);
   if (aiPlan) {
     var aiModules = {};
     modules.forEach(function (m) { aiModules[m.chapter] = m; });
@@ -578,7 +595,7 @@ function finalPlanData() {
     });
   }
   var dailyMinutes = Math.max(45, Math.min(120, Math.round((Number(fe.duration) || 120) * 0.5 / 5) * 5));
-  return { empty: false, past: false, today: today, exam: exam, total: total, days: days, phases: [p1, p2, Math.max(0, total - p1 - p2)], materials: materials, modules: modules, chapters: planChapters, dailyMinutes: dailyMinutes, duration: fe.duration, ai: aiPlan || null };
+  return { empty: false, past: false, today: today, exam: exam, total: total, days: days, phases: [p1, p2, Math.max(0, total - p1 - p2)], materials: materials, modules: modules, chapters: planChapters, sections: planSections, sectionMap: sectionMap, dailyMinutes: dailyMinutes, duration: fe.duration, ai: aiPlan || null };
 }
 
 function finalPlanExampleHtml(example, template) {
@@ -623,6 +640,7 @@ function finalPlanPointHtml(point) {
   return '<article class="fpm-point">' +
     '<div class="fpm-point-head"><b>' + renderInline(point.name || '知识点') + '</b>' + (point.section ? '<span>' + esc(point.section) + '</span>' : '') + '</div>' +
     (point.detail ? '<p class="md">' + renderInline(point.detail) + '</p>' : '') +
+    (point.memory ? '<small class="fpm-memory-tip"><b>记忆与考场用法</b> ' + renderInline(point.memory) + '</small>' : '') +
     (point.source ? '<small class="fpm-source">出处：' + esc(point.source) + '</small>' : '') +
   '</article>';
 }
@@ -711,14 +729,14 @@ function finalPlanHtml() {
   '</div>';
   var aiTips = ai && ai.tips && ai.tips.length ? '<ul>' + ai.tips.map(function (x) { return '<li>' + renderInline(x) + '</li>'; }).join('') + '</ul>' : '';
   var aiNote = ai
-    ? '<div class="final-ai-note"><b>AI 个性化计划</b><span>' + esc(ai.model || '已配置模型') + ' · ' + ai.units.length + ' 个学习单元' + (ai.filled ? ' · 本地补齐 ' + ai.filled + ' 章' : '') + ' · 题号与出处已对照本地题库校验</span>' + aiTips + '</div>'
+    ? '<div class="final-ai-note"><b>AI 个性化计划</b><span>' + esc(ai.model || '已配置模型') + ' · ' + (ai.sections && ai.sections.length ? ai.sections.length + ' 节 · ' : '') + ai.units.length + ' 个学习单元' + (ai.filled ? ' · 本地补齐 ' + ai.filled + ' 章' : '') + ' · 题号与出处已对照本地题库校验</span>' + aiTips + '</div>'
     : (ui.finalAiPlanError ? '<div class="final-ai-note is-warn"><b>AI 排程未完成</b><span>' + esc(ui.finalAiPlanError) + '；当前仍使用本地计划。</span></div>' : '');
   var introBadge = ai ? 'AI 个性化' : '智能排程';
   var introTitle = ai ? 'AI 已按你的章节与考试时间重排每天的学习单元' : '按所选章节与考试时间生成，具体到每一天';
   var introCopy = ai
     ? '由 ' + esc(ai.model || '已配置模型') + ' 生成；每个单元的章节、知识点、模板与例题都在本地题库中校验，无法校验的条目会被丢弃，失败时自动保留本地计划。'
-    : '默认本地排程，不调用外部 API；配置 AI 后可让模型按你的章节与考试时间个性化定制。知识点来自对应科目 skill，逐条标注教材章节与小节出处。';
-  return '<div class="final-plan-intro"><div><span class="final-plan-badge">' + esc(introBadge) + '</span><b>' + esc(introTitle) + '</b><p>' + esc(introCopy) + '</p></div><div class="final-plan-side"><span class="final-plan-meta">' + data.chapters.length + ' 章 · ' + pointTotal + ' 个知识点 · 每天约 ' + data.dailyMinutes + ' 分钟</span>' + aiActions + '</div></div>' + aiNote +
+    : '默认本地排程，不调用外部 API；配置 AI 后可让模型按你的章节、小节与考试时间个性化定制。知识点来自对应科目 skill，逐条标注教材章节与小节出处。';
+  return '<div class="final-plan-intro"><div><span class="final-plan-badge">' + esc(introBadge) + '</span><b>' + esc(introTitle) + '</b><p>' + esc(introCopy) + '</p></div><div class="final-plan-side"><span class="final-plan-meta">' + data.chapters.length + ' 章' + (data.sections.length ? ' · ' + data.sections.length + ' 节' : '') + ' · ' + pointTotal + ' 个知识点 · 每天约 ' + data.dailyMinutes + ' 分钟</span>' + aiActions + '</div></div>' + aiNote +
     '<div class="final-count-banner"><b>' + data.total + '</b><span>天复习窗口</span><small>' + finalDateKey(data.today) + ' → ' + finalDateKey(data.exam) + '</small></div>' +
     '<div class="final-phase-grid">' + phaseCards + '</div>' +
     '<div class="final-plan-usage"><b>每天怎么用</b><ol><li>先用 10 分钟口述当天章节的答题模板。</li><li>用 ' + data.dailyMinutes + ' 分钟独立做例题，不翻答案。</li><li>对照考试标准解答和详细解析，补上跳过的步骤。</li><li>把卡点写成一句错因；考前一天只看模板与错因。</li></ol></div>' +

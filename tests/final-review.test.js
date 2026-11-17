@@ -23,7 +23,7 @@ function finalContext() {
     renderMarkdown(s) { return '<div class="md">' + s + '</div>'; },
     renderInline(s) { return String(s); },
     markDirty() {}, nowIso() { return '2026-11-16T00:00:00+08:00'; }, normalizeStars(x) { return x || 3; },
-    entryTitle() { return ''; }, findEntry() { return null; }, bankOf() { return []; }, templatesOf() { return []; },
+    entryTitle() { return ''; }, findEntry() { return null; }, bankOf() { return []; }, templatesOf() { return []; }, chapterSectionsFor() { return []; },
     aiConfigReady() { return false; }, setTimeout() {}, clearTimeout() {},
     location: { hash: '' }, URL: { createObjectURL() { return ''; }, revokeObjectURL() {} }
   };
@@ -64,6 +64,37 @@ test('章节筛选不依赖已加入材料，计划模块接入模板清单并�
   assert.match(css, /\.fpm-tpl > summary \{/);
   assert.match(css, /\.fpm-tpl-body \{/);
   assert.match(css, /\.fpm-tpl-pitfall \{/);
+});
+
+test('多章可分别选小节，计划与 AI 签名都锁定到小节', () => {
+  const ctx = finalContext();
+  ctx.chapterSectionsFor = function (subject, chapter) {
+    if (chapter === '第一章 多项式') return ['数域', '一元多项式'];
+    if (chapter === '第二章 行列式') return ['排列', 'n 级行列式'];
+    return [];
+  };
+  ctx.finalAllChapters = function () { return ['第一章 多项式', '第二章 行列式']; };
+  ctx.state.finalExam = {
+    date: '2026-12-20', duration: 120, subject: 'gaodai',
+    chapterSel: { gaodai: ['第一章 多项式', '第二章 行列式'] },
+    sectionSel: { gaodai: ['数域', '排列'] },
+    items: [], papers: [], done: {}
+  };
+  const html = ctx.finalChapterFilterHtml('gaodai');
+  assert.match(html, /已选 2 章 · 2 节/);
+  assert.equal((html.match(/data-section-chapter=/g) || []).length, 2, '每个已选大章都要有小节分组');
+  assert.match(html, /小节 · 第一章 多项式/);
+  assert.match(html, /小节 · 第二章 行列式/);
+  assert.match(html, /data-chapter="第一章 多项式"[^>]*data-section="数域"/);
+  assert.match(html, /data-chapter="第二章 行列式"[^>]*data-section="排列"/);
+  assert.deepEqual(ctx.finalSelectedSections('gaodai'), ['数域', '排列']);
+  assert.deepEqual(ctx.finalSectionsForChapter('gaodai', '第一章 多项式'), ['数域']);
+  const js = read('src/js/58-final.js');
+  assert.match(js, /function finalSectionsForChapter/);
+  assert.match(js, /var sections = finalSectionsForChapter\(subject, chapter\)/);
+  assert.match(js, /finalAiPlanSignature\(subject, chapters, sections\)/);
+  assert.match(js, /finalAiPlanFor\(subject, chapters, sections\)/);
+  assert.match(js, /sectionsByChapter: data\.sectionMap/);
 });
 
 test('计划知识点来自学科 skill，带教材章节小节出处和记忆用法', () => {
@@ -140,7 +171,8 @@ test('期末复习跨端门禁被 package 与 CI 同时引用', () => {
   assert.match(gate, /390, 768, 1440/);
   assert.match(gate, /\.fpm-point/);
   assert.match(gate, /fd-more/);
-  assert.match(gate, /章节筛选/);
+  assert.match(gate, /多章 \+ 多小节/);
+  assert.match(gate, /final-section-filter/);
 });
 
 test('AI 个性化计划只接受本地章节、模板与题号，非法条目会丢弃并回退', () => {
@@ -160,7 +192,7 @@ test('AI 个性化计划只接受本地章节、模板与题号，非法条目�
     date: future.getFullYear() + '-' + String(future.getMonth() + 1).padStart(2, '0') + '-' + String(future.getDate()).padStart(2, '0'),
     duration: 120, subject: 'gaodai', chapterSel: { gaodai: [] }, sectionSel: {}, items: [], papers: [], done: {}
   };
-  const plan = ctx.finalAiNormalizePlan('gaodai', ['第一章 多项式'], {
+  const plan = ctx.finalAiNormalizePlan('gaodai', ['第一章 多项式'], [], {
     units: [
       { chapter: '第一章 多项式', point: '整除判定', templateId: 'T-01-02', exampleId: 'GA-B9999', task: '先做 $x_1$ 的例题', memory: '记住 $x_1$ 回代' },
       { chapter: '不存在的章节', point: '编造知识点', exampleId: 'NOPE', task: '编造任务' },

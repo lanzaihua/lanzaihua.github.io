@@ -9876,3 +9876,11 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .hero .page-actions .btn { width: 100%; min-width: 0; padding: 0 10px; }
   .hero-meta { gap: 6px 14px !important; }
 }
+
+/* 期末计划：多章小节分组与每个知识点的记忆提示 */
+.final-section-filter{display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:6px!important;padding:7px 0 3px!important;border-top:1px dashed var(--line)!important}
+.final-section-filter .fcf-label{flex:0 0 100%;white-space:normal!important;line-height:1.5!important;margin:0 0 2px!important;color:var(--muted)!important;font-size:10px!important;letter-spacing:.06em!important}
+.final-section-filter .fcf-chip{flex:0 0 auto}
+.fpm-memory-tip{display:block!important;margin-top:6px!important;color:var(--muted)!important;font-size:10px!important;line-height:1.65!important;overflow-wrap:anywhere!important}
+.fpm-memory-tip b{color:var(--ink)!important;font-weight:600!important;margin-right:2px!important}
+@media(max-width:700px){.final-section-filter{gap:5px!important;padding-top:6px!important}.final-section-filter .fcf-chip{font-size:10px!important;padding:5px 9px!important}}

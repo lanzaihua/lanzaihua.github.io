@@ -20,6 +20,9 @@ function chapterNo(name) { const m = /^第(.+?)章/.exec(String(name)); return m
 function cleanSection(s) {
   return String(s || '').replace(/\s*（[★☆]+）/g, '').replace(/\x60/g, '').replace(/\s+/g, ' ').replace(/\s*（[^）]*）\s*$/,'').trim();
 }
+function cleanPunct(s) {
+  return String(s || '').replace(/。：/g, '：').replace(/：。/g, '：').replace(/。。/g, '。').replace(/，，/g, '，').replace(/；。/g, '；').replace(/、。/g, '、');
+}
 function stripMd(s) {
   return String(s || '').replace(/\r/g, '').replace(/\*\*/g, '').replace(/\x60/g, '').replace(/\$/g, '').replace(/\s+/g, ' ').trim();
 }
@@ -101,10 +104,14 @@ for (const subject of Object.keys(CFG)) {
       const model = bestBy(section + ' ' + c.name, models).best || models[0] || '';
       points.push({
         name: c.name,
-        detail: c.detail.slice(0, 300),
+        detail: cleanPunct(c.detail.slice(0, 300)),
         section: '§' + (ci + 1) + '.' + (bestJ + 1) + ' ' + section,
         source: cfg.book + ' · ' + chapter + ' · §' + (ci + 1) + '.' + (bestJ + 1) + ' ' + section,
-        memory: String(model || '').slice(0, 180)
+        memory: (function () {
+          var hook = '记「' + c.name + '」：' + String(c.detail || '').replace(/[。；;]+$/, '').slice(0, 96);
+          var use = cleanPunct(String(model || '')).replace(/[。；;]+$/, '').slice(0, 96);
+          return hook + '。考场：' + (use || '先写定义或判据，再代入条件，最后用特例检查') + '。';
+        })()
       });
     });
     planned.push({ chapter: chapter, chapterNo: ci + 1, sectionCount: allSections.length, points: points });

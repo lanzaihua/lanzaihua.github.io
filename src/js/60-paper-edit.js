@@ -260,29 +260,46 @@ function finalPaperToggleChapter(chapter) {
   var subject = finalSubject();
   var fe = finalData();
   fe.chapterSel = fe.chapterSel || {};
-  var arr = finalSelectedChapters(subject);
-  if (!chapter) arr = [];
-  else if (arr.indexOf(chapter) >= 0) arr = arr.filter(function (x) { return x !== chapter; });
-  else arr = arr.concat([chapter]);
-  fe.chapterSel[subject] = arr;
   fe.sectionSel = fe.sectionSel || {};
-  fe.sectionSel[subject] = [];
+  var arr = finalSelectedChapters(subject);
+  var chosen = finalSelectedSections(subject);
+  if (!chapter) {
+    arr = [];
+    chosen = [];
+  } else if (arr.indexOf(chapter) >= 0) {
+    arr = arr.filter(function (x) { return x !== chapter; });
+    var removed = chapterSectionsFor(subject, chapter);
+    chosen = chosen.filter(function (x) { return removed.indexOf(x) < 0; });
+  } else {
+    arr = arr.concat([chapter]);
+  }
+  fe.chapterSel[subject] = arr;
+  fe.sectionSel[subject] = chosen;
   ui.finalPaperId = '';
   markDirty(); render();
 }
 
-function finalPaperToggleSection(section) {
+function finalPaperToggleSection(section, chapter) {
   var subject = finalSubject();
   var fe = finalData();
-  var chs = finalSelectedChapters(subject);
-  if (chs.length !== 1) return;
-  var all = chapterSectionsFor(subject, chs[0]);
+  var chapters = finalSelectedChapters(subject);
+  if (!chapters.length) return;
+  var target = String(chapter || '').trim();
+  if (target && chapters.indexOf(target) < 0) return;
+  if (!target && chapters.length === 1) target = chapters[0];
+  var all = target ? chapterSectionsFor(subject, target) : [];
   var arr = finalSelectedSections(subject);
-  if (!section) arr = [];
-  else if (arr.indexOf(section) >= 0) arr = arr.filter(function (x) { return x !== section; });
-  else arr = arr.concat([section]);
+  if (!section) {
+    arr = target ? arr.filter(function (x) { return all.indexOf(x) < 0; }) : [];
+  } else {
+    if (all.indexOf(section) < 0) return;
+    if (arr.indexOf(section) >= 0) arr = arr.filter(function (x) { return x !== section; });
+    else arr = arr.concat([section]);
+  }
+  var valid = [];
+  chapters.forEach(function (ch) { valid = valid.concat(chapterSectionsFor(subject, ch)); });
   fe.sectionSel = fe.sectionSel || {};
-  fe.sectionSel[subject] = arr.filter(function (x) { return all.indexOf(x) >= 0; });
+  fe.sectionSel[subject] = arr.filter(function (x) { return valid.indexOf(x) >= 0; });
   ui.finalPaperId = '';
   markDirty(); render();
 }
@@ -575,7 +592,7 @@ document.addEventListener('click', function (e) {
   else if (act === 'final-ai-reset') { e.preventDefault(); finalAiResetPlan(); }
   else if (act === 'final-insert-material') { e.preventDefault(); finalPaperImportMaterial(); }
   else if (act === 'final-chapter') { e.preventDefault(); finalPaperToggleChapter(el.getAttribute('data-chapter')); }
-  else if (act === 'final-section') { e.preventDefault(); finalPaperToggleSection(el.getAttribute('data-section')); }
+  else if (act === 'final-section') { e.preventDefault(); finalPaperToggleSection(el.getAttribute('data-section'), el.getAttribute('data-chapter')); }
   else if (act === 'final-smart-scores') { e.preventDefault(); finalPaperSmartScores(); }
   else if (act === 'final-picker-select-all') { e.preventDefault(); finalPickerToggleAll(); }
   else if (act === 'final-picker-clear') { e.preventDefault(); finalPickerClear(); }
