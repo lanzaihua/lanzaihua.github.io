@@ -188,26 +188,29 @@ function finalPlanExampleScore(m) {
   return score;
 }
 function finalPlanExamplesFor(subject, chapter) {
-  var all = bankOf(subject).filter(function (b) { return b && b.chapter === chapter; }).map(function (b) {
-    return finalResolveItem({ type: 'bank', subject: subject, id: b.id, key: finalItemKey(subject, 'bank', b.id) });
-  }).filter(Boolean);
+  var all = bankOf(subject).filter(function (b) { return b && b.chapter === chapter; });
   function rank(list) {
     return list.slice().sort(function (a, b) {
       return (finalPlanExampleScore(b) - finalPlanExampleScore(a)) || String(a.id).localeCompare(String(b.id));
     });
   }
-  var strong = rank(all.filter(function (m) { return m.standardSolution && m.detailedAnalysis; }));
-  var withSolution = rank(all.filter(function (m) { return m.standardSolution; }));
   var picked = [], used = {};
-  function take(list, need) {
-    for (var i = 0; i < list.length && picked.length < need; i++) {
-      if (!used[list[i].key]) { used[list[i].key] = true; picked.push(list[i]); }
+  function take(list, limit) {
+    var ranked = rank(list);
+    for (var i = 0; i < ranked.length && i < limit; i++) {
+      var b = ranked[i];
+      if (!b || used[b.id]) continue;
+      used[b.id] = true;
+      picked.push(b);
     }
   }
-  take(strong, 2);
-  if (picked.length < 2) take(withSolution, 2);
-  if (picked.length < 2) take(rank(all), 2);
-  return picked;
+  // 只排序原始题库条目，最后才解析少量候选，避免每次重排把整章题目都克隆一遍。
+  take(all.filter(function (m) { return m.standardSolution && m.detailedAnalysis; }), 3);
+  take(all.filter(function (m) { return m.standardSolution; }), 3);
+  take(all, 4);
+  return picked.slice(0, 2).map(function (b) {
+    return finalResolveItem({ type: 'bank', subject: subject, id: b.id, key: finalItemKey(subject, 'bank', b.id) });
+  }).filter(Boolean);
 }
 function finalPlanPlain(md, max) {
   var s = typeof plainText === 'function' ? plainText(md) : String(md || '').replace(/\$[^$]*\$/g, ' ');
@@ -259,6 +262,186 @@ function finalPlanModules(subject) {
   return finalPlanChapters(subject).map(function (chapter) { return finalPlanModule(subject, chapter); });
 }
 
+function finalAiCleanText(value, max) {
+  var s = String(value == null ? '' : value).replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!s) return '';
+  if (/<\/?[A-Za-z][^>]*>/.test(s)) return '';
+  if (s.indexOf('\uFFFD') >= 0) return '';
+  if ((s.match(/\$/g) || []).length % 2) return '';
+  max = Number(max) || 260;
+  if (s.length > max) s = s.slice(0, max - 1) + '…';
+  return s;
+}
+function finalAiPlanSignature(subject, chapters) {
+  var fe = finalData();
+  return [subject, String(fe.date || ''), String(Number(fe.duration) || 120), (chapters || []).join('|')].join('||');
+}
+function finalAiPlanFor(subject, chapters) {
+  var fe = finalData();
+  var plan = fe && fe.aiPlan;
+  if (!plan || !Array.isArray(plan.units) || !plan.units.length) return null;
+  if (plan.sig !== finalAiPlanSignature(subject, chapters)) return null;
+  return plan;
+}
+function finalPlanFindPoint(module, name) {
+  var points = module && Array.isArray(module.points) ? module.points : [];
+  if (!points.length) return null;
+  var want = String(name || '').replace(/\s+/g, '');
+  if (want) {
+    for (var i = 0; i < points.length; i++) {
+      var key = String(points[i].name || '').replace(/\s+/g, '');
+      if (key && (key === want || key.indexOf(want) >= 0 || want.indexOf(key) >= 0)) return points[i];
+    }
+  }
+  return points[0];
+}
+function finalPlanFindExample(subject, chapter, id) {
+  id = String(id || '').trim();
+  if (!id) return null;
+  var hit = bankOf(subject).filter(function (b) { return b && b.id === id && b.chapter === chapter; })[0];
+  if (!hit) return null;
+  return finalResolveItem({ type: 'bank', subject: subject, id: hit.id, key: finalItemKey(subject, 'bank', hit.id) });
+}
+function finalAiUnitResolve(subject, chapters, modules, raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  var chapter = String(raw.chapter || '').trim();
+  if ((chapters || []).indexOf(chapter) < 0) return null;
+  var module = modules[chapter];
+  if (!module) return null;
+  var point = finalPlanFindPoint(module, raw.point || raw.pointName);
+  var template = null;
+  var templateId = String(raw.templateId || '').trim();
+  if (templateId) template = module.templates.filter(function (t) { return t && t.id === templateId; })[0] || null;
+  var example = finalPlanFindExample(subject, chapter, raw.exampleId);
+  if (!template) template = (example && finalPlanTemplateFor(subject, chapter, example)) || module.template;
+  if (!example) example = module.examples[0] || null;
+  var memory = finalAiCleanText(raw.memory, 220);
+  if (point && memory) point = Object.assign({}, point, { memory: memory });
+  return {
+    chapter: chapter,
+    pointName: point ? String(point.name || '').trim() : '',
+    pointSection: point ? String(point.section || '').trim() : '',
+    pointSource: point ? String(point.source || '').trim() : '',
+    point: point,
+    templateId: template ? String(template.id || '').trim() : '',
+    template: template,
+    exampleId: example ? String(example.id || '').trim() : '',
+    example: example,
+    task: finalAiCleanText(raw.task || raw.focus, 240),
+    memory: memory
+  };
+}
+function finalAiNormalizePlan(subject, chapters, raw, model) {
+  var list = raw && (Array.isArray(raw.units) ? raw.units : (Array.isArray(raw.days) ? raw.days : null));
+  if (!list || !list.length) throw new Error('AI 没有返回可用的复习单元');
+  var modules = {};
+  chapters.forEach(function (chapter) { modules[chapter] = finalPlanModule(subject, chapter); });
+  var units = [];
+  list.slice(0, 120).forEach(function (item) {
+    var unit = finalAiUnitResolve(subject, chapters, modules, item);
+    if (!unit) return;
+    units.push({
+      chapter: unit.chapter, pointName: unit.pointName, templateId: unit.templateId,
+      exampleId: unit.exampleId, task: unit.task, memory: unit.memory
+    });
+  });
+  if (!units.length) throw new Error('AI 返回的章节或题号与本地题库不一致');
+  var filled = 0;
+  chapters.forEach(function (chapter) {
+    if (units.some(function (u) { return u.chapter === chapter; })) return;
+    var module = modules[chapter];
+    if (!module) return;
+    var point = module.points[0] || null;
+    var template = module.template || null;
+    var example = module.examples[0] || null;
+    units.push({
+      chapter: chapter,
+      pointName: point ? String(point.name || '').trim() : '',
+      templateId: template ? String(template.id || '').trim() : '',
+      exampleId: example ? String(example.id || '').trim() : '',
+      task: '', memory: ''
+    });
+    filled += 1;
+  });
+  var tips = (Array.isArray(raw.tips) ? raw.tips : []).map(function (x) { return finalAiCleanText(x, 160); }).filter(Boolean).slice(0, 6);
+  var fe = finalData();
+  return {
+    v: 1, subject: subject, sig: finalAiPlanSignature(subject, chapters),
+    date: String(fe.date || ''), duration: Number(fe.duration) || 120,
+    chapters: chapters.slice(), model: String(model || '').trim(), filled: filled,
+    units: units, tips: tips, createdAt: nowIso()
+  };
+}
+function finalAiPlanPrompt(data) {
+  var modules = (data.modules || []).map(function (m) {
+    return {
+      chapter: m.chapter,
+      points: m.points.map(function (p) { return { name: p.name, section: p.section || '', source: p.source || '' }; }),
+      templates: m.templates.map(function (t) { return { id: t.id, title: t.title || '' }; }),
+      examples: m.examples.map(function (e) { return { id: e.id, code: e.code || '', title: e.title || '' }; })
+    };
+  });
+  return {
+    subject: subjectOf(finalSubject()).name,
+    examDate: finalDateKey(data.exam),
+    today: finalDateKey(data.today),
+    totalDays: data.total,
+    duration: data.duration,
+    dailyMinutes: data.dailyMinutes,
+    chapters: data.chapters,
+    modules: modules,
+    unitCount: Math.min(data.total, 60)
+  };
+}
+async function finalAiGeneratePlan() {
+  if (ui.finalAiPlanBusy) return;
+  if (typeof aiConfigReady !== 'function' || !aiConfigReady()) { toast('先在「设置与同步 → 在线 AI 服务」配置模型，再让 AI 个性化排程'); return; }
+  if (typeof finalAiJsonCall !== 'function') { toast('当前构建没有加载 AI 模块'); return; }
+  var data = finalPlanData();
+  if (data.empty) { toast('先设定期末考试日期'); return; }
+  if (data.past) { toast('考试日期已经过去，请先改成今天或之后'); return; }
+  var subject = finalSubject();
+  var chapters = data.chapters.slice();
+  var cfg = aiConfig();
+  ui.finalAiPlanBusy = true;
+  ui.finalAiPlanError = '';
+  render();
+  try {
+    var systemPrompt = '你是大学数学与西方经济学教授，负责把期末复习排成逐日计划。只输出一个 JSON 对象，不要代码围栏、Markdown 标题或解释。' +
+      '你只能使用输入 chapters 中已有的章节、points 中已有的知识点名称、templates 中已有的模板 id、examples 中已有的例题 id；禁止编造新章节、新知识点、新题号或不存在的模板。' +
+      'units 是按天依次执行的学习单元，按从基础到冲刺排序，必须覆盖每个章节至少一次；unitCount 是希望返回的单元数。' +
+      '每项 task 用一句可执行的考场化任务（例如「先口述……再独立做例题，最后对照标准解答补步骤」），每项 memory 用一句便于记忆、考场可直接调用的方法。' +
+      '所有数学公式必须用 $...$ 包裹，禁止裸写 x^2、x_1、sqrt(x)、<=、>=、->；禁止在 task/memory 中写 HTML 标签；不要输出答案或新题目。' +
+      '输出格式：{"units":[{"chapter":"原样章节名","point":"points 中的知识点名称","templateId":"templates 中的 id 或空串","exampleId":"examples 中的 id 或空串","task":"当天任务","memory":"记忆与考场用法"}],"tips":["最多 6 条通用提醒"]}';
+    var userText = JSON.stringify(finalAiPlanPrompt(data));
+    var out = await finalAiJsonCall(systemPrompt, userText, [], 120000);
+    var raw = out && out.parsed;
+    if (!raw && out && Array.isArray(out.objects)) {
+      raw = out.objects.filter(function (x) { return x && (Array.isArray(x.units) || Array.isArray(x.days)); })[0] || null;
+    }
+    if (!raw) throw new Error('AI 返回的格式不是可解析的 JSON');
+    var plan = finalAiNormalizePlan(subject, chapters, raw, cfg.model);
+    finalData().aiPlan = plan;
+    markDirty();
+    render();
+    toast('AI 已按 ' + plan.units.length + ' 个学习单元排入 ' + data.total + ' 天；题号与出处已校验');
+  } catch (e) {
+    ui.finalAiPlanError = (e && e.message) ? e.message : 'AI 排程失败';
+    render();
+    toast('AI 排程未完成，已保留本地计划：' + ui.finalAiPlanError);
+  } finally {
+    ui.finalAiPlanBusy = false;
+  }
+}
+function finalAiResetPlan() {
+  var fe = finalData();
+  if (!fe.aiPlan) { toast('当前没有 AI 计划'); return; }
+  delete fe.aiPlan;
+  ui.finalAiPlanError = '';
+  markDirty();
+  render();
+  toast('已恢复本地智能排程');
+}
 function finalMaterialsForChapters(subject) {
   var all = finalMaterialsForSubject(subject);
   var sel = finalSelectedChapters(subject);
@@ -372,8 +555,30 @@ function finalPlanData() {
       example: example, exampleCode: code, done: !!fe.done[finalDateKey(d)]
     });
   }
+  var planChapters = finalPlanChapters(finalSubject());
+  var aiPlan = finalAiPlanFor(finalSubject(), planChapters);
+  if (aiPlan) {
+    var aiModules = {};
+    modules.forEach(function (m) { aiModules[m.chapter] = m; });
+    days.forEach(function (d, i) {
+      var rawUnit = aiPlan.units[i % aiPlan.units.length];
+      var unit = finalAiUnitResolve(finalSubject(), planChapters, aiModules, rawUnit);
+      if (!unit || !unit.point) return;
+      d.chapter = unit.chapter;
+      d.point = unit.point;
+      d.pointName = unit.pointName;
+      d.pointSection = unit.pointSection;
+      d.pointSource = unit.pointSource;
+      d.template = unit.template;
+      d.templateName = unit.template ? String(unit.template.title || '').trim() : '';
+      d.example = unit.example;
+      d.exampleCode = unit.example ? unit.example.code : '';
+      if (unit.task) d.focus = unit.task;
+      d.ai = true;
+    });
+  }
   var dailyMinutes = Math.max(45, Math.min(120, Math.round((Number(fe.duration) || 120) * 0.5 / 5) * 5));
-  return { empty: false, past: false, today: today, exam: exam, total: total, days: days, phases: [p1, p2, Math.max(0, total - p1 - p2)], materials: materials, modules: modules, chapters: finalPlanChapters(finalSubject()), dailyMinutes: dailyMinutes, duration: fe.duration };
+  return { empty: false, past: false, today: today, exam: exam, total: total, days: days, phases: [p1, p2, Math.max(0, total - p1 - p2)], materials: materials, modules: modules, chapters: planChapters, dailyMinutes: dailyMinutes, duration: fe.duration, ai: aiPlan || null };
 }
 
 function finalPlanExampleHtml(example, template) {
@@ -399,6 +604,7 @@ function finalPlanExampleHtml(example, template) {
     (detail ? '<details class="fpe-detail"><summary>展开考试标准解答、答题模板、详细解析与易错点</summary><div class="fpe-detail-body">' + detail + '</div></details>' : '') +
   '</article>';
 }
+var FINAL_PLAN_LAZY = {};
 function finalPlanTemplateListHtml(m) {
   if (!m || !m.templates.length) return '<div class="final-plan-note">模板库暂无本章模板；先按标准解答的步骤顺序口述一遍。</div>';
   var items = m.templates.map(function (t, i) {
@@ -420,23 +626,54 @@ function finalPlanPointHtml(point) {
     (point.source ? '<small class="fpm-source">出处：' + esc(point.source) + '</small>' : '') +
   '</article>';
 }
-function finalPlanModuleHtml(m, index) {
-  if (!m) return '';
+function finalPlanModuleBodyHtml(m) {
   var pointHtml = m.points.map(finalPlanPointHtml).join('');
   var memory = m.memory.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('');
   var examples = m.examples.length ? m.examples.map(function (ex) { return finalPlanExampleHtml(ex, m.template); }).join('') : '<div class="final-plan-note">本章暂无完整例题，先按模板复述步骤。</div>';
+  return '<div class="fpm-kps"><span class="fpm-label">知识点与出处</span><div class="fpm-points">' + pointHtml + '</div></div>' +
+    '<div class="fpm-memory"><h4>记忆与考场用法</h4><ul>' + memory + '</ul></div>' +
+    finalPlanTemplateListHtml(m) +
+    '<div class="fpm-examples"><h4>本章例题（含标准解答、模板、详细解析）</h4>' + examples + '</div>';
+}
+function finalPlanModuleHtml(m, index) {
+  if (!m) return '';
+  var key = 'm:' + finalSubject() + ':' + m.chapter;
+  var body = '';
+  if (index === 0) body = finalPlanModuleBodyHtml(m);
+  else {
+    FINAL_PLAN_LAZY[key] = { type: 'module', m: m };
+    body = '<div class="final-plan-note is-lazy-note" data-final-lazy="' + attr(key) + '">展开本章后加载模板与例题。</div>';
+  }
   return '<details class="final-plan-module"' + (index === 0 ? ' open' : '') + ' data-final-module="' + attr(m.chapter) + '">' +
     '<summary><span class="fpm-index">' + pad(index + 1, 2) + '</span><span class="fpm-title">' + esc(m.chapter) + '</span><span class="fpm-meta">' + m.points.length + ' 个知识点 · ' + m.templates.length + ' 个模板 · ' + m.examples.length + ' 道例题</span></summary>' +
-    '<div class="fpm-body">' +
-      '<div class="fpm-kps"><span class="fpm-label">知识点与出处</span><div class="fpm-points">' + pointHtml + '</div></div>' +
-      '<div class="fpm-memory"><h4>记忆与考场用法</h4><ul>' + memory + '</ul></div>' +
-      finalPlanTemplateListHtml(m) +
-      '<div class="fpm-examples"><h4>本章例题（含标准解答、模板、详细解析）</h4>' + examples + '</div>' +
-    '</div>' +
+    '<div class="fpm-body">' + body + '</div>' +
   '</details>';
+}
+function finalPlanDayBodyHtml(d) {
+  var detail = '';
+  if (d.point) {
+    detail += '<div class="fd-point-card"><b>' + renderInline(d.point.name || '知识点') + '</b>' +
+      (d.point.section ? '<span class="fd-point-sec">' + renderInline(d.point.section) + '</span>' : '') +
+      (d.point.detail ? '<p class="md">' + renderInline(d.point.detail) + '</p>' : '') +
+      (d.point.source ? '<small>出处：' + esc(d.point.source) + '</small>' : '') +
+      (d.point.memory ? '<div class="fd-memory"><b>记忆与考场用法</b><p>' + renderInline(d.point.memory) + '</p></div>' : '') +
+    '</div>';
+  }
+  detail += d.example ? finalPlanExampleHtml(d.example, d.template) : '<div class="final-plan-note">本章暂无完整例题；按模板口述步骤，再回题库做一道同类题。</div>';
+  return detail;
+}
+function finalPlanFillLazy(el) {
+  if (!el || el.getAttribute('data-loaded') === '1') return;
+  var key = el.getAttribute('data-final-lazy');
+  var entry = key ? FINAL_PLAN_LAZY[key] : null;
+  if (!entry) return;
+  el.setAttribute('data-loaded', '1');
+  el.classList.remove('is-lazy-note');
+  el.innerHTML = entry.type === 'module' ? finalPlanModuleBodyHtml(entry.m) : finalPlanDayBodyHtml(entry.d);
 }
 function finalPlanHtml() {
   var data = finalPlanData();
+  FINAL_PLAN_LAZY = {};
   if (data.empty) {
     return '<div class="final-empty"><b>先设定考试日期</b><p>日期确定后，系统会按所选章节拆分三个阶段，并把知识点、模板和例题排进每天的任务。</p></div>';
   }
@@ -450,16 +687,9 @@ function finalPlanHtml() {
   var pointTotal = (data.modules || []).reduce(function (n, m) { return n + (m.points ? m.points.length : 0); }, 0);
   var modulesHtml = modules ? '<div class="final-plan-modules"><div class="final-plan-modules-head"><h3>章节重点与例题</h3><span>' + data.chapters.length + ' 章 · ' + pointTotal + ' 个知识点 · 每章含模板与例题</span></div>' + modules + '</div>' : '';
   var rows = data.days.map(function (d) {
-    var detail = '';
-    if (d.point) {
-      detail += '<div class="fd-point-card"><b>' + renderInline(d.point.name || '知识点') + '</b>' +
-        (d.point.section ? '<span class="fd-point-sec">' + renderInline(d.point.section) + '</span>' : '') +
-        (d.point.detail ? '<p class="md">' + renderInline(d.point.detail) + '</p>' : '') +
-        (d.point.source ? '<small>出处：' + esc(d.point.source) + '</small>' : '') +
-        (d.point.memory ? '<div class="fd-memory"><b>记忆与考场用法</b><p>' + renderInline(d.point.memory) + '</p></div>' : '') +
-      '</div>';
-    }
-    detail += d.example ? finalPlanExampleHtml(d.example, d.template) : '<div class="final-plan-note">本章暂无完整例题；按模板口述步骤，再回题库做一道同类题。</div>';
+    var lazyKey = 'd:' + d.key;
+    FINAL_PLAN_LAZY[lazyKey] = { type: 'day', d: d };
+    var detail = '<div class="final-plan-note is-lazy-note" data-final-lazy="' + attr(lazyKey) + '">展开当天后加载知识点与例题。</div>';
     return '<div class="final-day' + (d.done ? ' is-done' : '') + '">' +
       '<span class="fd-date">' + pad(d.date.getMonth() + 1, 2) + '.' + pad(d.date.getDate(), 2) + '<small>周' + '日一二三四五六'.charAt(d.date.getDay()) + '</small></span>' +
       '<span class="fd-phase">' + FINAL_PHASES[d.phase].label + '</span>' +
@@ -472,7 +702,23 @@ function finalPlanHtml() {
     '</div>';
   }).join('');
   var emptyDays = data.days.length ? '' : '<div class="final-plan-note">今天就是考试日：只看章节模板、错题标题和易错点。</div>';
-  return '<div class="final-plan-intro"><div><span class="final-plan-badge">智能排程</span><b>按所选章节与考试时间生成，具体到每一天</b><p>按章节权重、剩余天数与每日可用时间自动排程，不调用外部 API；知识点来自对应科目 skill，逐条标注教材章节与小节出处。</p></div><span class="final-plan-meta">' + data.chapters.length + ' 章 · ' + pointTotal + ' 个知识点 · 每天约 ' + data.dailyMinutes + ' 分钟</span></div>' +
+  var ai = data.ai;
+  var aiReady = typeof aiConfigReady === 'function' && aiConfigReady();
+  var aiBusy = !!ui.finalAiPlanBusy;
+  var aiActions = '<div class="final-ai-actions">' +
+    '<button class="btn btn-xs' + (!ai ? ' btn-primary' : '') + '" data-act="final-ai-plan" type="button"' + ((aiReady && !aiBusy) ? '' : ' disabled') + ' title="' + attr(aiReady ? '让已配置的 AI 按章节与考试日期重新安排每天的学习单元' : '先在设置与同步 → 在线 AI 服务中配置模型') + '">' + (aiBusy ? 'AI 正在排程…' : (ai ? '重新用 AI 排程' : '用 AI 个性化')) + '</button>' +
+    (ai ? '<button class="btn btn-xs" data-act="final-ai-reset" type="button">恢复本地排程</button>' : '') +
+  '</div>';
+  var aiTips = ai && ai.tips && ai.tips.length ? '<ul>' + ai.tips.map(function (x) { return '<li>' + renderInline(x) + '</li>'; }).join('') + '</ul>' : '';
+  var aiNote = ai
+    ? '<div class="final-ai-note"><b>AI 个性化计划</b><span>' + esc(ai.model || '已配置模型') + ' · ' + ai.units.length + ' 个学习单元' + (ai.filled ? ' · 本地补齐 ' + ai.filled + ' 章' : '') + ' · 题号与出处已对照本地题库校验</span>' + aiTips + '</div>'
+    : (ui.finalAiPlanError ? '<div class="final-ai-note is-warn"><b>AI 排程未完成</b><span>' + esc(ui.finalAiPlanError) + '；当前仍使用本地计划。</span></div>' : '');
+  var introBadge = ai ? 'AI 个性化' : '智能排程';
+  var introTitle = ai ? 'AI 已按你的章节与考试时间重排每天的学习单元' : '按所选章节与考试时间生成，具体到每一天';
+  var introCopy = ai
+    ? '由 ' + esc(ai.model || '已配置模型') + ' 生成；每个单元的章节、知识点、模板与例题都在本地题库中校验，无法校验的条目会被丢弃，失败时自动保留本地计划。'
+    : '默认本地排程，不调用外部 API；配置 AI 后可让模型按你的章节与考试时间个性化定制。知识点来自对应科目 skill，逐条标注教材章节与小节出处。';
+  return '<div class="final-plan-intro"><div><span class="final-plan-badge">' + esc(introBadge) + '</span><b>' + esc(introTitle) + '</b><p>' + esc(introCopy) + '</p></div><div class="final-plan-side"><span class="final-plan-meta">' + data.chapters.length + ' 章 · ' + pointTotal + ' 个知识点 · 每天约 ' + data.dailyMinutes + ' 分钟</span>' + aiActions + '</div></div>' + aiNote +
     '<div class="final-count-banner"><b>' + data.total + '</b><span>天复习窗口</span><small>' + finalDateKey(data.today) + ' → ' + finalDateKey(data.exam) + '</small></div>' +
     '<div class="final-phase-grid">' + phaseCards + '</div>' +
     '<div class="final-plan-usage"><b>每天怎么用</b><ol><li>先用 10 分钟口述当天章节的答题模板。</li><li>用 ' + data.dailyMinutes + ' 分钟独立做例题，不翻答案。</li><li>对照考试标准解答和详细解析，补上跳过的步骤。</li><li>把卡点写成一句错因；考前一天只看模板与错因。</li></ol></div>' +
@@ -1360,6 +1606,14 @@ function finalUpdatePaperItem(el) {
   finalSaveSoon();
 }
 
+document.addEventListener('click', function (e) {
+  var s = e.target && e.target.closest ? e.target.closest('summary') : null;
+  if (!s) return;
+  var d = s.parentElement;
+  if (!d || !d.matches || !d.matches('details.final-plan-module, details.fd-more')) return;
+  var body = d.querySelector('[data-final-lazy]');
+  if (body) finalPlanFillLazy(body);
+}, true);
 document.addEventListener('input', function (e) {
   var t = e.target;
   if (!t || !t.getAttribute) return;

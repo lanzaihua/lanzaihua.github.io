@@ -571,6 +571,8 @@ document.addEventListener('click', function (e) {
   if (!el) return;
   var act = el.getAttribute('data-act');
   if (act === 'final-ai-paper') { e.preventDefault(); finalPaperAiGenerate(); }
+  else if (act === 'final-ai-plan') { e.preventDefault(); finalAiGeneratePlan(); }
+  else if (act === 'final-ai-reset') { e.preventDefault(); finalAiResetPlan(); }
   else if (act === 'final-insert-material') { e.preventDefault(); finalPaperImportMaterial(); }
   else if (act === 'final-chapter') { e.preventDefault(); finalPaperToggleChapter(el.getAttribute('data-chapter')); }
   else if (act === 'final-section') { e.preventDefault(); finalPaperToggleSection(el.getAttribute('data-section')); }

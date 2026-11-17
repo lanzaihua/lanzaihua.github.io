@@ -9810,3 +9810,24 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 .final-day .fd-focus { display: grid !important; -webkit-line-clamp: unset !important; -webkit-box-orient: initial !important; overflow: visible !important; line-height: 1.5 !important; }
 .final-day .fd-focus > * { min-width: 0; }
 .final-day .fd-task { overflow-wrap: anywhere; }
+.final-plan-side { display: grid; gap: 7px; justify-items: end; flex: 0 1 auto; min-width: 0; }
+.final-ai-actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.final-ai-actions .btn { min-height: 32px; white-space: nowrap; }
+.final-ai-actions .btn[disabled] { opacity: .55; cursor: not-allowed; }
+.final-ai-note { display: grid; gap: 4px; margin: 0 0 12px; padding: 10px 12px; border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line)); border-radius: 10px; background: color-mix(in srgb, var(--accent-soft) 42%, var(--surface)); }
+.final-ai-note > b { color: var(--accent-deep); font-size: 11px; letter-spacing: .03em; }
+.final-ai-note > span { color: var(--muted); font-size: 10.5px; line-height: 1.65; overflow-wrap: anywhere; }
+.final-ai-note ul { margin: 2px 0 0; padding-left: 17px; display: grid; gap: 2px; color: var(--muted); font-size: 10.5px; line-height: 1.65; }
+.final-ai-note.is-warn { border-color: color-mix(in srgb, #b45309 34%, var(--line)); background: color-mix(in srgb, #fef3c7 42%, var(--surface)); }
+@media (max-width: 760px) {
+  .final-plan-side { justify-items: start; width: 100%; }
+  .final-ai-actions { width: 100%; justify-content: flex-start; }
+  .final-ai-actions .btn { flex: 1 1 auto; }
+}
+
+/* 每日计划展开后的例题正文跟卡片同宽，长公式在自身容器内滚动 */
+.fd-focus { min-width: 0; }
+.fd-more-body, .fd-more-body .fpe-item, .fd-more-body .fpe-question, .fd-more-body .fpe-answer, .fd-more-body .md { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+.fd-more-body .math-display, .fd-more-body math[display="block"], .fd-more-body .tml-display { max-width: 100%; overflow-x: auto; }
+
+.fd-more-body { grid-template-columns: minmax(0, 1fr); }

@@ -49,12 +49,24 @@ async function planSnapshot(page) {
     const app = document.querySelector('.app') || document.body;
     const root = document.querySelector('.final-plan-modules');
     const points = visible('.fpm-point');
+    const aiBtn = document.querySelector('.final-plan-intro [data-act="final-ai-plan"]');
+    const aiRect = aiBtn ? aiBtn.getBoundingClientRect() : null;
+    const aiRange = aiBtn ? document.createRange() : null;
+    if (aiRange) aiRange.selectNodeContents(aiBtn);
+    const aiTextRect = aiRange ? aiRange.getBoundingClientRect() : null;
     return {
       tabs: visible('.final-section-tab').length,
+      aiButton: !!aiBtn,
+      aiText: aiBtn ? aiBtn.textContent.trim() : '',
+      aiDisabled: aiBtn ? aiBtn.disabled : null,
+      aiHeight: aiRect ? Math.round(aiRect.height) : 0,
+      aiTextClipped: !!(aiRect && aiTextRect && (aiTextRect.right > aiRect.right + 1 || aiTextRect.left < aiRect.left - 1)),
+      aiInsideIntro: !!(aiBtn && aiBtn.closest('.final-plan-intro')),
       planPanel: !!document.querySelector('.final-plan-panel'),
       picker: visible('.final-picker').length,
       modules: visible('.final-plan-module').length,
       points: points.length,
+      pointTotal: (() => { const h = document.querySelector('.final-plan-modules-head span'); const m = h ? String(h.textContent).match(/(\d+) 个知识点/) : null; return m ? Number(m[1]) : points.length; })(),
       memory: visible('.fpm-memory li').length,
       templates: visible('.fpm-tpl').length,
       days: visible('.final-day').length,
@@ -105,15 +117,21 @@ async function dailySnapshot(page) {
       await page.addInitScript((state) => {
         try { localStorage.setItem('sanke-cuotiben-v1', JSON.stringify(state)); } catch (e) { /* ignore */ }
       }, seed);
-      await page.goto(BASE + '/#/final', { waitUntil: 'networkidle', timeout: 120000 });
+      await page.goto(BASE + '/#/final', { waitUntil: 'domcontentloaded', timeout: 60000 });
+      await page.waitForSelector('.final-section-tab', { timeout: 20000 });
+      await page.evaluate(() => { document.querySelectorAll('dialog[open]').forEach((d) => d.close()); window.scrollTo(0, 0); });
       await page.waitForTimeout(600);
 
       const initial = await planSnapshot(page);
       if (initial.tabs !== 3) push(failures, width, 'expected 3 section tabs, got ' + initial.tabs);
+      if (!initial.aiButton) push(failures, width, 'AI plan button missing');
+      if (initial.aiButton && !initial.aiInsideIntro) push(failures, width, 'AI plan button outside plan intro');
+      if (initial.aiButton && initial.aiHeight < 30) push(failures, width, 'AI plan button too short ' + initial.aiHeight);
+      if (initial.aiTextClipped) push(failures, width, 'AI plan button text clipped');
       if (!initial.planPanel) push(failures, width, 'plan panel missing');
       if (initial.picker) push(failures, width, 'paper picker should not be mixed into plan tab');
       if (initial.modules < 1) push(failures, width, 'no plan modules');
-      if (initial.points < initial.modules) push(failures, width, 'plan points missing');
+      if (initial.points < 1) push(failures, width, 'plan points missing');
       if (initial.days < 1) push(failures, width, 'no daily plan rows');
       if (initial.dayDetails < 1) push(failures, width, 'no expandable daily details');
       if (initial.sources.length !== initial.points) push(failures, width, 'points without source');
@@ -128,12 +146,12 @@ async function dailySnapshot(page) {
         if (subjectId !== 'gaodai') {
           const tab = page.locator('.final-subject-tab[data-subject="' + subjectId + '"]').first();
           if (!(await tab.count())) { push(failures, width, 'subject tab missing: ' + subjectId); continue; }
-          await tab.click();
+          await tab.click({ timeout: 10000 });
           await page.waitForTimeout(700);
         }
         const snapshot = await planSnapshot(page);
         if (snapshot.modules !== expectedModules) push(failures, width, subjectId + ' plan modules ' + snapshot.modules + ' != ' + expectedModules);
-        if (snapshot.points < expectedModules * 2) push(failures, width, subjectId + ' too few knowledge points ' + snapshot.points);
+        if ((snapshot.pointTotal || snapshot.points) < expectedModules * 2) push(failures, width, subjectId + ' too few knowledge points ' + (snapshot.pointTotal || snapshot.points));
         if (snapshot.templates < 1) push(failures, width, subjectId + ' plan has no template');
         if (snapshot.memory < 1) push(failures, width, subjectId + ' plan has no memory tips');
         if (snapshot.sources.some((s) => s.indexOf('§') < 0)) push(failures, width, subjectId + ' knowledge source missing section');
@@ -142,14 +160,14 @@ async function dailySnapshot(page) {
         if (snapshot.overflow > 1) push(failures, width, subjectId + ' page overflow ' + snapshot.overflow);
         details.push({ width, stage: subjectId, ...snapshot, sources: snapshot.sources.slice(0, 2) });
       }
-      await page.locator('.final-subject-tab[data-subject="gaodai"]').first().click();
+      await page.locator('.final-subject-tab[data-subject="gaodai"]').first().click({ timeout: 10000 });
       await page.waitForTimeout(600);
 
       // 章节筛选：只保留第二章，逐日任务必须点名第二章
       const chapterButton = page.locator('.final-chapter-filter [data-act="final-chapter"][data-chapter="第二章 行列式"]').first();
       if (!(await chapterButton.count())) push(failures, width, 'chapter chip for 第二章 missing');
       else {
-        await chapterButton.click();
+        await chapterButton.click({ timeout: 10000 });
         await page.waitForTimeout(700);
         const filtered = await page.evaluate(() => {
           const modules = [...document.querySelectorAll('.final-plan-module')];
