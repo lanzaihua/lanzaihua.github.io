@@ -13,6 +13,12 @@ function cleanMathSource(tex) {
     return '\\begin{' + env + '}' + body.replace(/(?<!\\)\$/g, '') + '\\end{' + env + '}';
   });
   t = t.replace(/^\$+|\$+$/g, '');
+  // 兜底修复 AI 返回的伪记号；normalizeNoisyMathMarkup 已在解析前处理正文，
+  // 这里保证 renderMath() 被单独调用时也不会排成空底数。
+  t = t.replace(/(\([^()\n]{1,40}\))\s*\(\s*\^\s*\{([^{}\n]+)\}\s*\)/g, '$1^{($2)}');
+  t = t.replace(/([A-Za-z])\s*\(\s*\^\s*\{([^{}\n]+)\}\s*\)/g, '$1^{($2)}');
+  t = t.replace(/(^|[^\\A-Za-z])C\s*\(\s*([A-Za-z0-9]+)\s*,\s*([A-Za-z0-9]+)\s*\)/g, '$1\\binom{$2}{$3}');
+  t = t.replace(/(^|[^\\A-Za-z])(sin|cos|tan|cot|sec|csc|arcsin|arccos|arctan|sinh|cosh|tanh|ln|log|exp)(?=\s*(?:_|\^|[\(\[]|[A-Za-z]))/g, '$1\\$2 ');
   // 西经题解里常见 \frac{名义GDP}{实际GDP}：中文放进 \text{}，否则 Temml 无法解析。
   t = t.replace(/\\frac\{([^{}]*[\u4e00-\u9fa5][^{}]*)\}\{([^{}]*[\u4e00-\u9fa5][^{}]*)\}/g, function (m, a, b) {
     return '\\frac{\\text{' + a + '}}{\\text{' + b + '}}';
@@ -678,10 +684,33 @@ function inlineMathHtml(tex) {
   return '<span class="math-inline-scroll' + (hasMatrix ? ' has-matrix' : '') + (hasTall ? ' has-tall' : '') + '">' + html + '</span>';
 }
 
+function normalizeNoisyMathMarkup(src) {
+  var s = String(src || '');
+  if (!s) return s;
+  // AI/OCR 偶尔把 HTML 片段当成数学内容返回：<span class="PA">、&lt;span ...&gt;
+  // 会在页面上原样显示成标签文字，先去掉标签、保留其中文字。
+  s = s.replace(/&lt;\/?span\b[\s\S]*?&gt;/gi, '');
+  s = s.replace(/<\/?span\b[^>]*>/gi, '');
+  s = s.replace(/\bclass=["'](?:PA|AQ)["']\s*>/gi, '');
+  // 高阶导数的伪记号：f(^{n})、(uv)(^{n})、u(^{n-k})。
+  // 正确写法是 f^{(n)}，否则 Temml 会把它排成“空底数的上标 + 括号”。
+  s = s.replace(/(\([^()\n]{1,40}\))\s*\(\s*\^\s*\{([^{}\n]+)\}\s*\)/g, '$1^{($2)}');
+  s = s.replace(/([A-Za-z])\s*\(\s*\^\s*\{([^{}\n]+)\}\s*\)/g, '$1^{($2)}');
+  // 教材/模型常写 C(n,k)；统一成 \binom，中文排版才与组合数一致。
+  s = s.replace(/(^|[^\\A-Za-z])C\s*\(\s*([A-Za-z0-9]+)\s*,\s*([A-Za-z0-9]+)\s*\)/g, '$1\\binom{$2}{$3}');
+  // sinx / ln(1+x) 这类写法必须带反斜杠，否则会被排成 s i n x。
+  s = s.replace(/(^|[^\\A-Za-z])(sin|cos|tan|cot|sec|csc|arcsin|arccos|arctan|sinh|cosh|tanh|ln|log|exp)(?=\s*(?:_|\^|[\(\[]|[A-Za-z]))/g, '$1\\$2 ');
+  // 1/[x(1-x)]、n!/[k!(n-k)!] 这类线性分式也统一成 \frac。
+  s = s.replace(/(^|[^\\A-Za-z0-9])([A-Za-z0-9!]+)\s*\/\s*\[([^\]\n]{1,80})\]/g, '$1\\frac{$2}{$3}');
+  s = s.replace(/(^|[^\\A-Za-z0-9])([A-Za-z0-9!]+)\s*\/\s*(\([^()\n]{1,40}\))\s*\^\s*\{([^{}\n]+)\}/g, '$1\\frac{$2}{$3^{$4}}');
+  return s;
+}
+
 function renderMarkdown(src) {
   if (!src) return '';
   var codeSeg = extractCodeSegments(src);
   src = codeSeg.text;
+  src = normalizeNoisyMathMarkup(src);
   src = normalizeMarkdownHeadings(src);
   src = normalizeCjkStrong(src);
   src = normalizeEscapedLineBreaks(src).replace(/\uFFFD+/g, '');

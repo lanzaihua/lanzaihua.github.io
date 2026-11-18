@@ -49,6 +49,11 @@ jobs:
           PAGE_URL=http://127.0.0.1:4173 npm run qa:final
           PAGE_URL=http://127.0.0.1:4173 npm run qa:polish
           PAGE_URL=http://127.0.0.1:4173 npm run qa:resume
+          PAGE_URL=http://127.0.0.1:4173 ONLY_WIDTH=390 npm run qa:search
+          sleep 2
+          PAGE_URL=http://127.0.0.1:4173 ONLY_WIDTH=768 npm run qa:search
+          sleep 2
+          PAGE_URL=http://127.0.0.1:4173 ONLY_WIDTH=1440 npm run qa:search
       - name: Formula rendering regression
         run: npm run qa:formulas
 

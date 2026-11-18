@@ -21,7 +21,7 @@ function knowledgeSearchSubject(query) {
   var q = String(query || '');
   var hints = {
     gaodai: ['高代', '高等代数', '线性代数', '矩阵', '行列式', '多项式', '二次型', '特征值', '若尔当'],
-    shufen: ['数分', '数学分析', '极限', '无穷小', '无穷大', '连续', '导数', '微分', '积分', '级数', '收敛', '中值', '泰勒', '洛必达', '偏导', '重积分', '曲线积分', '曲面积分', '柯西', 'ε'],
+    shufen: ['数分', '数学分析', '极限', '无穷小', '无穷大', '连续', '间断点', '可去间断点', '跳跃间断点', '第二类间断点', '一致连续', '导数', '高阶导数', '微分', '中值', '泰勒', '洛必达', '偏导', '全微分', '不定积分', '定积分', '反常积分', '重积分', '曲线积分', '曲面积分', '级数', '收敛', '柯西', 'ε'],
     jieji: ['解几', '解析几何', '向量', '平面', '空间直线', '法式方程', '法向量', '点面距离', '异面直线', '平面束', '柱面', '锥面', '旋转曲面', '椭球面', '双曲面', '抛物面', '二次曲面', '二次曲线', '主方向', '不变量'],
     xijing: ['西经', '西方经济学', '微观', '宏观', '弹性', '边际', '效用', '消费者', '需求', '供给', 'GDP', '通胀', 'IS-LM', '索洛']
   };
@@ -96,57 +96,24 @@ function knowledgeSearchExcerpt(text, query) {
     return { title: '', text: '', noMatch: true };
   }
   var parent = best.unit.section || '';
-  // 优先返回“匹配点所在的完整小节”，而不是只给两段摘要。
-  var sectionLines = [];
-  var inSection = false;
-  for (var li = 0; li < lines.length; li++) {
-    var line = lines[li];
-    var heading = line.match(/^##\s*(.+)$/);
-    if (heading) {
-      if (inSection) break;
-      if (heading[1].trim() === parent) { inSection = true; sectionLines.push(line); }
-      continue;
-    }
-    if (inSection) sectionLines.push(line);
+  // 只取命中条目及其后同小节的两条，避免把整章 Key Concepts 全部塞进面板：
+  // 同一组概念重复两次既浪费空间，也会让用户以为知识点被讲了两遍。
+  var picked = [best.unit.text];
+  for (var pi = best.index + 1; pi < units.length && picked.length < 3; pi++) {
+    if (units[pi].section !== parent) break;
+    picked.push(units[pi].text);
   }
-  var sectionText = sectionLines.join('\n').trim();
-  if (sectionText.length < 80) sectionText = [best.unit.text].concat(units.slice(best.index + 1, best.index + 5).map(function (u) { return u.text; })).join('\n\n');
-  // 1) 短小节补入同章后续 3 个知识小节。
-  if (sectionText.length < 1600) {
-    var sectionStart = -1;
-    for (var sx = 0; sx < lines.length; sx++) {
-      var sm = lines[sx].match(/^##\s*(.+)$/);
-      if (sm && sm[1].trim() === parent) { sectionStart = sx; break; }
-    }
-    if (sectionStart >= 0) {
-      var extraLines = [];
-      var extraCount = 0;
-      for (var si = sectionStart + 1; si < lines.length; si++) {
-        if (/^##\s+/.test(lines[si])) {
-          extraCount++;
-          if (extraCount > 3) break;
-          extraLines.push('');
-        }
-        extraLines.push(lines[si]);
-      }
-      var extraText = extraLines.join('\n').trim();
-      if (extraText) sectionText += '\n\n' + extraText;
-    }
+  var seen = {};
+  var sectionText = picked.join('\n\n').split('\n').filter(function (line) {
+    var key = line.trim();
+    if (!key) return true;
+    if (seen[key]) return false;
+    seen[key] = 1;
+    return true;
+  }).join('\n').trim();
+  if (sectionText.length < 80) {
+    sectionText = [best.unit.text].concat(units.slice(best.index + 1, best.index + 3).map(function (u) { return u.text; })).join('\n\n');
   }
-  // 2) 补一段同章例题/解题套路，避免只有概念没有例题。
-  var exampleLines = [];
-  var inExample = false;
-  for (var ei = 0; ei < lines.length; ei++) {
-    var ehead = lines[ei].match(/^##\s+(.+)$/);
-    if (ehead) {
-      if (inExample) break;
-      if (!sectionText.includes(ehead[1]) && /例题|典型|Example|Worked|解题|题型|应用/.test(ehead[1])) { inExample = true; exampleLines.push(lines[ei]); }
-      continue;
-    }
-    if (inExample) exampleLines.push(lines[ei]);
-  }
-  var exampleText = exampleLines.join('\n').trim();
-  if (exampleText.length > 120) sectionText += '\n\n' + exampleText.slice(0, 3600);
   if (sectionText.length > 11000) sectionText = sectionText.slice(0, 11000) + '\n\n（本节内容较长，先展示前 11000 字；可继续搜索更具体的小节。）';
   var textOut = sectionText;
   return { title: knowledgeTitleChineseFirst(parent), text: knowledgeTitleChineseFirst(textOut), noMatch: false };
@@ -317,6 +284,7 @@ function knowledgeSearchPanelHtml() {
     '<h2>' + esc(a.title || a.query) + '</h2>' +
     '<p class="kb-answer-meta"><span>' + esc(subj.name) + '</span><span>skill：' + esc(subj.skill) + '</span></p>' +
     '<div class="kb-answer-body md">' + body + '</div>' +
+    (a.aiError ? '<p class="kb-ai-warn" role="status">' + esc(a.aiError) + '</p>' : '') +
     questionHtml +
     '<div class="kb-answer-source">教材出处：' + sourceLine + '</div>' +
     '<div class="kb-answer-ask"><span>是否将此知识点加入知识笔记？</span><div>' +
@@ -407,6 +375,7 @@ async function knowledgeSearchRun(query) {
     } else {
       content = '## 教材定位\n\n' + (chapter ? '本章：' + chapter.label + '。' : '') + '\n\n' + segment.text;
     }
+    if (typeof normalizeNoisyMathMarkup === 'function') content = normalizeNoisyMathMarkup(content);
     ui.kbAnswer = { query: q, subject: subject, title: q, content: content, busy: false, source: source, added: false, questions: knowledgeSearchQuestionHits(subject, q) };
     render();
     knowledgeSearchNotify(subject, q, source, !!segment.noMatch);
@@ -419,6 +388,40 @@ async function knowledgeSearchRun(query) {
     render();
     knowledgeSearchNotify(subject, q, null, true, '技能内容读取失败');
   }
+}
+
+function knowledgeContentIssues(content) {
+  var s = String(content || '');
+  var issues = [];
+  if (!s.trim()) issues.push('正文为空');
+  var html = s.replace(/<br\s*\/?>/gi, '\n');
+  if (/<\/?(?:span|div|p|table|tbody|thead|tr|td|th|script|style|iframe|svg|img|a|br|strong|em|ul|ol|li)\b[^>]*>/i.test(html)) issues.push('含 HTML 标签');
+  if (/\bclass\s*=\s*["'][^"']*["']/i.test(html)) issues.push('含 HTML 属性');
+  var outside = s.replace(/\$\$[\s\S]*?\$\$/g, ' ').replace(/\$[^$\n]*\$/g, ' ');
+  if (/(?:^|[^\\A-Za-z])[A-Za-z]\s*\(\s*\^/.test(outside)) issues.push('高阶导数写法不规范');
+  if (/(?:^|[^\\A-Za-z])C\s*\(\s*[A-Za-z0-9]+\s*,/.test(outside)) issues.push('组合数写法不规范');
+  if (/(?:^|[^\\A-Za-z])(?:sin|cos|tan|ln|log|exp)\s*[A-Za-z(]/.test(outside)) issues.push('初等函数写法不规范');
+  if (/(?:^|[^\\A-Za-z0-9])[A-Za-z0-9!]+\s*\/\s*\[/.test(outside)) issues.push('分式写法不规范');
+  if (/\\(?:frac|sum|int|sqrt|begin|alpha|beta|gamma|pi|cdot|times|le|ge|ne|in|subset|ldots|cdots)\b/.test(outside)) issues.push('LaTeX 命令在公式外');
+  var dollars = 0;
+  for (var i = 0; i < s.length; i++) {
+    if (s[i] === '$' && s[i - 1] !== '\\') dollars++;
+  }
+  if (dollars % 2) issues.push('公式定界符不成对');
+  if (/\uFFFD/.test(s)) issues.push('含乱码');
+  return issues;
+}
+
+function knowledgeTitleFromAi(title) {
+  var t = knowledgeAiNormalize(String(title || '')).replace(/\s+/g, ' ').trim();
+  return t.slice(0, 80);
+}
+
+function knowledgeAiNormalize(content) {
+  var s = String(content || '');
+  if (typeof normalizeNoisyMathMarkup === 'function') s = normalizeNoisyMathMarkup(s);
+  if (typeof wrapBareLatex === 'function') s = wrapBareLatex(s);
+  return s;
 }
 
 async function knowledgeSearchAi(query, subject, token) {
@@ -444,7 +447,8 @@ async function knowledgeSearchAi(query, subject, token) {
     var sys = '你是「四科错题本」的课程助教。只能使用提供的 /' + bundle.id + ' skill 材料与教材知识回答。只输出 JSON，不要代码围栏。';
     var ask = '请只详细回答知识点：' + query + '。如果材料没有直接讲解该知识点，content 必须写“教材技能包中没有检索到该知识点的直接讲解”，不得改用相邻概念或无关章节。\n' +
       '输出 JSON：{"title":"知识点标题","content":"详细正文，Markdown，尽量完整：定义、定理/公式、推导或方法、至少 2 个例题、易错点、考研用法","book":"教材名","chapter":"第X章 章名","section":"第X节 小节名","page":"第X页","tags":["标签"]}。' +
-      '必须给出教材章节、小节与页码；页码应以教材纸书为准，不能确定时写“以纸书该节页码为准”，不要编造不存在的页码。\n\n' +
+      '必须给出教材章节、小节与页码；页码应以教材纸书为准，不能确定时写“以纸书该节页码为准”，不要编造不存在的页码。\n' +
+      '数学公式必须用标准 LaTeX（行内 $...$）：高阶导数写 f^{(n)}、y^{(n)}；组合数写 \\binom{n}{k} 或 C_n^k；三角/对数写 \\sin x、\\ln x；矩阵用 pmatrix/bmatrix。禁止 f(^{n})、C(n,k)、sinx、1/[x(1-x)] 这类伪记号，禁止输出 HTML 标签（包括 span）。\n\n' +
       '【技能材料】\n' + bundle.materials.map(function (m) { return '### ' + m.label + '\n' + m.text; }).join('\n\n');
     var kbPushAt = 0;
     var kbFields = ['title', 'content', 'book', 'chapter', 'section', 'page', 'tags'];
@@ -466,15 +470,25 @@ async function knowledgeSearchAi(query, subject, token) {
     kbTask({ step: 2, percent: 90, valueText: '90%', stage: '正在写入补充讲解…', detail: '模型已返回，正在整理标题、章节与例题。' });
     var p = out.parsed || (out.objects && out.objects[0]) || null;
     if (p && p.content) {
+      var aiContent = knowledgeAiNormalize(String(p.content || ''));
       // 本地已经命中直接讲解时，AI 不得用“没有收录”覆盖它；AI 只做补充讲解。
-      if (/没有检索到|没有直接讲解|未收录/.test(String(p.content)) && ui.kbAnswer && !/未找到直接讲解/.test(String(ui.kbAnswer.content || ''))) {
+      if (/没有检索到|没有直接讲解|未收录/.test(aiContent) && ui.kbAnswer && !/未找到直接讲解/.test(String(ui.kbAnswer.content || ''))) {
         if (taskOn) longTaskFinish('kb-ai', { stage: '已保留本地讲解', detail: 'AI 没有给出更具体的补充，本地教材定位保持不变。' });
+        return;
+      }
+      var issues = knowledgeContentIssues(aiContent);
+      if (issues.length) {
+        if (ui.kbAnswer) {
+          ui.kbAnswer.aiError = 'AI 返回的公式未通过校验（' + issues.join('、') + '），已保留本地教材讲解。';
+          render();
+        }
+        if (taskOn) longTaskFinish('kb-ai', { stage: '已保留本地讲解', detail: 'AI 返回的公式未通过校验，已保留教材原文；可稍后重试。' });
         return;
       }
       var priorQuestions = ui.kbAnswer && ui.kbAnswer.questions;
       ui.kbAnswer = {
-        query: query, subject: subject, title: String(p.title || query),
-        content: knowledgeTitleChineseFirst(String(p.content || '')),
+        query: query, subject: subject, title: knowledgeTitleFromAi(p.title || query),
+        content: knowledgeTitleChineseFirst(aiContent),
         busy: false,
         source: {
           book: String(p.book || bundle.name + '（教材）'),

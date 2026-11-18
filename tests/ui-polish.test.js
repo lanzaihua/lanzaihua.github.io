@@ -71,9 +71,17 @@ test('UI polish gate is wired into scripts, CI and the current update block', ()
   const pkg = JSON.parse(read('package.json'));
   assert.strictEqual(pkg.scripts['qa:polish'], 'node tools/qa-ui-polish.js');
   assert.strictEqual(pkg.scripts['qa:resume'], 'node tools/qa-resume.js');
+  assert.strictEqual(pkg.scripts['qa:search'], 'node tools/qa-search.js');
   const workflow = read('.github/workflows/quality.yml');
   assert.ok(workflow.includes('npm run qa:polish'), 'CI 没有运行 qa:polish');
   assert.ok(workflow.includes('npm run qa:resume'), 'CI 没有运行 qa:resume');
+  assert.ok(workflow.includes('npm run qa:search'), 'CI 没有运行 qa:search');
+  const searchGate = read('tools/qa-search.js');
+  assert.ok(searchGate.includes('const WIDTHS = [390, 768, 1440];'), '搜索门禁没有覆盖手机/平板/桌面');
+  assert.ok(searchGate.includes('pseudo notation remains'), '搜索门禁没有检查 AI 伪 LaTeX');
+  assert.ok(searchGate.includes('broken ai did not show warning'), '搜索门禁没有检查 AI 公式校验回退');
+  assert.ok(searchGate.includes('concept duplicated'), '搜索门禁没有检查知识点重复');
+  assert.ok(searchGate.includes('subject='), '搜索门禁没有检查科目误判');
   const init = read('src/js/90-init.js');
   assert.ok(init.includes('function restoreLastRoute()') && init.includes('function rememberRoute('), '缺少刷新后恢复上次界面的逻辑');
   assert.ok(init.includes("h = '#/final/' + finalSectionValue()"), '期末子页没有写入地址');

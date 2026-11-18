@@ -10167,3 +10167,26 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 .fd-memory .fd-memory-tip{display:block!important}
 .fd-memory .fpm-memory-row{display:block!important;margin-top:4px!important;color:var(--muted)!important;font-size:10.5px!important;line-height:1.7!important}
 .fd-memory .fpm-memory-row b{display:inline-block!important;margin:0 4px 0 0!important;color:var(--accent-deep)!important;font-size:9.5px!important;letter-spacing:.04em!important}
+
+/* ---- knowledge AI validation warning (2026-11-18) ---- */
+.kb-ai-warn {
+  margin: 12px 0 0;
+  padding: 8px 10px;
+  border: 1px solid rgba(160, 82, 45, .28);
+  border-radius: 8px;
+  background: rgba(160, 82, 45, .06);
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.65;
+}
+.kb-ai-warn::before {
+  content: "公式校验";
+  display: inline-block;
+  margin-right: 8px;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: rgba(160, 82, 45, .12);
+  color: var(--accent-strong, #8a3a1d);
+  font-size: 10px;
+  letter-spacing: .04em;
+}

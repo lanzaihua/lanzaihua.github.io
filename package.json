@@ -38,7 +38,8 @@
     "qa:baseline": "node tools/check-bank-baseline.js",
     "qa:latex": "node tools/qa-bank-latex.js",
     "qa:bank-consistency": "node tools/qa-bank-consistency.js",
-    "qa:resume": "node tools/qa-resume.js"
+    "qa:resume": "node tools/qa-resume.js",
+    "qa:search": "node tools/qa-search.js"
   },
   "devDependencies": {
     "axe-core": "^4.14.0",

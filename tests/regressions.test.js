@@ -144,6 +144,29 @@ test('Markdown strips executable tags, URL schemes and attributes; preserves Mar
   assert.equal(bankTitle.includes('<math'), false, bankTitle);
   assert.match(bankTitle, /2★/);
 });
+
+test('pseudo LaTeX from AI knowledge answers is normalized before rendering',()=>{
+  const {parseHTML}=require('linkedom'); const {document}=parseHTML('<!doctype html><html><body></body></html>');
+  const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
+  vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
+  const sample = '若 f 的 n-1 阶导数 f(^{n-1}) 在 x_0 处可导，则记作 f(^{n})(x_{0})、y(^{n})|_{x=x_{0}}。由莱布尼茨公式 (uv)(^{n}) = \\sum _{k=0}^{n} C(n,k) u(^{n-k}) v^{(k)}，其中 C(n,k)=n!/[k!(n-k)!]。例 3 设 y=e^x sinx，求 y(^{n})。左乘 <span class="PA">交换 A 的第 i,j 行。1/[x(1-x)] 的 n 阶导数为 n!/(1-x)^{n+1}。';
+  const html=r.ctx.renderMarkdown(sample);
+  const e=document.createElement('div');e.innerHTML=html;
+  assert.equal(e.querySelectorAll('.math-raw,.temml-error').length,0,html);
+  assert.equal((e.textContent.match(/\$/g)||[]).length,0,html);
+  assert.equal(/<\s*span/i.test(e.textContent),false,html);
+  assert.equal(e.textContent.includes('(^'),false,html);
+  assert.ok(e.querySelectorAll('math').length>=8,html);
+  r.run('57-knowledge-search.js');
+  const clean=r.ctx.knowledgeAiNormalize(sample);
+  assert.deepEqual(Array.from(r.ctx.knowledgeContentIssues(clean)),[]);
+  assert.ok(r.ctx.knowledgeContentIssues('f(^{n}) 与 <span class="PA">x</span> 1/[x(1-x)]').length>=3);
+  assert.ok(r.ctx.knowledgeContentIssues('未闭合 $x^2').includes('公式定界符不成对'));
+  assert.ok(r.ctx.knowledgeContentIssues('<div class="x">x</div>').includes('含 HTML 标签'));
+  assert.equal(r.ctx.knowledgeContentIssues('x<y 且 x>0').includes('含 HTML 标签'),false);
+  assert.equal(r.ctx.knowledgeSearchSubject('高阶导数'),'shufen');
+  assert.equal(r.ctx.knowledgeSearchSubject('一致连续'),'shufen');
+});
 test('literal angle brackets and inline <b> text survive Markdown rendering',()=>{
   const {parseHTML}=require('linkedom'); const {document}=parseHTML('<!doctype html><html><body></body></html>');
   const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
@@ -927,7 +950,7 @@ test('README puts source details after technical notes and before feedback, with
   assert.ok(md.includes('885 道教材课后'),'教材课后 current count');
   assert.ok(md.includes('416 道习题集'),'习题集 current count');
   assert.ok(md.includes('9651'),'bank total');
-  assert.ok(md.includes('146 项回归测试'),'current test count');
+  assert.ok(md.includes('147 项回归测试'),'current test count');
   assert.ok(!md.includes('126 项回归测试')&&!md.includes('92 项回归测试')&&!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.18 Release'),'current release link');
   assert.equal(/\bv?\d{4}\.\d{2}\.\d{2}\.\d+\b/.test(md),false,'README must not keep dotted release versions');
