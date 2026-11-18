@@ -49,6 +49,8 @@ async function runWidth(browser, width) {
     if (!localStorage.getItem('sanke-cuotiben-v1')) localStorage.setItem('sanke-cuotiben-v1', JSON.stringify(state));
   }, seed);
   await open(page, '#/final');
+  // 线上首访会先渲染本机提示与题库缓存，期末三入口晚于骨架出现；等入口挂载后再计数。
+  await page.waitForSelector('[data-act="final-section"]', { timeout: 12000 }).catch(() => {});
   const tabs = await page.locator('[data-act="final-section"]').count();
   if (tabs !== 3) push(failures, width, '期末页不是三个入口');
 
