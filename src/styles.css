@@ -10136,3 +10136,6 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .note-library-top { grid-template-columns: minmax(0, 1fr) !important; }
   .note-library-top .note-library-count { justify-self: start !important; }
 }
+
+/* Final review subtitle: balance lines so a narrow phone never leaves a 2-4 character last line. */
+.final-page-head .page-sub { text-wrap: balance !important; }

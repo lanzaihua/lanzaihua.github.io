@@ -266,7 +266,8 @@ async function reading(page, width, failures) {
       count: (count.textContent || '').trim(),
       noteText: (note.textContent || '').trim(),
       lines: rows.length,
-      lastRatio: rows.length ? rows[rows.length - 1].w / (maxW || 1) : 0
+      lastRatio: rows.length ? rows[rows.length - 1].w / (maxW || 1) : 0,
+      balanced: getComputedStyle(sub).textWrap === 'balance'
     };
   });
   if (!plan) { push(failures, width, '期末复习缺科目/章节/说明'); return; }
@@ -274,6 +275,7 @@ async function reading(page, width, failures) {
   if (plan.noteText !== '复习计划只使用当前科目的章节与知识点，不混合科目。') push(failures, width, '期末复习计划科目说明文不对题：' + plan.noteText);
   if (width >= 761 && !plan.noteOnRow) push(failures, width, '期末复习科目说明在桌面未与科目同一行');
   if (plan.count !== '全部章节') push(failures, width, '期末复习未选章节时计数文案不是「全部章节」：' + plan.count);
+  if (!plan.balanced) push(failures, width, '期末复习说明没有启用平衡换行');
   if (plan.lastRatio < 0.55) push(failures, width, '期末复习说明末行过短，末行/最长行 ' + plan.lastRatio.toFixed(2));
 }
 

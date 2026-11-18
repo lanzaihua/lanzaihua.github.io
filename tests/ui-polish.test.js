@@ -32,6 +32,7 @@ test('layout copy and CSS use real chapter counts and fill cramped controls', ()
   assert.ok(css.includes('.final-subject-tabs > .final-subject-note'), '科目说明没有并入科目栏');
   assert.ok(css.includes('.page-nb'), '缺少页面说明的不可拆分短语样式');
   assert.ok(css.includes('.page-break-wide'), '缺少桌面说明的换行控制');
+  assert.ok(css.includes('.final-page-head .page-sub { text-wrap: balance !important; }'), '期末说明没有平衡换行，窄屏会留下过短末行');
   const final = read('src/js/58-final.js');
   assert.ok(final.includes('全部章节'), '未选章节时没有显示「全部章节」');
   assert.ok(final.includes('复习计划只使用当前科目的章节与知识点'), '复习计划科目说明应只描述计划');
@@ -68,6 +69,7 @@ test('UI polish gate is wired into scripts, CI and the current update block', ()
   assert.ok(gate.includes("waitForSelector('.hw-topbar p'"), '排版门禁没有等待线上首页骨架，慢加载会被误判');
   assert.ok(gate.includes('全部章节'), '排版门禁没有检查期末章节计数文案');
   assert.ok(gate.includes('async function finalLayout('), '排版门禁没有检查期末计划留白与章节网格');
+  assert.ok(gate.includes('期末复习说明没有启用平衡换行'), '排版门禁没有检查期末说明的平衡换行');
   assert.ok(gate.includes('章节 chip 宽窄不一'), '排版门禁没有检查章节 chip 等宽');
   assert.ok(gate.includes('出卷页章节筛选顶到卡片边框'), '排版门禁没有检查出卷页筛选内距');
   assert.ok(gate.includes('知识笔记'), '排版门禁没有检查笔记标题拆词');
