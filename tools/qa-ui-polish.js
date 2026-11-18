@@ -208,7 +208,11 @@ async function reading(page, width, failures) {
     const nb = document.querySelector('.hw-nobreak');
     const feat = document.querySelector('.home-features');
     const foot = document.querySelector('.home-foot');
-    if (!p || !feat || !foot) return null;
+    const title = document.querySelector('.home-title');
+    if (!p || !feat || !foot || !title) return null;
+    const pcs = getComputedStyle(p), ncs = nb ? getComputedStyle(nb) : null;
+    const uniform = !ncs || ['fontFamily','fontSize','fontWeight','color','letterSpacing','lineHeight'].every((k) => ncs[k] === pcs[k]);
+    const titleWeight = parseFloat(getComputedStyle(title).fontWeight) || 0;
     const range = document.createRange(); range.selectNodeContents(p);
     const rows = [];
     for (const r of range.getClientRects()) {
@@ -221,6 +225,8 @@ async function reading(page, width, failures) {
       lines: Math.round(p.getBoundingClientRect().height / (parseFloat(getComputedStyle(p).lineHeight) || 21)),
       lastLine: rows.length ? rows[rows.length - 1].r - rows[rows.length - 1].l : 0,
       nbRects: nb ? nb.getClientRects().length : 0,
+      uniform,
+      titleWeight,
       dot: getComputedStyle(document.querySelector('.home-features span:not(:last-child)'), '::after').content,
       footGap: Math.round(foot.getBoundingClientRect().top - feat.getBoundingClientRect().bottom)
     };
@@ -229,6 +235,8 @@ async function reading(page, width, failures) {
   if (width >= 761 && home.lines !== 1) push(failures, width, '首页工作台说明在桌面被无故换行，行数 ' + home.lines);
   if (width <= 760 && home.lines > 2) push(failures, width, '首页工作台说明在手机超过两行，行数 ' + home.lines);
   if (home.nbRects !== 1) push(failures, width, '首页说明末句仍被拆行 nbRects=' + home.nbRects);
+  if (!home.uniform) push(failures, width, '首页说明末句字体/字号/字色与正文不一致');
+  if (home.titleWeight < 700) push(failures, width, '首页问候标题字重不足 700');
   if (home.lastLine < 80) push(failures, width, '首页说明末行过短 ' + home.lastLine.toFixed(1) + 'px');
   if (home.dot && home.dot !== 'none' && home.dot !== 'normal' && home.dot !== '\"\"') push(failures, width, '首页功能条仍有重复分隔点');
   if (home.footGap < 24 || home.footGap > 52) push(failures, width, '首页功能条与页脚间距异常 ' + home.footGap + 'px');
@@ -316,6 +324,24 @@ async function finalLayout(page, width, failures) {
       const tr = range.getBoundingClientRect();
       return { l: b.l, r: b.r, w: b.w, h: b.h, fs: parseFloat(getComputedStyle(el).fontSize) || 0, padL: tr.left - b.l, padR: b.r - tr.right };
     });
+    const pointB = document.querySelector('.fpm-point-head b');
+    const pointSpan = pointB ? pointB.parentElement.querySelector('span') : null;
+    if (pointB && pointSpan) {
+      out.point = {
+        bWeight: parseFloat(getComputedStyle(pointB).fontWeight) || 0,
+        bColor: getComputedStyle(pointB).color,
+        spanColor: getComputedStyle(pointSpan).color,
+        spanFont: getComputedStyle(pointSpan).fontFamily
+      };
+    }
+    const usage = document.querySelector('.final-plan-usage');
+    const usageItems = usage ? [...usage.querySelectorAll('li')].map((li) => {
+      const m = (li.textContent || '').match(/(\d+)\s*分钟/);
+      return m ? Number(m[1]) : null;
+    }) : [];
+    const metaText = (document.querySelector('.final-plan-meta') || {}).textContent || '';
+    const metaMinutes = (metaText.match(/每天约\s*(\d+)\s*分钟/) || [])[1];
+    out.usage = { items: usageItems, total: metaMinutes ? Number(metaMinutes) : 0, heading: (usage && usage.querySelector('b') ? usage.querySelector('b').textContent : '').trim() };
     const countEl = filter.querySelector('.fcf-count');
     out.chips = {
       cols: cs.gridTemplateColumns.split(/\s+/).filter(Boolean).length,
@@ -333,6 +359,17 @@ async function finalLayout(page, width, failures) {
     if (b.missing) { push(failures, width, '期末复习缺 ' + b.label); continue; }
     if (Math.abs(b.leftGap - inner) > 2) push(failures, width, '期末复习' + b.label + '顶到卡片边框，左内距 ' + b.leftGap.toFixed(1) + ' 应为 ' + inner.toFixed(1));
     if (b.label !== '章节模块' && b.label !== '每日安排' && Math.abs(b.rightGap - inner) > 2) push(failures, width, '期末复习' + b.label + '右侧留白不均，右内距 ' + b.rightGap.toFixed(1) + ' 应为 ' + inner.toFixed(1));
+  }
+  if (plan.usage) {
+    const nums = plan.usage.items.filter((x) => typeof x === 'number');
+    const sum = nums.reduce((a, b) => a + b, 0);
+    if (!plan.usage.total || sum !== plan.usage.total) push(failures, width, '复习计划每日用时与总时长不一致：' + sum + ' / ' + plan.usage.total);
+    if (plan.usage.heading && !plan.usage.heading.includes(String(plan.usage.total))) push(failures, width, '复习计划每日用时标题没有写明总分钟数');
+  }
+  if (plan.point) {
+    if (plan.point.bWeight < 700) push(failures, width, '知识点标题字重不足 700');
+    if (plan.point.spanColor === 'rgb(143, 76, 46)') push(failures, width, '知识点出处仍占用章节强调色');
+    if (!/mono/i.test(plan.point.spanFont)) push(failures, width, '知识点出处没有使用等宽小字');
   }
   const tabs = plan.tabs;
   if (tabs.rects.length !== 4) push(failures, width, '期末复习科目按钮不是 4 个：' + tabs.rects.length);

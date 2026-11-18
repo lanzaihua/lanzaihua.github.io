@@ -27,6 +27,12 @@ test('layout copy and CSS use real chapter counts and fill cramped controls', ()
     assert.ok(css.includes('grid-template-columns: repeat(2, minmax(0, 1fr))'), '总览手机操作没有 2×2 网格');
   assert.ok(css.includes('.setting-row-name .user-name-actions'), '设置用户名行没有铺满样式');
   assert.ok(css.includes('.hw-nobreak'), '首页工作台说明缺少不可拆分的末句');
+  assert.ok(css.includes('.hw-topbar > span'), '首页工作台标签选择器仍是后代选择器，会误改说明末句');
+  assert.ok(!css.includes('.hw-topbar span {'), '首页工作台仍用后代选择器命中说明末句');
+  assert.ok(css.includes('letter-spacing: inherit !important;'), '首页说明末句没有继承正文字距');
+  assert.ok(css.includes('.home-title { font-weight: 700 !important; }'), '首页问候标题没有加粗');
+  assert.ok(css.includes('.fpm-point-head b { color: var(--ink) !important; font-weight: 700 !important; }'), '知识点标题没有使用墨色加粗');
+  assert.ok(css.includes('color: var(--muted) !important;') && css.includes('.fpm-point-head span {'), '知识点出处仍占用强调色');
   assert.ok(shell.includes('hw-nobreak'), '首页工作台没有把末句包成不可拆分');
   assert.ok(css.includes('.home-features span:not(:last-child)::after { content: none !important; }'), '首页功能条仍会生成双分隔点');
   assert.ok(css.includes('.final-subject-tabs > .final-subject-note'), '科目说明没有并入科目栏');
@@ -44,6 +50,9 @@ test('layout copy and CSS use real chapter counts and fill cramped controls', ()
   assert.ok(css.includes('.final-papers .final-chapter-filter') && css.includes('padding-left: 20px !important'), '出卷页章节筛选仍顶到卡片边框');
   assert.ok(!final.includes('一张卷只含一个科目'), '出卷页仍重复科目说明');
   assert.ok(final.includes('按考试时长自动选题'), '出卷页缺少清晰的选题说明');
+  assert.ok(final.includes('var practiceMinutes'), '每日用时没有按总时长拆分');
+  assert.ok(final.includes('每天怎么用 · 约 '), '每日用时标题没有写明总时长');
+  assert.ok(!final.includes('每天怎么用</b><ol><li>先用 10 分钟'), '每日用时的例题时间仍会把总时长撑破');
   const notes = read('src/js/49-notes.js');
   assert.ok(notes.includes('<span class="page-nb">知识笔记</span>'), '笔记标题未保护「知识笔记」不被拆行');
   assert.ok(notes.includes('</b> 本</span>'), '笔记标题把数量与「本」拆开');
@@ -73,6 +82,11 @@ test('UI polish gate is wired into scripts, CI and the current update block', ()
   assert.ok(gate.includes('章节 chip 宽窄不一'), '排版门禁没有检查章节 chip 等宽');
   assert.ok(gate.includes('出卷页章节筛选顶到卡片边框'), '排版门禁没有检查出卷页筛选内距');
   assert.ok(gate.includes('知识笔记'), '排版门禁没有检查笔记标题拆词');
+  assert.ok(gate.includes('首页说明末句字体/字号/字色与正文不一致'), '排版门禁没有检查首页说明的字色与字重');
+  assert.ok(gate.includes('首页问候标题字重不足 700'), '排版门禁没有检查首页问候的加粗');
+  assert.ok(gate.includes('知识点标题字重不足 700'), '排版门禁没有检查知识点标题字重');
+  assert.ok(gate.includes('知识点出处仍占用章节强调色'), '排版门禁没有检查知识点出处颜色');
+  assert.ok(gate.includes('复习计划每日用时与总时长不一致'), '排版门禁没有检查每日用时之和');
   assert.ok(gate.includes('最近 30 天'), '排版门禁没有检查统计口径');
   for (const token of ['bank-filter-toggle', 'template-filters', 'note-library-top', 'setting-row-name', 'clipped']) {
     assert.ok(gate.includes(token), '排版门禁缺少检查项 ' + token);

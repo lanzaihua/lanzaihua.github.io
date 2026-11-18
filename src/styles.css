@@ -8530,7 +8530,7 @@ body {
   padding: 0 0 13px;
   border-bottom: 1px solid var(--wa3-rule);
 }
-.hw-topbar span {
+.hw-topbar > span {
   flex: 0 0 auto;
   font-family: var(--font-mono);
   font-size: 10px;
@@ -10139,3 +10139,24 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 
 /* Final review subtitle: balance lines so a narrow phone never leaves a 2-4 character last line. */
 .final-page-head .page-sub { text-wrap: balance !important; }
+
+/* 2026-11-18 · 字体层级：首页说明与问候统一字重/字色，知识点出处不再占用章节强调色 */
+.hw-topbar > p .hw-nobreak,
+.hw-topbar p .hw-nobreak {
+  flex: 0 1 auto !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+}
+.home-title { font-weight: 700 !important; }
+.fpm-point-head b { color: var(--ink) !important; font-weight: 700 !important; }
+.fpm-point-head span {
+  color: var(--muted) !important;
+  background: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  font: 400 9.5px/1.5 var(--font-mono) !important;
+}

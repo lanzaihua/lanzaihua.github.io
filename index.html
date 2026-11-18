@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.18-b43c8907";</script>
+<script>window.__BUILD_ID__="2026.11.18-fea241fd";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -8553,7 +8553,7 @@ body {
   padding: 0 0 13px;
   border-bottom: 1px solid var(--wa3-rule);
 }
-.hw-topbar span {
+.hw-topbar > span {
   flex: 0 0 auto;
   font-family: var(--font-mono);
   font-size: 10px;
@@ -10162,6 +10162,27 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 
 /* Final review subtitle: balance lines so a narrow phone never leaves a 2-4 character last line. */
 .final-page-head .page-sub { text-wrap: balance !important; }
+
+/* 2026-11-18 · 字体层级：首页说明与问候统一字重/字色，知识点出处不再占用章节强调色 */
+.hw-topbar > p .hw-nobreak,
+.hw-topbar p .hw-nobreak {
+  flex: 0 1 auto !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+}
+.home-title { font-weight: 700 !important; }
+.fpm-point-head b { color: var(--ink) !important; font-weight: 700 !important; }
+.fpm-point-head span {
+  color: var(--muted) !important;
+  background: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  font: 400 9.5px/1.5 var(--font-mono) !important;
+}
 
 </style>
 </head>
@@ -24077,8 +24098,8 @@ var UPDATE_LOG = [{
   "date": "2026-11-18",
   "title": "计划顺序与智能读题",
   "historyTitle": "计划顺序与智能读题",
-  "summary": "本轮继续修界面排版与计划顺序，并让 AI 计划读取本机真实记录。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明在桌面压缩为一行、手机两行，保留本 / 页 / 条计数。AI 个性化计划现在会读取本机错题库、题库、模板库、模拟卷与已交卷模拟考，优先把薄弱章节和小节排进每日计划，允许直接用个人错题当例题，并在每天标注「为什么这样排」；所有题号与出处仍回本地校验。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 覆盖 360/390/768/1440：期末计划标题、科目、章节、智能排程、阶段与每日安排统一到同一左内距；手机科目按钮 2×2、章节按钮 2 列等宽 44px，出卷页章节恢复 20px 内距，360 窄屏笔记搜索独占一行，期末复习说明自动平衡行宽，不再只剩两三个字的末行。规范页自测矩阵的行首分号与 details/summary 标签也一并修好：矩阵行分隔符后带空格不再被当成细空格，summary/details 里的算子词不再被包成公式。144 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。",
-  "notifySummary": "计划顺序与智能读题：期末小节分组按教材顺序排列，手机筛选标签单独一行，模板计数回左；AI 计划会读取本机错题、模拟卷与模拟考，优先薄弱章节，可用个人错题当例题。规范页矩阵行首分号与 details/summary 裸标签已修。qa:final 增加反序点击检查，144 项测试通过。期末计划卡左侧留白统一，手机章节与科目改等宽两列，出卷页与 360 笔记不再顶边。",
+  "summary": "本轮继续修界面排版与计划顺序，并让 AI 计划读取本机真实记录。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明在桌面压缩为一行、手机两行，保留本 / 页 / 条计数。AI 个性化计划现在会读取本机错题库、题库、模板库、模拟卷与已交卷模拟考，优先把薄弱章节和小节排进每日计划，允许直接用个人错题当例题，并在每天标注「为什么这样排」；所有题号与出处仍回本地校验。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 覆盖 360/390/768/1440：期末计划标题、科目、章节、智能排程、阶段与每日安排统一到同一左内距；手机科目按钮 2×2、章节按钮 2 列等宽 44px，出卷页章节恢复 20px 内距，360 窄屏笔记搜索独占一行，期末复习说明自动平衡行宽，不再只剩两三个字的末行。规范页自测矩阵的行首分号与 details/summary 标签也一并修好：矩阵行分隔符后带空格不再被当成细空格，summary/details 里的算子词不再被包成公式。另外修好首页说明末句、知识点出处与问候标题的字体层级，并把每日用时拆成口述、例题、对照三段，分钟数之和与计划总时长一致。144 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。",
+  "notifySummary": "计划顺序与智能读题：期末小节分组按教材顺序排列，手机筛选标签单独一行，模板计数回左；AI 计划会读取本机错题、模拟卷与模拟考，优先薄弱章节，可用个人错题当例题。规范页矩阵行首分号与 details/summary 裸标签已修。qa:final 增加反序点击检查，144 项测试通过。期末计划卡左侧留白统一，手机章节与科目改等宽两列，出卷页与 360 笔记不再顶边。首页说明末句字色/字重与正文统一，知识点出处不再用章节强调色，问候标题加粗；每日用时按总分钟拆分，不再超过计划时长。",
   "notifyItems": [
     {
       "group": "排版对齐",
@@ -24099,6 +24120,14 @@ var UPDATE_LOG = [{
     {
       "group": "留白网格",
       "text": "期末计划卡的标题、科目、章节、智能排程、阶段与每日安排统一到同一左内距；手机科目 2×2、章节 2 列等宽 44px，出卷页章节恢复 20px 内距，360 窄屏笔记搜索独占一行，期末复习说明自动平衡行宽。qa:polish 在 360/390/768/1440 检查内距、等宽、计数贴边与期末说明换行。"
+    },
+    {
+      "group": "字体层级",
+      "text": "首页说明末句不再变成橙色等宽小字，知识点出处改用中性灰，问候标题加粗；qa:polish 检查字色、字号、字重。"
+    },
+    {
+      "group": "用时口径",
+      "text": "每天怎么用按总分钟拆成口述、例题、对照，60 分钟 = 10 + 40 + 10，不再超过计划时长。"
     },
     {
       "group": "防复发",
@@ -24125,6 +24154,14 @@ var UPDATE_LOG = [{
     {
       "group": "留白网格",
       "text": "期末计划卡的标题、科目、章节、智能排程、阶段与每日安排统一到同一左内距，带边框卡片不再贴着面板边框；手机科目按钮改为 2×2 等宽 42px，章节按钮改为 2 列等宽 44px，两行标题自动增高；出卷页章节筛选恢复 20px 左右内距，360 窄屏笔记搜索独占一行、计数下移。qa:polish 新增 360 宽度，并检查计划各块内距、章节/科目等宽、计数右缘与出卷页内距；期末复习说明改用平衡换行，360 窄屏末行不再只剩两三个字。"
+    },
+    {
+      "group": "字体层级",
+      "text": "首页工作台说明的末句不再被标签选择器误改成 10px 橙色等宽字，整句统一为正文 12.5px 灰色；知识点出处的 § 小节改用中性灰，不再占用章节强调色；首页问候标题由 600 加粗到 700。qa:polish 新增字色、字号、字重与知识点颜色检查。"
+    },
+    {
+      "group": "用时口径",
+      "text": "复习计划「每天怎么用」按总分钟拆分：约 60 分钟 = 10 分钟口述 + 40 分钟例题 + 10 分钟对照，不再出现 10 + 60 超过计划时长；标题直接写明总分钟数。"
     },
     {
       "group": "防复发",
@@ -34767,10 +34804,13 @@ function finalPlanHtml() {
   var introCopy = ai
     ? '由 ' + esc(ai.model || '已配置模型') + ' 读取你的章节、错题、模拟卷与模拟考记录后生成；章节、知识点、模板与例题都在本地校验，无法校验的条目会被丢弃，失败时自动保留本地计划。'
     : '默认本地排程，不调用外部 API；配置 AI 后可让模型读取你的错题、模拟卷与模拟考记录，按章节、小节与考试时间个性化定制。知识点来自对应科目 skill，逐条标注教材章节与小节出处。';
+  var warmMinutes = Math.max(5, Math.round(data.dailyMinutes * 0.15 / 5) * 5);
+  var reviewMinutes = warmMinutes;
+  var practiceMinutes = Math.max(10, data.dailyMinutes - warmMinutes - reviewMinutes);
   return '<div class="final-plan-intro"><div><span class="final-plan-badge">' + esc(introBadge) + '</span><b>' + esc(introTitle) + '</b><p>' + esc(introCopy) + '</p></div><div class="final-plan-side"><span class="final-plan-meta">' + data.chapters.length + ' 章' + (data.sections.length ? ' · ' + data.sections.length + ' 节' : '') + ' · ' + pointTotal + ' 个知识点 · 每天约 ' + data.dailyMinutes + ' 分钟</span>' + aiActions + '</div></div>' + aiNote +
     '<div class="final-count-banner"><b>' + data.total + '</b><span>天复习窗口</span><small>' + finalDateKey(data.today) + ' → ' + finalDateKey(data.exam) + '</small></div>' +
     '<div class="final-phase-grid">' + phaseCards + '</div>' +
-    '<div class="final-plan-usage"><b>每天怎么用</b><ol><li>先用 10 分钟口述当天章节的答题模板。</li><li>用 ' + data.dailyMinutes + ' 分钟独立做例题，不翻答案。</li><li>对照考试标准解答和详细解析，补上跳过的步骤。</li><li>把卡点写成一句错因；考前一天只看模板与错因。</li></ol></div>' +
+    '<div class="final-plan-usage"><b>每天怎么用 · 约 ' + data.dailyMinutes + ' 分钟</b><ol><li>先用 ' + warmMinutes + ' 分钟口述当天章节的答题模板。</li><li>用 ' + practiceMinutes + ' 分钟独立做例题，不翻答案。</li><li>用 ' + reviewMinutes + ' 分钟对照考试标准解答和详细解析，补上跳过的步骤。</li><li>把卡点写成一句错因；考前一天只看模板与错因。</li></ol></div>' +
     modulesHtml +
     '<div class="final-plan-schedule"><h3>每日安排</h3><div class="final-day-list">' + emptyDays + rows + '<div class="final-day is-exam"><span class="fd-date">' + pad(data.exam.getMonth() + 1, 2) + '.' + pad(data.exam.getDate(), 2) + '<small>考试</small></span><span class="fd-phase">考试日</span><span class="fd-focus">带齐证件与文具，按模拟卷节奏答题</span><span class="fd-check">—</span></div></div></div>';
 }

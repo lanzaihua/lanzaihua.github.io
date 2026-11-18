@@ -909,10 +909,13 @@ function finalPlanHtml() {
   var introCopy = ai
     ? '由 ' + esc(ai.model || '已配置模型') + ' 读取你的章节、错题、模拟卷与模拟考记录后生成；章节、知识点、模板与例题都在本地校验，无法校验的条目会被丢弃，失败时自动保留本地计划。'
     : '默认本地排程，不调用外部 API；配置 AI 后可让模型读取你的错题、模拟卷与模拟考记录，按章节、小节与考试时间个性化定制。知识点来自对应科目 skill，逐条标注教材章节与小节出处。';
+  var warmMinutes = Math.max(5, Math.round(data.dailyMinutes * 0.15 / 5) * 5);
+  var reviewMinutes = warmMinutes;
+  var practiceMinutes = Math.max(10, data.dailyMinutes - warmMinutes - reviewMinutes);
   return '<div class="final-plan-intro"><div><span class="final-plan-badge">' + esc(introBadge) + '</span><b>' + esc(introTitle) + '</b><p>' + esc(introCopy) + '</p></div><div class="final-plan-side"><span class="final-plan-meta">' + data.chapters.length + ' 章' + (data.sections.length ? ' · ' + data.sections.length + ' 节' : '') + ' · ' + pointTotal + ' 个知识点 · 每天约 ' + data.dailyMinutes + ' 分钟</span>' + aiActions + '</div></div>' + aiNote +
     '<div class="final-count-banner"><b>' + data.total + '</b><span>天复习窗口</span><small>' + finalDateKey(data.today) + ' → ' + finalDateKey(data.exam) + '</small></div>' +
     '<div class="final-phase-grid">' + phaseCards + '</div>' +
-    '<div class="final-plan-usage"><b>每天怎么用</b><ol><li>先用 10 分钟口述当天章节的答题模板。</li><li>用 ' + data.dailyMinutes + ' 分钟独立做例题，不翻答案。</li><li>对照考试标准解答和详细解析，补上跳过的步骤。</li><li>把卡点写成一句错因；考前一天只看模板与错因。</li></ol></div>' +
+    '<div class="final-plan-usage"><b>每天怎么用 · 约 ' + data.dailyMinutes + ' 分钟</b><ol><li>先用 ' + warmMinutes + ' 分钟口述当天章节的答题模板。</li><li>用 ' + practiceMinutes + ' 分钟独立做例题，不翻答案。</li><li>用 ' + reviewMinutes + ' 分钟对照考试标准解答和详细解析，补上跳过的步骤。</li><li>把卡点写成一句错因；考前一天只看模板与错因。</li></ol></div>' +
     modulesHtml +
     '<div class="final-plan-schedule"><h3>每日安排</h3><div class="final-day-list">' + emptyDays + rows + '<div class="final-day is-exam"><span class="fd-date">' + pad(data.exam.getMonth() + 1, 2) + '.' + pad(data.exam.getDate(), 2) + '<small>考试</small></span><span class="fd-phase">考试日</span><span class="fd-focus">带齐证件与文具，按模拟卷节奏答题</span><span class="fd-check">—</span></div></div></div>';
 }
