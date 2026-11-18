@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.18-c6765006";</script>
+<script>window.__BUILD_ID__="2026.11.18-531551fa";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -10004,6 +10004,160 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
 @media (max-width: 560px) {
   .fpe-source { margin-left: 0; }
   .fpe-head { flex-wrap: wrap; row-gap: 4px; }
+}
+
+/* 2026-11-18: plan body gutter, equal chapter cells, consistent pill sizing */
+.final-plan-panel > .final-plan-toolbar,
+.final-plan-panel > .final-plan-intro,
+.final-plan-panel > .final-ai-note,
+.final-plan-panel > .final-count-banner,
+.final-plan-panel > .final-phase-grid,
+.final-plan-panel > .final-plan-usage,
+.final-plan-panel > .final-plan-modules,
+.final-plan-panel > .final-plan-schedule,
+.final-plan-panel > .final-empty {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+.final-plan-panel > .final-plan-schedule .final-day {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.final-subject-tab,
+.fcf-chip {
+  min-height: 36px !important;
+  padding: 6px 13px !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+}
+.final-subject-tab,
+.fcf-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.fcf-label,
+.fcf-count {
+  font-size: 10.5px !important;
+}
+
+@media (max-width: 560px) {
+  .final-plan-panel > .final-plan-toolbar,
+  .final-plan-panel > .final-plan-intro,
+  .final-plan-panel > .final-ai-note,
+  .final-plan-panel > .final-count-banner,
+  .final-plan-panel > .final-phase-grid,
+  .final-plan-panel > .final-plan-usage,
+  .final-plan-panel > .final-plan-modules,
+  .final-plan-panel > .final-plan-schedule,
+  .final-plan-panel > .final-empty {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+  .final-subject-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+  .final-subject-tabs > .final-subject-tab {
+    width: 100% !important;
+    min-height: 42px !important;
+    padding: 8px 10px !important;
+    font-size: 12.5px !important;
+  }
+  .final-subject-tabs > .final-subject-note {
+    grid-column: 1 / -1;
+    max-width: none !important;
+    margin: 2px 0 0 !important;
+    text-align: left !important;
+  }
+  .final-chapter-filter:not(.final-section-filter),
+  .final-chapter-filter.final-section-filter {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+  .final-chapter-filter:not(.final-section-filter) .fcf-label {
+    grid-column: 1;
+    align-self: center;
+    margin: 0 !important;
+  }
+  .final-chapter-filter:not(.final-section-filter) .fcf-count {
+    grid-column: 2;
+    justify-self: end;
+    align-self: center;
+    margin: 0 !important;
+    text-align: right;
+  }
+  .final-chapter-filter:not(.final-section-filter) .fcf-break {
+    display: none !important;
+  }
+  .final-section-filter .fcf-label {
+    grid-column: 1 / -1;
+    margin: 0 0 2px !important;
+  }
+  .final-chapter-filter .fcf-chip {
+    width: 100% !important;
+    min-height: 44px !important;
+    padding: 8px 8px !important;
+    font-size: 12px !important;
+    white-space: normal !important;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 560px) {
+  .final-papers .final-chapter-filter,
+  .final-exam-entry .final-chapter-filter {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+/* inset bordered plan blocks so their frame never touches the card edge */
+.final-plan-panel > .final-plan-intro {
+  padding: 12px 14px !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+}
+.final-plan-panel > .final-count-banner {
+  padding: 14px 16px !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+}
+.final-plan-panel > .final-plan-usage {
+  padding: 11px 13px !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+}
+.final-plan-panel > .final-ai-note {
+  padding: 10px 12px !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+}
+.final-plan-panel > .final-phase-grid {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+}
+@media (max-width: 560px) {
+  .final-plan-panel > .final-plan-intro,
+  .final-plan-panel > .final-count-banner,
+  .final-plan-panel > .final-plan-usage,
+  .final-plan-panel > .final-ai-note,
+  .final-plan-panel > .final-phase-grid {
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .note-library-top { grid-template-columns: minmax(0, 1fr) !important; }
+  .note-library-top .note-library-count { justify-self: start !important; }
 }
 
 </style>
@@ -23920,8 +24074,8 @@ var UPDATE_LOG = [{
   "date": "2026-11-18",
   "title": "计划顺序与智能读题",
   "historyTitle": "计划顺序与智能读题",
-  "summary": "本轮继续修界面排版与计划顺序，并让 AI 计划读取本机真实记录。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明在桌面压缩为一行、手机两行，保留本 / 页 / 条计数。AI 个性化计划现在会读取本机错题库、题库、模板库、模拟卷与已交卷模拟考，优先把薄弱章节和小节排进每日计划，允许直接用个人错题当例题，并在每天标注「为什么这样排」；所有题号与出处仍回本地校验。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 继续覆盖 18 宽度与三端。规范页自测矩阵的行首分号与 details/summary 标签也一并修好：矩阵行分隔符后带空格不再被当成细空格，summary/details 里的算子词不再被包成公式。144 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。",
-  "notifySummary": "计划顺序与智能读题：期末小节分组按教材顺序排列，手机筛选标签单独一行，模板计数回左；AI 计划会读取本机错题、模拟卷与模拟考，优先薄弱章节，可用个人错题当例题。规范页矩阵行首分号与 details/summary 裸标签已修。qa:final 增加反序点击检查，144 项测试通过。",
+  "summary": "本轮继续修界面排版与计划顺序，并让 AI 计划读取本机真实记录。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明在桌面压缩为一行、手机两行，保留本 / 页 / 条计数。AI 个性化计划现在会读取本机错题库、题库、模板库、模拟卷与已交卷模拟考，优先把薄弱章节和小节排进每日计划，允许直接用个人错题当例题，并在每天标注「为什么这样排」；所有题号与出处仍回本地校验。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 覆盖 360/390/768/1440：期末计划标题、科目、章节、智能排程、阶段与每日安排统一到同一左内距；手机科目按钮 2×2、章节按钮 2 列等宽 44px，出卷页章节恢复 20px 内距，360 窄屏笔记搜索独占一行。规范页自测矩阵的行首分号与 details/summary 标签也一并修好：矩阵行分隔符后带空格不再被当成细空格，summary/details 里的算子词不再被包成公式。144 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。",
+  "notifySummary": "计划顺序与智能读题：期末小节分组按教材顺序排列，手机筛选标签单独一行，模板计数回左；AI 计划会读取本机错题、模拟卷与模拟考，优先薄弱章节，可用个人错题当例题。规范页矩阵行首分号与 details/summary 裸标签已修。qa:final 增加反序点击检查，144 项测试通过。期末计划卡左侧留白统一，手机章节与科目改等宽两列，出卷页与 360 笔记不再顶边。",
   "notifyItems": [
     {
       "group": "排版对齐",
@@ -23938,6 +24092,10 @@ var UPDATE_LOG = [{
     {
       "group": "公式细节",
       "text": "规范页自测矩阵的行分隔符后带空格不再多出分号；summary/details 里的 sum、det 等词不再被包成公式，标签不再变成裸文本。qa:formulas 新增这两项检查。"
+    },
+    {
+      "group": "留白网格",
+      "text": "期末计划卡的标题、科目、章节、智能排程、阶段与每日安排统一到同一左内距；手机科目 2×2、章节 2 列等宽 44px，出卷页章节恢复 20px 内距，360 窄屏笔记搜索独占一行。qa:polish 在 360/390/768/1440 检查内距、等宽与计数贴边。"
     },
     {
       "group": "防复发",
@@ -23962,8 +24120,12 @@ var UPDATE_LOG = [{
       "text": "规范页「变式（自测）」的矩阵行分隔符后带空格时，不再被替换成细空格而在每行首项前多出一个分号；矩阵仍按原行渲染。details/summary 里的 sum、det、dim 等算子词不再被包成公式，</summary> 与 </details> 不再被转义成裸文本，折叠块可以正常开合。qa:formulas 新增「summary 内不得出现公式或尖括号」与「mtr 首个 mtd 不得以分号开头」两项永久检查，14 个检查面全部通过。"
     },
     {
+      "group": "留白网格",
+      "text": "期末计划卡的标题、科目、章节、智能排程、阶段与每日安排统一到同一左内距，带边框卡片不再贴着面板边框；手机科目按钮改为 2×2 等宽 42px，章节按钮改为 2 列等宽 44px，两行标题自动增高；出卷页章节筛选恢复 20px 左右内距，360 窄屏笔记搜索独占一行、计数下移。qa:polish 新增 360 宽度，并检查计划各块内距、章节/科目等宽、计数右缘与出卷页内距。"
+    },
+    {
       "group": "防复发",
-      "text": "qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 继续覆盖 18 个宽度、390/768/1440 的工作台行数、功能条间距、规范顺序、统计口径、笔记拆词、模板计数与筛选卡宽度；qa:formulas 增加矩阵行首分号与 summary 标签检查；144 项回归测试与 CI 全部门禁。"
+      "text": "qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 覆盖 360/390/768/1440，检查工作台行数、计划内距、章节/科目等宽、功能条间距、规范顺序、统计口径、笔记拆词、模板计数与筛选卡宽度；qa:formulas 增加矩阵行首分号与 summary 标签检查；144 项回归测试与 CI 全部门禁。"
     }
   ]
 },
@@ -35121,7 +35283,7 @@ function finalPaperSmartScores() {
 function finalPapersHtml() {
   var fe = finalData();
   var p = finalActivePaper();
-  return '<div class="final-paper-head"><div><h2>我的模拟卷</h2><p>' + esc(subjectOf(finalSubject()).name) + ' · 按考试时长自动选题，材料为空时从标准题库抽题；一张卷只含一个科目，可自由编辑与导出。</p></div><div class="final-paper-head-actions"><button class="btn btn-primary" data-act="final-generate-paper" type="button">生成模拟卷</button></div></div>' +
+  return '<div class="final-paper-head"><div><h2>我的模拟卷</h2><p>' + esc(subjectOf(finalSubject()).name) + ' · 按考试时长自动选题，材料为空时从标准题库抽题；可自由编辑与导出。</p></div><div class="final-paper-head-actions"><button class="btn btn-primary" data-act="final-generate-paper" type="button">生成模拟卷</button></div></div>' +
     finalSubjectTabsHtml() + finalChapterFilterHtml(finalSubject()) +
     '<p class="final-paper-hint">模拟卷用于编辑、保存和导出；需要限时考试请切到「模拟考」。</p>' +
     finalPickerHtml(p) + finalPaperChipsHtml() + (p ? finalPaperEditorHtml(p) : '<div class="final-empty"><b>当前科目还没有模拟卷</b><p>先点「生成模拟卷」；也可以在题库选题里勾选后新建卷。</p></div>') + finalPaperImportHtml();
@@ -35133,7 +35295,7 @@ function finalSectionValue() {
 }
 function finalSectionTabsHtml() {
   var section = finalSectionValue();
-  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>按顺序走：先排计划，再出卷，最后开考。</p></div>' +
+  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>先排计划，再出卷，最后开考。</p></div>' +
     '<div class="final-section-tabs" role="tablist" aria-label="期末复习模块">' +
     '<button class="final-section-tab' + (section === 'plan' ? ' is-on' : '') + '" data-act="final-section" data-section="plan" role="tab" aria-selected="' + (section === 'plan') + '" type="button"><em>01</em><span class="final-tab-copy"><b>复习计划</b><span>每日知识点、例题、记忆法</span></span></button>' +
     '<button class="final-section-tab' + (section === 'paper' ? ' is-on' : '') + '" data-act="final-section" data-section="paper" role="tab" aria-selected="' + (section === 'paper') + '" type="button"><em>02</em><span class="final-tab-copy"><b>出模拟卷</b><span>选题、编辑、导出</span></span></button>' +
@@ -35183,7 +35345,7 @@ function viewFinal() {
       finalPlanHtml() + '</section>';
   }
   return '<div class="final-page">' +
-    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">复习计划、出模拟卷、模拟考三个入口分开；<br class="page-break-wide">计划按章节与<span class="page-nb">考试时间</span>排程，每天给出知识点、出处、例题和<span class="page-nb">记忆法</span>。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
+    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">复习计划、出模拟卷、模拟考三个入口分开；<br class="page-break-wide">按章节与<span class="page-nb">考试时间</span>排程，每天给知识点、出处、例题与<span class="page-nb">记忆法</span>。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
     subjectJumpHtml('final') + finalSectionTabsHtml() + setup + body +
     (ui.finalAiChaptersOpen && typeof finalExamChapterHtml === 'function' ? finalExamChapterHtml() : '') +
     (ui.examRulesOpen && typeof finalExamRulesHtml === 'function' ? finalExamRulesHtml() : '') +

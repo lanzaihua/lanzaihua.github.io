@@ -2,7 +2,7 @@
 'use strict';
 
 /**
- * 排版门禁：文字/按钮不顶边框、折叠筛选不留空卡、笔记搜索与页签对齐、
+ * 排版门禁：文字/按钮不顶边框、折叠筛选不留空卡、笔记搜索与页签对齐、期末计划/出卷留白与 2 列网格、
  * 总览操作在手机为 2×2、设置用户名行填满、卡片内距与按钮高度可读。
  * 用法：node tools/qa-ui-polish.js [baseUrl]
  */
@@ -12,7 +12,7 @@ const path = require('path');
 const { launchChromium } = require('./browser');
 
 const BASE = process.argv[2] || process.env.PAGE_URL || process.env.BASE_URL || 'http://127.0.0.1:4173';
-const WIDTHS = [390, 768, 1440];
+const WIDTHS = [360, 390, 768, 1440];
 const seed = {
   version: 1,
   rev: 1,
@@ -277,6 +277,107 @@ async function reading(page, width, failures) {
   if (plan.lastRatio < 0.55) push(failures, width, '期末复习说明末行过短，末行/最长行 ' + plan.lastRatio.toFixed(2));
 }
 
+
+async function finalLayout(page, width, failures) {
+  await page.waitForSelector('.final-plan-panel', { timeout: 8000 }).catch(() => {});
+  const plan = await page.evaluate(() => {
+    const rect = (el) => { const r = el.getBoundingClientRect(); return { l: r.left, r: r.right, t: r.top, b: r.bottom, w: r.width, h: r.height }; };
+    const panel = document.querySelector('.final-plan-panel');
+    const head = document.querySelector('.final-panel-head h2');
+    const filter = document.querySelector('.final-chapter-filter');
+    if (!panel || !head || !filter) return { missing: true };
+    const p = rect(panel), h = rect(head), gutter = h.l - p.l;
+    const blocks = [
+      ['排程说明', document.querySelector('.final-plan-intro')],
+      ['复习窗口', document.querySelector('.final-count-banner')],
+      ['阶段卡', document.querySelector('.final-phase-grid')],
+      ['使用说明', document.querySelector('.final-plan-usage')],
+      ['章节模块', document.querySelector('.final-plan-modules h3')],
+      ['模块卡', document.querySelector('.final-plan-module')],
+      ['每日安排', document.querySelector('.final-plan-schedule h3')],
+      ['每日行', document.querySelector('.final-day')]
+    ];
+    const out = { missing: false, gutter, panel: { l: p.l, r: p.r, w: p.w }, blocks: [], chips: null, tabs: null };
+    for (const pair of blocks) {
+      const label = pair[0], el = pair[1];
+      if (!el) { out.blocks.push({ label, missing: true }); continue; }
+      const b = rect(el);
+      out.blocks.push({ label, l: b.l, r: b.r, w: b.w, leftGap: b.l - p.l, rightGap: p.r - b.r });
+    }
+    const tabsEl = document.querySelector('.final-subject-tabs');
+    const tabRects = [...document.querySelectorAll('.final-subject-tab')].map(rect);
+    out.tabs = { cols: getComputedStyle(tabsEl).gridTemplateColumns.split(/\s+/).filter(Boolean).length, rects: tabRects, rows: new Set(tabRects.map((t) => Math.round(t.t))).size };
+    const cs = getComputedStyle(filter);
+    const chips = [...filter.querySelectorAll('.fcf-chip')].map((el) => {
+      const b = rect(el);
+      const range = document.createRange(); range.selectNodeContents(el);
+      const tr = range.getBoundingClientRect();
+      return { l: b.l, r: b.r, w: b.w, h: b.h, fs: parseFloat(getComputedStyle(el).fontSize) || 0, padL: tr.left - b.l, padR: b.r - tr.right };
+    });
+    const countEl = filter.querySelector('.fcf-count');
+    out.chips = {
+      cols: cs.gridTemplateColumns.split(/\s+/).filter(Boolean).length,
+      padL: parseFloat(cs.paddingLeft) || 0,
+      padR: parseFloat(cs.paddingRight) || 0,
+      filterL: rect(filter).l, filterR: rect(filter).r,
+      countR: countEl ? rect(countEl).r : 0,
+      list: chips
+    };
+    return out;
+  });
+  if (plan.missing) { push(failures, width, '期末复习计划缺面板/标题/章节筛选'); return; }
+  const inner = plan.gutter;
+  for (const b of plan.blocks) {
+    if (b.missing) { push(failures, width, '期末复习缺 ' + b.label); continue; }
+    if (Math.abs(b.leftGap - inner) > 2) push(failures, width, '期末复习' + b.label + '顶到卡片边框，左内距 ' + b.leftGap.toFixed(1) + ' 应为 ' + inner.toFixed(1));
+    if (b.label !== '章节模块' && b.label !== '每日安排' && Math.abs(b.rightGap - inner) > 2) push(failures, width, '期末复习' + b.label + '右侧留白不均，右内距 ' + b.rightGap.toFixed(1) + ' 应为 ' + inner.toFixed(1));
+  }
+  const tabs = plan.tabs;
+  if (tabs.rects.length !== 4) push(failures, width, '期末复习科目按钮不是 4 个：' + tabs.rects.length);
+  if (tabs.rects.some((t) => t.h < 33.5)) push(failures, width, '期末复习科目按钮过矮');
+  if (width >= 761 && tabs.rows !== 1) push(failures, width, '期末复习科目按钮在桌面换行');
+  if (width <= 560) {
+    if (tabs.cols !== 2) push(failures, width, '期末复习科目按钮手机不是 2 列：' + tabs.cols);
+    if (tabs.rects.length > 1 && Math.abs(tabs.rects[0].w - tabs.rects[1].w) > 1.5) push(failures, width, '期末复习科目按钮宽窄不一');
+    if (tabs.rects.some((t) => t.h < 40)) push(failures, width, '期末复习科目按钮手机高不足 40px');
+  }
+  const chips = plan.chips;
+  if (width <= 560) {
+    if (chips.cols !== 2) push(failures, width, '期末复习章节 chip 手机不是 2 列：' + chips.cols);
+    if (chips.list.length > 1 && Math.abs(chips.list[0].w - chips.list[1].w) > 1.5) push(failures, width, '期末复习章节 chip 宽窄不一');
+    if (chips.list.some((c) => c.h < 40)) push(failures, width, '期末复习章节 chip 高不足 40px');
+    for (const c of chips.list.slice(0, 3)) {
+      if (c.padL < 7 || c.padR < 7) push(failures, width, '期末复习章节 chip 文字贴边 ' + c.padL.toFixed(1) + '/' + c.padR.toFixed(1));
+    }
+    if (chips.countR > chips.filterR - chips.padR + 1.5) push(failures, width, '期末复习章节计数贴到卡片右缘');
+  } else {
+    if (chips.list.some((c) => c.h < 33.5)) push(failures, width, '期末复习章节 chip 桌面过矮');
+    if (chips.list.some((c) => c.fs < 11.5)) push(failures, width, '期末复习章节 chip 字号过小');
+  }
+  const paperTab = page.locator('[data-act="final-section"][data-section="paper"]').first();
+  if (await paperTab.count()) {
+    await paperTab.evaluate((el) => el.click());
+    await page.waitForTimeout(450);
+    const paper = await page.evaluate(() => {
+      const f = document.querySelector('.final-papers .final-chapter-filter');
+      if (!f) return null;
+      const cs = getComputedStyle(f);
+      return {
+        padL: parseFloat(cs.paddingLeft) || 0,
+        padR: parseFloat(cs.paddingRight) || 0,
+        cols: cs.gridTemplateColumns.split(/\s+/).filter(Boolean).length,
+        chips: [...f.querySelectorAll('.fcf-chip')].map((el) => { const b = el.getBoundingClientRect(); return { l: b.left, w: b.width, h: b.height }; })
+      };
+    });
+    if (!paper) push(failures, width, '期末出卷页缺章节筛选');
+    else {
+      if (paper.padL < 16 || paper.padR < 16) push(failures, width, '期末出卷页章节筛选顶到卡片边框 ' + paper.padL.toFixed(1) + '/' + paper.padR.toFixed(1));
+      if (width <= 560 && paper.chips.length > 1 && Math.abs(paper.chips[0].w - paper.chips[1].w) > 1.5) push(failures, width, '期末出卷页章节 chip 宽窄不一');
+      if (width <= 560 && paper.cols !== 2) push(failures, width, '期末出卷页章节 chip 手机不是 2 列：' + paper.cols);
+    }
+  }
+}
+
 (async () => {
   const failures = [];
   const browser = await launchChromium();
@@ -287,6 +388,7 @@ async function reading(page, width, failures) {
       const page = await context.newPage();
       await page.route('**/api/state', (route) => route.abort());
       await reading(page, width, failures);
+      await finalLayout(page, width, failures);
       await bank(page, width, failures);
       await templates(page, width, failures);
       await notes(page, width, failures);

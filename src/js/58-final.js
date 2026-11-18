@@ -1428,7 +1428,7 @@ function finalPaperSmartScores() {
 function finalPapersHtml() {
   var fe = finalData();
   var p = finalActivePaper();
-  return '<div class="final-paper-head"><div><h2>我的模拟卷</h2><p>' + esc(subjectOf(finalSubject()).name) + ' · 按考试时长自动选题，材料为空时从标准题库抽题；一张卷只含一个科目，可自由编辑与导出。</p></div><div class="final-paper-head-actions"><button class="btn btn-primary" data-act="final-generate-paper" type="button">生成模拟卷</button></div></div>' +
+  return '<div class="final-paper-head"><div><h2>我的模拟卷</h2><p>' + esc(subjectOf(finalSubject()).name) + ' · 按考试时长自动选题，材料为空时从标准题库抽题；可自由编辑与导出。</p></div><div class="final-paper-head-actions"><button class="btn btn-primary" data-act="final-generate-paper" type="button">生成模拟卷</button></div></div>' +
     finalSubjectTabsHtml() + finalChapterFilterHtml(finalSubject()) +
     '<p class="final-paper-hint">模拟卷用于编辑、保存和导出；需要限时考试请切到「模拟考」。</p>' +
     finalPickerHtml(p) + finalPaperChipsHtml() + (p ? finalPaperEditorHtml(p) : '<div class="final-empty"><b>当前科目还没有模拟卷</b><p>先点「生成模拟卷」；也可以在题库选题里勾选后新建卷。</p></div>') + finalPaperImportHtml();
@@ -1440,7 +1440,7 @@ function finalSectionValue() {
 }
 function finalSectionTabsHtml() {
   var section = finalSectionValue();
-  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>按顺序走：先排计划，再出卷，最后开考。</p></div>' +
+  return '<div class="final-flow"><div class="final-flow-label"><span>FINAL WORKFLOW</span><p>先排计划，再出卷，最后开考。</p></div>' +
     '<div class="final-section-tabs" role="tablist" aria-label="期末复习模块">' +
     '<button class="final-section-tab' + (section === 'plan' ? ' is-on' : '') + '" data-act="final-section" data-section="plan" role="tab" aria-selected="' + (section === 'plan') + '" type="button"><em>01</em><span class="final-tab-copy"><b>复习计划</b><span>每日知识点、例题、记忆法</span></span></button>' +
     '<button class="final-section-tab' + (section === 'paper' ? ' is-on' : '') + '" data-act="final-section" data-section="paper" role="tab" aria-selected="' + (section === 'paper') + '" type="button"><em>02</em><span class="final-tab-copy"><b>出模拟卷</b><span>选题、编辑、导出</span></span></button>' +
@@ -1490,7 +1490,7 @@ function viewFinal() {
       finalPlanHtml() + '</section>';
   }
   return '<div class="final-page">' +
-    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">复习计划、出模拟卷、模拟考三个入口分开；<br class="page-break-wide">计划按章节与<span class="page-nb">考试时间</span>排程，每天给出知识点、出处、例题和<span class="page-nb">记忆法</span>。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
+    '<div class="page-head final-page-head"><div class="final-head-main"><p class="eyebrow">FINAL REVIEW / 复习与模拟卷</p><h1 class="page-title">期末复习</h1><p class="page-sub">复习计划、出模拟卷、模拟考三个入口分开；<br class="page-break-wide">按章节与<span class="page-nb">考试时间</span>排程，每天给知识点、出处、例题与<span class="page-nb">记忆法</span>。</p></div><div class="final-head-side"><div class="page-actions"><a class="btn" href="#/' + attr(state.activeSubject) + '/entries">挑错题</a><a class="btn" href="#/' + attr(state.activeSubject) + '/bank">挑题库题</a></div></div></div>' +
     subjectJumpHtml('final') + finalSectionTabsHtml() + setup + body +
     (ui.finalAiChaptersOpen && typeof finalExamChapterHtml === 'function' ? finalExamChapterHtml() : '') +
     (ui.examRulesOpen && typeof finalExamRulesHtml === 'function' ? finalExamRulesHtml() : '') +

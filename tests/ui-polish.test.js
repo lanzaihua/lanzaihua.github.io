@@ -35,8 +35,14 @@ test('layout copy and CSS use real chapter counts and fill cramped controls', ()
   const final = read('src/js/58-final.js');
   assert.ok(final.includes('全部章节'), '未选章节时没有显示「全部章节」');
   assert.ok(final.includes('复习计划只使用当前科目的章节与知识点'), '复习计划科目说明应只描述计划');
-  assert.ok(final.includes('按顺序走：先排计划，再出卷，最后开考。'), '流程说明应简短不重复');
+  assert.ok(final.includes('先排计划，再出卷，最后开考。'), '流程说明应简短不重复');
+  assert.ok(!final.includes('按顺序走：'), '流程说明仍带多余前缀');
   assert.ok(final.includes('page-break-wide'), '期末说明没有使用桌面换行控制');
+  assert.ok(css.includes('.final-plan-panel > .final-plan-toolbar'), '期末计划正文没有统一左内距');
+  assert.ok(css.includes('.final-chapter-filter .fcf-chip') && css.includes('min-height: 44px !important'), '期末章节 chip 手机没有放大触控目标');
+  assert.ok(css.includes('.final-papers .final-chapter-filter') && css.includes('padding-left: 20px !important'), '出卷页章节筛选仍顶到卡片边框');
+  assert.ok(!final.includes('一张卷只含一个科目'), '出卷页仍重复科目说明');
+  assert.ok(final.includes('按考试时长自动选题'), '出卷页缺少清晰的选题说明');
   const notes = read('src/js/49-notes.js');
   assert.ok(notes.includes('<span class="page-nb">知识笔记</span>'), '笔记标题未保护「知识笔记」不被拆行');
   assert.ok(notes.includes('</b> 本</span>'), '笔记标题把数量与「本」拆开');
@@ -57,10 +63,13 @@ test('UI polish gate is wired into scripts, CI and the current update block', ()
   const workflow = read('.github/workflows/quality.yml');
   assert.ok(workflow.includes('npm run qa:polish'), 'CI 没有运行 qa:polish');
   const gate = read('tools/qa-ui-polish.js');
-  assert.ok(gate.includes('const WIDTHS = [390, 768, 1440];'), '排版门禁没有覆盖手机/平板/桌面');
+  assert.ok(gate.includes('const WIDTHS = [360, 390, 768, 1440];'), '排版门禁没有覆盖窄手机/手机/平板/桌面');
   assert.ok(gate.includes('async function reading('), '排版门禁没有检查正文换行与页脚间距');
   assert.ok(gate.includes("waitForSelector('.hw-topbar p'"), '排版门禁没有等待线上首页骨架，慢加载会被误判');
   assert.ok(gate.includes('全部章节'), '排版门禁没有检查期末章节计数文案');
+  assert.ok(gate.includes('async function finalLayout('), '排版门禁没有检查期末计划留白与章节网格');
+  assert.ok(gate.includes('章节 chip 宽窄不一'), '排版门禁没有检查章节 chip 等宽');
+  assert.ok(gate.includes('出卷页章节筛选顶到卡片边框'), '排版门禁没有检查出卷页筛选内距');
   assert.ok(gate.includes('知识笔记'), '排版门禁没有检查笔记标题拆词');
   assert.ok(gate.includes('最近 30 天'), '排版门禁没有检查统计口径');
   for (const token of ['bank-filter-toggle', 'template-filters', 'note-library-top', 'setting-row-name', 'clipped']) {
