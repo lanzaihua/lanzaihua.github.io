@@ -22,9 +22,11 @@ def api(path, method='GET', data=None, ctype='application/json'):
     with urllib.request.urlopen(req, timeout=300) as r:
         raw = r.read()
         return json.loads(raw.decode('utf-8')) if raw else {}
-body = r'''## 四科错题本 v2026.11.18 · 计划顺序与智能读题
+body = r'''## 四科错题本 v2026.11.18 · 记忆与刷新收口
 
-**9 项 · 9 组**
+**10 项 · 10 组**
+
+期末复习计划支持按大章与小节排程，AI 可读取本机错题、模拟卷与模拟考；574 个知识点逐条给出记忆与考场用法，排版与公式同步收口。刷新会回到上次打开的期末子页；更新摘要、README 与 Release 同日只保留一条。146 项测试通过。
 
 ### 本轮更新
 - 计划顺序：期末复习章节筛选的小节分组按教材章节顺序（第一→第六）生成，不再按点击顺序倒序；即使先点第四章、再点第一章，分组仍按第一、第二…排列。期末模拟卷标题里的章节也按同一顺序拼接。手机 ≤560px 时「章节 / 已选 N 章」独占一行，全部与各章按钮从下一行开始。
@@ -35,12 +37,13 @@ body = r'''## 四科错题本 v2026.11.18 · 计划顺序与智能读题
 - 字体层级：首页工作台说明末句不再被标签选择器误改成 10px 橙色等宽字，整句字体、字号与字色和正文一致；知识点出处改用中性灰，不占用章节强调色，知识点标题用墨色加粗；首页问候标题由 600 加粗到 700。qa:polish 新增字色、字号、字重与知识点颜色检查。
 - 用时口径：复习计划「每天怎么用」按总分钟拆分，约 60 分钟 = 10 分钟口述 + 40 分钟例题 + 10 分钟对照，不再超过计划时长；标题写明总分钟数，qa:polish 校验各段之和。
 - 记忆用法：574 个知识点逐条重写记忆钩子与考场用法，钩子压缩该点的定义、判据或公式，考场用法写明遇到什么题先做什么、最后检查什么；「可去间断点」「跳跃间断点」「第二类间断点」不再共用同一句。知识点卡拆成「记忆」「考场」两行，qa:memory 校验 574 点全覆盖、两类句子各自唯一、公式定界符成对、无 HTML 与替换字符。
+- 刷新与记录：刷新页面会恢复上次打开的期末子页（复习计划 / 出模拟卷 / 进行模拟考）与主页面，不再固定回到复习计划。最近更新摘要压缩为一段，README 只展开最近一块，CHANGELOG 与 Release 同日只保留一条；qa:resume 在真浏览器验证刷新后的页面与子页。
 - 防复发：qa:final 先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机标签与按钮分行；qa:polish 覆盖 360/390/768/1440 的计划内距、章节/科目等宽与三端排版；qa:formulas 检查矩阵行首与 summary 标签；qa:memory 检查 574 个知识点的记忆与考场用法；146 项回归测试与 CI 全部门禁。
 
 ### 验证
 - 回归测试 146 项通过；严格题库 QA 9651 唯一、problems 0 / warnings 0；全库渲染审计、104223 字段数学语言审计与 574 点记忆/考场用法审计 0 失败。
 - 公式门禁 14 个面、模拟卷编辑卡 18 个宽度、筛选栏 22 个宽度、期末复习四科三端、8 视口真实浏览器均 0 failures；无障碍、性能、拆包、尺寸与发布一致性门禁通过。
-- BUILD_ID 2026.11.18-12a2442a；GitHub Pages 与 Release 以同一提交构建。
+- BUILD_ID 2026.11.18-cc062901；GitHub Pages 与 Release 以同一提交构建。
 
 完整记录见仓库 docs/VERIFICATION.md 与 docs/RELEASE.md。
 '''
@@ -49,7 +52,7 @@ try:
 except urllib.error.HTTPError as e:
     if e.code != 404:
         raise
-    rel = api('/releases', method='POST', data={'tag_name': TAG, 'name': '四科错题本 v2026.11.18 · 计划顺序与智能读题', 'body': body, 'draft': False, 'prerelease': False})
+    rel = api('/releases', method='POST', data={'tag_name': TAG, 'name': '四科错题本 v2026.11.18 · 记忆与刷新收口', 'body': body, 'draft': False, 'prerelease': False})
     print('created release', rel['id'])
 for a in rel.get('assets', []):
     if a['name'] in ('source.zip', 'SHA256SUMS', STATIC):
@@ -61,5 +64,5 @@ for name in ['source.zip', STATIC, 'SHA256SUMS']:
     with urllib.request.urlopen(req, timeout=600) as r:
         a = json.loads(r.read().decode('utf-8'))
     print('uploaded', a['name'], a['size'])
-api('/releases/%d' % rel['id'], method='PATCH', data={'body': body, 'name': '四科错题本 v2026.11.18 · 计划顺序与智能读题', 'target_commitish': 'main'})
+api('/releases/%d' % rel['id'], method='PATCH', data={'body': body, 'name': '四科错题本 v2026.11.18 · 记忆与刷新收口', 'target_commitish': 'main'})
 print('body updated')

@@ -3,6 +3,32 @@
    ========================================================= */
 var suppressHash = false;
 
+function rememberedHash(hash) {
+  var h = String(hash || '').replace(/\?.*$/, '');
+  if (!h || h === '#') return '#/';
+  if (h === '#/final') h = '#/final/' + ((ui && (ui.finalSection === 'paper' || ui.finalSection === 'exam')) ? ui.finalSection : 'plan');
+  if (!/^#\/(?:$|final\/(?:plan|paper|exam)$|notes(?:\/kb)?$|[a-z]+(?:\/(?:overview|stats|entries|bank|templates|guide))?$)/.test(h)) return '';
+  return h;
+}
+
+function rememberRoute(hash) {
+  if (!state || !state.prefs) return;
+  var h = rememberedHash(hash || location.hash);
+  if (!h || state.prefs.lastRoute === h) return;
+  state.prefs.lastRoute = h;
+  if (typeof markDirty === 'function') markDirty();
+}
+
+function restoreLastRoute() {
+  var raw = String(location.hash || '');
+  // 只有真正没有路由时才恢复上次界面；#/home 与 #/welcome 是用户显式选择回到首页，必须尊重。
+  if (raw && raw !== '#' && raw !== '#/') return;
+  var last = rememberedHash(state && state.prefs && state.prefs.lastRoute);
+  if (!last || last === '#/') return;
+  try { history.replaceState(null, '', location.pathname + location.search + last); }
+  catch (e) { location.hash = last; }
+}
+
 function syncModalScrollLock() {
   var open = !!document.querySelector('dialog[open]');
   document.documentElement.classList.toggle('has-modal', open);
@@ -30,7 +56,18 @@ function parseHash() {
   var clean = h.split('?')[0].split('&')[0];
   var parts = clean.split('/').filter(Boolean);
   if (parts[0] === 'home' || parts[0] === 'welcome') return;
-  if (parts[0] === 'final') { state.activeView = 'final'; ui.noteKb = false; return; }
+  if (parts[0] === 'final') {
+    state.activeView = 'final';
+    ui.noteKb = false;
+    var fsec = parts[1];
+    if (fsec === 'paper' || fsec === 'exam' || fsec === 'plan') ui.finalSection = fsec;
+    else {
+      var savedSec = state.prefs && state.prefs.finalSection;
+      ui.finalSection = savedSec === 'paper' || savedSec === 'exam' ? savedSec : 'plan';
+    }
+    if (state.prefs) state.prefs.finalSection = ui.finalSection;
+    return;
+  }
   if (parts[0] === 'notes') { state.activeView = 'notes'; ui.noteBatch = false; ui.noteKb = parts[1] === 'kb'; ui.noteLibrary = !ui.noteKb; return; }
   ui.noteKb = false;
   if (parts[0] && (SUBJ_BY_ID[parts[0]] || parts[0] === 'xijing')) {
@@ -57,9 +94,12 @@ function parseHash() {
 }
 
 function updateHash() {
-  if (state.activeView === 'final') { setHash('#/final'); return; }
-  if (state.activeView === 'notes') { setHash(ui.noteKb ? '#/notes/kb' : '#/notes'); return; }
-  setHash('#/' + subjectRouteId(state.activeSubject) + '/' + state.activeView);
+  var h;
+  if (state.activeView === 'final') h = '#/final/' + finalSectionValue();
+  else if (state.activeView === 'notes') h = ui.noteKb ? '#/notes/kb' : '#/notes';
+  else h = '#/' + subjectRouteId(state.activeSubject) + '/' + state.activeView;
+  rememberRoute(h);
+  setHash(h);
 }
 
 function copyPlain(text, done) {
@@ -710,6 +750,7 @@ document.addEventListener('input', function (e) {
   window.addEventListener('hashchange', function () {
     if (suppressHash) return;
     parseHash();
+    rememberRoute(location.hash);
     render();
     updateHomeVisibility();
     var m = String(location.hash).match(/[?&]e=([^&]+)/);
@@ -878,7 +919,9 @@ async function boot() {
   }
   applyTheme();
   restoreSpaRedirect();
+  restoreLastRoute();
   parseHash();
+  rememberRoute(location.hash);
   if (typeof finalExamAutoCollectExpired === 'function') finalExamAutoCollectExpired();
   render();
   if (typeof initNotifications === 'function') initNotifications();

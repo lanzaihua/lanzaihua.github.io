@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.18-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.18--12a2442a-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.18--cc062901-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -150,11 +150,11 @@
 
 ## 更新记录
 
-### 2026-11-18 · 计划顺序与智能读题
+### 2026-11-18 · 记忆与刷新收口
 
-**9 项 · 9 组**
+**10 项 · 10 组**
 
-本轮继续修界面排版与计划顺序，不改题目内容，并让 AI 计划读取本机记录。期末复习章节筛选的小节分组改为按教材章节顺序（第一→第六）展开，即使先点第四章也不会倒序；期末模拟卷标题里的章节同样按章节顺序。手机章节筛选把「章节 / 已选 N 章」单独一行、章节按钮另起一行，避免标签、计数与第一个章节按钮挤在同一行；手机模板筛选的计数回到左侧，与右侧「清空筛选」分列。笔记库页头说明在桌面压缩为一行、手机两行，保留本 / 页 / 条计数。AI 个性化计划现在会读取本机错题库、题库、模板库、模拟卷与已交卷模拟考，优先把薄弱章节和小节排进每日计划，允许直接用个人错题当例题，并在每天标注「为什么这样排」；所有题号与出处仍回本地校验。qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查手机章节标题与按钮分行；qa:polish 覆盖 360/390/768/1440：期末计划标题、科目、章节、智能排程、阶段与每日安排统一到同一左内距；手机科目按钮 2×2、章节按钮 2 列等宽 44px，出卷页章节恢复 20px 内距，360 窄屏笔记搜索独占一行，期末复习说明自动平衡行宽，不再只剩两三个字的末行。规范页自测矩阵的行首分号与 details/summary 标签也一并修好：矩阵行分隔符后带空格不再被当成细空格，summary/details 里的算子词不再被包成公式。另外修好首页说明末句、知识点出处与问候标题的字体层级，并把每日用时拆成口述、例题、对照三段，分钟数之和与计划总时长一致。574 个知识点的记忆钩子与考场用法也逐条重写：每条都针对该点的定义、判据或易错点，考场句不再复用章级通用句；知识点卡拆成「记忆」「考场」两行。146 项回归测试与现有门禁全部通过。本块随 v2026.11.18 Release 发布。
+期末复习计划支持按大章与小节排程，AI 可读取本机错题、模拟卷与模拟考；574 个知识点逐条给出记忆与考场用法，排版与公式同步收口。刷新会回到上次打开的期末子页；更新摘要、README 与 Release 同日只保留一条。146 项测试通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -166,9 +166,10 @@
 | **字体层级** | 首页工作台说明的末句不再被标签选择器误改成 10px 橙色等宽字，整句统一为正文 12.5px 灰色；知识点出处的 § 小节改用中性灰，不再占用章节强调色；首页问候标题由 600 加粗到 700。qa:polish 新增字色、字号、字重与知识点颜色检查。 |
 | **用时口径** | 复习计划「每天怎么用」按总分钟拆分：约 60 分钟 = 10 分钟口述 + 40 分钟例题 + 10 分钟对照，不再出现 10 + 60 超过计划时长；标题直接写明总分钟数。 |
 | **记忆用法** | 574 个知识点逐条重写记忆钩子与考场用法：钩子压缩该点的定义、判据或公式，考场用法写明遇到什么题先做什么、最后检查什么；例如「可去间断点」要求先补定义或改函数值再判断，不再与「跳跃间断点」「第二类间断点」共用同一句。知识点卡拆成「记忆」「考场」两行显示，qa:memory 校验 574 点全覆盖、钩子与考场句各自唯一、公式定界符成对、无 HTML 与替换字符。 |
+| **刷新与记录** | 刷新页面会恢复上次打开的期末子页（复习计划 / 出模拟卷 / 进行模拟考）与主页面，不再固定回到复习计划。最近更新摘要压缩为一段，README 只展开最近一块，CHANGELOG 与 Release 同日只保留一条；qa:resume 在真浏览器验证刷新后的页面与子页，防止再次回退。 |
 | **防复发** | qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 覆盖 360/390/768/1440，检查工作台行数、计划内距、章节/科目等宽、功能条间距、规范顺序、统计口径、笔记拆词、模板计数与筛选卡宽度；qa:formulas 增加矩阵行首与 summary 标签检查；qa:memory 检查 574 个知识点的记忆与考场用法；146 项回归测试与 CI 全部门禁。 |
 
-<img src="assets/v2/20261118-changelog.png" alt="网页内计划顺序与智能读题更新记录" width="820">
+<img src="assets/v2/20261118-changelog.png" alt="网页内记忆与刷新收口更新记录" width="820">
 
 <details>
 <summary>历史更新 · 2026-11-17 及更早 · 26 个版本</summary>

@@ -145,6 +145,25 @@ if (!latestHeading || latestHeading.date !== latest.date || latestHeading.title 
   if (/20261108-changelog\.png/.test(readme)) problems.push('README 仍引用旧的 20261108 更新记录截图');
   const notifyGroups = (latest.notifyItems || []).map((it) => it.group);
   notifyGroups.forEach((g) => add(!(latest.items || []).some((it) => it.group === g), '最新通知条目不在更新记录中：' + g));
+  const summary = String(latest.summary || '').trim();
+  const notifySummary = String(latest.notifySummary || '').trim();
+  add(!summary, '最新更新缺少摘要');
+  add(summary.length > 180, '最新更新摘要过长：' + summary.length + ' 字');
+  add(!notifySummary, '最新更新缺少通知摘要');
+  add(notifySummary.length > 160, '最新更新通知摘要过长：' + notifySummary.length + ' 字');
+  add(!latestBlock.includes(summary), 'README 最新更新摘要与更新记录不一致');
+  const seenItems = new Set();
+  (latest.items || []).forEach((it) => {
+    const key = String(it.group || '') + '\u0000' + String(it.text || '');
+    add(seenItems.has(key), '最新更新出现重复分组与正文：' + it.group);
+    seenItems.add(key);
+  });
+  const seenNotify = new Set();
+  (latest.notifyItems || []).forEach((it) => {
+    const key = String(it.group || '') + '\u0000' + String(it.text || '');
+    add(seenNotify.has(key), '最新通知出现重复分组与正文：' + it.group);
+    seenNotify.add(key);
+  });
   if (/^\| \*\*/m.test(latestBlock)) {
     const rows = (latestBlock.match(/^\| \*\*/gm) || []).length;
     if (rows !== (latest.items || []).length) problems.push('README 最新更新表格行数不一致');

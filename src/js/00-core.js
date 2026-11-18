@@ -1036,7 +1036,7 @@ function seedState() {
     userTemplates: { gaodai: [], shufen: [], jieji: [], xijing: [] },
     userBank: { gaodai: [], shufen: [], jieji: [], xijing: [] },
     finalExam: { date: '', duration: 120, subject: '', chapterSel: {}, items: [], papers: [], done: {} },
-    prefs: { theme: 'auto', autoAi: true, userName: '', lang: 'zh-CN', apiNoticeDismissed: false },
+    prefs: { theme: 'auto', autoAi: true, userName: '', lang: 'zh-CN', apiNoticeDismissed: false, finalSection: 'plan', lastRoute: '' },
     chapterOrderVersion: BOOK_ORDER_VERSION,
     chapterValueVersion: CHAPTER_VALUE_VERSION,
     clearEpoch: EMPTY_EPOCH
@@ -1259,6 +1259,8 @@ function migrateState(st) {
   if (!st.finalExam.mock || typeof st.finalExam.mock !== 'object') st.finalExam.mock = null;
   if (!st.finalExam.chapterSel || typeof st.finalExam.chapterSel !== 'object') st.finalExam.chapterSel = {};
   if (!st.prefs || !st.prefs.theme) st.prefs = { theme: 'auto', userName: '' };
+  if (st.prefs.finalSection !== 'paper' && st.prefs.finalSection !== 'exam') st.prefs.finalSection = 'plan';
+  if (typeof st.prefs.lastRoute !== 'string') st.prefs.lastRoute = '';
   if (typeof st.prefs.userName !== 'string') st.prefs.userName = '';
   if (typeof st.prefs.apiNoticeDismissed !== 'boolean') st.prefs.apiNoticeDismissed = false;
   if (!st.prefs.lang) st.prefs.lang = 'zh-CN';

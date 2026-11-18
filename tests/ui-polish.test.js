@@ -70,8 +70,16 @@ test('layout copy and CSS use real chapter counts and fill cramped controls', ()
 test('UI polish gate is wired into scripts, CI and the current update block', () => {
   const pkg = JSON.parse(read('package.json'));
   assert.strictEqual(pkg.scripts['qa:polish'], 'node tools/qa-ui-polish.js');
+  assert.strictEqual(pkg.scripts['qa:resume'], 'node tools/qa-resume.js');
   const workflow = read('.github/workflows/quality.yml');
   assert.ok(workflow.includes('npm run qa:polish'), 'CI 没有运行 qa:polish');
+  assert.ok(workflow.includes('npm run qa:resume'), 'CI 没有运行 qa:resume');
+  const init = read('src/js/90-init.js');
+  assert.ok(init.includes('function restoreLastRoute()') && init.includes('function rememberRoute('), '缺少刷新后恢复上次界面的逻辑');
+  assert.ok(init.includes("h = '#/final/' + finalSectionValue()"), '期末子页没有写入地址');
+  assert.ok(init.includes('restoreLastRoute();'), '启动时没有调用刷新恢复');
+  assert.ok(init.includes('lastRoute'), '上次打开页面没有持久化');
+  assert.ok(read('src/js/59-exam.js').includes('state.prefs.finalSection = ui.finalSection'), '切换期末子页没有写入偏好');
   const gate = read('tools/qa-ui-polish.js');
   assert.ok(gate.includes('const WIDTHS = [360, 390, 768, 1440];'), '排版门禁没有覆盖窄手机/手机/平板/桌面');
   assert.ok(gate.includes('async function reading('), '排版门禁没有检查正文换行与页脚间距');
@@ -94,4 +102,8 @@ test('UI polish gate is wired into scripts, CI and the current update block', ()
   const readme = read('README.md');
   assert.ok(readme.includes('**排版收口**'), 'README 最新更新块没有排版收口条目');
   assert.ok(readme.includes('qa:polish'), 'README 没有说明排版门禁');
+  const siteGate = read('tools/qa-site-consistency.js');
+  assert.ok(siteGate.includes('最新更新摘要过长'), '站点一致性门禁没有限制最近更新摘要长度');
+  assert.ok(siteGate.includes('README 最新更新摘要与更新记录不一致'), '站点一致性门禁没有核对 README 摘要');
+  assert.ok(siteGate.includes('最新通知出现重复分组与正文'), '站点一致性门禁没有检查通知重复');
 });
