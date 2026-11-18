@@ -10160,3 +10160,10 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   padding: 0 !important;
   font: 400 9.5px/1.5 var(--font-mono) !important;
 }
+
+.fpm-memory-tip .fpm-memory-row{display:block!important}
+.fpm-memory-tip .fpm-memory-row + .fpm-memory-row{margin-top:3px!important}
+.fpm-memory-tip .fpm-memory-row b{display:inline-block!important;margin:0 4px 0 0!important;color:var(--ink)!important;font-weight:600!important}
+.fd-memory .fd-memory-tip{display:block!important}
+.fd-memory .fpm-memory-row{display:block!important;margin-top:4px!important;color:var(--muted)!important;font-size:10.5px!important;line-height:1.7!important}
+.fd-memory .fpm-memory-row b{display:inline-block!important;margin:0 4px 0 0!important;color:var(--accent-deep)!important;font-size:9.5px!important;letter-spacing:.04em!important}

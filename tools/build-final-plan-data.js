@@ -16,12 +16,28 @@ const CFG = {
   xijing: { dir: 'western-economics', book: '《西方经济学》第二版（马工程）' }
 };
 const CN = { '一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10,'十一':11,'十二':12,'十三':13,'十四':14,'十五':15,'十六':16,'十七':17,'十八':18,'十九':19,'二十':20,'二十一':21,'二十二':22,'二十三':23 };
+const MEM_FILE = path.join(ROOT, 'src/data/final-plan-memory.json');
+let MEM_OVERRIDES = {};
+if (fs.existsSync(MEM_FILE)) {
+  try { MEM_OVERRIDES = JSON.parse(fs.readFileSync(MEM_FILE, 'utf8')).points || {}; } catch (e) { MEM_OVERRIDES = {}; }
+}
 function chapterNo(name) { const m = /^第(.+?)章/.exec(String(name)); return m && CN[m[1]] ? CN[m[1]] : 99; }
 function cleanSection(s) {
   return String(s || '').replace(/\s*（[★☆]+）/g, '').replace(/\x60/g, '').replace(/\s+/g, ' ').replace(/\s*（[^）]*）\s*$/,'').trim();
 }
 function cleanPunct(s) {
   return String(s || '').replace(/。：/g, '：').replace(/：。/g, '：').replace(/。。/g, '。').replace(/，，/g, '，').replace(/；。/g, '；').replace(/、。/g, '、');
+}
+function clipText(s, max) {
+  s = String(s || '').replace(/\s+/g, ' ').trim();
+  if (s.length <= max) return s;
+  let cut = s.slice(0, max);
+  const p = Math.max(cut.lastIndexOf('。'), cut.lastIndexOf('；'), cut.lastIndexOf(';'));
+  if (p >= Math.floor(max * 0.55)) cut = cut.slice(0, p + 1);
+  cut = cut.replace(/\\[A-Za-z]+\{?$/, '').replace(/\$[^$]*$/, '');
+  const dollars = (cut.match(/\$/g) || []).length;
+  if (dollars % 2) cut = cut.slice(0, cut.lastIndexOf('$'));
+  return cut.replace(/[。；;，,、]+$/, '') + '。';
 }
 function stripMd(s) {
   return String(s || '').replace(/\r/g, '').replace(/\*\*/g, '').replace(/\x60/g, '').replace(/\$/g, '').replace(/\s+/g, ' ').trim();
@@ -69,7 +85,7 @@ function bestBy(text, list) {
   list.forEach(function (x) { const s = overlap(text, typeof x === 'string' ? x : x.name); if (s > score) { score = s; best = x; } });
   return { best: best, score: score };
 }
-const out = { version: 1, generatedAt: '2026-11-16', subjects: {} };
+const out = { version: 1, generatedAt: '2026-11-18', subjects: {} };
 for (const subject of Object.keys(CFG)) {
   const cfg = CFG[subject];
   const chapters = Object.keys(CS[subject] || {}).sort(function (a, b) { return chapterNo(a) - chapterNo(b); });
@@ -102,15 +118,21 @@ for (const subject of Object.keys(CFG)) {
       else sj = bestJ;
       const section = allSections[bestJ];
       const model = bestBy(section + ' ' + c.name, models).best || models[0] || '';
+      const memKey = subject + '||' + chapter + '||' + c.name;
+      const mem = MEM_OVERRIDES[memKey] || null;
+      const hook = mem ? String(mem.memory || '').replace(/[。；;]+$/, '') : '';
+      const exam = mem ? String(mem.exam || '').replace(/[。；;]+$/, '') : '';
       points.push({
         name: c.name,
-        detail: cleanPunct(c.detail.slice(0, 300)),
+        detail: clipText(cleanPunct(c.detail), 300),
         section: '§' + (ci + 1) + '.' + (bestJ + 1) + ' ' + section,
         source: cfg.book + ' · ' + chapter + ' · §' + (ci + 1) + '.' + (bestJ + 1) + ' ' + section,
-        memory: (function () {
-          var hook = '记「' + c.name + '」：' + String(c.detail || '').replace(/[。；;]+$/, '').slice(0, 96);
+        memoryHook: mem ? hook : undefined,
+        exam: mem ? exam : undefined,
+        memory: mem ? ('记「' + c.name + '」：' + hook + '。考场：' + exam + '。') : (function () {
+          var h = '记「' + c.name + '」：' + String(c.detail || '').replace(/[。；;]+$/, '').slice(0, 96);
           var use = cleanPunct(String(model || '')).replace(/[。；;]+$/, '').slice(0, 96);
-          return hook + '。考场：' + (use || '先写定义或判据，再代入条件，最后用特例检查') + '。';
+          return h + '。考场：' + (use || '先写定义或判据，再代入条件，最后用特例检查') + '。';
         })()
       });
     });

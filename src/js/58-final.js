@@ -463,7 +463,7 @@ function finalAiUnitResolve(subject, chapters, modules, raw, sections) {
   }
   if (!template) template = (example && finalPlanTemplateFor(subject, chapter, example)) || module.template;
   var memory = finalAiCleanText(raw.memory, 220);
-  if (point && memory) point = Object.assign({}, point, { memory: memory });
+  if (point && memory) point = Object.assign({}, point, { memory: memory, memoryHook: '', exam: '' });
   return {
     chapter: chapter,
     pointName: point ? String(point.name || '').trim() : '',
@@ -806,12 +806,30 @@ function finalPlanTemplateListHtml(m) {
   }).join('');
   return '<div class="fpm-templates"><h4>答题模板（' + m.templates.length + ' 个，展开看步骤）</h4>' + items + '</div>';
 }
+function finalPlanMemoryHtml(memory, hook, exam, cls) {
+  var h = String(hook || '').trim();
+  var x = String(exam || '').trim();
+  if (!h && !x) {
+    var s = String(memory || '');
+    var i = s.indexOf('考场：');
+    if (i >= 0) { h = s.slice(0, i); x = s.slice(i + 3); }
+    else h = s;
+    h = h.replace(/^记「[^」]+」[：:]\s*/, '');
+  }
+  h = h.replace(/[。；;]+$/, '').trim();
+  x = x.replace(/[。；;]+$/, '').trim();
+  if (!h && !x) return '';
+  return '<small class="' + cls + '">' +
+    (h ? '<span class="fpm-memory-row"><b>记忆</b> ' + renderInline(h) + '</span>' : '') +
+    (x ? '<span class="fpm-memory-row"><b>考场</b> ' + renderInline(x) + '</span>' : '') +
+  '</small>';
+}
 function finalPlanPointHtml(point) {
   if (!point) return '';
   return '<article class="fpm-point">' +
     '<div class="fpm-point-head"><b>' + renderInline(point.name || '知识点') + '</b>' + (point.section ? '<span>' + esc(point.section) + '</span>' : '') + '</div>' +
     (point.detail ? '<p class="md">' + renderInline(point.detail) + '</p>' : '') +
-    (point.memory ? '<small class="fpm-memory-tip"><b>记忆与考场用法</b> ' + renderInline(point.memory) + '</small>' : '') +
+    (point.memory ? finalPlanMemoryHtml(point.memory, point.memoryHook, point.exam, 'fpm-memory-tip') : '') +
     (point.source ? '<small class="fpm-source">出处：' + esc(point.source) + '</small>' : '') +
   '</article>';
 }
@@ -820,7 +838,7 @@ function finalPlanModuleBodyHtml(m) {
   var memory = m.memory.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('');
   var examples = m.examples.length ? m.examples.map(function (ex) { return finalPlanExampleHtml(ex, m.template); }).join('') : '<div class="final-plan-note">本章暂无完整例题，先按模板复述步骤。</div>';
   return '<div class="fpm-kps"><span class="fpm-label">知识点与出处</span><div class="fpm-points">' + pointHtml + '</div></div>' +
-    '<div class="fpm-memory"><h4>记忆与考场用法</h4><ul>' + memory + '</ul></div>' +
+    '<div class="fpm-memory"><h4>本章模板的考场流程</h4><ul>' + memory + '</ul></div>' +
     finalPlanTemplateListHtml(m) +
     '<div class="fpm-examples"><h4>本章例题（含标准解答、模板、详细解析）</h4>' + examples + '</div>';
 }
@@ -845,7 +863,7 @@ function finalPlanDayBodyHtml(d) {
       (d.point.section ? '<span class="fd-point-sec">' + renderInline(d.point.section) + '</span>' : '') +
       (d.point.detail ? '<p class="md">' + renderInline(d.point.detail) + '</p>' : '') +
       (d.point.source ? '<small>出处：' + esc(d.point.source) + '</small>' : '') +
-      (d.point.memory ? '<div class="fd-memory"><b>记忆与考场用法</b><p>' + renderInline(d.point.memory) + '</p></div>' : '') +
+      (d.point.memory ? '<div class="fd-memory"><b>记忆与考场用法</b>' + finalPlanMemoryHtml(d.point.memory, d.point.memoryHook, d.point.exam, 'fd-memory-tip') + '</div>' : '') +
     '</div>';
   }
   if (d.reason) detail += '<div class="fd-ai-reason"><b>为什么这样排</b><p>' + renderInline(d.reason) + '</p></div>';

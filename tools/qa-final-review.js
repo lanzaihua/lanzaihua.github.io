@@ -68,6 +68,8 @@ async function planSnapshot(page) {
       points: points.length,
       pointTotal: (() => { const h = document.querySelector('.final-plan-modules-head span'); const m = h ? String(h.textContent).match(/(\d+) 个知识点/) : null; return m ? Number(m[1]) : points.length; })(),
       memory: visible('.fpm-memory li').length,
+      memoryRows: points.map((p) => p.querySelectorAll('.fpm-memory-tip .fpm-memory-row').length),
+      examTexts: points.map((p) => { const rows = p.querySelectorAll('.fpm-memory-tip .fpm-memory-row'); return rows.length ? rows[rows.length - 1].textContent.trim() : ''; }),
       templates: visible('.fpm-tpl').length,
       days: visible('.final-day').length,
       dayDetails: visible('.fd-more').length,
@@ -90,6 +92,7 @@ async function dailySnapshot(page) {
       text: body.innerText,
       pointCards: body.querySelectorAll('.fd-point-card').length,
       memory: body.querySelectorAll('.fd-memory').length,
+      memoryRows: body.querySelectorAll('.fd-memory-tip .fpm-memory-row').length,
       examples: body.querySelectorAll('.fpe-item').length,
       source: card ? (card.querySelector('small') || {}).textContent || '' : '',
       raw: body.querySelectorAll('.math-raw,.temml-error,.merror').length,
@@ -154,6 +157,8 @@ async function dailySnapshot(page) {
         if ((snapshot.pointTotal || snapshot.points) < expectedModules * 2) push(failures, width, subjectId + ' too few knowledge points ' + (snapshot.pointTotal || snapshot.points));
         if (snapshot.templates < 1) push(failures, width, subjectId + ' plan has no template');
         if (snapshot.memory < 1) push(failures, width, subjectId + ' plan has no memory tips');
+        if (snapshot.memoryRows && snapshot.memoryRows.some((n) => n < 2)) push(failures, width, subjectId + ' memory/exam rows missing');
+        if (snapshot.examTexts && new Set(snapshot.examTexts).size < snapshot.examTexts.length) push(failures, width, subjectId + ' duplicate exam methods in first module');
         if (snapshot.sources.some((s) => s.indexOf('§') < 0)) push(failures, width, subjectId + ' knowledge source missing section');
         if (snapshot.rawDollar) push(failures, width, subjectId + ' plan has raw $');
         if (snapshot.rawMath) push(failures, width, subjectId + ' plan has unrendered math');
@@ -243,6 +248,7 @@ async function dailySnapshot(page) {
         else {
           if (!daily.source.includes('§')) push(failures, width, 'daily point source missing section');
           if (daily.memory < 1) push(failures, width, 'daily memory tip missing');
+          if (daily.memoryRows < 2) push(failures, width, 'daily memory/exam rows missing');
           if (daily.examples < 1) push(failures, width, 'daily example missing');
           if (!/考试标准解答/.test(daily.text)) push(failures, width, 'daily detail missing standard solution');
           if (!/答题模板/.test(daily.text)) push(failures, width, 'daily detail missing answer template');

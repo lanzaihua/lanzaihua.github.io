@@ -44,5 +44,5 @@ test('math pipeline normalizes sizing, bars and unicode subscripts inside formul
   assert.ok(md.includes("replace(/\\\\\\|/g, '\\\\Vert ')"), 'double bars must become Vert');
   assert.ok(md.includes("replace(/\\\\\\{/g, '\\\\lbrace ')"), 'escaped braces must become lbrace');
   const fin = read('src/js/58-final.js');
-  assert.ok(fin.includes("renderInline(d.point.memory)"), 'day memory must use the math renderer');
+  assert.ok(fin.includes("finalPlanMemoryHtml(d.point.memory"), 'day memory must use the math renderer');
 });
