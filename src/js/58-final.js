@@ -600,9 +600,11 @@ async function finalAiGeneratePlan() {
     var plan = finalAiNormalizePlan(subject, chapters, sections, raw, cfg.model, prompt.personal);
     finalData().aiPlan = plan;
     markDirty();
+    ui.finalAiPlanBusy = false;
     render();
     toast('AI 已按 ' + plan.units.length + ' 个学习单元排入 ' + data.total + ' 天；题号与出处已校验');
   } catch (e) {
+    ui.finalAiPlanBusy = false;
     ui.finalAiPlanError = (e && e.message) ? e.message : 'AI 排程失败';
     render();
     toast('AI 排程未完成，已保留本地计划：' + ui.finalAiPlanError);
@@ -913,9 +915,11 @@ function finalPlanHtml() {
   var ai = data.ai;
   var aiReady = typeof aiConfigReady === 'function' && aiConfigReady();
   var aiBusy = !!ui.finalAiPlanBusy;
+  var aiLabel = aiBusy ? 'AI 正在排程…' : (ai ? 'AI 已排程' : '用 AI 个性化');
+  var aiTitle = aiBusy ? '正在按章节、小节与考试日期生成复习计划' : (aiReady ? (ai ? 'AI 已排程；如需重新生成，先恢复本地排程' : '让已配置的 AI 按章节、小节与考试日期安排每天的学习单元') : '先在设置与同步 → 在线 AI 服务中配置模型');
   var aiActions = '<div class="final-ai-actions">' +
-    '<button class="btn btn-xs' + (!ai ? ' btn-primary' : '') + '" data-act="final-ai-plan" type="button"' + ((aiReady && !aiBusy) ? '' : ' disabled') + ' title="' + attr(aiReady ? '让已配置的 AI 按章节与考试日期重新安排每天的学习单元' : '先在设置与同步 → 在线 AI 服务中配置模型') + '">' + (aiBusy ? 'AI 正在排程…' : (ai ? '重新用 AI 排程' : '用 AI 个性化')) + '</button>' +
-    (ai ? '<button class="btn btn-xs" data-act="final-ai-reset" type="button">恢复本地排程</button>' : '') +
+    '<button class="btn btn-xs' + (!ai ? ' btn-primary' : '') + '" data-act="final-ai-plan" type="button"' + ((aiReady && !aiBusy && !ai) ? '' : ' disabled') + ' title="' + attr(aiTitle) + '">' + aiLabel + '</button>' +
+    ((ai && !aiBusy) ? '<button class="btn btn-xs" data-act="final-ai-reset" type="button">恢复本地排程</button>' : '') +
   '</div>';
   var aiTips = ai && ai.tips && ai.tips.length ? '<ul>' + ai.tips.map(function (x) { return '<li>' + renderInline(x) + '</li>'; }).join('') + '</ul>' : '';
   var aiPersonal = ai ? finalAiPersonalSummary(ai) : '';

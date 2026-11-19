@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.18-118fda02";</script>
+<script>window.__BUILD_ID__="2026.11.19-46896243";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -24155,7 +24155,35 @@ function autoAiPendingCount() {
    ========================================================= */
 var __BUILD_DAY_MATCH = String((typeof window !== 'undefined' && window.__BUILD_ID__) || '').match(/^(\d{4})\.(\d{2})\.(\d{2})/);
 var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_MATCH[2] + '-' + __BUILD_DAY_MATCH[3] : '';
-var UPDATE_LOG = [{
+var UPDATE_LOG = [
+{
+  "date": "2026-11-19",
+  "title": "排程状态收口",
+  "historyTitle": "排程状态收口",
+  "summary": "AI 排程完成后按钮改为「AI 已排程」，不再和「恢复本地排程」同时显示；成功与失败都先结束忙碌状态再刷新。148 项测试通过。",
+  "notifySummary": "AI 排程完成后显示「AI 已排程」，排程中不再同时出现恢复按钮；成功与失败都先结束忙碌状态再刷新。148 项测试通过。",
+  "notifyItems": [
+    {
+      "group": "排程状态",
+      "text": "AI 排程成功后先清除忙碌状态再重绘，按钮显示「AI 已排程」；失败时同样先结束「AI 正在排程…」再显示错误。排程进行中隐藏「恢复本地排程」，不再同时出现两个互相矛盾的状态。"
+    },
+    {
+      "group": "防复发",
+      "text": "回归测试直接渲染 AI 计划完成态与进行态：完成态必须含「AI 已排程」、不含「正在排程」并保留恢复按钮；进行态必须只含「正在排程」且不显示恢复按钮。测试同时锁定成功与失败路径的 busy→render 顺序，148 项测试与现有门禁全部执行。"
+    }
+  ],
+  "items": [
+    {
+      "group": "排程状态",
+      "text": "AI 排程成功后先清除忙碌状态再重绘，按钮显示「AI 已排程」；失败时同样先结束「AI 正在排程…」再显示错误。排程进行中隐藏「恢复本地排程」，不再同时出现两个互相矛盾的状态。"
+    },
+    {
+      "group": "防复发",
+      "text": "回归测试直接渲染 AI 计划完成态与进行态：完成态必须含「AI 已排程」、不含「正在排程」并保留恢复按钮；进行态必须只含「正在排程」且不显示恢复按钮。测试同时锁定成功与失败路径的 busy→render 顺序，148 项测试与现有门禁全部执行。"
+    }
+  ]
+},
+{
   "date": "2026-11-18",
   "title": "记忆与刷新收口",
   "historyTitle": "记忆与刷新收口",
@@ -34594,9 +34622,11 @@ async function finalAiGeneratePlan() {
     var plan = finalAiNormalizePlan(subject, chapters, sections, raw, cfg.model, prompt.personal);
     finalData().aiPlan = plan;
     markDirty();
+    ui.finalAiPlanBusy = false;
     render();
     toast('AI 已按 ' + plan.units.length + ' 个学习单元排入 ' + data.total + ' 天；题号与出处已校验');
   } catch (e) {
+    ui.finalAiPlanBusy = false;
     ui.finalAiPlanError = (e && e.message) ? e.message : 'AI 排程失败';
     render();
     toast('AI 排程未完成，已保留本地计划：' + ui.finalAiPlanError);
@@ -34907,9 +34937,11 @@ function finalPlanHtml() {
   var ai = data.ai;
   var aiReady = typeof aiConfigReady === 'function' && aiConfigReady();
   var aiBusy = !!ui.finalAiPlanBusy;
+  var aiLabel = aiBusy ? 'AI 正在排程…' : (ai ? 'AI 已排程' : '用 AI 个性化');
+  var aiTitle = aiBusy ? '正在按章节、小节与考试日期生成复习计划' : (aiReady ? (ai ? 'AI 已排程；如需重新生成，先恢复本地排程' : '让已配置的 AI 按章节、小节与考试日期安排每天的学习单元') : '先在设置与同步 → 在线 AI 服务中配置模型');
   var aiActions = '<div class="final-ai-actions">' +
-    '<button class="btn btn-xs' + (!ai ? ' btn-primary' : '') + '" data-act="final-ai-plan" type="button"' + ((aiReady && !aiBusy) ? '' : ' disabled') + ' title="' + attr(aiReady ? '让已配置的 AI 按章节与考试日期重新安排每天的学习单元' : '先在设置与同步 → 在线 AI 服务中配置模型') + '">' + (aiBusy ? 'AI 正在排程…' : (ai ? '重新用 AI 排程' : '用 AI 个性化')) + '</button>' +
-    (ai ? '<button class="btn btn-xs" data-act="final-ai-reset" type="button">恢复本地排程</button>' : '') +
+    '<button class="btn btn-xs' + (!ai ? ' btn-primary' : '') + '" data-act="final-ai-plan" type="button"' + ((aiReady && !aiBusy && !ai) ? '' : ' disabled') + ' title="' + attr(aiTitle) + '">' + aiLabel + '</button>' +
+    ((ai && !aiBusy) ? '<button class="btn btn-xs" data-act="final-ai-reset" type="button">恢复本地排程</button>' : '') +
   '</div>';
   var aiTips = ai && ai.tips && ai.tips.length ? '<ul>' + ai.tips.map(function (x) { return '<li>' + renderInline(x) + '</li>'; }).join('') + '</ul>' : '';
   var aiPersonal = ai ? finalAiPersonalSummary(ai) : '';

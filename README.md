@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.18-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.18--118fda02-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.19-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.19--46896243-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -150,6 +150,22 @@
 
 ## 更新记录
 
+### 2026-11-19 · 排程状态收口
+
+**2 项 · 2 组**
+
+AI 排程完成后按钮改为「AI 已排程」，不再和「恢复本地排程」同时显示；成功与失败都先结束忙碌状态再刷新。148 项测试通过。
+
+| 分组 | 本次更新 |
+|---|---|
+| **排程状态** | AI 排程成功后先清除忙碌状态再重绘，按钮显示「AI 已排程」；失败时同样先结束「AI 正在排程…」再显示错误。排程进行中隐藏「恢复本地排程」，不再同时出现两个互相矛盾的状态。 |
+| **防复发** | 回归测试直接渲染 AI 计划完成态与进行态：完成态必须含「AI 已排程」、不含「正在排程」并保留恢复按钮；进行态必须只含「正在排程」且不显示恢复按钮。测试同时锁定成功与失败路径的 busy→render 顺序，148 项测试与现有门禁全部执行。 |
+
+<img src="assets/v2/20261119-changelog.png" alt="网页内排程状态收口更新记录" width="820">
+
+<details>
+<summary>历史更新 · 2026-11-18 及更早 · 27 个版本</summary>
+
 ### 2026-11-18 · 记忆与刷新收口
 
 **11 项 · 11 组**
@@ -171,9 +187,6 @@
 | **防复发** | qa:final 改为先点第二章再点第一章，断言小节分组仍按章节顺序，并检查 390 宽标签与按钮分行；qa:polish 覆盖 360/390/768/1440，检查工作台行数、计划内距、章节/科目等宽、功能条间距、规范顺序、统计口径、笔记拆词、模板计数与筛选卡宽度；qa:formulas 增加矩阵行首与 summary 标签检查；qa:memory 检查 574 个知识点的记忆与考场用法；147 项回归测试与 CI 全部门禁。 |
 
 <img src="assets/v2/20261118-changelog.png" alt="网页内记忆与刷新收口更新记录" width="820">
-
-<details>
-<summary>历史更新 · 2026-11-17 及更早 · 26 个版本</summary>
 
 ### 2026-11-17 · 复习计划与记录收口
 
@@ -964,12 +977,12 @@
 
 ## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.18 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.18/source.zip) 提供。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.19 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.19/source.zip) 提供。
 
 ### 仓库与许可证
 
 - **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
-- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.18/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.18/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
+- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.19/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.19/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
 - **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
 - **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
 - **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。
@@ -983,7 +996,7 @@
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、8 视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 147 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
+| `tests/` | 148 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 

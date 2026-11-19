@@ -317,3 +317,49 @@ test('AI 计划读取错题、模拟卷与模拟考，并可用个人错题当�
   assert.equal(fallback.units[0].exampleKind, 'bank', '不存在的个人错题必须回退到题库例题');
   assert.equal(fallback.units[0].exampleId, 'GA-B0001');
 });
+
+test('AI 排程完成后显示已排程状态，不再同时出现正在排程与恢复按钮', () => {
+  const ctx = finalContext();
+  ctx.ui = { finalAiPlanBusy: false, finalAiPlanError: '' };
+  ctx.aiConfigReady = () => true;
+  ctx.bankOf = () => [{
+    id: 'GA-B0001', chapter: '第一章 多项式', title: '证明题', type: 'subjective', difficulty: 3,
+    question: '证明整除性质', answer: '结论成立', standardSolution: '证明：由定义直接得到。',
+    detailedAnalysis: '按定义展开。', points: ['整除定义'], pitfalls: ['不要漏掉零多项式'],
+    templateId: 'T-01-01', pointKeys: ['整除定义']
+  }];
+  ctx.templatesOf = () => [{
+    id: 'T-01-01', chapter: '第一章 多项式', title: '带余除法',
+    sections: [{ label: '步骤骨架', md: '做带余除法' }, { label: '易错点', md: '余式次数' }]
+  }];
+  const future = new Date(Date.now() + 20 * 86400000);
+  ctx.state.finalExam = {
+    date: future.getFullYear() + '-' + String(future.getMonth() + 1).padStart(2, '0') + '-' + String(future.getDate()).padStart(2, '0'),
+    duration: 120, subject: 'gaodai', chapterSel: { gaodai: ['第一章 多项式'] }, sectionSel: {},
+    items: [], papers: [], examHistory: [], done: {}
+  };
+  const plan = ctx.finalAiNormalizePlan('gaodai', ['第一章 多项式'], [], {
+    units: [{ chapter: '第一章 多项式', point: '带余除法', templateId: 'T-01-01', exampleId: 'GA-B0001', task: '先口述带余除法，再做例题', memory: '先看余式次数' }]
+  }, 'deepseek-flash');
+  ctx.state.finalExam.aiPlan = plan;
+
+  let html = ctx.finalPlanHtml();
+  assert.match(html, /AI 个性化/);
+  assert.match(html, /AI 已排程/, '完成后按钮必须显示 AI 已排程');
+  assert.doesNotMatch(html, /AI 正在排程/, '完成后不能残留正在排程');
+  assert.match(html, /恢复本地排程/, '完成后应保留恢复本地计划');
+  assert.match(html, /data-act="final-ai-plan"[^>]*disabled/, '完成后排程按钮应作为状态禁用，避免误触重排');
+
+  ctx.ui.finalAiPlanBusy = true;
+  html = ctx.finalPlanHtml();
+  assert.match(html, /AI 正在排程/);
+  assert.doesNotMatch(html, /AI 已排程/);
+  assert.doesNotMatch(html, /恢复本地排程/, '排程进行中不能同时显示恢复按钮');
+
+  const js = read('src/js/58-final.js');
+  const gen = js.slice(js.indexOf('async function finalAiGeneratePlan'), js.indexOf('function finalAiResetPlan'));
+  assert.match(gen, /finalData\(\)\.aiPlan = plan;[\s\S]*ui\.finalAiPlanBusy = false;[\s\S]*render\(\);/,
+    '成功写回计划后必须先清 busy 再 render');
+  assert.match(gen, /catch \(e\) \{[\s\S]*ui\.finalAiPlanBusy = false;[\s\S]*ui\.finalAiPlanError =/,
+    '失败时也必须先清 busy 再显示错误');
+});
