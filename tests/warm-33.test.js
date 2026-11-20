@@ -19,14 +19,14 @@ test('review queue uses the next unopened review node, not the total error count
   const entries = [
     { id: 'GA-9001', date: '2026-11-20', review: { D1: false, D3: false } },
     { id: 'GA-9002', date: '2026-10-01', review: { D1: false, D3: false } },
-    { id: 'GA-9003', date: '2026-10-02', review: { D1: true, D3: false }, reviewAt: { D1: '2026-11-21T08:00:00+08:00' } }
+    { id: 'GA-9003', date: '2026-10-02', review: { D1: true, D3: false }, reviewAt: { D1: new Date(2026, 10, 21, 8, 0, 0).toISOString() } }
   ];
   const ctx = load('src/js/16-stats.js', {
     SUBJECTS: [{ id: 'gaodai', name: '高等代数' }],
     entriesOf: () => entries,
     reviewPlanKeys: () => ['D1', 'D3'],
     reviewDayAvailableAt: (e, day) => {
-      const base = new Date(e.date + 'T00:00:00+08:00').getTime();
+      const base = new Date(e.date + 'T00:00:00').getTime();
       return base + (day === 'D1' ? 1 : 3) * 86400000;
     },
     libraryInventory: () => ({ totalBank: 0, totalTemplates: 0, builtInBank: 0, builtInTemplates: 0, userBank: 0, userTemplates: 0, duplicateBank: 0, duplicateTemplates: 0 }),
