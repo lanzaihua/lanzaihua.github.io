@@ -22,11 +22,11 @@ def api(path, method='GET', data=None, ctype='application/json'):
     with urllib.request.urlopen(req, timeout=300) as r:
         raw = r.read()
         return json.loads(raw.decode('utf-8')) if raw else {}
-body = r'''## 四科错题本 v2026.11.21 · 题库扩充与3.3
+body = r'''## 四科错题本 v2026.11.21 · 题库扩充与质量升级
 
 **11 项 · 11 组**
 
-题库扩至 9875 题并完成 Warm Academic 3.3 质量升级：首页改用真实复习队列，题库与模板统一内置/自建口径，备份显示时间与完整性，通知支持分类，AI 请求状态可见；行内分式字号与高公式尾串基线同步修正。153 项测试通过。
+题库扩至 9875 题并完成 3.3 质量升级：首页改用真实复习队列，资源统一内置/自建口径，备份、通知与 AI 状态更清楚；公式字号与高公式尾串对齐同步修正。153 项测试通过。
 
 ### 本轮更新
 - 解析几何补全：补入 42 道，解析几何由 1199 增至 1241。
@@ -45,7 +45,7 @@ body = r'''## 四科错题本 v2026.11.21 · 题库扩充与3.3
 - 回归测试 153 项通过；严格题库 QA 9875 唯一、problems 0 / warnings 0；教材课后 927、习题集 598。
 - 全库渲染审计 9875 题 0 失败；107436 字段数学语言审计 0；574 点记忆/考场用法审计 0 失败。
 - 公式、模拟卷、筛选、期末复习、搜索、8 视口浏览器、无障碍、性能、拆包、尺寸与发布一致性门禁通过。
-- BUILD_ID 2026.11.21-91aac930；GitHub Pages 与 Release 以同一提交构建。
+- BUILD_ID 2026.11.21-493de5fe；GitHub Pages 与 Release 以同一提交构建。
 
 完整记录见仓库 docs/VERIFICATION.md、docs/audit/WARM-ACADEMIC-3.3-AUDIT.md 与 docs/reports/。'''
 try:
@@ -53,7 +53,7 @@ try:
 except urllib.error.HTTPError as e:
     if e.code != 404:
         raise
-    rel = api('/releases', method='POST', data={'tag_name': TAG, 'name': '四科错题本 v2026.11.21 · 题库扩充与3.3', 'body': body, 'draft': False, 'prerelease': False})
+    rel = api('/releases', method='POST', data={'tag_name': TAG, 'name': '四科错题本 v2026.11.21 · 题库扩充与质量升级', 'body': body, 'draft': False, 'prerelease': False})
     print('created release', rel['id'])
 for a in rel.get('assets', []):
     if a['name'] in ('source.zip', 'SHA256SUMS', STATIC):
@@ -65,5 +65,5 @@ for name in ['source.zip', STATIC, 'SHA256SUMS']:
     with urllib.request.urlopen(req, timeout=600) as r:
         a = json.loads(r.read().decode('utf-8'))
     print('uploaded', a['name'], a['size'])
-api('/releases/%d' % rel['id'], method='PATCH', data={'body': body, 'name': '四科错题本 v2026.11.21 · 题库扩充与3.3', 'target_commitish': 'main'})
+api('/releases/%d' % rel['id'], method='PATCH', data={'body': body, 'name': '四科错题本 v2026.11.21 · 题库扩充与质量升级', 'target_commitish': 'main'})
 print('body updated')

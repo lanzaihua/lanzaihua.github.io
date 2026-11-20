@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.21-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.21--91aac930-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.21--493de5fe-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -21,7 +21,7 @@
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
-<img src="assets/v2/20261118-home.png" alt="四科错题本首页" width="860">
+<img src="assets/v2/20261121-home.png" alt="四科错题本首页" width="860">
 
 </div>
 
@@ -114,18 +114,18 @@
 
 <table>
 <tr>
-<td width="50%"><img src="assets/v2/20261118-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
-<td width="50%"><img src="assets/v2/20261118-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
+<td width="50%"><img src="assets/v2/20261121-overview.png" alt="总览" width="100%"><br><sub><b>总览</b> · 章节、掌握进度与错因分布</sub></td>
+<td width="50%"><img src="assets/v2/20261121-notes.png" alt="笔记库" width="100%"><br><sub><b>笔记库</b> · 手写笔记本与 Markdown 知识笔记</sub></td>
 </tr>
 <tr>
-<td width="50%"><img src="assets/v2/20261118-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
-<td width="50%"><img src="assets/v2/20261118-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
+<td width="50%"><img src="assets/v2/20261121-templates.png" alt="模板库" width="100%"><br><sub><b>模板库</b> · 章节索引与双列卡片</sub></td>
+<td width="50%"><img src="assets/v2/20261121-guide.png" alt="规范" width="100%"><br><sub><b>规范</b> · 五件套、编号与复习节奏</sub></td>
 </tr>
 </table>
 
-<p align="center"><img src="assets/v2/20261118-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
+<p align="center"><img src="assets/v2/20261121-final.png" alt="期末复习" width="860"><br><sub><b>期末复习</b> · 复习计划、模拟卷与限时模拟考</sub></p>
 
-<p align="center"><img src="assets/v2/20261118-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
+<p align="center"><img src="assets/v2/20261121-welcome.png" alt="首次进入提示" width="820"><br><sub><b>首次进入</b> · 未配置 AI 时的一次温和提醒</sub></p>
 
 ## 屏幕适配
 
@@ -151,11 +151,11 @@
 
 ## 更新记录
 
-### 2026-11-21 · 题库扩充与3.3
+### 2026-11-21 · 题库扩充与质量升级
 
 **11 项 · 11 组**
 
-题库扩至 9875 题并完成 Warm Academic 3.3 质量升级：首页改用真实复习队列，题库与模板统一内置/自建口径，备份显示时间与完整性，通知支持分类，AI 请求状态可见；行内分式字号与高公式尾串基线同步修正。153 项测试通过。
+题库扩至 9875 题并完成 3.3 质量升级：首页改用真实复习队列，资源统一内置/自建口径，备份、通知与 AI 状态更清楚；公式字号与高公式尾串对齐同步修正。153 项测试通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -171,7 +171,7 @@
 | **公式字号** | 行内分式从 MathML 默认的 0.7 倍调到 0.92 倍，\dfrac 不再降级；高矩阵与标点尾串垂直居中；qa:formulas 增两项检查。 |
 | **防复发** | qa:polish 检查首页队列、手机顺序、统计口径与通知分类；单元测试覆盖队列、资源清单、通知与 AI 状态。 |
 
-<img src="assets/v2/20261121-changelog.png" alt="网页内题库扩充与 3.3 升级更新记录" width="820">
+<img src="assets/v2/20261121-changelog.png" alt="网页内题库扩充与质量升级更新记录" width="820">
 
 <details>
 <summary>历史更新 · 2026-11-19 及更早 · 28 个版本</summary>

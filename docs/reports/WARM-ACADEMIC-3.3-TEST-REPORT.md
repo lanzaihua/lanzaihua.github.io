@@ -26,7 +26,7 @@
 | qa:formulas | 14 个面，broken 0 |
 | qa:paper / qa:filters | 18 / 22 个宽度，failures 0 |
 | qa:responsive | 8 视口，failures []；桌面 1440×1000 四科卡全部在首屏 |
-| qa:pages | 首访 network、刷新 idb，items 2075，id 91aac930 |
+| qa:pages | 首访 network、刷新 idb，items 2075，id 493de5fe |
 | qa:a11y / qa:perf | 8 路由无问题；problems [] |
 | verify:build / pages / skills | 三处构建号一致；分片字节一致；技能 121 条目 0 问题 |
 | qa:size | root 3.67MB / dist 18.50MB / pages 3.67MB，ratio 19.8% |
@@ -35,5 +35,5 @@
 
 - 统计卡实测 9875 可用题库、118 可用模板、3 今日待复习。
 - 通知筛选四类，390/1440 均无横向溢出，pageerror []。
-- BUILD_ID：2026.11.21-91aac930。
+- BUILD_ID：2026.11.21-493de5fe。
 - 用户本机 10336/176 的差异仍属浏览器内数据口径，仓库侧不删除用户数据，只按唯一 ID 合并统计。

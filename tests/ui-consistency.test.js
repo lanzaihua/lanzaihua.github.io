@@ -35,7 +35,7 @@ test('latest update block and README share the same date, counts and current fac
   const latest = sandbox.__UPDATE_LOG__[0];
   const latestText = JSON.stringify(latest);
   assert.strictEqual(latest.date, '2026-11-21');
-  assert.strictEqual(latest.title, '题库扩充与3.3');
+  assert.strictEqual(latest.title, '题库扩充与质量升级');
   assert.strictEqual(latest.items.length, 11);
   assert.ok(latest.items.some((row) => row.group === '解析几何补全'), '最新更新块缺少解析几何补全');
   assert.ok(latest.items.some((row) => row.group === '首页队列'), '最新更新块缺少首页复习队列');
@@ -47,9 +47,11 @@ test('latest update block and README share the same date, counts and current fac
   assert.ok(latest.notifyItems.every((it) => latest.items.some((row) => row.group === it.group && row.text === it.text)), '通知条目必须与更新记录正文一致');
   assert.ok(!/99 项|题库仍为 9163|1900 余字|v2026\.11\.15|证明成立（详见标准解答）|按 4MB 预算检查/.test(latestText), '最新更新块仍含旧的同日数值');
   const readme = read('README.md');
-  assert.ok(readme.includes('### 2026-11-21 · 题库扩充与3.3'), 'README 最新更新块日期或标题不一致');
+  assert.ok(readme.includes('### 2026-11-21 · 题库扩充与质量升级'), 'README 最新更新块日期或标题不一致');
   assert.ok(readme.includes('### 2026-11-19 · 排程状态收口'), 'README 缺少 11-19 更新块');
   assert.ok(readme.includes('**11 项 · 11 组**'), 'README 最新更新块计数不一致');
+  assert.ok(readme.includes('assets/v2/20261121-home.png'), 'README 首页截图未更新到当前版本');
+  assert.ok(!readme.includes('assets/v2/20261118-home.png'), 'README 仍引用旧首页截图');
   assert.ok(readme.includes(latest.summary), 'README 最新更新摘要与网页不一致');
   assert.ok(readme.includes('| **首页队列** |'), 'README 最新更新块缺少首页队列行');
   assert.ok(readme.includes('| **数据口径** |') && readme.includes('| **防复发** |'), 'README 最新更新块缺少数据口径或防复发行');
@@ -58,7 +60,7 @@ test('latest update block and README share the same date, counts and current fac
   assert.strictEqual(sandbox.__UPDATE_LOG__.filter((b) => b.date === '2026-11-15').length, 1, '11-15 更新块只能有一块');
   assert.ok(readme.includes('默认 IndexedDB'), 'README 数据方式仍写 localStorage');
   const changelogMd = read('CHANGELOG.md');
-  assert.ok(changelogMd.includes('## 题库扩充与3.3\n\n2026-11-21\n\n**11 项 · 11 组**'), 'CHANGELOG 最新块未同步');
+  assert.ok(changelogMd.includes('## 题库扩充与质量升级\n\n2026-11-21\n\n**11 项 · 11 组**'), 'CHANGELOG 最新块未同步');
   assert.ok(changelogMd.includes('## 排程状态收口\n\n2026-11-19\n\n**2 项 · 2 组**'), 'CHANGELOG 缺少 11-18 块');
   assert.ok(changelogMd.includes('## 复习计划与记录收口\n\n2026-11-17\n\n**6 项 · 6 组**'), 'CHANGELOG 缺少 11-17 块');
   assert.ok(changelogMd.includes('## 题库扩充与稳定性加固\n\n2026-11-15\n\n**32 项 · 32 组**'), 'CHANGELOG 缺少 11-15 更新块');
