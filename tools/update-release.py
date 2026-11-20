@@ -44,7 +44,7 @@ body = r'''## 四科错题本 v2026.11.21 · 题库扩充与3.3
 - 回归测试 153 项通过；严格题库 QA 9875 唯一、problems 0 / warnings 0；教材课后 927、习题集 598。
 - 全库渲染审计 9875 题 0 失败；107436 字段数学语言审计 0；574 点记忆/考场用法审计 0 失败。
 - 公式、模拟卷、筛选、期末复习、搜索、8 视口浏览器、无障碍、性能、拆包、尺寸与发布一致性门禁通过。
-- BUILD_ID 2026.11.21-0d0fb0da；GitHub Pages 与 Release 以同一提交构建。
+- BUILD_ID 2026.11.21-9d95291b；GitHub Pages 与 Release 以同一提交构建。
 
 完整记录见仓库 docs/VERIFICATION.md、docs/audit/WARM-ACADEMIC-3.3-AUDIT.md 与 docs/reports/。'''
 try:
