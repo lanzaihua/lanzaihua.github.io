@@ -49348,6 +49348,1885 @@
       "options": [],
       "correct": "",
       "category": "计算题"
+    },
+    {
+      "id": "GE-B1200",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "混合积的三重线性展开",
+      "question": "证明 $(a-d,b-d,c-d)=(a,b,c)-(a,b,d)+(a,c,d)-(b,c,d)$。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：\n$$(a-d,b-d,c-d)=[(a-d)\\times(b-d)]\\cdot(c-d)=(a\\times b-a\\times d+b\\times d)\\cdot(c-d)$$\n$$=(a\\times b)\\cdot c-(a\\times b)\\cdot d-(a\\times d)\\cdot c+(b\\times d)\\cdot c=(a,b,c)-(a,b,d)+(a,c,d)-(b,c,d).$$\n证毕",
+      "detailedAnalysis": "考点：混合积的三重线性 / 叉积展开。方法：把\"每个向量都减去同一个向量\"看成行列式的一列加上另一列的负倍数，按线性性拆成 8 项，再删去有重复向量的项。",
+      "points": [
+        "混合积的三重线性",
+        "叉积展开"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 3(1) 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：\n$$(a-d,b-d,c-d)=[(a-d)\\times(b-d)]\\cdot(c-d)=(a\\times b-a\\times d+b\\times d)\\cdot(c-d)$$\n$$=(a\\times b)\\cdot c-(a\\times b)\\cdot d-(a\\times d)\\cdot c+(b\\times d)\\cdot c=(a,b,c)-(a,b,d)+(a,c,d)-(b,c,d).$$\n证毕"
+      ],
+      "pointKeys": [
+        "混合积的三重线性",
+        "叉积展开"
+      ]
+    },
+    {
+      "id": "GE-B1201",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "双重向量积恒等式",
+      "question": "证明 $a\\times[b\\times(c\\times d)]=(a\\times c)(b\\cdot d)-(a\\times d)(b\\cdot c)$。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：由 $b\\times(c\\times d)=(b\\cdot d)c-(b\\cdot c)d$，\n$$a\\times[b\\times(c\\times d)]=(b\\cdot d)(a\\times c)-(b\\cdot c)(a\\times d)=(a\\times c)(b\\cdot d)-(a\\times d)(b\\cdot c).$$\n证毕",
+      "detailedAnalysis": "考点：双重向量积 / 与标量的结合。方法：由内向外逐层用 $(x\\times y)\\times z$ 型公式，标量可以提到叉积外面。",
+      "points": [
+        "双重向量积",
+        "与标量的结合"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 3(2) 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：由 $b\\times(c\\times d)=(b\\cdot d)c-(b\\cdot c)d$，\n$$a\\times[b\\times(c\\times d)]=(b\\cdot d)(a\\times c)-(b\\cdot c)(a\\times d)=(a\\times c)(b\\cdot d)-(a\\times d)(b\\cdot c).$$\n证毕"
+      ],
+      "pointKeys": [
+        "双重向量积",
+        "与标量的结合"
+      ]
+    },
+    {
+      "id": "GE-B1202",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "三叉积混合积等于平方",
+      "question": "证明 $(a\\times b,b\\times c,c\\times a)=(a,b,c)^2$。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：$(b\\times c)\\times(c\\times a)=(b,c,a)c-(b,c,c)a=(a,b,c)c$，\n$$(a\\times b,b\\times c,c\\times a)=\\big[(a\\times b)\\times(b\\times c)\\big]\\cdot(c\\times a)=\\big[(a,b,c)b\\big]\\cdot(c\\times a)=(a,b,c)(b,c,a)=(a,b,c)^2.$$\n证毕",
+      "detailedAnalysis": "考点：双重向量积 / 混合积平方。方法：与习题 1.10 题 5 是同一恒等式（那题问\"共面\"，这里问\"值\"），记住结论 $(a\\times b,b\\times c,c\\times a)=(a,b,c)^2$。",
+      "points": [
+        "双重向量积",
+        "混合积平方"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 3(3) 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：$(b\\times c)\\times(c\\times a)=(b,c,a)c-(b,c,c)a=(a,b,c)c$，\n$$(a\\times b,b\\times c,c\\times a)=\\big[(a\\times b)\\times(b\\times c)\\big]\\cdot(c\\times a)=\\big[(a,b,c)b\\big]\\cdot(c\\times a)=(a,b,c)(b,c,a)=(a,b,c)^2.$$\n证毕"
+      ],
+      "pointKeys": [
+        "双重向量积",
+        "混合积平方"
+      ]
+    },
+    {
+      "id": "GE-B1203",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "对角线表示平行四边形的面积",
+      "question": "设平行四边形的对角线为 $a=m+2n$ 与 $b=3m-4n$，而 $|m|=1$，$|n|=2$，$\\angle(m,n)=30^\\circ$，求该平行四边形的面积。",
+      "answer": "面积为 $5$。",
+      "standardSolution": "解：设相邻两边为 $\\alpha,\\beta$，则 $\\alpha+\\beta=a$，$\\beta-\\alpha=b$（对角向量），解得\n$$\\alpha=\\frac{a-b}{2}=-m+3n,\\qquad \\beta=\\frac{a+b}{2}=2m-n.$$\n于是\n$$\\alpha\\times\\beta=(-m+3n)\\times(2m-n)=m\\times n+6(n\\times m)=-5(m\\times n),$$\n$$|m\\times n|=|m||n|\\sin30^\\circ=1\\cdot2\\cdot\\frac12=1,$$\n故面积 $S=|\\alpha\\times\\beta|=5$。",
+      "detailedAnalysis": "考点：用对角线表示边 / 向量积求面积。方法：已知对角向量时 $\\alpha=\\tfrac12(a-b)$、$\\beta=\\tfrac12(a+b)$；面积 $=|\\alpha\\times\\beta|$，$|m\\times n|$ 由定义算。",
+      "points": [
+        "用对角线表示边",
+        "向量积求面积"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 4 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：设相邻两边为 $\\alpha,\\beta$，则 $\\alpha+\\beta=a$，$\\beta-\\alpha=b$（对角向量），解得\n$$\\alpha=\\frac{a-b}{2}=-m+3n,\\qquad \\beta=\\frac{a+b}{2}=2m-n.$$\n于是\n$$\\alpha\\times\\beta=(-m+3n)\\times(2m-n)=m\\times n+6(n\\times m)=-5(m\\times n),$$\n$$|m\\times n|=|m||n|\\sin30^\\circ=1\\cdot2\\cdot\\frac12=1,$$\n故面积 $S=|\\alpha\\times\\beta|=5$。"
+      ],
+      "pointKeys": [
+        "用对角线表示边",
+        "向量积求面积"
+      ]
+    },
+    {
+      "id": "GE-B1204",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "三向量共面的线性组合判据",
+      "question": "设空间任意三向量 $m,n,p$，证明：(1) $m+n,\\ n+p,\\ p-m$ 共面；(2) $a\\times m,\\ a\\times n,\\ a\\times p$ 共面。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：(1) 因为 $(m+n)-(n+p)+(p-m)=0$，三向量线性相关，故共面。\n（另证：混合积 $=[(m+n)\\times(n+p)]\\cdot(p-m)=(m\\times n+m\\times p+n\\times p)\\cdot(p-m)=(m,n,p)-(m,n,p)=0$。）\n(2) 由向量积定义，$a\\times m,\\ a\\times n,\\ a\\times p$ 都与 $a$ 垂直，故都平行于以 $a$ 为法向量的平面，从而共面。证毕",
+      "detailedAnalysis": "考点：线性相关判据 / 共面判据。方法：能\"凑出系数和为 0 的组合\"就直接用；不能时找公共法向量。",
+      "points": [
+        "线性相关判据",
+        "共面判据"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 5 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1) 因为 $(m+n)-(n+p)+(p-m)=0$，三向量线性相关，故共面。\n（另证：混合积 $=[(m+n)\\times(n+p)]\\cdot(p-m)=(m\\times n+m\\times p+n\\times p)\\cdot(p-m)=(m,n,p)-(m,n,p)=0$。）\n(2) 由向量积定义，$a\\times m,\\ a\\times n,\\ a\\times p$ 都与 $a$ 垂直，故都平行于以 $a$ 为法向量的平面，从而共面。证毕"
+      ],
+      "pointKeys": [
+        "线性相关判据",
+        "共面判据"
+      ]
+    },
+    {
+      "id": "GE-B1205",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "混合积线性展开求值",
+      "question": "设 $(\\alpha\\times\\beta)\\cdot\\gamma=2$，求 $[(\\alpha+\\beta)\\times(\\beta+\\gamma)]\\cdot(\\gamma+\\alpha)$ 的值。",
+      "answer": "值为 $4$。",
+      "standardSolution": "解：展开\n$$[(\\alpha+\\beta)\\times(\\beta+\\gamma)]\\cdot(\\gamma+\\alpha)=(\\alpha\\times\\beta+\\alpha\\times\\gamma+\\beta\\times\\gamma)\\cdot(\\gamma+\\alpha)$$\n$$=(\\alpha\\times\\beta)\\cdot\\gamma+(\\alpha\\times\\gamma)\\cdot\\gamma+(\\beta\\times\\gamma)\\cdot\\gamma+(\\alpha\\times\\beta)\\cdot\\alpha+(\\alpha\\times\\gamma)\\cdot\\alpha+(\\beta\\times\\gamma)\\cdot\\alpha.$$\n其中含重复向量的混合积全为 0，只剩\n$$(\\alpha\\times\\beta)\\cdot\\gamma+(\\beta\\times\\gamma)\\cdot\\alpha=2(\\alpha,\\beta,\\gamma)=4.$$",
+      "detailedAnalysis": "考点：混合积的线性性 / 轮换性。方法：先全部展开，再用\"混合积中有两个向量相同则为 0\"筛掉六项中的四项。",
+      "points": [
+        "混合积的线性性",
+        "轮换性"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 6 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：展开\n$$[(\\alpha+\\beta)\\times(\\beta+\\gamma)]\\cdot(\\gamma+\\alpha)=(\\alpha\\times\\beta+\\alpha\\times\\gamma+\\beta\\times\\gamma)\\cdot(\\gamma+\\alpha)$$\n$$=(\\alpha\\times\\beta)\\cdot\\gamma+(\\alpha\\times\\gamma)\\cdot\\gamma+(\\beta\\times\\gamma)\\cdot\\gamma+(\\alpha\\times\\beta)\\cdot\\alpha+(\\alpha\\times\\gamma)\\cdot\\alpha+(\\beta\\times\\gamma)\\cdot\\alpha.$$\n其中含重复向量的混合积全为 0，只剩\n$$(\\alpha\\times\\beta)\\cdot\\gamma+(\\beta\\times\\gamma)\\cdot\\alpha=2(\\alpha,\\beta,\\gamma)=4.$$"
+      ],
+      "pointKeys": [
+        "混合积的线性性",
+        "轮换性"
+      ]
+    },
+    {
+      "id": "GE-B1206",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "用向量证明柯西与混合积不等式",
+      "question": "利用向量证明：\n(1) $(a_1b_1+a_2b_2+a_3b_3)^2\\le(a_1^2+a_2^2+a_3^2)(b_1^2+b_2^2+b_3^2)$；\n(2) $\\begin{vmatrix}a_1&a_2&a_3\\\\ b_1&b_2&b_3\\\\ c_1&c_2&c_3\\end{vmatrix}^2\\le(a_1^2+a_2^2+a_3^2)(b_1^2+b_2^2+b_3^2)(c_1^2+c_2^2+c_3^2)$。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：设 $a=\\{a_1,a_2,a_3\\}$，$b=\\{b_1,b_2,b_3\\}$，$c=\\{c_1,c_2,c_3\\}$。\n(1) $(a\\cdot b)^2=|a|^2|b|^2\\cos^2\\angle(a,b)\\le|a|^2|b|^2$，即所证不等式。\n(2) $(a,b,c)^2=[(a\\times b)\\cdot c]^2\\le|a\\times b|^2|c|^2\\le|a|^2|b|^2|c|^2$，其中第一步用柯西不等式、第二步用 $(a\\times b)^2\\le a^2b^2$，即所证不等式。证毕",
+      "detailedAnalysis": "考点：柯西不等式 / 混合积的几何意义（体积不超过三边乘积）。方法：两个不等式都是\"$|\\cos|\\le1$、$|\\sin|\\le1$\"的产物；第二式即\"平行六面体体积不超过三棱长之积\"。",
+      "points": [
+        "柯西不等式",
+        "混合积的几何意义（体积不超过三边乘积）"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 7 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $a=\\{a_1,a_2,a_3\\}$，$b=\\{b_1,b_2,b_3\\}$，$c=\\{c_1,c_2,c_3\\}$。\n(1) $(a\\cdot b)^2=|a|^2|b|^2\\cos^2\\angle(a,b)\\le|a|^2|b|^2$，即所证不等式。\n(2) $(a,b,c)^2=[(a\\times b)\\cdot c]^2\\le|a\\times b|^2|c|^2\\le|a|^2|b|^2|c|^2$，其中第一步用柯西不等式、第二步用 $(a\\times b)^2\\le a^2b^2$，即所证不等式。证毕"
+      ],
+      "pointKeys": [
+        "柯西不等式",
+        "混合积的几何意义（体积不超过三边乘积）"
+      ]
+    },
+    {
+      "id": "GE-B1207",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "不共面向量的分解恒等式",
+      "question": "设 $e_1,e_2,e_3$ 为三个不共面的向量，试证明：\n(1) 对于任意向量 $r$，有恒等式\n$$r=\\frac{(r,e_2,e_3)}{(e_1,e_2,e_3)}e_1+\\frac{(e_1,r,e_3)}{(e_1,e_2,e_3)}e_2+\\frac{(e_1,e_2,r)}{(e_1,e_2,e_3)}e_3;$$\n(2) 向量方程组 $(x,e_2,e_3)=l,\\ (x,e_3,e_1)=m,\\ (x,e_1,e_2)=n$ 的解可表示为\n$$x=\\frac{1}{(e_1,e_2,e_3)}(le_1+me_2+ne_3).$$",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：(1) 因 $e_1,e_2,e_3$ 不共面，可设 $r=\\lambda e_1+\\mu e_2+\\nu e_3$。两边与 $e_2\\times e_3$ 作数量积：\n$$(r,e_2,e_3)=\\lambda(e_1,e_2,e_3)\\ \\Longrightarrow\\ \\lambda=\\frac{(r,e_2,e_3)}{(e_1,e_2,e_3)}.$$\n同理与 $e_3\\times e_1$、$e_1\\times e_2$ 作数量积得 $\\mu=\\dfrac{(e_1,r,e_3)}{(e_1,e_2,e_3)}$，$\\nu=\\dfrac{(e_1,e_2,r)}{(e_1,e_2,e_3)}$，代回即得恒等式。\n(2) 同样设 $x=\\lambda e_1+\\mu e_2+\\nu e_3$，三个方程分别给出 $\\lambda(e_1,e_2,e_3)=l$、$\\mu(e_1,e_2,e_3)=m$、$\\nu(e_1,e_2,e_3)=n$，故 $x=\\dfrac{le_1+me_2+ne_3}{(e_1,e_2,e_3)}$。证毕",
+      "detailedAnalysis": "考点：混合积与坐标（克莱姆法则）/ 共面判据。方法：\"在一个基下求坐标\"的通用手法：与 $e_2\\times e_3$ 作点积即可把 $e_1$ 的系数单独选出。",
+      "points": [
+        "混合积与坐标（克莱姆法则）",
+        "共面判据"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 8 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1) 因 $e_1,e_2,e_3$ 不共面，可设 $r=\\lambda e_1+\\mu e_2+\\nu e_3$。两边与 $e_2\\times e_3$ 作数量积：\n$$(r,e_2,e_3)=\\lambda(e_1,e_2,e_3)\\ \\Longrightarrow\\ \\lambda=\\frac{(r,e_2,e_3)}{(e_1,e_2,e_3)}.$$\n同理与 $e_3\\times e_1$、$e_1\\times e_2$ 作数量积得 $\\mu=\\dfrac{(e_1,r,e_3)}{(e_1,e_2,e_3)}$，$\\nu=\\dfrac{(e_1,e_2,r)}{(e_1,e_2,e_3)}$，代回即得恒等式。\n(2) 同样设 $x=\\lambda e_1+\\mu e_2+\\nu e_3$，三个方程分别给出 $\\lambda(e_1,e_2,e_3)=l$、$\\mu(e_1,e_2,e_3)=m$、$\\nu(e_1,e_2,e_3)=n$，故 $x=\\dfrac{le_1+me_2+ne_3}{(e_1,e_2,e_3)}$。证毕"
+      ],
+      "pointKeys": [
+        "混合积与坐标（克莱姆法则）",
+        "共面判据"
+      ]
+    },
+    {
+      "id": "GE-B1208",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "三角形中线与重心的向量关系",
+      "question": "设三角形 $ABC$ 的三边 $BC,CA,AB$ 的中点依次为 $D,E,F$，又 $O$ 为 $\\triangle ABC$ 的重心，试证：\n(1) 三角形的三条中线向量 $\\vec{AD},\\vec{BE},\\vec{CF}$ 首尾相接可构成一个三角形；\n(2) $\\vec{OA}+\\vec{OB}+\\vec{OC}=0$。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：(1) $\\vec{AD}=\\vec{AB}+\\tfrac12\\vec{BC}$，$\\vec{BE}=\\vec{BC}+\\tfrac12\\vec{CA}$，$\\vec{CF}=\\vec{CA}+\\tfrac12\\vec{AB}$，三式相加\n$$\\vec{AD}+\\vec{BE}+\\vec{CF}=\\frac32(\\vec{AB}+\\vec{BC}+\\vec{CA})=0.$$\n又因三中线不互相平行，故它们首尾相接构成三角形。\n(2) 重心把每条中线自顶点起分成 $2:1$，故 $\\vec{OA}=-\\tfrac23\\vec{AD}$，$\\vec{OB}=-\\tfrac23\\vec{BE}$，$\\vec{OC}=-\\tfrac23\\vec{CF}$，于是\n$$\\vec{OA}+\\vec{OB}+\\vec{OC}=-\\frac23(\\vec{AD}+\\vec{BE}+\\vec{CF})=0.$$\n证毕",
+      "detailedAnalysis": "考点：中线向量 / 重心分比。方法：先证\"三中线之和为零\"，再乘 $\\tfrac23$ 得重心结论——两问共用同一组中线表达式。",
+      "points": [
+        "中线向量",
+        "重心分比"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 9 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1) $\\vec{AD}=\\vec{AB}+\\tfrac12\\vec{BC}$，$\\vec{BE}=\\vec{BC}+\\tfrac12\\vec{CA}$，$\\vec{CF}=\\vec{CA}+\\tfrac12\\vec{AB}$，三式相加\n$$\\vec{AD}+\\vec{BE}+\\vec{CF}=\\frac32(\\vec{AB}+\\vec{BC}+\\vec{CA})=0.$$\n又因三中线不互相平行，故它们首尾相接构成三角形。\n(2) 重心把每条中线自顶点起分成 $2:1$，故 $\\vec{OA}=-\\tfrac23\\vec{AD}$，$\\vec{OB}=-\\tfrac23\\vec{BE}$，$\\vec{OC}=-\\tfrac23\\vec{CF}$，于是\n$$\\vec{OA}+\\vec{OB}+\\vec{OC}=-\\frac23(\\vec{AD}+\\vec{BE}+\\vec{CF})=0.$$\n证毕"
+      ],
+      "pointKeys": [
+        "中线向量",
+        "重心分比"
+      ]
+    },
+    {
+      "id": "GE-B1209",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "三中线平方和等于三边平方和",
+      "question": "证明三角形三条中线的长度平方和等于三边的长度平方和的 $\\dfrac34$。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：设 $D,E,F$ 为 $BC,CA,AB$ 的中点，则\n$$\\vec{AD}=\\vec{AB}+\\frac{\\vec{BC}}{2},\\quad \\vec{BE}=\\vec{BC}+\\frac{\\vec{CA}}{2},\\quad \\vec{CF}=\\vec{CA}+\\frac{\\vec{AB}}{2}.$$\n平方相加：\n$$\\vec{AD}^2+\\vec{BE}^2+\\vec{CF}^2=\\frac54(\\vec{AB}^2+\\vec{BC}^2+\\vec{CA}^2)+(\\vec{AB}\\cdot\\vec{BC}+\\vec{BC}\\cdot\\vec{CA}+\\vec{CA}\\cdot\\vec{AB}).$$\n由 $\\vec{AB}+\\vec{BC}+\\vec{CA}=0$ 得 $\\vec{AB}^2+\\vec{BC}^2+\\vec{CA}^2=-2(\\vec{AB}\\cdot\\vec{BC}+\\vec{BC}\\cdot\\vec{CA}+\\vec{CA}\\cdot\\vec{AB})$，即点积和 $=-\\tfrac12(\\vec{AB}^2+\\vec{BC}^2+\\vec{CA}^2)$。故\n$$|AD|^2+|BE|^2+|CF|^2=\\Big(\\frac54-\\frac12\\Big)(|AB|^2+|BC|^2+|CA|^2)=\\frac34(|AB|^2+|BC|^2+|CA|^2).$$\n证毕",
+      "detailedAnalysis": "考点：中线长公式 / 三边平方和恒等式。方法：平方式展开后必出现\"两两点积和\"，用 $\\vec{AB}+\\vec{BC}+\\vec{CA}=0$ 把它换成三边平方和。",
+      "points": [
+        "中线长公式",
+        "三边平方和恒等式"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 10 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $D,E,F$ 为 $BC,CA,AB$ 的中点，则\n$$\\vec{AD}=\\vec{AB}+\\frac{\\vec{BC}}{2},\\quad \\vec{BE}=\\vec{BC}+\\frac{\\vec{CA}}{2},\\quad \\vec{CF}=\\vec{CA}+\\frac{\\vec{AB}}{2}.$$\n平方相加：\n$$\\vec{AD}^2+\\vec{BE}^2+\\vec{CF}^2=\\frac54(\\vec{AB}^2+\\vec{BC}^2+\\vec{CA}^2)+(\\vec{AB}\\cdot\\vec{BC}+\\vec{BC}\\cdot\\vec{CA}+\\vec{CA}\\cdot\\vec{AB}).$$\n由 $\\vec{AB}+\\vec{BC}+\\vec{CA}=0$ 得 $\\vec{AB}^2+\\vec{BC}^2+\\vec{CA}^2=-2(\\vec{AB}\\cdot\\vec{BC}+\\vec{BC}\\cdot\\vec{CA}+\\vec{CA}\\cdot\\vec{AB})$，即点积和 $=-\\tfrac12(\\vec{AB}^2+\\vec{BC}^2+\\vec{CA}^2)$。故\n$$|AD|^2+|BE|^2+|CF|^2=\\Big(\\frac54-\\frac12\\Big)(|AB|^2+|BC|^2+|CA|^2)=\\frac34(|AB|^2+|BC|^2+|CA|^2).$$\n证毕"
+      ],
+      "pointKeys": [
+        "中线长公式",
+        "三边平方和恒等式"
+      ]
+    },
+    {
+      "id": "GE-B1210",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "四面体顶点到对面重心连线共点",
+      "question": "利用坐标法证明：四面体的四条自顶点到对面重心的连线段共点，并且该点分割这四条线段（自顶点起）都是 $3:1$。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：设 $A(x_1,y_1,z_1)$，$B(x_2,y_2,z_2)$，$C(x_3,y_3,z_3)$，$D(x_4,y_4,z_4)$。$\\triangle BCD$ 的重心\n$$G_1=\\Big(\\frac{x_2+x_3+x_4}{3},\\frac{y_2+y_3+y_4}{3},\\frac{z_2+z_3+z_4}{3}\\Big).$$\n在 $AG_1$ 上取点 $G$ 使 $AG:GG_1=3:1$，由定比分点公式\n$$G=\\frac{A+3G_1}{4}=\\Big(\\frac{x_1+x_2+x_3+x_4}{4},\\frac{y_1+y_2+y_3+y_4}{4},\\frac{z_1+z_2+z_3+z_4}{4}\\Big).$$\n同理 $\\triangle ACD,\\triangle ABD,\\triangle ABC$ 的重心分别为 $G_2,G_3,G_4$，而 $BG_2,CG_3,DG_4$ 上自顶点起 $3:1$ 的分点按同一公式算出的三个坐标完全相同，都是上述 $G$。故四条线段共点于 $G$，且分比均为 $3:1$。证毕",
+      "detailedAnalysis": "考点：坐标法 / 定比分点公式 / 四面体重心。方法：坐标法证\"共点\"的套路：把候选点按一种途径算出坐标，再验证另一条途径给出同一组坐标。\n\n---\n\n## 本册易错点汇总\n\n- **数乘与数量积的优先级**：$(a\\cdot b)c$ 是\"数乘向量\"，而 $a\\cdot(b\\cdot c)$ 无意义（内积结果是数，不能再点乘）。三重积必须写全括号：$(a\\times b)\\times c$ 与 $a\\times(b\\times c)$ 是**两个不同的向量**。\n- **向量等式不能约去公因子**：$a\\cdot b=a\\cdot c$ 且 $a\\ne0$ 只能得 $a\\cdot(b-c)=0$，推不出 $b=c$；同理 $a\\times b=a\\times c$ 得 $(b-c)\\parallel a$，不是 $b=c$。\n- **模的等式先平方**：$|a+b|=|a|+|b|$、$|a+b|=|a-b|$ 这类条件，一律两边平方化成数量积方程；直接\"消去\"会漏掉同向/反向/垂直的几何条件。\n- **夹角取\"尾对尾\"**：几何中的 $\\angle A$ 是边 $AB,AC$ 的夹角，但 $\\vec{CA}$ 与 $\\vec{AB}$ 的夹角是 $\\pi-A$。余弦定理、三角形各内角的点积计算里，符号错多半出在这里。\n- **面积/体积的系数**：三角形面积 $\\tfrac12|a\\times b|$，平行六面体体积 $|(a,b,c)|$，四面体体积 $\\tfrac16|(\\vec{AB},\\vec{AC},\\vec{AD})|$。$\\tfrac12$ 与 $\\tfrac16$ 混用是本题库最高频的失分点。\n- **混合积换序必带符号**：交换任意两个向量变号，循环置换不变号：$(a,b,c)=(b,c,a)=(c,a,b)=-(b,a,c)$。化简时忘记负号会让\"共面\"结论对、具体值错。\n- **共面判据要分清三种场合**：三向量共面 $\\iff(a,b,c)=0$；四点 $P_1\\cdots P_4$ 共面 $\\iff(\\vec{P_1P_2},\\vec{P_1P_3},\\vec{P_1P_4})=0$，等价的仿射判据是 $\\sum\\lambda_ir_i=0$ **且** $\\sum\\lambda_i=0$（三个向量共面时系数和不必为零）；三点共线看两向量成比例。三者不能互相替代。\n- **\"与 $a,b$ 都垂直\"必有两解**：方向为 $\\pm(a\\times b)$；单位化要除以 $|a\\times b|=|a||b|\\sin\\angle(a,b)$，不是 $|a||b|$；漏 $\\pm$ 是选择题的高频陷阱。\n- **射影是数、射影向量是向量**：$\\mathrm{proj}_e\\vec{AB}=|\\vec{AB}|\\cos\\theta$ 可正可负；射影向量 $=(\\text{射影})\\,e$。轴反向（$e'=-e$）时射影变号而射影向量不变。\n- **仿射标架 ≠ 直角标架**：在 $\\{A;e_1,e_2,e_3\\}$ 这类仿射标架里，坐标的**线性运算**（分点、重心、共线共面、线性表示）与直角坐标完全一样，但**长度、夹角、距离公式不能直接用**——必须先换成直角坐标或回到向量运算。",
+      "points": [
+        "坐标法",
+        "定比分点公式",
+        "四面体重心"
+      ],
+      "pitfalls": [
+        "向量方向写反导致叉积差一个负号",
+        "把向量积的模当成面积而漏掉夹角正弦"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试 第 11 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $A(x_1,y_1,z_1)$，$B(x_2,y_2,z_2)$，$C(x_3,y_3,z_3)$，$D(x_4,y_4,z_4)$。$\\triangle BCD$ 的重心\n$$G_1=\\Big(\\frac{x_2+x_3+x_4}{3},\\frac{y_2+y_3+y_4}{3},\\frac{z_2+z_3+z_4}{3}\\Big).$$\n在 $AG_1$ 上取点 $G$ 使 $AG:GG_1=3:1$，由定比分点公式\n$$G=\\frac{A+3G_1}{4}=\\Big(\\frac{x_1+x_2+x_3+x_4}{4},\\frac{y_1+y_2+y_3+y_4}{4},\\frac{z_1+z_2+z_3+z_4}{4}\\Big).$$\n同理 $\\triangle ACD,\\triangle ABD,\\triangle ABC$ 的重心分别为 $G_2,G_3,G_4$，而 $BG_2,CG_3,DG_4$ 上自顶点起 $3:1$ 的分点按同一公式算出的三个坐标完全相同，都是上述 $G$。故四条线段共点于 $G$，且分比均为 $3:1$。证毕"
+      ],
+      "pointKeys": [
+        "坐标法",
+        "定比分点公式",
+        "四面体重心"
+      ]
+    },
+    {
+      "id": "GE-B1211",
+      "subject": "jieji",
+      "chapter": "第二章 轨迹与方程",
+      "section": "§2.1",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "等轴双曲线三点垂心仍在曲线上",
+      "question": "设 $P,Q,R$ 是等轴双曲线上任意三点，求证 $\\triangle PQR$ 的垂心 $H$ 必在同一等轴双曲线上。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：取等轴双曲线为 $xy=a^2\\ (a>0)$，其参数式为 $x=at,\\ y=\\frac{a}{t}$。设 $P,Q,R$ 对应参数 $t_1,t_2,t_3$，垂心 $H(x_0,y_0)$。因\n$$\\overrightarrow{QR}\\parallel\\left(1,-\\frac{1}{t_2t_3}\\right),\\qquad \\overrightarrow{PR}\\parallel\\left(1,-\\frac{1}{t_1t_3}\\right),$$\n由 $PH\\perp QR$、$QH\\perp PR$ 得\n$$\\left(x_0-at_1\\right)-\\frac{1}{t_2t_3}\\left(y_0-\\frac{a}{t_1}\\right)=0\\qquad(1)$$\n$$\\left(x_0-at_2\\right)-\\frac{1}{t_1t_3}\\left(y_0-\\frac{a}{t_2}\\right)=0.\\qquad(2)$$\n$(1)-(2)$ 并利用 $t_1\\ne t_2$ 得 $y_0=-at_1t_2t_3$；代回 $(1)$ 得 $x_0=-\\dfrac{a}{t_1t_2t_3}$。于是 $x_0y_0=a^2$，即 $H$ 也在 $xy=a^2$ 上。证毕。\n\n**考点**：等轴双曲线参数式 / 垂心 / 数量积垂直判据\n\n**方法**：等轴双曲线一律用 $x=at,\\ y=a/t$；证「点在曲线上」只需算出坐标满足曲线方程。",
+      "detailedAnalysis": "考点：等轴双曲线参数式 / 垂心 / 数量积垂直判据。方法：等轴双曲线一律用 $x=at,\\ y=a/t$；证「点在曲线上」只需算出坐标满足曲线方程。",
+      "points": [
+        "等轴双曲线参数式",
+        "垂心",
+        "数量积垂直判据"
+      ],
+      "pitfalls": [
+        "参数方程消参时漏掉参数范围",
+        "把空间曲线投影柱面与曲面本身混为一谈"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 轨迹与方程）· §2.1 第 4 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 轨迹与方程",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：取等轴双曲线为 $xy=a^2\\ (a>0)$，其参数式为 $x=at,\\ y=\\frac{a}{t}$。设 $P,Q,R$ 对应参数 $t_1,t_2,t_3$，垂心 $H(x_0,y_0)$。因\n$$\\overrightarrow{QR}\\parallel\\left(1,-\\frac{1}{t_2t_3}\\right),\\qquad \\overrightarrow{PR}\\parallel\\left(1,-\\frac{1}{t_1t_3}\\right),$$\n由 $PH\\perp QR$、$QH\\perp PR$ 得\n$$\\left(x_0-at_1\\right)-\\frac{1}{t_2t_3}\\left(y_0-\\frac{a}{t_1}\\right)=0\\qquad(1)$$\n$$\\left(x_0-at_2\\right)-\\frac{1}{t_1t_3}\\left(y_0-\\frac{a}{t_2}\\right)=0.\\qquad(2)$$\n$(1)-(2)$ 并利用 $t_1\\ne t_2$ 得 $y_0=-at_1t_2t_3$；代回 $(1)$ 得 $x_0=-\\dfrac{a}{t_1t_2t_3}$。于是 $x_0y_0=a^2$，即 $H$ 也在 $xy=a^2$ 上。证毕。",
+        "**考点**：等轴双曲线参数式 / 垂心 / 数量积垂直判据",
+        "**方法**：等轴双曲线一律用 $x=at,\\ y=a/t$；证「点在曲线上」只需算出坐标满足曲线方程。"
+      ],
+      "pointKeys": [
+        "等轴双曲线参数式",
+        "垂心",
+        "数量积垂直判据"
+      ]
+    },
+    {
+      "id": "GE-B1212",
+      "subject": "jieji",
+      "chapter": "第二章 轨迹与方程",
+      "section": "§2.1",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "直线向量式参数方程与对称式",
+      "question": "设直线 $l$ 通过定点 $M_0(x_0,y_0)$，并且与非零向量 $\\vec v=\\{X,Y\\}$ 共线，试证直线 $l$ 的向量式参数方程为 $\\vec r=\\vec r_0+t\\vec v\\ (-\\infty<t<+\\infty)$，其中 $\\vec r_0=\\overrightarrow{OM_0}$，$t$ 为参数；坐标式参数方程为 $x=x_0+Xt,\\ y=y_0+Yt\\ (-\\infty<t<+\\infty)$；对称式（标准式）方程为 $\\frac{x-x_0}{X}=\\frac{y-y_0}{Y}$。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：设 $P$ 为 $l$ 上任意一点，记 $\\vec r=\\overrightarrow{OP}$。因 $l$ 过 $M_0$ 且与非零向量 $\\vec v$ 平行，故存在唯一实数 $t$ 使\n$$\\overrightarrow{M_0P}=t\\vec v,\\quad\\text{即}\\quad \\vec r-\\vec r_0=t\\vec v,\\ \\ \\vec r=\\vec r_0+t\\vec v .$$\n反之，任一实数 $t$ 由 $\\vec r=\\vec r_0+t\\vec v$ 确定的点 $P$ 满足 $\\overrightarrow{M_0P}\\parallel\\vec v$，故在 $l$ 上；且 $t$ 与 $l$ 上的点一一对应。\n按 $\\vec i,\\vec j$ 分解即得坐标式参数方程 $x=x_0+Xt,\\ y=y_0+Yt\\ (-\\infty<t<+\\infty)$。\n由 $\\vec v\\ne\\vec 0$ 知 $X,Y$ 不同时为零，从参数方程消去 $t$ 得对称式 $\\dfrac{x-x_0}{X}=\\dfrac{y-y_0}{Y}$（当 $X=0$ 时理解为 $x=x_0$）。证毕。\n\n**考点**：直线的向量式参数方程 / 参数方程与对称式互化 / 一一对应\n\n**方法**：证明参数方程「表示整条直线」要写双向：直线上的点都能由某 $t$ 产生，每个 $t$ 产生的点都在直线上。",
+      "detailedAnalysis": "考点：直线的向量式参数方程 / 参数方程与对称式互化 / 一一对应。方法：证明参数方程「表示整条直线」要写双向：直线上的点都能由某 $t$ 产生，每个 $t$ 产生的点都在直线上。",
+      "points": [
+        "直线的向量式参数方程",
+        "参数方程与对称式互化",
+        "一一对应"
+      ],
+      "pitfalls": [
+        "参数方程消参时漏掉参数范围",
+        "把空间曲线投影柱面与曲面本身混为一谈"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 轨迹与方程）· §2.1 第 5 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 轨迹与方程",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $P$ 为 $l$ 上任意一点，记 $\\vec r=\\overrightarrow{OP}$。因 $l$ 过 $M_0$ 且与非零向量 $\\vec v$ 平行，故存在唯一实数 $t$ 使\n$$\\overrightarrow{M_0P}=t\\vec v,\\quad\\text{即}\\quad \\vec r-\\vec r_0=t\\vec v,\\ \\ \\vec r=\\vec r_0+t\\vec v .$$\n反之，任一实数 $t$ 由 $\\vec r=\\vec r_0+t\\vec v$ 确定的点 $P$ 满足 $\\overrightarrow{M_0P}\\parallel\\vec v$，故在 $l$ 上；且 $t$ 与 $l$ 上的点一一对应。\n按 $\\vec i,\\vec j$ 分解即得坐标式参数方程 $x=x_0+Xt,\\ y=y_0+Yt\\ (-\\infty<t<+\\infty)$。\n由 $\\vec v\\ne\\vec 0$ 知 $X,Y$ 不同时为零，从参数方程消去 $t$ 得对称式 $\\dfrac{x-x_0}{X}=\\dfrac{y-y_0}{Y}$（当 $X=0$ 时理解为 $x=x_0$）。证毕。",
+        "**考点**：直线的向量式参数方程 / 参数方程与对称式互化 / 一一对应",
+        "**方法**：证明参数方程「表示整条直线」要写双向：直线上的点都能由某 $t$ 产生，每个 $t$ 产生的点都在直线上。"
+      ],
+      "pointKeys": [
+        "直线的向量式参数方程",
+        "参数方程与对称式互化",
+        "一一对应"
+      ]
+    },
+    {
+      "id": "GE-B1213",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "§4.1",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "柱面向量式参数方程",
+      "question": "已知柱面的准线为 $\\vec r(u)=\\{x(u),y(u),z(u)\\}$，母线的方向平行于向量 $\\vec s=\\{X,Y,Z\\}$，试证明柱面的向量式参数方程与坐标式参数方程分别为\n$$\\vec r=\\vec r(u)+v\\vec s,\\qquad \\begin{cases}x=x(u)+Xv,\\\\ y=y(u)+Yv,\\\\ z=z(u)+Zv,\\end{cases}$$\n式中 $u,v$ 为参数。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：设 $M(x,y,z)$ 为柱面上任一点，则在准线上必存在点 $M_0(x(u),y(u),z(u))$，使 $\\overrightarrow{M_0M}\\parallel\\vec s$。记 $\\vec r=\\overrightarrow{OM}$，$\\vec r(u)=\\overrightarrow{OM_0}$，则存在数 $v$ 使 $\\overrightarrow{M_0M}=v\\vec s$，即 $\\vec r-\\vec r(u)=v\\vec s$，故\n$$\\vec r=\\vec r(u)+v\\vec s .$$\n写成分量即得坐标式参数方程。反之，对任意 $u,v$，$\\vec r(u)+v\\vec s$ 所对应的点都在过准线点 $M_0$、平行于 $\\vec s$ 的直线上，故它在柱面上。证毕。\n\n**考点**：柱面的参数表示 / 向量式与坐标式的互化\n\n**方法**：柱面＝「准线参数 $u$ ＋母线参数 $v$」双参数表示；证明末了要补一句「反之，参数给出的点都在曲面上」。",
+      "detailedAnalysis": "考点：柱面的参数表示 / 向量式与坐标式的互化。方法：柱面＝「准线参数 $u$ ＋母线参数 $v$」双参数表示；证明末了要补一句「反之，参数给出的点都在曲面上」。",
+      "points": [
+        "柱面的参数表示",
+        "向量式与坐标式的互化"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· §4.1 第 4 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $M(x,y,z)$ 为柱面上任一点，则在准线上必存在点 $M_0(x(u),y(u),z(u))$，使 $\\overrightarrow{M_0M}\\parallel\\vec s$。记 $\\vec r=\\overrightarrow{OM}$，$\\vec r(u)=\\overrightarrow{OM_0}$，则存在数 $v$ 使 $\\overrightarrow{M_0M}=v\\vec s$，即 $\\vec r-\\vec r(u)=v\\vec s$，故\n$$\\vec r=\\vec r(u)+v\\vec s .$$\n写成分量即得坐标式参数方程。反之，对任意 $u,v$，$\\vec r(u)+v\\vec s$ 所对应的点都在过准线点 $M_0$、平行于 $\\vec s$ 的直线上，故它在柱面上。证毕。",
+        "**考点**：柱面的参数表示 / 向量式与坐标式的互化",
+        "**方法**：柱面＝「准线参数 $u$ ＋母线参数 $v$」双参数表示；证明末了要补一句「反之，参数给出的点都在曲面上」。"
+      ],
+      "pointKeys": [
+        "柱面的参数表示",
+        "向量式与坐标式的互化"
+      ]
+    },
+    {
+      "id": "GE-B1214",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "§4.1",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "判断曲面为柱面",
+      "question": "证明曲面 $F\\!\\left(\\dfrac xl-\\dfrac zn,\\ \\dfrac ym-\\dfrac zn\\right)=0$ 是一个柱面，它的母线平行于直线 $\\dfrac xl=\\dfrac ym=\\dfrac zn$（$l,m,n$ 均不为零）。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：设 $M_0(x_0,y_0,z_0)$ 是曲面上的任一点，考虑过 $M_0$ 且平行于 $\\vec s=(l,m,n)$ 的直线\n$$L:\\quad x=x_0+lt,\\quad y=y_0+mt,\\quad z=z_0+nt .$$\n沿 $L$ 的两个函数值都不变：\n$$\\frac{x_0+lt}{l}-\\frac{z_0+nt}{n}=\\frac{x_0}{l}-\\frac{z_0}{n},\\qquad \\frac{y_0+mt}{m}-\\frac{z_0+nt}{n}=\\frac{y_0}{m}-\\frac{z_0}{n}.$$\n故 $L$ 上每一点都满足 $F=0$，即整条 $L$ 落在曲面上。于是曲面由一族平行于 $\\vec s$ 的直线生成，是母线平行于直线 $\\dfrac xl=\\dfrac ym=\\dfrac zn$ 的柱面。证毕。\n\n**考点**：柱面的不变量判据 / 直线在曲面上的验证\n\n**方法**：验证「整条直线在曲面上」只需说明 $F$ 的两个自变量沿该方向不变——这是判断柱面最快的写法。\n\n<!-- OCR存疑：此题题干 OCR 残片似还含第三个自变量（形如 $F\\!\\left(\\frac xl-\\frac zn,\\frac ym-\\frac zn,\\frac ym-\\frac xl\\right)$）。若确有三元，则第三个自变量 $\\frac ym-\\frac xl$ 恰为前两式之差、沿 $\\vec s$ 同样不变，上述证明与结论一字不改；此处按两元形式录出。 -->",
+      "detailedAnalysis": "考点：柱面的不变量判据 / 直线在曲面上的验证。方法：验证「整条直线在曲面上」只需说明 $F$ 的两个自变量沿该方向不变——这是判断柱面最快的写法。\n\n<!-- OCR存疑：此题题干 OCR 残片似还含第三个自变量（形如 $F\\!\\left(\\frac xl-\\frac zn,\\frac ym-\\frac zn,\\frac ym-\\frac xl\\right)$）。若确有三元，则第三个自变量 $\\frac ym-\\frac xl$ 恰为前两式之差、沿 $\\vec s$ 同样不变，上述证明与结论一字不改；此处按两元形式录出。 -->",
+      "points": [
+        "柱面的不变量判据",
+        "直线在曲面上的验证"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· §4.1 第 6 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $M_0(x_0,y_0,z_0)$ 是曲面上的任一点，考虑过 $M_0$ 且平行于 $\\vec s=(l,m,n)$ 的直线\n$$L:\\quad x=x_0+lt,\\quad y=y_0+mt,\\quad z=z_0+nt .$$\n沿 $L$ 的两个函数值都不变：\n$$\\frac{x_0+lt}{l}-\\frac{z_0+nt}{n}=\\frac{x_0}{l}-\\frac{z_0}{n},\\qquad \\frac{y_0+mt}{m}-\\frac{z_0+nt}{n}=\\frac{y_0}{m}-\\frac{z_0}{n}.$$\n故 $L$ 上每一点都满足 $F=0$，即整条 $L$ 落在曲面上。于是曲面由一族平行于 $\\vec s$ 的直线生成，是母线平行于直线 $\\dfrac xl=\\dfrac ym=\\dfrac zn$ 的柱面。证毕。",
+        "**考点**：柱面的不变量判据 / 直线在曲面上的验证",
+        "**方法**：验证「整条直线在曲面上」只需说明 $F$ 的两个自变量沿该方向不变——这是判断柱面最快的写法。",
+        "<!-- OCR存疑：此题题干 OCR 残片似还含第三个自变量（形如 $F\\!\\left(\\frac xl-\\frac zn,\\frac ym-\\frac zn,\\frac ym-\\frac xl\\right)$）。若确有三元，则第三个自变量 $\\frac ym-\\frac xl$ 恰为前两式之差、沿 $\\vec s$ 同样不变，上述证明与结论一字不改；此处按两元形式录出。 -->"
+      ],
+      "pointKeys": [
+        "柱面的不变量判据",
+        "直线在曲面上的验证"
+      ]
+    },
+    {
+      "id": "GE-B1215",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "§4.2",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "锥面向量式参数方程",
+      "question": "已知锥面的准线为 $\\vec r(u)=\\{x(u),y(u),z(u)\\}$，顶点 $A$ 决定的向径为 $\\vec r_0=\\{x_0,y_0,z_0\\}$，试证明锥面的向量式参数方程与坐标式参数方程分别为\n$$\\vec r=v\\vec r(u)+(1-v)\\vec r_0,\\qquad \\begin{cases}x=vx(u)+(1-v)x_0,\\\\ y=vy(u)+(1-v)y_0,\\\\ z=vz(u)+(1-v)z_0,\\end{cases}$$\n其中 $u,v$ 为参数。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：设 $P(x,y,z)$ 为锥面上任一点，$\\vec r=\\overrightarrow{OP}$，则 $P$ 落在某条母线上，该母线与准线交于 $M(x(u),y(u),z(u))$，故 $\\vec r-\\vec r_0$ 与 $\\vec r(u)-\\vec r_0$ 共线，存在 $t$ 使\n$$\\vec r-\\vec r_0=t\\,[\\vec r(u)-\\vec r_0]\\ \\Longrightarrow\\ (1+t)\\vec r=\\vec r_0+t\\vec r(u).$$\n当 $t\\ne-1$ 时 $\\vec r=\\dfrac{1}{1+t}\\vec r_0+\\dfrac{t}{1+t}\\vec r(u)$。令 $v=\\dfrac{t}{1+t}$，则 $\\dfrac{1}{1+t}=1-v$，得\n$$\\vec r=(1-v)\\vec r_0+v\\vec r(u),$$\n写成分量即坐标式参数方程。$t=-1$ 对应 $P=A$（顶点），可由 $v\\to\\infty$ 的极限或单独补入。证毕。\n\n**考点**：锥面的双参数表示 / 顶点在参数方程中的角色\n\n**方法**：锥面参数方程的本质是「准线点与顶点的凸组合」，$v=0$ 给顶点、$v=1$ 给准线；与柱面 $\\vec r=\\vec r(u)+v\\vec s$ 对照记忆。\n\n---",
+      "detailedAnalysis": "考点：锥面的双参数表示 / 顶点在参数方程中的角色。方法：锥面参数方程的本质是「准线点与顶点的凸组合」，$v=0$ 给顶点、$v=1$ 给准线；与柱面 $\\vec r=\\vec r(u)+v\\vec s$ 对照记忆。\n\n---",
+      "points": [
+        "锥面的双参数表示",
+        "顶点在参数方程中的角色"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· §4.2 第 6 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $P(x,y,z)$ 为锥面上任一点，$\\vec r=\\overrightarrow{OP}$，则 $P$ 落在某条母线上，该母线与准线交于 $M(x(u),y(u),z(u))$，故 $\\vec r-\\vec r_0$ 与 $\\vec r(u)-\\vec r_0$ 共线，存在 $t$ 使\n$$\\vec r-\\vec r_0=t\\,[\\vec r(u)-\\vec r_0]\\ \\Longrightarrow\\ (1+t)\\vec r=\\vec r_0+t\\vec r(u).$$\n当 $t\\ne-1$ 时 $\\vec r=\\dfrac{1}{1+t}\\vec r_0+\\dfrac{t}{1+t}\\vec r(u)$。令 $v=\\dfrac{t}{1+t}$，则 $\\dfrac{1}{1+t}=1-v$，得\n$$\\vec r=(1-v)\\vec r_0+v\\vec r(u),$$\n写成分量即坐标式参数方程。$t=-1$ 对应 $P=A$（顶点），可由 $v\\to\\infty$ 的极限或单独补入。证毕。",
+        "**考点**：锥面的双参数表示 / 顶点在参数方程中的角色",
+        "**方法**：锥面参数方程的本质是「准线点与顶点的凸组合」，$v=0$ 给顶点、$v=1$ 给准线；与柱面 $\\vec r=\\vec r(u)+v\\vec s$ 对照记忆。",
+        "---"
+      ],
+      "pointKeys": [
+        "锥面的双参数表示",
+        "顶点在参数方程中的角色"
+      ]
+    },
+    {
+      "id": "GE-B1216",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "§4.4",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "椭球面向径与方向余弦",
+      "question": "由椭球面 $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}+\\dfrac{z^2}{c^2}=1$ 的中心（即原点），沿某一定方向到曲面上的一点的距离是 $r$，设定方向的方向余弦分别为 $\\lambda,\\mu,\\nu$，试证：\n$$\\frac1{r^2}=\\frac{\\lambda^2}{a^2}+\\frac{\\mu^2}{b^2}+\\frac{\\nu^2}{c^2} .$$",
+      "answer": "结果见标准解答。",
+      "standardSolution": "证明：设该点坐标为 $(r\\lambda,r\\mu,r\\nu)$——因方向余弦为 $\\lambda,\\mu,\\nu$，从原点沿此方向距离 $r$ 的点正有上述坐标。该点在椭球面上，代入得\n$$\\frac{(r\\lambda)^2}{a^2}+\\frac{(r\\mu)^2}{b^2}+\\frac{(r\\nu)^2}{c^2}=1,$$\n即 $r^2\\left(\\dfrac{\\lambda^2}{a^2}+\\dfrac{\\mu^2}{b^2}+\\dfrac{\\nu^2}{c^2}\\right)=1$，两边除以 $r^2\\ne0$ 即得所证。证毕。\n\n**考点**：方向余弦的坐标表示 / 有心二次曲面的向径公式\n\n**方法**：向径问题一律「点写成 $r\\cdot(\\lambda,\\mu,\\nu)$」再代入曲面方程；这条 $\\frac1{r^2}$ 公式是本章后面几条轨迹题的公共工具。",
+      "detailedAnalysis": "考点：方向余弦的坐标表示 / 有心二次曲面的向径公式。方法：向径问题一律「点写成 $r\\cdot(\\lambda,\\mu,\\nu)$」再代入曲面方程；这条 $\\frac1{r^2}$ 公式是本章后面几条轨迹题的公共工具。",
+      "points": [
+        "方向余弦的坐标表示",
+        "有心二次曲面的向径公式"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· §4.4 第 3 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设该点坐标为 $(r\\lambda,r\\mu,r\\nu)$——因方向余弦为 $\\lambda,\\mu,\\nu$，从原点沿此方向距离 $r$ 的点正有上述坐标。该点在椭球面上，代入得\n$$\\frac{(r\\lambda)^2}{a^2}+\\frac{(r\\mu)^2}{b^2}+\\frac{(r\\nu)^2}{c^2}=1,$$\n即 $r^2\\left(\\dfrac{\\lambda^2}{a^2}+\\dfrac{\\mu^2}{b^2}+\\dfrac{\\nu^2}{c^2}\\right)=1$，两边除以 $r^2\\ne0$ 即得所证。证毕。",
+        "**考点**：方向余弦的坐标表示 / 有心二次曲面的向径公式",
+        "**方法**：向径问题一律「点写成 $r\\cdot(\\lambda,\\mu,\\nu)$」再代入曲面方程；这条 $\\frac1{r^2}$ 公式是本章后面几条轨迹题的公共工具。"
+      ],
+      "pointKeys": [
+        "方向余弦的坐标表示",
+        "有心二次曲面的向径公式"
+      ]
+    },
+    {
+      "id": "GE-B1217",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "§4.4",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "椭球面三条正交射线的倒数和",
+      "question": "由椭球面 $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}+\\dfrac{z^2}{c^2}=1$ 的中心引三条两两相互垂直的射线，分别交曲面于点 $P_1,P_2,P_3$，设 $OP_1=r_1,\\ OP_2=r_2,\\ OP_3=r_3$，试证：\n$$\\frac1{r_1^2}+\\frac1{r_2^2}+\\frac1{r_3^2}=\\frac1{a^2}+\\frac1{b^2}+\\frac1{c^2} .$$",
+      "answer": "结果见标准解答。",
+      "standardSolution": "证明：设 $\\overrightarrow{OP_i}$ 的方向余弦为 $(\\lambda_i,\\mu_i,\\nu_i)$，$i=1,2,3$。由题 3，\n$$\\frac1{r_i^2}=\\frac{\\lambda_i^2}{a^2}+\\frac{\\mu_i^2}{b^2}+\\frac{\\nu_i^2}{c^2}.$$\n把三条两两垂直的射线方向向量作为行排成矩阵\n$$\\begin{pmatrix}\\lambda_1&\\mu_1&\\nu_1\\\\ \\lambda_2&\\mu_2&\\nu_2\\\\ \\lambda_3&\\mu_3&\\nu_3\\end{pmatrix}$$\n它是正交矩阵，故列的平方和也为 $1$：\n$$\\lambda_1^2+\\lambda_2^2+\\lambda_3^2=\\mu_1^2+\\mu_2^2+\\mu_3^2=\\nu_1^2+\\nu_2^2+\\nu_3^2=1 .$$\n三式相加得\n$$\\frac1{r_1^2}+\\frac1{r_2^2}+\\frac1{r_3^2}=\\frac1{a^2}(\\lambda_1^2+\\lambda_2^2+\\lambda_3^2)+\\frac1{b^2}(\\mu_1^2+\\mu_2^2+\\mu_3^2)+\\frac1{c^2}(\\nu_1^2+\\nu_2^2+\\nu_3^2)=\\frac1{a^2}+\\frac1{b^2}+\\frac1{c^2}.$$\n证毕。\n\n**考点**：正交矩阵的行列平方和均为 $1$ / 题 3 公式的三次调用\n\n**方法**：凡是「三条两两垂直的射线」都翻译成「方向余弦矩阵是正交矩阵」，于是行和列各自平方和为 $1$；这是本题唯一的关键。",
+      "detailedAnalysis": "考点：正交矩阵的行列平方和均为 $1$ / 题 3 公式的三次调用。方法：凡是「三条两两垂直的射线」都翻译成「方向余弦矩阵是正交矩阵」，于是行和列各自平方和为 $1$；这是本题唯一的关键。",
+      "points": [
+        "正交矩阵的行列平方和均为 $1$",
+        "题 3 公式的三次调用"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· §4.4 第 4 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $\\overrightarrow{OP_i}$ 的方向余弦为 $(\\lambda_i,\\mu_i,\\nu_i)$，$i=1,2,3$。由题 3，\n$$\\frac1{r_i^2}=\\frac{\\lambda_i^2}{a^2}+\\frac{\\mu_i^2}{b^2}+\\frac{\\nu_i^2}{c^2}.$$\n把三条两两垂直的射线方向向量作为行排成矩阵\n$$\\begin{pmatrix}\\lambda_1&\\mu_1&\\nu_1\\\\ \\lambda_2&\\mu_2&\\nu_2\\\\ \\lambda_3&\\mu_3&\\nu_3\\end{pmatrix}$$\n它是正交矩阵，故列的平方和也为 $1$：\n$$\\lambda_1^2+\\lambda_2^2+\\lambda_3^2=\\mu_1^2+\\mu_2^2+\\mu_3^2=\\nu_1^2+\\nu_2^2+\\nu_3^2=1 .$$\n三式相加得\n$$\\frac1{r_1^2}+\\frac1{r_2^2}+\\frac1{r_3^2}=\\frac1{a^2}(\\lambda_1^2+\\lambda_2^2+\\lambda_3^2)+\\frac1{b^2}(\\mu_1^2+\\mu_2^2+\\mu_3^2)+\\frac1{c^2}(\\nu_1^2+\\nu_2^2+\\nu_3^2)=\\frac1{a^2}+\\frac1{b^2}+\\frac1{c^2}.$$\n证毕。",
+        "**考点**：正交矩阵的行列平方和均为 $1$ / 题 3 公式的三次调用",
+        "**方法**：凡是「三条两两垂直的射线」都翻译成「方向余弦矩阵是正交矩阵」，于是行和列各自平方和为 $1$；这是本题唯一的关键。"
+      ],
+      "pointKeys": [
+        "正交矩阵的行列平方和均为 $1$",
+        "题 3 公式的三次调用"
+      ]
+    },
+    {
+      "id": "GE-B1218",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "§4.5",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "异面直线滑动中点的轨迹",
+      "question": "设直线 $l$ 与 $m$ 为互不垂直的两条异面直线，$C$ 是 $l$ 与 $m$ 的公垂线的中点，$A,B$ 两点分别在直线 $l,m$ 上滑动，且 $\\angle ACB=90^\\circ$，试证直线 $AB$ 的轨迹是一个单叶双曲面。",
+      "answer": "结果见标准解答。",
+      "standardSolution": "证明：取公垂线为 $z$ 轴、其中点 $C$ 为原点、$x$ 轴与两异面直线成等角。设公垂线长为 $2a$，$l,m$ 的交角为 $2\\alpha\\ne90^\\circ$，则\n$$l:\\ x=t_1\\cos\\alpha,\\ y=t_1\\sin\\alpha,\\ z=a;\\qquad m:\\ x=t_2\\cos\\alpha,\\ y=-t_2\\sin\\alpha,\\ z=-a .$$\n即 $A(t_1\\cos\\alpha,t_1\\sin\\alpha,a)$，$B(t_2\\cos\\alpha,-t_2\\sin\\alpha,-a)$。由 $\\angle ACB=90^\\circ$：\n$$\\overrightarrow{CA}\\cdot\\overrightarrow{CB}=t_1t_2(\\cos^2\\alpha-\\sin^2\\alpha)-a^2=0\\ \\Longrightarrow\\ t_1t_2=\\frac{a^2}{\\cos2\\alpha}\\quad(\\cos2\\alpha\\ne0).$$\n直线 $AB$ 的参数式为\n$$x=t_1\\cos\\alpha+(t_2-t_1)\\cos\\alpha\\,u,\\quad y=t_1\\sin\\alpha-(t_2+t_1)\\sin\\alpha\\,u,\\quad z=a-2au .$$\n记\n$$P=\\frac{t_1(a+z)}{2a},\\qquad Q=\\frac{t_2(a-z)}{2a},$$\n则 $x=\\cos\\alpha\\,(P+Q)$，$y=\\sin\\alpha\\,(P-Q)$，解得\n$$P=\\frac{x}{2\\cos\\alpha}+\\frac{y}{2\\sin\\alpha},\\qquad Q=\\frac{x}{2\\cos\\alpha}-\\frac{y}{2\\sin\\alpha},$$\n从而\n$$PQ=\\frac{x^2}{4\\cos^2\\alpha}-\\frac{y^2}{4\\sin^2\\alpha}.$$\n又 $t_1=\\dfrac{2aP}{a+z},\\ t_2=\\dfrac{2aQ}{a-z}$，代入 $t_1t_2=\\dfrac{a^2}{\\cos2\\alpha}$ 得 $PQ=\\dfrac{a^2-z^2}{4\\cos2\\alpha}$，于是\n$$\\frac{\\cos2\\alpha}{\\cos^2\\alpha}x^2-\\frac{\\cos2\\alpha}{\\sin^2\\alpha}y^2+z^2=a^2,$$\n即\n$$\\frac{x^2}{\\frac{a^2\\cos^2\\alpha}{\\cos2\\alpha}}-\\frac{y^2}{\\frac{a^2\\sin^2\\alpha}{\\cos2\\alpha}}+\\frac{z^2}{a^2}=1 .$$\n它恰有两个正项、一个负项，故为单叶双曲面。证毕。\n\n**考点**：异面直线的标准摆法 / 用参数 $u$ 做「线性组合消参」/ 单叶双曲面的判定\n\n**方法**：这类「两动点连线」题的标准三步：定坐标系（公垂线作 $z$ 轴、等角作 $x$ 轴）→ 写出定点坐标与两参数 → 由几何条件（这里是 $\\angle ACB=90^\\circ$）把两参数乘起来，再用新参数 $u$ 表示动点，代回即消参。\n\n<!-- OCR存疑：OCR 的轨迹方程把 $y^2$ 项前的负号印成了正号；由 $\\cos^2\\alpha-\\sin^2\\alpha$ 的符号结构，$y^2$ 项必为负，否则曲面不可能有「$2$ 正 $1$ 负」的单叶双曲面符号分布。 -->",
+      "detailedAnalysis": "考点：异面直线的标准摆法 / 用参数 $u$ 做「线性组合消参」/ 单叶双曲面的判定。方法：这类「两动点连线」题的标准三步：定坐标系（公垂线作 $z$ 轴、等角作 $x$ 轴）→ 写出定点坐标与两参数 → 由几何条件（这里是 $\\angle ACB=90^\\circ$）把两参数乘起来，再用新参数 $u$ 表示动点，代回即消参。\n\n<!-- OCR存疑：OCR 的轨迹方程把 $y^2$ 项前的负号印成了正号；由 $\\cos^2\\alpha-\\sin^2\\alpha$ 的符号结构，$y^2$ 项必为负，否则曲面不可能有「$2$ 正 $1$ 负」的单叶双曲面符号分布。 -->",
+      "points": [
+        "异面直线的标准摆法",
+        "用参数 $u$ 做「线性组合消参」",
+        "单叶双曲面的判定"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· §4.5 第 6 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：取公垂线为 $z$ 轴、其中点 $C$ 为原点、$x$ 轴与两异面直线成等角。设公垂线长为 $2a$，$l,m$ 的交角为 $2\\alpha\\ne90^\\circ$，则\n$$l:\\ x=t_1\\cos\\alpha,\\ y=t_1\\sin\\alpha,\\ z=a;\\qquad m:\\ x=t_2\\cos\\alpha,\\ y=-t_2\\sin\\alpha,\\ z=-a .$$\n即 $A(t_1\\cos\\alpha,t_1\\sin\\alpha,a)$，$B(t_2\\cos\\alpha,-t_2\\sin\\alpha,-a)$。由 $\\angle ACB=90^\\circ$：\n$$\\overrightarrow{CA}\\cdot\\overrightarrow{CB}=t_1t_2(\\cos^2\\alpha-\\sin^2\\alpha)-a^2=0\\ \\Longrightarrow\\ t_1t_2=\\frac{a^2}{\\cos2\\alpha}\\quad(\\cos2\\alpha\\ne0).$$\n直线 $AB$ 的参数式为\n$$x=t_1\\cos\\alpha+(t_2-t_1)\\cos\\alpha\\,u,\\quad y=t_1\\sin\\alpha-(t_2+t_1)\\sin\\alpha\\,u,\\quad z=a-2au .$$\n记\n$$P=\\frac{t_1(a+z)}{2a},\\qquad Q=\\frac{t_2(a-z)}{2a},$$\n则 $x=\\cos\\alpha\\,(P+Q)$，$y=\\sin\\alpha\\,(P-Q)$，解得\n$$P=\\frac{x}{2\\cos\\alpha}+\\frac{y}{2\\sin\\alpha},\\qquad Q=\\frac{x}{2\\cos\\alpha}-\\frac{y}{2\\sin\\alpha},$$\n从而\n$$PQ=\\frac{x^2}{4\\cos^2\\alpha}-\\frac{y^2}{4\\sin^2\\alpha}.$$\n又 $t_1=\\dfrac{2aP}{a+z},\\ t_2=\\dfrac{2aQ}{a-z}$，代入 $t_1t_2=\\dfrac{a^2}{\\cos2\\alpha}$ 得 $PQ=\\dfrac{a^2-z^2}{4\\cos2\\alpha}$，于是\n$$\\frac{\\cos2\\alpha}{\\cos^2\\alpha}x^2-\\frac{\\cos2\\alpha}{\\sin^2\\alpha}y^2+z^2=a^2,$$\n即\n$$\\frac{x^2}{\\frac{a^2\\cos^2\\alpha}{\\cos2\\alpha}}-\\frac{y^2}{\\frac{a^2\\sin^2\\alpha}{\\cos2\\alpha}}+\\frac{z^2}{a^2}=1 .$$\n它恰有两个正项、一个负项，故为单叶双曲面。证毕。",
+        "**考点**：异面直线的标准摆法 / 用参数 $u$ 做「线性组合消参」/ 单叶双曲面的判定",
+        "**方法**：这类「两动点连线」题的标准三步：定坐标系（公垂线作 $z$ 轴、等角作 $x$ 轴）→ 写出定点坐标与两参数 → 由几何条件（这里是 $\\angle ACB=90^\\circ$）把两参数乘起来，再用新参数 $u$ 表示动点，代回即消参。",
+        "<!-- OCR存疑：OCR 的轨迹方程把 $y^2$ 项前的负号印成了正号；由 $\\cos^2\\alpha-\\sin^2\\alpha$ 的符号结构，$y^2$ 项必为负，否则曲面不可能有「$2$ 正 $1$ 负」的单叶双曲面符号分布。 -->"
+      ],
+      "pointKeys": [
+        "异面直线的标准摆法",
+        "用参数 $u$ 做「线性组合消参」",
+        "单叶双曲面的判定"
+      ]
+    },
+    {
+      "id": "GE-B1219",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "§4.5",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "双曲面参数方程验证",
+      "question": "试验证单叶双曲面与双叶双曲面的参数方程分别为\n$$\\begin{cases}x=a\\sec u\\cos v,\\\\ y=b\\sec u\\sin v,\\\\ z=c\\tan u,\\end{cases}\\qquad\\text{与}\\qquad\\begin{cases}x=a\\tan u\\cos v,\\\\ y=b\\tan u\\sin v,\\\\ z=c\\sec u .\\end{cases}$$",
+      "answer": "结果见标准解答。",
+      "standardSolution": "证明：(1) 设 $x=a\\sec u\\cos v,\\ y=b\\sec u\\sin v,\\ z=c\\tan u$。由前两式\n$$\\frac{x^2}{a^2}+\\frac{y^2}{b^2}=\\sec^2u,\\qquad \\frac{z^2}{c^2}=\\tan^2u,$$\n相减并用 $\\sec^2u-\\tan^2u=1$ 得\n$$\\frac{x^2}{a^2}+\\frac{y^2}{b^2}-\\frac{z^2}{c^2}=1,$$\n即单叶双曲面。\n(2) 设 $x=a\\tan u\\cos v,\\ y=b\\tan u\\sin v,\\ z=c\\sec u$。同理\n$$\\frac{x^2}{a^2}+\\frac{y^2}{b^2}=\\tan^2u,\\qquad \\frac{z^2}{c^2}=\\sec^2u,$$\n相减得 $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}-\\dfrac{z^2}{c^2}=\\tan^2u-\\sec^2u=-1$，即双叶双曲面。证毕。\n\n**考点**：$\\sec^2u-\\tan^2u=1$ 的使用 / 参数方程与标准方程的互化\n\n**方法**：验证参数方程的唯一动作是「消参数 $u,v$」：先把含 $v$ 的两式凑成 $\\frac{x^2}{a^2}+\\frac{y^2}{b^2}$，再用三角恒等式对接 $z$ 项。\n\n---",
+      "detailedAnalysis": "考点：$\\sec^2u-\\tan^2u=1$ 的使用 / 参数方程与标准方程的互化。方法：验证参数方程的唯一动作是「消参数 $u,v$」：先把含 $v$ 的两式凑成 $\\frac{x^2}{a^2}+\\frac{y^2}{b^2}$，再用三角恒等式对接 $z$ 项。\n\n---",
+      "points": [
+        "$\\sec^2u-\\tan^2u=1$ 的使用",
+        "参数方程与标准方程的互化"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· §4.5 第 7 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1) 设 $x=a\\sec u\\cos v,\\ y=b\\sec u\\sin v,\\ z=c\\tan u$。由前两式\n$$\\frac{x^2}{a^2}+\\frac{y^2}{b^2}=\\sec^2u,\\qquad \\frac{z^2}{c^2}=\\tan^2u,$$\n相减并用 $\\sec^2u-\\tan^2u=1$ 得\n$$\\frac{x^2}{a^2}+\\frac{y^2}{b^2}-\\frac{z^2}{c^2}=1,$$\n即单叶双曲面。\n(2) 设 $x=a\\tan u\\cos v,\\ y=b\\tan u\\sin v,\\ z=c\\sec u$。同理\n$$\\frac{x^2}{a^2}+\\frac{y^2}{b^2}=\\tan^2u,\\qquad \\frac{z^2}{c^2}=\\sec^2u,$$\n相减得 $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}-\\dfrac{z^2}{c^2}=\\tan^2u-\\sec^2u=-1$，即双叶双曲面。证毕。",
+        "**考点**：$\\sec^2u-\\tan^2u=1$ 的使用 / 参数方程与标准方程的互化",
+        "**方法**：验证参数方程的唯一动作是「消参数 $u,v$」：先把含 $v$ 的两式凑成 $\\frac{x^2}{a^2}+\\frac{y^2}{b^2}$，再用三角恒等式对接 $z$ 项。",
+        "---"
+      ],
+      "pointKeys": [
+        "$\\sec^2u-\\tan^2u=1$ 的使用",
+        "参数方程与标准方程的互化"
+      ]
+    },
+    {
+      "id": "GE-B1220",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "§4.6",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "抛物面参数方程验证",
+      "question": "试验证椭圆抛物面与双曲抛物面的参数方程可分别写为\n$$\\begin{cases}x=au\\cos v,\\\\ y=bu\\sin v,\\\\ z=\\frac12u^2,\\end{cases}\\qquad\\text{与}\\qquad\\begin{cases}x=a(u+v),\\\\ y=b(u-v),\\\\ z=2uv,\\end{cases}$$\n式中 $u,v$ 为参数。",
+      "answer": "结果见标准解答。",
+      "standardSolution": "证明：(1) 由前两式得\n$$\\frac{x^2}{a^2}+\\frac{y^2}{b^2}=u^2\\cos^2v+u^2\\sin^2v=u^2=2z,$$\n故参数方程表示椭圆抛物面 $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=2z$。\n(2) 由前两式得\n$$\\frac{x^2}{a^2}-\\frac{y^2}{b^2}=(u+v)^2-(u-v)^2=4uv=2z,$$\n故参数方程表示双曲抛物面 $\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=2z$。证毕。\n\n**考点**：抛物面的参数化 / $\\cos^2+\\sin^2=1$ 与平方差公式\n\n**方法**：验证参数方程的唯一动作是消参数——椭圆抛物面靠 $\\cos^2v+\\sin^2v$，双曲抛物面靠 $(u+v)^2-(u-v)^2=4uv$。\n\n---",
+      "detailedAnalysis": "考点：抛物面的参数化 / $\\cos^2+\\sin^2=1$ 与平方差公式。方法：验证参数方程的唯一动作是消参数——椭圆抛物面靠 $\\cos^2v+\\sin^2v$，双曲抛物面靠 $(u+v)^2-(u-v)^2=4uv$。\n\n---",
+      "points": [
+        "抛物面的参数化",
+        "$\\cos^2+\\sin^2=1$ 与平方差公式"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· §4.6 第 5 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1) 由前两式得\n$$\\frac{x^2}{a^2}+\\frac{y^2}{b^2}=u^2\\cos^2v+u^2\\sin^2v=u^2=2z,$$\n故参数方程表示椭圆抛物面 $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=2z$。\n(2) 由前两式得\n$$\\frac{x^2}{a^2}-\\frac{y^2}{b^2}=(u+v)^2-(u-v)^2=4uv=2z,$$\n故参数方程表示双曲抛物面 $\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=2z$。证毕。",
+        "**考点**：抛物面的参数化 / $\\cos^2+\\sin^2=1$ 与平方差公式",
+        "**方法**：验证参数方程的唯一动作是消参数——椭圆抛物面靠 $\\cos^2v+\\sin^2v$，双曲抛物面靠 $(u+v)^2-(u-v)^2=4uv$。",
+        "---"
+      ],
+      "pointKeys": [
+        "抛物面的参数化",
+        "$\\cos^2+\\sin^2=1$ 与平方差公式"
+      ]
+    },
+    {
+      "id": "GE-B1221",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "§4.7",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "单叶双曲面直母线的投影与腰椭圆",
+      "question": "试证单叶双曲面 $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}-\\dfrac{z^2}{c^2}=1$ 的任意一条直母线在 $xOy$ 面上的射影，一定是其腰椭圆的切线。",
+      "answer": "结果见标准解答。",
+      "standardSolution": "证明：腰椭圆为 $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=1,\\ z=0$。两族直母线为\n$$u\\ \\text{族}:\\begin{cases}w\\left(\\dfrac xa+\\dfrac zc\\right)=u\\left(1+\\dfrac yb\\right),\\\\ u\\left(\\dfrac xa-\\dfrac zc\\right)=w\\left(1-\\dfrac yb\\right),\\end{cases}\\qquad v\\ \\text{族}:\\begin{cases}v\\left(\\dfrac xa+\\dfrac zc\\right)=t\\left(1-\\dfrac yb\\right),\\\\ t\\left(\\dfrac xa-\\dfrac zc\\right)=v\\left(1+\\dfrac yb\\right).\\end{cases}$$\n$u$ 族直母线的方向向量为 $\\vec s_u=\\left(a(u^2-w^2),\\,2buw,\\,c(u^2+w^2)\\right)$，第三个分量恒不为零，故每条 $u$ 族直母线与 $z=0$ 恰交于一点。在 $u$ 族方程中令 $z=0$ 解得交点\n$$M_0\\left(\\frac{2auw}{u^2+w^2},\\ \\frac{b(w^2-u^2)}{u^2+w^2},\\ 0\\right).$$\n于是 $u$ 族直母线在 $xOy$ 面上的射影为过 $M_0$、方向 $\\left(a(u^2-w^2),\\,2buw\\right)$ 的直线：\n$$2buw\\,x-a(u^2-w^2)\\,y-ab(u^2+w^2)=0 .$$\n（其常数项为 $Xy_0-Yx_0=-\\dfrac{ab(u^2-w^2)^2}{u^2+w^2}-\\dfrac{4abu^2w^2}{u^2+w^2}=-ab(u^2+w^2)$。）\n对腰椭圆用相切条件 $a^2A^2+b^2B^2=C^2$（$A=2buw,\\ B=-a(u^2-w^2),\\ C=-ab(u^2+w^2)$）：\n$$a^2\\cdot4b^2u^2w^2+b^2\\cdot a^2(u^2-w^2)^2=a^2b^2\\left[4u^2w^2+(u^2-w^2)^2\\right]=a^2b^2(u^2+w^2)^2=C^2,$$\n故射影直线与腰椭圆相切。$v$ 族只需把 $u,w$ 换成 $v,t$，同法可得。证毕。\n\n**考点**：直母线与腰椭圆的交点 / 直线与椭圆的相切条件 $a^2A^2+b^2B^2=C^2$ / 射影直线\n\n**方法**：「射影是切线」＝算出射影直线的 $A,B,C$，验证 $a^2A^2+b^2B^2=C^2$；关键是先求出直母线与 $z=0$ 的交点（第三分量不为零保证交点唯一）。",
+      "detailedAnalysis": "考点：直母线与腰椭圆的交点 / 直线与椭圆的相切条件 $a^2A^2+b^2B^2=C^2$ / 射影直线。方法：「射影是切线」＝算出射影直线的 $A,B,C$，验证 $a^2A^2+b^2B^2=C^2$；关键是先求出直母线与 $z=0$ 的交点（第三分量不为零保证交点唯一）。",
+      "points": [
+        "直母线与腰椭圆的交点",
+        "直线与椭圆的相切条件 $a^2A^2+b^2B^2=C^2$",
+        "射影直线"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· §4.7 第 4 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：腰椭圆为 $\\dfrac{x^2}{a^2}+\\dfrac{y^2}{b^2}=1,\\ z=0$。两族直母线为\n$$u\\ \\text{族}:\\begin{cases}w\\left(\\dfrac xa+\\dfrac zc\\right)=u\\left(1+\\dfrac yb\\right),\\\\ u\\left(\\dfrac xa-\\dfrac zc\\right)=w\\left(1-\\dfrac yb\\right),\\end{cases}\\qquad v\\ \\text{族}:\\begin{cases}v\\left(\\dfrac xa+\\dfrac zc\\right)=t\\left(1-\\dfrac yb\\right),\\\\ t\\left(\\dfrac xa-\\dfrac zc\\right)=v\\left(1+\\dfrac yb\\right).\\end{cases}$$\n$u$ 族直母线的方向向量为 $\\vec s_u=\\left(a(u^2-w^2),\\,2buw,\\,c(u^2+w^2)\\right)$，第三个分量恒不为零，故每条 $u$ 族直母线与 $z=0$ 恰交于一点。在 $u$ 族方程中令 $z=0$ 解得交点\n$$M_0\\left(\\frac{2auw}{u^2+w^2},\\ \\frac{b(w^2-u^2)}{u^2+w^2},\\ 0\\right).$$\n于是 $u$ 族直母线在 $xOy$ 面上的射影为过 $M_0$、方向 $\\left(a(u^2-w^2),\\,2buw\\right)$ 的直线：\n$$2buw\\,x-a(u^2-w^2)\\,y-ab(u^2+w^2)=0 .$$\n（其常数项为 $Xy_0-Yx_0=-\\dfrac{ab(u^2-w^2)^2}{u^2+w^2}-\\dfrac{4abu^2w^2}{u^2+w^2}=-ab(u^2+w^2)$。）\n对腰椭圆用相切条件 $a^2A^2+b^2B^2=C^2$（$A=2buw,\\ B=-a(u^2-w^2),\\ C=-ab(u^2+w^2)$）：\n$$a^2\\cdot4b^2u^2w^2+b^2\\cdot a^2(u^2-w^2)^2=a^2b^2\\left[4u^2w^2+(u^2-w^2)^2\\right]=a^2b^2(u^2+w^2)^2=C^2,$$\n故射影直线与腰椭圆相切。$v$ 族只需把 $u,w$ 换成 $v,t$，同法可得。证毕。",
+        "**考点**：直母线与腰椭圆的交点 / 直线与椭圆的相切条件 $a^2A^2+b^2B^2=C^2$ / 射影直线",
+        "**方法**：「射影是切线」＝算出射影直线的 $A,B,C$，验证 $a^2A^2+b^2B^2=C^2$；关键是先求出直母线与 $z=0$ 的交点（第三分量不为零保证交点唯一）。"
+      ],
+      "pointKeys": [
+        "直母线与腰椭圆的交点",
+        "直线与椭圆的相切条件 $a^2A^2+b^2B^2=C^2$",
+        "射影直线"
+      ]
+    },
+    {
+      "id": "GE-B1222",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "§4.7",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "双曲抛物面正交直母线交点轨迹",
+      "question": "试证明双曲抛物面 $\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=2z\\ (a\\ne b)$ 上的两直母线正交时，其交点必在一双曲线上。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：两相交直母线必属异族。双曲抛物面的两族直母线为\n$$u\\ \\text{族}:\\begin{cases}\\dfrac xa+\\dfrac yb=2u,\\\\ u\\left(\\dfrac xa-\\dfrac yb\\right)=z,\\end{cases}\\qquad v\\ \\text{族}:\\begin{cases}\\dfrac xa-\\dfrac yb=2v,\\\\ v\\left(\\dfrac xa+\\dfrac yb\\right)=z .\\end{cases}$$\n两族的方向向量分别为\n$$\\vec s_u\\sim(a,-b,2u),\\qquad \\vec s_v\\sim(a,b,2v).$$\n由 $\\vec s_u\\cdot\\vec s_v=0$ 得 $a^2-b^2+4uv=0$，即 $4uv=b^2-a^2$。\n两族直母线的交点为 $\\dfrac xa=u+v$、$\\dfrac yb=u-v$、$z=2uv$，故\n$$2z=4uv=b^2-a^2 .$$\n于是交点满足方程组\n$$\\begin{cases}\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=2z,\\\\ 2z=b^2-a^2,\\end{cases}\\quad\\text{即}\\quad\\begin{cases}\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=b^2-a^2,\\\\ z=\\dfrac{b^2-a^2}{2}.\\end{cases}$$\n这是平面 $z=\\dfrac{b^2-a^2}{2}$ 上的双曲线（因 $a\\ne b$，右端不为零）。证毕。\n\n**考点**：双曲抛物面两族直母线的方向 / 正交条件 / 交点的参数表示\n\n**方法**：双曲抛物面两族直母线的方向是 $(a,-b,2u)$ 与 $(a,b,2v)$，正交立刻给出 $4uv=b^2-a^2$；而交点坐标恰是 $\\frac xa=u+v,\\frac yb=u-v,z=2uv$，代回即成曲线方程。",
+      "detailedAnalysis": "考点：双曲抛物面两族直母线的方向 / 正交条件 / 交点的参数表示。方法：双曲抛物面两族直母线的方向是 $(a,-b,2u)$ 与 $(a,b,2v)$，正交立刻给出 $4uv=b^2-a^2$；而交点坐标恰是 $\\frac xa=u+v,\\frac yb=u-v,z=2uv$，代回即成曲线方程。",
+      "points": [
+        "双曲抛物面两族直母线的方向",
+        "正交条件",
+        "交点的参数表示"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· §4.7 第 9 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：两相交直母线必属异族。双曲抛物面的两族直母线为\n$$u\\ \\text{族}:\\begin{cases}\\dfrac xa+\\dfrac yb=2u,\\\\ u\\left(\\dfrac xa-\\dfrac yb\\right)=z,\\end{cases}\\qquad v\\ \\text{族}:\\begin{cases}\\dfrac xa-\\dfrac yb=2v,\\\\ v\\left(\\dfrac xa+\\dfrac yb\\right)=z .\\end{cases}$$\n两族的方向向量分别为\n$$\\vec s_u\\sim(a,-b,2u),\\qquad \\vec s_v\\sim(a,b,2v).$$\n由 $\\vec s_u\\cdot\\vec s_v=0$ 得 $a^2-b^2+4uv=0$，即 $4uv=b^2-a^2$。\n两族直母线的交点为 $\\dfrac xa=u+v$、$\\dfrac yb=u-v$、$z=2uv$，故\n$$2z=4uv=b^2-a^2 .$$\n于是交点满足方程组\n$$\\begin{cases}\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=2z,\\\\ 2z=b^2-a^2,\\end{cases}\\quad\\text{即}\\quad\\begin{cases}\\dfrac{x^2}{a^2}-\\dfrac{y^2}{b^2}=b^2-a^2,\\\\ z=\\dfrac{b^2-a^2}{2}.\\end{cases}$$\n这是平面 $z=\\dfrac{b^2-a^2}{2}$ 上的双曲线（因 $a\\ne b$，右端不为零）。证毕。",
+        "**考点**：双曲抛物面两族直母线的方向 / 正交条件 / 交点的参数表示",
+        "**方法**：双曲抛物面两族直母线的方向是 $(a,-b,2u)$ 与 $(a,b,2v)$，正交立刻给出 $4uv=b^2-a^2$；而交点坐标恰是 $\\frac xa=u+v,\\frac yb=u-v,z=2uv$，代回即成曲线方程。"
+      ],
+      "pointKeys": [
+        "双曲抛物面两族直母线的方向",
+        "正交条件",
+        "交点的参数表示"
+      ]
+    },
+    {
+      "id": "GE-B1223",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "直线为轴的圆柱面与圆锥面方程",
+      "question": "已知直线 $l:\\dfrac xm=\\dfrac yn=\\dfrac zp$，试证明：\n(1) 以 $l$ 为轴、半径为 $R$ 的圆柱面方程为\n$$(mx+ny+pz)^2=(m^2+n^2+p^2)\\left(x^2+y^2+z^2-R^2\\right);$$\n(2) 以 $l$ 为轴、原点为顶点、半顶角为 $\\alpha$ 的圆锥面方程为\n$$(mx+ny+pz)^2=\\cos^2\\alpha\\,(m^2+n^2+p^2)\\left(x^2+y^2+z^2\\right).$$",
+      "answer": "结果见标准解答。",
+      "standardSolution": "证明：设 $M(x,y,z)$ 为曲面上的点。$l$ 过原点，方向 $\\vec d=\\{m,n,p\\}$，记 $\\vec r=\\{x,y,z\\}$。\n(1) 圆柱面即到 $l$ 距离为 $R$ 的点集：\n$$\\frac{|\\vec r\\times\\vec d|}{|\\vec d|}=R\\ \\Longrightarrow\\ (py-nz)^2+(mz-px)^2+(nx-my)^2=R^2(m^2+n^2+p^2).$$\n用恒等式 $|\\vec r\\times\\vec d|^2=|\\vec r|^2|\\vec d|^2-(\\vec r\\cdot\\vec d)^2$，左端等于\n$$(m^2+n^2+p^2)(x^2+y^2+z^2)-(mx+ny+pz)^2,$$\n代入整理即得 $(mx+ny+pz)^2=(m^2+n^2+p^2)(x^2+y^2+z^2-R^2)$。\n(2) 圆锥面即 $\\angle\\left(\\overrightarrow{OM},l\\right)=\\alpha$：\n$$\\frac{|mx+ny+pz|}{\\sqrt{m^2+n^2+p^2}\\cdot\\sqrt{x^2+y^2+z^2}}=\\cos\\alpha,$$\n两边平方即得 $(mx+ny+pz)^2=\\cos^2\\alpha(m^2+n^2+p^2)(x^2+y^2+z^2)$。证毕。\n\n**考点**：向量形式下的圆柱面与圆锥面方程 / 叉积恒等式 $|\\vec r\\times\\vec d|^2=|\\vec r|^2|\\vec d|^2-(\\vec r\\cdot\\vec d)^2$\n\n**方法**：「轴不过坐标轴、顶点在原点」的圆柱面／圆锥面一律用向量写：距离 $=\\frac{|\\vec r\\times\\vec d|}{|\\vec d|}$，夹角余弦 $=\\frac{\\vec r\\cdot\\vec d}{|\\vec r||\\vec d|}$；平方后即为二次方程。",
+      "detailedAnalysis": "考点：向量形式下的圆柱面与圆锥面方程 / 叉积恒等式 $|\\vec r\\times\\vec d|^2=|\\vec r|^2|\\vec d|^2-(\\vec r\\cdot\\vec d)^2$。方法：「轴不过坐标轴、顶点在原点」的圆柱面／圆锥面一律用向量写：距离 $=\\frac{|\\vec r\\times\\vec d|}{|\\vec d|}$，夹角余弦 $=\\frac{\\vec r\\cdot\\vec d}{|\\vec r||\\vec d|}$；平方后即为二次方程。",
+      "points": [
+        "向量形式下的圆柱面与圆锥面方程",
+        "叉积恒等式 $|\\vec r\\times\\vec d|^2=|\\vec r|^2|\\vec d|^2-(\\vec r\\cdot\\vec d)^2$"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· 复习与测试 第 2 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $M(x,y,z)$ 为曲面上的点。$l$ 过原点，方向 $\\vec d=\\{m,n,p\\}$，记 $\\vec r=\\{x,y,z\\}$。\n(1) 圆柱面即到 $l$ 距离为 $R$ 的点集：\n$$\\frac{|\\vec r\\times\\vec d|}{|\\vec d|}=R\\ \\Longrightarrow\\ (py-nz)^2+(mz-px)^2+(nx-my)^2=R^2(m^2+n^2+p^2).$$\n用恒等式 $|\\vec r\\times\\vec d|^2=|\\vec r|^2|\\vec d|^2-(\\vec r\\cdot\\vec d)^2$，左端等于\n$$(m^2+n^2+p^2)(x^2+y^2+z^2)-(mx+ny+pz)^2,$$\n代入整理即得 $(mx+ny+pz)^2=(m^2+n^2+p^2)(x^2+y^2+z^2-R^2)$。\n(2) 圆锥面即 $\\angle\\left(\\overrightarrow{OM},l\\right)=\\alpha$：\n$$\\frac{|mx+ny+pz|}{\\sqrt{m^2+n^2+p^2}\\cdot\\sqrt{x^2+y^2+z^2}}=\\cos\\alpha,$$\n两边平方即得 $(mx+ny+pz)^2=\\cos^2\\alpha(m^2+n^2+p^2)(x^2+y^2+z^2)$。证毕。",
+        "**考点**：向量形式下的圆柱面与圆锥面方程 / 叉积恒等式 $|\\vec r\\times\\vec d|^2=|\\vec r|^2|\\vec d|^2-(\\vec r\\cdot\\vec d)^2$",
+        "**方法**：「轴不过坐标轴、顶点在原点」的圆柱面／圆锥面一律用向量写：距离 $=\\frac{|\\vec r\\times\\vec d|}{|\\vec d|}$，夹角余弦 $=\\frac{\\vec r\\cdot\\vec d}{|\\vec r||\\vec d|}$；平方后即为二次方程。"
+      ],
+      "pointKeys": [
+        "向量形式下的圆柱面与圆锥面方程",
+        "叉积恒等式 $|\\vec r\\times\\vec d|^2=|\\vec r|^2|\\vec d|^2-(\\vec r\\cdot\\vec d)^2$"
+      ]
+    },
+    {
+      "id": "GE-B1224",
+      "subject": "jieji",
+      "chapter": "第四章 柱面、锥面、旋转曲面与二次曲面",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "平面截锥面两直线垂直条件",
+      "question": "证明：以平面 $ax+by+cz=0$ 截割锥面 $xy+yz+zx=0$，当 $\\dfrac1a+\\dfrac1b+\\dfrac1c=0$ 时，截得的两直线互相垂直。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：平面过原点，即过锥面 $xy+yz+zx=0$ 的顶点，故截线为过原点的两条直线。由 $cz=-(ax+by)$ 得 $z=-\\dfrac{ax+by}{c}$，代入锥面方程\n$$xy+(x+y)z=0\\ \\Longrightarrow\\ cxy-(x+y)(ax+by)=0\\ \\Longrightarrow\\ ax^2+(a+b-c)xy+by^2=0 .$$\n由 $\\dfrac1a+\\dfrac1b+\\dfrac1c=0$ 得 $c=-\\dfrac{ab}{a+b}$，故 $a+b-c=\\dfrac{(a+b)^2+ab}{a+b}$。代入上式并乘 $a+b$：\n$$a(a+b)x^2+\\left[(a+b)^2+ab\\right]xy+b(a+b)y^2=0\\ \\Longrightarrow\\ \\left[(a+b)x+by\\right]\\left[ax+(a+b)y\\right]=0 .$$\n于是截得的两直线为\n$$l_1:\\begin{cases}ax+by+cz=0,\\\\ (a+b)x+by=0,\\end{cases}\\qquad l_2:\\begin{cases}ax+by+cz=0,\\\\ ax+(a+b)y=0 .\\end{cases}$$\n取 $\\vec n=\\{a,b,c\\}$，$\\vec d_1=\\{a+b,b,0\\}$，$\\vec d_2=\\{a,a+b,0\\}$，则方向向量\n$$\\vec v_1=\\vec n\\times\\vec d_1=\\{-bc,\\ c(a+b),\\ -b^2\\},\\qquad \\vec v_2=\\vec n\\times\\vec d_2=\\{-c(a+b),\\ ac,\\ a^2\\}.$$\n于是\n$$\\vec v_1\\cdot\\vec v_2=bc^2(a+b)+ac^2(a+b)-a^2b^2=c^2(a+b)^2-a^2b^2 .$$\n由 $c(a+b)=-ab$ 得 $c^2(a+b)^2=a^2b^2$，故 $\\vec v_1\\cdot\\vec v_2=0$，即截得的两直线互相垂直。证毕。\n\n**考点**：平面截锥面得两直线（退化二次曲线）/ 二次型分解为两个一次式 / 方向向量的叉积表示\n\n**方法**：截线是「平面＋二次齐次式」时，把平面方程代入锥面方程化为二元二次齐次式；能因式分解就得到两条直线，再把方向向量用 $\\vec n\\times\\vec d_i$ 写出算数量积。",
+      "detailedAnalysis": "考点：平面截锥面得两直线（退化二次曲线）/ 二次型分解为两个一次式 / 方向向量的叉积表示。方法：截线是「平面＋二次齐次式」时，把平面方程代入锥面方程化为二元二次齐次式；能因式分解就得到两条直线，再把方向向量用 $\\vec n\\times\\vec d_i$ 写出算数量积。",
+      "points": [
+        "平面截锥面得两直线（退化二次曲线）",
+        "二次型分解为两个一次式",
+        "方向向量的叉积表示"
+      ],
+      "pitfalls": [
+        "锥面顶点不在原点时仍套齐次方程",
+        "旋转曲面母线绕轴转时坐标代换写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第四章 柱面、锥面、旋转曲面与二次曲面）· 复习与测试 第 4 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第四章 柱面、锥面、旋转曲面与二次曲面",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：平面过原点，即过锥面 $xy+yz+zx=0$ 的顶点，故截线为过原点的两条直线。由 $cz=-(ax+by)$ 得 $z=-\\dfrac{ax+by}{c}$，代入锥面方程\n$$xy+(x+y)z=0\\ \\Longrightarrow\\ cxy-(x+y)(ax+by)=0\\ \\Longrightarrow\\ ax^2+(a+b-c)xy+by^2=0 .$$\n由 $\\dfrac1a+\\dfrac1b+\\dfrac1c=0$ 得 $c=-\\dfrac{ab}{a+b}$，故 $a+b-c=\\dfrac{(a+b)^2+ab}{a+b}$。代入上式并乘 $a+b$：\n$$a(a+b)x^2+\\left[(a+b)^2+ab\\right]xy+b(a+b)y^2=0\\ \\Longrightarrow\\ \\left[(a+b)x+by\\right]\\left[ax+(a+b)y\\right]=0 .$$\n于是截得的两直线为\n$$l_1:\\begin{cases}ax+by+cz=0,\\\\ (a+b)x+by=0,\\end{cases}\\qquad l_2:\\begin{cases}ax+by+cz=0,\\\\ ax+(a+b)y=0 .\\end{cases}$$\n取 $\\vec n=\\{a,b,c\\}$，$\\vec d_1=\\{a+b,b,0\\}$，$\\vec d_2=\\{a,a+b,0\\}$，则方向向量\n$$\\vec v_1=\\vec n\\times\\vec d_1=\\{-bc,\\ c(a+b),\\ -b^2\\},\\qquad \\vec v_2=\\vec n\\times\\vec d_2=\\{-c(a+b),\\ ac,\\ a^2\\}.$$\n于是\n$$\\vec v_1\\cdot\\vec v_2=bc^2(a+b)+ac^2(a+b)-a^2b^2=c^2(a+b)^2-a^2b^2 .$$\n由 $c(a+b)=-ab$ 得 $c^2(a+b)^2=a^2b^2$，故 $\\vec v_1\\cdot\\vec v_2=0$，即截得的两直线互相垂直。证毕。",
+        "**考点**：平面截锥面得两直线（退化二次曲线）/ 二次型分解为两个一次式 / 方向向量的叉积表示",
+        "**方法**：截线是「平面＋二次齐次式」时，把平面方程代入锥面方程化为二元二次齐次式；能因式分解就得到两条直线，再把方向向量用 $\\vec n\\times\\vec d_i$ 写出算数量积。"
+      ],
+      "pointKeys": [
+        "平面截锥面得两直线（退化二次曲线）",
+        "二次型分解为两个一次式",
+        "方向向量的叉积表示"
+      ]
+    },
+    {
+      "id": "GE-B1225",
+      "subject": "jieji",
+      "chapter": "第六章 二次曲面的一般理论",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "不同特征根主方向互相垂直",
+      "question": "证明：二次曲面的两个不同特征根决定的主方向一定相互垂直。",
+      "answer": "结论成立，证明见标准解答。",
+      "standardSolution": "证明：设 $\\lambda_1\\ne\\lambda_2$，对应主方向依次为 $X_1:Y_1:Z_1$、$X_2:Y_2:Z_2$，则由 (6.5-1)\n$$a_{11}X_i+a_{12}Y_i+a_{13}Z_i=\\lambda_iX_i,\\quad a_{12}X_i+a_{22}Y_i+a_{23}Z_i=\\lambda_iY_i,\\quad a_{13}X_i+a_{23}Y_i+a_{33}Z_i=\\lambda_iZ_i\\ (i=1,2).$$\n以 $(X_2,Y_2,Z_2)$ 乘 $\\lambda_1$ 的三式相加，再以 $(X_1,Y_1,Z_1)$ 乘 $\\lambda_2$ 的三式相加；因 $A$ 对称，两边的交叉和相等：\n$$\\lambda_1\\left(X_1X_2+Y_1Y_2+Z_1Z_2\\right)=\\lambda_2\\left(X_1X_2+Y_1Y_2+Z_1Z_2\\right).$$\n故 $(\\lambda_1-\\lambda_2)(X_1X_2+Y_1Y_2+Z_1Z_2)=0$；因 $\\lambda_1\\ne\\lambda_2$，得 $X_1X_2+Y_1Y_2+Z_1Z_2=0$，即两主方向互相垂直。证毕。",
+      "detailedAnalysis": "考点：特征值与主方向；实对称矩阵不同特征值的特征向量正交。方法：两组特征方程\"交叉相乘再相加\"，是对称矩阵正交性的标准证法。",
+      "points": [
+        "特征值与主方向",
+        "实对称矩阵不同特征值的特征向量正交"
+      ],
+      "pitfalls": [
+        "主方向特征根与标准形系数对应错",
+        "径面与切平面条件混用"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第六章 二次曲面的一般理论）· 复习与测试 第 4 题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第六章 二次曲面的一般理论",
+        "教材课后",
+        "解析几何"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $\\lambda_1\\ne\\lambda_2$，对应主方向依次为 $X_1:Y_1:Z_1$、$X_2:Y_2:Z_2$，则由 (6.5-1)\n$$a_{11}X_i+a_{12}Y_i+a_{13}Z_i=\\lambda_iX_i,\\quad a_{12}X_i+a_{22}Y_i+a_{23}Z_i=\\lambda_iY_i,\\quad a_{13}X_i+a_{23}Y_i+a_{33}Z_i=\\lambda_iZ_i\\ (i=1,2).$$\n以 $(X_2,Y_2,Z_2)$ 乘 $\\lambda_1$ 的三式相加，再以 $(X_1,Y_1,Z_1)$ 乘 $\\lambda_2$ 的三式相加；因 $A$ 对称，两边的交叉和相等：\n$$\\lambda_1\\left(X_1X_2+Y_1Y_2+Z_1Z_2\\right)=\\lambda_2\\left(X_1X_2+Y_1Y_2+Z_1Z_2\\right).$$\n故 $(\\lambda_1-\\lambda_2)(X_1X_2+Y_1Y_2+Z_1Z_2)=0$；因 $\\lambda_1\\ne\\lambda_2$，得 $X_1X_2+Y_1Y_2+Z_1Z_2=0$，即两主方向互相垂直。证毕。"
+      ],
+      "pointKeys": [
+        "特征值与主方向",
+        "实对称矩阵不同特征值的特征向量正交"
+      ]
+    },
+    {
+      "id": "GE-B1226",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "choice",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "概念辨析题 · 设平行四边形的三顶点为 那么第四顶点为",
+      "question": "设平行四边形的三顶点为 $(0,-2,0),(2,0,1),(0,4,2)$，那么第四顶点为（ ）。",
+      "answer": "D",
+      "standardSolution": "解：由定义与判据逐项比较，正确选项为 D。",
+      "detailedAnalysis": "考点：概念辨析题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [
+        {
+          "key": "A",
+          "text": "$(-2,2,1)$"
+        },
+        {
+          "key": "B",
+          "text": "$(-2,2,1)$ 或 $(2,-6,-1)$"
+        },
+        {
+          "key": "C",
+          "text": "$(2,-6,-1)$ 或 $(2,6,3)$"
+        },
+        {
+          "key": "D",
+          "text": "$(-2,2,1)$ 或 $(2,-6,-1)$ 或 $(2,6,3)$"
+        }
+      ],
+      "correct": "D",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：由定义与判据逐项比较，正确选项为 D。"
+      ],
+      "pointKeys": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1227",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "choice",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "概念辨析题 · 向量 与 的交角是",
+      "question": "向量 $a=i+j$ 与 $b=i+k$ 的交角是（ ）。",
+      "answer": "B",
+      "standardSolution": "解：由定义与判据逐项比较，正确选项为 B。",
+      "detailedAnalysis": "考点：概念辨析题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [
+        {
+          "key": "A",
+          "text": "$\\dfrac{\\pi}{4}$"
+        },
+        {
+          "key": "B",
+          "text": "$\\dfrac{\\pi}{3}$"
+        },
+        {
+          "key": "C",
+          "text": "$\\dfrac{2\\pi}{3}$"
+        },
+        {
+          "key": "D",
+          "text": "$\\dfrac{\\pi}{2}$"
+        }
+      ],
+      "correct": "B",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：由定义与判据逐项比较，正确选项为 B。"
+      ],
+      "pointKeys": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1228",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "choice",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "概念辨析题 · 设 为两不共线的单位向量 那么与 都垂直的单位向…",
+      "question": "设 $a,b$ 为两不共线的单位向量，那么与 $a,b$ 都垂直的单位向量是（ ）。",
+      "answer": "D",
+      "standardSolution": "解：由定义与判据逐项比较，正确选项为 D。",
+      "detailedAnalysis": "考点：概念辨析题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [
+        {
+          "key": "A",
+          "text": "$a\\times b$"
+        },
+        {
+          "key": "B",
+          "text": "$\\dfrac{a\\times b}{|a\\times b|}$"
+        },
+        {
+          "key": "C",
+          "text": "$\\dfrac{a\\times b}{\\sin\\angle(a,b)}$"
+        },
+        {
+          "key": "D",
+          "text": "$\\pm\\dfrac{a\\times b}{\\sin\\angle(a,b)}$"
+        }
+      ],
+      "correct": "D",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：由定义与判据逐项比较，正确选项为 D。"
+      ],
+      "pointKeys": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1229",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "choice",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "概念辨析题 · 设 是直角坐标轴上的单位向量 那么有性质",
+      "question": "设 $i,j,k$ 是直角坐标轴上的单位向量，那么有性质（ ）。",
+      "answer": "C",
+      "standardSolution": "解：由定义与判据逐项比较，正确选项为 C。",
+      "detailedAnalysis": "考点：概念辨析题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [
+        {
+          "key": "A",
+          "text": "$i\\times j=0,\\ j\\times k=0,\\ k\\times i=0$"
+        },
+        {
+          "key": "B",
+          "text": "$i\\times j=1,\\ j\\times k=1,\\ k\\times i=1$"
+        },
+        {
+          "key": "C",
+          "text": "$i\\times j=k,\\ j\\times k=i,\\ k\\times i=j$"
+        },
+        {
+          "key": "D",
+          "text": "$i\\times j=-k,\\ j\\times k=-i,\\ k\\times i=-j$"
+        }
+      ],
+      "correct": "C",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：由定义与判据逐项比较，正确选项为 C。"
+      ],
+      "pointKeys": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1230",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "choice",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "概念辨析题 · 设三向量 满足 那么",
+      "question": "设三向量 $a,b,c$ 满足 $a+b+c=0$，那么 $a\\times b=$（ ）。",
+      "answer": "C",
+      "standardSolution": "解：由定义与判据逐项比较，正确选项为 C。",
+      "detailedAnalysis": "考点：概念辨析题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [
+        {
+          "key": "A",
+          "text": "$b\\times a$"
+        },
+        {
+          "key": "B",
+          "text": "$c\\times b$"
+        },
+        {
+          "key": "C",
+          "text": "$b\\times c$"
+        },
+        {
+          "key": "D",
+          "text": "$a\\times c$"
+        }
+      ],
+      "correct": "C",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：由定义与判据逐项比较，正确选项为 C。"
+      ],
+      "pointKeys": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1231",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "choice",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "概念辨析题 · 如果 且 那么",
+      "question": "如果 $a\\times c=b\\times c$ 且 $c\\ne0$，那么（ ）。",
+      "answer": "C",
+      "standardSolution": "解：由定义与判据逐项比较，正确选项为 C。",
+      "detailedAnalysis": "考点：概念辨析题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [
+        {
+          "key": "A",
+          "text": "$a=b$"
+        },
+        {
+          "key": "B",
+          "text": "$a\\parallel b$"
+        },
+        {
+          "key": "C",
+          "text": "$(a-b)\\parallel c$"
+        },
+        {
+          "key": "D",
+          "text": "$(a-b)\\perp c$"
+        }
+      ],
+      "correct": "C",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：由定义与判据逐项比较，正确选项为 C。"
+      ],
+      "pointKeys": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1232",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "choice",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "概念辨析题 · 混合积",
+      "question": "混合积 $(a\\times b)\\cdot c=$（ ）。",
+      "answer": "D",
+      "standardSolution": "解：由定义与判据逐项比较，正确选项为 D。",
+      "detailedAnalysis": "考点：概念辨析题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [
+        {
+          "key": "A",
+          "text": "$(a\\times c)\\cdot b$"
+        },
+        {
+          "key": "B",
+          "text": "$c\\cdot(b\\times a)$"
+        },
+        {
+          "key": "C",
+          "text": "$(c\\times b)\\cdot a$"
+        },
+        {
+          "key": "D",
+          "text": "$b\\cdot(c\\times a)$"
+        }
+      ],
+      "correct": "D",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：由定义与判据逐项比较，正确选项为 D。"
+      ],
+      "pointKeys": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1233",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "choice",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "概念辨析题 · 向量积 的充要条件是",
+      "question": "向量积 $a\\times b=0$ 的充要条件是（ ）。",
+      "answer": "D",
+      "standardSolution": "解：由定义与判据逐项比较，正确选项为 D。",
+      "detailedAnalysis": "考点：概念辨析题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [
+        {
+          "key": "A",
+          "text": "$a=0$ 且 $b=0$"
+        },
+        {
+          "key": "B",
+          "text": "$a=0$ 或 $b=0$"
+        },
+        {
+          "key": "C",
+          "text": "$a=0$ 或 $b=0$ 或 $\\angle(a,b)=0$"
+        },
+        {
+          "key": "D",
+          "text": "$a=0$ 或 $b=0$ 或 $\\sin\\angle(a,b)=0$"
+        }
+      ],
+      "correct": "D",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：由定义与判据逐项比较，正确选项为 D。"
+      ],
+      "pointKeys": [
+        "概念辨析",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1234",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "公式填空 · 已知 那么 ＿＿＿ 以 为邻边的平行四边形的面积…",
+      "question": "已知 $a=\\{-1,2,1\\}$，$b=\\{0,1,1\\}$，那么 $\\angle(a,b)=$ ＿＿＿，以 $a,b$ 为邻边的平行四边形的面积为 ＿＿＿，与 $a,b$ 均垂直的单位向量 $c=$ ＿＿＿。",
+      "answer": "$\\dfrac{\\pi}{6}$；$\\sqrt3$；$\\pm\\dfrac{\\sqrt3}{3}\\{1,1,-1\\}$",
+      "standardSolution": "解：$\\dfrac{\\pi}{6}$；$\\sqrt3$；$\\pm\\dfrac{\\sqrt3}{3}\\{1,1,-1\\}$",
+      "detailedAnalysis": "考点：公式填空题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "公式填空",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：$\\dfrac{\\pi}{6}$；$\\sqrt3$；$\\pm\\dfrac{\\sqrt3}{3}\\{1,1,-1\\}$"
+      ],
+      "pointKeys": [
+        "公式填空",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1235",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "公式填空 · 设 为两个不共线的向量 那么 的充要条件是 ＿＿…",
+      "question": "设 $a,b$ 为两个不共线的向量，那么 $|a+b|>|a-b|$ 的充要条件是 ＿＿＿，$|a+b|=|a-b|$ 的充要条件是 ＿＿＿，$|a+b|<|a-b|$ 的充要条件是 ＿＿＿。",
+      "answer": "$0<\\angle(a,b)<\\dfrac\\pi2$；$\\angle(a,b)=\\dfrac\\pi2$；$\\dfrac\\pi2<\\angle(a,b)<\\pi$",
+      "standardSolution": "解：$0<\\angle(a,b)<\\dfrac\\pi2$；$\\angle(a,b)=\\dfrac\\pi2$；$\\dfrac\\pi2<\\angle(a,b)<\\pi$",
+      "detailedAnalysis": "考点：公式填空题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "公式填空",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：$0<\\angle(a,b)<\\dfrac\\pi2$；$\\angle(a,b)=\\dfrac\\pi2$；$\\dfrac\\pi2<\\angle(a,b)<\\pi$"
+      ],
+      "pointKeys": [
+        "公式填空",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1236",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "公式填空 · 设三个单位向量 满足 那么 ＿＿＿",
+      "question": "设三个单位向量 $e_1,e_2,e_3$ 满足 $e_1+e_2+e_3=0$，那么 $e_1\\cdot e_2+e_2\\cdot e_3+e_3\\cdot e_1=$ ＿＿＿。",
+      "answer": "$-\\dfrac32$",
+      "standardSolution": "解：$-\\dfrac32$",
+      "detailedAnalysis": "考点：公式填空题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "公式填空",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：$-\\dfrac32$"
+      ],
+      "pointKeys": [
+        "公式填空",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1237",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "公式填空 · 设 是 的重心 那么 ＿＿＿",
+      "question": "设 $\\vec{OA}=a,\\ \\vec{OB}=b,\\ \\vec{OC}=c$，$G$ 是 $\\triangle ABC$ 的重心，那么 $\\vec{OG}=$ ＿＿＿。",
+      "answer": "$\\dfrac13(a+b+c)$",
+      "standardSolution": "解：$\\dfrac13(a+b+c)$",
+      "detailedAnalysis": "考点：公式填空题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "公式填空",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：$\\dfrac13(a+b+c)$"
+      ],
+      "pointKeys": [
+        "公式填空",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1238",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "公式填空 · 设有两向量 如果 那么 ＿＿＿",
+      "question": "设有两向量 $a,b$，如果 $|a|=13$，$|b|=19$，$|a+b|=24$，那么 $|a-b|=$ ＿＿＿。",
+      "answer": "$22$",
+      "standardSolution": "解：$22$",
+      "detailedAnalysis": "考点：公式填空题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "公式填空",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：$22$"
+      ],
+      "pointKeys": [
+        "公式填空",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1239",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "公式填空 · 设 如果 那么 ＿＿＿",
+      "question": "设 $a=\\{3,-2,1\\}$，$b=\\{-1,k,-5\\}$，如果 $\\mathrm{proj}_a b=-\\sqrt{14}$，那么 $k=$ ＿＿＿。",
+      "answer": "$3$",
+      "standardSolution": "解：$3$",
+      "detailedAnalysis": "考点：公式填空题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "公式填空",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：$3$"
+      ],
+      "pointKeys": [
+        "公式填空",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1240",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "公式填空 · 设三向量 两两相互垂直 并且 那么 ＿＿＿ ＿＿…",
+      "question": "设三向量 $a,b,c$ 两两相互垂直，并且 $|a|=1,|b|=2,|c|=3$，那么 $|a+b+c|=$ ＿＿＿，$|a\\times b+b\\times c+c\\times a|=$ ＿＿＿。",
+      "answer": "$\\sqrt{14}$；$7$",
+      "standardSolution": "解：$\\sqrt{14}$；$7$",
+      "detailedAnalysis": "考点：公式填空题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "公式填空",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：$\\sqrt{14}$；$7$"
+      ],
+      "pointKeys": [
+        "公式填空",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
+    },
+    {
+      "id": "GE-B1241",
+      "subject": "jieji",
+      "chapter": "第一章 向量与坐标",
+      "section": "复习与测试",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "公式填空 · 设三向量 不共面 那么当 与 共线时 ＿＿＿ 当…",
+      "question": "设三向量 $e_1,e_2,e_3$ 不共面，那么当 $\\lambda e_1+e_2$ 与 $e_1+\\lambda e_2$ 共线时，$\\lambda=$ ＿＿＿；当 $\\lambda e_1+\\mu e_2+\\nu e_3$ 与 $e_2,e_3$ 共面时，$\\lambda=$ ＿＿＿。",
+      "answer": "$\\pm1$；$0$",
+      "standardSolution": "解：$\\pm1$；$0$",
+      "detailedAnalysis": "考点：公式填空题。按定义逐项判断，必要时用坐标或向量计算验证。",
+      "points": [
+        "公式填空",
+        "解析几何"
+      ],
+      "pitfalls": [
+        "只凭直觉不代定义",
+        "漏掉退化或方向相反的情形"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 向量与坐标）· 复习与测试",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 向量与坐标",
+        "教材课后",
+        "复习与测试"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：$\\pm1$；$0$"
+      ],
+      "pointKeys": [
+        "公式填空",
+        "解析几何"
+      ],
+      "verification": "人工复核：由定义与标准结论核对。"
     }
   ]
 }

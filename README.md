@@ -8,8 +8,8 @@
 <p>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
-<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.19-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.19--46896243-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.21-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.21--f8e08ec1-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -17,7 +17,7 @@
 <a href="#屏幕适配"><img src="https://img.shields.io/badge/DOCS-3%20DEVICES-475569?style=for-the-badge&labelColor=334155" alt="Three device classes"></a>
 </p>
 
-<p><b>联系</b> <a href="mailto:3554833568@qq.com">3554833568@qq.com</a> · <b>118</b> 解答模板 · <b>9651</b> 道题库 · <b>4</b> 科 · <b>内置中文</b> · <b>0</b> 注册</p>
+<p><b>联系</b> <a href="mailto:3554833568@qq.com">3554833568@qq.com</a> · <b>118</b> 解答模板 · <b>9875</b> 道题库 · <b>4</b> 科 · <b>内置中文</b> · <b>0</b> 注册</p>
 
 <p><a href="https://lanzaihua.github.io/"><b>开始使用</b></a> · <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#更新记录">更新记录</a> · <a href="#隐私与限制">隐私与限制</a></p>
 
@@ -35,17 +35,17 @@
 
 | 适合 | 现在包含 | 数据方式 |
 |---|---|---|
-| 大学高代、数分、解几、西经的错题整理与考前复习 | **118** 张解答模板 · **8350** 道考研同型题 + **885** 道教材课后习题 + **416** 道习题集题 · 统一笔记库 | 默认 IndexedDB；可导出 / 导入 JSON 备份 |
+| 大学高代、数分、解几、西经的错题整理与考前复习 | **118** 张解答模板 · **8350** 道考研同型题 + **927** 道教材课后习题 + **598** 道习题集题 · 统一笔记库 | 默认 IndexedDB；可导出 / 导入 JSON 备份 |
 
 ## 四个科目
 
 | 科目 | 主要内容 | 模板 | 题库 |
 |---|---|---:|---:|
-| 高等代数 | 行列式、矩阵、线性方程组、向量空间、线性变换、特征值、二次型、欧氏空间 | 52 | 2046 |
-| 数学分析 | 极限、连续、导数、积分、级数、多元微积分、曲线曲面积分 | 29 | 3523 |
-| 解析几何 | 向量与坐标、平面与空间直线、柱面锥面旋转曲面、二次曲线与二次曲面 | 13 | 1199 |
-| 西方经济学 | 供求、弹性、消费者、生产者、成本、市场结构、市场失灵、GDP、IS-LM、AD-AS、失业、通胀、增长 | 24 | 2883 |
-| **合计** | | **118** | **9651** |
+| 高等代数 | 行列式、矩阵、线性方程组、向量空间、线性变换、特征值、二次型、欧氏空间 | 52 | 2075 |
+| 数学分析 | 极限、连续、导数、积分、级数、多元微积分、曲线曲面积分 | 29 | 3571 |
+| 解析几何 | 向量与坐标、平面与空间直线、柱面锥面旋转曲面、二次曲线与二次曲面 | 13 | 1241 |
+| 西方经济学 | 供求、弹性、消费者、生产者、成本、市场结构、市场失灵、GDP、IS-LM、AD-AS、失业、通胀、增长 | 24 | 2988 |
+| **合计** | | **118** | **9875** |
 
 四科分开建册。每科有自己的编号、章节、模板和题库，互不混淆。
 
@@ -62,8 +62,9 @@
 
 - 118 张模板按科目和章节组织，顶部章节目录可直接跳转。
 - 模板固定四段：识别特征 / 首选方法 / 步骤骨架 / 易错点。
-- 8350 道考研同型题 + 885 道教材课后习题 + 416 道习题集题，可以展开查看标准解答、详细解析、答案、解题要点和易错点。
-- 模板、题库、错题条目都支持复制 Markdown 源码。题库中 8250 道为按每章 1–5★ 各 10 客观 + 10 填空 + 10 主观配置的基础题，100 道为西经配套题；885 道教材课后与 416 道习题集为补充，不占该配额。
+- 8350 道考研同型题 + 927 道教材课后习题 + 598 道习题集题，可以展开查看标准解答、详细解析、答案、解题要点和易错点。
+- 模板、题库、错题条目都支持复制 Markdown 源码。题库中 8250 道为按每章 1–5★ 各 10 客观 + 10 填空 + 10 主观配置的基础题，100 道为西经配套题；927 道教材课后与 598 道习题集为补充，不占该配额。
+- 本轮补入解析几何 42 道、西方经济学真实教材题 160 道与考研真题 105 道、全国大学生数学竞赛 77 道；数学分析教材、吉米多维奇与高等代数教材/辅导书的全量录入仍在后续批次，当前不把这些未完成部分计入题库。
 
 ### 统一笔记库
 
@@ -101,7 +102,7 @@
 ### 数据、备份与语言
 
 - 数据默认只在本机浏览器；换设备或清缓存前请先导出备份。
-- JSON 备份默认只含用户错题、用户自建模板/题库、笔记和设置；内置 9651 道题库与 118 张模板由页面自带，不写入备份，导入也不会回滚内置题库。支持合并或覆盖导入。
+- JSON 备份默认只含用户错题、用户自建模板/题库、笔记和设置；内置 9875 道题库与 118 张模板由页面自带，不写入备份，导入也不会回滚内置题库。支持合并或覆盖导入。
 - 当前语言备份会预翻译内容并输出 gzip 压缩的 <code>.json.gz</code>，文件更小。
 - 界面内置简体中文；繁體中文部分内置；English、Français、Deutsch、日本語、한국어、Português、Русский、Español 需要在设置里配置 AI 后生成并缓存，未配置时仍可正常使用简体中文。
 - 语言选择持久化；界面、题库、规范、笔记和弹窗使用同一套翻译缓存（v11）。
@@ -150,6 +151,24 @@
 
 ## 更新记录
 
+### 2026-11-21 · 题库扩充与竞赛录入
+
+**4 项 · 4 组**
+
+解析几何按技能补入 42 道，西方经济学 160 道教材题改用真实题干并新增 105 道考研真题，全国大学生数学竞赛 77 道经 OCR 入库；题库增至 9875 题（2075 / 3571 / 1241 / 2988），查重、严格 QA、LaTeX 与全库渲染均 0 问题，148 项测试通过。
+
+| 分组 | 本次更新 |
+|---|---|
+| **解析几何补全** | 从解析几何 skill 的 325 道章末习题中筛出 26 道未收录题，并把第一章复习与测试的 8 道选择、8 道填空并入题库，编号连续且不重复；解析几何由 1199 增至 1241。选项统一为 key/text，多空填空按综合题收录，题干与解答回查教材小节。 |
+| **西经真题** | 把 160 道教材课后题的模板壳替换为《西方经济学》第二版课后习题的真实题干、标准解答、详细解析、要点与易错点；再从配套题库录入 105 道考研真题。西方经济学由 2883 增至 2988，模板壳与真实题不再并存。 |
+| **竞赛录入** | 全国大学生数学竞赛第 1–12 届汇总、第 13 届初赛与补赛、第 15–17 届 A/B 类共 8 份扫描件按 200dpi OCR，去重后录入 77 道：高等代数 29 道、数学分析 48 道，高等代数与数学分析各自连续编号；来源逐条标注届次与 A/B 卷，跨卷重复题只留一条。 |
+| **防复发** | 题库基线锁与严格 QA 覆盖到 9875：id 唯一、归一化题干无重复、客观题四选项、主观题解答以「解：/证明：」开头；全库 LaTeX 与渲染审计、四科公式门禁同步执行。可计算题经过 sympy 或数值复核，证明题记录人工复核要点；148 项回归与 CI 全部门禁通过。 |
+
+<img src="assets/v2/20261121-changelog.png" alt="网页内题库扩充与竞赛录入更新记录" width="820">
+
+<details>
+<summary>历史更新 · 2026-11-19 及更早 · 28 个版本</summary>
+
 ### 2026-11-19 · 排程状态收口
 
 **2 项 · 2 组**
@@ -162,9 +181,6 @@ AI 排程完成后按钮改为「AI 已排程」，不再和「恢复本地排�
 | **防复发** | 回归测试直接渲染 AI 计划完成态与进行态：完成态必须含「AI 已排程」、不含「正在排程」并保留恢复按钮；进行态必须只含「正在排程」且不显示恢复按钮。测试同时锁定成功与失败路径的 busy→render 顺序，148 项测试与现有门禁全部执行。 |
 
 <img src="assets/v2/20261119-changelog.png" alt="网页内排程状态收口更新记录" width="820">
-
-<details>
-<summary>历史更新 · 2026-11-18 及更早 · 27 个版本</summary>
 
 ### 2026-11-18 · 记忆与刷新收口
 
@@ -977,12 +993,12 @@ AI 排程完成后按钮改为「AI 已排程」，不再和「恢复本地排�
 
 ## 源码、构建与开源
 
-仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.19 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.19/source.zip) 提供。
+仓库完全公开：<https://github.com/lanzaihua/lanzaihua.github.io>，默认分支 `main`。运行代码直接放在仓库里，方便查看、检索和对照；题库数据体积较大，完整可构建源码随 [v2026.11.21 Release](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.21/source.zip) 提供。
 
 ### 仓库与许可证
 
 - **许可证**：MIT，允许学习、修改、分发与二次开发；保留版权与许可声明，详见 [LICENSE](LICENSE)。
-- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.19/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.19/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
+- **源码包**：下载 [`source.zip`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.21/source.zip) 后解压，包含 `src/`（含 `src/data/` 题库）、`build.js`、`server.js`、`skills.js`、`tools/` 与 `Makefile`；[`SHA256SUMS`](https://github.com/lanzaihua/lanzaihua.github.io/releases/download/v2026.11.21/SHA256SUMS) 给出校验值，可用 `sha256sum -c SHA256SUMS` 核对。
 - **数据与部署**：题库与模板数据在 `src/data/`；导出的静态页可直接部署到任意静态托管，不需要 Node 运行时。
 - **问题与建议**：可在仓库 Issues 提交；不接收含个人错题数据、密钥或未授权教材扫描件的 PR。
 - **技能**：四个学科 skill 的入口在 [`skills/`](skills/)，完整内容打包为 [`skills/skills-full.zip`](skills/skills-full.zip)。学科材料仅供个人学习，第三方教材版权归原出版方。

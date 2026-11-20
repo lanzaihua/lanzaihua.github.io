@@ -13,8 +13,8 @@ function add(cond, msg) { if (cond) problems.push(msg); }
 const banks = ['bank-algebra.json', 'bank-analysis.json', 'bank-geometry.json', 'bank-western.json']
   .map((f) => JSON.parse(read(path.join(SRC, 'data', f))));
 const totals = banks.map((b) => (b.items || []).length);
-add(totals[0] < 1559 || totals[1] < 3522 || totals[2] < 1199 || totals[3] < 2883, '四科题库计数低于下限：' + totals.join(' / '));
-add(totals.reduce((a, b) => a + b, 0) < 9163, '题库总数低于 9163');
+add(totals[0] < 2075 || totals[1] < 3571 || totals[2] < 1241 || totals[3] < 2988, '四科题库计数低于下限：' + totals.join(' / '));
+add(totals.reduce((a, b) => a + b, 0) < 9875, '题库总数低于 9875');
 
 const jsFiles = fs.readdirSync(path.join(SRC, 'js')).filter((f) => /\.js$/.test(f));
 const js = jsFiles.map((f) => read(path.join(SRC, 'js', f))).join('\n');

@@ -96628,6 +96628,1503 @@
       "relatedEntries": [],
       "difficulty": 4,
       "verification": "用 sympy 取 $4$ 维空间、秩 $4$ 的对称双线性函数与二维子空间 $K$，验证 $\\dim K+\\dim K^{\\perp}=4$ 且 $K\\cap K^{\\perp}=\\\\{0\\\\}$。"
+    },
+    {
+      "id": "GA-B1992",
+      "subject": "gaodai",
+      "chapter": "第七章 线性变换",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 交换子等于自身的线性变换",
+      "question": "设 $V$ 是复数域 $\\mathbb{C}$ 上 $n$ 维线性空间（$n>0$），$f,g$ 是 $V$ 上的线性变换。如果 $fg-gf=f$，证明：$f$ 的特征值都是 $0$，且 $f,g$ 有公共特征向量。",
+      "answer": "$f$ 的全部特征值均为 $0$，且存在非零向量 $\\eta\\in V$ 同时是 $f$（特征值 $0$）与 $g$ 的特征向量。",
+      "solution": [
+        "证明：",
+        "设 $\\lambda_0$ 是 $f$ 的任一特征值，$W=\\{\\eta\\in V\\mid f(\\eta)=\\lambda_0\\eta\\}$ 是相应的特征子空间，$W\\ne\\{0\\}$，且 $f(W)\\subseteq W$。",
+        "取非零 $\\eta\\in W$。因 $\\dim V=n$，向量组 $\\eta,g(\\eta),g^2(\\eta),\\cdots$ 必线性相关，令 $m$ 为使 $\\eta,g(\\eta),\\cdots,g^m(\\eta)$ 线性相关的最小正整数。则 $\\eta,g(\\eta),\\cdots,g^{m-1}(\\eta)$ 线性无关，记\n$$W_m=\\operatorname{span}\\{\\eta,g(\\eta),\\cdots,g^{m-1}(\\eta)\\},\\qquad \\dim W_m=m,$$\n由 $m$ 的最小性得 $g^m(\\eta)\\in W_m$，故 $g(W_m)\\subseteq W_m$，即 $W_m$ 是 $g$-不变子空间。",
+        "再证 $W_m$ 是 $f$-不变子空间。由 $fg=gf+f$ 计算\n$$f(g(\\eta))=gf(\\eta)+f(\\eta)=\\lambda_0g(\\eta)+\\lambda_0\\eta,$$\n即 $f(g(\\eta))$ 是 $\\eta,g(\\eta)$ 的线性组合且 $g(\\eta)$ 的系数为 $\\lambda_0$。设 $f(g^k(\\eta))=\\lambda_0g^k(\\eta)+(\\eta,g(\\eta),\\cdots,g^{k-1}(\\eta)\\text{ 的组合})$，则\n$$f(g^{k+1}(\\eta))=fg(g^k(\\eta))=gf(g^k(\\eta))+f(g^k(\\eta))=\\lambda_0g^{k+1}(\\eta)+(\\text{低次项}),$$\n由归纳法知 $f(g^k(\\eta))\\in W_{k+1}$ 且 $g^k(\\eta)$ 的系数恒为 $\\lambda_0$。于是 $f(W_m)\\subseteq W_m$，且 $f|_{W_m}$ 在基 $\\eta,g(\\eta),\\cdots,g^{m-1}(\\eta)$ 下的矩阵是上三角矩阵，对角元全为 $\\lambda_0$，故\n$$\\operatorname{tr}(f|_{W_m})=m\\lambda_0.$$",
+        "另一方面，把 $fg-gf=f$ 限制在 $W_m$ 上：$f|_{W_m},g|_{W_m}$ 都是 $W_m$ 上的线性变换，故\n$$\\operatorname{tr}\\big((fg-gf)|_{W_m}\\big)=\\operatorname{tr}(f|_{W_m}g|_{W_m})-\\operatorname{tr}(g|_{W_m}f|_{W_m})=0,$$\n而 $(fg-gf)|_{W_m}=f|_{W_m}$，其迹为 $m\\lambda_0$。因此 $m\\lambda_0=0$，即 $\\lambda_0=0$。由 $\\lambda_0$ 的任意性，$f$ 的特征值全为 $0$。",
+        "最后找公共特征向量。令 $W_0=\\ker f$，由上面的结论 $f$ 的特征值全为 $0$，故 $W_0\\ne\\{0\\}$。对任意 $\\eta\\in W_0$，\n$$f(g(\\eta))=gf(\\eta)+f(\\eta)=g(0)+0=0,$$\n故 $g(\\eta)\\in W_0$，即 $g(W_0)\\subseteq W_0$。$W_0$ 是复数域上的非零向量空间，$g|_{W_0}$ 必有特征值 $\\mu$ 与特征向量 $\\eta_0\\ne0$。此时 $f(\\eta_0)=0=0\\cdot\\eta_0$，故 $\\eta_0$ 同时是 $f$ 与 $g$ 的特征向量。"
+      ],
+      "detailedAnalysis": "核心事实是交换子的迹为零：$\\operatorname{tr}(fg-gf)=0$，但直接在 $V$ 上取迹只得到 $\\sum\\lambda_i=0$，推不出每个特征值为零，因此要把讨论限制在同时被 $f,g$ 保持的子空间上。取特征向量 $\\eta$，用 $g$ 反复作用得 $W_m=\\operatorname{span}\\{\\eta,\\dots,g^{m-1}\\eta\\}$，$m$ 取首次线性相关的指标，则 $g(W_m)\\subseteq W_m$。再由 $fg=gf+f$ 归纳证明 $f$ 也保持 $W_m$，且 $f$ 在该基下上三角、对角元全为 $\\lambda_0$，故迹为 $m\\lambda_0$，与交换子迹零比较得 $\\lambda_0=0$。公共特征向量由 $\\ker f$ 在 $g$ 下不变得到。",
+      "points": [
+        "线性变换的交换子与迹",
+        "$g$-循环子空间与不变子空间",
+        "上三角矩阵的迹等于对角元之和",
+        "特征值与公共特征向量"
+      ],
+      "pitfalls": [
+        "在整空间上取迹，得到 $\\sum\\lambda_i=0$ 就以为每个 $\\lambda_i=0$。",
+        "忘记说明 $W_m$ 是 $g$-不变子空间（即 $g^m(\\eta)\\in W_m$），导致 $g|_{W_m}$ 无从谈起。",
+        "把“特征值全为 $0$”误读为 $f=0$；$f$ 只是幂零，未必是零变换。"
+      ],
+      "verification": "人工复核：核心是 $\\operatorname{tr}(fg-gf)=0$ 与 $f|_{W_m}$ 的上三角性，两者都不涉及数值计算；公共特征向量部分依赖 $\\mathbb{C}$ 上线性变换必有特征值。属纯逻辑证明，不适用 sympy 机器复核。",
+      "difficulty": 5,
+      "standardSolution": "证明：\n\n设 $\\lambda_0$ 是 $f$ 的任一特征值，$W=\\{\\eta\\in V\\mid f(\\eta)=\\lambda_0\\eta\\}$ 是相应的特征子空间，$W\\ne\\{0\\}$，且 $f(W)\\subseteq W$。\n\n取非零 $\\eta\\in W$。因 $\\dim V=n$，向量组 $\\eta,g(\\eta),g^2(\\eta),\\cdots$ 必线性相关，令 $m$ 为使 $\\eta,g(\\eta),\\cdots,g^m(\\eta)$ 线性相关的最小正整数。则 $\\eta,g(\\eta),\\cdots,g^{m-1}(\\eta)$ 线性无关，记\n$$W_m=\\operatorname{span}\\{\\eta,g(\\eta),\\cdots,g^{m-1}(\\eta)\\},\\qquad \\dim W_m=m,$$\n由 $m$ 的最小性得 $g^m(\\eta)\\in W_m$，故 $g(W_m)\\subseteq W_m$，即 $W_m$ 是 $g$-不变子空间。\n\n再证 $W_m$ 是 $f$-不变子空间。由 $fg=gf+f$ 计算\n$$f(g(\\eta))=gf(\\eta)+f(\\eta)=\\lambda_0g(\\eta)+\\lambda_0\\eta,$$\n即 $f(g(\\eta))$ 是 $\\eta,g(\\eta)$ 的线性组合且 $g(\\eta)$ 的系数为 $\\lambda_0$。设 $f(g^k(\\eta))=\\lambda_0g^k(\\eta)+(\\eta,g(\\eta),\\cdots,g^{k-1}(\\eta)\\text{ 的组合})$，则\n$$f(g^{k+1}(\\eta))=fg(g^k(\\eta))=gf(g^k(\\eta))+f(g^k(\\eta))=\\lambda_0g^{k+1}(\\eta)+(\\text{低次项}),$$\n由归纳法知 $f(g^k(\\eta))\\in W_{k+1}$ 且 $g^k(\\eta)$ 的系数恒为 $\\lambda_0$。于是 $f(W_m)\\subseteq W_m$，且 $f|_{W_m}$ 在基 $\\eta,g(\\eta),\\cdots,g^{m-1}(\\eta)$ 下的矩阵是上三角矩阵，对角元全为 $\\lambda_0$，故\n$$\\operatorname{tr}(f|_{W_m})=m\\lambda_0.$$\n\n另一方面，把 $fg-gf=f$ 限制在 $W_m$ 上：$f|_{W_m},g|_{W_m}$ 都是 $W_m$ 上的线性变换，故\n$$\\operatorname{tr}\\big((fg-gf)|_{W_m}\\big)=\\operatorname{tr}(f|_{W_m}g|_{W_m})-\\operatorname{tr}(g|_{W_m}f|_{W_m})=0,$$\n而 $(fg-gf)|_{W_m}=f|_{W_m}$，其迹为 $m\\lambda_0$。因此 $m\\lambda_0=0$，即 $\\lambda_0=0$。由 $\\lambda_0$ 的任意性，$f$ 的特征值全为 $0$。\n\n最后找公共特征向量。令 $W_0=\\ker f$，由上面的结论 $f$ 的特征值全为 $0$，故 $W_0\\ne\\{0\\}$。对任意 $\\eta\\in W_0$，\n$$f(g(\\eta))=gf(\\eta)+f(\\eta)=g(0)+0=0,$$\n故 $g(\\eta)\\in W_0$，即 $g(W_0)\\subseteq W_0$。$W_0$ 是复数域上的非零向量空间，$g|_{W_0}$ 必有特征值 $\\mu$ 与特征向量 $\\eta_0\\ne0$。此时 $f(\\eta_0)=0=0\\cdot\\eta_0$，故 $\\eta_0$ 同时是 $f$ 与 $g$ 的特征向量。",
+      "pointKeys": [
+        "线性变换的交换子与迹",
+        "$g$-循环子空间与不变子空间",
+        "上三角矩阵的迹等于对角元之和",
+        "特征值与公共特征向量"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "线性变换"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 3 题）"
+    },
+    {
+      "id": "GA-B1993",
+      "subject": "gaodai",
+      "chapter": "第七章 线性变换",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 与所有矩阵交换的线性变换",
+      "question": "设 $F^{n}$ 是数域 $F$ 上的 $n$ 维列空间，$\\sigma:F^{n}\\to F^{n}$ 是一个线性变换。若对任意 $A\\in M_n(F)$ 及任意 $\\alpha\\in F^{n}$，都有 $\\sigma(A\\alpha)=A\\sigma(\\alpha)$，证明：$\\sigma=\\lambda\\cdot\\mathrm{id}_{F^{n}}$，其中 $\\lambda$ 是 $F$ 中某个数。",
+      "answer": "$\\sigma$ 必为数量变换，即存在 $\\lambda\\in F$ 使 $\\sigma=\\lambda\\,\\mathrm{id}_{F^{n}}$。",
+      "solution": [
+        "证明：",
+        "设 $\\sigma$ 在标准基 $\\varepsilon_1,\\cdots,\\varepsilon_n$ 下的矩阵为 $B=(b_{ij})$，则 $\\sigma(\\alpha)=B\\alpha$。题设条件即\n$$BA\\alpha=AB\\alpha,\\qquad \\forall A\\in M_n(F),\\ \\forall\\alpha\\in F^{n}.$$\n让 $\\alpha$ 取遍标准基，得 $BA=AB$ 对一切 $A\\in M_n(F)$ 成立。",
+        "先证 $B$ 是对角矩阵。取 $A=\\mathrm{diag}(1,\\cdots,1,c,1,\\cdots,1)$（第 $i$ 个对角元为 $c\\ne0,1$）。比较 $AB=BA$ 的 $(i,j)$ 元素（$j\\ne i$）：\n$$(AB)_{ij}=c\\,b_{ij},\\qquad (BA)_{ij}=b_{ij},$$\n故 $(c-1)b_{ij}=0$，得 $b_{ij}=0$。同理比较 $(j,i)$ 元素得 $b_{ji}=0$。于是 $B=\\mathrm{diag}(b_{11},\\cdots,b_{nn})$。",
+        "再证对角元相等。对 $i\\ne j$ 取 $A=I-E_{ii}-E_{jj}+E_{ij}+E_{ji}$（它把第 $i,j$ 个坐标互换，其余不动）。由 $AB=BA$ 且 $B$ 已为对角阵，比较 $(i,j)$ 元素得 $b_{ji}=b_{ij}=0$（已成立），比较 $(i,i)$ 元素得 $b_{ii}=b_{jj}$。由 $i,j$ 的任意性，$b_{11}=\\cdots=b_{nn}=:\\lambda$。",
+        "于是 $B=\\lambda I$，即 $\\sigma(\\alpha)=\\lambda\\alpha$ 对一切 $\\alpha\\in F^{n}$ 成立，故 $\\sigma=\\lambda\\cdot\\mathrm{id}_{F^{n}}$。"
+      ],
+      "detailedAnalysis": "题设对一切 $A$ 与 $\\alpha$ 成立，条件极强。先由 $\\alpha$ 任意取标准基，把它化为矩阵等式 $BA=AB$，问题变成与所有矩阵交换者必为数量阵。做法是选两类特殊 $A$：第一类取 $\\operatorname{diag}(1,\\dots,c,\\dots,1)$，$c\\ne0,1$ 时比较 $(i,j)$ 元素得 $(c-1)b_{ij}=0$，消灭非对角元；第二类取交换第 $i,j$ 坐标的置换阵 $I-E_{ii}-E_{jj}+E_{ij}+E_{ji}$，比较对角元得 $b_{ii}=b_{jj}$。两步合起来 $B=\\lambda I$。注意 $c=1$ 时第一类失效，必须强调 $c\\ne1$，否则推不出任何信息。",
+      "points": [
+        "线性变换的矩阵表示",
+        "与所有矩阵交换的矩阵是数量阵",
+        "初等矩阵与置换矩阵的作用",
+        "Schur 引理的一维情形"
+      ],
+      "pitfalls": [
+        "取 $A=\\mathrm{diag}(1,\\cdots,c,\\cdots,1)$ 时允许 $c=1$，此时 $(c-1)b_{ij}=0$ 不给出任何信息。",
+        "只由 $BA=AB$ 对 $A=E_{ij}$ 比较就以为已得 $B$ 为对角阵，实际还需处理对角元相等。",
+        "把 $\\sigma(A\\alpha)=A\\sigma(\\alpha)$ 误写成 $\\sigma A=A\\sigma$ 而忽略 $\\alpha$ 的任意性，导致矩阵等式不成立。"
+      ],
+      "verification": "人工复核：由 $\\alpha$ 任意化归为 $AB=BA\\ (\\forall A)$，再用对角阵与置换阵两类特殊 $A$ 分别得到非对角元为零与对角元相等；$n=1$ 时结论平凡。属纯代数推理，不适用 sympy 机器复核。",
+      "difficulty": 4,
+      "standardSolution": "证明：\n\n设 $\\sigma$ 在标准基 $\\varepsilon_1,\\cdots,\\varepsilon_n$ 下的矩阵为 $B=(b_{ij})$，则 $\\sigma(\\alpha)=B\\alpha$。题设条件即\n$$BA\\alpha=AB\\alpha,\\qquad \\forall A\\in M_n(F),\\ \\forall\\alpha\\in F^{n}.$$\n让 $\\alpha$ 取遍标准基，得 $BA=AB$ 对一切 $A\\in M_n(F)$ 成立。\n\n先证 $B$ 是对角矩阵。取 $A=\\mathrm{diag}(1,\\cdots,1,c,1,\\cdots,1)$（第 $i$ 个对角元为 $c\\ne0,1$）。比较 $AB=BA$ 的 $(i,j)$ 元素（$j\\ne i$）：\n$$(AB)_{ij}=c\\,b_{ij},\\qquad (BA)_{ij}=b_{ij},$$\n故 $(c-1)b_{ij}=0$，得 $b_{ij}=0$。同理比较 $(j,i)$ 元素得 $b_{ji}=0$。于是 $B=\\mathrm{diag}(b_{11},\\cdots,b_{nn})$。\n\n再证对角元相等。对 $i\\ne j$ 取 $A=I-E_{ii}-E_{jj}+E_{ij}+E_{ji}$（它把第 $i,j$ 个坐标互换，其余不动）。由 $AB=BA$ 且 $B$ 已为对角阵，比较 $(i,j)$ 元素得 $b_{ji}=b_{ij}=0$（已成立），比较 $(i,i)$ 元素得 $b_{ii}=b_{jj}$。由 $i,j$ 的任意性，$b_{11}=\\cdots=b_{nn}=:\\lambda$。\n\n于是 $B=\\lambda I$，即 $\\sigma(\\alpha)=\\lambda\\alpha$ 对一切 $\\alpha\\in F^{n}$ 成立，故 $\\sigma=\\lambda\\cdot\\mathrm{id}_{F^{n}}$。",
+      "pointKeys": [
+        "线性变换的矩阵表示",
+        "与所有矩阵交换的矩阵是数量阵",
+        "初等矩阵与置换矩阵的作用",
+        "Schur 引理的一维情形"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "线性变换"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 3 题）"
+    },
+    {
+      "id": "GA-B1994",
+      "subject": "gaodai",
+      "chapter": "第五章 二次型",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 正定矩阵多项式行列式根的实部",
+      "question": "设 $A,B,C$ 均为实 $n$ 阶正定矩阵，$P(t)=At^{2}+Bt+C$，$f(t)=\\det P(t)$，其中 $t$ 为未定元。若 $\\lambda$ 为 $f(t)$ 的根，证明：$\\operatorname{Re}\\lambda<0$。",
+      "answer": "$f(t)$ 的每个根 $\\lambda$ 都满足 $\\operatorname{Re}\\lambda<0$，即所有根都落在左半开平面。",
+      "solution": [
+        "证明：",
+        "设 $f(\\lambda)=0$，即 $\\det P(\\lambda)=0$。于是 $P(\\lambda)$ 奇异，存在非零复向量 $\\alpha\\in\\mathbb{C}^{n}$ 使\n$$P(\\lambda)\\alpha=0.$$",
+        "用 $\\alpha^{*}=\\bar\\alpha^{\\mathrm{T}}$ 左乘该式，得\n$$\\alpha^{*}P(\\lambda)\\alpha=\\lambda^{2}\\,\\alpha^{*}A\\alpha+\\lambda\\,\\alpha^{*}B\\alpha+\\alpha^{*}C\\alpha=0.$$",
+        "记 $a=\\alpha^{*}A\\alpha$，$b=\\alpha^{*}B\\alpha$，$c=\\alpha^{*}C\\alpha$。因 $A,B,C$ 为实对称正定矩阵，它们也是 Hermite 正定矩阵，故对 $\\alpha\\ne0$ 有\n$$a>0,\\qquad b>0,\\qquad c>0,$$\n且 $a,b,c$ 均为实数。于是 $\\lambda$ 是实系数二次方程\n$$az^{2}+bz+c=0$$\n的根。",
+        "若 $\\lambda$ 为实数，则由 $a,b,c>0$ 知 $z\\ge0$ 时 $az^{2}+bz+c>0$，故 $\\lambda<0$，当然 $\\operatorname{Re}\\lambda<0$。",
+        "若 $\\lambda$ 不是实数，则因 $a,b,c\\in\\mathbb{R}$，$\\bar\\lambda$ 也是该方程的根，由韦达定理\n$$\\lambda+\\bar\\lambda=-\\frac{b}{a}<0,$$\n故 $\\operatorname{Re}\\lambda=-\\dfrac{b}{2a}<0$。",
+        "综上，$f$ 的每个根都满足 $\\operatorname{Re}\\lambda<0$。"
+      ],
+      "detailedAnalysis": "直接算 $\\det P(\\lambda)$ 是 $2n$ 次多项式，无从下手；把行列式为零转化为存在非零向量 $\\alpha$ 使 $P(\\lambda)\\alpha=0$，再用 $\\alpha^*$ 左乘，就压成一元二次方程 $a\\lambda^2+b\\lambda+c=0$。这里必须用共轭转置而非转置，否则 $a,b,c$ 可能为复数，正定性用不上；$A,B,C$ 实对称正定即 Hermite 正定，故 $a,b,c>0$ 且为实数。实根时三项同号得 $\\lambda<0$；非实根时两根共轭，由韦达定理实部为 $-\\frac{b}{2a}<0$。检验：$A=B=C=I$ 时 $f=(t^2+t+1)^n$，根实部为 $-\\frac12$。",
+      "points": [
+        "正定矩阵的二次型恒正",
+        "奇异矩阵的核非零",
+        "共轭转置与 Hermite 型",
+        "实系数二次方程根的符号"
+      ],
+      "pitfalls": [
+        "对复向量用转置 $\\alpha^{\\mathrm{T}}$ 而不是共轭转置 $\\alpha^{*}$，此时 $\\alpha^{\\mathrm{T}}A\\alpha$ 可能为复数，正定性无法使用。",
+        "只讨论实根，遗漏非实根（此时需用共轭成对与韦达定理看实部）。",
+        "把 $\\det P(\\lambda)=0$ 直接当成 $\\lambda$ 是实数来处理。"
+      ],
+      "verification": "人工复核：由 $P(\\lambda)\\alpha=0$ 得 $a\\lambda^{2}+b\\lambda+c=0$（$a,b,c>0$ 为实数），实根必为负、非实根的实部为 $-b/(2a)<0$。另取 $A=B=C=I$ 时 $f=(t^{2}+t+1)^{n}$，其根实部为 $-1/2$，可作一致性检验。属纯逻辑证明，不适用 sympy 机器复核。",
+      "difficulty": 5,
+      "standardSolution": "证明：\n\n设 $f(\\lambda)=0$，即 $\\det P(\\lambda)=0$。于是 $P(\\lambda)$ 奇异，存在非零复向量 $\\alpha\\in\\mathbb{C}^{n}$ 使\n$$P(\\lambda)\\alpha=0.$$\n\n用 $\\alpha^{*}=\\bar\\alpha^{\\mathrm{T}}$ 左乘该式，得\n$$\\alpha^{*}P(\\lambda)\\alpha=\\lambda^{2}\\,\\alpha^{*}A\\alpha+\\lambda\\,\\alpha^{*}B\\alpha+\\alpha^{*}C\\alpha=0.$$\n\n记 $a=\\alpha^{*}A\\alpha$，$b=\\alpha^{*}B\\alpha$，$c=\\alpha^{*}C\\alpha$。因 $A,B,C$ 为实对称正定矩阵，它们也是 Hermite 正定矩阵，故对 $\\alpha\\ne0$ 有\n$$a>0,\\qquad b>0,\\qquad c>0,$$\n且 $a,b,c$ 均为实数。于是 $\\lambda$ 是实系数二次方程\n$$az^{2}+bz+c=0$$\n的根。\n\n若 $\\lambda$ 为实数，则由 $a,b,c>0$ 知 $z\\ge0$ 时 $az^{2}+bz+c>0$，故 $\\lambda<0$，当然 $\\operatorname{Re}\\lambda<0$。\n\n若 $\\lambda$ 不是实数，则因 $a,b,c\\in\\mathbb{R}$，$\\bar\\lambda$ 也是该方程的根，由韦达定理\n$$\\lambda+\\bar\\lambda=-\\frac{b}{a}<0,$$\n故 $\\operatorname{Re}\\lambda=-\\dfrac{b}{2a}<0$。\n\n综上，$f$ 的每个根都满足 $\\operatorname{Re}\\lambda<0$。",
+      "pointKeys": [
+        "正定矩阵的二次型恒正",
+        "奇异矩阵的核非零",
+        "共轭转置与 Hermite 型",
+        "实系数二次方程根的符号"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "二次型"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 4 题）"
+    },
+    {
+      "id": "GA-B1995",
+      "subject": "gaodai",
+      "chapter": "第三章 线性方程组",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 相容方程组与系数行列式的公因式",
+      "question": "设 $n$ 阶方阵 $B(t)$ 和 $n\\times1$ 矩阵 $b(t)$ 分别为\n$$B(t)=\\big(b_{ij}(t)\\big),\\qquad b(t)=\\begin{pmatrix}b_1(t)\\\\ \\vdots\\\\ b_n(t)\\end{pmatrix},$$\n其中 $b_{ij}(t),\\,b_i(t)$ 均为关于 $t$ 的实系数多项式（$i,j=1,2,\\cdots,n$）。记 $d(t)$ 为 $B(t)$ 的行列式，$d_i(t)$ 为用 $b(t)$ 替代 $B(t)$ 的第 $i$ 列后所得的 $n$ 阶矩阵的行列式。若 $d(t)$ 有实根 $t_0$，使得 $B(t_0)X=b(t_0)$ 成为关于 $X$ 的相容线性方程组，试证明：$d(t),d_1(t),\\cdots,d_n(t)$ 必有次数 $\\ge1$ 的公因式。",
+      "answer": "$t-t_0$ 就是所求的公因式：$d(t_0)=d_1(t_0)=\\cdots=d_n(t_0)=0$，故 $d,d_1,\\cdots,d_n$ 有次数为 $1$ 的公共因式。",
+      "solution": [
+        "证明：",
+        "记 $B(t)$ 的第 $j$ 列为 $B_j(t)$（$j=1,\\cdots,n$），则 $d(t)=\\det\\big(B_1(t),\\cdots,B_n(t)\\big)$。考察 $n\\times(n+1)$ 矩阵\n$$\\widetilde{B}(t)=\\big(B_1(t),\\cdots,B_n(t),b(t)\\big).$$\n它的 $n$ 阶子式有两类：删去最后一列所得的子式就是 $d(t)$；删去第 $i$ 列（$1\\le i\\le n$）所得的子式为 $\\det\\big(B_1,\\cdots,B_{i-1},B_{i+1},\\cdots,B_n,b\\big)$，它由 $d_i(t)$ 经过一次列置换（把最后一列移回第 $i$ 个位置）得到，故与 $d_i(t)$ 只相差符号 $\\pm1$。",
+        "由题设 $t_0$ 是 $d(t)$ 的实根，故 $d(t_0)=\\det B(t_0)=0$，从而\n$$\\operatorname{rank}B(t_0)\\le n-1.$$",
+        "又 $B(t_0)X=b(t_0)$ 是相容方程组，即 $b(t_0)$ 可由 $B(t_0)$ 的列向量组线性表示，故增广矩阵不增加秩：\n$$\\operatorname{rank}\\widetilde{B}(t_0)=\\operatorname{rank}B(t_0)\\le n-1.$$",
+        "于是 $\\widetilde{B}(t_0)$ 的所有 $n$ 阶子式都为零。按上面的对应关系，即\n$$d(t_0)=0,\\qquad d_i(t_0)=0\\quad (i=1,2,\\cdots,n).$$\n由于 $d(t),d_1(t),\\cdots,d_n(t)$ 都是实系数多项式，而实数 $t_0$ 是它们的公共根，故一次多项式 $t-t_0$ 整除每一个 $d_i(t)$，即 $t-t_0$ 是它们的一个次数为 $1$ 的公因式。",
+        "因此 $d(t),d_1(t),\\cdots,d_n(t)$ 必有次数 $\\ge1$ 的公因式。"
+      ],
+      "detailedAnalysis": "本题把方程组相容与多项式有公因式接起来，桥梁是 Cramer 法则的结构：$d,d_1,\\dots,d_n$ 恰是增广矩阵 $\\widetilde B(t)=(B(t)\\,|\\,b(t))$ 的全部 $n$ 阶子式（至多差符号）。于是只需证 $t_0$ 处这些子式全为零。两条信息拼起来：$d(t_0)=0$ 给 $\\operatorname{rank}B(t_0)\\le n-1$；相容性给增广矩阵的秩等于 $B(t_0)$ 的秩。合起来秩不超过 $n-1$，故一切 $n$ 阶子式为零，$t-t_0$ 即公因式。检验：若不相容，秩可能升到 $n$，某个 $d_i(t_0)\\ne0$，公因式就不存在，可见相容条件不可省。",
+      "points": [
+        "线性方程组相容的秩判据",
+        "矩阵的子式与秩的关系",
+        "Cramer 法则的行列式结构",
+        "多项式的公共根与公因式"
+      ],
+      "pitfalls": [
+        "只验证 $d(t_0)=0$，忘记说明 $d_1(t_0),\\cdots,d_n(t_0)$ 也同时为零，因而得不到公因式。",
+        "把 $d_i(t)$ 与增广矩阵删列子式的符号差别忽略，导致下标对应关系说不清楚（符号不影响是否为零）。",
+        "误用“存在非零解”代替“相容”：$B(t_0)X=b(t_0)$ 是相容非齐次方程组，条件比齐次方程有非零解更强。"
+      ],
+      "verification": "人工复核：增广矩阵 $\\widetilde{B}(t_0)$ 的全部 $n$ 阶子式即 $d(t_0)$ 与 $\\pm d_i(t_0)$；由 $d(t_0)=0$ 及相容性得 $\\operatorname{rank}\\widetilde{B}(t_0)\\le n-1$，故全部子式为零，$t-t_0$ 为公因式。属纯代数推理，不适用 sympy 机器复核。",
+      "difficulty": 4,
+      "standardSolution": "证明：\n\n记 $B(t)$ 的第 $j$ 列为 $B_j(t)$（$j=1,\\cdots,n$），则 $d(t)=\\det\\big(B_1(t),\\cdots,B_n(t)\\big)$。考察 $n\\times(n+1)$ 矩阵\n$$\\widetilde{B}(t)=\\big(B_1(t),\\cdots,B_n(t),b(t)\\big).$$\n它的 $n$ 阶子式有两类：删去最后一列所得的子式就是 $d(t)$；删去第 $i$ 列（$1\\le i\\le n$）所得的子式为 $\\det\\big(B_1,\\cdots,B_{i-1},B_{i+1},\\cdots,B_n,b\\big)$，它由 $d_i(t)$ 经过一次列置换（把最后一列移回第 $i$ 个位置）得到，故与 $d_i(t)$ 只相差符号 $\\pm1$。\n\n由题设 $t_0$ 是 $d(t)$ 的实根，故 $d(t_0)=\\det B(t_0)=0$，从而\n$$\\operatorname{rank}B(t_0)\\le n-1.$$\n\n又 $B(t_0)X=b(t_0)$ 是相容方程组，即 $b(t_0)$ 可由 $B(t_0)$ 的列向量组线性表示，故增广矩阵不增加秩：\n$$\\operatorname{rank}\\widetilde{B}(t_0)=\\operatorname{rank}B(t_0)\\le n-1.$$\n\n于是 $\\widetilde{B}(t_0)$ 的所有 $n$ 阶子式都为零。按上面的对应关系，即\n$$d(t_0)=0,\\qquad d_i(t_0)=0\\quad (i=1,2,\\cdots,n).$$\n由于 $d(t),d_1(t),\\cdots,d_n(t)$ 都是实系数多项式，而实数 $t_0$ 是它们的公共根，故一次多项式 $t-t_0$ 整除每一个 $d_i(t)$，即 $t-t_0$ 是它们的一个次数为 $1$ 的公因式。\n\n因此 $d(t),d_1(t),\\cdots,d_n(t)$ 必有次数 $\\ge1$ 的公因式。",
+      "pointKeys": [
+        "线性方程组相容的秩判据",
+        "矩阵的子式与秩的关系",
+        "Cramer 法则的行列式结构",
+        "多项式的公共根与公因式"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "线性方程组"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 2 题）"
+    },
+    {
+      "id": "GA-B1996",
+      "subject": "gaodai",
+      "chapter": "第六章 线性空间",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 函数族线性无关的行列式刻画",
+      "question": "设 $V$ 为闭区间 $[0,1]$ 上全体实函数构成的实向量空间，其中向量加法与纯量乘法均为通常的。$f_1,\\cdots,f_n\\in V$。证明以下两条等价：\n1) $f_1,\\cdots,f_n$ 线性无关；\n2) 存在 $a_1,\\cdots,a_n\\in[0,1]$，使得 $\\det\\big(f_i(a_j)\\big)\\ne0$（这里 $\\det$ 表行列式）。",
+      "answer": "两条命题等价：$f_1,\\cdots,f_n$ 线性无关当且仅当存在 $n$ 个点使取值矩阵 $\\big(f_i(a_j)\\big)$ 非异。",
+      "solution": [
+        "证明：",
+        "$2)\\Rightarrow1)$：设 $\\lambda_1f_1+\\cdots+\\lambda_nf_n=0$ 为 $V$ 中的零函数。把 $a_1,\\cdots,a_n$ 分别代入，得齐次线性方程组\n$$\\begin{cases}\\lambda_1f_1(a_1)+\\cdots+\\lambda_nf_n(a_1)=0,\\\\ \\qquad\\qquad\\vdots\\\\ \\lambda_1f_1(a_n)+\\cdots+\\lambda_nf_n(a_n)=0.\\end{cases}$$\n其系数矩阵为 $\\big(f_i(a_j)\\big)^{\\mathrm{T}}$。由 $\\det\\big(f_i(a_j)\\big)\\ne0$ 知系数矩阵可逆，故只有零解 $\\lambda_1=\\cdots=\\lambda_n=0$，即 $f_1,\\cdots,f_n$ 线性无关。",
+        "$1)\\Rightarrow2)$：对 $n$ 作归纳。$n=1$ 时，$f_1$ 线性无关即 $f_1$ 不是零函数，故存在 $a_1\\in[0,1]$ 使 $f_1(a_1)\\ne0$，结论成立。",
+        "设 $n=k$ 时结论成立，考察 $n=k+1$ 的情形。由 $f_1,\\cdots,f_{k+1}$ 线性无关知其部分组 $f_1,\\cdots,f_k$ 也线性无关，故由归纳假设存在 $a_1,\\cdots,a_k\\in[0,1]$ 使\n$$D=\\det\\big(f_i(a_j)\\big)_{k\\times k}\\ne0.$$\n构造函数\n$$F(x)=\\begin{vmatrix}f_1(a_1)&\\cdots&f_1(a_k)&f_1(x)\\\\ \\vdots&&\\vdots&\\vdots\\\\ f_k(a_1)&\\cdots&f_k(a_k)&f_k(x)\\\\ f_{k+1}(a_1)&\\cdots&f_{k+1}(a_k)&f_{k+1}(x)\\end{vmatrix}.$$",
+        "把 $F(x)$ 按最后一列展开：\n$$F(x)=\\lambda_1f_1(x)+\\cdots+\\lambda_kf_k(x)+\\lambda_{k+1}f_{k+1}(x),$$\n其中各 $\\lambda_i$ 都是常数，且 $f_{k+1}(x)$ 的系数 $\\lambda_{k+1}$ 恰为划去最后一行最后一列所得的子式，即 $\\lambda_{k+1}=D\\ne0$。",
+        "若 $F(x)$ 恒等于零函数，则 $\\lambda_1f_1+\\cdots+\\lambda_{k+1}f_{k+1}=0$ 是非平凡的线性关系（因 $\\lambda_{k+1}\\ne0$），与 $f_1,\\cdots,f_{k+1}$ 线性无关矛盾。故 $F$ 不恒为零，存在 $a_{k+1}\\in[0,1]$ 使 $F(a_{k+1})\\ne0$。",
+        "而 $F(a_{k+1})$ 正是 $(k+1)$ 阶行列式 $\\det\\big(f_i(a_j)\\big)_{(k+1)\\times(k+1)}$，故取 $a_1,\\cdots,a_{k+1}$ 即有 $\\det\\big(f_i(a_j)\\big)\\ne0$。由归纳原理，$1)\\Rightarrow2)$ 对一切 $n$ 成立。"
+      ],
+      "detailedAnalysis": "两个方向手法不同。$2)\\Rightarrow1)$ 是代入取值：把 $\\sum\\lambda_if_i=0$ 在 $a_1,\\dots,a_n$ 处取值，得系数矩阵为 $(f_i(a_j))^{\\mathrm T}$ 的齐次方程组，非异故只有零解。$1)\\Rightarrow2)$ 用归纳：先由 $f_1,\\dots,f_k$ 无关取得 $a_1,\\dots,a_k$，再把 $f_{k+1}$ 作为末列拼成 $F(x)$；按末列展开后 $f_{k+1}$ 的系数恰为旧的行列式 $D\\ne0$，故 $F\\equiv0$ 会给出非平凡的线性关系，矛盾，于是存在 $a_{k+1}$ 使 $F(a_{k+1})\\ne0$，它就是新的 $(k+1)$ 阶行列式。检验：$f_i=x^{i-1}$ 对应 Vandermonde 行列式。",
+      "points": [
+        "函数族的线性无关性",
+        "齐次线性方程组只有零解的判定",
+        "Vandermonde 型行列式",
+        "归纳法与行列式的按列展开"
+      ],
+      "pitfalls": [
+        "充分性方向把系数矩阵写成 $\\big(f_i(a_j)\\big)^{\\mathrm{T}}$ 后又误当成 $\\big(f_i(a_j)\\big)$，行列式非零的结论虽然相同，但方程组的对应关系没有交代清楚。",
+        "必要性方向忘记说明 $\\lambda_{k+1}\\ne0$：它正是旧的行列式 $D$，若为零则 $F\\equiv0$ 未必导出非平凡关系。",
+        "忽略“$f_1,\\cdots,f_{k+1}$ 线性无关蕴含其部分组 $f_1,\\cdots,f_k$ 线性无关”，使归纳假设无法使用。"
+      ],
+      "verification": "人工复核：$2)\\Rightarrow1)$ 由齐次方程组系数矩阵非异得零解；$1)\\Rightarrow2)$ 用归纳与行列式按末列展开，末元系数为旧的 $k$ 阶行列式 $D\\ne0$；取 $f_i(x)=x^{i-1}$ 与 Vandermonde 行列式可作一致性检验。属纯逻辑证明，不适用 sympy 机器复核。",
+      "difficulty": 5,
+      "standardSolution": "证明：\n\n$2)\\Rightarrow1)$：设 $\\lambda_1f_1+\\cdots+\\lambda_nf_n=0$ 为 $V$ 中的零函数。把 $a_1,\\cdots,a_n$ 分别代入，得齐次线性方程组\n$$\\begin{cases}\\lambda_1f_1(a_1)+\\cdots+\\lambda_nf_n(a_1)=0,\\\\ \\qquad\\qquad\\vdots\\\\ \\lambda_1f_1(a_n)+\\cdots+\\lambda_nf_n(a_n)=0.\\end{cases}$$\n其系数矩阵为 $\\big(f_i(a_j)\\big)^{\\mathrm{T}}$。由 $\\det\\big(f_i(a_j)\\big)\\ne0$ 知系数矩阵可逆，故只有零解 $\\lambda_1=\\cdots=\\lambda_n=0$，即 $f_1,\\cdots,f_n$ 线性无关。\n\n$1)\\Rightarrow2)$：对 $n$ 作归纳。$n=1$ 时，$f_1$ 线性无关即 $f_1$ 不是零函数，故存在 $a_1\\in[0,1]$ 使 $f_1(a_1)\\ne0$，结论成立。\n\n设 $n=k$ 时结论成立，考察 $n=k+1$ 的情形。由 $f_1,\\cdots,f_{k+1}$ 线性无关知其部分组 $f_1,\\cdots,f_k$ 也线性无关，故由归纳假设存在 $a_1,\\cdots,a_k\\in[0,1]$ 使\n$$D=\\det\\big(f_i(a_j)\\big)_{k\\times k}\\ne0.$$\n构造函数\n$$F(x)=\\begin{vmatrix}f_1(a_1)&\\cdots&f_1(a_k)&f_1(x)\\\\ \\vdots&&\\vdots&\\vdots\\\\ f_k(a_1)&\\cdots&f_k(a_k)&f_k(x)\\\\ f_{k+1}(a_1)&\\cdots&f_{k+1}(a_k)&f_{k+1}(x)\\end{vmatrix}.$$\n\n把 $F(x)$ 按最后一列展开：\n$$F(x)=\\lambda_1f_1(x)+\\cdots+\\lambda_kf_k(x)+\\lambda_{k+1}f_{k+1}(x),$$\n其中各 $\\lambda_i$ 都是常数，且 $f_{k+1}(x)$ 的系数 $\\lambda_{k+1}$ 恰为划去最后一行最后一列所得的子式，即 $\\lambda_{k+1}=D\\ne0$。\n\n若 $F(x)$ 恒等于零函数，则 $\\lambda_1f_1+\\cdots+\\lambda_{k+1}f_{k+1}=0$ 是非平凡的线性关系（因 $\\lambda_{k+1}\\ne0$），与 $f_1,\\cdots,f_{k+1}$ 线性无关矛盾。故 $F$ 不恒为零，存在 $a_{k+1}\\in[0,1]$ 使 $F(a_{k+1})\\ne0$。\n\n而 $F(a_{k+1})$ 正是 $(k+1)$ 阶行列式 $\\det\\big(f_i(a_j)\\big)_{(k+1)\\times(k+1)}$，故取 $a_1,\\cdots,a_{k+1}$ 即有 $\\det\\big(f_i(a_j)\\big)\\ne0$。由归纳原理，$1)\\Rightarrow2)$ 对一切 $n$ 成立。",
+      "pointKeys": [
+        "函数族的线性无关性",
+        "齐次线性方程组只有零解的判定",
+        "Vandermonde 型行列式",
+        "归纳法与行列式的按列展开"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "线性空间"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 3 题）"
+    },
+    {
+      "id": "GA-B1997",
+      "subject": "gaodai",
+      "chapter": "第七章 线性变换",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "计算题 · 由迹的幂和求四阶矩阵行列式",
+      "question": "设 $A$ 为 $4$ 阶复方阵，它满足关于迹的关系式\n$$\\operatorname{tr}A^{i}=i,\\qquad i=1,2,3,4.$$\n求 $A$ 的行列式 $|A|$。",
+      "answer": "$|A|=\\dfrac{1}{24}$。",
+      "solution": [
+        "解：",
+        "记 $A$ 的四个特征值为 $\\lambda_1,\\lambda_2,\\lambda_3,\\lambda_4$（计重数），特征多项式为\n$$p(\\lambda)=\\lambda^{4}+a_3\\lambda^{3}+a_2\\lambda^{2}+a_1\\lambda+a_0,\\qquad a_0=|A|=\\lambda_1\\lambda_2\\lambda_3\\lambda_4.$$",
+        "由 $\\operatorname{tr}A^{i}=\\lambda_1^{i}+\\lambda_2^{i}+\\lambda_3^{i}+\\lambda_4^{i}$，题设即幂和\n$$s_1=1,\\qquad s_2=2,\\qquad s_3=3,\\qquad s_4=4.$$",
+        "由 Newton 恒等式（$k=1,2,3,4$）：\n$$s_1+a_3=0,\\qquad s_2+a_3s_1+2a_2=0,\\qquad s_3+a_3s_2+a_2s_1+3a_1=0,$$\n$$s_4+a_3s_3+a_2s_2+a_1s_1+4a_0=0.$$",
+        "逐式代入：由第一式得 $a_3=-s_1=-1$；由第二式得 $2a_2=-s_2-a_3s_1=-2+1=-1$，即 $a_2=-\\dfrac12$；由第三式得 $3a_1=-s_3-a_3s_2-a_2s_1=-3+2+\\dfrac12=-\\dfrac12$，即 $a_1=-\\dfrac16$。",
+        "代入第四式：\n$$4a_0=-s_4-a_3s_3-a_2s_2-a_1s_1=-4+3+1+\\frac16=\\frac16,$$\n故 $a_0=\\dfrac{1}{24}$。于是\n$$p(\\lambda)=\\lambda^{4}-\\lambda^{3}-\\frac12\\lambda^{2}-\\frac16\\lambda+\\frac{1}{24},\\qquad |A|=a_0=\\frac{1}{24}.$$",
+        "验算：若 $\\lambda^{4}-\\lambda^{3}-\\tfrac12\\lambda^{2}-\\tfrac16\\lambda+\\tfrac{1}{24}=0$，用 Newton 恒等式反算得 $s_1=1,s_2=2,s_3=3,s_4=4$，与题设一致；又 $a_0=\\prod\\lambda_i=\\dfrac{1}{24}\\ne0$，说明 $A$ 可逆。"
+      ],
+      "detailedAnalysis": "题设给迹的幂和，要求行列式，标准工具是 Newton 恒等式：幂和 $s_k=\\operatorname{tr}A^k$ 与特征多项式系数可逐级递推，$a_0=\\prod\\lambda_i=|A|$ 在最后一步出现。$A^k$ 的特征值为 $\\lambda_i^k$，故迹即幂和（上三角化后迹等于对角元之和）。按 $k=1$ 到 $4$ 依次使用，每式解出一个新系数：$a_3=-1$，$a_2=-\\frac12$，$a_1=-\\frac16$，最后由 $s_4+a_3s_3+a_2s_2+a_1s_1+4a_0=0$ 得 $a_0=\\frac{1}{24}$。注意第四式的系数 $4$ 不能漏。检验：代回 Newton 恒等式可复现 $s_k=k$。",
+      "points": [
+        "特征值与迹、行列式的关系",
+        "Newton 恒等式",
+        "特征多项式的系数与幂和",
+        "上三角化下迹的计算"
+      ],
+      "pitfalls": [
+        "把 $\\operatorname{tr}A^{i}=i$ 误当成特征值之和为 $i$，只用一个方程就下结论。",
+        "Newton 恒等式中的系数 $k$（即 $4a_0$ 的 $4$）漏写，导致 $a_0$ 差一个倍数。",
+        "忘记 $a_0=\\prod\\lambda_i=|A|$ 与特征多项式常数项的对应关系，最后一步没有回到行列式。"
+      ],
+      "verification": "sympy 复核：设 $p(\\lambda)=\\lambda^{4}+a_3\\lambda^{3}+a_2\\lambda^{2}+a_1\\lambda+a_0$，由 Newton 恒等式依次得 $a_3=-1,\\ a_2=-1/2,\\ a_1=-1/6,\\ a_0=1/24$；代回验算 $s_1=1,s_2=2,s_3=3,s_4=4$ 全部成立。",
+      "difficulty": 4,
+      "standardSolution": "解：\n\n记 $A$ 的四个特征值为 $\\lambda_1,\\lambda_2,\\lambda_3,\\lambda_4$（计重数），特征多项式为\n$$p(\\lambda)=\\lambda^{4}+a_3\\lambda^{3}+a_2\\lambda^{2}+a_1\\lambda+a_0,\\qquad a_0=|A|=\\lambda_1\\lambda_2\\lambda_3\\lambda_4.$$\n\n由 $\\operatorname{tr}A^{i}=\\lambda_1^{i}+\\lambda_2^{i}+\\lambda_3^{i}+\\lambda_4^{i}$，题设即幂和\n$$s_1=1,\\qquad s_2=2,\\qquad s_3=3,\\qquad s_4=4.$$\n\n由 Newton 恒等式（$k=1,2,3,4$）：\n$$s_1+a_3=0,\\qquad s_2+a_3s_1+2a_2=0,\\qquad s_3+a_3s_2+a_2s_1+3a_1=0,$$\n$$s_4+a_3s_3+a_2s_2+a_1s_1+4a_0=0.$$\n\n逐式代入：由第一式得 $a_3=-s_1=-1$；由第二式得 $2a_2=-s_2-a_3s_1=-2+1=-1$，即 $a_2=-\\dfrac12$；由第三式得 $3a_1=-s_3-a_3s_2-a_2s_1=-3+2+\\dfrac12=-\\dfrac12$，即 $a_1=-\\dfrac16$。\n\n代入第四式：\n$$4a_0=-s_4-a_3s_3-a_2s_2-a_1s_1=-4+3+1+\\frac16=\\frac16,$$\n故 $a_0=\\dfrac{1}{24}$。于是\n$$p(\\lambda)=\\lambda^{4}-\\lambda^{3}-\\frac12\\lambda^{2}-\\frac16\\lambda+\\frac{1}{24},\\qquad |A|=a_0=\\frac{1}{24}.$$\n\n验算：若 $\\lambda^{4}-\\lambda^{3}-\\tfrac12\\lambda^{2}-\\tfrac16\\lambda+\\tfrac{1}{24}=0$，用 Newton 恒等式反算得 $s_1=1,s_2=2,s_3=3,s_4=4$，与题设一致；又 $a_0=\\prod\\lambda_i=\\dfrac{1}{24}\\ne0$，说明 $A$ 可逆。",
+      "pointKeys": [
+        "特征值与迹、行列式的关系",
+        "Newton 恒等式",
+        "特征多项式的系数与幂和",
+        "上三角化下迹的计算"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "特征多项式"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 2 题）"
+    },
+    {
+      "id": "GA-B1998",
+      "subject": "gaodai",
+      "chapter": "第三章 线性方程组",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 二零一七个矩阵的线性组合必奇异",
+      "question": "设 $A_1,\\cdots,A_{2017}$ 为 $2016$ 阶实方阵。证明：关于 $x_1,\\cdots,x_{2017}$ 的方程\n$$\\det\\big(x_1A_1+\\cdots+x_{2017}A_{2017}\\big)=0$$\n至少有一组非零实数解，其中 $\\det$ 表示行列式。",
+      "answer": "存在不全为零的实数 $c_1,\\cdots,c_{2017}$，使 $\\det(c_1A_1+\\cdots+c_{2017}A_{2017})=0$。",
+      "solution": [
+        "证明：",
+        "记 $A_j$ 的第 $1$ 列为 $p^{(j)}=\\big(p_1^{(j)},p_2^{(j)},\\cdots,p_{2016}^{(j)}\\big)^{\\mathrm{T}}$，$j=1,2,\\cdots,2017$。考察关于 $x_1,\\cdots,x_{2017}$ 的齐次线性方程组\n$$\\begin{cases}x_1p_1^{(1)}+x_2p_1^{(2)}+\\cdots+x_{2017}p_1^{(2017)}=0,\\\\ \\qquad\\qquad\\qquad\\vdots\\\\ x_1p_{2016}^{(1)}+x_2p_{2016}^{(2)}+\\cdots+x_{2017}p_{2016}^{(2017)}=0.\\end{cases}$$\n它只有 $2016$ 个方程，却有 $2017$ 个未知量，故其系数矩阵的秩不超过 $2016$，从而存在非零实解 $(c_1,c_2,\\cdots,c_{2017})$。",
+        "由方程组的构造，这个解满足：矩阵\n$$C=c_1A_1+c_2A_2+\\cdots+c_{2017}A_{2017}$$\n的第 $1$ 列（其第 $i$ 个分量为 $c_1p_i^{(1)}+\\cdots+c_{2017}p_i^{(2017)}$，$i=1,\\cdots,2016$）是零向量。",
+        "于是 $2016$ 阶方阵 $C$ 的第一列全为零，其行列式必然为零：\n$$\\det\\big(c_1A_1+c_2A_2+\\cdots+c_{2017}A_{2017}\\big)=0.$$\n而 $c_1,\\cdots,c_{2017}$ 不全为零，故所求解为非零实解。",
+        "结论得证。"
+      ],
+      "detailedAnalysis": "关键是未知量个数大于方程个数这一秩不等式，难点是把行列式为零变成线性方程组。切入点是行列式定义：只要某一列全为零，行列式即为零。于是不必去算那个 $2016$ 次多项式，只需找不全为零的 $c_j$ 使 $\\sum c_jA_j$ 的第一列为零。把各 $A_j$ 的第一列竖起来作系数列，得 $2016$ 个方程、$2017$ 个未知量的齐次方程组，必有非零解。常见错误是对全部 $2016$ 列同时列方程，反而失去未知量多于方程的优势。检验：把 $(2016,2017)$ 换成 $(1,2)$，即 $a_1x_1+a_2x_2=0$ 恒有非零解。",
+      "points": [
+        "齐次线性方程组有非零解的判定",
+        "矩阵的秩与方程个数",
+        "行列式按列展开与零列的判定",
+        "矩阵线性组合"
+      ],
+      "pitfalls": [
+        "误以为要对全部 $2016$ 列同时写出方程组（共 $2016^{2}$ 个方程），反而失去“未知量多于方程”的优势。",
+        "把结论说成“存在非零矩阵”，而题目要求的是存在非零实系数向量 $(c_1,\\cdots,c_{2017})$。",
+        "只用 $2016$ 个矩阵讨论，忘记 $2017$ 个矩阵恰好比阶数多 $1$ 是本题成立的关键。"
+      ],
+      "verification": "人工复核：$2016$ 个方程、$2017$ 个未知量的齐次方程组必有非零解；该解使 $\\sum c_jA_j$ 的第一列为零，故行列式为零。属纯代数推理，不适用 sympy 机器复核。",
+      "difficulty": 4,
+      "standardSolution": "证明：\n\n记 $A_j$ 的第 $1$ 列为 $p^{(j)}=\\big(p_1^{(j)},p_2^{(j)},\\cdots,p_{2016}^{(j)}\\big)^{\\mathrm{T}}$，$j=1,2,\\cdots,2017$。考察关于 $x_1,\\cdots,x_{2017}$ 的齐次线性方程组\n$$\\begin{cases}x_1p_1^{(1)}+x_2p_1^{(2)}+\\cdots+x_{2017}p_1^{(2017)}=0,\\\\ \\qquad\\qquad\\qquad\\vdots\\\\ x_1p_{2016}^{(1)}+x_2p_{2016}^{(2)}+\\cdots+x_{2017}p_{2016}^{(2017)}=0.\\end{cases}$$\n它只有 $2016$ 个方程，却有 $2017$ 个未知量，故其系数矩阵的秩不超过 $2016$，从而存在非零实解 $(c_1,c_2,\\cdots,c_{2017})$。\n\n由方程组的构造，这个解满足：矩阵\n$$C=c_1A_1+c_2A_2+\\cdots+c_{2017}A_{2017}$$\n的第 $1$ 列（其第 $i$ 个分量为 $c_1p_i^{(1)}+\\cdots+c_{2017}p_i^{(2017)}$，$i=1,\\cdots,2016$）是零向量。\n\n于是 $2016$ 阶方阵 $C$ 的第一列全为零，其行列式必然为零：\n$$\\det\\big(c_1A_1+c_2A_2+\\cdots+c_{2017}A_{2017}\\big)=0.$$\n而 $c_1,\\cdots,c_{2017}$ 不全为零，故所求解为非零实解。\n\n结论得证。",
+      "pointKeys": [
+        "齐次线性方程组有非零解的判定",
+        "矩阵的秩与方程个数",
+        "行列式按列展开与零列的判定",
+        "矩阵线性组合"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "线性方程组"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 3 题）"
+    },
+    {
+      "id": "GA-B1999",
+      "subject": "gaodai",
+      "chapter": "第四章 矩阵",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 乘法封闭可逆矩阵族之和的零化",
+      "question": "设 $\\Gamma=\\{W_1,W_2,\\cdots,W_r\\}$ 为 $r$ 个各不相同的可逆 $n$ 阶复方阵构成的集合。若该集合关于矩阵乘法封闭（即 $\\forall M,N\\in\\Gamma$，有 $MN\\in\\Gamma$），证明：\n$$\\sum_{i=1}^{r}W_i=0\\quad\\Longleftrightarrow\\quad\\sum_{i=1}^{r}\\operatorname{tr}(W_i)=0,$$\n其中 $\\operatorname{tr}(W_i)$ 表示 $W_i$ 的迹。",
+      "answer": "两端等价：$\\sum W_i=0$ 当且仅当 $\\sum\\operatorname{tr}(W_i)=0$，关键在于 $W\\Gamma=\\Gamma$ 迫使 $S=\\sum W_i$ 满足 $S^{2}=rS$ 且特征值只取 $0,r$。",
+      "solution": [
+        "证明：",
+        "记 $S=\\sum\\limits_{i=1}^{r}W_i$。",
+        "必要性：由迹的线性性，若 $S=0$，则 $\\sum\\limits_{i=1}^{r}\\operatorname{tr}(W_i)=\\operatorname{tr}(S)=0$。",
+        "充分性：设 $\\sum\\limits_{i=1}^{r}\\operatorname{tr}(W_i)=0$。对任意 $W\\in\\Gamma$，因 $W$ 可逆，$WW_1,\\cdots,WW_r$ 两两不同；又由乘法封闭性 $WW_j\\in\\Gamma$，故\n$$W\\Gamma=\\{WW_1,\\cdots,WW_r\\}=\\Gamma.$$",
+        "于是\n$$WS=W\\sum_{i=1}^{r}W_i=\\sum_{i=1}^{r}WW_i=\\sum_{M\\in\\Gamma}M=S.$$\n进而\n$$S^{2}=S\\cdot S=\\sum_{i=1}^{r}W_iS=\\sum_{i=1}^{r}S=rS,\\qquad\\text{即}\\qquad S^{2}-rS=0.$$",
+        "设 $\\lambda$ 是 $S$ 的任一特征值，由 $S^{2}=rS$ 得 $\\lambda^{2}=r\\lambda$，故 $\\lambda=0$ 或 $\\lambda=r$。",
+        "又 $\\operatorname{tr}S=\\sum\\limits_{i=1}^{r}\\operatorname{tr}(W_i)=0$，而迹等于全部特征值之和，这些特征值每个都是 $0$ 或 $r$，其和为 $0$，故所有特征值只能是 $0$。于是 $S-rI$ 的特征值全为 $-r\\ne0$，$S-rI$ 可逆。",
+        "由 $S(S-rI)=S^{2}-rS=0$，两边右乘 $(S-rI)^{-1}$ 得\n$$S=0.$$",
+        "故 $\\sum\\limits_{i=1}^{r}W_i=0$ 与 $\\sum\\limits_{i=1}^{r}\\operatorname{tr}(W_i)=0$ 等价。"
+      ],
+      "detailedAnalysis": "一边是矩阵等式（强），一边是迹等式（弱），思路必然是由弱推强，桥梁是乘法封闭性。左乘 $W\\in\\Gamma$ 给出 $W\\Gamma\\subseteq\\Gamma$；又 $W$ 可逆故左乘是单射，有限集上单射即满射，于是 $W\\Gamma=\\Gamma$，得 $WS=S$，进而 $S^2=rS$，$S$ 的谱只能含 $0$ 与 $r$。再用迹条件排除 $r$：迹等于特征值之和，若有一个 $r$ 则迹至少为 $r>0$。于是谱全为零，$S-rI$ 可逆，由 $S(S-rI)=0$ 得 $S=0$。两处细节：元素互异性与 $S-rI$ 可逆的理由。检验：$\\Gamma=\\{I,-I\\}$ 时和与迹和都为零。",
+      "points": [
+        "矩阵乘法的封闭性与有限集的单射",
+        "迹的线性性与特征值之和",
+        "矩阵多项式与特征值的关系",
+        "可逆矩阵的判定"
+      ],
+      "pitfalls": [
+        "由封闭性只得到 $W\\Gamma\\subseteq\\Gamma$ 就直接写 $W\\Gamma=\\Gamma$，没有用“$|\\Gamma|$ 有限且左乘是单射”补足等号。",
+        "由 $\\operatorname{tr}S=0$ 与“特征值只取 $0$ 或 $r$”推出谱全为 $0$ 时，没有说清迹等于特征值之和。",
+        "试图直接由 $WS=S$ 消去 $S$，但 $S$ 未必可逆，不能消。"
+      ],
+      "verification": "人工复核：$W\\Gamma=\\Gamma$ 由封闭性与有限集上的单射给出；$S^{2}=rS$，谱 $\\subseteq\\{0,r\\}$，再由 $\\operatorname{tr}S=0$ 排除 $r$；$S-rI$ 可逆，$S(S-rI)=0$ 得 $S=0$。属纯代数推理，不适用 sympy 机器复核。",
+      "difficulty": 4,
+      "standardSolution": "证明：\n\n记 $S=\\sum\\limits_{i=1}^{r}W_i$。\n\n必要性：由迹的线性性，若 $S=0$，则 $\\sum\\limits_{i=1}^{r}\\operatorname{tr}(W_i)=\\operatorname{tr}(S)=0$。\n\n充分性：设 $\\sum\\limits_{i=1}^{r}\\operatorname{tr}(W_i)=0$。对任意 $W\\in\\Gamma$，因 $W$ 可逆，$WW_1,\\cdots,WW_r$ 两两不同；又由乘法封闭性 $WW_j\\in\\Gamma$，故\n$$W\\Gamma=\\{WW_1,\\cdots,WW_r\\}=\\Gamma.$$\n\n于是\n$$WS=W\\sum_{i=1}^{r}W_i=\\sum_{i=1}^{r}WW_i=\\sum_{M\\in\\Gamma}M=S.$$\n进而\n$$S^{2}=S\\cdot S=\\sum_{i=1}^{r}W_iS=\\sum_{i=1}^{r}S=rS,\\qquad\\text{即}\\qquad S^{2}-rS=0.$$\n\n设 $\\lambda$ 是 $S$ 的任一特征值，由 $S^{2}=rS$ 得 $\\lambda^{2}=r\\lambda$，故 $\\lambda=0$ 或 $\\lambda=r$。\n\n又 $\\operatorname{tr}S=\\sum\\limits_{i=1}^{r}\\operatorname{tr}(W_i)=0$，而迹等于全部特征值之和，这些特征值每个都是 $0$ 或 $r$，其和为 $0$，故所有特征值只能是 $0$。于是 $S-rI$ 的特征值全为 $-r\\ne0$，$S-rI$ 可逆。\n\n由 $S(S-rI)=S^{2}-rS=0$，两边右乘 $(S-rI)^{-1}$ 得\n$$S=0.$$\n\n故 $\\sum\\limits_{i=1}^{r}W_i=0$ 与 $\\sum\\limits_{i=1}^{r}\\operatorname{tr}(W_i)=0$ 等价。",
+      "pointKeys": [
+        "矩阵乘法的封闭性与有限集的单射",
+        "迹的线性性与特征值之和",
+        "矩阵多项式与特征值的关系",
+        "可逆矩阵的判定"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "矩阵代数"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 3 题）"
+    },
+    {
+      "id": "GA-B2000",
+      "subject": "gaodai",
+      "chapter": "第五章 二次型",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "综合题 · 强对角占优型二次型的规范形",
+      "question": "设 $A=(a_{ij})_{n\\times n}$ 为 $n$ 阶实方阵，满足\n1) $a_{11}=a_{22}=\\cdots=a_{nn}=a>0$；\n2) 对每个 $i\\ (i=1,\\cdots,n)$，有 $\\sum\\limits_{j=1}^{n}|a_{ij}|+\\sum\\limits_{j=1}^{n}|a_{ji}|<4a$。\n求 $f(x_1,\\cdots,x_n)=(x_1,\\cdots,x_n)A\\begin{pmatrix}x_1\\\\ \\vdots\\\\ x_n\\end{pmatrix}$ 的规范形。",
+      "answer": "$f$ 的规范形为 $y_1^{2}+y_2^{2}+\\cdots+y_n^{2}$，即 $f$ 是正定二次型。",
+      "solution": [
+        "解：",
+        "由于 $f=x^{\\mathrm{T}}Ax=x^{\\mathrm{T}}\\dfrac{A+A^{\\mathrm{T}}}{2}x$，不妨令\n$$B=(b_{ij})=\\frac{A+A^{\\mathrm{T}}}{2},$$\n则 $B$ 为实对称矩阵，且\n$$b_{ii}=\\frac{a_{ii}+a_{ii}}{2}=a>0\\qquad(i=1,\\cdots,n).$$",
+        "对 $i\\ne j$，$b_{ij}=\\dfrac{a_{ij}+a_{ji}}{2}$，故\n$$\\sum_{j\\ne i}|b_{ij}|=\\sum_{j\\ne i}\\frac{|a_{ij}+a_{ji}|}{2}\\le\\frac12\\sum_{j\\ne i}\\big(|a_{ij}|+|a_{ji}|\\big).$$\n由条件 2)，注意 $j=i$ 的两项之和为 $2a$，得\n$$\\sum_{j\\ne i}\\big(|a_{ij}|+|a_{ji}|\\big)=\\Big(\\sum_{j=1}^{n}|a_{ij}|+\\sum_{j=1}^{n}|a_{ji}|\\Big)-2a<4a-2a=2a,$$\n于是\n$$\\sum_{j\\ne i}|b_{ij}|<a=b_{ii}.$$\n即 $B$ 按行严格对角占优，且对角元全为正数 $a$。",
+        "设 $\\lambda$ 是 $B$ 的任一特征值，$\\alpha=(x_1,\\cdots,x_n)^{\\mathrm{T}}\\ne0$ 为相应的特征向量，取下标 $k$ 使 $|x_k|=\\max\\limits_{1\\le j\\le n}|x_j|>0$。由 $B\\alpha=\\lambda\\alpha$ 的第 $k$ 个分量\n$$\\lambda x_k=\\sum_{j=1}^{n}b_{kj}x_j=b_{kk}x_k+\\sum_{j\\ne k}b_{kj}x_j,$$\n两边除以 $x_k$ 并取实部（$B,\\lambda$ 均为实）得\n$$\\lambda=b_{kk}+\\sum_{j\\ne k}b_{kj}\\frac{x_j}{x_k}\\ge b_{kk}-\\sum_{j\\ne k}|b_{kj}|\\Big|\\frac{x_j}{x_k}\\Big|\\ge a-\\sum_{j\\ne k}|b_{kj}|>0.$$\n故 $B$ 的全部特征值为正，$B$ 正定。",
+        "于是二次型 $f=x^{\\mathrm{T}}Bx$ 正定。由惯性定理，正定二次型的规范形中正平方项个数等于 $n$、负平方项与零项个数均为 $0$，故 $f$ 的规范形为\n$$y_1^{2}+y_2^{2}+\\cdots+y_n^{2}.$$"
+      ],
+      "detailedAnalysis": "二次型只依赖对称部分，第一步必是令 $B=\\frac{A+A^{\\mathrm T}}{2}$，把非对称的 $A$ 换成实对称阵，才能谈特征值与正定性。第二步把条件译成 $B$ 的严格对角占优：两个和都含 $j=i$ 的项 $|a_{ii}|=a$，合计 $2a$，故非对角部分小于 $2a$；而 $b_{ij}$ 是 $a_{ij},a_{ji}$ 的平均，于是 $\\sum_{j\\ne i}|b_{ij}|<a=b_{ii}$，这正是 $4a$ 的来历。第三步用 Gershgorin 圆盘（或取最大分量）得所有特征值落在 $(0,2a)$ 内，$B$ 正定。最后由惯性定理，正定二次型的规范形为 $n$ 个正平方项。",
+      "points": [
+        "二次型的对称化",
+        "严格对角占优矩阵",
+        "Gershgorin 圆盘定理与特征值估计",
+        "惯性定理与规范形"
+      ],
+      "pitfalls": [
+        "直接对 $A$ 用 Gershgorin 定理，但 $A$ 非对称、特征值可能为复，正定性无从谈起。",
+        "把条件 2) 的两个和都直接当作非对角部分，漏掉 $j=i$ 的 $2a$，得到 $\\sum_{j\\ne i}|b_{ij}|<2a$ 而得不到 $<a$。",
+        "只证明 $B$ 可逆或半正定，没有说明全部 $n$ 个特征值为正，规范形可能含零项或负项。"
+      ],
+      "verification": "sympy 复核：取 $n=2$、$a=1$、$A=\\begin{pmatrix}1&0.3\\\\0.3&1\\end{pmatrix}$，$B=A$，$\\sum_{j\\ne i}|b_{ij}|=0.3<1$，特征值 $1.3,0.7$ 均为正，规范形 $y_1^{2}+y_2^{2}$；再取非对称例子 $A=\\begin{pmatrix}1&0.8\\\\-0.4&1\\end{pmatrix}$，$B$ 的非对角元为 $0.2$，特征值 $1.2,0.8$ 仍为正。",
+      "difficulty": 4,
+      "standardSolution": "解：\n\n由于 $f=x^{\\mathrm{T}}Ax=x^{\\mathrm{T}}\\dfrac{A+A^{\\mathrm{T}}}{2}x$，不妨令\n$$B=(b_{ij})=\\frac{A+A^{\\mathrm{T}}}{2},$$\n则 $B$ 为实对称矩阵，且\n$$b_{ii}=\\frac{a_{ii}+a_{ii}}{2}=a>0\\qquad(i=1,\\cdots,n).$$\n\n对 $i\\ne j$，$b_{ij}=\\dfrac{a_{ij}+a_{ji}}{2}$，故\n$$\\sum_{j\\ne i}|b_{ij}|=\\sum_{j\\ne i}\\frac{|a_{ij}+a_{ji}|}{2}\\le\\frac12\\sum_{j\\ne i}\\big(|a_{ij}|+|a_{ji}|\\big).$$\n由条件 2)，注意 $j=i$ 的两项之和为 $2a$，得\n$$\\sum_{j\\ne i}\\big(|a_{ij}|+|a_{ji}|\\big)=\\Big(\\sum_{j=1}^{n}|a_{ij}|+\\sum_{j=1}^{n}|a_{ji}|\\Big)-2a<4a-2a=2a,$$\n于是\n$$\\sum_{j\\ne i}|b_{ij}|<a=b_{ii}.$$\n即 $B$ 按行严格对角占优，且对角元全为正数 $a$。\n\n设 $\\lambda$ 是 $B$ 的任一特征值，$\\alpha=(x_1,\\cdots,x_n)^{\\mathrm{T}}\\ne0$ 为相应的特征向量，取下标 $k$ 使 $|x_k|=\\max\\limits_{1\\le j\\le n}|x_j|>0$。由 $B\\alpha=\\lambda\\alpha$ 的第 $k$ 个分量\n$$\\lambda x_k=\\sum_{j=1}^{n}b_{kj}x_j=b_{kk}x_k+\\sum_{j\\ne k}b_{kj}x_j,$$\n两边除以 $x_k$ 并取实部（$B,\\lambda$ 均为实）得\n$$\\lambda=b_{kk}+\\sum_{j\\ne k}b_{kj}\\frac{x_j}{x_k}\\ge b_{kk}-\\sum_{j\\ne k}|b_{kj}|\\Big|\\frac{x_j}{x_k}\\Big|\\ge a-\\sum_{j\\ne k}|b_{kj}|>0.$$\n故 $B$ 的全部特征值为正，$B$ 正定。\n\n于是二次型 $f=x^{\\mathrm{T}}Bx$ 正定。由惯性定理，正定二次型的规范形中正平方项个数等于 $n$、负平方项与零项个数均为 $0$，故 $f$ 的规范形为\n$$y_1^{2}+y_2^{2}+\\cdots+y_n^{2}.$$",
+      "pointKeys": [
+        "二次型的对称化",
+        "严格对角占优矩阵",
+        "Gershgorin 圆盘定理与特征值估计",
+        "惯性定理与规范形"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "二次型"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 2 题）"
+    },
+    {
+      "id": "GA-B2001",
+      "subject": "gaodai",
+      "chapter": "第四章 矩阵",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 共轭变换矩阵特征多项式的实系数性",
+      "question": "设 $A$ 为 $n$ 阶复方阵，$p(x)$ 为 $I-A\\bar{A}$ 的特征多项式，其中 $\\bar{A}$ 表示 $A$ 的共轭矩阵。证明：$p(x)$ 必为实系数多项式。",
+      "answer": "$p(x)$ 的系数全为实数，即 $p\\in\\mathbb{R}[x]$。",
+      "solution": [
+        "证明：",
+        "记\n$$p(t)=\\det\\big(tI-(I-A\\bar{A})\\big)=\\det\\big((t-1)I+A\\bar{A}\\big).$$\n对任意实数 $t$，把 $p(t)$ 取共轭。因 $\\det\\bar{M}=\\overline{\\det M}$，且 $\\bar{t}=t$（$t$ 为实数），得\n$$\\overline{p(t)}=\\det\\big((t-1)I+\\bar{A}A\\big).$$",
+        "下面证明对任意两个 $n$ 阶方阵 $M,N$ 及任意数 $s$，有\n$$\\det(sI+MN)=\\det(sI+NM).$$\n事实上，对充分大的正整数 $k$，$N+\\dfrac1kI$ 可逆（因其行列式是关于 $\\frac1k$ 的多项式，不恒为零），记 $N_k=N+\\dfrac1kI$，则\n$$\\det(sI+MN_k)=\\det\\big((sI+MN_k)N_k^{-1}\\big)\\det N_k=\\det\\big(sN_k^{-1}+M\\big)\\det N_k,$$\n又\n$$\\det(sI+N_kM)=\\det\\big(N_k^{-1}(sI+N_kM)\\big)\\det N_k=\\det\\big(sN_k^{-1}+M\\big)\\det N_k,$$\n故 $\\det(sI+MN_k)=\\det(sI+N_kM)$。两边都是关于 $\\frac1k$ 的多项式，令 $k\\to\\infty$（即 $N_k\\to N$），由行列式的连续性得 $\\det(sI+MN)=\\det(sI+NM)$。",
+        "在上面公式中取 $M=A$、$N=\\bar{A}$、$s=t-1$，得\n$$\\det\\big((t-1)I+\\bar{A}A\\big)=\\det\\big((t-1)I+A\\bar{A}\\big)=p(t).$$\n于是对一切实数 $t$，\n$$\\overline{p(t)}=p(t),$$\n即 $p(t)$ 取实数值。",
+        "设 $p(t)=c_0+c_1t+\\cdots+c_nt^{n}$。因 $p$ 在无穷多个实数处取实值，故 $\\overline{p(t)}-p(t)$ 是零多项式，即 $\\bar{c}_j=c_j$ 对一切 $j$ 成立，也就是每个系数 $c_j$ 都是实数。故 $p(x)$ 为实系数多项式。"
+      ],
+      "detailedAnalysis": "要证系数全为实数，最省力的判据是在足够多实点上取实值，即 $p(t)=\\overline{p(t)}$。对行列式取共轭会使 $A$ 与 $\\bar A$ 交换位置，于是问题归结为经典结论 $\\det(sI+MN)=\\det(sI+NM)$。该结论不能直接对 $N$ 求逆，标准做法是用 $N_k=N+\\frac1kI$ 逼近：可逆时把两个行列式都化成 $\\det(sN_k^{-1}+M)\\det N_k$ 而相等，再令 $k\\to\\infty$ 用连续性过渡。最后由两个多项式在无穷多点相等即为零多项式，得系数为实。注意 $t$ 是实数，取共轭时不必再取。",
+      "points": [
+        "行列式与共轭运算",
+        "$\\det(sI+MN)=\\det(sI+NM)$",
+        "可逆矩阵逼近与连续性",
+        "实系数多项式的判别"
+      ],
+      "pitfalls": [
+        "直接假设 $\\bar{A}$ 可逆以便使用 $\\det(sI+AB)=\\det(sI+BA)$ 的证明，但 $\\bar A$ 未必可逆。",
+        "对 $p(t)$ 取共轭时把实数 $t$ 也写成 $\\bar t$，虽不影响结果，但对非实数 $t$ 的论证并不成立，应只对实 $t$ 讨论。",
+        "由 $\\overline{p(t)}=p(t)$ 对实 $t$ 成立，未说明“无穷多个实点处相等蕴含系数相等”就直接断言系数为实。"
+      ],
+      "verification": "人工复核：对实 $t$，$\\overline{p(t)}=\\det((t-1)I+\\bar AA)=\\det((t-1)I+A\\bar A)=p(t)$，故 $p$ 在 $\\mathbb{R}$ 上取实值，系数必为实。sympy 可用 $2$ 阶随机复矩阵数值验证 $\\det(sI+MN)-\\det(sI+NM)=0$。",
+      "difficulty": 5,
+      "standardSolution": "证明：\n\n记\n$$p(t)=\\det\\big(tI-(I-A\\bar{A})\\big)=\\det\\big((t-1)I+A\\bar{A}\\big).$$\n对任意实数 $t$，把 $p(t)$ 取共轭。因 $\\det\\bar{M}=\\overline{\\det M}$，且 $\\bar{t}=t$（$t$ 为实数），得\n$$\\overline{p(t)}=\\det\\big((t-1)I+\\bar{A}A\\big).$$\n\n下面证明对任意两个 $n$ 阶方阵 $M,N$ 及任意数 $s$，有\n$$\\det(sI+MN)=\\det(sI+NM).$$\n事实上，对充分大的正整数 $k$，$N+\\dfrac1kI$ 可逆（因其行列式是关于 $\\frac1k$ 的多项式，不恒为零），记 $N_k=N+\\dfrac1kI$，则\n$$\\det(sI+MN_k)=\\det\\big((sI+MN_k)N_k^{-1}\\big)\\det N_k=\\det\\big(sN_k^{-1}+M\\big)\\det N_k,$$\n又\n$$\\det(sI+N_kM)=\\det\\big(N_k^{-1}(sI+N_kM)\\big)\\det N_k=\\det\\big(sN_k^{-1}+M\\big)\\det N_k,$$\n故 $\\det(sI+MN_k)=\\det(sI+N_kM)$。两边都是关于 $\\frac1k$ 的多项式，令 $k\\to\\infty$（即 $N_k\\to N$），由行列式的连续性得 $\\det(sI+MN)=\\det(sI+NM)$。\n\n在上面公式中取 $M=A$、$N=\\bar{A}$、$s=t-1$，得\n$$\\det\\big((t-1)I+\\bar{A}A\\big)=\\det\\big((t-1)I+A\\bar{A}\\big)=p(t).$$\n于是对一切实数 $t$，\n$$\\overline{p(t)}=p(t),$$\n即 $p(t)$ 取实数值。\n\n设 $p(t)=c_0+c_1t+\\cdots+c_nt^{n}$。因 $p$ 在无穷多个实数处取实值，故 $\\overline{p(t)}-p(t)$ 是零多项式，即 $\\bar{c}_j=c_j$ 对一切 $j$ 成立，也就是每个系数 $c_j$ 都是实数。故 $p(x)$ 为实系数多项式。",
+      "pointKeys": [
+        "行列式与共轭运算",
+        "$\\det(sI+MN)=\\det(sI+NM)$",
+        "可逆矩阵逼近与连续性",
+        "实系数多项式的判别"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "矩阵多项式"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 3 题）"
+    },
+    {
+      "id": "GA-B2002",
+      "subject": "gaodai",
+      "chapter": "第八章 λ-矩阵",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 矩阵多项式可逆与多项式互素",
+      "question": "设 $A$ 为 $n$ 阶复方阵，$p(x)$ 为 $A$ 的特征多项式。又设 $g(x)$ 为 $m$ 次复系数多项式，$m\\ge1$。证明：$g(A)$ 可逆当且仅当 $p(x)$ 与 $g(x)$ 互素。",
+      "answer": "$g(A)$ 可逆 $\\iff$ $p$ 与 $g$ 互素；且 $\\det g(A)=\\prod\\limits_{i=1}^{s}g(\\lambda_i)^{n_i}$，其中 $\\lambda_i$ 为 $A$ 的互异特征值、$n_i$ 为其代数重数。",
+      "solution": [
+        "证明：",
+        "设 $A$ 的互异特征值为 $\\lambda_1,\\cdots,\\lambda_s$，相应的代数重数为 $n_1,\\cdots,n_s$，则\n$$p(x)=\\prod_{i=1}^{s}(x-\\lambda_i)^{n_i}.$$\n取 $A$ 的 Jordan 分解 $A=P\\operatorname{diag}(J_1,\\cdots,J_s)P^{-1}$，其中 $J_i$ 是特征值为 $\\lambda_i$ 的 Jordan 块（可能由若干块组成）。对多项式 $g$ 有\n$$g(A)=P\\operatorname{diag}\\big(g(J_1),\\cdots,g(J_s)\\big)P^{-1}.$$",
+        "由于 $J_i=\\lambda_iI+N_i$（$N_i$ 为幂零矩阵）且 $N_i$ 与 $\\lambda_iI$ 交换，$g(J_i)$ 的展开式中除常数项外都含 $N_i$ 的正幂，故 $g(J_i)$ 是上三角矩阵，其对角元全为 $g(\\lambda_i)$。因此\n$$\\det g(A)=\\prod_{i=1}^{s}\\det g(J_i)=\\prod_{i=1}^{s}g(\\lambda_i)^{n_i}.$$",
+        "（$\\Leftarrow$）设 $p$ 与 $g$ 互素。若某个 $g(\\lambda_i)=0$，则 $x-\\lambda_i$ 是 $p$ 与 $g$ 的公因式，与互素矛盾。故 $g(\\lambda_i)\\ne0\\ (i=1,\\cdots,s)$，从而\n$$\\det g(A)=\\prod_{i=1}^{s}g(\\lambda_i)^{n_i}\\ne0,$$\n即 $g(A)$ 可逆。",
+        "（$\\Rightarrow$）设 $g(A)$ 可逆，则 $\\det g(A)\\ne0$，由上式得 $g(\\lambda_i)\\ne0$ 对一切 $i$ 成立。若 $p$ 与 $g$ 不互素，则在复数域上它们有公共根 $\\mu$，而 $p$ 的根只能是 $\\lambda_1,\\cdots,\\lambda_s$ 之一，故 $\\mu=\\lambda_i$ 对某个 $i$ 成立，于是 $g(\\lambda_i)=0$，矛盾。故 $p$ 与 $g$ 互素。",
+        "综上，$g(A)$ 可逆当且仅当 $p(x)$ 与 $g(x)$ 互素。"
+      ],
+      "detailedAnalysis": "在可逆与互素之间搭桥的是行列式：$g(A)$ 可逆当且仅当 $\\det g(A)\\ne0$，而 $\\det g(A)$ 可用 Jordan 形算出。切入点是上三角化：$J_i=\\lambda_iI+N_i$，$N_i$ 幂零且与 $\\lambda_iI$ 交换，故 $g(J_i)$ 上三角、对角元全为 $g(\\lambda_i)$，行列式为 $g(\\lambda_i)^{n_i}$，乘起来得 $\\det g(A)=\\prod g(\\lambda_i)^{n_i}$。于是判据变成每个 $g(\\lambda_i)\\ne0$。再由 $\\mathbb{C}$ 代数闭，$p,g$ 互素等价于无公共根，也等价于所有 $g(\\lambda_i)\\ne0$，两个方向各自一句话完成。注意指数是代数重数 $n_i$。",
+      "points": [
+        "Jordan 标准形",
+        "矩阵多项式的计算",
+        "特征多项式与特征值",
+        "复数域上互素与无公共根"
+      ],
+      "pitfalls": [
+        "把 $\\det g(A)$ 写成 $\\prod g(\\lambda_i)$（互异根个数），漏掉代数重数 $n_i$ 作为指数。",
+        "只用可对角化情形论证，未处理 $A$ 不可对角化（有非平凡 Jordan 块）的一般情形。",
+        "在 $\\mathbb{R}[x]$ 上讨论互素：互素与“无公共根”的等价需要代数闭域，本题在 $\\mathbb{C}$ 上成立。"
+      ],
+      "verification": "人工复核：由 Jordan 形 $g(J_i)$ 上三角、对角元为 $g(\\lambda_i)$ 得 $\\det g(A)=\\prod g(\\lambda_i)^{n_i}$；$\\mathbb{C}$ 上 $p,g$ 互素 $\\iff$ 无公共根 $\\iff$ 所有 $g(\\lambda_i)\\ne0$。sympy 可用具体矩阵（如 $A=\\begin{pmatrix}1&1\\\\0&1\\end{pmatrix}$，$g=x$、$g=x-1$）验证 $\\det g(A)$ 与互素性一致。",
+      "difficulty": 4,
+      "standardSolution": "证明：\n\n设 $A$ 的互异特征值为 $\\lambda_1,\\cdots,\\lambda_s$，相应的代数重数为 $n_1,\\cdots,n_s$，则\n$$p(x)=\\prod_{i=1}^{s}(x-\\lambda_i)^{n_i}.$$\n取 $A$ 的 Jordan 分解 $A=P\\operatorname{diag}(J_1,\\cdots,J_s)P^{-1}$，其中 $J_i$ 是特征值为 $\\lambda_i$ 的 Jordan 块（可能由若干块组成）。对多项式 $g$ 有\n$$g(A)=P\\operatorname{diag}\\big(g(J_1),\\cdots,g(J_s)\\big)P^{-1}.$$\n\n由于 $J_i=\\lambda_iI+N_i$（$N_i$ 为幂零矩阵）且 $N_i$ 与 $\\lambda_iI$ 交换，$g(J_i)$ 的展开式中除常数项外都含 $N_i$ 的正幂，故 $g(J_i)$ 是上三角矩阵，其对角元全为 $g(\\lambda_i)$。因此\n$$\\det g(A)=\\prod_{i=1}^{s}\\det g(J_i)=\\prod_{i=1}^{s}g(\\lambda_i)^{n_i}.$$\n\n（$\\Leftarrow$）设 $p$ 与 $g$ 互素。若某个 $g(\\lambda_i)=0$，则 $x-\\lambda_i$ 是 $p$ 与 $g$ 的公因式，与互素矛盾。故 $g(\\lambda_i)\\ne0\\ (i=1,\\cdots,s)$，从而\n$$\\det g(A)=\\prod_{i=1}^{s}g(\\lambda_i)^{n_i}\\ne0,$$\n即 $g(A)$ 可逆。\n\n（$\\Rightarrow$）设 $g(A)$ 可逆，则 $\\det g(A)\\ne0$，由上式得 $g(\\lambda_i)\\ne0$ 对一切 $i$ 成立。若 $p$ 与 $g$ 不互素，则在复数域上它们有公共根 $\\mu$，而 $p$ 的根只能是 $\\lambda_1,\\cdots,\\lambda_s$ 之一，故 $\\mu=\\lambda_i$ 对某个 $i$ 成立，于是 $g(\\lambda_i)=0$，矛盾。故 $p$ 与 $g$ 互素。\n\n综上，$g(A)$ 可逆当且仅当 $p(x)$ 与 $g(x)$ 互素。",
+      "pointKeys": [
+        "Jordan 标准形",
+        "矩阵多项式的计算",
+        "特征多项式与特征值",
+        "复数域上互素与无公共根"
+      ],
+      "options": [],
+      "correct": "",
+      "examOrigin": "习题集",
+      "relatedEntries": [],
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "λ-矩阵"
+      ],
+      "source": "习题集（全国大学生数学竞赛（第 1–12 届全国大学生数学竞赛（数学类）预赛）第 3 题）"
+    },
+    {
+      "id": "GA-B2003",
+      "subject": "gaodai",
+      "chapter": "第一章 多项式",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 整系数多项式根的实性判定",
+      "question": "设 $f(x)=x^{2021}+a_{2020}x^{2020}+a_{2019}x^{2019}+\\cdots+a_2x^2+a_1x+a_0$ 为整系数多项式，$a_0\\neq0$，且对任意 $0\\leq k\\leq2020$ 有 $|a_k|\\leq40$。证明：$f(x)=0$ 的根不可能全为实数。",
+      "answer": "若根全为实数，则柯西不等式给出 $2021^2\\leq1680^2$，与 $4084441>2822400$ 矛盾。",
+      "standardSolution": "证明：设 $f(x)=0$ 的 $2021$ 个根为 $x_1,x_2,\\dots,x_{2021}$（计重数）。因 $a_0\\neq0$，故 $x_i\\neq0$。\n\n反设 $x_1,\\dots,x_{2021}$ 全为实数。由柯西不等式，\n$$\\Bigl(\\sum_{i=1}^{2021}x_i^2\\Bigr)\\Bigl(\\sum_{i=1}^{2021}\\frac{1}{x_i^2}\\Bigr)\\geq\\Bigl(\\sum_{i=1}^{2021}x_i\\cdot\\frac{1}{x_i}\\Bigr)^2=2021^2=4084441 .$$\n\n由韦达定理，\n$$\\sum_{i=1}^{2021}x_i=-a_{2020},\\qquad\\sum_{1\\leq i<j\\leq2021}x_ix_j=a_{2019},$$\n故\n$$\\sum_{i=1}^{2021}x_i^2=\\Bigl(\\sum x_i\\Bigr)^2-2\\sum_{i<j}x_ix_j=a_{2020}^2-2a_{2019},$$\n由 $|a_{2020}|\\leq40$、$|a_{2019}|\\leq40$ 得\n$$\\Bigl|\\sum_{i=1}^{2021}x_i^2\\Bigr|\\leq40^2+2\\cdot40=1680 .$$\n\n再考虑 $g(x)=x^{2021}f\\Bigl(\\dfrac1x\\Bigr)=a_0x^{2021}+a_1x^{2020}+\\cdots+a_{2020}x+1$，它的根恰为 $\\dfrac{1}{x_1},\\dots,\\dfrac{1}{x_{2021}}$。对 $g$ 用韦达定理（首项系数 $a_0$，$x^{2020}$ 的系数为 $a_1$，$x^{2019}$ 的系数为 $a_2$）：\n$$\\sum_{i=1}^{2021}\\frac{1}{x_i}=-\\frac{a_1}{a_0},\\qquad\\sum_{i<j}\\frac{1}{x_ix_j}=\\frac{a_2}{a_0},$$\n故\n$$\\sum_{i=1}^{2021}\\frac{1}{x_i^2}=\\Bigl(\\frac{a_1}{a_0}\\Bigr)^2-\\frac{2a_2}{a_0}.$$\n由 $|a_0|\\geq1$（$a_0$ 为非零整数）及 $|a_1|,|a_2|\\leq40$ 得\n$$\\Bigl|\\sum_{i=1}^{2021}\\frac{1}{x_i^2}\\Bigr|\\leq40^2+2\\cdot40=1680 .$$\n\n于是\n$$2021^2\\leq\\Bigl|\\sum x_i^2\\Bigr|\\cdot\\Bigl|\\sum\\frac{1}{x_i^2}\\Bigr|\\leq1680^2=2822400,$$\n而 $2021^2=4084441>2822400$，矛盾。故 $f(x)=0$ 的根不可能全为实数。",
+      "detailedAnalysis": "要否定\"根全为实\"，需要一个只依赖系数、又与根的实性密切相关的量。柯西不等式给出 $\\bigl(\\sum x_i^2\\bigr)\\bigl(\\sum x_i^{-2}\\bigr)\\geq2021^2$，左边两个因子都能用韦达定理由系数估计：$\\sum x_i^2=a_{2020}^2-2a_{2019}$，而 $\\sum x_i^{-2}$ 需借助倒多项式 $g(x)=x^{2021}f(1/x)$，它的根是 $1/x_i$。\n\n估计时最关键的一步是把 $a_0$ 除掉：$\\sum x_i^{-2}=(a_1/a_0)^2-2a_2/a_0$，由于 $a_0$ 是非零整数，$|a_0|\\geq1$，故 $|a_1/a_0|\\leq40$、$|a_2/a_0|\\leq40$，两个因子都被控制在 $1680$ 以内。若不除 $a_0$ 而直接估计 $a_1^2-2a_0a_2$，会得到 $4800$ 的上界，乘积 $1680\\times4800$ 超过 $2021^2$，论证失效——这是本题最容易卡住的地方。\n\n最后比较 $2021^2=4084441$ 与 $1680^2=2822400$，前者更大，矛盾成立。$40$ 这个界恰好使 $1680<2021$，命题的设计意图正在于此；若把 $40$ 换成 $200$，同样的推理就会失败。另外，$x_i$ 可能有重根，但韦达定理与柯西不等式都对计及重数的根成立，故无需假设根互异。",
+      "points": [
+        "韦达定理",
+        "柯西不等式",
+        "倒多项式 $x^nf(1/x)$",
+        "整系数多项式的系数估计"
+      ],
+      "pitfalls": [
+        "估计 $\\sum x_i^{-2}$ 时忘记除以 $a_0$，得到 $4800$ 的过宽上界使论证失效。",
+        "忽略 $a_0\\neq0$ 保证 $x_i\\neq0$，直接对 $1/x_i$ 使用韦达定理。"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十三届全国大学生数学竞赛初赛及补赛（数学类与非数学类））（数学A类）第 3 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "多项式"
+      ],
+      "relatedEntries": [],
+      "difficulty": 5,
+      "solution": [
+        "证明：设 $f(x)=0$ 的 $2021$ 个根为 $x_1,x_2,\\dots,x_{2021}$（计重数）。因 $a_0\\neq0$，故 $x_i\\neq0$。",
+        "反设 $x_1,\\dots,x_{2021}$ 全为实数。由柯西不等式，\n$$\\Bigl(\\sum_{i=1}^{2021}x_i^2\\Bigr)\\Bigl(\\sum_{i=1}^{2021}\\frac{1}{x_i^2}\\Bigr)\\geq\\Bigl(\\sum_{i=1}^{2021}x_i\\cdot\\frac{1}{x_i}\\Bigr)^2=2021^2=4084441 .$$",
+        "由韦达定理，\n$$\\sum_{i=1}^{2021}x_i=-a_{2020},\\qquad\\sum_{1\\leq i<j\\leq2021}x_ix_j=a_{2019},$$\n故\n$$\\sum_{i=1}^{2021}x_i^2=\\Bigl(\\sum x_i\\Bigr)^2-2\\sum_{i<j}x_ix_j=a_{2020}^2-2a_{2019},$$\n由 $|a_{2020}|\\leq40$、$|a_{2019}|\\leq40$ 得\n$$\\Bigl|\\sum_{i=1}^{2021}x_i^2\\Bigr|\\leq40^2+2\\cdot40=1680 .$$",
+        "再考虑 $g(x)=x^{2021}f\\Bigl(\\dfrac1x\\Bigr)=a_0x^{2021}+a_1x^{2020}+\\cdots+a_{2020}x+1$，它的根恰为 $\\dfrac{1}{x_1},\\dots,\\dfrac{1}{x_{2021}}$。对 $g$ 用韦达定理（首项系数 $a_0$，$x^{2020}$ 的系数为 $a_1$，$x^{2019}$ 的系数为 $a_2$）：\n$$\\sum_{i=1}^{2021}\\frac{1}{x_i}=-\\frac{a_1}{a_0},\\qquad\\sum_{i<j}\\frac{1}{x_ix_j}=\\frac{a_2}{a_0},$$\n故\n$$\\sum_{i=1}^{2021}\\frac{1}{x_i^2}=\\Bigl(\\frac{a_1}{a_0}\\Bigr)^2-\\frac{2a_2}{a_0}.$$\n由 $|a_0|\\geq1$（$a_0$ 为非零整数）及 $|a_1|,|a_2|\\leq40$ 得\n$$\\Bigl|\\sum_{i=1}^{2021}\\frac{1}{x_i^2}\\Bigr|\\leq40^2+2\\cdot40=1680 .$$",
+        "于是\n$$2021^2\\leq\\Bigl|\\sum x_i^2\\Bigr|\\cdot\\Bigl|\\sum\\frac{1}{x_i^2}\\Bigr|\\leq1680^2=2822400,$$\n而 $2021^2=4084441>2822400$，矛盾。故 $f(x)=0$ 的根不可能全为实数。"
+      ],
+      "pointKeys": [
+        "韦达定理",
+        "柯西不等式",
+        "倒多项式 $x^nf(1/x)$",
+        "整系数多项式的系数估计"
+      ],
+      "verification": "人工复核：核对 $2021^2=4084441>1680^2=2822400$；核对 $g(x)=x^{2021}f(1/x)$ 的系数排列给出 $\\sum1/x_i=-a_1/a_0$；核对在 $|a_0|\\geq1$ 下 $|a_1/a_0|\\leq40$。均为初等代数验证。"
+    },
+    {
+      "id": "GA-B2004",
+      "subject": "gaodai",
+      "chapter": "第二章 行列式",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 三阶行列式的取值集合",
+      "question": "设 $R=\\{0,1,-1\\}$，$S$ 为 $R$ 上的 $3$ 阶行列式全体，即\n$$S=\\bigl\\{\\det(a_{ij})_{3\\times3}\\ \\big|\\ a_{ij}\\in R\\bigr\\}.$$\n证明：$S=\\{-4,-3,-2,-1,0,1,2,3,4\\}$。",
+      "answer": "$S$ 恰为 $-4$ 到 $4$ 的全部整数。",
+      "standardSolution": "证明：分两步，先证每个整数 $|k|\\leq4$ 都能被取到，再证 $|\\det|\\leq4$。\n\n（一）可达性。直接给出矩阵：\n$$\\det\\begin{pmatrix}1&0&0\\\\0&1&0\\\\0&0&0\\end{pmatrix}=0,\\qquad\n\\det\\begin{pmatrix}1&0&0\\\\0&1&0\\\\0&0&1\\end{pmatrix}=1,$$\n$$\\det\\begin{pmatrix}1&1&0\\\\0&1&1\\\\1&0&1\\end{pmatrix}=1\\cdot(1-0)-1\\cdot(0-1)+0=2,$$\n$$\\det\\begin{pmatrix}-1&-1&-1\\\\-1&0&1\\\\-1&1&0\\end{pmatrix}=(-1)(0-1)-(-1)(0+1)+(-1)(-1-0)=3,$$\n$$\\det\\begin{pmatrix}1&-1&1\\\\1&1&-1\\\\-1&1&1\\end{pmatrix}=1\\cdot(1+1)-(-1)(1-1)+1\\cdot(1+1)=4 .$$\n交换前两行可把 $1,2,3,4$ 分别变为 $-1,-2,-3,-4$，故 $\\{-4,\\dots,4\\}\\subseteq S$。\n\n（二）上界。按定义展开：\n$$\\det A=\\sum_{\\sigma\\in S_3}\\operatorname{sgn}\\sigma\\prod_{i=1}^{3}a_{i,\\sigma(i)}=b_1+b_2+b_3+b_4+b_5+b_6,$$\n其中\n$$b_1=a_{11}a_{22}a_{33},\\quad b_2=a_{12}a_{23}a_{31},\\quad b_3=a_{13}a_{21}a_{32},$$\n$$b_4=-a_{13}a_{22}a_{31},\\quad b_5=-a_{12}a_{21}a_{33},\\quad b_6=-a_{11}a_{23}a_{32}.$$\n每个 $b_i$ 是三个 $\\{-1,0,1\\}$ 中数的乘积，故 $b_i\\in\\{-1,0,1\\}$。又九个位置的元素在六个乘积中各出现恰好两次，且三个负号使\n$$b_1b_2b_3b_4b_5b_6=-\\Bigl(\\prod_{i,j}a_{ij}\\Bigr)^2\\leq0 .$$\n\n情形一：某个 $a_{ij}=0$。由于每个位置恰好出现在两个乘积中，至少有两个 $b_i$ 为零，其余至多四个非零且绝对值不超过 $1$，故\n$$|\\det A|\\leq4 .$$\n\n情形二：全部 $a_{ij}\\in\\{-1,1\\}$。此时每个 $b_i\\in\\{-1,1\\}$，且 $b_1\\cdots b_6=-1$，说明 $b_1,\\dots,b_6$ 中 $-1$ 的个数为奇数，即 $1,3$ 或 $5$ 个。于是\n$$\\det A=6-2k\\in\\{4,0,-4\\}\\subseteq[-4,4].$$\n综上 $S\\subseteq\\{-4,-3,\\dots,4\\}$，结合（一）得 $S=\\{-4,-3,-2,-1,0,1,2,3,4\\}$。",
+      "detailedAnalysis": "题目要求“恰好”是这九个数，必须两头都做：一侧构造出每个值，另一侧证明不可能超出。构造部分没有统一公式，只能逐个试凑；技巧是利用 $\\det$ 的线性与行交换性——先把 $0,1,2,3,4$ 做出来，交换两行即得负值，所以只需五个矩阵。\n\n上界部分是真正的难点。把行列式看成六个乘积 $b_i$ 之和，每个 $b_i\\in\\{-1,0,1\\}$，若无约束则和可到 $6$。约束来自两点：一是每个元素在六个乘积中恰好出现两次，故某个元素为零时至少两个 $b_i$ 为零，和至多 $4$；二是三个负号使 $\\prod b_i=-\\bigl(\\prod a_{ij}\\bigr)^2\\leq0$，当全部元素为 $\\pm1$ 时六个 $b_i$ 的乘积为 $-1$，$-1$ 的个数必为奇数，和只能是 $4,0,-4$。\n\n这两条恰好覆盖所有情况，也解释了为什么 $5$ 取不到：要取 $5$ 需要五个 $+1$ 和一个 $0$，但零元素会连带消灭两个乘积，只能剩下四个。检验：枚举全部 $3^9=19683$ 个矩阵，行列式取值恰为 $\\{-4,\\dots,4\\}$，与结论一致。",
+      "points": [
+        "行列式的完全展开式",
+        "置换的符号",
+        "乘积约束下的取值估计",
+        "构造法"
+      ],
+      "pitfalls": [
+        "只证明 $|\\det|\\leq4$ 而未构造出 $2,3$ 等具体矩阵。",
+        "忽略“每个元素在六个乘积中出现两次”，误以为零元素只消灭一个乘积而得到 $|\\det|\\leq5$。"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十三届全国大学生数学竞赛初赛及补赛（数学类与非数学类））（数学B类）第 4 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "行列式"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：分两步，先证每个整数 $|k|\\leq4$ 都能被取到，再证 $|\\det|\\leq4$。",
+        "（一）可达性。直接给出矩阵：\n$$\\det\\begin{pmatrix}1&0&0\\\\0&1&0\\\\0&0&0\\end{pmatrix}=0,\\qquad\n\\det\\begin{pmatrix}1&0&0\\\\0&1&0\\\\0&0&1\\end{pmatrix}=1,$$\n$$\\det\\begin{pmatrix}1&1&0\\\\0&1&1\\\\1&0&1\\end{pmatrix}=1\\cdot(1-0)-1\\cdot(0-1)+0=2,$$\n$$\\det\\begin{pmatrix}-1&-1&-1\\\\-1&0&1\\\\-1&1&0\\end{pmatrix}=(-1)(0-1)-(-1)(0+1)+(-1)(-1-0)=3,$$\n$$\\det\\begin{pmatrix}1&-1&1\\\\1&1&-1\\\\-1&1&1\\end{pmatrix}=1\\cdot(1+1)-(-1)(1-1)+1\\cdot(1+1)=4 .$$\n交换前两行可把 $1,2,3,4$ 分别变为 $-1,-2,-3,-4$，故 $\\{-4,\\dots,4\\}\\subseteq S$。",
+        "（二）上界。按定义展开：\n$$\\det A=\\sum_{\\sigma\\in S_3}\\operatorname{sgn}\\sigma\\prod_{i=1}^{3}a_{i,\\sigma(i)}=b_1+b_2+b_3+b_4+b_5+b_6,$$\n其中\n$$b_1=a_{11}a_{22}a_{33},\\quad b_2=a_{12}a_{23}a_{31},\\quad b_3=a_{13}a_{21}a_{32},$$\n$$b_4=-a_{13}a_{22}a_{31},\\quad b_5=-a_{12}a_{21}a_{33},\\quad b_6=-a_{11}a_{23}a_{32}.$$\n每个 $b_i$ 是三个 $\\{-1,0,1\\}$ 中数的乘积，故 $b_i\\in\\{-1,0,1\\}$。又九个位置的元素在六个乘积中各出现恰好两次，且三个负号使\n$$b_1b_2b_3b_4b_5b_6=-\\Bigl(\\prod_{i,j}a_{ij}\\Bigr)^2\\leq0 .$$",
+        "情形一：某个 $a_{ij}=0$。由于每个位置恰好出现在两个乘积中，至少有两个 $b_i$ 为零，其余至多四个非零且绝对值不超过 $1$，故\n$$|\\det A|\\leq4 .$$",
+        "情形二：全部 $a_{ij}\\in\\{-1,1\\}$。此时每个 $b_i\\in\\{-1,1\\}$，且 $b_1\\cdots b_6=-1$，说明 $b_1,\\dots,b_6$ 中 $-1$ 的个数为奇数，即 $1,3$ 或 $5$ 个。于是\n$$\\det A=6-2k\\in\\{4,0,-4\\}\\subseteq[-4,4].$$\n综上 $S\\subseteq\\{-4,-3,\\dots,4\\}$，结合（一）得 $S=\\{-4,-3,-2,-1,0,1,2,3,4\\}$。"
+      ],
+      "pointKeys": [
+        "行列式的完全展开式",
+        "置换的符号",
+        "乘积约束下的取值估计",
+        "构造法"
+      ],
+      "verification": "计算机穷举复核：对全部 $3^9=19683$ 个 $R$ 上的 $3$ 阶矩阵计算行列式，取值集合恰为 $\\{-4,-3,-2,-1,0,1,2,3,4\\}$；并逐一验证文中五个矩阵的行列式为 $0,1,2,3,4$。"
+    },
+    {
+      "id": "GA-B2005",
+      "subject": "gaodai",
+      "chapter": "第四章 矩阵",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 行和为一的方阵的迹估计",
+      "question": "设 $a_1,a_2,a_3$ 为满足 $a_1^2+a_2^2+a_3^2=1$ 的一组实数，$b_1,b_2$ 为满足 $b_1^2+b_2^2=1$ 的一组实数。又设 $M_1$ 为 $5\\times3$ 矩阵，其每一行都为 $a_1,a_2,a_3$ 的一个排列；$M_2$ 是 $5\\times2$ 矩阵，其每一行都为 $b_1,b_2$ 的一个排列。令 $M=(M_1,M_2)$，它为 $5\\times5$ 矩阵。证明：\n(1) $(\\operatorname{tr}M)^2\\leq(5+2\\sqrt6)\\operatorname{rank}M$；\n(2) $M$ 必有绝对值小于或等于 $\\sqrt2+\\sqrt3$ 的实特征值 $\\lambda$。",
+      "answer": "两个结论均成立：$(\\operatorname{tr}M)^2\\leq(5+2\\sqrt6)\\operatorname{rank}M$，且存在实特征值 $|\\lambda|\\leq\\sqrt2+\\sqrt3$。",
+      "standardSolution": "证明：把 $M$ 分块为\n$$M=\\begin{pmatrix}A&B\\\\C&D\\end{pmatrix},$$\n其中 $A$ 为 $M$ 的前 $3$ 行前 $3$ 列（即 $M_1$ 的前三行），$D$ 为 $M$ 的后 $2$ 行后 $2$ 列（即 $M_2$ 的后两行），$B,C$ 为相应的交叉块。记 $r=\\operatorname{rank}M$。\n\n(1) 由分块结构，$\\operatorname{tr}M=\\operatorname{tr}A+\\operatorname{tr}D$。又 $M_1$ 的每一行都是 $(a_1,a_2,a_3)$ 的排列，故每一行的平方和为 $1$；$A$ 的每一行是 $M_1$ 对应行的一部分，故\n$$\\|A\\|_F^2=\\sum_{i=1}^{3}\\sum_{j=1}^{3}a_{ij}^2\\leq\\sum_{i=1}^{3}1=3 .$$\n同理 $M_2$ 每一行的平方和为 $1$，$D$ 的每一行是其中一部分，故 $\\|D\\|_F^2\\leq2$。\n\n设 $A$ 的奇异值为 $\\sigma_1,\\dots$，由 $(\\operatorname{tr}A)^2\\leq\\operatorname{rank}(A)\\sum\\sigma_i^2=\\operatorname{rank}(A)\\|A\\|_F^2$ 及 $\\operatorname{rank}A\\leq r$ 得\n$$(\\operatorname{tr}A)^2\\leq3r ;$$\n同理 $(\\operatorname{tr}D)^2\\leq\\operatorname{rank}(D)\\|D\\|_F^2\\leq2r$。于是\n$$(\\operatorname{tr}M)^2=\\bigl(\\operatorname{tr}A+\\operatorname{tr}D\\bigr)^2\\leq\\bigl(|\\operatorname{tr}A|+|\\operatorname{tr}D|\\bigr)^2\\leq\\bigl(\\sqrt{3r}+\\sqrt{2r}\\bigr)^2=(5+2\\sqrt6)\\,r .$$\n\n(2) 取行范数 $\\|M\\|_\\infty=\\max_i\\sum_j|m_{ij}|$，它是与向量 $\\infty$-范数相容的矩阵范数，故谱半径 $\\rho(M)\\leq\\|M\\|_\\infty$。对 $M$ 的任一行，\n$$\\sum_{j=1}^{5}|m_{ij}|\\leq|a_1|+|a_2|+|a_3|+|b_1|+|b_2|,$$\n因为该行由三个 $a$ 的排列与两个 $b$ 的排列拼成。由柯西不等式，\n$$|a_1|+|a_2|+|a_3|\\leq\\sqrt3\\sqrt{a_1^2+a_2^2+a_3^2}=\\sqrt3,\\qquad|b_1|+|b_2|\\leq\\sqrt2\\sqrt{b_1^2+b_2^2}=\\sqrt2 .$$\n故 $\\|M\\|_\\infty\\leq\\sqrt3+\\sqrt2$，从而 $\\rho(M)\\leq\\sqrt3+\\sqrt2$。\n\n另一方面，$M$ 是奇数阶（$5$ 阶）实矩阵，其特征多项式为奇次实系数多项式，故至少有一个实根，即 $M$ 有实特征值 $\\lambda$。对任意特征值都有 $|\\lambda|\\leq\\rho(M)$，所以存在实特征值满足\n$$|\\lambda|\\leq\\sqrt3+\\sqrt2 .$$",
+      "detailedAnalysis": "两个结论走两条不同的路，但都利用同一个结构：$M$ 的每一行由 $a$ 的三个分量与 $b$ 的两个分量拼成，因而每行的平方和恒为 $a_1^2+a_2^2+a_3^2+b_1^2+b_2^2=2$，每行的绝对值和不超过 $\\sqrt3+\\sqrt2$。\n\n第 (1) 问要估计迹的平方，思路是用“迹的平方不超过秩乘以 Frobenius 范数平方”这一奇异值不等式：$(\\operatorname{tr}A)^2=(\\sum\\sigma_i)^2\\leq r_A\\sum\\sigma_i^2$。把 $M$ 分成左上 $3\\times3$ 块 $A$ 与右下 $2\\times2$ 块 $D$，则 $\\operatorname{tr}M=\\operatorname{tr}A+\\operatorname{tr}D$，而 $\\|A\\|_F^2\\leq3$、$\\|D\\|_F^2\\leq2$（各行的平方和只有一部分落在对角块内），于是两项分别为 $3r$ 与 $2r$，开方相加得 $(\\sqrt3+\\sqrt2)^2r$，系数恰为 $5+2\\sqrt6$。\n\n第 (2) 问用行范数控制谱半径，再用奇次实多项式必有实根保证实特征值的存在性。注意不能直接用 $\\|M\\|_2$，因为那需要估计奇异值；行范数只需估计每行的绝对值和，正好与 $a,b$ 的平方和条件匹配。检验：随机生成大量满足条件的 $M$，$(\\operatorname{tr}M)^2/\\operatorname{rank}M$ 的最大值约 $8.8<5+2\\sqrt6\\approx9.899$，与不等式相容。",
+      "points": [
+        "矩阵的 Frobenius 范数",
+        "奇异值与迹的不等式",
+        "行范数与谱半径",
+        "奇次实系数多项式必有实根"
+      ],
+      "pitfalls": [
+        "把 $\\|A\\|_F^2$ 直接当成 $3$ 而忽略 $A$ 只是 $M_1$ 前三行的部分块。",
+        "用 $\\|M\\|_2$ 代替行范数估计谱半径，导致无法得到 $\\sqrt3+\\sqrt2$ 这个界。"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十三届全国大学生数学竞赛初赛及补赛（数学类与非数学类））（补赛 数学A类）第 4 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "矩阵"
+      ],
+      "relatedEntries": [],
+      "difficulty": 5,
+      "solution": [
+        "证明：把 $M$ 分块为\n$$M=\\begin{pmatrix}A&B\\\\C&D\\end{pmatrix},$$\n其中 $A$ 为 $M$ 的前 $3$ 行前 $3$ 列（即 $M_1$ 的前三行），$D$ 为 $M$ 的后 $2$ 行后 $2$ 列（即 $M_2$ 的后两行），$B,C$ 为相应的交叉块。记 $r=\\operatorname{rank}M$。",
+        "(1) 由分块结构，$\\operatorname{tr}M=\\operatorname{tr}A+\\operatorname{tr}D$。又 $M_1$ 的每一行都是 $(a_1,a_2,a_3)$ 的排列，故每一行的平方和为 $1$；$A$ 的每一行是 $M_1$ 对应行的一部分，故\n$$\\|A\\|_F^2=\\sum_{i=1}^{3}\\sum_{j=1}^{3}a_{ij}^2\\leq\\sum_{i=1}^{3}1=3 .$$\n同理 $M_2$ 每一行的平方和为 $1$，$D$ 的每一行是其中一部分，故 $\\|D\\|_F^2\\leq2$。",
+        "设 $A$ 的奇异值为 $\\sigma_1,\\dots$，由 $(\\operatorname{tr}A)^2\\leq\\operatorname{rank}(A)\\sum\\sigma_i^2=\\operatorname{rank}(A)\\|A\\|_F^2$ 及 $\\operatorname{rank}A\\leq r$ 得\n$$(\\operatorname{tr}A)^2\\leq3r ;$$\n同理 $(\\operatorname{tr}D)^2\\leq\\operatorname{rank}(D)\\|D\\|_F^2\\leq2r$。于是\n$$(\\operatorname{tr}M)^2=\\bigl(\\operatorname{tr}A+\\operatorname{tr}D\\bigr)^2\\leq\\bigl(|\\operatorname{tr}A|+|\\operatorname{tr}D|\\bigr)^2\\leq\\bigl(\\sqrt{3r}+\\sqrt{2r}\\bigr)^2=(5+2\\sqrt6)\\,r .$$",
+        "(2) 取行范数 $\\|M\\|_\\infty=\\max_i\\sum_j|m_{ij}|$，它是与向量 $\\infty$-范数相容的矩阵范数，故谱半径 $\\rho(M)\\leq\\|M\\|_\\infty$。对 $M$ 的任一行，\n$$\\sum_{j=1}^{5}|m_{ij}|\\leq|a_1|+|a_2|+|a_3|+|b_1|+|b_2|,$$\n因为该行由三个 $a$ 的排列与两个 $b$ 的排列拼成。由柯西不等式，\n$$|a_1|+|a_2|+|a_3|\\leq\\sqrt3\\sqrt{a_1^2+a_2^2+a_3^2}=\\sqrt3,\\qquad|b_1|+|b_2|\\leq\\sqrt2\\sqrt{b_1^2+b_2^2}=\\sqrt2 .$$\n故 $\\|M\\|_\\infty\\leq\\sqrt3+\\sqrt2$，从而 $\\rho(M)\\leq\\sqrt3+\\sqrt2$。",
+        "另一方面，$M$ 是奇数阶（$5$ 阶）实矩阵，其特征多项式为奇次实系数多项式，故至少有一个实根，即 $M$ 有实特征值 $\\lambda$。对任意特征值都有 $|\\lambda|\\leq\\rho(M)$，所以存在实特征值满足\n$$|\\lambda|\\leq\\sqrt3+\\sqrt2 .$$"
+      ],
+      "pointKeys": [
+        "矩阵的 Frobenius 范数",
+        "奇异值与迹的不等式",
+        "行范数与谱半径",
+        "奇次实系数多项式必有实根"
+      ],
+      "verification": "数值复核：蒙特卡洛生成 $10^5$ 组满足条件的 $M$，$\\max(\\operatorname{tr}M)^2/\\operatorname{rank}M=8.78<9.899=5+2\\sqrt6$；同时检验 $\\|M\\|_\\infty\\leq2.7\\leq\\sqrt3+\\sqrt2=3.146$，与证明一致。"
+    },
+    {
+      "id": "GA-B2006",
+      "subject": "gaodai",
+      "chapter": "第七章 线性变换",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 置换行矩阵的特征值重数",
+      "question": "设 $a_1,\\dots,a_n$ 为和为 $1$ 的 $n$ 个正数（$n\\geq2$），$A=(a_{ij})_{n\\times n}$ 为 $n$ 阶方阵，其每一行均是 $a_1,\\dots,a_n$ 的一个排列。\n(1) 设 $V_1$ 表示 $A$ 关于特征值 $1$ 的复特征向量空间，试计算 $V_1$ 的维数并给出 $V_1$ 的一组基；\n(2) 证明：$1$ 作为 $A$ 的特征值，其代数重数也为 $1$。",
+      "answer": "$\\dim V_1=1$，$\\{(1,1,\\dots,1)^{\\mathrm T}\\}$ 为一组基；$1$ 的代数重数也是 $1$。",
+      "standardSolution": "证明：(1) 由于 $A$ 的每一行元素之和都是 $a_1+\\cdots+a_n=1$，故 $A\\boldsymbol e=\\boldsymbol e$，其中 $\\boldsymbol e=(1,1,\\dots,1)^{\\mathrm T}$。所以 $\\boldsymbol e\\in V_1$，$1$ 是 $A$ 的特征值，且 $\\dim V_1\\geq1$。\n\n设 $\\boldsymbol z=(z_1,\\dots,z_n)^{\\mathrm T}\\in V_1$，$A\\boldsymbol z=\\boldsymbol z$，即对每个 $i$，\n$$z_i=\\sum_{j=1}^{n}a_{ij}z_j .$$\n取 $k$ 使 $|z_k|=\\max_j|z_j|=:M$。由 $a_{ij}>0$ 及 $\\sum_j a_{ij}=1$，\n$$M=|z_k|\\leq\\sum_{j}a_{kj}|z_j|\\leq M\\sum_{j}a_{kj}=M .$$\n故上式中的不等号全为等号，从而对每一个 $a_{kj}>0$ 的 $j$ 都有 $|z_j|=M$；因所有 $a_{kj}>0$，得 $|z_j|=M$ 对一切 $j$ 成立。\n\n再把等式 $z_k=\\sum_ja_{kj}z_j$ 看作复数 $z_j$ 的凸组合取模：因 $|z_j|=M$ 都相等且取到等号，这些复数必同向，即存在 $\\lambda\\in\\mathbb{C}$，$|\\lambda|=1$，使 $z_j=\\lambda M$ 对一切 $j$ 成立。于是 $\\boldsymbol z=\\lambda M\\boldsymbol e$，即 $V_1\\subseteq\\operatorname{span}\\{\\boldsymbol e\\}$。故\n$$\\dim V_1=1,\\qquad\\{\\boldsymbol e\\}\\ \\text{是}\\ V_1\\ \\text{的一组基}.$$\n\n(2) 反设 $1$ 的代数重数大于 $1$。由 (1) 知几何重数为 $1$，故 $A$ 的 Jordan 标准形中含一个以 $1$ 为特征值、阶数 $\\geq2$ 的 Jordan 块，于是存在向量 $\\boldsymbol w$ 使\n$$(A-E)\\boldsymbol w=\\boldsymbol e,\\qquad (A-E)\\boldsymbol e=\\boldsymbol 0 .$$\n从而 $(A-E)^2\\boldsymbol w=\\boldsymbol 0$，且 $A\\boldsymbol w=\\boldsymbol w+\\boldsymbol e$。用归纳法可得\n$$A^k\\boldsymbol w=\\boldsymbol w+k\\boldsymbol e,\\qquad k=1,2,\\dots$$\n另一方面，$A$ 的每行元素均为正且行和为 $1$，故 $\\|A\\|_\\infty=1$（行范数），从而 $\\|A^k\\|_\\infty\\leq\\|A\\|_\\infty^k=1$。于是\n$$\\|\\boldsymbol w+k\\boldsymbol e\\|_\\infty=\\|A^k\\boldsymbol w\\|_\\infty\\leq\\|A^k\\|_\\infty\\|\\boldsymbol w\\|_\\infty\\leq\\|\\boldsymbol w\\|_\\infty .$$\n但 $\\|\\boldsymbol w+k\\boldsymbol e\\|_\\infty\\geq k\\|\\boldsymbol e\\|_\\infty-\\|\\boldsymbol w\\|_\\infty=k-\\|\\boldsymbol w\\|_\\infty$，当 $k$ 充分大时大于 $\\|\\boldsymbol w\\|_\\infty$，矛盾。故 $1$ 的代数重数为 $1$。",
+      "detailedAnalysis": "第 (1) 问的关键是“行和为一”只保证 $\\boldsymbol e$ 是特征向量，要证“没有别的”必须用正性。做法是取分量模最大的位置 $k$，把 $z_k$ 写成 $\\sum a_{kj}z_j$ 的加权平均，模不等式给出 $M\\leq M$，等号成立迫使所有被加项的模都等于 $M$；再由等号条件（凸组合取模等于模的加权平均）推出所有 $z_j$ 同向，于是 $V_1$ 只有一维。这里 $a_{ij}>0$ 是本质的：若有零元素，等号条件只对非零系数成立，就可能出现多个特征向量。\n\n第 (2) 问是“几何重数为 $1$，代数重数也是 $1$”的典型论证，工具是 Jordan 块与矩阵范数。若代数重数大于 $1$，就存在 $\\boldsymbol w$ 使 $(A-E)\\boldsymbol w=\\boldsymbol e$，从而 $A^k\\boldsymbol w=\\boldsymbol w+k\\boldsymbol e$ 随 $k$ 线性增长；但行和为 $1$ 给出行范数 $\\|A\\|_\\infty=1$，幂的范数不超过 $1$，$\\|A^k\\boldsymbol w\\|$ 有界，矛盾。\n\n检验：取 $n=2$、$a_1=a_2=\\frac12$，则 $A=\\frac12\\begin{pmatrix}1&1\\\\1&1\\end{pmatrix}$，特征值为 $1,0$，代数重数确为 $1$；若取 $a_1=1,a_2=0$（非正），$A=\\begin{pmatrix}1&0\\\\0&1\\end{pmatrix}$，$1$ 的代数重数为 $2$，说明正性条件不可去掉。",
+      "points": [
+        "特征值与行和的关系",
+        "模最大分量法",
+        "Jordan 标准形",
+        "矩阵行范数与幂的有界性"
+      ],
+      "pitfalls": [
+        "只用行和为 $1$ 就断言 $\\dim V_1=1$，未使用元素全正这一条件。",
+        "第 (2) 问中未说明 $\\|A^k\\|_\\infty\\leq\\|A\\|_\\infty^k=1$，直接由 $\\operatorname{tr}A=1$ 下结论。"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十三届全国大学生数学竞赛初赛及补赛（数学类与非数学类））（补赛 数学B类）第 4 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "特征值"
+      ],
+      "relatedEntries": [],
+      "difficulty": 5,
+      "solution": [
+        "证明：(1) 由于 $A$ 的每一行元素之和都是 $a_1+\\cdots+a_n=1$，故 $A\\boldsymbol e=\\boldsymbol e$，其中 $\\boldsymbol e=(1,1,\\dots,1)^{\\mathrm T}$。所以 $\\boldsymbol e\\in V_1$，$1$ 是 $A$ 的特征值，且 $\\dim V_1\\geq1$。",
+        "设 $\\boldsymbol z=(z_1,\\dots,z_n)^{\\mathrm T}\\in V_1$，$A\\boldsymbol z=\\boldsymbol z$，即对每个 $i$，\n$$z_i=\\sum_{j=1}^{n}a_{ij}z_j .$$\n取 $k$ 使 $|z_k|=\\max_j|z_j|=:M$。由 $a_{ij}>0$ 及 $\\sum_j a_{ij}=1$，\n$$M=|z_k|\\leq\\sum_{j}a_{kj}|z_j|\\leq M\\sum_{j}a_{kj}=M .$$\n故上式中的不等号全为等号，从而对每一个 $a_{kj}>0$ 的 $j$ 都有 $|z_j|=M$；因所有 $a_{kj}>0$，得 $|z_j|=M$ 对一切 $j$ 成立。",
+        "再把等式 $z_k=\\sum_ja_{kj}z_j$ 看作复数 $z_j$ 的凸组合取模：因 $|z_j|=M$ 都相等且取到等号，这些复数必同向，即存在 $\\lambda\\in\\mathbb{C}$，$|\\lambda|=1$，使 $z_j=\\lambda M$ 对一切 $j$ 成立。于是 $\\boldsymbol z=\\lambda M\\boldsymbol e$，即 $V_1\\subseteq\\operatorname{span}\\{\\boldsymbol e\\}$。故\n$$\\dim V_1=1,\\qquad\\{\\boldsymbol e\\}\\ \\text{是}\\ V_1\\ \\text{的一组基}.$$",
+        "(2) 反设 $1$ 的代数重数大于 $1$。由 (1) 知几何重数为 $1$，故 $A$ 的 Jordan 标准形中含一个以 $1$ 为特征值、阶数 $\\geq2$ 的 Jordan 块，于是存在向量 $\\boldsymbol w$ 使\n$$(A-E)\\boldsymbol w=\\boldsymbol e,\\qquad (A-E)\\boldsymbol e=\\boldsymbol 0 .$$\n从而 $(A-E)^2\\boldsymbol w=\\boldsymbol 0$，且 $A\\boldsymbol w=\\boldsymbol w+\\boldsymbol e$。用归纳法可得\n$$A^k\\boldsymbol w=\\boldsymbol w+k\\boldsymbol e,\\qquad k=1,2,\\dots$$\n另一方面，$A$ 的每行元素均为正且行和为 $1$，故 $\\|A\\|_\\infty=1$（行范数），从而 $\\|A^k\\|_\\infty\\leq\\|A\\|_\\infty^k=1$。于是\n$$\\|\\boldsymbol w+k\\boldsymbol e\\|_\\infty=\\|A^k\\boldsymbol w\\|_\\infty\\leq\\|A^k\\|_\\infty\\|\\boldsymbol w\\|_\\infty\\leq\\|\\boldsymbol w\\|_\\infty .$$\n但 $\\|\\boldsymbol w+k\\boldsymbol e\\|_\\infty\\geq k\\|\\boldsymbol e\\|_\\infty-\\|\\boldsymbol w\\|_\\infty=k-\\|\\boldsymbol w\\|_\\infty$，当 $k$ 充分大时大于 $\\|\\boldsymbol w\\|_\\infty$，矛盾。故 $1$ 的代数重数为 $1$。"
+      ],
+      "pointKeys": [
+        "特征值与行和的关系",
+        "模最大分量法",
+        "Jordan 标准形",
+        "矩阵行范数与幂的有界性"
+      ],
+      "verification": "人工复核：核对模最大分量法中 $M\\leq\\sum a_{kj}|z_j|\\leq M$ 的等号分析；核对 Jordan 块给出 $(A-E)\\boldsymbol w=\\boldsymbol e$ 与 $A^k\\boldsymbol w=\\boldsymbol w+k\\boldsymbol e$；核对 $\\|A\\|_\\infty=1$。另用 $n=2$ 的两个例子验证正性条件的必要性。"
+    },
+    {
+      "id": "GA-B2007",
+      "subject": "gaodai",
+      "chapter": "第九章 欧几里得空间",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 对称酉矩阵的共轭平方分解",
+      "question": "设 $P$ 为对称酉矩阵，证明：存在可逆复矩阵 $Q$ 使得\n$$P=Q\\overline{Q}^{-1},$$\n其中 $\\overline{Q}$ 表示 $Q$ 的共轭矩阵。",
+      "answer": "取 $Q=UEU^{-1}$（$E$ 为 $D$ 的对角平方根）即满足 $P=Q\\overline Q^{-1}$。",
+      "standardSolution": "证明：设 $P$ 为 $n$ 阶矩阵。$P$ 是酉矩阵，故为正规矩阵（$P^*P=PP^*$），由酉相似对角化定理，存在酉矩阵 $U$ 使\n$$U^{-1}PU=D=\\operatorname{diag}(\\alpha_1,\\dots,\\alpha_n),$$\n其中 $|\\alpha_i|=1$。\n\n取复数 $\\beta_i$ 使 $\\beta_i^2=\\alpha_i$（$1\\leq i\\leq n$），则 $|\\beta_i|=1$。令\n$$E=\\operatorname{diag}(\\beta_1,\\dots,\\beta_n).$$\n由拉格朗日插值公式，存在复系数多项式 $f$ 使 $f(\\alpha_i)=\\beta_i$，于是 $E=f(D)$。\n\n首先证明 $\\overline E=E^{-1}$：由 $|\\beta_i|=1$ 得 $\\overline{\\beta_i}=\\beta_i^{-1}$，故\n$$\\overline E=\\operatorname{diag}(\\overline{\\beta_1},\\dots,\\overline{\\beta_n})=\\operatorname{diag}(\\beta_1^{-1},\\dots,\\beta_n^{-1})=E^{-1}.$$\n\n再证 $\\overline E$ 与 $U^{-1}\\overline U$ 可交换。因 $P$ 是酉矩阵，\n$$P^{-1}=P^*=\\overline{P}^{\\,\\mathrm T}=\\overline{P^{\\mathrm T}}=\\overline P,$$\n最后一步用了 $P$ 对称（$P^{\\mathrm T}=P$）。于是\n$$UD^{-1}U^{-1}=P^{-1}=\\overline P=\\overline U\\,\\overline D\\,\\overline U^{-1}=\\overline U D^{-1}\\overline U^{-1},$$\n其中用了 $\\overline D=\\operatorname{diag}(\\overline{\\alpha_i})=D^{-1}$。两边左乘 $U^{-1}$、右乘 $\\overline U$ 得\n$$D^{-1}\\bigl(U^{-1}\\overline U\\bigr)=\\bigl(U^{-1}\\overline U\\bigr)D^{-1},$$\n即 $W:=U^{-1}\\overline U$ 与 $D^{-1}$（从而与 $D$、与 $f(D)=E$、与 $\\overline E=E^{-1}$）可交换。\n\n令 $Q=UEU^{-1}$。因 $U$ 酉、$E$ 对角且对角元非零，$Q$ 可逆，且 $\\overline Q=\\overline U\\,\\overline E\\,\\overline U^{-1}$。计算\n$$Q\\overline Q^{-1}=UEU^{-1}\\cdot\\overline U\\,\\overline E^{-1}\\overline U^{-1}=UE\\bigl(U^{-1}\\overline U\\bigr)\\overline E^{-1}\\overline U^{-1}=UE\\,\\overline E^{-1}\\bigl(U^{-1}\\overline U\\bigr)\\overline U^{-1},$$\n这里用了 $W=U^{-1}\\overline U$ 与 $\\overline E^{-1}$ 可交换。又 $E\\overline E^{-1}=\\operatorname{diag}(\\beta_i\\beta_i)=D$，且 $\\bigl(U^{-1}\\overline U\\bigr)\\overline U^{-1}=U^{-1}$，故\n$$Q\\overline Q^{-1}=U\\,D\\,U^{-1}=P .$$",
+      "detailedAnalysis": "题目的目标是\"把 $P$ 写成 $Q$ 与它共轭之逆的乘积\"，这提示先在酉对角化下把 $P$ 化成对角阵 $D$，再在对角层面构造 $Q$。对角层面要做的事是：找对角的 $E$ 使 $E\\overline E^{-1}=D$，即 $\\beta_i/\\overline{\\beta_i}=\\alpha_i$。若取 $\\beta_i^2=\\alpha_i$ 且 $|\\beta_i|=1$，则 $\\overline{\\beta_i}=\\beta_i^{-1}$，条件自动满足——这正是 $|\\alpha_i|=1$ 的用处，也是本题设计的核心。\n\n难点在于把对角构造搬回原空间。设 $Q=UEU^{-1}$，则 $Q\\overline Q^{-1}=U\\bigl(E\\,W\\,\\overline E^{-1}W^{-1}\\bigr)U^{-1}$，其中 $W=U^{-1}\\overline U$；要让它等于 $UDU^{-1}$，需要 $E\\overline E^{-1}=D$ 且 $W$ 与 $E,\\overline E$ 都可交换。后者来自 $P$ 的对称性：由 $P^{-1}=P^*=\\overline P$ 得 $D^{-1}W=WD^{-1}$，故 $W$ 与 $f(D)=E$ 交换。\n\n最后把 $E\\,W\\,\\overline E^{-1}W^{-1}$ 化简为 $E\\overline E^{-1}$，再用 $E^2=D$ 收尾。检验：一阶情形 $P=e^{i\\theta}$ 取 $\\beta=e^{i\\theta/2}$，确有 $\\beta/\\overline\\beta=e^{i\\theta}$；$n$ 阶时对每个特征值分别验证即可。值得强调的是 $Q$ 并不唯一：每个 $\\beta_i$ 的两个平方根都可取，因此题目只要求证明存在性，不必给出唯一的表达式。",
+      "points": [
+        "酉矩阵的谱分解",
+        "正规矩阵的对角化",
+        "拉格朗日插值构造多项式",
+        "共轭与逆的关系"
+      ],
+      "pitfalls": [
+        "取 $\\beta_i$ 时忘记 $|\\beta_i|=1$，导致 $\\overline E\\neq E^{-1}$，后面无法化简。",
+        "未证明 $U^{-1}\\overline U$ 与 $E$ 可交换就直接把 $Q\\overline Q^{-1}$ 写成 $UDU^{-1}$。"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十三届全国大学生数学竞赛初赛及补赛（数学类与非数学类））（数学A类）第 4 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "酉矩阵"
+      ],
+      "relatedEntries": [],
+      "difficulty": 5,
+      "solution": [
+        "证明：设 $P$ 为 $n$ 阶矩阵。$P$ 是酉矩阵，故为正规矩阵（$P^*P=PP^*$），由酉相似对角化定理，存在酉矩阵 $U$ 使\n$$U^{-1}PU=D=\\operatorname{diag}(\\alpha_1,\\dots,\\alpha_n),$$\n其中 $|\\alpha_i|=1$。",
+        "取复数 $\\beta_i$ 使 $\\beta_i^2=\\alpha_i$（$1\\leq i\\leq n$），则 $|\\beta_i|=1$。令\n$$E=\\operatorname{diag}(\\beta_1,\\dots,\\beta_n).$$\n由拉格朗日插值公式，存在复系数多项式 $f$ 使 $f(\\alpha_i)=\\beta_i$，于是 $E=f(D)$。",
+        "首先证明 $\\overline E=E^{-1}$：由 $|\\beta_i|=1$ 得 $\\overline{\\beta_i}=\\beta_i^{-1}$，故\n$$\\overline E=\\operatorname{diag}(\\overline{\\beta_1},\\dots,\\overline{\\beta_n})=\\operatorname{diag}(\\beta_1^{-1},\\dots,\\beta_n^{-1})=E^{-1}.$$",
+        "再证 $\\overline E$ 与 $U^{-1}\\overline U$ 可交换。因 $P$ 是酉矩阵，\n$$P^{-1}=P^*=\\overline{P}^{\\,\\mathrm T}=\\overline{P^{\\mathrm T}}=\\overline P,$$\n最后一步用了 $P$ 对称（$P^{\\mathrm T}=P$）。于是\n$$UD^{-1}U^{-1}=P^{-1}=\\overline P=\\overline U\\,\\overline D\\,\\overline U^{-1}=\\overline U D^{-1}\\overline U^{-1},$$\n其中用了 $\\overline D=\\operatorname{diag}(\\overline{\\alpha_i})=D^{-1}$。两边左乘 $U^{-1}$、右乘 $\\overline U$ 得\n$$D^{-1}\\bigl(U^{-1}\\overline U\\bigr)=\\bigl(U^{-1}\\overline U\\bigr)D^{-1},$$\n即 $W:=U^{-1}\\overline U$ 与 $D^{-1}$（从而与 $D$、与 $f(D)=E$、与 $\\overline E=E^{-1}$）可交换。",
+        "令 $Q=UEU^{-1}$。因 $U$ 酉、$E$ 对角且对角元非零，$Q$ 可逆，且 $\\overline Q=\\overline U\\,\\overline E\\,\\overline U^{-1}$。计算\n$$Q\\overline Q^{-1}=UEU^{-1}\\cdot\\overline U\\,\\overline E^{-1}\\overline U^{-1}=UE\\bigl(U^{-1}\\overline U\\bigr)\\overline E^{-1}\\overline U^{-1}=UE\\,\\overline E^{-1}\\bigl(U^{-1}\\overline U\\bigr)\\overline U^{-1},$$\n这里用了 $W=U^{-1}\\overline U$ 与 $\\overline E^{-1}$ 可交换。又 $E\\overline E^{-1}=\\operatorname{diag}(\\beta_i\\beta_i)=D$，且 $\\bigl(U^{-1}\\overline U\\bigr)\\overline U^{-1}=U^{-1}$，故\n$$Q\\overline Q^{-1}=U\\,D\\,U^{-1}=P .$$"
+      ],
+      "pointKeys": [
+        "酉矩阵的谱分解",
+        "正规矩阵的对角化",
+        "拉格朗日插值构造多项式",
+        "共轭与逆的关系"
+      ],
+      "verification": "人工复核：核对 $P$ 对称且酉时 $P^{-1}=\\overline P$；核对 $\\overline D=D^{-1}$ 与 $D^{-1}W=WD^{-1}$；核对 $E\\overline E^{-1}=\\operatorname{diag}(\\beta_i^2)=D$。并用 $n=1$ 的 $P=e^{i\\theta}$（实对称一阶即实酉）验证 $\\beta=e^{i\\theta/2}$ 给出 $\\beta/\\overline\\beta=e^{i\\theta}$。"
+    },
+    {
+      "id": "GA-B2008",
+      "subject": "gaodai",
+      "chapter": "第七章 线性变换",
+      "section": "§7.4 特征值与特征向量",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 循环向量与几何重数",
+      "question": "设 $V$ 是复数域 $\\mathbb{C}$ 上的 $n$ 维线性空间，$A$ 是 $V$ 上的一个线性变换。证明：存在 $\\alpha\\in V$ 使得 $\\{\\alpha,A\\alpha,\\cdots,A^{n-1}\\alpha\\}$ 成为 $V$ 的一组基，当且仅当对于 $A$ 的任一特征值 $\\lambda$，$\\lambda$ 的几何重数为 $1$。",
+      "answer": "结论成立：这样的 $\\alpha$（循环向量）存在，当且仅当 $A$ 的每个特征值只对应一个 Jordan 块，即每个特征值的几何重数都是 $1$。",
+      "standardSolution": "证明：必要性。设存在 $\\alpha\\in V$ 使 $\\{\\alpha,A\\alpha,\\cdots,A^{n-1}\\alpha\\}$ 是 $V$ 的一组基。由于 $A(A^{k}\\alpha)=A^{k+1}\\alpha$，$A$ 在该基下的矩阵为\n\n$$\\mathcal{A}=\\begin{pmatrix}0&0&\\cdots&0&*\\\\1&0&\\cdots&0&*\\\\0&1&\\cdots&0&*\\\\\\vdots&\\vdots&\\ddots&\\vdots&\\vdots\\\\0&0&\\cdots&1&*\\end{pmatrix}.$$\n\n对任意 $c\\in\\mathbb{C}$，$cE-\\mathcal{A}$ 的第 $i+1$ 行第 $i$ 列元素为 $-1$（$i=1,\\cdots,n-1$）。取第 $2,3,\\cdots,n$ 行与第 $1,2,\\cdots,n-1$ 列构成的 $n-1$ 阶子式，它是主对角线全为 $-1$ 的上三角行列式，其值为 $(-1)^{n-1}\\ne 0$。故\n\n$$\\operatorname{rank}(cE-\\mathcal{A})\\ge n-1,$$\n\n从而齐次方程组 $(cE-\\mathcal{A})X=0$ 的解空间维数 $n-\\operatorname{rank}(cE-\\mathcal{A})\\le 1$。取 $c=\\lambda$ 为 $A$ 的任一特征值，此时 $(\\lambda E-\\mathcal{A})X=0$ 有非零解，解空间维数 $\\ge 1$，于是恰为 $1$，即 $\\lambda$ 的几何重数为 $1$。\n\n充分性。设 $A$ 的互不相同的特征值为 $\\lambda_{1},\\cdots,\\lambda_{s}$，代数重数为 $d_{1},\\cdots,d_{s}$，$\\sum_{i=1}^{s}d_{i}=n$，则特征多项式为 $f(x)=\\prod_{i=1}^{s}(x-\\lambda_{i})^{d_{i}}$。令\n\n$$V_{i}=\\ker\\left((A-\\lambda_{i}E)^{d_{i}}\\right),\\qquad i=1,\\cdots,s,$$\n\n则每个 $V_{i}$ 都是 $A$-不变子空间，$\\dim V_{i}=d_{i}$，且有准素分解 $V=V_{1}\\oplus\\cdots\\oplus V_{s}$。\n\n由于 $\\lambda_{i}$ 的几何重数为 $1$，而 $\\ker(A-\\lambda_{i}E)\\subset V_{i}$，故 $A|_{V_{i}}$ 的几何重数也是 $1$，即 $A|_{V_{i}}$ 的 Jordan 标准形恰为一个 $d_{i}$ 阶 Jordan 块 $J_{d_{i}}(\\lambda_{i})$。于是存在 $\\alpha_{i}\\in V_{i}$，使\n\n$$(A-\\lambda_{i}E)^{d_{i}-1}\\alpha_{i}\\ne 0,$$\n\n且 $\\alpha_{i},A\\alpha_{i},\\cdots,A^{d_{i}-1}\\alpha_{i}$ 是 $V_{i}$ 的基（$\\alpha_{i}$ 为该 Jordan 块的循环向量）。\n\n令 $\\alpha=\\alpha_{1}+\\alpha_{2}+\\cdots+\\alpha_{s}$。若 $\\alpha,A\\alpha,\\cdots,A^{n-1}\\alpha$ 线性相关，则存在非零多项式 $p(x)\\in\\mathbb{C}[x]$，$\\deg p\\le n-1$，使 $p(A)\\alpha=0$。由 $V_{i}$ 的 $A$-不变性，$p(A)\\alpha_{i}\\in V_{i}$，而直和分解给出 $p(A)\\alpha=\\sum_{i=1}^{s}p(A)\\alpha_{i}$，故\n\n$$p(A)\\alpha_{i}=0,\\qquad i=1,\\cdots,s.$$\n\n另一方面，零化 $\\alpha_{i}$ 的最低次首一多项式恰为 $(x-\\lambda_{i})^{d_{i}}$：它整除 $(x-\\lambda_{i})^{d_{i}}$，而不整除 $(x-\\lambda_{i})^{d_{i}-1}$（因 $(A-\\lambda_{i}E)^{d_{i}-1}\\alpha_{i}\\ne 0$）。于是\n\n$$(x-\\lambda_{i})^{d_{i}}\\mid p(x),\\qquad i=1,\\cdots,s.$$\n\n当 $i\\ne j$ 时 $(x-\\lambda_{i})^{d_{i}}$ 与 $(x-\\lambda_{j})^{d_{j}}$ 互素，故其乘积 $f(x)$ 也整除 $p(x)$，从而 $\\deg p\\ge n$，与 $\\deg p\\le n-1$ 矛盾。\n\n所以 $\\alpha,A\\alpha,\\cdots,A^{n-1}\\alpha$ 线性无关，构成 $n$ 维空间 $V$ 的一组基。",
+      "detailedAnalysis": "本题的实质是循环向量的判别。一个向量反复作用线性变换能张成整个空间，等价于空间作为多项式环上的模是循环模，也等价于每个特征值只对应一个 Jordan 块。必要条件用循环基：在该基下矩阵呈友矩阵形状，任何 $c$ 对应的矩阵都有固定的非零子式，于是解空间维数至多为一；再取 $c$ 恰为某个特征值，解空间非零，才得到恰为一。两个方向都要写，只写\"至多\"是常见失分点。充分条件用准素分解：几何重数为一保证每个广义特征子空间上只有一个 Jordan 块，各取循环向量再相加，即得候选向量。证明它是基用反证法：若存在低次多项式把它零化，由直和分解可逐块零化，于是每个特征多项式因子都整除该多项式，合并后得到特征多项式整除它，与次数太低矛盾。",
+      "points": [
+        "循环向量与友矩阵",
+        "最大阶非零子式与解空间维数",
+        "几何重数与代数重数",
+        "Jordan 标准形",
+        "准素分解与不变子空间"
+      ],
+      "pitfalls": [
+        "必要性中只得到解空间维数 $\\le 1$ 就下结论，忘记对 $c=\\lambda$ 说明解空间非零。",
+        "充分性中默认“几何重数都是 $1$”可直接推出 $A$ 可对角化，忽略了 $d_{i}>1$ 时 $A|_{V_{\\lambda_{i}}}$ 是单个 $d_{i}$ 阶 Jordan 块。",
+        "把 $\\alpha_{i}$ 的零化多项式写成 $(x-\\lambda_{i})$ 而不是 $(x-\\lambda_{i})^{d_{i}}$，导致整除关系推不到特征多项式。"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十五届全国大学生数学竞赛初赛（数学 A 类，2023））第 3 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "循环向量"
+      ],
+      "relatedEntries": [],
+      "difficulty": 5,
+      "solution": [
+        "证明：必要性。设存在 $\\alpha\\in V$ 使 $\\{\\alpha,A\\alpha,\\cdots,A^{n-1}\\alpha\\}$ 是 $V$ 的一组基。由于 $A(A^{k}\\alpha)=A^{k+1}\\alpha$，$A$ 在该基下的矩阵为",
+        "$$\\mathcal{A}=\\begin{pmatrix}0&0&\\cdots&0&*\\\\1&0&\\cdots&0&*\\\\0&1&\\cdots&0&*\\\\\\vdots&\\vdots&\\ddots&\\vdots&\\vdots\\\\0&0&\\cdots&1&*\\end{pmatrix}.$$",
+        "对任意 $c\\in\\mathbb{C}$，$cE-\\mathcal{A}$ 的第 $i+1$ 行第 $i$ 列元素为 $-1$（$i=1,\\cdots,n-1$）。取第 $2,3,\\cdots,n$ 行与第 $1,2,\\cdots,n-1$ 列构成的 $n-1$ 阶子式，它是主对角线全为 $-1$ 的上三角行列式，其值为 $(-1)^{n-1}\\ne 0$。故",
+        "$$\\operatorname{rank}(cE-\\mathcal{A})\\ge n-1,$$",
+        "从而齐次方程组 $(cE-\\mathcal{A})X=0$ 的解空间维数 $n-\\operatorname{rank}(cE-\\mathcal{A})\\le 1$。取 $c=\\lambda$ 为 $A$ 的任一特征值，此时 $(\\lambda E-\\mathcal{A})X=0$ 有非零解，解空间维数 $\\ge 1$，于是恰为 $1$，即 $\\lambda$ 的几何重数为 $1$。",
+        "充分性。设 $A$ 的互不相同的特征值为 $\\lambda_{1},\\cdots,\\lambda_{s}$，代数重数为 $d_{1},\\cdots,d_{s}$，$\\sum_{i=1}^{s}d_{i}=n$，则特征多项式为 $f(x)=\\prod_{i=1}^{s}(x-\\lambda_{i})^{d_{i}}$。令",
+        "$$V_{i}=\\ker\\left((A-\\lambda_{i}E)^{d_{i}}\\right),\\qquad i=1,\\cdots,s,$$",
+        "则每个 $V_{i}$ 都是 $A$-不变子空间，$\\dim V_{i}=d_{i}$，且有准素分解 $V=V_{1}\\oplus\\cdots\\oplus V_{s}$。",
+        "由于 $\\lambda_{i}$ 的几何重数为 $1$，而 $\\ker(A-\\lambda_{i}E)\\subset V_{i}$，故 $A|_{V_{i}}$ 的几何重数也是 $1$，即 $A|_{V_{i}}$ 的 Jordan 标准形恰为一个 $d_{i}$ 阶 Jordan 块 $J_{d_{i}}(\\lambda_{i})$。于是存在 $\\alpha_{i}\\in V_{i}$，使",
+        "$$(A-\\lambda_{i}E)^{d_{i}-1}\\alpha_{i}\\ne 0,$$",
+        "且 $\\alpha_{i},A\\alpha_{i},\\cdots,A^{d_{i}-1}\\alpha_{i}$ 是 $V_{i}$ 的基（$\\alpha_{i}$ 为该 Jordan 块的循环向量）。",
+        "令 $\\alpha=\\alpha_{1}+\\alpha_{2}+\\cdots+\\alpha_{s}$。若 $\\alpha,A\\alpha,\\cdots,A^{n-1}\\alpha$ 线性相关，则存在非零多项式 $p(x)\\in\\mathbb{C}[x]$，$\\deg p\\le n-1$，使 $p(A)\\alpha=0$。由 $V_{i}$ 的 $A$-不变性，$p(A)\\alpha_{i}\\in V_{i}$，而直和分解给出 $p(A)\\alpha=\\sum_{i=1}^{s}p(A)\\alpha_{i}$，故",
+        "$$p(A)\\alpha_{i}=0,\\qquad i=1,\\cdots,s.$$",
+        "另一方面，零化 $\\alpha_{i}$ 的最低次首一多项式恰为 $(x-\\lambda_{i})^{d_{i}}$：它整除 $(x-\\lambda_{i})^{d_{i}}$，而不整除 $(x-\\lambda_{i})^{d_{i}-1}$（因 $(A-\\lambda_{i}E)^{d_{i}-1}\\alpha_{i}\\ne 0$）。于是",
+        "$$(x-\\lambda_{i})^{d_{i}}\\mid p(x),\\qquad i=1,\\cdots,s.$$",
+        "当 $i\\ne j$ 时 $(x-\\lambda_{i})^{d_{i}}$ 与 $(x-\\lambda_{j})^{d_{j}}$ 互素，故其乘积 $f(x)$ 也整除 $p(x)$，从而 $\\deg p\\ge n$，与 $\\deg p\\le n-1$ 矛盾。",
+        "所以 $\\alpha,A\\alpha,\\cdots,A^{n-1}\\alpha$ 线性无关，构成 $n$ 维空间 $V$ 的一组基。"
+      ],
+      "pointKeys": [
+        "循环向量与友矩阵",
+        "最大阶非零子式与解空间维数",
+        "几何重数与代数重数",
+        "Jordan 标准形",
+        "准素分解与不变子空间"
+      ],
+      "verification": "人工复核：以 Jordan 标准形为准则——$\\alpha$ 循环等价于 $V$ 是循环 $\\mathbb{C}[x]$-模，等价于每个特征值只对应一个 Jordan 块，即几何重数全为 $1$；必要性由友矩阵 $cE-\\mathcal{A}$ 的 $n-1$ 阶非零子式给出，充分性由准素分解与零化多项式的整除关系给出。"
+    },
+    {
+      "id": "GA-B2009",
+      "subject": "gaodai",
+      "chapter": "第四章 矩阵",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "计算题 · 正弦型矩阵幂和的行列式",
+      "question": "设 $n\\ge 3$ 为自然数，$\\theta=\\dfrac{2\\pi}{n}$。对任意 $1\\le s,t\\le n$，取 $a_{st}=\\sin\\big((s+t)\\theta\\big)$，令矩阵 $A=(a_{st})_{n\\times n}$。计算 $\\left|E+A^{2023}\\right|$，其中 $E$ 为 $n$ 阶单位矩阵。",
+      "answer": "$\\left|E+A^{2023}\\right|=1-\\left(\\dfrac{n}{2}\\right)^{4046}=1-\\dfrac{n^{4046}}{2^{4046}}$。",
+      "standardSolution": "解：记 $\\boldsymbol{v}=(e^{i\\theta},e^{2i\\theta},\\cdots,e^{ni\\theta})^{T}\\in\\mathbb{C}^{n}$。由 $\\sin(s+t)\\theta=\\dfrac{1}{2i}\\left(e^{i(s+t)\\theta}-e^{-i(s+t)\\theta}\\right)$ 及 $(\\boldsymbol{v}\\boldsymbol{v}^{T})_{st}=e^{i(s+t)\\theta}$ 得\n\n$$A=\\frac{1}{2i}\\left(\\boldsymbol{v}\\boldsymbol{v}^{T}-\\bar{\\boldsymbol{v}}\\bar{\\boldsymbol{v}}^{T}\\right),\\qquad \\bar{\\boldsymbol{v}}=(e^{-i\\theta},e^{-2i\\theta},\\cdots,e^{-ni\\theta})^{T}.$$\n\n于是 $\\operatorname{rank}A\\le 2$；又 $A$ 的元素均为实数且 $a_{st}=a_{ts}$，故 $A$ 是实对称矩阵，可正交对角化，特征值全为实数。\n\n求迹。因 $n\\ge 3$ 时 $e^{2i\\theta}\\ne 1$，而 $e^{2in\\theta}=e^{4\\pi i}=1$，故\n\n$$\\sum_{s=1}^{n}e^{2is\\theta}=e^{2i\\theta}\\frac{1-e^{2in\\theta}}{1-e^{2i\\theta}}=0,$$\n\n从而 $\\operatorname{tr}A=\\sum_{s=1}^{n}\\sin(2s\\theta)=\\operatorname{Im}\\sum_{s=1}^{n}e^{2is\\theta}=0$。\n\n再求 $\\operatorname{tr}A^{2}$。由 $A$ 对称得 $\\operatorname{tr}A^{2}=\\sum_{s,t}a_{st}^{2}$，于是\n\n$$\\operatorname{tr}A^{2}=\\sum_{s,t}\\sin^{2}(s+t)\\theta=\\frac{1}{2}\\sum_{s,t}\\left(1-\\cos 2(s+t)\\theta\\right)=\\frac{1}{2}\\left(n^{2}-\\operatorname{Re}\\left(\\sum_{s=1}^{n}e^{2is\\theta}\\right)^{2}\\right)=\\frac{n^{2}}{2}.$$\n\n设 $A$ 的非零特征值为 $\\mu_{1},\\cdots,\\mu_{r}$。由 $\\operatorname{rank}A\\le 2$ 得 $r\\le 2$；若 $r=1$，则 $\\mu_{1}=\\operatorname{tr}A=0$，与 $\\operatorname{tr}A^{2}=\\dfrac{n^{2}}{2}>0$ 矛盾，故 $r=2$，且\n\n$$\\mu_{1}+\\mu_{2}=0,\\qquad \\mu_{1}^{2}+\\mu_{2}^{2}=\\frac{n^{2}}{2},$$\n\n解得 $\\mu_{1,2}=\\pm\\dfrac{n}{2}$。即 $A$ 的 $n$ 个特征值为 $0,\\cdots,0,\\dfrac{n}{2},-\\dfrac{n}{2}$，其中 $0$ 的重数为 $n-2$。\n\n因 $A$ 可对角化，$E+A^{2023}$ 的特征值为 $1,\\cdots,1,1+\\left(\\dfrac{n}{2}\\right)^{2023},1-\\left(\\dfrac{n}{2}\\right)^{2023}$，而矩阵的行列式等于其全部特征值之积，故\n\n$$\\left|E+A^{2023}\\right|=\\left[1+\\left(\\frac{n}{2}\\right)^{2023}\\right]\\left[1-\\left(\\frac{n}{2}\\right)^{2023}\\right]=1-\\left(\\frac{n}{2}\\right)^{4046}=1-\\frac{n^{4046}}{2^{4046}}.$$",
+      "detailedAnalysis": "这道题的关键是识别矩阵的结构而不是硬算。矩阵元素是正弦，而正弦可写成两个指数之差，行指标与列指标因此分离，整个矩阵成为两个列向量外积之差。这个分解一次给出两条信息：矩阵的秩不超过二，所以至多两个非零特征值；又因为元素是实数且关于主对角线对称，矩阵可正交对角化，特征值全为实数。接着只需两个不变量：迹与迹的平方，前者由等比求和为零得到，后者由元素平方求和算出，结果恰好是阶数平方的一半。设两个非零特征值，利用和为零、平方和已知，解出它们是一对相反数。最后用行列式等于特征值之积，并注意幂运算把指数放大一倍。全过程不必讨论最小多项式，也不必为特殊阶数单列情形，这正是分解带来的简化。",
+      "points": [
+        "外积分解与矩阵的秩",
+        "实对称矩阵的正交对角化",
+        "迹与二阶矩",
+        "等比数列求和",
+        "行列式等于特征值之积"
+      ],
+      "pitfalls": [
+        "把 $\\operatorname{tr}A^{2}$ 当成 $(\\operatorname{tr}A)^{2}$ 使用，于是只能得到零特征值而无法定出 $\\pm\\dfrac{n}{2}$。",
+        "误以为 $\\operatorname{rank}A\\le 2$ 一定意味着只有一个非零特征值，忽略重根情形与 $\\operatorname{tr}A^{2}$ 的约束。",
+        "直接用 $\\left|E+A^{2023}\\right|=1+\\left|A\\right|^{2023}$ 之类的错误公式。"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十五届全国大学生数学竞赛初赛（数学 A 类，2023））第 4 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "矩阵行列式"
+      ],
+      "relatedEntries": [],
+      "difficulty": 5,
+      "solution": [
+        "解：记 $\\boldsymbol{v}=(e^{i\\theta},e^{2i\\theta},\\cdots,e^{ni\\theta})^{T}\\in\\mathbb{C}^{n}$。由 $\\sin(s+t)\\theta=\\dfrac{1}{2i}\\left(e^{i(s+t)\\theta}-e^{-i(s+t)\\theta}\\right)$ 及 $(\\boldsymbol{v}\\boldsymbol{v}^{T})_{st}=e^{i(s+t)\\theta}$ 得",
+        "$$A=\\frac{1}{2i}\\left(\\boldsymbol{v}\\boldsymbol{v}^{T}-\\bar{\\boldsymbol{v}}\\bar{\\boldsymbol{v}}^{T}\\right),\\qquad \\bar{\\boldsymbol{v}}=(e^{-i\\theta},e^{-2i\\theta},\\cdots,e^{-ni\\theta})^{T}.$$",
+        "于是 $\\operatorname{rank}A\\le 2$；又 $A$ 的元素均为实数且 $a_{st}=a_{ts}$，故 $A$ 是实对称矩阵，可正交对角化，特征值全为实数。",
+        "求迹。因 $n\\ge 3$ 时 $e^{2i\\theta}\\ne 1$，而 $e^{2in\\theta}=e^{4\\pi i}=1$，故",
+        "$$\\sum_{s=1}^{n}e^{2is\\theta}=e^{2i\\theta}\\frac{1-e^{2in\\theta}}{1-e^{2i\\theta}}=0,$$",
+        "从而 $\\operatorname{tr}A=\\sum_{s=1}^{n}\\sin(2s\\theta)=\\operatorname{Im}\\sum_{s=1}^{n}e^{2is\\theta}=0$。",
+        "再求 $\\operatorname{tr}A^{2}$。由 $A$ 对称得 $\\operatorname{tr}A^{2}=\\sum_{s,t}a_{st}^{2}$，于是",
+        "$$\\operatorname{tr}A^{2}=\\sum_{s,t}\\sin^{2}(s+t)\\theta=\\frac{1}{2}\\sum_{s,t}\\left(1-\\cos 2(s+t)\\theta\\right)=\\frac{1}{2}\\left(n^{2}-\\operatorname{Re}\\left(\\sum_{s=1}^{n}e^{2is\\theta}\\right)^{2}\\right)=\\frac{n^{2}}{2}.$$",
+        "设 $A$ 的非零特征值为 $\\mu_{1},\\cdots,\\mu_{r}$。由 $\\operatorname{rank}A\\le 2$ 得 $r\\le 2$；若 $r=1$，则 $\\mu_{1}=\\operatorname{tr}A=0$，与 $\\operatorname{tr}A^{2}=\\dfrac{n^{2}}{2}>0$ 矛盾，故 $r=2$，且",
+        "$$\\mu_{1}+\\mu_{2}=0,\\qquad \\mu_{1}^{2}+\\mu_{2}^{2}=\\frac{n^{2}}{2},$$",
+        "解得 $\\mu_{1,2}=\\pm\\dfrac{n}{2}$。即 $A$ 的 $n$ 个特征值为 $0,\\cdots,0,\\dfrac{n}{2},-\\dfrac{n}{2}$，其中 $0$ 的重数为 $n-2$。",
+        "因 $A$ 可对角化，$E+A^{2023}$ 的特征值为 $1,\\cdots,1,1+\\left(\\dfrac{n}{2}\\right)^{2023},1-\\left(\\dfrac{n}{2}\\right)^{2023}$，而矩阵的行列式等于其全部特征值之积，故",
+        "$$\\left|E+A^{2023}\\right|=\\left[1+\\left(\\frac{n}{2}\\right)^{2023}\\right]\\left[1-\\left(\\frac{n}{2}\\right)^{2023}\\right]=1-\\left(\\frac{n}{2}\\right)^{4046}=1-\\frac{n^{4046}}{2^{4046}}.$$"
+      ],
+      "pointKeys": [
+        "外积分解与矩阵的秩",
+        "实对称矩阵的正交对角化",
+        "迹与二阶矩",
+        "等比数列求和",
+        "行列式等于特征值之积"
+      ],
+      "verification": "sympy 复核：$n=3,4$ 时用精确矩阵幂算得 $\\left|E+A^{2023}\\right|$ 与 $1-\\left(\\dfrac{n}{2}\\right)^{4046}$ 之差化简为 $0$；$n=3,\\cdots,8$ 数值验证 $\\operatorname{rank}A=2$、$\\operatorname{tr}A=0$、$\\operatorname{tr}A^{2}=\\dfrac{n^{2}}{2}$，特征值为 $0,\\cdots,0,\\pm\\dfrac{n}{2}$。"
+    },
+    {
+      "id": "GA-B2010",
+      "subject": "gaodai",
+      "chapter": "第九章 欧几里得空间",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 正交交点轨迹：以 PQ 为直径的球面",
+      "question": "在空间中给定两个不同点 $P$ 和 $Q$。过 $P$ 的直线 $L(P)$ 与过 $Q$ 的直线 $L(Q)$ 正交于点 $M$。问：所有可能的正交点 $M$ 构成何种曲面？证明你的结论。",
+      "answer": "所有可能的正交点 $M$ 恰好构成以线段 $PQ$ 为直径的球面，即 $x^{2}+y^{2}+z^{2}=a^{2}$（$a=\\frac{1}{2}|PQ|$，球心为 $PQ$ 的中点）。",
+      "standardSolution": "证明：取线段 $PQ$ 的中点为原点 $O$，以直线 $PQ$ 为 $x$ 轴建立空间直角坐标系。设 $|PQ|=2a\\ (a>0)$，则\n$$P=(-a,0,0),\\qquad Q=(a,0,0).$$\n\n设正交交点为 $M=(x,y,z)$。当 $M$ 不与 $P,Q$ 重合时，过 $P$ 与 $M$ 的直线就是 $L(P)$，过 $Q$ 与 $M$ 的直线就是 $L(Q)$，故 $L(P)\\perp L(Q)$ 等价于\n$$\\overrightarrow{PM}\\cdot\\overrightarrow{QM}=0.$$\n而 $\\overrightarrow{PM}=(x+a,\\ y,\\ z)$，$\\overrightarrow{QM}=(x-a,\\ y,\\ z)$，代入得\n$$0=(x+a)(x-a)+y^{2}+z^{2}=x^{2}+y^{2}+z^{2}-a^{2},$$\n即 $M$ 满足\n$$x^{2}+y^{2}+z^{2}=a^{2}.$$\n这是以 $PQ$ 为直径的球面：球心为 $PQ$ 的中点 $O$，半径为 $a=\\frac{1}{2}|PQ|$。\n\n反之，设点 $M=(x,y,z)$ 满足 $x^{2}+y^{2}+z^{2}=a^{2}$。若 $M\\neq P,Q$，取 $L(P)$ 为直线 $PM$、$L(Q)$ 为直线 $QM$，由上面的计算 $\\overrightarrow{PM}\\cdot\\overrightarrow{QM}=0$，故两直线在 $M$ 处正交。若 $M=P$，取 $L(Q)$ 为直线 $PQ$、$L(P)$ 为过 $P$ 且垂直于 $PQ$ 的任一直线，二者正交于 $P$；$M=Q$ 同理。因此球面上每一点都能成为正交交点。\n\n综上，所有可能的正交点 $M$ 的集合恰为球面\n$$x^{2}+y^{2}+z^{2}=a^{2},\\qquad a=\\frac{|PQ|}{2},$$\n即以线段 $PQ$ 为直径的球面。",
+      "detailedAnalysis": "切入点是\"正交\"二字：两条动直线的方向无关紧要，决定 $M$ 的只是它到两个定点的有向线段，于是把 $L(P)\\perp L(Q)$ 翻译成 $\\overrightarrow{PM}\\cdot\\overrightarrow{QM}=0$，轨迹便由二次方程给出。把 $PQ$ 的中点置于原点、$PQ$ 取作 $x$ 轴，$P,Q$ 关于原点对称，内积展开后一次项自动抵消，直接得到球面方程，这是对称建系的便利。证明须分两半：必要性由正交条件算方程，充分性要说明球面上每点确能实现。验算注意退化情形：$M=P$ 时一条直线退化为 $PQ$，另一条取过 $P$ 且垂直于 $PQ$ 的直线即可，故端点也在轨迹上；原点处内积为 $-a^{2}<0$，确非正交交点。再取 $M=(0,a,0)$ 代入得 $0$，与结论吻合。",
+      "points": [
+        "向量内积与正交条件",
+        "以 PQ 中点为原点对称建系",
+        "轨迹方程的必要性与充分性",
+        "退化情形 M=P 或 M=Q"
+      ],
+      "pitfalls": [
+        "只由 $\\overrightarrow{PM}\\cdot\\overrightarrow{QM}=0$ 得出球面方程，却漏证球面上每一点确能实现（充分性未验证）",
+        "把 $M=P$、$M=Q$ 误判为不在轨迹上，或漏掉这两点须单独构造直线"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十五届全国大学生数学竞赛初赛（数学 B 类，2023））第 1 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "球面方程"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "verification": "sympy 展开 $(x+a)(x-a)+y^{2}+z^{2}$ 得 $x^{2}+y^{2}+z^{2}-a^{2}$，故正交条件确为 $x^{2}+y^{2}+z^{2}=a^{2}$；再代 $M=(0,a,0)$ 得 $(a,a,0)\\cdot(-a,a,0)=0$，代 $M=(0,0,0)$ 得 $-a^{2}\\ne0$，与\"球面\"结论一致。",
+      "solution": [
+        "证明：取线段 $PQ$ 的中点为原点 $O$，以直线 $PQ$ 为 $x$ 轴建立空间直角坐标系。设 $|PQ|=2a\\ (a>0)$，则\n$$P=(-a,0,0),\\qquad Q=(a,0,0).$$",
+        "设正交交点为 $M=(x,y,z)$。当 $M$ 不与 $P,Q$ 重合时，过 $P$ 与 $M$ 的直线就是 $L(P)$，过 $Q$ 与 $M$ 的直线就是 $L(Q)$，故 $L(P)\\perp L(Q)$ 等价于\n$$\\overrightarrow{PM}\\cdot\\overrightarrow{QM}=0.$$\n而 $\\overrightarrow{PM}=(x+a,\\ y,\\ z)$，$\\overrightarrow{QM}=(x-a,\\ y,\\ z)$，代入得\n$$0=(x+a)(x-a)+y^{2}+z^{2}=x^{2}+y^{2}+z^{2}-a^{2},$$\n即 $M$ 满足\n$$x^{2}+y^{2}+z^{2}=a^{2}.$$\n这是以 $PQ$ 为直径的球面：球心为 $PQ$ 的中点 $O$，半径为 $a=\\frac{1}{2}|PQ|$。",
+        "反之，设点 $M=(x,y,z)$ 满足 $x^{2}+y^{2}+z^{2}=a^{2}$。若 $M\\neq P,Q$，取 $L(P)$ 为直线 $PM$、$L(Q)$ 为直线 $QM$，由上面的计算 $\\overrightarrow{PM}\\cdot\\overrightarrow{QM}=0$，故两直线在 $M$ 处正交。若 $M=P$，取 $L(Q)$ 为直线 $PQ$、$L(P)$ 为过 $P$ 且垂直于 $PQ$ 的任一直线，二者正交于 $P$；$M=Q$ 同理。因此球面上每一点都能成为正交交点。",
+        "综上，所有可能的正交点 $M$ 的集合恰为球面\n$$x^{2}+y^{2}+z^{2}=a^{2},\\qquad a=\\frac{|PQ|}{2},$$\n即以线段 $PQ$ 为直径的球面。"
+      ],
+      "pointKeys": [
+        "向量内积与正交条件",
+        "以 PQ 中点为原点对称建系",
+        "轨迹方程的必要性与充分性",
+        "退化情形 M=P 或 M=Q"
+      ]
+    },
+    {
+      "id": "GA-B2011",
+      "subject": "gaodai",
+      "chapter": "第四章 矩阵",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · ±1 对角阵扰动使方阵可逆的归纳法",
+      "question": "证明：对任意 $n$ 阶方阵 $A$，存在主对角线上元素为 $1$ 或 $-1$ 的 $n$ 阶对角矩阵 $J$，使得 $A+J$ 可逆。",
+      "answer": "对任意 $n$ 阶方阵 $A$，都存在对角元全为 $\\pm1$ 的对角矩阵 $J$，使 $\\det(A+J)\\ne0$，即 $A+J$ 可逆。",
+      "standardSolution": "证明：对 $n$ 作归纳。当 $n=1$ 时 $A=(a)$：若 $a\\ne-1$，取 $J=(1)$，则 $a+1\\ne0$；若 $a=-1$，取 $J=(-1)$，则 $a-1=-2\\ne0$。故 $n=1$ 时结论成立。\n\n设结论对 $n-1$ 阶方阵成立，考察 $n$ 阶方阵 $A$。按分块写成\n$$A=\\begin{pmatrix}A_1&\\beta\\\\ \\alpha&a_{nn}\\end{pmatrix},$$\n其中 $A_1$ 是 $n-1$ 阶方阵，$\\beta$ 是 $n-1$ 维列向量，$\\alpha$ 是 $n-1$ 维行向量，$a_{nn}$ 是一个数。\n\n由归纳假设，存在主对角元为 $1$ 或 $-1$ 的 $n-1$ 阶对角矩阵 $J_1$，使 $A_1+J_1$ 可逆。记 $d=\\det(A_1+J_1)\\ne0$，并记\n$$D_+=\\begin{vmatrix}A_1+J_1&\\beta\\\\ \\alpha&a_{nn}+1\\end{vmatrix},\\qquad D_-=\\begin{vmatrix}A_1+J_1&\\beta\\\\ \\alpha&a_{nn}-1\\end{vmatrix}.$$\n\n这两个行列式只有右下角的元素不同。按最后一列展开时，前 $n-1$ 个元素的代数余子式与最后一列的元素无关，故\n$$D_+-D_-=2\\det(A_1+J_1)=2d\\ne0,$$\n从而 $D_+$ 与 $D_-$ 中至少有一个不为零。\n\n若 $D_+\\ne0$，取 $J=\\begin{pmatrix}J_1&0\\\\ 0&1\\end{pmatrix}$，则 $A+J=\\begin{pmatrix}A_1+J_1&\\beta\\\\ \\alpha&a_{nn}+1\\end{pmatrix}$，$\\det(A+J)=D_+\\ne0$；若 $D_-\\ne0$，取 $J=\\begin{pmatrix}J_1&0\\\\ 0&-1\\end{pmatrix}$，同理 $\\det(A+J)=D_-\\ne0$。无论哪种情形，$J$ 都是主对角元为 $1$ 或 $-1$ 的 $n$ 阶对角矩阵，且 $A+J$ 可逆。\n\n故结论对 $n$ 阶方阵成立，由数学归纳法，对任意 $n$ 阶方阵 $A$ 都存在这样的 $J$。",
+      "detailedAnalysis": "切入点是\"可逆\"即\"行列式不为零\"，而 $\\pm1$ 对角阵只动对角线，故对阶数归纳、只在最后一行一列上做文章最自然。$n=1$ 的起点必须讨论：$a+1$ 与 $a-1$ 至少一个非零，这正是归纳能启动的原因。归纳步的核心是两个只差一个元素的行列式 $D_+$ 与 $D_-$：按最后一列展开时前 $n-1$ 项的代数余子式相同，差别只在 $(a_{nn}\\pm1)d$，相减得 $2d\\ne0$，故二者不同时为零，\"至少一个非零\"便给出了选择 $J$ 的自由，把存在性化为两个数不能都为零。检验：$A=O$ 取 $J=I$ 得 $\\det=1$；$A=-I$ 时 $J=I$ 不可行，而 $J=\\operatorname{diag}(1,-1)$ 可行，说明必须比较两个候选。",
+      "points": [
+        "对阶数作归纳",
+        "分块矩阵按最后一列展开",
+        "两个行列式只差一个元素",
+        "n=1 时 a±1 至少一个非零"
+      ],
+      "pitfalls": [
+        "$n=1$ 时不讨论 $a=-1$ 的情形，直接取 $J=(1)$ 导致 $a+1=0$",
+        "把 $D_+-D_-$ 误算成 $\\det(A_1+J_1)$，漏掉因子 $2$，从而无法断定\"至少一个非零\"",
+        "只讨论 $D_+\\ne0$ 的情形，忘记 $D_+=0$ 时还可取对角元 $-1$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十五届全国大学生数学竞赛初赛（数学 B 类，2023））第 4 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "矩阵求逆"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "verification": "sympy 对 $n=1,2,3,4$ 各取数十个随机整矩阵 $A$，穷举全部 $2^{n}$ 个对角元为 $\\pm1$ 的 $J$，每次都能找到使 $\\det(A+J)\\ne0$ 的一个；另手算 $n=2$、$A=O$ 取 $J=I$ 得 $\\det=1$，$A=-I$ 时取 $J=\\operatorname{diag}(1,-1)$ 得 $\\det=-2$。",
+      "solution": [
+        "证明：对 $n$ 作归纳。当 $n=1$ 时 $A=(a)$：若 $a\\ne-1$，取 $J=(1)$，则 $a+1\\ne0$；若 $a=-1$，取 $J=(-1)$，则 $a-1=-2\\ne0$。故 $n=1$ 时结论成立。",
+        "设结论对 $n-1$ 阶方阵成立，考察 $n$ 阶方阵 $A$。按分块写成\n$$A=\\begin{pmatrix}A_1&\\beta\\\\ \\alpha&a_{nn}\\end{pmatrix},$$\n其中 $A_1$ 是 $n-1$ 阶方阵，$\\beta$ 是 $n-1$ 维列向量，$\\alpha$ 是 $n-1$ 维行向量，$a_{nn}$ 是一个数。",
+        "由归纳假设，存在主对角元为 $1$ 或 $-1$ 的 $n-1$ 阶对角矩阵 $J_1$，使 $A_1+J_1$ 可逆。记 $d=\\det(A_1+J_1)\\ne0$，并记\n$$D_+=\\begin{vmatrix}A_1+J_1&\\beta\\\\ \\alpha&a_{nn}+1\\end{vmatrix},\\qquad D_-=\\begin{vmatrix}A_1+J_1&\\beta\\\\ \\alpha&a_{nn}-1\\end{vmatrix}.$$",
+        "这两个行列式只有右下角的元素不同。按最后一列展开时，前 $n-1$ 个元素的代数余子式与最后一列的元素无关，故\n$$D_+-D_-=2\\det(A_1+J_1)=2d\\ne0,$$\n从而 $D_+$ 与 $D_-$ 中至少有一个不为零。",
+        "若 $D_+\\ne0$，取 $J=\\begin{pmatrix}J_1&0\\\\ 0&1\\end{pmatrix}$，则 $A+J=\\begin{pmatrix}A_1+J_1&\\beta\\\\ \\alpha&a_{nn}+1\\end{pmatrix}$，$\\det(A+J)=D_+\\ne0$；若 $D_-\\ne0$，取 $J=\\begin{pmatrix}J_1&0\\\\ 0&-1\\end{pmatrix}$，同理 $\\det(A+J)=D_-\\ne0$。无论哪种情形，$J$ 都是主对角元为 $1$ 或 $-1$ 的 $n$ 阶对角矩阵，且 $A+J$ 可逆。",
+        "故结论对 $n$ 阶方阵成立，由数学归纳法，对任意 $n$ 阶方阵 $A$ 都存在这样的 $J$。"
+      ],
+      "pointKeys": [
+        "对阶数作归纳",
+        "分块矩阵按最后一列展开",
+        "两个行列式只差一个元素",
+        "n=1 时 a±1 至少一个非零"
+      ]
+    },
+    {
+      "id": "GA-B2012",
+      "subject": "gaodai",
+      "chapter": "第五章 二次型",
+      "section": "二次曲面与锥面",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "计算题 · 过定点的切线锥面与切点所在平面",
+      "question": "设双叶双曲面 $S:x^{2}+y^{2}-z^{2}=-2$，其上叶为 $S^{+}=\\{(x,y,z)\\in S\\mid z\\ge\\sqrt{2}\\}$。记以 $M_0(1,1,-1)$ 为顶点且与 $S$ 相切的所有直线所构成的锥面为 $\\Sigma$。\n(1) 求锥面 $\\Sigma$ 的方程；\n(2) 求 $S^{+}\\cap\\Sigma$ 所在平面 $\\pi$ 的方程。",
+      "answer": "$\\Sigma$ 的方程为 $(x-1)^{2}+(y-1)^{2}-2(z+1)^{2}-(x-1)(y-1)-(x-1)(z+1)-(y-1)(z+1)=0$，$S^{+}\\cap\\Sigma$ 所在平面为 $x+y+z+2=0$。",
+      "standardSolution": "解：(1) 设过 $M_0(1,1,-1)$ 的直线 $L$ 的方向向量为 $(l,m,n)\\ne(0,0,0)$，其参数方程为\n$$L:\\quad x=1+lt,\\quad y=1+mt,\\quad z=-1+nt.$$\n代入 $S$ 的方程 $x^{2}+y^{2}-z^{2}=-2$，整理得关于 $t$ 的二次方程\n$$(l^{2}+m^{2}-n^{2})t^{2}+2(l+m+n)t+3=0.$$\n\n直线 $L$ 与 $S$ 相切，当且仅当上述方程有重根，即判别式为零：\n$$4(l+m+n)^{2}-12(l^{2}+m^{2}-n^{2})=0,$$\n两边除以 $-8$，得\n$$l^{2}+m^{2}-2n^{2}-lm-ln-mn=0.\\qquad (*)$$\n这是一个关于 $(l,m,n)$ 的二次齐次方程，它恰好刻画了从 $M_0$ 出发的切线的方向，因而给出以 $M_0$ 为顶点的锥面 $\\Sigma$。（若 $l^{2}+m^{2}=n^{2}$，则 $(*)$ 的左端可化为 $-(n+l)(n+m)$，由 $(*)$ 得 $l=-n$ 或 $m=-n$，代回 $l^{2}+m^{2}=n^{2}$ 知此时方向向量必平行于 $(-1,0,1)$，且有 $l+m+n=0$；该直线与 $S$ 无公共点，是切线的极限方向，不影响锥面方程。）\n\n对 $\\Sigma$ 上异于顶点的点 $M(x,y,z)$，其方向向量可取 $(l,m,n)=(x-1,\\,y-1,\\,z+1)$，代入 $(*)$ 即得锥面方程\n$$\\Sigma:\\ (x-1)^{2}+(y-1)^{2}-2(z+1)^{2}-(x-1)(y-1)-(x-1)(z+1)-(y-1)(z+1)=0.$$\n\n(2) 任取 $M_1(x_1,y_1,z_1)\\in S^{+}\\cap\\Sigma$。在直线 $M_0M_1$ 上取点 $M(x,y,z)$，以 $t$ 为参数写成\n$$x=x_1+t(x_1-1),\\quad y=y_1+t(y_1-1),\\quad z=z_1+t(z_1+1).$$\n代入 $S$ 的方程，记左端为 $F(t)$。由 $M_1\\in S$ 得\n$$F(0)=x_1^{2}+y_1^{2}-z_1^{2}+2=0,$$\n又\n$$F'(0)=2\\big[x_1(x_1-1)+y_1(y_1-1)-z_1(z_1+1)\\big]=2\\big[x_1^{2}+y_1^{2}-z_1^{2}-(x_1+y_1+z_1)\\big]=-2(x_1+y_1+z_1+2),$$\n故\n$$F(t)=\\big[(x_1-1)^{2}+(y_1-1)^{2}-(z_1+1)^{2}\\big]t^{2}-2(x_1+y_1+z_1+2)t.$$\n\n因 $M_1\\in\\Sigma$，直线 $M_0M_1$ 与 $S$ 相切，而 $M_0\\notin S$，故切点必为 $M_1$，即 $t=0$ 是 $F(t)=0$ 的重根。于是 $F(t)$ 的一次项系数为零：\n$$x_1+y_1+z_1+2=0.$$\n这表明 $S^{+}\\cap\\Sigma$ 全部落在平面 $x+y+z+2=0$ 上。\n\n反之，若 $M_1\\in S$ 且 $x_1+y_1+z_1+2=0$，则 $F(t)=At^{2}$（此时 $A\\ne0$，否则整条直线落在 $S$ 上，而双叶双曲面不含直线），$t=0$ 为重根，直线 $M_0M_1$ 在 $M_1$ 处与 $S$ 相切，即 $M_1\\in\\Sigma$。故所求平面为\n$$\\pi:\\ x+y+z+2=0.$$\n检验：在对称面 $x=y$ 上联立 $x+y+z+2=0$ 与 $x^{2}+y^{2}-z^{2}=-2$，得 $z=2\\pm2\\sqrt{3}$，其中 $z=2+2\\sqrt{3}\\ge\\sqrt{2}$ 的一支正是 $S^{+}\\cap\\Sigma$，对应的点为 $\\big(-(2+\\sqrt{3}),-(2+\\sqrt{3}),2+2\\sqrt{3}\\big)$，它同时满足 $S$、$\\Sigma$、$\\pi$ 三个方程。",
+      "detailedAnalysis": "本题的切入点是把“相切”翻译成代数条件：锥面是以 $M_0$ 为顶点的直纹面，只要刻画“过 $M_0$ 的直线与 $S$ 相切”，锥面就随之确定。相切不是几何直观上的“碰一下”，而是把直线的参数方程代入曲面方程后，所得关于 $t$ 的方程有重根，于是判别式为零。得到的恰是关于方向向量 $(l,m,n)$ 的二次齐次方程——齐次性正是锥面的代数特征，这也是为什么不必先猜出锥面形状。第二步的关键是把 $(l,m,n)$ 换成坐标增量 $(x-1,y-1,z+1)$，此处最容易漏掉顶点的平移而写成 $(x,y,z)$。第 (2) 问要反过来用第 (1) 问的结论：$M_1\\in S$ 保证 $F(0)=0$，$M_1\\in\\Sigma$ 保证直线 $M_0M_1$ 是切线，于是 $t=0$ 必为重根，只需令 $F'(0)=0$，即得 $x_1+y_1+z_1+2=0$，这正是平面方程；还要说明其逆向成立，才能断言平面被完全确定。检验的办法是把 $\\pi$ 与 $S$ 联立：在对称面 $x=y$ 上得 $z=2\\pm2\\sqrt{3}$，其中 $z=2+2\\sqrt{3}\\ge\\sqrt{2}$ 的一支就是 $S^{+}\\cap\\Sigma$，说明所求平面确实与上半叶相交而非空集。",
+      "points": [
+        "直线与二次曲面的相切条件",
+        "重根与判别式为零",
+        "二次齐次方程的锥面意义",
+        "切点的参数化与导数条件",
+        "平面方程的确定与验证"
+      ],
+      "pitfalls": [
+        "把相切误当成“只有一个交点”，不去要求方程有重根（判别式为零）",
+        "回代时把方向向量写成 $(x,y,z)$ 而漏掉顶点平移，应为 $(x-1,y-1,z+1)$",
+        "第 (2) 问只由 $F(0)=0$ 就下结论，没有用 $F'(0)=0$ 表达“$t=0$ 是重根”"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十六届全国大学生数学竞赛初赛（数学 A 类，2024））第 1 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "二次曲面与锥面"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "解：(1) 设过 $M_0(1,1,-1)$ 的直线 $L$ 的方向向量为 $(l,m,n)\\ne(0,0,0)$，其参数方程为\n$$L:\\quad x=1+lt,\\quad y=1+mt,\\quad z=-1+nt.$$\n代入 $S$ 的方程 $x^{2}+y^{2}-z^{2}=-2$，整理得关于 $t$ 的二次方程\n$$(l^{2}+m^{2}-n^{2})t^{2}+2(l+m+n)t+3=0.$$",
+        "直线 $L$ 与 $S$ 相切，当且仅当上述方程有重根，即判别式为零：\n$$4(l+m+n)^{2}-12(l^{2}+m^{2}-n^{2})=0,$$\n两边除以 $-8$，得\n$$l^{2}+m^{2}-2n^{2}-lm-ln-mn=0.\\qquad (*)$$\n这是一个关于 $(l,m,n)$ 的二次齐次方程，它恰好刻画了从 $M_0$ 出发的切线的方向，因而给出以 $M_0$ 为顶点的锥面 $\\Sigma$。（若 $l^{2}+m^{2}=n^{2}$，则 $(*)$ 的左端可化为 $-(n+l)(n+m)$，由 $(*)$ 得 $l=-n$ 或 $m=-n$，代回 $l^{2}+m^{2}=n^{2}$ 知此时方向向量必平行于 $(-1,0,1)$，且有 $l+m+n=0$；该直线与 $S$ 无公共点，是切线的极限方向，不影响锥面方程。）",
+        "对 $\\Sigma$ 上异于顶点的点 $M(x,y,z)$，其方向向量可取 $(l,m,n)=(x-1,\\,y-1,\\,z+1)$，代入 $(*)$ 即得锥面方程\n$$\\Sigma:\\ (x-1)^{2}+(y-1)^{2}-2(z+1)^{2}-(x-1)(y-1)-(x-1)(z+1)-(y-1)(z+1)=0.$$",
+        "(2) 任取 $M_1(x_1,y_1,z_1)\\in S^{+}\\cap\\Sigma$。在直线 $M_0M_1$ 上取点 $M(x,y,z)$，以 $t$ 为参数写成\n$$x=x_1+t(x_1-1),\\quad y=y_1+t(y_1-1),\\quad z=z_1+t(z_1+1).$$\n代入 $S$ 的方程，记左端为 $F(t)$。由 $M_1\\in S$ 得\n$$F(0)=x_1^{2}+y_1^{2}-z_1^{2}+2=0,$$\n又\n$$F'(0)=2\\big[x_1(x_1-1)+y_1(y_1-1)-z_1(z_1+1)\\big]=2\\big[x_1^{2}+y_1^{2}-z_1^{2}-(x_1+y_1+z_1)\\big]=-2(x_1+y_1+z_1+2),$$\n故\n$$F(t)=\\big[(x_1-1)^{2}+(y_1-1)^{2}-(z_1+1)^{2}\\big]t^{2}-2(x_1+y_1+z_1+2)t.$$",
+        "因 $M_1\\in\\Sigma$，直线 $M_0M_1$ 与 $S$ 相切，而 $M_0\\notin S$，故切点必为 $M_1$，即 $t=0$ 是 $F(t)=0$ 的重根。于是 $F(t)$ 的一次项系数为零：\n$$x_1+y_1+z_1+2=0.$$\n这表明 $S^{+}\\cap\\Sigma$ 全部落在平面 $x+y+z+2=0$ 上。",
+        "反之，若 $M_1\\in S$ 且 $x_1+y_1+z_1+2=0$，则 $F(t)=At^{2}$（此时 $A\\ne0$，否则整条直线落在 $S$ 上，而双叶双曲面不含直线），$t=0$ 为重根，直线 $M_0M_1$ 在 $M_1$ 处与 $S$ 相切，即 $M_1\\in\\Sigma$。故所求平面为\n$$\\pi:\\ x+y+z+2=0.$$\n检验：在对称面 $x=y$ 上联立 $x+y+z+2=0$ 与 $x^{2}+y^{2}-z^{2}=-2$，得 $z=2\\pm2\\sqrt{3}$，其中 $z=2+2\\sqrt{3}\\ge\\sqrt{2}$ 的一支正是 $S^{+}\\cap\\Sigma$，对应的点为 $\\big(-(2+\\sqrt{3}),-(2+\\sqrt{3}),2+2\\sqrt{3}\\big)$，它同时满足 $S$、$\\Sigma$、$\\pi$ 三个方程。"
+      ],
+      "pointKeys": [
+        "直线与二次曲面的相切条件",
+        "重根与判别式为零",
+        "二次齐次方程的锥面意义",
+        "切点的参数化与导数条件",
+        "平面方程的确定与验证"
+      ],
+      "verification": "sympy 复核：判别式为 $4(l+m+n)^{2}-12(l^{2}+m^{2}-n^{2})=-8(l^{2}+m^{2}-2n^{2}-lm-ln-mn)$，故相切条件与 $(*)$ 同解；对 8000 组满足 $(*)$ 的方向向量数值求解切点，切点满足 $x^{2}+y^{2}-z^{2}+2=0$ 的最大偏差 $1.9\\times10^{-6}$，满足 $x+y+z+2=0$ 的最大偏差 $1.1\\times10^{-6}$；点 $\\big(-(2+\\sqrt{3}),-(2+\\sqrt{3}),2+2\\sqrt{3}\\big)$ 代入 $S$、$\\Sigma$、$\\pi$ 三个方程均得 $0$。"
+    },
+    {
+      "id": "GA-B2013",
+      "subject": "gaodai",
+      "chapter": "第六章 线性空间",
+      "section": "线性相关与等价向量组",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 次数和受限时的线性相关性",
+      "question": "熟知实数域 $\\mathbb{R}$ 上的一元多项式集合 $\\mathbb{R}[x]$ 在多项式加法和数乘下构成 $\\mathbb{R}$ 上的一个线性空间。设 $f_i(x)\\in\\mathbb{R}[x]$ 且次数为 $n_i$（$1\\le i\\le2024$，这里规定零多项式的次数为 $-\\infty$），已知\n$$\\sum_{i=1}^{2024}n_i<2047276,$$\n证明：$f_1(x),f_2(x),\\cdots,f_{2024}(x)$ 为空间 $\\mathbb{R}[x]$ 中线性相关的向量组。",
+      "answer": "若 $\\sum_{i=1}^{2024}\\deg f_i<2047276=\\frac{2023\\times2024}{2}$，则 $f_1,\\cdots,f_{2024}$ 在 $\\mathbb{R}[x]$ 中线性相关；且常数 $2047276$ 不可改小。",
+      "standardSolution": "证明：记向量组 $(I)$：$f_1(x),f_2(x),\\cdots,f_{2024}(x)$。若其中某个 $f_i(x)=0$，则取 $c_i=1$、其余系数为 $0$，得非平凡的线性组合等于零，$(I)$ 线性相关。以下设一切 $f_i(x)\\ne0$，此时 $n_i=\\deg f_i\\ge0$ 都是非负整数。\n\n先证 $(I)$ 中必有两个多项式次数相同。若 $n_1,n_2,\\cdots,n_{2024}$ 两两不同，重排后可设 $n_1<n_2<\\cdots<n_{2024}$。由 $n_i$ 为非负整数且互不相同，得 $n_i\\ge i-1$，于是\n$$\\sum_{i=1}^{2024}n_i\\ge\\sum_{i=1}^{2024}(i-1)=\\frac{2023\\times2024}{2}=2047276,$$\n这与已知 $\\sum_{i=1}^{2024}n_i<2047276$ 矛盾。故存在 $i<j$ 使 $n_i=n_j=n$。\n\n设 $f_i(x)$、$f_j(x)$ 的首项系数分别为 $a,b$（$a,b\\ne0$），令\n$$g(x)=f_i(x)-\\frac{a}{b}f_j(x).$$\n由于 $f_i$ 与 $f_j$ 的首项相消，故 $\\deg g(x)<n=\\deg f_i(x)$。又\n$$f_i(x)=g(x)+\\frac{a}{b}f_j(x),$$\n即 $g$ 与 $f_i$ 可互相线性表出，所以把 $(I)$ 中的 $f_i$ 换成 $g$ 所得的向量组 $(II)$ 与 $(I)$ 等价，二者同时线性相关或同时线性无关。并且 $(II)$ 中各多项式次数之和严格小于 $\\sum_{i=1}^{2024}n_i$（只有一项的次数下降，其余不变）。\n\n对 $(II)$ 重复上面的两步论证：若 $(II)$ 含零多项式，则 $(II)$ 线性相关，由等价性知 $(I)$ 线性相关，结论成立；否则 $(II)$ 中仍有次数相同的两个多项式，再作一次上述等价替换，得到一个与 $(I)$ 等价、次数和更小的向量组。\n\n注意每一步都使“各多项式次数之和”这个非负整数严格减小，故这个过程不可能无限进行，必在有限步后终止。终止时所得的向量组 $(IV)$ 中必有零多项式（否则第二步的论证保证还可以继续替换），于是 $(IV)$ 线性相关。由等价关系的传递性，$(IV)$ 与 $(I)$ 等价，故 $(I)$ 线性相关，即 $f_1(x),f_2(x),\\cdots,f_{2024}(x)$ 在 $\\mathbb{R}[x]$ 中线性相关。证毕。",
+      "detailedAnalysis": "切入点：$\\mathbb{R}[x]$ 是无限维空间，“2024 个向量”本身不构成任何限制，因此不能靠维数或向量个数论证；可用的整数信息只有次数，于是把“次数和”当作势函数。关键观察是 $2047276=\\frac{2023\\times2024}{2}=\\sum_{i=0}^{2023}i$，它正是 2024 个次数互不相同的多项式所能达到的最小次数和（次数分别为 $0,1,\\cdots,2023$），所以题设条件只可能靠“出现两个同次多项式”来实现。同次就能用首项相消把其中一个的次数降下来，而替换 $g=f_i-\\frac{a}{b}f_j$ 是可逆的（$f_i=g+\\frac{a}{b}f_j$），因此向量组的线性相关性不变——这是全题的技术核心：等价替换加次数和严格下降。由于次数和是非负整数，下降过程必在有限步停止，停止时只能出现零多项式，相关性再沿等价关系传递回原向量组。检验：取 $f_i=x^{i-1}$ 时次数和恰为 $2047276$ 且线性无关，说明常数不能再改小，也说明第二步的估计 $n_i\\ge i-1$ 是紧的。",
+      "points": [
+        "线性相关与线性组合",
+        "多项式次数与首项系数",
+        "等价向量组的传递性",
+        "次数和的严格下降",
+        "反证法与有限终止"
+      ],
+      "pitfalls": [
+        "把 $\\mathbb{R}[x]$ 当成有限维空间，用向量个数或维数比较直接下结论",
+        "只讨论所有 $f_i\\ne0$ 的情形，漏掉含零多项式时已显然相关这一支",
+        "换入 $g=f_i-\\frac{a}{b}f_j$ 后只证“新组相关 $\\Rightarrow$ 原组相关”，没有说明两组等价（另一方向也需要 $f_i=g+\\frac{a}{b}f_j$）"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十六届全国大学生数学竞赛初赛（数学 A 类，2024））第 4 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "线性相关"
+      ],
+      "relatedEntries": [],
+      "difficulty": 5,
+      "solution": [
+        "证明：记向量组 $(I)$：$f_1(x),f_2(x),\\cdots,f_{2024}(x)$。若其中某个 $f_i(x)=0$，则取 $c_i=1$、其余系数为 $0$，得非平凡的线性组合等于零，$(I)$ 线性相关。以下设一切 $f_i(x)\\ne0$，此时 $n_i=\\deg f_i\\ge0$ 都是非负整数。",
+        "先证 $(I)$ 中必有两个多项式次数相同。若 $n_1,n_2,\\cdots,n_{2024}$ 两两不同，重排后可设 $n_1<n_2<\\cdots<n_{2024}$。由 $n_i$ 为非负整数且互不相同，得 $n_i\\ge i-1$，于是\n$$\\sum_{i=1}^{2024}n_i\\ge\\sum_{i=1}^{2024}(i-1)=\\frac{2023\\times2024}{2}=2047276,$$\n这与已知 $\\sum_{i=1}^{2024}n_i<2047276$ 矛盾。故存在 $i<j$ 使 $n_i=n_j=n$。",
+        "设 $f_i(x)$、$f_j(x)$ 的首项系数分别为 $a,b$（$a,b\\ne0$），令\n$$g(x)=f_i(x)-\\frac{a}{b}f_j(x).$$\n由于 $f_i$ 与 $f_j$ 的首项相消，故 $\\deg g(x)<n=\\deg f_i(x)$。又\n$$f_i(x)=g(x)+\\frac{a}{b}f_j(x),$$\n即 $g$ 与 $f_i$ 可互相线性表出，所以把 $(I)$ 中的 $f_i$ 换成 $g$ 所得的向量组 $(II)$ 与 $(I)$ 等价，二者同时线性相关或同时线性无关。并且 $(II)$ 中各多项式次数之和严格小于 $\\sum_{i=1}^{2024}n_i$（只有一项的次数下降，其余不变）。",
+        "对 $(II)$ 重复上面的两步论证：若 $(II)$ 含零多项式，则 $(II)$ 线性相关，由等价性知 $(I)$ 线性相关，结论成立；否则 $(II)$ 中仍有次数相同的两个多项式，再作一次上述等价替换，得到一个与 $(I)$ 等价、次数和更小的向量组。",
+        "注意每一步都使“各多项式次数之和”这个非负整数严格减小，故这个过程不可能无限进行，必在有限步后终止。终止时所得的向量组 $(IV)$ 中必有零多项式（否则第二步的论证保证还可以继续替换），于是 $(IV)$ 线性相关。由等价关系的传递性，$(IV)$ 与 $(I)$ 等价，故 $(I)$ 线性相关，即 $f_1(x),f_2(x),\\cdots,f_{2024}(x)$ 在 $\\mathbb{R}[x]$ 中线性相关。证毕。"
+      ],
+      "pointKeys": [
+        "线性相关与线性组合",
+        "多项式次数与首项系数",
+        "等价向量组的传递性",
+        "次数和的严格下降",
+        "反证法与有限终止"
+      ],
+      "verification": "人工复核：证明为纯逻辑推理（反证 + 可逆替换 + 非负整数次数和严格下降故有限终止），无计算可机验；关键常数核验 $\\sum_{i=1}^{2024}(i-1)=\\frac{2023\\times2024}{2}=2047276$，且取 $f_i=x^{i-1}$ 时次数和恰为 $2047276$ 而向量组线性无关，说明界不可改进。"
+    },
+    {
+      "id": "GA-B2014",
+      "subject": "gaodai",
+      "chapter": "第五章 二次型",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "综合题 · 单叶双曲面的直母线与正交母线交点的轨迹",
+      "question": "设单叶双曲面 $S:\\;x^2+y^2-z^2=1$。\n(1) 求 $S$ 上经过点 $M_0(1,-1,1)$ 的两条不同族的直母线方程；\n(2) 求 $S$ 上相互垂直的两条直母线其交点的轨迹。",
+      "answer": "过 $M_0$ 的两条直母线为 $L_1:\\;y=-1,\\;x=z$ 与 $L_2:\\;x=1,\\;z=-y$；相互垂直的直母线其交点的轨迹是平面 $z=0$ 上的圆 $x^2+y^2=1$。",
+      "standardSolution": "解：(1) 由 $x^2+y^2-z^2=1$ 得\n$$(x+z)(x-z)=(1+y)(1-y).$$\n把上式左右两边的两个因子按两种方式配对，即得曲面上的两族直线：\n$$L_1(u,v):\\quad u(x+z)=v(1+y),\\;\\;v(x-z)=u(1-y);$$\n$$L_2(\\lambda,\\mu):\\quad \\lambda(x+z)=\\mu(1-y),\\;\\;\\mu(x-z)=\\lambda(1+y),$$\n其中 $(u,v)\\neq(0,0)$，$(\\lambda,\\mu)\\neq(0,0)$。把任一族中直线的两个方程相乘，即得 $(x+z)(x-z)=(1+y)(1-y)$，故这些直线全在 $S$ 上。\n\n代入 $M_0(1,-1,1)$。对 $L_1$ 族：$2u=0\\cdot v$，故 $u=0,\\;v\\neq0$，得第一条直母线\n$$L_1:\\quad 1+y=0,\\quad x-z=0\\qquad(\\text{即 } y=-1,\\;x=z).$$\n对 $L_2$ 族：$2\\lambda=2\\mu$，故 $\\lambda=\\mu\\neq0$，得第二条直母线\n$$L_2:\\quad x+z=1-y,\\quad x-z=1+y\\qquad(\\text{即 } x=1,\\;z=-y).$$\n二者分属两族，且都经过 $M_0$。\n\n(2) 先求方向向量。$L_1(u,v)$ 是平面 $ux-vy+uz=v$ 与 $vx+uy-vz=u$ 的交线，其方向向量是两法向量 $(u,-v,u)$ 与 $(v,u,-v)$ 的叉积\n$$\\vec s_1=(v^2-u^2,\\;2uv,\\;u^2+v^2);$$\n同理 $L_2(\\lambda,\\mu)$ 的方向向量为\n$$\\vec s_2=(\\lambda^2-\\mu^2,\\;2\\lambda\\mu,\\;-(\\lambda^2+\\mu^2)).$$\n于是 $L_1\\perp L_2$ 当且仅当\n$$\\vec s_1\\cdot\\vec s_2=(v^2-u^2)(\\lambda^2-\\mu^2)+4uv\\lambda\\mu-(u^2+v^2)(\\lambda^2+\\mu^2)=-2(u\\lambda-v\\mu)^2=0,$$\n即 $u\\lambda=v\\mu$。\n\n设交点为 $P(X,Y,Z)$。同一点处两族直母线各过唯一的一条，故 $P$ 在 $L_1(u,v)$、$L_2(\\lambda,\\mu)$ 上等价于\n$$u(X+Z)=v(1+Y),\\quad v(X-Z)=u(1-Y),\\qquad\\lambda(X+Z)=\\mu(1-Y),\\quad\\mu(X-Z)=\\lambda(1+Y).$$\n情形 1：$1+Y\\neq0$。此时可取 $(u,v)=(1+Y,\\;X+Z)$，$(\\lambda,\\mu)=(X-Z,\\;1+Y)$，于是\n$$u\\lambda-v\\mu=(1+Y)(X-Z)-(X+Z)(1+Y)=-2Z(1+Y),$$\n故垂直当且仅当 $Z=0$，再由 $P\\in S$ 得 $X^2+Y^2=1$。\n\n情形 2：$1+Y=0$，即 $Y=-1$，此时由 $P\\in S$ 得 $X^2=Z^2$。若 $X=Z$，可取 $\\vec s_1=(1,0,1)$ 与 $\\vec s_2=(1-Z^2,\\;2Z,\\;-(1+Z^2))$；若 $X=-Z$，可取 $\\vec s_1=(1-Z^2,\\;-2Z,\\;1+Z^2)$ 与 $\\vec s_2=(1,0,-1)$。两种情形都有 $\\vec s_1\\cdot\\vec s_2=-2Z^2$，故仅当 $Z=0$ 时垂直，此时 $X=0,\\;Y=-1$，点 $(0,-1,0)$ 已在上面那个圆上。\n\n综上，所求轨迹为平面 $z=0$ 上的圆\n$$x^2+y^2=1,\\qquad z=0.$$",
+      "detailedAnalysis": "切入点是把方程看成“两个一次式之积相等”：$(x+z)(x-z)=(1+y)(1-y)$，再把两边因子按两种方式配对，就得到两族直母线；配对方式写错，族就分错，过 $M_0$ 的两条可能被算成同族。求方向向量不必硬解参数方程：直线是两平面之交，方向向量就是两法向量的叉积，这一步把几何条件变成代数式子。第 (2) 问的题眼是把正交条件化成完全平方 $-2(u\\lambda-v\\mu)^2$，垂直与否只取决于两组参数是否匹配，比直接展开三个坐标干净。轨迹不必解交点方程组：同一点处两族各过一条，交点就是该点本身，只需把 $P$ 的参数代入 $u\\lambda=v\\mu$。最后要讨论 $1+Y=0$ 的退化情形，那里参数化失效、必须另取参数。检验：腰圆 $z=0$ 上的点两母线正交，而 $M_0$ 处不正交。",
+      "points": [
+        "单叶双曲面的两族直母线及其齐次参数表示",
+        "由两相交平面的法向量叉积求直线方向向量",
+        "两直线垂直的判定 $\\vec s_1\\cdot\\vec s_2=0$",
+        "把正交条件配成完全平方 $u\\lambda=v\\mu$",
+        "轨迹的化简与退化情形的讨论"
+      ],
+      "pitfalls": [
+        "用单参数 $\\lambda=v/u$ 表示第一族直母线会丢掉 $u=0$ 的那一条，而它恰是过 $M_0$ 的母线，必须用齐次参数 $(u,v)$。",
+        "求轨迹时漏掉 $1+Y=0$ 的退化情形：此时上述参数全部退化，须换一组参数单独验证。",
+        "误以为过同一点的两条直母线一定垂直——只有腰圆 $z=0$ 上的点才垂直，$M_0(1,-1,1)$ 处的两条母线就不垂直。"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十六届全国大学生数学竞赛初赛（数学 B 类，2024））第 1 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "单叶双曲面"
+      ],
+      "relatedEntries": [],
+      "difficulty": 5,
+      "solution": [
+        "解：(1) 由 $x^2+y^2-z^2=1$ 得\n$$(x+z)(x-z)=(1+y)(1-y).$$\n把上式左右两边的两个因子按两种方式配对，即得曲面上的两族直线：\n$$L_1(u,v):\\quad u(x+z)=v(1+y),\\;\\;v(x-z)=u(1-y);$$\n$$L_2(\\lambda,\\mu):\\quad \\lambda(x+z)=\\mu(1-y),\\;\\;\\mu(x-z)=\\lambda(1+y),$$\n其中 $(u,v)\\neq(0,0)$，$(\\lambda,\\mu)\\neq(0,0)$。把任一族中直线的两个方程相乘，即得 $(x+z)(x-z)=(1+y)(1-y)$，故这些直线全在 $S$ 上。",
+        "代入 $M_0(1,-1,1)$。对 $L_1$ 族：$2u=0\\cdot v$，故 $u=0,\\;v\\neq0$，得第一条直母线\n$$L_1:\\quad 1+y=0,\\quad x-z=0\\qquad(\\text{即 } y=-1,\\;x=z).$$\n对 $L_2$ 族：$2\\lambda=2\\mu$，故 $\\lambda=\\mu\\neq0$，得第二条直母线\n$$L_2:\\quad x+z=1-y,\\quad x-z=1+y\\qquad(\\text{即 } x=1,\\;z=-y).$$\n二者分属两族，且都经过 $M_0$。",
+        "(2) 先求方向向量。$L_1(u,v)$ 是平面 $ux-vy+uz=v$ 与 $vx+uy-vz=u$ 的交线，其方向向量是两法向量 $(u,-v,u)$ 与 $(v,u,-v)$ 的叉积\n$$\\vec s_1=(v^2-u^2,\\;2uv,\\;u^2+v^2);$$\n同理 $L_2(\\lambda,\\mu)$ 的方向向量为\n$$\\vec s_2=(\\lambda^2-\\mu^2,\\;2\\lambda\\mu,\\;-(\\lambda^2+\\mu^2)).$$\n于是 $L_1\\perp L_2$ 当且仅当\n$$\\vec s_1\\cdot\\vec s_2=(v^2-u^2)(\\lambda^2-\\mu^2)+4uv\\lambda\\mu-(u^2+v^2)(\\lambda^2+\\mu^2)=-2(u\\lambda-v\\mu)^2=0,$$\n即 $u\\lambda=v\\mu$。",
+        "设交点为 $P(X,Y,Z)$。同一点处两族直母线各过唯一的一条，故 $P$ 在 $L_1(u,v)$、$L_2(\\lambda,\\mu)$ 上等价于\n$$u(X+Z)=v(1+Y),\\quad v(X-Z)=u(1-Y),\\qquad\\lambda(X+Z)=\\mu(1-Y),\\quad\\mu(X-Z)=\\lambda(1+Y).$$\n情形 1：$1+Y\\neq0$。此时可取 $(u,v)=(1+Y,\\;X+Z)$，$(\\lambda,\\mu)=(X-Z,\\;1+Y)$，于是\n$$u\\lambda-v\\mu=(1+Y)(X-Z)-(X+Z)(1+Y)=-2Z(1+Y),$$\n故垂直当且仅当 $Z=0$，再由 $P\\in S$ 得 $X^2+Y^2=1$。",
+        "情形 2：$1+Y=0$，即 $Y=-1$，此时由 $P\\in S$ 得 $X^2=Z^2$。若 $X=Z$，可取 $\\vec s_1=(1,0,1)$ 与 $\\vec s_2=(1-Z^2,\\;2Z,\\;-(1+Z^2))$；若 $X=-Z$，可取 $\\vec s_1=(1-Z^2,\\;-2Z,\\;1+Z^2)$ 与 $\\vec s_2=(1,0,-1)$。两种情形都有 $\\vec s_1\\cdot\\vec s_2=-2Z^2$，故仅当 $Z=0$ 时垂直，此时 $X=0,\\;Y=-1$，点 $(0,-1,0)$ 已在上面那个圆上。",
+        "综上，所求轨迹为平面 $z=0$ 上的圆\n$$x^2+y^2=1,\\qquad z=0.$$"
+      ],
+      "pointKeys": [
+        "单叶双曲面的两族直母线及其齐次参数表示",
+        "由两相交平面的法向量叉积求直线方向向量",
+        "两直线垂直的判定 $\\vec s_1\\cdot\\vec s_2=0$",
+        "把正交条件配成完全平方 $u\\lambda=v\\mu$",
+        "轨迹的化简与退化情形的讨论"
+      ],
+      "verification": "sympy 符号复核恒等式 $(v^2-u^2)(\\lambda^2-\\mu^2)+4uv\\lambda\\mu-(u^2+v^2)(\\lambda^2+\\mu^2)=-2(u\\lambda-v\\mu)^2$；对 $S$ 上 4000 个随机点计算两族方向向量内积，仅 $z=0$ 腰圆上的点内积为 $0$（另取 13 个圆上点逐一验证，内积绝对值小于 $10^{-15}$），$M_0$ 处内积为 $-1$，与结论一致。"
+    },
+    {
+      "id": "GA-B2015",
+      "subject": "gaodai",
+      "chapter": "第二章 行列式",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 秩一扰动矩阵的行列式与可逆性",
+      "question": "设 $f(x)$ 是实数域 $\\mathbb{R}$ 上没有零点的实连续函数，且 $f(2023)+f(2024)=2025$。证明：对任意 $x_1,x_2,\\cdots,x_n\\in\\mathbb{R}$，矩阵\n$$A=\\begin{pmatrix}\n1+f(x_1) & f(x_2) & \\cdots & f(x_n)\\\\\nf(x_1) & 1+f(x_2) & \\cdots & f(x_n)\\\\\n\\vdots & \\vdots & \\ddots & \\vdots\\\\\nf(x_1) & f(x_2) & \\cdots & 1+f(x_n)\n\\end{pmatrix}$$\n是可逆矩阵。",
+      "answer": "由 $f$ 连续且无零点知 $f$ 恒正，而 $|A|=1+\\sum_{i=1}^{n}f(x_i)>0$，故 $A$ 可逆。",
+      "standardSolution": "证明：(1) 因为 $f$ 在 $\\mathbb{R}$ 上连续且没有零点，所以 $f$ 在 $\\mathbb{R}$ 上不变号：若存在 $u<v$ 使 $f(u)$ 与 $f(v)$ 异号，则由零点定理，$f$ 在 $(u,v)$ 内必有零点，矛盾。若 $f<0$，则 $f(2023)+f(2024)<0$，与 $f(2023)+f(2024)=2025$ 矛盾。故\n$$f(x)>0,\\qquad \\forall x\\in\\mathbb{R}.$$\n\n(2) 记 $\\alpha=(1,1,\\cdots,1)^{\\mathrm{T}}\\in\\mathbb{R}^n$，$\\beta=(f(x_1),f(x_2),\\cdots,f(x_n))^{\\mathrm{T}}\\in\\mathbb{R}^n$，$E$ 为 $n$ 阶单位矩阵，则\n$$A=E+\\alpha\\beta^{\\mathrm{T}},$$\n因为 $(\\alpha\\beta^{\\mathrm{T}})_{ij}=f(x_j)$，恰为 $A$ 中第 $i$ 行第 $j$ 列的非对角部分。\n\n(3) 计算 $|A|$。把第 $2,3,\\cdots,n$ 行分别减去第 $1$ 行（行列式不变），则第 $i\\;(i\\ge2)$ 行变为：第 $1$ 列为 $-1$，第 $i$ 列为 $1$，其余各列为 $0$。再把第 $2,3,\\cdots,n$ 列都加到第 $1$ 列（行列式不变），则第 $1$ 列除第一个元素变为 $1+\\sum_{i=1}^{n}f(x_i)$ 外全为 $0$，而右下角的 $n-1$ 阶块是单位矩阵。于是按第 $1$ 列展开得\n$$|A|=\\begin{vmatrix}\n1+\\sum_{i=1}^{n}f(x_i) & f(x_2) & \\cdots & f(x_n)\\\\\n0 & 1 & \\cdots & 0\\\\\n\\vdots & \\vdots & \\ddots & \\vdots\\\\\n0 & 0 & \\cdots & 1\n\\end{vmatrix}=1+\\sum_{i=1}^{n}f(x_i).$$\n（这也正是行列式引理 $|E+\\alpha\\beta^{\\mathrm{T}}|=1+\\beta^{\\mathrm{T}}\\alpha$ 的特例。）\n\n(4) 由 (1) 知 $f(x_i)>0\\;(i=1,2,\\cdots,n)$，故\n$$|A|=1+\\sum_{i=1}^{n}f(x_i)\\ge1>0,$$\n所以 $A$ 可逆。\n\n注：也可由 $\\alpha\\beta^{\\mathrm{T}}$ 只有一个非零特征值 $\\beta^{\\mathrm{T}}\\alpha=\\sum_{i=1}^{n}f(x_i)$，得 $A$ 的特征值为 $1+\\sum_{i=1}^{n}f(x_i)$（一重）与 $1$（$n-1$ 重），全部非零，同样得到可逆性。",
+      "detailedAnalysis": "看到“对角多一个 $1$、非对角元按列只依赖 $x_j$”，应立刻想到秩一分解 $A=E+\\alpha\\beta^{\\mathrm{T}}$。秩一矩阵 $\\alpha\\beta^{\\mathrm{T}}$ 只有一个非零特征值 $\\beta^{\\mathrm{T}}\\alpha=\\sum f(x_i)$，故 $A$ 的特征值为 $1+\\sum f(x_i)$ 与 $n-1$ 重的 $1$，这正是行列式引理 $|E+\\alpha\\beta^{\\mathrm{T}}|=1+\\beta^{\\mathrm{T}}\\alpha$ 的来源。题设 $f(2023)+f(2024)=2025$ 不是用来算数而是定号：$f$ 连续无零点，在连通的 $\\mathbb{R}$ 上不变号，两值之和为正，故 $f$ 恒正，否则无法断言 $\\sum f(x_i)>0$。也可纯用行、列变换化成三角形。检验：$n=2$ 时 $|A|=1+f_1+f_2$ 与通式一致。",
+      "points": [
+        "连续函数无零点则不变号（零点定理）",
+        "矩阵的秩一分解 $A=E+\\alpha\\beta^{\\mathrm{T}}$",
+        "用行、列变换把行列式化为三角形",
+        "行列式引理 $|E+\\alpha\\beta^{\\mathrm{T}}|=1+\\beta^{\\mathrm{T}}\\alpha$",
+        "$A$ 可逆 $\\iff |A|\\neq0$"
+      ],
+      "pitfalls": [
+        "由 $f(2023)+f(2024)=2025$ 直接断定 $f$ 恒正，漏掉“连续且无零点 $\\Rightarrow$ 不变号”这一步。",
+        "把 $A$ 写成 $E+\\alpha\\beta^{\\mathrm{T}}$ 时弄错 $\\alpha,\\beta$ 的位置：$A_{ij}=f(x_j)$ 依赖列指标，若写成 $\\beta\\alpha^{\\mathrm{T}}$ 则得到另一个矩阵。",
+        "行变换后忘记再做列变换，或误以为“把某列的倍数加到另一列”会改变行列式的值。"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十六届全国大学生数学竞赛初赛（数学 B 类，2024））第 4 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "行列式"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：(1) 因为 $f$ 在 $\\mathbb{R}$ 上连续且没有零点，所以 $f$ 在 $\\mathbb{R}$ 上不变号：若存在 $u<v$ 使 $f(u)$ 与 $f(v)$ 异号，则由零点定理，$f$ 在 $(u,v)$ 内必有零点，矛盾。若 $f<0$，则 $f(2023)+f(2024)<0$，与 $f(2023)+f(2024)=2025$ 矛盾。故\n$$f(x)>0,\\qquad \\forall x\\in\\mathbb{R}.$$",
+        "(2) 记 $\\alpha=(1,1,\\cdots,1)^{\\mathrm{T}}\\in\\mathbb{R}^n$，$\\beta=(f(x_1),f(x_2),\\cdots,f(x_n))^{\\mathrm{T}}\\in\\mathbb{R}^n$，$E$ 为 $n$ 阶单位矩阵，则\n$$A=E+\\alpha\\beta^{\\mathrm{T}},$$\n因为 $(\\alpha\\beta^{\\mathrm{T}})_{ij}=f(x_j)$，恰为 $A$ 中第 $i$ 行第 $j$ 列的非对角部分。",
+        "(3) 计算 $|A|$。把第 $2,3,\\cdots,n$ 行分别减去第 $1$ 行（行列式不变），则第 $i\\;(i\\ge2)$ 行变为：第 $1$ 列为 $-1$，第 $i$ 列为 $1$，其余各列为 $0$。再把第 $2,3,\\cdots,n$ 列都加到第 $1$ 列（行列式不变），则第 $1$ 列除第一个元素变为 $1+\\sum_{i=1}^{n}f(x_i)$ 外全为 $0$，而右下角的 $n-1$ 阶块是单位矩阵。于是按第 $1$ 列展开得\n$$|A|=\\begin{vmatrix}\n1+\\sum_{i=1}^{n}f(x_i) & f(x_2) & \\cdots & f(x_n)\\\\\n0 & 1 & \\cdots & 0\\\\\n\\vdots & \\vdots & \\ddots & \\vdots\\\\\n0 & 0 & \\cdots & 1\n\\end{vmatrix}=1+\\sum_{i=1}^{n}f(x_i).$$\n（这也正是行列式引理 $|E+\\alpha\\beta^{\\mathrm{T}}|=1+\\beta^{\\mathrm{T}}\\alpha$ 的特例。）",
+        "(4) 由 (1) 知 $f(x_i)>0\\;(i=1,2,\\cdots,n)$，故\n$$|A|=1+\\sum_{i=1}^{n}f(x_i)\\ge1>0,$$\n所以 $A$ 可逆。",
+        "注：也可由 $\\alpha\\beta^{\\mathrm{T}}$ 只有一个非零特征值 $\\beta^{\\mathrm{T}}\\alpha=\\sum_{i=1}^{n}f(x_i)$，得 $A$ 的特征值为 $1+\\sum_{i=1}^{n}f(x_i)$（一重）与 $1$（$n-1$ 重），全部非零，同样得到可逆性。"
+      ],
+      "pointKeys": [
+        "连续函数无零点则不变号（零点定理）",
+        "矩阵的秩一分解 $A=E+\\alpha\\beta^{\\mathrm{T}}$",
+        "用行、列变换把行列式化为三角形",
+        "行列式引理 $|E+\\alpha\\beta^{\\mathrm{T}}|=1+\\beta^{\\mathrm{T}}\\alpha$",
+        "$A$ 可逆 $\\iff |A|\\neq0$"
+      ],
+      "verification": "sympy 复核：对 $n=2,3,4,5$ 取符号 $f_1,\\cdots,f_n>0$ 构造 $A$，均有 $\\det A-\\left(1+\\sum_{i=1}^{n}f_i\\right)=0$；随机正数代入亦得 $|A|>0$。“$f$ 恒正”与可逆性推理为逻辑论证，已人工复核。"
+    },
+    {
+      "id": "GA-B2016",
+      "subject": "gaodai",
+      "chapter": "第二章 行列式",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 指定行列式的有理方阵构造",
+      "question": "设 $m,n$ 为大于 $2$ 的整数，$a_1,\\cdots,a_{m+1}$ 为任意 $m+1$ 个有理数，$\\mathbb{Q}^{n\\times n}$ 为有理数域上 $n$ 阶方阵全体，$|A|$ 表示方阵 $A$ 的行列式。证明：\n(1) $\\mathbb{Q}^{n\\times n}$ 中存在 $m$ 个元素 $B_1,\\cdots,B_m$，使得 $|B_j|=j\\ (j=1,\\cdots,m)$；\n(2) $\\mathbb{Q}^{n\\times n}$ 中存在 $m$ 个元素 $A_1,\\cdots,A_m$，使得下列两条同时成立：\n(i) $|A_j|=a_j\\ (j=1,\\cdots,m)$；\n(ii) $|A_1-A_2-\\cdots-A_m|=a_{m+1}$。",
+      "answer": "两问都用“对角阵加一个 $2\\times2$ 分块”实现：(1) 取 $B_j=\\mathrm{diag}(1,\\cdots,1,j)$；(2) 取 $A_j=\\mathrm{diag}(a_j,1,\\cdots,1)\\ (j\\ge2)$，把 $A_1$ 的前 $2\\times2$ 块取成 $\\begin{pmatrix}u&1\\\\ y&v\\end{pmatrix}$，由关于 $u,v$ 的一次方程在有理数域中解出参数，即可同时满足两个行列式条件。",
+      "standardSolution": "证明：(1) 取 $B_j=\\mathrm{diag}(1,\\cdots,1,j)$（前 $n-1$ 个对角元为 $1$，最后一个为 $j$），$j=1,\\cdots,m$。上三角阵的行列式等于对角元之积，故 $|B_j|=j$，且 $B_j\\in\\mathbb{Q}^{n\\times n}$，$j=1,\\cdots,m$。\n\n(2) 记 $s=a_2+\\cdots+a_m$，$\\beta=\\dfrac{a_{m+1}}{(2-m)^{n-2}}$。由 $m>2$ 得 $2-m\\ne0$，由 $n>2$ 得 $n-2\\ge1$，故 $\\beta\\in\\mathbb{Q}$。取\n$$A_j=\\mathrm{diag}(a_j,1,\\cdots,1),\\qquad j=2,\\cdots,m,$$\n则 $|A_j|=a_j$，且 $A_2+\\cdots+A_m=\\mathrm{diag}(s,m-1,\\cdots,m-1)$。再取\n$$A_1=\\begin{pmatrix}u&1&0\\\\ y&v&0\\\\ 0&0&I_{n-2}\\end{pmatrix},$$\n其中 $u,v,y\\in\\mathbb{Q}$ 待定。此时\n$$|A_1|=uv-y,\\qquad T:=A_1-A_2-\\cdots-A_m=\\begin{pmatrix}u-s&1&0\\\\ y&v-(m-1)&0\\\\ 0&0&(2-m)I_{n-2}\\end{pmatrix},$$\n按分块行列式展开（交换行列后 $T$ 为分块下三角）得\n$$|T|=\\big[(u-s)(v-(m-1))-y\\big](2-m)^{n-2}.$$\n\n于是两个条件 $|A_1|=a_1$ 与 $|T|=a_{m+1}$ 就是\n$$uv-y=a_1,\\qquad (u-s)(v-(m-1))-y=\\beta.$$\n两式相减，$uv$ 与 $-y$ 一并抵消，得关于 $u,v$ 的一次方程\n$$-u(m-1)-s\\,v+s(m-1)=\\beta-a_1. \\qquad(\\ast)$$\n\n若 $s\\ne0$：在 $(\\ast)$ 中取 $u=0$，解出 $v=\\dfrac{(m-1)s+a_1-\\beta}{s}\\in\\mathbb{Q}$，再取 $y=uv-a_1=-a_1\\in\\mathbb{Q}$，则 $|A_1|=a_1$，$|T|=\\beta(2-m)^{n-2}=a_{m+1}$。\n若 $s=0$：$(\\ast)$ 化为 $-u(m-1)=\\beta-a_1$，取 $u=\\dfrac{a_1-\\beta}{m-1}\\in\\mathbb{Q}$（$m>2$ 保证 $m-1\\ne0$），$v=0$，$y=uv-a_1=-a_1$，同样得 $|A_1|=a_1$、$|T|=\\beta(2-m)^{n-2}=a_{m+1}$。\n\n综上，$A_1,\\cdots,A_m\\in\\mathbb{Q}^{n\\times n}$ 满足 $|A_j|=a_j\\ (j=1,\\cdots,m)$ 与 $|A_1-A_2-\\cdots-A_m|=a_{m+1}$，即 (2) 成立。证毕。",
+      "detailedAnalysis": "先说 (1)：对角阵 $\\mathrm{diag}(\\lambda,1,\\cdots,1)$ 的行列式就是 $\\lambda$，故取指定行列式无困难，(2)(i) 同理。(2)(ii) 才是实质：$|A_1-\\cdots-A_m|$ 只有一个可调自由度，且与 $|A_1|=a_1$ 耦合，改 $A_1$ 会同时改变两者。办法是把参数放进 $2\\times2$ 分块的非对角元：$|A_1|$ 与 $|T|$ 都含 $y=uv-a_1$，两式相减正好消去它，剩下 $u,v$ 的一次方程，有理数域上必有解。若全取对角阵，$|T|$ 被钉死为 $(a_1-\\sum a_j)(2-m)^{n-2}$，命中不了任给的 $a_{m+1}$。关键步骤：分块行列式、消交叉项、按 $s=0$ 与 $s\\ne0$ 讨论以免除零。检验：解出的 $u,v,y$ 回代两个行列式即可。",
+      "points": [
+        "行列式的分块计算",
+        "对角阵构造指定行列式",
+        "参数自由度的选择",
+        "消去交叉项的一次方程",
+        "有理数域上构造的存在性"
+      ],
+      "pitfalls": [
+        "把 $A_1-A_2-\\cdots-A_m$ 误读成 $A_1A_2\\cdots A_m$",
+        "全部取对角阵，使 $|T|$ 只剩一个定值而无法命中 $a_{m+1}$",
+        "$s=a_2+\\cdots+a_m=0$ 时仍除以 $s$，导致构造中断"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十七届全国大学生数学竞赛初赛（数学 A 类，2025））第 3 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "行列式的构造"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：(1) 取 $B_j=\\mathrm{diag}(1,\\cdots,1,j)$（前 $n-1$ 个对角元为 $1$，最后一个为 $j$），$j=1,\\cdots,m$。上三角阵的行列式等于对角元之积，故 $|B_j|=j$，且 $B_j\\in\\mathbb{Q}^{n\\times n}$，$j=1,\\cdots,m$。",
+        "(2) 记 $s=a_2+\\cdots+a_m$，$\\beta=\\dfrac{a_{m+1}}{(2-m)^{n-2}}$。由 $m>2$ 得 $2-m\\ne0$，由 $n>2$ 得 $n-2\\ge1$，故 $\\beta\\in\\mathbb{Q}$。取\n$$A_j=\\mathrm{diag}(a_j,1,\\cdots,1),\\qquad j=2,\\cdots,m,$$\n则 $|A_j|=a_j$，且 $A_2+\\cdots+A_m=\\mathrm{diag}(s,m-1,\\cdots,m-1)$。再取\n$$A_1=\\begin{pmatrix}u&1&0\\\\ y&v&0\\\\ 0&0&I_{n-2}\\end{pmatrix},$$\n其中 $u,v,y\\in\\mathbb{Q}$ 待定。此时\n$$|A_1|=uv-y,\\qquad T:=A_1-A_2-\\cdots-A_m=\\begin{pmatrix}u-s&1&0\\\\ y&v-(m-1)&0\\\\ 0&0&(2-m)I_{n-2}\\end{pmatrix},$$\n按分块行列式展开（交换行列后 $T$ 为分块下三角）得\n$$|T|=\\big[(u-s)(v-(m-1))-y\\big](2-m)^{n-2}.$$",
+        "于是两个条件 $|A_1|=a_1$ 与 $|T|=a_{m+1}$ 就是\n$$uv-y=a_1,\\qquad (u-s)(v-(m-1))-y=\\beta.$$\n两式相减，$uv$ 与 $-y$ 一并抵消，得关于 $u,v$ 的一次方程\n$$-u(m-1)-s\\,v+s(m-1)=\\beta-a_1. \\qquad(\\ast)$$",
+        "若 $s\\ne0$：在 $(\\ast)$ 中取 $u=0$，解出 $v=\\dfrac{(m-1)s+a_1-\\beta}{s}\\in\\mathbb{Q}$，再取 $y=uv-a_1=-a_1\\in\\mathbb{Q}$，则 $|A_1|=a_1$，$|T|=\\beta(2-m)^{n-2}=a_{m+1}$。\n若 $s=0$：$(\\ast)$ 化为 $-u(m-1)=\\beta-a_1$，取 $u=\\dfrac{a_1-\\beta}{m-1}\\in\\mathbb{Q}$（$m>2$ 保证 $m-1\\ne0$），$v=0$，$y=uv-a_1=-a_1$，同样得 $|A_1|=a_1$、$|T|=\\beta(2-m)^{n-2}=a_{m+1}$。",
+        "综上，$A_1,\\cdots,A_m\\in\\mathbb{Q}^{n\\times n}$ 满足 $|A_j|=a_j\\ (j=1,\\cdots,m)$ 与 $|A_1-A_2-\\cdots-A_m|=a_{m+1}$，即 (2) 成立。证毕。"
+      ],
+      "pointKeys": [
+        "行列式的分块计算",
+        "对角阵构造指定行列式",
+        "参数自由度的选择",
+        "消去交叉项的一次方程",
+        "有理数域上构造的存在性"
+      ],
+      "verification": "sympy 复核：取 $n=3$、$m=3$ 的两组数据 $(a_1,\\cdots,a_4)=(\\frac12,-3,\\frac75,\\frac{11}6)$（$s\\ne0$）与 $(2,-\\frac35,\\frac35,4)$（$s=0$），再取 $m=4$、$(a_1,\\cdots,a_5)=(\\frac57,2,0,-\\frac94,\\frac{13}3)$，按上述构造算出 $|A_1|,\\cdots,|A_m|$ 及 $|A_1-A_2-\\cdots-A_m|$，与 $a_1,\\cdots,a_{m+1}$ 逐一相符。人工复核：一般情形下的分块行列式 $|T|=((u-s)(v-(m-1))-y)(2-m)^{n-2}$、两式相减消去 $y$ 得一次方程，以及 $s\\ne0$ 与 $s=0$ 两种取法都在 $\\mathbb{Q}$ 内解出 $u,v,y$。"
+    },
+    {
+      "id": "GA-B2017",
+      "subject": "gaodai",
+      "chapter": "第七章 线性变换",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 极小多项式与循环向量的存在性",
+      "question": "设 $K$ 为数域，$\\mathcal{A}:V\\to V$ 是 $n$ 维 $K$-向量空间 $V$ 上的线性算子，$\\mu_{\\mathcal{A}}(x),\\chi_{\\mathcal{A}}(x)\\in K[x]$ 分别是 $\\mathcal{A}$ 的极小多项式和特征多项式。证明：\n(1) 存在 $\\alpha\\in V$ 使 $\\mu_{\\mathcal{A}}(x)=\\mu_{\\mathcal{A},\\alpha}(x)$，其中 $\\mu_{\\mathcal{A},\\alpha}(x)$ 是集合 $\\{f(x)\\in K[x]\\mid f(\\mathcal{A})(\\alpha)=0\\}$ 中首项系数为 $1$、次数最小的多项式；\n(2) $K[\\mathcal{A}]\\cdot\\alpha:=\\{f(\\mathcal{A})(\\alpha)\\mid \\forall f(x)\\in K[x]\\}$ 是 $\\deg\\mu_{\\mathcal{A},\\alpha}(x)$ 维的 $\\mathcal{A}$-不变子空间；\n(3) 设 $\\mathcal{B}:V\\to V$ 是任意线性算子，若 $\\mu_{\\mathcal{A}}(x)=\\chi_{\\mathcal{A}}(x)$，则\n$$\\mathcal{A}\\mathcal{B}=\\mathcal{B}\\mathcal{A}\\iff \\text{存在}\\ f(x)\\in K[x]\\text{，使}\\ \\mathcal{B}=f(\\mathcal{A}).$$",
+      "answer": "(1) 在 $\\mu_{\\mathcal A}$ 的各准素分量上取 $\\alpha_i$ 使 $\\mu_{\\mathcal A,\\alpha_i}=p_i^{m_i}$，令 $\\alpha=\\sum\\alpha_i$ 即得；(2) $\\alpha,\\mathcal A\\alpha,\\cdots,\\mathcal A^{d-1}\\alpha$（$d=\\deg\\mu_{\\mathcal A,\\alpha}$）为基，故维数为 $d$ 且 $\\mathcal A$-不变；(3) $\\mu_{\\mathcal A}=\\chi_{\\mathcal A}$ 时由 (1)(2) 知 $\\alpha$ 是循环向量，与 $\\mathcal A$ 交换的算子由它在 $\\alpha$ 上的值决定，故必为 $\\mathcal A$ 的多项式。",
+      "standardSolution": "证明：(1) 设 $\\mu_{\\mathcal{A}}(x)=p_1(x)^{m_1}\\cdots p_s(x)^{m_s}$ 是 $\\mu_{\\mathcal{A}}(x)$ 在 $K[x]$ 中的不可约分解（$p_i$ 首一、两两不同，$m_i\\ge1$）。令 $V_i=\\ker p_i(\\mathcal{A})^{m_i}$，则\n$$V=V_1\\oplus\\cdots\\oplus V_s,$$\n每个 $V_i$ 都是 $\\mathcal{A}$-不变子空间，且 $\\mathcal{A}_i=\\mathcal{A}|_{V_i}$ 的极小多项式为 $p_i^{m_i}$。\n\n先证存在 $\\alpha_i\\in V_i$ 使 $\\mu_{\\mathcal{A},\\alpha_i}=p_i^{m_i}$。若 $m_i=1$，取 $0\\ne\\alpha_i\\in V_i$，由 $\\mu_{\\mathcal{A},\\alpha_i}\\mid\\mu_{\\mathcal{A}_i}=p_i$ 且 $\\mu_{\\mathcal{A},\\alpha_i}\\ne1$（否则 $\\alpha_i=0$）得 $\\mu_{\\mathcal{A},\\alpha_i}=p_i$。若 $m_i>1$，由 $p_i^{m_i}$ 是 $\\mathcal{A}_i$ 的极小多项式知 $p_i(\\mathcal{A})^{m_i-1}$ 在 $V_i$ 上不恒为零，故有 $\\alpha_i\\in V_i$ 使 $p_i(\\mathcal{A})^{m_i-1}\\alpha_i\\ne0$；另一方面 $\\mu_{\\mathcal{A},\\alpha_i}\\mid p_i^{m_i}$，可写 $\\mu_{\\mathcal{A},\\alpha_i}=p_i^{k}$，$k\\le m_i$；若 $k<m_i$，则\n$$p_i(\\mathcal{A})^{m_i-1}\\alpha_i=p_i(\\mathcal{A})^{m_i-1-k}\\big(p_i(\\mathcal{A})^{k}\\alpha_i\\big)=0,$$\n矛盾，故 $k=m_i$。\n\n令 $\\alpha=\\alpha_1+\\cdots+\\alpha_s$，记 $h(x)=\\mu_{\\mathcal{A},\\alpha}(x)$。由 $\\mu_{\\mathcal{A}}(\\mathcal{A})=0$ 得 $h\\mid\\mu_{\\mathcal{A}}$。反之 $h(\\mathcal{A})\\alpha=0$，而 $h(\\mathcal{A})\\alpha_i\\in V_i$，由直和分解得 $h(\\mathcal{A})\\alpha_i=0$，于是 $\\mu_{\\mathcal{A},\\alpha_i}=p_i^{m_i}\\mid h$ 对每个 $i$ 成立；$p_1,\\cdots,p_s$ 两两互素，故 $\\mu_{\\mathcal{A}}=p_1^{m_1}\\cdots p_s^{m_s}\\mid h$。于是 $h=\\mu_{\\mathcal{A}}$，即存在 $\\alpha\\in V$ 使 $\\mu_{\\mathcal{A},\\alpha}=\\mu_{\\mathcal{A}}$。\n\n(2) 记 $d=\\deg\\mu_{\\mathcal{A},\\alpha}(x)$，证明\n$$\\alpha,\\ \\mathcal{A}\\alpha,\\ \\cdots,\\ \\mathcal{A}^{d-1}\\alpha$$\n构成 $K[\\mathcal{A}]\\cdot\\alpha$ 的一组基。张成性：对任意 $f(x)\\in K[x]$ 作带余除法 $f=q\\mu_{\\mathcal{A},\\alpha}+r$，$\\deg r<d$，则 $f(\\mathcal{A})\\alpha=r(\\mathcal{A})\\alpha$，是上述 $d$ 个向量的线性组合。线性无关性：若 $\\sum_{k=0}^{d-1}c_k\\mathcal{A}^{k}\\alpha=0$，令 $r(x)=\\sum c_kx^{k}$，则 $r(\\mathcal{A})\\alpha=0$，由 $\\mu_{\\mathcal{A},\\alpha}$ 的次数最小性得 $r=0$，即 $c_0=\\cdots=c_{d-1}=0$。故 $\\dim K[\\mathcal{A}]\\cdot\\alpha=d$。又对 $f(\\mathcal{A})\\alpha\\in K[\\mathcal{A}]\\cdot\\alpha$ 有 $\\mathcal{A}\\big(f(\\mathcal{A})\\alpha\\big)=(xf)(\\mathcal{A})\\alpha\\in K[\\mathcal{A}]\\cdot\\alpha$，故它是 $\\mathcal{A}$-不变子空间。\n\n(3) 设 $\\mu_{\\mathcal{A}}(x)=\\chi_{\\mathcal{A}}(x)$。由 (1) 取 $\\alpha$ 使 $\\mu_{\\mathcal{A},\\alpha}=\\mu_{\\mathcal{A}}=\\chi_{\\mathcal{A}}$，则 $d=\\deg\\chi_{\\mathcal{A}}=n$；由 (2)，$K[\\mathcal{A}]\\cdot\\alpha$ 是 $V$ 的 $n$ 维子空间，故 $V=K[\\mathcal{A}]\\cdot\\alpha$，即 $\\alpha$ 是循环向量。\n\n若 $\\mathcal{A}\\mathcal{B}=\\mathcal{B}\\mathcal{A}$：因 $\\mathcal{B}(\\alpha)\\in V=K[\\mathcal{A}]\\cdot\\alpha$，存在 $f(x)\\in K[x]$ 使 $\\mathcal{B}(\\alpha)=f(\\mathcal{A})(\\alpha)$。任取 $\\beta=g(\\mathcal{A})\\alpha\\in V$，则\n$$\\mathcal{B}(\\beta)=\\mathcal{B}\\big(g(\\mathcal{A})\\alpha\\big)=g(\\mathcal{A})\\mathcal{B}(\\alpha)=g(\\mathcal{A})f(\\mathcal{A})\\alpha=f(\\mathcal{A})g(\\mathcal{A})\\alpha=f(\\mathcal{A})(\\beta),$$\n故 $\\mathcal{B}=f(\\mathcal{A})$。反之若 $\\mathcal{B}=f(\\mathcal{A})$，则 $\\mathcal{A}\\mathcal{B}=(\\mathcal{A}f)(\\mathcal{A})=(f\\mathcal{A})(\\mathcal{A})=\\mathcal{B}\\mathcal{A}$。证毕。",
+      "detailedAnalysis": "(1) 思路是把极小多项式看作各向量零化多项式的公因式，要让它取到“最大公因式”，就在每个准素分量上各取最坏的向量再相加：$V=\\ker p_1(\\mathcal A)^{m_1}\\oplus\\cdots$ 后各分量极小多项式为单幂次 $p_i^{m_i}$。关键：$m_i>1$ 时用 $p_i(\\mathcal A)^{m_i-1}\\ne0$ 挑 $\\alpha_i$，由整除得 $\\mu_{\\mathcal A,\\alpha_i}=p_i^{m_i}$，再证 $\\mu_{\\mathcal A}\\mid\\mu_{\\mathcal A,\\alpha}$。(2) 用带余除法把 $f(\\mathcal A)\\alpha$ 压到次数 $<d$，次数最小性保证这 $d$ 个向量无关。(3) 由 $\\deg\\chi_{\\mathcal A}=n$ 知 $\\alpha$ 张成 $V$。",
+      "points": [
+        "极小多项式与准素分解",
+        "循环向量与 $\\mu_{\\mathcal A,\\alpha}$ 的整除关系",
+        "$K[\\mathcal A]$-模的基与维数",
+        "$\\mathcal A$-不变子空间",
+        "$\\mu_{\\mathcal A}=\\chi_{\\mathcal A}$ 时中心化子等于多项式代数"
+      ],
+      "pitfalls": [
+        "在 (1) 中于每个 $V_i$ 里随便取非零向量，忽略 $m_i>1$ 时必须用 $p_i(\\mathcal A)^{m_i-1}\\ne0$ 挑向量",
+        "把 $\\mu_{\\mathcal A,\\alpha_i}\\mid h$ 与 $h\\mid\\mu_{\\mathcal A}$ 的整除方向弄反",
+        "(3) 中未先由 (1)(2) 说明 $\\alpha$ 生成整个 $V$，就把 $\\mathcal B(\\alpha)=f(\\mathcal A)\\alpha$ 推广到所有向量"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十七届全国大学生数学竞赛初赛（数学 A 类，2025））第 4 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "极小多项式与循环向量"
+      ],
+      "relatedEntries": [],
+      "difficulty": 5,
+      "solution": [
+        "证明：(1) 设 $\\mu_{\\mathcal{A}}(x)=p_1(x)^{m_1}\\cdots p_s(x)^{m_s}$ 是 $\\mu_{\\mathcal{A}}(x)$ 在 $K[x]$ 中的不可约分解（$p_i$ 首一、两两不同，$m_i\\ge1$）。令 $V_i=\\ker p_i(\\mathcal{A})^{m_i}$，则\n$$V=V_1\\oplus\\cdots\\oplus V_s,$$\n每个 $V_i$ 都是 $\\mathcal{A}$-不变子空间，且 $\\mathcal{A}_i=\\mathcal{A}|_{V_i}$ 的极小多项式为 $p_i^{m_i}$。",
+        "先证存在 $\\alpha_i\\in V_i$ 使 $\\mu_{\\mathcal{A},\\alpha_i}=p_i^{m_i}$。若 $m_i=1$，取 $0\\ne\\alpha_i\\in V_i$，由 $\\mu_{\\mathcal{A},\\alpha_i}\\mid\\mu_{\\mathcal{A}_i}=p_i$ 且 $\\mu_{\\mathcal{A},\\alpha_i}\\ne1$（否则 $\\alpha_i=0$）得 $\\mu_{\\mathcal{A},\\alpha_i}=p_i$。若 $m_i>1$，由 $p_i^{m_i}$ 是 $\\mathcal{A}_i$ 的极小多项式知 $p_i(\\mathcal{A})^{m_i-1}$ 在 $V_i$ 上不恒为零，故有 $\\alpha_i\\in V_i$ 使 $p_i(\\mathcal{A})^{m_i-1}\\alpha_i\\ne0$；另一方面 $\\mu_{\\mathcal{A},\\alpha_i}\\mid p_i^{m_i}$，可写 $\\mu_{\\mathcal{A},\\alpha_i}=p_i^{k}$，$k\\le m_i$；若 $k<m_i$，则\n$$p_i(\\mathcal{A})^{m_i-1}\\alpha_i=p_i(\\mathcal{A})^{m_i-1-k}\\big(p_i(\\mathcal{A})^{k}\\alpha_i\\big)=0,$$\n矛盾，故 $k=m_i$。",
+        "令 $\\alpha=\\alpha_1+\\cdots+\\alpha_s$，记 $h(x)=\\mu_{\\mathcal{A},\\alpha}(x)$。由 $\\mu_{\\mathcal{A}}(\\mathcal{A})=0$ 得 $h\\mid\\mu_{\\mathcal{A}}$。反之 $h(\\mathcal{A})\\alpha=0$，而 $h(\\mathcal{A})\\alpha_i\\in V_i$，由直和分解得 $h(\\mathcal{A})\\alpha_i=0$，于是 $\\mu_{\\mathcal{A},\\alpha_i}=p_i^{m_i}\\mid h$ 对每个 $i$ 成立；$p_1,\\cdots,p_s$ 两两互素，故 $\\mu_{\\mathcal{A}}=p_1^{m_1}\\cdots p_s^{m_s}\\mid h$。于是 $h=\\mu_{\\mathcal{A}}$，即存在 $\\alpha\\in V$ 使 $\\mu_{\\mathcal{A},\\alpha}=\\mu_{\\mathcal{A}}$。",
+        "(2) 记 $d=\\deg\\mu_{\\mathcal{A},\\alpha}(x)$，证明\n$$\\alpha,\\ \\mathcal{A}\\alpha,\\ \\cdots,\\ \\mathcal{A}^{d-1}\\alpha$$\n构成 $K[\\mathcal{A}]\\cdot\\alpha$ 的一组基。张成性：对任意 $f(x)\\in K[x]$ 作带余除法 $f=q\\mu_{\\mathcal{A},\\alpha}+r$，$\\deg r<d$，则 $f(\\mathcal{A})\\alpha=r(\\mathcal{A})\\alpha$，是上述 $d$ 个向量的线性组合。线性无关性：若 $\\sum_{k=0}^{d-1}c_k\\mathcal{A}^{k}\\alpha=0$，令 $r(x)=\\sum c_kx^{k}$，则 $r(\\mathcal{A})\\alpha=0$，由 $\\mu_{\\mathcal{A},\\alpha}$ 的次数最小性得 $r=0$，即 $c_0=\\cdots=c_{d-1}=0$。故 $\\dim K[\\mathcal{A}]\\cdot\\alpha=d$。又对 $f(\\mathcal{A})\\alpha\\in K[\\mathcal{A}]\\cdot\\alpha$ 有 $\\mathcal{A}\\big(f(\\mathcal{A})\\alpha\\big)=(xf)(\\mathcal{A})\\alpha\\in K[\\mathcal{A}]\\cdot\\alpha$，故它是 $\\mathcal{A}$-不变子空间。",
+        "(3) 设 $\\mu_{\\mathcal{A}}(x)=\\chi_{\\mathcal{A}}(x)$。由 (1) 取 $\\alpha$ 使 $\\mu_{\\mathcal{A},\\alpha}=\\mu_{\\mathcal{A}}=\\chi_{\\mathcal{A}}$，则 $d=\\deg\\chi_{\\mathcal{A}}=n$；由 (2)，$K[\\mathcal{A}]\\cdot\\alpha$ 是 $V$ 的 $n$ 维子空间，故 $V=K[\\mathcal{A}]\\cdot\\alpha$，即 $\\alpha$ 是循环向量。",
+        "若 $\\mathcal{A}\\mathcal{B}=\\mathcal{B}\\mathcal{A}$：因 $\\mathcal{B}(\\alpha)\\in V=K[\\mathcal{A}]\\cdot\\alpha$，存在 $f(x)\\in K[x]$ 使 $\\mathcal{B}(\\alpha)=f(\\mathcal{A})(\\alpha)$。任取 $\\beta=g(\\mathcal{A})\\alpha\\in V$，则\n$$\\mathcal{B}(\\beta)=\\mathcal{B}\\big(g(\\mathcal{A})\\alpha\\big)=g(\\mathcal{A})\\mathcal{B}(\\alpha)=g(\\mathcal{A})f(\\mathcal{A})\\alpha=f(\\mathcal{A})g(\\mathcal{A})\\alpha=f(\\mathcal{A})(\\beta),$$\n故 $\\mathcal{B}=f(\\mathcal{A})$。反之若 $\\mathcal{B}=f(\\mathcal{A})$，则 $\\mathcal{A}\\mathcal{B}=(\\mathcal{A}f)(\\mathcal{A})=(f\\mathcal{A})(\\mathcal{A})=\\mathcal{B}\\mathcal{A}$。证毕。"
+      ],
+      "pointKeys": [
+        "极小多项式与准素分解",
+        "循环向量与 $\\mu_{\\mathcal A,\\alpha}$ 的整除关系",
+        "$K[\\mathcal A]$-模的基与维数",
+        "$\\mathcal A$-不变子空间",
+        "$\\mu_{\\mathcal A}=\\chi_{\\mathcal A}$ 时中心化子等于多项式代数"
+      ],
+      "verification": "人工复核：三条均为线性变换标准结论（准素分解、$\\deg\\mu_{\\mathcal A,\\alpha}=\\dim K[\\mathcal A]\\alpha$、$\\mu=\\chi$ 等价于存在循环向量），按“整除方向—直和取零—基的线性无关”逐步核对，属证明题无机器验证；另用 $\\mathcal A=\\mathrm{diag}(1,1)$ 检验条件 $\\mu=\\chi$ 不可去。"
+    },
+    {
+      "id": "GA-B2018",
+      "subject": "gaodai",
+      "chapter": "第六章 线性空间",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "综合题 · 四面体三中线共点与重心坐标",
+      "question": "三角形三条中线的交点称为三角形的重心．在四面体 $ABCD$ 中，记 $\\boldsymbol{e}_{1}=\\overrightarrow{AB}$，$\\boldsymbol{e}_{2}=\\overrightarrow{AC}$，$\\boldsymbol{e}_{3}=\\overrightarrow{AD}$，并设 $O_{1},O_{2},O_{3}$ 分别为 $\\triangle BCD$、$\\triangle ACD$ 和 $\\triangle ABD$ 的重心．\n（1）在坐标系 $\\{A;\\boldsymbol{e}_{1},\\boldsymbol{e}_{2},\\boldsymbol{e}_{3}\\}$ 下，求 $O_{1}$ 点的坐标 $(x,y,z)$；\n（2）证明三直线 $AO_{1}$，$BO_{2}$ 及 $CO_{3}$ 相交于一点 $P$；\n（3）在坐标系 $\\{A;\\boldsymbol{e}_{1},\\boldsymbol{e}_{2},\\boldsymbol{e}_{3}\\}$ 下，求（2）中交点 $P$ 的坐标．",
+      "answer": "$O_{1}$ 的坐标为 $\\left(\\frac13,\\frac13,\\frac13\\right)$，且 $AO_{1},BO_{2},CO_{3}$ 三线共点于 $P\\left(\\frac14,\\frac14,\\frac14\\right)$．",
+      "standardSolution": "解：在坐标系 $\\{A;\\boldsymbol{e}_{1},\\boldsymbol{e}_{2},\\boldsymbol{e}_{3}\\}$ 下，$A=(0,0,0)$，$B=(1,0,0)$，$C=(0,1,0)$，$D=(0,0,1)$．\n\n（1）设 $E$ 为 $CD$ 的中点，则 $E=\\left(0,\\frac12,\\frac12\\right)$．因 $O_{1}$ 是 $\\triangle BCD$ 的重心，故 $O_{1}$ 在 $BE$ 上且 $BO_{1}:O_{1}E=2:1$，于是$$\\overrightarrow{AO_{1}}=\\overrightarrow{AB}+\\frac23\\overrightarrow{BE}=\\boldsymbol{e}_{1}+\\frac23\\left(-\\boldsymbol{e}_{1}+\\frac12\\boldsymbol{e}_{2}+\\frac12\\boldsymbol{e}_{3}\\right)=\\frac13\\left(\\boldsymbol{e}_{1}+\\boldsymbol{e}_{2}+\\boldsymbol{e}_{3}\\right),$$所以 $O_{1}$ 的坐标为 $\\left(\\frac13,\\frac13,\\frac13\\right)$．\n\n（2）同理 $O_{2}$ 是 $\\triangle ACD$ 的重心、$O_{3}$ 是 $\\triangle ABD$ 的重心，由“重心的坐标等于三个顶点坐标的算术平均”得$$O_{2}=\\left(0,\\frac13,\\frac13\\right),\\qquad O_{3}=\\left(\\frac13,0,\\frac13\\right).$$设 $AO_{1}$ 与 $BO_{2}$ 交于点 $P$，则存在 $\\lambda,\\mu\\in\\mathbb{R}$ 使$$P=A+\\lambda\\overrightarrow{AO_{1}}=\\frac{\\lambda}{3}\\left(\\boldsymbol{e}_{1}+\\boldsymbol{e}_{2}+\\boldsymbol{e}_{3}\\right),\\qquad P=B+\\mu\\overrightarrow{BO_{2}}=\\left(1-\\mu,\\frac{\\mu}{3},\\frac{\\mu}{3}\\right).$$比较坐标得 $\\frac{\\lambda}{3}=1-\\mu$ 且 $\\frac{\\lambda}{3}=\\frac{\\mu}{3}$，故 $\\lambda=\\mu$，代回得 $\\frac{\\lambda}{3}=1-\\lambda$，即 $\\lambda=\\mu=\\frac34$．于是$$P=\\frac34\\overrightarrow{AO_{1}}=\\frac14\\left(\\boldsymbol{e}_{1}+\\boldsymbol{e}_{2}+\\boldsymbol{e}_{3}\\right)=\\left(\\frac14,\\frac14,\\frac14\\right).$$再验证 $P$ 在直线 $CO_{3}$ 上：$$\\overrightarrow{CP}=P-C=\\left(\\frac14,-\\frac34,\\frac14\\right)=\\frac34\\left(\\frac13,-1,\\frac13\\right)=\\frac34\\overrightarrow{CO_{3}},$$故 $C,P,O_{3}$ 三点共线（此时 $\\overrightarrow{CP}=3\\overrightarrow{PO_{3}}$，与重心分中线的比一致）．所以 $AO_{1},BO_{2},CO_{3}$ 三线共点于 $P$．\n\n（3）由（2）即得交点 $P$ 的坐标为 $\\left(\\frac14,\\frac14,\\frac14\\right)$．",
+      "detailedAnalysis": "切入点是把几何命题翻译成仿射坐标下的线性运算：重心、共线、定比分点都是仿射概念，与度量无关，因此取 $\\{\\boldsymbol{e}_{1},\\boldsymbol{e}_{2},\\boldsymbol{e}_{3}\\}$ 为基最省力，$A,B,C,D$ 的坐标立刻化为 $(0,0,0),(1,0,0),(0,1,0),(0,0,1)$．三线共点的标准套路是“先求两线交点，再验证它落在第三线上”，每条线写成 $X=X_{0}+t\\vec{v}$ 后，交点问题就是二元一次方程组，不需要任何空间想象．关键步骤有三：其一，重心坐标用顶点坐标的算术平均（可由中线定比 $2:1$ 推出），得 $O_{1}$ 的坐标；其二，联立 $AO_{1}$ 与 $BO_{2}$ 时 $B$ 的第一个坐标是 $1-\\mu$，解得 $\\lambda=\\mu=\\frac34$；其三，用 $\\overrightarrow{CP}=\\frac34\\overrightarrow{CO_{3}}$ 完成共线验证，这一步不能省，否则只说明了两线相交．检验：$\\lambda=\\frac34$ 表示 $AP:PO_{1}=3:1$，与“重心把中线分成 $2:1$”相容；所得 $P$ 关于三个顶点轮换对称，也印证结果合理．顺带可见第四条线（$D$ 与 $\\triangle ABC$ 重心的连线）同样过 $P$，因为 $P$ 的坐标关于四个顶点完全对称，这正是“四面体重心”的定比分点刻画．",
+      "points": [
+        "仿射坐标系与向量的坐标",
+        "三角形重心的定比刻画",
+        "直线的参数方程",
+        "两线求交与三线共点的验证",
+        "定比分点的计算"
+      ],
+      "pitfalls": [
+        "把 $O_{1}$ 与 $O_{2}$ 的坐标混淆（$O_{2}$ 才是 $\\left(0,\\frac13,\\frac13\\right)$），或把重心与对边中点混为一谈",
+        "联立 $AO_{1}$ 与 $BO_{2}$ 时把 $B$ 的第一个坐标写成 $1-\\frac{\\mu}{3}$（正确为 $1-\\mu$），导致 $\\lambda$ 求错",
+        "求出两线交点后直接断言三线共点，漏掉 $C,P,O_{3}$ 共线的验证"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十七届全国大学生数学竞赛初赛（数学 B 类，2025））第 1 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "仿射坐标"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "verification": "sympy：在给定的坐标系中解线性方程组得 $\\lambda=\\mu=\\frac34$、$P=\\left(\\frac14,\\frac14,\\frac14\\right)$，并验证 $\\overrightarrow{CP}=\\frac34\\overrightarrow{CO_{3}}$ 及 $|CP|/|PO_{3}|=3$，与结果一致。",
+      "solution": [
+        "解：在坐标系 $\\{A;\\boldsymbol{e}_{1},\\boldsymbol{e}_{2},\\boldsymbol{e}_{3}\\}$ 下，$A=(0,0,0)$，$B=(1,0,0)$，$C=(0,1,0)$，$D=(0,0,1)$．",
+        "（1）设 $E$ 为 $CD$ 的中点，则 $E=\\left(0,\\frac12,\\frac12\\right)$．因 $O_{1}$ 是 $\\triangle BCD$ 的重心，故 $O_{1}$ 在 $BE$ 上且 $BO_{1}:O_{1}E=2:1$，于是$$\\overrightarrow{AO_{1}}=\\overrightarrow{AB}+\\frac23\\overrightarrow{BE}=\\boldsymbol{e}_{1}+\\frac23\\left(-\\boldsymbol{e}_{1}+\\frac12\\boldsymbol{e}_{2}+\\frac12\\boldsymbol{e}_{3}\\right)=\\frac13\\left(\\boldsymbol{e}_{1}+\\boldsymbol{e}_{2}+\\boldsymbol{e}_{3}\\right),$$所以 $O_{1}$ 的坐标为 $\\left(\\frac13,\\frac13,\\frac13\\right)$．",
+        "（2）同理 $O_{2}$ 是 $\\triangle ACD$ 的重心、$O_{3}$ 是 $\\triangle ABD$ 的重心，由“重心的坐标等于三个顶点坐标的算术平均”得$$O_{2}=\\left(0,\\frac13,\\frac13\\right),\\qquad O_{3}=\\left(\\frac13,0,\\frac13\\right).$$设 $AO_{1}$ 与 $BO_{2}$ 交于点 $P$，则存在 $\\lambda,\\mu\\in\\mathbb{R}$ 使$$P=A+\\lambda\\overrightarrow{AO_{1}}=\\frac{\\lambda}{3}\\left(\\boldsymbol{e}_{1}+\\boldsymbol{e}_{2}+\\boldsymbol{e}_{3}\\right),\\qquad P=B+\\mu\\overrightarrow{BO_{2}}=\\left(1-\\mu,\\frac{\\mu}{3},\\frac{\\mu}{3}\\right).$$比较坐标得 $\\frac{\\lambda}{3}=1-\\mu$ 且 $\\frac{\\lambda}{3}=\\frac{\\mu}{3}$，故 $\\lambda=\\mu$，代回得 $\\frac{\\lambda}{3}=1-\\lambda$，即 $\\lambda=\\mu=\\frac34$．于是$$P=\\frac34\\overrightarrow{AO_{1}}=\\frac14\\left(\\boldsymbol{e}_{1}+\\boldsymbol{e}_{2}+\\boldsymbol{e}_{3}\\right)=\\left(\\frac14,\\frac14,\\frac14\\right).$$再验证 $P$ 在直线 $CO_{3}$ 上：$$\\overrightarrow{CP}=P-C=\\left(\\frac14,-\\frac34,\\frac14\\right)=\\frac34\\left(\\frac13,-1,\\frac13\\right)=\\frac34\\overrightarrow{CO_{3}},$$故 $C,P,O_{3}$ 三点共线（此时 $\\overrightarrow{CP}=3\\overrightarrow{PO_{3}}$，与重心分中线的比一致）．所以 $AO_{1},BO_{2},CO_{3}$ 三线共点于 $P$．",
+        "（3）由（2）即得交点 $P$ 的坐标为 $\\left(\\frac14,\\frac14,\\frac14\\right)$．"
+      ],
+      "pointKeys": [
+        "仿射坐标系与向量的坐标",
+        "三角形重心的定比刻画",
+        "直线的参数方程",
+        "两线求交与三线共点的验证",
+        "定比分点的计算"
+      ]
+    },
+    {
+      "id": "GA-B2019",
+      "subject": "gaodai",
+      "chapter": "第二章 行列式",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 指定行列式的有理方阵构造",
+      "question": "设 $m,n$ 为大于 $2$ 的整数，$a_{1},\\dots,a_{m+1}$ 为任意 $m+1$ 个有理数，$\\mathbb{Q}^{n\\times n}$ 为有理数域上 $n$ 阶方阵全体．证明：\n（1）$\\mathbb{Q}^{n\\times n}$ 中存在 $m$ 个元素 $B_{1},\\dots,B_{m}$，使得行列式 $|B_{j}|=j\\ (j=1,\\dots,m)$ 成立；\n（2）$\\mathbb{Q}^{n\\times n}$ 中存在 $m$ 个元素 $A_{1},\\dots,A_{m}$，使得下列两条同时成立：\n（i）$|A_{j}|=a_{j}\\ (j=1,\\dots,m)$；\n（ii）$|A_{1}-A_{2}-\\cdots-A_{m}|=a_{m+1}$．",
+      "answer": "（1）（2）均成立：$B_{j}=\\operatorname{diag}(j,1,\\dots,1)$ 即可；对 $A_{1},A_{2}$ 的 $(1,2)$、$(2,1)$ 位作扰动，可把 $|A_{1}-A_{2}-\\cdots-A_{m}|$ 调成任意指定的 $a_{m+1}$．",
+      "standardSolution": "证明：以下用 $|M|$ 表示方阵 $M$ 的行列式，$E_{ij}$ 表示 $(i,j)$ 元为 $1$、其余元为 $0$ 的 $n$ 阶方阵．\n\n（1）取$$B_{j}=\\operatorname{diag}(j,1,\\dots,1)\\in\\mathbb{Q}^{n\\times n},\\qquad j=1,\\dots,m.$$它们都是对角阵，故 $|B_{j}|=j\\cdot1\\cdots1=j$，即所要求的 $m$ 个元素存在．\n\n（2）记 $s=a_{1}-a_{2}-\\cdots-a_{m}$，$t=2-m$．由 $m>2$ 知 $t\\ne0$，由 $n>2$ 知 $n-2\\ge1$，故 $t^{\\,n-2}\\ne0$．取$$A_{1}=\\operatorname{diag}(a_{1},1,\\dots,1)+E_{12},\\qquad A_{2}=\\operatorname{diag}(a_{2},1,\\dots,1)+cE_{21},\\qquad A_{i}=\\operatorname{diag}(a_{i},1,\\dots,1)\\ (i=3,\\dots,m),$$其中$$c=\\frac{a_{m+1}}{t^{\\,n-2}}-st\\in\\mathbb{Q}.$$\n\n$A_{1}$ 是上三角阵、$A_{2}$ 是下三角阵，对角元分别为 $a_{1}$ 与 $a_{2}$，其余对角元为 $1$，故 $|A_{1}|=a_{1}$，$|A_{2}|=a_{2}$；$A_{i}\\ (i\\ge3)$ 为对角阵，$|A_{i}|=a_{i}$．即（i）成立．\n\n再计算 $D:=A_{1}-A_{2}-\\cdots-A_{m}$．$D$ 的非对角非零元只有 $D_{12}=1$ 与 $D_{21}=-c$，其对角元为$$D_{11}=a_{1}-\\sum_{i=2}^{m}a_{i}=s,\\qquad D_{jj}=1-(m-1)=t\\quad(j=2,\\dots,n).$$把 $D$ 按前两行、前两列分块，左上块为 $\\begin{pmatrix}s&1\\\\-c&t\\end{pmatrix}$，右下块为 $tI_{n-2}$，其余块为零阵，故$$|D|=\\begin{vmatrix}s&1\\\\-c&t\\end{vmatrix}\\cdot t^{\\,n-2}=(st+c)\\,t^{\\,n-2}.$$\n\n由 $c=\\frac{a_{m+1}}{t^{\\,n-2}}-st$ 得 $(st+c)t^{\\,n-2}=a_{m+1}$，即 $|A_{1}-A_{2}-\\cdots-A_{m}|=a_{m+1}$，（ii）成立．证毕．",
+      "detailedAnalysis": "切入点是把问题拆成“造一个 $|B_{j}|=j$”和“造一串同时满足 $m+1$ 个条件的 $A_{j}$”两件事，后者才是难点．若只取 $A_{i}=\\operatorname{diag}(a_{i},1,\\dots,1)$，则 $A_{1}-A_{2}-\\cdots-A_{m}=\\operatorname{diag}(s,2-m,\\dots,2-m)$，行列式被锁死为 $s(2-m)^{n-1}$，一般不等于 $a_{m+1}$；而对角阵能调的只有对角元，$A_{1}$ 的对角元又已被 $a_{1}$ 占用，所以必须换一种“不改变 $|A_{j}|$”的自由度：把元素加在严格上（下）三角位置，矩阵仍为三角阵，行列式不变．关键步骤是在 $A_{1}$ 的 $(1,2)$ 位加 $1$、在 $A_{2}$ 的 $(2,1)$ 位加 $c$，于是 $|A_{1}|=a_{1}$、$|A_{2}|=a_{2}$ 不受影响，而 $D$ 的左上 $2\\times2$ 块变成含 $c$ 的矩阵，行列式多出 $c$ 的一次项：$|D|=(st+c)t^{\\,n-2}$．这里 $t=2-m\\ne0$ 用到 $m>2$，$n-2\\ge1$ 用到 $n>2$，两者共同保证 $c$ 是有理数且由 $a_{m+1}$ 唯一确定；整个构造只用到加、减、乘、除，所以 $A_{j}$ 确实落在 $\\mathbb{Q}^{n\\times n}$ 内．检验：取 $m=n=3$、$(a_{1},\\dots,a_{4})=(1,2,3,4)$，则 $t=-1$、$s=-4$、$c=-8$，$|D|=(4-8)\\cdot(-1)=4=a_{4}$，与独立计算一致；可见 (1) 其实是 (2) 取 $a_{j}=j$ 的特例，只是构造更简单．",
+      "points": [
+        "对角阵的行列式",
+        "矩阵单位 $E_{ij}$ 的扰动",
+        "分块对角阵的行列式",
+        "有理数域上的封闭性",
+        "待定系数法"
+      ],
+      "pitfalls": [
+        "把扰动加在 $A_{1}$ 的 $(1,2)$ 位却在 $D$ 中仍按三角阵计算，漏掉 $-c$ 这一项，得出 $|D|=st^{\\,n-2}$",
+        "忽略 $m>2$ 与 $n>2$ 的作用，忘记 $t=2-m\\ne0$、$t^{\\,n-2}\\ne0$ 才能把 $c$ 解出来",
+        "把 $D$ 的第 $(1,1)$ 元算成 $a_{1}+\\sum_{i\\ge2}a_{i}$（符号写反），导致 $s$ 错、$|D|$ 错"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十七届全国大学生数学竞赛初赛（数学 B 类，2025））第 3 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "行列式构造"
+      ],
+      "relatedEntries": [],
+      "difficulty": 5,
+      "verification": "sympy：对 $(m,n)=(3,3),(3,4),(4,3),(4,5),(5,4)$ 及随机有理数组，按构造取 $b=1$、$c=\\frac{a_{m+1}}{t^{n-2}}-st$，验证 $|A_{j}|=a_{j}$ 且 $|A_{1}-\\cdots-A_{m}|=a_{m+1}$，全部通过；一般 $m,n$ 的论证为人工复核（关键是 $t^{n-2}\\ne0$）。",
+      "solution": [
+        "证明：以下用 $|M|$ 表示方阵 $M$ 的行列式，$E_{ij}$ 表示 $(i,j)$ 元为 $1$、其余元为 $0$ 的 $n$ 阶方阵．",
+        "（1）取$$B_{j}=\\operatorname{diag}(j,1,\\dots,1)\\in\\mathbb{Q}^{n\\times n},\\qquad j=1,\\dots,m.$$它们都是对角阵，故 $|B_{j}|=j\\cdot1\\cdots1=j$，即所要求的 $m$ 个元素存在．",
+        "（2）记 $s=a_{1}-a_{2}-\\cdots-a_{m}$，$t=2-m$．由 $m>2$ 知 $t\\ne0$，由 $n>2$ 知 $n-2\\ge1$，故 $t^{\\,n-2}\\ne0$．取$$A_{1}=\\operatorname{diag}(a_{1},1,\\dots,1)+E_{12},\\qquad A_{2}=\\operatorname{diag}(a_{2},1,\\dots,1)+cE_{21},\\qquad A_{i}=\\operatorname{diag}(a_{i},1,\\dots,1)\\ (i=3,\\dots,m),$$其中$$c=\\frac{a_{m+1}}{t^{\\,n-2}}-st\\in\\mathbb{Q}.$$",
+        "$A_{1}$ 是上三角阵、$A_{2}$ 是下三角阵，对角元分别为 $a_{1}$ 与 $a_{2}$，其余对角元为 $1$，故 $|A_{1}|=a_{1}$，$|A_{2}|=a_{2}$；$A_{i}\\ (i\\ge3)$ 为对角阵，$|A_{i}|=a_{i}$．即（i）成立．",
+        "再计算 $D:=A_{1}-A_{2}-\\cdots-A_{m}$．$D$ 的非对角非零元只有 $D_{12}=1$ 与 $D_{21}=-c$，其对角元为$$D_{11}=a_{1}-\\sum_{i=2}^{m}a_{i}=s,\\qquad D_{jj}=1-(m-1)=t\\quad(j=2,\\dots,n).$$把 $D$ 按前两行、前两列分块，左上块为 $\\begin{pmatrix}s&1\\\\-c&t\\end{pmatrix}$，右下块为 $tI_{n-2}$，其余块为零阵，故$$|D|=\\begin{vmatrix}s&1\\\\-c&t\\end{vmatrix}\\cdot t^{\\,n-2}=(st+c)\\,t^{\\,n-2}.$$",
+        "由 $c=\\frac{a_{m+1}}{t^{\\,n-2}}-st$ 得 $(st+c)t^{\\,n-2}=a_{m+1}$，即 $|A_{1}-A_{2}-\\cdots-A_{m}|=a_{m+1}$，（ii）成立．证毕．"
+      ],
+      "pointKeys": [
+        "对角阵的行列式",
+        "矩阵单位 $E_{ij}$ 的扰动",
+        "分块对角阵的行列式",
+        "有理数域上的封闭性",
+        "待定系数法"
+      ]
+    },
+    {
+      "id": "GA-B2020",
+      "subject": "gaodai",
+      "chapter": "第四章 矩阵",
+      "section": "竞赛综合",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "证明题 · 对角为3其余为2或2029的秩",
+      "question": "设 $A$ 为 $n$ 阶方阵，其主对角线上的元素皆为 $3$，其余位置上的元素不是 $2$ 就是 $2029$．证明：$\\operatorname{rank}A=n$ 或 $n-1$．",
+      "answer": "$\\operatorname{rank}A$ 只能是 $n$ 或 $n-1$．",
+      "standardSolution": "证明：记 $J$ 为元素全为 $1$ 的 $n$ 阶方阵，令$$B=2J,\\qquad C=A-B.$$则 $C$ 的主对角元为 $3-2=1$，其余位置上的元素为 $2-2=0$ 或 $2029-2=2027$，即存在整数矩阵 $M$（对角元为 $0$，其余元为 $0$ 或 $1$）使$$C=I+2027M.$$\n\n行列式是各元素的多项式，故对模 $2027$ 取同余得$$|C|\\equiv|I|=1\\pmod{2027}.$$若 $|C|=0$，则 $0\\equiv1\\pmod{2027}$，矛盾，故 $|C|\\ne0$，即 $C$ 可逆，$\\operatorname{rank}C=n$．\n\n另一方面，$B=2J$ 的各行都相同，故 $\\operatorname{rank}B=1$（$n\\ge2$；$n=1$ 时 $\\operatorname{rank}A=1=n$，结论显然）．由秩的次可加性$$\\operatorname{rank}C=\\operatorname{rank}(A-B)\\le\\operatorname{rank}A+\\operatorname{rank}(-B)=\\operatorname{rank}A+1,$$即 $n\\le\\operatorname{rank}A+1$，故 $\\operatorname{rank}A\\ge n-1$；又 $\\operatorname{rank}A\\le n$，所以 $\\operatorname{rank}A=n-1$ 或 $n$．证毕．",
+      "detailedAnalysis": "切入点：要证 $\\operatorname{rank}A\\ge n-1$，最自然的工具是秩的次可加性 $\\operatorname{rank}(X+Y)\\le\\operatorname{rank}X+\\operatorname{rank}Y$，其中一项必须已知为 $1$．于是去找一个“与 $A$ 只差一点点”的低秩矩阵 $B$：$A$ 的对角元全是 $3$，非对角元只在 $2$ 与 $2029$ 之间取舍，取 $B=2J$（全 $2$ 矩阵）正好合适．$B$ 的各行相同，秩为 $1$；而 $C=A-B$ 的对角元为 $1$、非对角元为 $0$ 或 $2027$，即 $C=I+2027M$．题目把 $2029$ 与 $2$ 并列的用意就在这里：二者之差 $2027$ 被用作模数，模 $2027$ 后 $C\\equiv I$，于是 $|C|\\equiv1$，可逆性立刻显现，甚至不需要知道 $A$ 的具体元素．关键步骤是由这个同余式得 $|C|\\ne0$，再由 $n=\\operatorname{rank}C\\le\\operatorname{rank}A+1$ 收尾；注意结论是“非此即彼”，并不要求 $n-1$ 真的出现，所以只需给出下界．检验：$n=2,\\dots,6$ 各取 60 个随机矩阵，均有 $\\operatorname{rank}A\\in\\{n-1,n\\}$ 且 $|A-2J|\\equiv1\\pmod{2027}$；若误取 $B=2J+I$，$C$ 的对角元会变成 $0$，模论证立即失效，这是最容易踩的坑．",
+      "points": [
+        "秩的次可加性",
+        "全 1 矩阵的秩",
+        "行列式的模同余",
+        "$I+pM$ 型矩阵的可逆性"
+      ],
+      "pitfalls": [
+        "取 $B=2J+I$，使 $C$ 的对角元变成 $0$，与“对角元为 $1$、其余为 $2027$”的 $C=I+2027M$ 不符",
+        "只证明 $|C|\\ne0$ 而不说明 $\\operatorname{rank}B=1$，就无法把 $n\\le\\operatorname{rank}A+\\operatorname{rank}B$ 收成 $n-1$",
+        "把次可加性用反方向，或误以为 $\\operatorname{rank}(A-B)=\\operatorname{rank}A-\\operatorname{rank}B$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "习题集（全国大学生数学竞赛（第十七届全国大学生数学竞赛初赛（数学 B 类，2025））第 4 题）",
+      "examOrigin": "习题集",
+      "tags": [
+        "全国大学生数学竞赛",
+        "数学类",
+        "矩阵的秩"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "verification": "sympy：对 $n=2,\\dots,6$ 各 60 个随机矩阵（对角 $3$、其余随机取 $2$ 或 $2029$）验证 $\\operatorname{rank}A\\in\\{n-1,n\\}$、$\\operatorname{rank}(A-2J)=n$、$|A-2J|\\equiv1\\pmod{2027}$；并穷举 $n=3$ 的全部 $64$ 种取法，秩均为 $3$。",
+      "solution": [
+        "证明：记 $J$ 为元素全为 $1$ 的 $n$ 阶方阵，令$$B=2J,\\qquad C=A-B.$$则 $C$ 的主对角元为 $3-2=1$，其余位置上的元素为 $2-2=0$ 或 $2029-2=2027$，即存在整数矩阵 $M$（对角元为 $0$，其余元为 $0$ 或 $1$）使$$C=I+2027M.$$",
+        "行列式是各元素的多项式，故对模 $2027$ 取同余得$$|C|\\equiv|I|=1\\pmod{2027}.$$若 $|C|=0$，则 $0\\equiv1\\pmod{2027}$，矛盾，故 $|C|\\ne0$，即 $C$ 可逆，$\\operatorname{rank}C=n$．",
+        "另一方面，$B=2J$ 的各行都相同，故 $\\operatorname{rank}B=1$（$n\\ge2$；$n=1$ 时 $\\operatorname{rank}A=1=n$，结论显然）．由秩的次可加性$$\\operatorname{rank}C=\\operatorname{rank}(A-B)\\le\\operatorname{rank}A+\\operatorname{rank}(-B)=\\operatorname{rank}A+1,$$即 $n\\le\\operatorname{rank}A+1$，故 $\\operatorname{rank}A\\ge n-1$；又 $\\operatorname{rank}A\\le n$，所以 $\\operatorname{rank}A=n-1$ 或 $n$．证毕．"
+      ],
+      "pointKeys": [
+        "秩的次可加性",
+        "全 1 矩阵的秩",
+        "行列式的模同余",
+        "$I+pM$ 型矩阵的可逆性"
+      ]
     }
   ]
 }

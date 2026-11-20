@@ -105,14 +105,14 @@ def audit(data_dir: Path, strict_difficulty: bool):
 
     if len(base_items) < 8250:
         problems.append(("GLOBAL", f"基础题库 {len(base_items)} < 8250"))
-    if len(all_items) < 9163:
-        problems.append(("GLOBAL", f"题库总数 {len(all_items)} < 9163"))
+    if len(all_items) < 9875:
+        problems.append(("GLOBAL", f"题库总数 {len(all_items)} < 9875"))
     textbook = [item for item in all_items if item.get("examOrigin") == "教材课后习题"]
-    if len(textbook) < 590:
-        problems.append(("GLOBAL", f"教材课后题 {len(textbook)} < 590"))
+    if len(textbook) < 927:
+        problems.append(("GLOBAL", f"教材课后题 {len(textbook)} < 927"))
     exercise = [item for item in all_items if item.get("examOrigin") == "习题集"]
-    if len(exercise) < 223:
-        problems.append(("GLOBAL", f"习题集题 {len(exercise)} < 223"))
+    if len(exercise) < 598:
+        problems.append(("GLOBAL", f"习题集题 {len(exercise)} < 598"))
 
     chapter_keys = {item.get("subject") + "|" + item.get("chapter") for item in all_items}
     if len(chapter_keys) != 55:
