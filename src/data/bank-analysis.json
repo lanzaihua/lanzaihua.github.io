@@ -166487,6 +166487,3086 @@
         "$\\ln^{3}x\\to-\\infty$ 时的连续延拓",
         "按是否恒零分类讨论"
       ]
+    },
+    {
+      "id": "MA-3499",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.1",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "有理数与无理数的和积性质",
+      "question": "设 $a$ 为有理数，$x$ 为无理数。证明：(1) $a+x$ 是无理数；(2) 当 $a\\ne 0$ 时，$ax$ 是无理数。",
+      "answer": "(1)(2) 均成立：有理数与无理数之和仍为无理数，非零有理数与无理数之积仍为无理数。",
+      "standardSolution": "证明：(1) 反设 $a+x$ 为有理数。由于 $a$ 为有理数，两个有理数之差仍为有理数，故 $x=(a+x)-a$ 为有理数，与已知 $x$ 为无理数矛盾。所以 $a+x$ 是无理数。\n\n(2) 反设 $ax$ 为有理数。由于 $a\\ne 0$，两个有理数之商仍为有理数，故 $x=\\frac{ax}{a}$ 为有理数，矛盾。所以 $ax$ 是无理数。$\\square$",
+      "detailedAnalysis": "切入点是对“无理数”作否定式刻画：它不是有理数，因此宜用反证法。关键是利用有理数对加、减、乘、除（除数非零）封闭。易错点是第(2)问忘记使用 $a\\ne 0$，或在第(1)问中把 $a+x$ 与 $x$ 的关系写反。",
+      "points": [
+        "反证法",
+        "有理数对四则运算封闭"
+      ],
+      "pitfalls": [
+        "第(2)问忽略 $a\\ne 0$ 就作除法",
+        "误认为两个无理数之和必为无理数"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.1 第1题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.1"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：(1) 反设 $a+x$ 为有理数。由于 $a$ 为有理数，两个有理数之差仍为有理数，故 $x=(a+x)-a$ 为有理数，与已知 $x$ 为无理数矛盾。所以 $a+x$ 是无理数。",
+        "(2) 反设 $ax$ 为有理数。由于 $a\\ne 0$，两个有理数之商仍为有理数，故 $x=\\frac{ax}{a}$ 为有理数，矛盾。所以 $ax$ 是无理数。$\\square$"
+      ],
+      "pointKeys": [
+        "反证法",
+        "有理数对四则运算封闭"
+      ]
+    },
+    {
+      "id": "MA-3500",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.1",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "三类不等式的解集与数轴表示",
+      "question": "试在数轴上表示出下列不等式的解：(1) $x(x^2-1)>0$；(2) $|x-1|<|x-3|$；(3) $\\sqrt{x-1}-\\sqrt{2x-1}\\ge\\sqrt{3x-2}$。",
+      "answer": "(1) $(-1,0)\\cup(1,+\\infty)$；(2) $(-\\infty,2)$；(3) 解集为空集 $\\varnothing$。",
+      "standardSolution": "解：(1) 因式分解得 $x(x-1)(x+1)>0$，零点为 $-1,0,1$。用穿根法（或分区间讨论）得解集 $(-1,0)\\cup(1,+\\infty)$。\n\n(2) 两边均非负，平方得 $(x-1)^2<(x-3)^2$，即 $x^2-2x+1<x^2-6x+9$，化简得 $4x<8$，故 $x<2$，解集为 $(-\\infty,2)$。\n\n(3) 定义域要求 $x-1\\ge0$、$2x-1\\ge0$、$3x-2\\ge0$，即 $x\\ge1$。当 $x\\ge1$ 时 $0\\le x-1<2x-1$，故 $\\sqrt{x-1}<\\sqrt{2x-1}$，左边 $\\sqrt{x-1}-\\sqrt{2x-1}<0$；而右边 $\\sqrt{3x-2}\\ge1>0$。所以不等式无解，解集为 $\\varnothing$。在数轴上，(1) 为两段开区间，(2) 为 $2$ 左侧射线，(3) 为空集。",
+      "detailedAnalysis": "三问分别考查高次不等式、绝对值不等式与根式不等式。第(1)问因式分解后用穿根法；第(2)问两边非负可直接平方；第(3)问的关键是先确定定义域并比较两边符号，切忌直接平方——左边为负时平方会产生伪解。",
+      "points": [
+        "高次不等式穿根法",
+        "绝对值不等式平方",
+        "根式不等式先定定义域并判号"
+      ],
+      "pitfalls": [
+        "第(3)问直接平方得到伪解",
+        "第(2)问忽略平方需两边非负"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.1 第2题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.1"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：(1) 因式分解得 $x(x-1)(x+1)>0$，零点为 $-1,0,1$。用穿根法（或分区间讨论）得解集 $(-1,0)\\cup(1,+\\infty)$。",
+        "(2) 两边均非负，平方得 $(x-1)^2<(x-3)^2$，即 $x^2-2x+1<x^2-6x+9$，化简得 $4x<8$，故 $x<2$，解集为 $(-\\infty,2)$。",
+        "(3) 定义域要求 $x-1\\ge0$、$2x-1\\ge0$、$3x-2\\ge0$，即 $x\\ge1$。当 $x\\ge1$ 时 $0\\le x-1<2x-1$，故 $\\sqrt{x-1}<\\sqrt{2x-1}$，左边 $\\sqrt{x-1}-\\sqrt{2x-1}<0$；而右边 $\\sqrt{3x-2}\\ge1>0$。所以不等式无解，解集为 $\\varnothing$。在数轴上，(1) 为两段开区间，(2) 为 $2$ 左侧射线，(3) 为空集。"
+      ],
+      "pointKeys": [
+        "高次不等式穿根法",
+        "绝对值不等式平方",
+        "根式不等式先定定义域并判号"
+      ]
+    },
+    {
+      "id": "MA-3501",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.1",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "倒数和的绝对值不等式",
+      "question": "设 $x\\ne 0$，证明 $\\left|x+\\frac1x\\right|\\ge 2$，并说明其中等号何时成立。",
+      "answer": "不等式对一切 $x\\ne 0$ 成立；等号当且仅当 $x=\\pm1$。",
+      "standardSolution": "证明：由 $x\\ne0$，有 $\\left|x+\\frac1x\\right|=\\frac{x^2+1}{|x|}$。\n\n又 $x^2+1-2|x|=(|x|-1)^2\\ge0$，故 $x^2+1\\ge2|x|$。两边除以 $|x|>0$，得 $\\frac{x^2+1}{|x|}\\ge2$，即 $\\left|x+\\frac1x\\right|\\ge2$。\n\n等号成立当且仅当 $(|x|-1)^2=0$，即 $|x|=1$，亦即 $x=\\pm1$。$\\square$",
+      "detailedAnalysis": "先把 $x+\\frac1x$ 通分并取绝对值，转化为 $|x|+\\frac1{|x|}$ 型，再用配方（或均值不等式）证明。易错点：只对 $x>0$ 讨论而漏掉负值，或把等号条件写成 $x=1$ 而漏掉 $x=-1$。",
+      "points": [
+        "绝对值化简",
+        "配方或均值不等式"
+      ],
+      "pitfalls": [
+        "只讨论 $x>0$",
+        "漏掉 $x=-1$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.1 第4题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.1"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：由 $x\\ne0$，有 $\\left|x+\\frac1x\\right|=\\frac{x^2+1}{|x|}$。",
+        "又 $x^2+1-2|x|=(|x|-1)^2\\ge0$，故 $x^2+1\\ge2|x|$。两边除以 $|x|>0$，得 $\\frac{x^2+1}{|x|}\\ge2$，即 $\\left|x+\\frac1x\\right|\\ge2$。",
+        "等号成立当且仅当 $(|x|-1)^2=0$，即 $|x|=1$，亦即 $x=\\pm1$。$\\square$"
+      ],
+      "pointKeys": [
+        "绝对值化简",
+        "配方或均值不等式"
+      ]
+    },
+    {
+      "id": "MA-3502",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.1",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "绝对值和的等号条件",
+      "question": "证明：对任何 $x\\in\\mathbb{R}$，有 (1) $|x-1|+|x-2|\\ge1$；(2) $|x-1|+|x-2|+|x-3|\\ge2$。并说明等号何时成立。",
+      "answer": "(1) 成立，等号当且仅当 $x\\in[1,2]$；(2) 成立，等号当且仅当 $x=2$。",
+      "standardSolution": "证明：(1) 由三角不等式 $|x-1|+|x-2|\\ge|(x-1)-(x-2)|=1$。等号成立当且仅当 $(x-1)(x-2)\\le0$，即 $x\\in[1,2]$。\n\n(2) 由三角不等式 $|x-1|+|x-3|\\ge|(x-1)-(x-3)|=2$，故原式 $\\ge2+|x-2|\\ge2$。\n\n等号成立需同时满足 $x\\in[1,3]$ 和 $|x-2|=0$，即 $x=2$。$\\square$",
+      "detailedAnalysis": "切入点是凑出 $(x-1)-(x-2)$ 消去 $x$，用三角不等式 $|u|+|v|\\ge|u-v|$。等号条件为 $uv\\le0$。易错点：把第(1)问等号写成 $x=1$ 或 $x=2$，以及第(2)问忽略 $|x-2|$ 也必须为零。",
+      "points": [
+        "三角不等式",
+        "等号条件 $uv\\le0$"
+      ],
+      "pitfalls": [
+        "等号条件只写端点",
+        "第(2)问忽略 $|x-2|=0$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.1 第5题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.1"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：(1) 由三角不等式 $|x-1|+|x-2|\\ge|(x-1)-(x-2)|=1$。等号成立当且仅当 $(x-1)(x-2)\\le0$，即 $x\\in[1,2]$。",
+        "(2) 由三角不等式 $|x-1|+|x-3|\\ge|(x-1)-(x-3)|=2$，故原式 $\\ge2+|x-2|\\ge2$。",
+        "等号成立需同时满足 $x\\in[1,3]$ 和 $|x-2|=0$，即 $x=2$。$\\square$"
+      ],
+      "pointKeys": [
+        "三角不等式",
+        "等号条件 $uv\\le0$"
+      ]
+    },
+    {
+      "id": "MA-3503",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.1",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "斜边差的估计及其几何意义",
+      "question": "设 $a,b,c\\in\\mathbb{R}_+$。证明：$\\left|\\sqrt{a^2+b^2}-\\sqrt{a^2+c^2}\\right|\\le|b-c|$。你能说明此不等式的几何意义吗？",
+      "answer": "不等式成立。几何意义：取 $O(0,0)$、$P(a,b)$、$Q(a,c)$，则 $OP=\\sqrt{a^2+b^2}$，$OQ=\\sqrt{a^2+c^2}$，$PQ=|b-c|$，不等式即反向三角不等式 $|OP-OQ|\\le PQ$。",
+      "standardSolution": "证明：分子有理化，得 $\\left|\\sqrt{a^2+b^2}-\\sqrt{a^2+c^2}\\right|=\\frac{|b^2-c^2|}{\\sqrt{a^2+b^2}+\\sqrt{a^2+c^2}}$。\n\n当 $b=c$ 时两边均为 $0$。当 $|b|+|c|>0$ 时，由 $\\sqrt{a^2+b^2}\\ge|b|$、$\\sqrt{a^2+c^2}\\ge|c|$ 得分母不小于 $|b|+|c|$，故原式 $\\le\\frac{|b-c|(|b|+|c|)}{|b|+|c|}=|b-c|$。\n\n几何意义：在平面上取 $O(0,0)$、$P(a,b)$、$Q(a,c)$，三点构成以 $PQ$ 为一边的三角形（可退化），$|OP-OQ|\\le PQ$ 正是反向三角不等式。$\\square$",
+      "detailedAnalysis": "关键是分子有理化，把根式差化为 $|b^2-c^2|$ 与分母之和的商，再用 $\\sqrt{a^2+b^2}\\ge|b|$ 放缩。几何意义是反向三角不等式：三角形两边之差不超过第三边。易错点：放缩方向搞反，或忽略 $b=c$ 时分母为零的退化情形。",
+      "points": [
+        "分子有理化",
+        "反向三角不等式",
+        "几何意义"
+      ],
+      "pitfalls": [
+        "放缩方向搞反",
+        "忽略 $b=c$ 的退化情形"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.1 第6题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.1"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：分子有理化，得 $\\left|\\sqrt{a^2+b^2}-\\sqrt{a^2+c^2}\\right|=\\frac{|b^2-c^2|}{\\sqrt{a^2+b^2}+\\sqrt{a^2+c^2}}$。",
+        "当 $b=c$ 时两边均为 $0$。当 $|b|+|c|>0$ 时，由 $\\sqrt{a^2+b^2}\\ge|b|$、$\\sqrt{a^2+c^2}\\ge|c|$ 得分母不小于 $|b|+|c|$，故原式 $\\le\\frac{|b-c|(|b|+|c|)}{|b|+|c|}=|b-c|$。",
+        "几何意义：在平面上取 $O(0,0)$、$P(a,b)$、$Q(a,c)$，三点构成以 $PQ$ 为一边的三角形（可退化），$|OP-OQ|\\le PQ$ 正是反向三角不等式。$\\square$"
+      ],
+      "pointKeys": [
+        "分子有理化",
+        "反向三角不等式",
+        "几何意义"
+      ]
+    },
+    {
+      "id": "MA-3504",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.1",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "分式介于1与a/b之间",
+      "question": "设 $x>0$，$b>0$，$a\\ne b$。证明：$\\frac{x+a}{x+b}$ 介于 $1$ 与 $\\frac ab$ 之间。",
+      "answer": "当 $a>b$ 时 $1<\\frac{x+a}{x+b}<\\frac ab$；当 $a<b$ 时 $\\frac ab<\\frac{x+a}{x+b}<1$。",
+      "standardSolution": "证明：作差得 $\\frac{x+a}{x+b}-1=\\frac{a-b}{x+b}$，且 $\\frac{x+a}{x+b}-\\frac ab=\\frac{b(x+a)-a(x+b)}{b(x+b)}=\\frac{x(b-a)}{b(x+b)}$。\n\n因 $x>0$，$b>0$，故 $x+b>0$，$b(x+b)>0$。两个差的符号分别由 $a-b$ 与 $b-a=-(a-b)$ 决定，恰为一正一负且均不为零。所以 $\\frac{x+a}{x+b}$ 严格介于 $1$ 与 $\\frac ab$ 之间。$\\square$",
+      "detailedAnalysis": "用作差法比较大小：只需证明该分式与两个端点的差异号。易错点：只算一个差就下结论，或忘记说明 $b(x+b)>0$ 因而分母为正。",
+      "points": [
+        "作差法比较大小",
+        "分母符号分析"
+      ],
+      "pitfalls": [
+        "只验证一个端点",
+        "忽略 $b>0$ 保证分母为正"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.1 第7题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.1"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：作差得 $\\frac{x+a}{x+b}-1=\\frac{a-b}{x+b}$，且 $\\frac{x+a}{x+b}-\\frac ab=\\frac{b(x+a)-a(x+b)}{b(x+b)}=\\frac{x(b-a)}{b(x+b)}$。",
+        "因 $x>0$，$b>0$，故 $x+b>0$，$b(x+b)>0$。两个差的符号分别由 $a-b$ 与 $b-a=-(a-b)$ 决定，恰为一正一负且均不为零。所以 $\\frac{x+a}{x+b}$ 严格介于 $1$ 与 $\\frac ab$ 之间。$\\square$"
+      ],
+      "pointKeys": [
+        "作差法比较大小",
+        "分母符号分析"
+      ]
+    },
+    {
+      "id": "MA-3505",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.1",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "非完全平方数的平方根无理",
+      "question": "设 $p$ 为正整数。证明：若 $p$ 不是完全平方数，则 $\\sqrt p$ 是无理数。",
+      "answer": "结论成立：任何非完全平方正整数的平方根都是无理数。",
+      "standardSolution": "证明：反设 $\\sqrt p=\\frac mn$，其中 $m,n\\in\\mathbb{N}_+$ 且 $\\gcd(m,n)=1$。则 $m^2=pn^2$。\n\n记 $v_q(m)$ 为 $m$ 的素因数分解中素因子 $q$ 的指数。设 $p$ 的素因数分解为 $p=\\prod_i q_i^{\\alpha_i}$。对每个素因子 $q_i$，比较 $m^2=pn^2$ 两边的指数：左边指数 $2v_{q_i}(m)$ 为偶数，右边指数 $\\alpha_i+2v_{q_i}(n)$，故 $\\alpha_i$ 必为偶数。\n\n于是 $p=\\prod_i q_i^{\\alpha_i}$ 是完全平方数，与题设矛盾。所以 $\\sqrt p$ 是无理数。$\\square$",
+      "detailedAnalysis": "核心是算术基本定理：有理数的平方写成分数后，各素因子的指数奇偶性受约束。若 $p$ 的某个素因子指数为奇数，则 $p$ 不可能是有理数平方。易错点：只对 $p$ 为素数证明，或由 $p\\mid m^2$ 错误推出 $p\\mid m$（$p$ 非素数时不成立）。",
+      "points": [
+        "反证法",
+        "算术基本定理",
+        "素因数指数奇偶性"
+      ],
+      "pitfalls": [
+        "把 $p$ 当作素数处理",
+        "由 $p\\mid m^2$ 直接断言 $p\\mid m$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.1 第8题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.1"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：反设 $\\sqrt p=\\frac mn$，其中 $m,n\\in\\mathbb{N}_+$ 且 $\\gcd(m,n)=1$。则 $m^2=pn^2$。",
+        "记 $v_q(m)$ 为 $m$ 的素因数分解中素因子 $q$ 的指数。设 $p$ 的素因数分解为 $p=\\prod_i q_i^{\\alpha_i}$。对每个素因子 $q_i$，比较 $m^2=pn^2$ 两边的指数：左边指数 $2v_{q_i}(m)$ 为偶数，右边指数 $\\alpha_i+2v_{q_i}(n)$，故 $\\alpha_i$ 必为偶数。",
+        "于是 $p=\\prod_i q_i^{\\alpha_i}$ 是完全平方数，与题设矛盾。所以 $\\sqrt p$ 是无理数。$\\square$"
+      ],
+      "pointKeys": [
+        "反证法",
+        "算术基本定理",
+        "素因数指数奇偶性"
+      ]
+    },
+    {
+      "id": "MA-3506",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.1",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "不用绝对值符号表示解集",
+      "question": "设 $a,b$ 为给定实数。试用不等式符号（不用绝对值符号）表示下列不等式的解：(1) $|x-a|<|x-b|$；(2) $|x-a|<x-b$；(3) $|x^2-a|<b$。",
+      "answer": "(1) 当 $a<b$ 时 $x<\\frac{a+b}{2}$；当 $a>b$ 时 $x>\\frac{a+b}{2}$；当 $a=b$ 时无解。(2) 当 $a>b$ 时 $x>\\frac{a+b}{2}$；当 $a\\le b$ 时无解。(3) 当 $b\\le0$ 或 $a+b\\le0$ 时无解；当 $a\\le0$ 且 $b>-a$ 时解为 $-\\sqrt{a+b}<x<\\sqrt{a+b}$；当 $a>0$ 且 $0<b\\le a$ 时解为 $\\sqrt{a-b}<|x|<\\sqrt{a+b}$；当 $a>0$ 且 $b>a$ 时解为 $|x|<\\sqrt{a+b}$。",
+      "standardSolution": "解：(1) 两边非负，平方得 $(x-a)^2<(x-b)^2$，即 $2(b-a)x<b^2-a^2=(b-a)(a+b)$。当 $a<b$ 时 $x<\\frac{a+b}{2}$；当 $a>b$ 时 $x>\\frac{a+b}{2}$；当 $a=b$ 时不等式为 $0<0$，无解。\n\n(2) 首先需 $x-b>0$，即 $x>b$。此时 $|x-a|<x-b$ 等价于 $b-x<x-a<x-b$，即 $x>\\frac{a+b}{2}$ 且 $a>b$。故当 $a>b$ 时解为 $x>\\frac{a+b}{2}$；当 $a\\le b$ 时无解（$a=b$ 时 $|x-a|<x-a$ 不可能）。\n\n(3) 若 $b\\le0$，左边非负而右边非正，无解。若 $b>0$，则 $a-b<x^2<a+b$。当 $a+b\\le0$ 时无解；当 $a\\le0$ 且 $b>-a$ 时，下界 $a-b<0$ 自动满足，解为 $|x|<\\sqrt{a+b}$；当 $a>0$ 且 $0<b\\le a$ 时，解为 $\\sqrt{a-b}<|x|<\\sqrt{a+b}$；当 $a>0$ 且 $b>a$ 时，$a-b<0$，解为 $|x|<\\sqrt{a+b}$。",
+      "detailedAnalysis": "第(1)问两边非负可平方；第(2)问必须先由 $x-b>0$ 确定 $x>b$ 才能平方；第(3)问按 $b$ 的符号、$a+b$ 的符号以及 $b$ 与 $a$ 的大小分类。易错点：漏掉 $a=b$、$b\\le0$、$a+b\\le0$ 的无解情形，以及第(3)问把 $|x|$ 的区间端点写错。",
+      "points": [
+        "含绝对值不等式平方",
+        "分类讨论",
+        "$|x|$ 型解集"
+      ],
+      "pitfalls": [
+        "第(2)问忽略 $x-b>0$",
+        "第(3)问漏掉 $b\\le0$ 与 $a+b\\le0$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.1 第9题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.1"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "解：(1) 两边非负，平方得 $(x-a)^2<(x-b)^2$，即 $2(b-a)x<b^2-a^2=(b-a)(a+b)$。当 $a<b$ 时 $x<\\frac{a+b}{2}$；当 $a>b$ 时 $x>\\frac{a+b}{2}$；当 $a=b$ 时不等式为 $0<0$，无解。",
+        "(2) 首先需 $x-b>0$，即 $x>b$。此时 $|x-a|<x-b$ 等价于 $b-x<x-a<x-b$，即 $x>\\frac{a+b}{2}$ 且 $a>b$。故当 $a>b$ 时解为 $x>\\frac{a+b}{2}$；当 $a\\le b$ 时无解（$a=b$ 时 $|x-a|<x-a$ 不可能）。",
+        "(3) 若 $b\\le0$，左边非负而右边非正，无解。若 $b>0$，则 $a-b<x^2<a+b$。当 $a+b\\le0$ 时无解；当 $a\\le0$ 且 $b>-a$ 时，下界 $a-b<0$ 自动满足，解为 $|x|<\\sqrt{a+b}$；当 $a>0$ 且 $0<b\\le a$ 时，解为 $\\sqrt{a-b}<|x|<\\sqrt{a+b}$；当 $a>0$ 且 $b>a$ 时，$a-b<0$，解为 $|x|<\\sqrt{a+b}$。"
+      ],
+      "pointKeys": [
+        "含绝对值不等式平方",
+        "分类讨论",
+        "$|x|$ 型解集"
+      ]
+    },
+    {
+      "id": "MA-3507",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.2",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "四类不等式的区间解",
+      "question": "用区间表示下列不等式的解：(1) $|1-x|-x\\ge0$；(2) $x+\\frac1x\\le6$；(3) $(x-a)(x-b)(x-c)>0$（$a,b,c$ 为常数，且 $a<b<c$）；(4) $\\sin x\\ge\\frac{\\sqrt2}{2}$。",
+      "answer": "(1) $\\left(-\\infty,\\frac12\\right]$；(2) $(-\\infty,0)\\cup[3-2\\sqrt2,3+2\\sqrt2]$；(3) $(a,b)\\cup(c,+\\infty)$；(4) $\\bigcup_{k\\in\\mathbb{Z}}\\left[\\frac\\pi4+2k\\pi,\\frac{3\\pi}4+2k\\pi\\right]$。",
+      "standardSolution": "解：(1) 即 $|x-1|\\ge x$。当 $x<0$ 时显然成立；当 $0\\le x<1$ 时 $1-x\\ge x$，得 $x\\le\\frac12$；当 $x\\ge1$ 时 $x-1\\ge x$ 不成立。故解集为 $\\left(-\\infty,\\frac12\\right]$。\n\n(2) 移项通分得 $\\frac{x^2-6x+1}{x}\\le0$。分子零点为 $3\\pm2\\sqrt2$。列表判断符号：$x<0$ 时分子为正、分母为负，不等式成立；$0<x<3-2\\sqrt2$ 时不成立；$3-2\\sqrt2\\le x\\le3+2\\sqrt2$ 时成立；$x>3+2\\sqrt2$ 时不成立。故解集为 $(-\\infty,0)\\cup[3-2\\sqrt2,3+2\\sqrt2]$。\n\n(3) 三个零点 $a<b<c$ 将数轴分成四段，取 $x>c$ 时三个因子均为正，再由穿根法交替变号，得解集 $(a,b)\\cup(c,+\\infty)$。\n\n(4) 在一个周期内 $\\sin x\\ge\\frac{\\sqrt2}{2}$ 的解为 $\\frac\\pi4\\le x\\le\\frac{3\\pi}4$，加上周期 $2k\\pi$ 得 $\\bigcup_{k\\in\\mathbb{Z}}\\left[\\frac\\pi4+2k\\pi,\\frac{3\\pi}4+2k\\pi\\right]$。",
+      "detailedAnalysis": "四问分别是有绝对值、分式、高次和三角不等式。分式不等式移项通分后列表判号，注意 $x=0$ 不在定义域；高次不等式用穿根法；三角不等式先求一个周期内的解再并上 $2k\\pi$。易错点：分式不等式直接去分母（需讨论 $x$ 的符号），以及三角不等式漏写 $k\\in\\mathbb{Z}$。",
+      "points": [
+        "分式不等式通分判号",
+        "高次不等式穿根法",
+        "三角不等式的周期解"
+      ],
+      "pitfalls": [
+        "分式不等式直接去分母",
+        "三角不等式漏掉 $2k\\pi$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.2 第1题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.2"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：(1) 即 $|x-1|\\ge x$。当 $x<0$ 时显然成立；当 $0\\le x<1$ 时 $1-x\\ge x$，得 $x\\le\\frac12$；当 $x\\ge1$ 时 $x-1\\ge x$ 不成立。故解集为 $\\left(-\\infty,\\frac12\\right]$。",
+        "(2) 移项通分得 $\\frac{x^2-6x+1}{x}\\le0$。分子零点为 $3\\pm2\\sqrt2$。列表判断符号：$x<0$ 时分子为正、分母为负，不等式成立；$0<x<3-2\\sqrt2$ 时不成立；$3-2\\sqrt2\\le x\\le3+2\\sqrt2$ 时成立；$x>3+2\\sqrt2$ 时不成立。故解集为 $(-\\infty,0)\\cup[3-2\\sqrt2,3+2\\sqrt2]$。",
+        "(3) 三个零点 $a<b<c$ 将数轴分成四段，取 $x>c$ 时三个因子均为正，再由穿根法交替变号，得解集 $(a,b)\\cup(c,+\\infty)$。",
+        "(4) 在一个周期内 $\\sin x\\ge\\frac{\\sqrt2}{2}$ 的解为 $\\frac\\pi4\\le x\\le\\frac{3\\pi}4$，加上周期 $2k\\pi$ 得 $\\bigcup_{k\\in\\mathbb{Z}}\\left[\\frac\\pi4+2k\\pi,\\frac{3\\pi}4+2k\\pi\\right]$。"
+      ],
+      "pointKeys": [
+        "分式不等式通分判号",
+        "高次不等式穿根法",
+        "三角不等式的周期解"
+      ]
+    },
+    {
+      "id": "MA-3508",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.2",
+      "type": "subjective",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "无上界与无界的定义",
+      "question": "设 $S$ 为非空数集。试对下列概念给出定义：(1) $S$ 无上界；(2) $S$ 无界。",
+      "answer": "(1) 对任意 $M\\in\\mathbb{R}$，存在 $x\\in S$，使 $x>M$。(2) 对任意 $M>0$，存在 $x\\in S$，使 $|x|>M$。",
+      "standardSolution": "解：(1) $S$ 无上界，即 $S$ 没有上界：对任意 $M\\in\\mathbb{R}$，都存在 $x\\in S$ 使 $x>M$。等价地，$\\sup S=+\\infty$（非正常上确界）。\n\n(2) $S$ 无界，即 $S$ 既无上界又无下界：对任意 $M>0$，都存在 $x\\in S$ 使 $|x|>M$。等价说法是：对任意 $M>0$，$S\\not\\subset[-M,M]$。",
+      "detailedAnalysis": "考查量词否定的写法。“无上界”只否定上界，“无界”同时否定上界与下界，两者不同。易错点：把“无上界”与“无界”混为一谈（如 $(-\\infty,0]$ 无下界但有上界，故无界却非无上界），或把 $M$ 写成某个固定常数。",
+      "points": [
+        "量词否定",
+        "无上界与无界的区别"
+      ],
+      "pitfalls": [
+        "混淆无上界与无界",
+        "把任意 $M$ 写成固定常数"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.2 第2题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.2"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "解：(1) $S$ 无上界，即 $S$ 没有上界：对任意 $M\\in\\mathbb{R}$，都存在 $x\\in S$ 使 $x>M$。等价地，$\\sup S=+\\infty$（非正常上确界）。",
+        "(2) $S$ 无界，即 $S$ 既无上界又无下界：对任意 $M>0$，都存在 $x\\in S$ 使 $|x|>M$。等价说法是：对任意 $M>0$，$S\\not\\subset[-M,M]$。"
+      ],
+      "pointKeys": [
+        "量词否定",
+        "无上界与无界的区别"
+      ]
+    },
+    {
+      "id": "MA-3509",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.2",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "抛物线值域集的上界与无下界",
+      "question": "试证明由 $S=\\{y\\mid y=2-x^2,\\ x\\in\\mathbb{R}\\}$ 所确定的数集 $S$ 有上界而无下界。",
+      "answer": "$S=(-\\infty,2]$，故 $2$ 是 $S$ 的上界，而 $S$ 无下界。",
+      "standardSolution": "证明：对任意 $y=2-x^2\\in S$，由 $x^2\\ge0$ 得 $y=2-x^2\\le2$，所以 $2$ 是 $S$ 的一个上界，$S$ 有上界。\n\n对任意 $M\\in\\mathbb{R}$，取实数 $x$ 使 $x^2>2-M$（这样的 $x$ 存在，因为平方可任意大），则 $y=2-x^2<M$。这说明 $M$ 不是 $S$ 的下界。由 $M$ 的任意性，$S$ 无下界。$\\square$",
+      "detailedAnalysis": "上界只需验证 $y\\le2$；无下界要按定义“对任意 $M$ 都存在 $y<M$”来证。易错点：只举几个负值说明“可以很小”，没有对任意 $M$ 构造；或忽略 $x^2$ 无上界这一事实。",
+      "points": [
+        "上界定义",
+        "无下界定义",
+        "平方无上界"
+      ],
+      "pitfalls": [
+        "用特例代替任意 $M$",
+        "忽略 $x$ 可取任意实数"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.2 第3题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.2"
+      ],
+      "relatedEntries": [],
+      "difficulty": 1,
+      "solution": [
+        "证明：对任意 $y=2-x^2\\in S$，由 $x^2\\ge0$ 得 $y=2-x^2\\le2$，所以 $2$ 是 $S$ 的一个上界，$S$ 有上界。",
+        "对任意 $M\\in\\mathbb{R}$，取实数 $x$ 使 $x^2>2-M$（这样的 $x$ 存在，因为平方可任意大），则 $y=2-x^2<M$。这说明 $M$ 不是 $S$ 的下界。由 $M$ 的任意性，$S$ 无下界。$\\square$"
+      ],
+      "pointKeys": [
+        "上界定义",
+        "无下界定义",
+        "平方无上界"
+      ]
+    },
+    {
+      "id": "MA-3510",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.2",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "对称数集的确界关系",
+      "question": "设 $S$ 为非空数集，定义 $S^-=\\{x\\mid -x\\in S\\}$。证明：(1) $\\inf S^-=-\\sup S$；(2) $\\sup S^-=-\\inf S$。",
+      "answer": "两式均成立（有界时按正常确界理解；无界时按非正常确界理解，结论仍成立）。",
+      "standardSolution": "证明：先证 (1)。设有界，记 $a=\\sup S$。对任意 $x\\in S^-$，有 $-x\\in S$，故 $-x\\le a$，即 $x\\ge-a$，所以 $-a$ 是 $S^-$ 的下界。\n\n任给 $\\varepsilon>0$，由上确界定义，存在 $s\\in S$ 使 $s>a-\\varepsilon$。令 $x=-s$，则 $x\\in S^-$ 且 $x=-s<-a+\\varepsilon$。故 $S^-$ 的下界中 $-a$ 最大，从而 $\\inf S^-=-a=-\\sup S$。\n\n(2) 同理：记 $b=\\inf S$，则对 $x\\in S^-$ 有 $-x\\ge b$，即 $x\\le-b$，故 $-b$ 是 $S^-$ 的上界；任给 $\\varepsilon>0$，存在 $s\\in S$ 使 $s<b+\\varepsilon$，令 $x=-s\\in S^-$，得 $x>-b-\\varepsilon$，故 $\\sup S^-=-b=-\\inf S$。无界情形按非正常确界的定义直接验证。$\\square$",
+      "detailedAnalysis": "关键是把 $S^-$ 的元素写成 $-s$（$s\\in S$），把对 $S$ 的上（下）界转化为对 $S^-$ 的下（上）界。易错点：只验证“是界”而不验证“是最佳界”；以及符号写反，把 $\\inf S^-$ 误写成 $\\sup S$。",
+      "points": [
+        "确界的两个条件",
+        "集合的对称变换"
+      ],
+      "pitfalls": [
+        "只验证是界不验证最佳性",
+        "符号写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.2 第6题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.2"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：先证 (1)。设有界，记 $a=\\sup S$。对任意 $x\\in S^-$，有 $-x\\in S$，故 $-x\\le a$，即 $x\\ge-a$，所以 $-a$ 是 $S^-$ 的下界。",
+        "任给 $\\varepsilon>0$，由上确界定义，存在 $s\\in S$ 使 $s>a-\\varepsilon$。令 $x=-s$，则 $x\\in S^-$ 且 $x=-s<-a+\\varepsilon$。故 $S^-$ 的下界中 $-a$ 最大，从而 $\\inf S^-=-a=-\\sup S$。",
+        "(2) 同理：记 $b=\\inf S$，则对 $x\\in S^-$ 有 $-x\\ge b$，即 $x\\le-b$，故 $-b$ 是 $S^-$ 的上界；任给 $\\varepsilon>0$，存在 $s\\in S$ 使 $s<b+\\varepsilon$，令 $x=-s\\in S^-$，得 $x>-b-\\varepsilon$，故 $\\sup S^-=-b=-\\inf S$。无界情形按非正常确界的定义直接验证。$\\square$"
+      ],
+      "pointKeys": [
+        "确界的两个条件",
+        "集合的对称变换"
+      ]
+    },
+    {
+      "id": "MA-3511",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.2",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "和集的确界",
+      "question": "设 $A,B$ 皆为非空有界数集，定义数集 $A+B=\\{z\\mid z=x+y,\\ x\\in A,\\ y\\in B\\}$。证明：(1) $\\sup(A+B)=\\sup A+\\sup B$；(2) $\\inf(A+B)=\\inf A+\\inf B$。",
+      "answer": "两式均成立。",
+      "standardSolution": "证明：(1) 记 $a=\\sup A$，$b=\\sup B$。对任意 $z=x+y\\in A+B$，有 $x\\le a$，$y\\le b$，故 $z\\le a+b$，即 $a+b$ 是 $A+B$ 的上界。\n\n任给 $\\varepsilon>0$，存在 $x\\in A$、$y\\in B$ 使 $x>a-\\frac\\varepsilon2$、$y>b-\\frac\\varepsilon2$，于是 $z=x+y>a+b-\\varepsilon$。故 $a+b$ 是最小上界，$\\sup(A+B)=a+b$。\n\n(2) 记 $c=\\inf A$，$d=\\inf B$。对任意 $z=x+y$ 有 $z\\ge c+d$，故 $c+d$ 是下界；任给 $\\varepsilon>0$，存在 $x<c+\\frac\\varepsilon2$、$y<d+\\frac\\varepsilon2$，得 $z<c+d+\\varepsilon$。故 $c+d$ 是最大下界，$\\inf(A+B)=c+d$。$\\square$",
+      "detailedAnalysis": "证明分两步：先验证上（下）界，再用 $\\varepsilon$ 论证最小（大）性。易错点：只证“是界”，或把“存在 $x,y$”写成“对任意 $x,y$”，以及 $\\varepsilon/2$ 的分配写错。",
+      "points": [
+        "确界的两个条件",
+        "$\\varepsilon$ 论证",
+        "和集"
+      ],
+      "pitfalls": [
+        "只证上界不证最小性",
+        "把存在量词写成全称量词"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.2 第7题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.2"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1) 记 $a=\\sup A$，$b=\\sup B$。对任意 $z=x+y\\in A+B$，有 $x\\le a$，$y\\le b$，故 $z\\le a+b$，即 $a+b$ 是 $A+B$ 的上界。",
+        "任给 $\\varepsilon>0$，存在 $x\\in A$、$y\\in B$ 使 $x>a-\\frac\\varepsilon2$、$y>b-\\frac\\varepsilon2$，于是 $z=x+y>a+b-\\varepsilon$。故 $a+b$ 是最小上界，$\\sup(A+B)=a+b$。",
+        "(2) 记 $c=\\inf A$，$d=\\inf B$。对任意 $z=x+y$ 有 $z\\ge c+d$，故 $c+d$ 是下界；任给 $\\varepsilon>0$，存在 $x<c+\\frac\\varepsilon2$、$y<d+\\frac\\varepsilon2$，得 $z<c+d+\\varepsilon$。故 $c+d$ 是最大下界，$\\inf(A+B)=c+d$。$\\square$"
+      ],
+      "pointKeys": [
+        "确界的两个条件",
+        "$\\varepsilon$ 论证",
+        "和集"
+      ]
+    },
+    {
+      "id": "MA-3512",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.3",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "五个函数图像的作法",
+      "question": "试作下列函数的图像：(1) $y=x^2+1$；(2) $y=(x+1)^2$；(3) $y=1-(x+1)^2$；(4) $y=\\operatorname{sgn}(\\sin x)$；(5) $y=\\begin{cases}3x,&|x|>1,\\\\x^3,&|x|<1,\\\\3,&|x|=1.\\end{cases}$",
+      "answer": "(1) 抛物线 $y=x^2$ 向上平移 $1$，顶点 $(0,1)$，开口向上。(2) 抛物线 $y=x^2$ 向左平移 $1$，顶点 $(-1,0)$，开口向上。(3) 抛物线 $y=-x^2$ 向左平移 $1$ 再向上平移 $1$，顶点 $(-1,1)$，开口向下。(4) 以 $2\\pi$ 为周期的方波：在 $(2k\\pi,(2k+1)\\pi)$ 上取 $1$，在 $((2k+1)\\pi,(2k+2)\\pi)$ 上取 $-1$，在 $x=k\\pi$ 处取 $0$。(5) $|x|>1$ 时为直线 $y=3x$ 的两条射线；$|x|<1$ 时为立方曲线 $y=x^3$；$x=\\pm1$ 处为孤立点 $(1,3)$、$(-1,3)$。",
+      "standardSolution": "解：(1) 以 $y=x^2$ 为基准，向上平移 $1$ 个单位，得顶点 $(0,1)$、开口向上的抛物线。\n\n(2) 由“左加右减”，把 $y=x^2$ 向左平移 $1$ 个单位，得 $y=(x+1)^2$，顶点 $(-1,0)$。\n\n(3) 先作 $y=-x^2$（开口向下），再向左平移 $1$、向上平移 $1$，得 $y=1-(x+1)^2$，顶点 $(-1,1)$。\n\n(4) 先作 $y=\\sin x$ 的图像，在 $\\sin x>0$ 处画水平线 $y=1$，在 $\\sin x<0$ 处画 $y=-1$，在零点处取 $0$，得到周期为 $2\\pi$ 的方波。\n\n(5) 在 $|x|>1$ 上画直线 $y=3x$ 的两条射线（不含 $x=\\pm1$）；在 $|x|<1$ 上画 $y=x^3$；在 $x=\\pm1$ 处分别标出孤立点 $(1,3)$、$(-1,3)$，注意 $x=-1$ 处不是直线上的 $(-1,-3)$。",
+      "detailedAnalysis": "本题训练平移变换、符号函数与分段函数作图。口诀“左加右减、上加下减”要结合顶点理解；$\\operatorname{sgn}(\\sin x)$ 在零点取 $0$，图像由水平线段和孤立点组成；分段函数在分界点 $|x|=1$ 处单独定义，必须画成孤立点而不是连线。易错点：$y=1-(x+1)^2$ 的平移顺序与顶点写错，以及忽略 $x=-1$ 处取值为 $3$。",
+      "points": [
+        "函数图像平移",
+        "符号函数与周期性",
+        "分段函数作图"
+      ],
+      "pitfalls": [
+        "$y=1-(x+1)^2$ 的顶点写错",
+        "忽略 $|x|=1$ 处的孤立点"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.3 第1题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.3"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "解：(1) 以 $y=x^2$ 为基准，向上平移 $1$ 个单位，得顶点 $(0,1)$、开口向上的抛物线。",
+        "(2) 由“左加右减”，把 $y=x^2$ 向左平移 $1$ 个单位，得 $y=(x+1)^2$，顶点 $(-1,0)$。",
+        "(3) 先作 $y=-x^2$（开口向下），再向左平移 $1$、向上平移 $1$，得 $y=1-(x+1)^2$，顶点 $(-1,1)$。",
+        "(4) 先作 $y=\\sin x$ 的图像，在 $\\sin x>0$ 处画水平线 $y=1$，在 $\\sin x<0$ 处画 $y=-1$，在零点处取 $0$，得到周期为 $2\\pi$ 的方波。",
+        "(5) 在 $|x|>1$ 上画直线 $y=3x$ 的两条射线（不含 $x=\\pm1$）；在 $|x|<1$ 上画 $y=x^3$；在 $x=\\pm1$ 处分别标出孤立点 $(1,3)$、$(-1,3)$，注意 $x=-1$ 处不是直线上的 $(-1,-3)$。"
+      ],
+      "pointKeys": [
+        "函数图像平移",
+        "符号函数与周期性",
+        "分段函数作图"
+      ]
+    },
+    {
+      "id": "MA-3513",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.3",
+      "type": "subjective",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "指数函数与对数函数图像比较",
+      "question": "试比较函数 $y=a^x$ 与 $y=\\log_a x$ 分别当 $a=2$ 和 $a=\\frac12$ 时的图像。",
+      "answer": "当 $a=2$ 时，$y=2^x$ 与 $y=\\log_2 x$ 互为反函数，图像关于直线 $y=x$ 对称；前者过 $(0,1)$ 且严格增，后者过 $(1,0)$ 且严格增。当 $a=\\frac12$ 时，$y=\\left(\\frac12\\right)^x$ 与 $y=\\log_{1/2}x$ 也互为反函数，图像关于 $y=x$ 对称；两者均严格减，分别过 $(0,1)$ 与 $(1,0)$。此外 $\\left(\\frac12\\right)^x=2^{-x}$ 是 $2^x$ 关于 $y$ 轴的对称，$\\log_{1/2}x=-\\log_2 x$ 是 $\\log_2 x$ 关于 $x$ 轴的对称。",
+      "standardSolution": "解：$y=2^x$ 的定义域为 $\\mathbb{R}$、值域为 $(0,+\\infty)$，过 $(0,1)$，严格递增；$y=\\log_2 x$ 的定义域为 $(0,+\\infty)$、值域为 $\\mathbb{R}$，过 $(1,0)$，严格递增。两者互为反函数，图像关于 $y=x$ 对称。\n\n$y=\\left(\\frac12\\right)^x=2^{-x}$ 过 $(0,1)$，严格递减；$y=\\log_{1/2}x$ 过 $(1,0)$，严格递减。两者也互为反函数，图像关于 $y=x$ 对称。\n\n比较四个图像：$y=2^x$ 与 $y=\\left(\\frac12\\right)^x$ 关于 $y$ 轴对称；$y=\\log_2 x$ 与 $y=\\log_{1/2}x$ 关于 $x$ 轴对称；同一底数的指数函数与对数函数关于 $y=x$ 对称。",
+      "detailedAnalysis": "核心是反函数图像关于 $y=x$ 对称，以及底数互为倒数时 $a^x=(1/a)^{-x}$、$\\log_{1/a}x=-\\log_a x$。易错点：把 $y=2^x$ 与 $y=\\log_{1/2}x$ 误认为互为反函数（应是同底数的指数与对数），或把单调性说反。",
+      "points": [
+        "反函数图像关于 $y=x$ 对称",
+        "底数互为倒数"
+      ],
+      "pitfalls": [
+        "把不同底数的指数与对数配成反函数",
+        "单调性说反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.3 第2题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.3"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "解：$y=2^x$ 的定义域为 $\\mathbb{R}$、值域为 $(0,+\\infty)$，过 $(0,1)$，严格递增；$y=\\log_2 x$ 的定义域为 $(0,+\\infty)$、值域为 $\\mathbb{R}$，过 $(1,0)$，严格递增。两者互为反函数，图像关于 $y=x$ 对称。",
+        "$y=\\left(\\frac12\\right)^x=2^{-x}$ 过 $(0,1)$，严格递减；$y=\\log_{1/2}x$ 过 $(1,0)$，严格递减。两者也互为反函数，图像关于 $y=x$ 对称。",
+        "比较四个图像：$y=2^x$ 与 $y=\\left(\\frac12\\right)^x$ 关于 $y$ 轴对称；$y=\\log_2 x$ 与 $y=\\log_{1/2}x$ 关于 $x$ 轴对称；同一底数的指数函数与对数函数关于 $y=x$ 对称。"
+      ],
+      "pointKeys": [
+        "反函数图像关于 $y=x$ 对称",
+        "底数互为倒数"
+      ]
+    },
+    {
+      "id": "MA-3514",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.3",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "分段函数的函数值与差商",
+      "question": "设函数 $f(x)=\\begin{cases}2+x,&x\\le0,\\\\2^x,&x>0.\\end{cases}$ 求：(1) $f(-3)$，$f(0)$，$f(1)$；(2) $\\frac{f(\\Delta x)-f(0)}{\\Delta x}$，$\\frac{f(-\\Delta x)-f(0)}{\\Delta x}$（$\\Delta x>0$）。",
+      "answer": "(1) $f(-3)=-1$，$f(0)=2$，$f(1)=2$。(2) $\\frac{f(\\Delta x)-f(0)}{\\Delta x}=\\frac{2^{\\Delta x}-2}{\\Delta x}$，$\\frac{f(-\\Delta x)-f(0)}{\\Delta x}=-1$。",
+      "standardSolution": "解：(1) $-3\\le0$，故 $f(-3)=2+(-3)=-1$；$0\\le0$，故 $f(0)=2+0=2$；$1>0$，故 $f(1)=2^1=2$。\n\n(2) 因 $\\Delta x>0$，故 $\\Delta x$ 落在第二段，$f(\\Delta x)=2^{\\Delta x}$，而 $f(0)=2$，所以 $\\frac{f(\\Delta x)-f(0)}{\\Delta x}=\\frac{2^{\\Delta x}-2}{\\Delta x}$。\n\n又 $-\\Delta x<0$，故 $f(-\\Delta x)=2+(-\\Delta x)=2-\\Delta x$，于是 $\\frac{f(-\\Delta x)-f(0)}{\\Delta x}=\\frac{(2-\\Delta x)-2}{\\Delta x}=-1$。",
+      "detailedAnalysis": "分段函数求值的关键是判断自变量落在哪一段，分界点 $x=0$ 属于第一段。第(2)问要由 $\\Delta x>0$ 推出 $\\Delta x>0$、$-\\Delta x<0$，再选对应表达式。易错点：把 $f(0)$ 用第二段计算为 $2^0=1$（正确值为 $2$），或把 $f(-\\Delta x)$ 误用 $2^{-\\Delta x}$。",
+      "points": [
+        "分段函数求值",
+        "差商",
+        "分界点归属"
+      ],
+      "pitfalls": [
+        "$x=0$ 处误用第二段",
+        "$\\Delta x$ 的符号判断错误"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.3 第5题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.3"
+      ],
+      "relatedEntries": [],
+      "difficulty": 1,
+      "solution": [
+        "解：(1) $-3\\le0$，故 $f(-3)=2+(-3)=-1$；$0\\le0$，故 $f(0)=2+0=2$；$1>0$，故 $f(1)=2^1=2$。",
+        "(2) 因 $\\Delta x>0$，故 $\\Delta x$ 落在第二段，$f(\\Delta x)=2^{\\Delta x}$，而 $f(0)=2$，所以 $\\frac{f(\\Delta x)-f(0)}{\\Delta x}=\\frac{2^{\\Delta x}-2}{\\Delta x}$。",
+        "又 $-\\Delta x<0$，故 $f(-\\Delta x)=2+(-\\Delta x)=2-\\Delta x$，于是 $\\frac{f(-\\Delta x)-f(0)}{\\Delta x}=\\frac{(2-\\Delta x)-2}{\\Delta x}=-1$。"
+      ],
+      "pointKeys": [
+        "分段函数求值",
+        "差商",
+        "分界点归属"
+      ]
+    },
+    {
+      "id": "MA-3515",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.3",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "分式函数的多次代入",
+      "question": "设函数 $f(x)=\\frac1{1+x}$，求 $f(2+x)$，$f(2x)$，$f(x^2)$，$f(f(x))$，$f\\left(\\frac1{f(x)}\\right)$。",
+      "answer": "$f(2+x)=\\frac1{3+x}$（$x\\ne-3$）；$f(2x)=\\frac1{1+2x}$（$x\\ne-\\frac12$）；$f(x^2)=\\frac1{1+x^2}$；$f(f(x))=\\frac{1+x}{2+x}$（$x\\ne-1,-2$）；$f\\left(\\frac1{f(x)}\\right)=\\frac1{2+x}$（$x\\ne-1,-2$）。",
+      "standardSolution": "解：$f(2+x)=\\frac1{1+(2+x)}=\\frac1{3+x}$；$f(2x)=\\frac1{1+2x}$；$f(x^2)=\\frac1{1+x^2}$。\n\n$f(f(x))=\\frac1{1+\\frac1{1+x}}=\\frac{1+x}{2+x}$，其中需 $x\\ne-1$ 且 $x\\ne-2$。\n\n因 $\\frac1{f(x)}=1+x$，故 $f\\left(\\frac1{f(x)}\\right)=\\frac1{1+(1+x)}=\\frac1{2+x}$，同样需 $x\\ne-1,-2$。",
+      "detailedAnalysis": "依次把内层表达式代入 $f$ 的自变量位置，再化简繁分式。易错点：$f(f(x))$ 化简时把分母算成 $1+x$（漏掉内层的 $1$），以及忽略代入后定义域的变化（分母不能为零）。",
+      "points": [
+        "函数代入",
+        "复合函数",
+        "繁分式化简"
+      ],
+      "pitfalls": [
+        "$f(f(x))$ 化简错误",
+        "忽略定义域变化"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.3 第6题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.3"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "解：$f(2+x)=\\frac1{1+(2+x)}=\\frac1{3+x}$；$f(2x)=\\frac1{1+2x}$；$f(x^2)=\\frac1{1+x^2}$。",
+        "$f(f(x))=\\frac1{1+\\frac1{1+x}}=\\frac{1+x}{2+x}$，其中需 $x\\ne-1$ 且 $x\\ne-2$。",
+        "因 $\\frac1{f(x)}=1+x$，故 $f\\left(\\frac1{f(x)}\\right)=\\frac1{1+(1+x)}=\\frac1{2+x}$，同样需 $x\\ne-1,-2$。"
+      ],
+      "pointKeys": [
+        "函数代入",
+        "复合函数",
+        "繁分式化简"
+      ]
+    },
+    {
+      "id": "MA-3516",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.3",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "反函数等于自身的条件",
+      "question": "在什么条件下，函数 $y=\\frac{ax+b}{cx+d}$ 的反函数就是它本身？",
+      "answer": "在 $ad-bc\\ne0$ 且 $c\\ne0$ 时，条件为 $a+d=0$。若允许 $c=0$，则除 $a+d=0$ 外，还有恒等函数情形 $a=d\\ne0$、$b=0$。",
+      "standardSolution": "解：由 $y=\\frac{ax+b}{cx+d}$ 解出 $x$，得 $x=\\frac{b-dy}{cy-a}$，故当 $ad-bc\\ne0$ 时反函数为 $y=\\frac{b-dx}{cx-a}$。\n\n令反函数与原函数恒等：$\\frac{b-dx}{cx-a}=\\frac{ax+b}{cx+d}$。交叉相乘并展开，得 $-cdx^2+(bc-d^2)x+bd=acx^2+(bc-a^2)x-ab$。\n\n比较系数：由二次项得 $c(a+d)=0$。当 $c\\ne0$ 时 $a+d=0$；此时一次项与常数项条件 $a^2=d^2$、$b(a+d)=0$ 自动满足，故 $a+d=0$ 即为所求。\n\n若 $c=0$，则 $f(x)=\\frac{ax+b}{d}$ 为一次函数，$f(f(x))=x$ 要求 $a^2=d^2$ 且 $b(a+d)=0$。于是 $a=-d$（即 $a+d=0$）或 $a=d$、$b=0$（恒等函数）。",
+      "detailedAnalysis": "先求反函数，再令其与原函数恒等，比较分子分母的系数。易错点：只写 $a+d=0$ 而忽略 $c=0$ 时恒等函数这一例外；或忘记前提 $ad-bc\\ne0$（否则不是一一对应，无反函数）。",
+      "points": [
+        "反函数求法",
+        "恒等式比较系数",
+        "分类讨论"
+      ],
+      "pitfalls": [
+        "忽略 $c=0$ 的恒等函数情形",
+        "漏掉 $ad-bc\\ne0$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.3 第8题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.3"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "解：由 $y=\\frac{ax+b}{cx+d}$ 解出 $x$，得 $x=\\frac{b-dy}{cy-a}$，故当 $ad-bc\\ne0$ 时反函数为 $y=\\frac{b-dx}{cx-a}$。",
+        "令反函数与原函数恒等：$\\frac{b-dx}{cx-a}=\\frac{ax+b}{cx+d}$。交叉相乘并展开，得 $-cdx^2+(bc-d^2)x+bd=acx^2+(bc-a^2)x-ab$。",
+        "比较系数：由二次项得 $c(a+d)=0$。当 $c\\ne0$ 时 $a+d=0$；此时一次项与常数项条件 $a^2=d^2$、$b(a+d)=0$ 自动满足，故 $a+d=0$ 即为所求。",
+        "若 $c=0$，则 $f(x)=\\frac{ax+b}{d}$ 为一次函数，$f(f(x))=x$ 要求 $a^2=d^2$ 且 $b(a+d)=0$。于是 $a=-d$（即 $a+d=0$）或 $a=d$、$b=0$（恒等函数）。"
+      ],
+      "pointKeys": [
+        "反函数求法",
+        "恒等式比较系数",
+        "分类讨论"
+      ]
+    },
+    {
+      "id": "MA-3517",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.4",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "三类函数的单调性证明",
+      "question": "证明下列函数在指定区间上的单调性：(1) $y=3x-1$ 在 $(-\\infty,+\\infty)$ 上严格递增；(2) $y=\\sin x$ 在 $\\left[-\\frac\\pi2,\\frac\\pi2\\right]$ 上严格递增；(3) $y=\\cos x$ 在 $[0,\\pi]$ 上严格递减。",
+      "answer": "三个结论均成立。",
+      "standardSolution": "证明：(1) 任取 $x_1<x_2$，则 $y_2-y_1=3(x_2-x_1)>0$，故 $y=3x-1$ 在 $\\mathbb{R}$ 上严格递增。\n\n(2) 任取 $-\\frac\\pi2\\le x_1<x_2\\le\\frac\\pi2$，则 $\\frac{x_1+x_2}{2}\\in\\left(-\\frac\\pi2,\\frac\\pi2\\right)$，$\\frac{x_2-x_1}{2}\\in\\left(0,\\frac\\pi2\\right)$，且 $\\sin x_2-\\sin x_1=2\\cos\\frac{x_1+x_2}{2}\\sin\\frac{x_2-x_1}{2}>0$，故 $\\sin x$ 严格递增。\n\n(3) 任取 $0\\le x_1<x_2\\le\\pi$，则 $\\frac{x_1+x_2}{2}\\in(0,\\pi)$，$\\frac{x_2-x_1}{2}\\in\\left(0,\\frac\\pi2\\right)$，且 $\\cos x_1-\\cos x_2=2\\sin\\frac{x_1+x_2}{2}\\sin\\frac{x_2-x_1}{2}>0$，故 $\\cos x_1>\\cos x_2$，即 $\\cos x$ 严格递减。",
+      "detailedAnalysis": "用单调性定义作差，三角函数部分用和差化积。关键是判断两个半角所在区间，保证余弦、正弦因子为正。易错点：只画图像说明；第(2)问忽略 $\\cos\\frac{x_1+x_2}{2}>0$ 的范围；第(3)问把 $\\cos x_1-\\cos x_2$ 的符号写反。",
+      "points": [
+        "单调性定义",
+        "和差化积",
+        "半角范围判号"
+      ],
+      "pitfalls": [
+        "只画图不作差",
+        "第(2)问忽略余弦因子为正"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.4 第3题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.4"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1) 任取 $x_1<x_2$，则 $y_2-y_1=3(x_2-x_1)>0$，故 $y=3x-1$ 在 $\\mathbb{R}$ 上严格递增。",
+        "(2) 任取 $-\\frac\\pi2\\le x_1<x_2\\le\\frac\\pi2$，则 $\\frac{x_1+x_2}{2}\\in\\left(-\\frac\\pi2,\\frac\\pi2\\right)$，$\\frac{x_2-x_1}{2}\\in\\left(0,\\frac\\pi2\\right)$，且 $\\sin x_2-\\sin x_1=2\\cos\\frac{x_1+x_2}{2}\\sin\\frac{x_2-x_1}{2}>0$，故 $\\sin x$ 严格递增。",
+        "(3) 任取 $0\\le x_1<x_2\\le\\pi$，则 $\\frac{x_1+x_2}{2}\\in(0,\\pi)$，$\\frac{x_2-x_1}{2}\\in\\left(0,\\frac\\pi2\\right)$，且 $\\cos x_1-\\cos x_2=2\\sin\\frac{x_1+x_2}{2}\\sin\\frac{x_2-x_1}{2}>0$，故 $\\cos x_1>\\cos x_2$，即 $\\cos x$ 严格递减。"
+      ],
+      "pointKeys": [
+        "单调性定义",
+        "和差化积",
+        "半角范围判号"
+      ]
+    },
+    {
+      "id": "MA-3518",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "习题1.4",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "三类三角函数的周期",
+      "question": "求下列函数的周期：(1) $\\cos^2 x$；(2) $\\tan 3x$；(3) $\\cos\\frac x2+2\\sin\\frac x3$。",
+      "answer": "(1) $\\pi$；(2) $\\frac\\pi3$；(3) $12\\pi$。",
+      "standardSolution": "解：(1) 由 $\\cos^2x=\\frac{1+\\cos2x}{2}$，其周期为 $\\frac{2\\pi}{2}=\\pi$，且 $\\frac\\pi2$ 不是周期，故最小正周期为 $\\pi$。\n\n(2) $\\tan u$ 的周期为 $\\pi$，令 $3T=\\pi$，得 $T=\\frac\\pi3$。\n\n(3) $\\cos\\frac x2$ 的周期为 $4\\pi$，$2\\sin\\frac x3$ 的周期为 $6\\pi$。两者共同的周期是 $4\\pi$ 与 $6\\pi$ 的公倍数，最小为 $12\\pi$，故原函数的最小正周期为 $12\\pi$。",
+      "detailedAnalysis": "第(1)问先用倍角公式降幂；第(2)问由 $\\tan$ 的周期 $\\pi$ 反解 $T$；第(3)问是多个周期函数之和，取各周期的最小公倍数。易错点：把 $\\cos^2x$ 的周期写成 $2\\pi$，把 $\\tan3x$ 的周期写成 $\\pi$，以及第(3)问误取 $10\\pi$ 或 $24\\pi$。",
+      "points": [
+        "三角恒等变形",
+        "最小公倍数求周期"
+      ],
+      "pitfalls": [
+        "$\\cos^2x$ 周期误为 $2\\pi$",
+        "$\\tan3x$ 周期误为 $\\pi$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 习题1.4 第5题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "习题1.4"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "解：(1) 由 $\\cos^2x=\\frac{1+\\cos2x}{2}$，其周期为 $\\frac{2\\pi}{2}=\\pi$，且 $\\frac\\pi2$ 不是周期，故最小正周期为 $\\pi$。",
+        "(2) $\\tan u$ 的周期为 $\\pi$，令 $3T=\\pi$，得 $T=\\frac\\pi3$。",
+        "(3) $\\cos\\frac x2$ 的周期为 $4\\pi$，$2\\sin\\frac x3$ 的周期为 $6\\pi$。两者共同的周期是 $4\\pi$ 与 $6\\pi$ 的公倍数，最小为 $12\\pi$，故原函数的最小正周期为 $12\\pi$。"
+      ],
+      "pointKeys": [
+        "三角恒等变形",
+        "最小公倍数求周期"
+      ]
+    },
+    {
+      "id": "MA-3519",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "max与min的绝对值表示",
+      "question": "设 $a,b\\in\\mathbb{R}$，证明：(1) $\\max\\{a,b\\}=\\frac12(a+b+|a-b|)$；(2) $\\min\\{a,b\\}=\\frac12(a+b-|a-b|)$。",
+      "answer": "两式均成立。",
+      "standardSolution": "证明：按 $a\\ge b$ 与 $a<b$ 两种情况讨论。\n\n(1) 若 $a\\ge b$，则 $|a-b|=a-b$，右边 $=\\frac12(a+b+a-b)=a=\\max\\{a,b\\}$；若 $a<b$，则 $|a-b|=b-a$，右边 $=\\frac12(a+b+b-a)=b=\\max\\{a,b\\}$。\n\n(2) 若 $a\\ge b$，右边 $=\\frac12(a+b-a+b)=b=\\min\\{a,b\\}$；若 $a<b$，右边 $=\\frac12(a+b-b+a)=a=\\min\\{a,b\\}$。$\\square$",
+      "detailedAnalysis": "用绝对值表示两点中较大者或较小者，本质是分类讨论的统一写法。易错点：不讨论就直接说“显然”，或把两个公式中的正负号写反。",
+      "points": [
+        "绝对值分类讨论",
+        "最值的统一表示"
+      ],
+      "pitfalls": [
+        "两个公式的符号写反",
+        "忽略 $a=b$ 时两式仍成立"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第1题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 1,
+      "solution": [
+        "证明：按 $a\\ge b$ 与 $a<b$ 两种情况讨论。",
+        "(1) 若 $a\\ge b$，则 $|a-b|=a-b$，右边 $=\\frac12(a+b+a-b)=a=\\max\\{a,b\\}$；若 $a<b$，则 $|a-b|=b-a$，右边 $=\\frac12(a+b+b-a)=b=\\max\\{a,b\\}$。",
+        "(2) 若 $a\\ge b$，右边 $=\\frac12(a+b-a+b)=b=\\min\\{a,b\\}$；若 $a<b$，右边 $=\\frac12(a+b-b+a)=a=\\min\\{a,b\\}$。$\\square$"
+      ],
+      "pointKeys": [
+        "绝对值分类讨论",
+        "最值的统一表示"
+      ]
+    },
+    {
+      "id": "MA-3520",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "概念辨析题",
+      "templateId": "",
+      "title": "两个初等函数的逐点最值",
+      "question": "设 $f$ 和 $g$ 都是 $D$ 上的初等函数。定义 $M(x)=\\max\\{f(x),g(x)\\}$，$m(x)=\\min\\{f(x),g(x)\\}$，$x\\in D$。试问 $M(x)$ 和 $m(x)$ 是否为初等函数？",
+      "answer": "都是初等函数。因为 $M=\\frac12(f+g+|f-g|)$，$m=\\frac12(f+g-|f-g|)$，而 $|f-g|=\\sqrt{(f-g)^2}$ 由初等函数经复合得到。",
+      "standardSolution": "解：由第1题的恒等式，$M(x)=\\frac12\\left(f(x)+g(x)+|f(x)-g(x)|\\right)$，$m(x)=\\frac12\\left(f(x)+g(x)-|f(x)-g(x)|\\right)$。\n\n又 $|u|=\\sqrt{u^2}$，故 $|f-g|=\\sqrt{(f-g)^2}$。平方与开方都是基本初等函数，$f-g$ 是初等函数，经复合与四则运算后仍是初等函数。\n\n因此 $M(x)$ 与 $m(x)$ 都是初等函数。",
+      "detailedAnalysis": "关键是把 $\\max,\\min$ 用绝对值和四则运算表示，再用 $|u|=\\sqrt{u^2}$ 说明绝对值不破坏初等性。易错点：认为“分段函数一定不是初等函数”而直接否定；或忽略 $\\sqrt{u^2}$ 在 $u=0$ 处不可导但仍是初等函数。",
+      "points": [
+        "$\\max/\\min$ 的绝对值表示",
+        "初等函数对四则运算与复合封闭"
+      ],
+      "pitfalls": [
+        "误认为逐点取大一定非初等",
+        "把可导性与初等性混为一谈"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第2题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：由第1题的恒等式，$M(x)=\\frac12\\left(f(x)+g(x)+|f(x)-g(x)|\\right)$，$m(x)=\\frac12\\left(f(x)+g(x)-|f(x)-g(x)|\\right)$。",
+        "又 $|u|=\\sqrt{u^2}$，故 $|f-g|=\\sqrt{(f-g)^2}$。平方与开方都是基本初等函数，$f-g$ 是初等函数，经复合与四则运算后仍是初等函数。",
+        "因此 $M(x)$ 与 $m(x)$ 都是初等函数。"
+      ],
+      "pointKeys": [
+        "$\\max/\\min$ 的绝对值表示",
+        "初等函数对四则运算与复合封闭"
+      ]
+    },
+    {
+      "id": "MA-3521",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "分式线性函数的六次代入",
+      "question": "设函数 $f(x)=\\frac{1-x}{1+x}$，求：$f(-x)$，$f(x+1)$，$f(x)+1$，$f\\left(\\frac1x\\right)$，$f(x^2)$，$f(f(x))$。",
+      "answer": "$f(-x)=\\frac{1+x}{1-x}$；$f(x+1)=-\\frac{x}{x+2}$；$f(x)+1=\\frac{2}{1+x}$；$f\\left(\\frac1x\\right)=\\frac{x-1}{x+1}$；$f(x^2)=\\frac{1-x^2}{1+x^2}$；$f(f(x))=x$。",
+      "standardSolution": "解：$f(-x)=\\frac{1-(-x)}{1+(-x)}=\\frac{1+x}{1-x}$；$f(x+1)=\\frac{1-(x+1)}{1+(x+1)}=\\frac{-x}{x+2}$。\n\n$f(x)+1=\\frac{1-x}{1+x}+1=\\frac{1-x+1+x}{1+x}=\\frac{2}{1+x}$；$f\\left(\\frac1x\\right)=\\frac{1-\\frac1x}{1+\\frac1x}=\\frac{x-1}{x+1}$。\n\n$f(x^2)=\\frac{1-x^2}{1+x^2}$；$f(f(x))=\\frac{1-\\frac{1-x}{1+x}}{1+\\frac{1-x}{1+x}}=\\frac{(1+x)-(1-x)}{(1+x)+(1-x)}=\\frac{2x}{2}=x$（$x\\ne-1$）。",
+      "detailedAnalysis": "本题考查函数记号的理解：$f(x+1)$ 是把自变量换成 $x+1$，与 $f(x)+1$ 完全不同。$f(f(x))=x$ 说明 $f$ 是自逆函数。易错点：把 $f(x)+1$ 与 $f(x+1)$ 混淆；化简 $f(f(x))$ 时符号出错；忽略分母为零的点。",
+      "points": [
+        "函数记号与代入",
+        "分式化简",
+        "自逆函数"
+      ],
+      "pitfalls": [
+        "$f(x)+1$ 与 $f(x+1)$ 混淆",
+        "忽略 $x\\ne-1$ 等定义域限制"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第3题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "解：$f(-x)=\\frac{1-(-x)}{1+(-x)}=\\frac{1+x}{1-x}$；$f(x+1)=\\frac{1-(x+1)}{1+(x+1)}=\\frac{-x}{x+2}$。",
+        "$f(x)+1=\\frac{1-x}{1+x}+1=\\frac{1-x+1+x}{1+x}=\\frac{2}{1+x}$；$f\\left(\\frac1x\\right)=\\frac{1-\\frac1x}{1+\\frac1x}=\\frac{x-1}{x+1}$。",
+        "$f(x^2)=\\frac{1-x^2}{1+x^2}$；$f(f(x))=\\frac{1-\\frac{1-x}{1+x}}{1+\\frac{1-x}{1+x}}=\\frac{(1+x)-(1-x)}{(1+x)+(1-x)}=\\frac{2x}{2}=x$（$x\\ne-1$）。"
+      ],
+      "pointKeys": [
+        "函数记号与代入",
+        "分式化简",
+        "自逆函数"
+      ]
+    },
+    {
+      "id": "MA-3522",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "title": "由复合式求函数解析式",
+      "question": "已知 $f\\left(\\frac1x\\right)=x+\\sqrt{1+x^2}$，求 $f(x)$。",
+      "answer": "$f(x)=\\frac1x+\\sqrt{1+\\frac1{x^2}}=\\frac1x+\\frac{\\sqrt{x^2+1}}{|x|}$，$x\\ne0$。",
+      "standardSolution": "解：令 $t=\\frac1x$，则 $x\\ne0$，$x=\\frac1t$，代入得 $f(t)=\\frac1t+\\sqrt{1+\\frac1{t^2}}$。\n\n又 $\\sqrt{1+\\frac1{t^2}}=\\frac{\\sqrt{t^2+1}}{|t|}$，故 $f(t)=\\frac1t+\\frac{\\sqrt{t^2+1}}{|t|}$。\n\n将 $t$ 改写为 $x$，得 $f(x)=\\frac1x+\\frac{\\sqrt{x^2+1}}{|x|}$，$x\\ne0$。",
+      "detailedAnalysis": "用换元法：令 $t=1/x$ 反解 $x=1/t$，再代回。关键是开方时 $\\sqrt{1/t^2}=1/|t|$，不能漏绝对值。易错点：忘记 $x\\ne0$；或写成 $\\sqrt{1+1/x^2}=1+1/x$ 之类的错误化简。",
+      "points": [
+        "换元法",
+        "根式化简",
+        "绝对值"
+      ],
+      "pitfalls": [
+        "忘记 $x\\ne0$",
+        "$\\sqrt{1/t^2}=1/|t|$ 漏绝对值"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第4题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "解：令 $t=\\frac1x$，则 $x\\ne0$，$x=\\frac1t$，代入得 $f(t)=\\frac1t+\\sqrt{1+\\frac1{t^2}}$。",
+        "又 $\\sqrt{1+\\frac1{t^2}}=\\frac{\\sqrt{t^2+1}}{|t|}$，故 $f(t)=\\frac1t+\\frac{\\sqrt{t^2+1}}{|t|}$。",
+        "将 $t$ 改写为 $x$，得 $f(x)=\\frac1x+\\frac{\\sqrt{x^2+1}}{|x|}$，$x\\ne0$。"
+      ],
+      "pointKeys": [
+        "换元法",
+        "根式化简",
+        "绝对值"
+      ]
+    },
+    {
+      "id": "MA-3523",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "取整函数的两个应用模型",
+      "question": "利用函数 $y=[x]$ 求解：(1) 某系各班级推选学生代表，每5人推选1名代表，余额满3人可增选1名，写出可推选代表数 $y$ 与班级学生数 $x$ 之间的函数关系（假设每班学生数为30~50）；(2) 正数 $x$ 经四舍五入后得整数 $y$，写出 $y$ 与 $x$ 之间的函数关系。",
+      "answer": "(1) $y=\\left[\\frac{x+2}{5}\\right]$，$x\\in\\{30,31,\\dots,50\\}$；(2) $y=[x+0.5]$，$x>0$。",
+      "standardSolution": "解：(1) 设 $x=5q+r$，其中 $q=[x/5]$，$r\\in\\{0,1,2,3,4\\}$。当 $r=0,1,2$ 时代表数为 $q$；当 $r=3,4$ 时代表数为 $q+1$。这恰可统一写成 $y=\\left[\\frac{x+2}{5}\\right]$。例如 $x=30$ 时 $y=[32/5]=6$，$x=33$ 时 $y=[35/5]=7$，$x=50$ 时 $y=[52/5]=10$。\n\n(2) 四舍五入即小数点后第一位小于 $5$ 时舍去、不小于 $5$ 时进一，故 $y=[x+0.5]$。例如 $x=2.4$ 时 $y=[2.9]=2$，$x=2.5$ 时 $y=[3.0]=3$。",
+      "detailedAnalysis": "把“每满5人1名、余额满3人加1名”转化为“先加2再除以5取整”；四舍五入转化为“加0.5后取整”。易错点：第(1)问写成 $[x/5]+1$（会多算），第(2)问忘记 $x>0$ 或把临界值 $2.5$ 判错。",
+      "points": [
+        "取整函数",
+        "分段计数建模",
+        "四舍五入"
+      ],
+      "pitfalls": [
+        "第(1)问写成 $[x/5]+1$",
+        "第(2)问忽略 $x>0$ 或临界点"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第5题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：(1) 设 $x=5q+r$，其中 $q=[x/5]$，$r\\in\\{0,1,2,3,4\\}$。当 $r=0,1,2$ 时代表数为 $q$；当 $r=3,4$ 时代表数为 $q+1$。这恰可统一写成 $y=\\left[\\frac{x+2}{5}\\right]$。例如 $x=30$ 时 $y=[32/5]=6$，$x=33$ 时 $y=[35/5]=7$，$x=50$ 时 $y=[52/5]=10$。",
+        "(2) 四舍五入即小数点后第一位小于 $5$ 时舍去、不小于 $5$ 时进一，故 $y=[x+0.5]$。例如 $x=2.4$ 时 $y=[2.9]=2$，$x=2.5$ 时 $y=[3.0]=3$。"
+      ],
+      "pointKeys": [
+        "取整函数",
+        "分段计数建模",
+        "四舍五入"
+      ]
+    },
+    {
+      "id": "MA-3524",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "由f(x)图像作七种变换",
+      "question": "试问如何从函数 $y=f(x)$ 的图像得到下列各函数的图像：(1) $y=-f(x)$；(2) $y=f(-x)$；(3) $y=-f(-x)$；(4) $y=|f(x)|$；(5) $y=\\operatorname{sgn} f(x)$；(6) $y=\\frac12(|f(x)|+f(x))$；(7) $y=\\frac12(|f(x)|-f(x))$。",
+      "answer": "(1) 关于 $x$ 轴对称；(2) 关于 $y$ 轴对称；(3) 关于原点对称；(4) $x$ 轴下方部分翻折到上方，上方部分不变；(5) $f>0$ 处取 $1$，$f=0$ 处取 $0$，$f<0$ 处取 $-1$；(6) 取 $f$ 的正部 $\\max\\{f,0\\}$：保留 $x$ 轴上方部分，下方改为 $0$；(7) 取 $f$ 的负部 $\\max\\{-f,0\\}$：把 $x$ 轴下方部分翻到上方，上方改为 $0$。",
+      "standardSolution": "解：(1)(2)(3) 分别是关于 $x$ 轴、$y$ 轴、原点的对称变换：$(x,y)\\mapsto(x,-y)$、$(x,y)\\mapsto(-x,y)$、$(x,y)\\mapsto(-x,-y)$。\n\n(4) 因 $|f(x)|\\ge0$，$f(x)\\ge0$ 时图像不变，$f(x)<0$ 时把该点关于 $x$ 轴翻折到上方。\n\n(5) 按 $f(x)$ 的符号把图像压缩为三条水平线：$y=1$（$f>0$）、$y=0$（$f=0$）、$y=-1$（$f<0$）。\n\n(6) $\\frac12(|f|+f)=\\max\\{f,0\\}$，只保留 $f$ 在 $x$ 轴上方的部分，其余取 $0$；(7) $\\frac12(|f|-f)=\\max\\{-f,0\\}$，只保留 $f$ 在 $x$ 轴下方部分并翻到上方，其余取 $0$。",
+      "detailedAnalysis": "本题系统训练图像的对称、翻折与正负部分解。第(6)(7)问可用恒等式 $\\max\\{u,0\\}=\\frac12(|u|+u)$、$\\max\\{-u,0\\}=\\frac12(|u|-u)$ 理解。易错点：第(3)问误为只关于 $y$ 轴对称；第(6)(7)问把正部与负部颠倒。",
+      "points": [
+        "图像对称变换",
+        "绝对值翻折",
+        "正部与负部"
+      ],
+      "pitfalls": [
+        "第(3)问误为关于 $y$ 轴对称",
+        "第(6)(7)问正负部颠倒"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第6题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：(1)(2)(3) 分别是关于 $x$ 轴、$y$ 轴、原点的对称变换：$(x,y)\\mapsto(x,-y)$、$(x,y)\\mapsto(-x,y)$、$(x,y)\\mapsto(-x,-y)$。",
+        "(4) 因 $|f(x)|\\ge0$，$f(x)\\ge0$ 时图像不变，$f(x)<0$ 时把该点关于 $x$ 轴翻折到上方。",
+        "(5) 按 $f(x)$ 的符号把图像压缩为三条水平线：$y=1$（$f>0$）、$y=0$（$f=0$）、$y=-1$（$f<0$）。",
+        "(6) $\\frac12(|f|+f)=\\max\\{f,0\\}$，只保留 $f$ 在 $x$ 轴上方的部分，其余取 $0$；(7) $\\frac12(|f|-f)=\\max\\{-f,0\\}$，只保留 $f$ 在 $x$ 轴下方部分并翻到上方，其余取 $0$。"
+      ],
+      "pointKeys": [
+        "图像对称变换",
+        "绝对值翻折",
+        "正部与负部"
+      ]
+    },
+    {
+      "id": "MA-3525",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "title": "两函数图像的上下包络",
+      "question": "如何从函数 $f$ 和 $g$ 的图像得到下列函数的图像：(1) $\\varphi(x)=\\max\\{f(x),g(x)\\}$；(2) $\\psi(x)=\\min\\{f(x),g(x)\\}$。",
+      "answer": "(1) 在每一 $x$ 处取两图像中较高者，得到 $\\varphi$ 的图像（上包络）；(2) 取较低者，得到 $\\psi$ 的图像（下包络）。两图像的交点处 $\\varphi=\\psi$。",
+      "standardSolution": "解：对每个 $x_0$，比较 $f(x_0)$ 与 $g(x_0)$：若 $f(x_0)\\ge g(x_0)$，则 $\\varphi(x_0)=f(x_0)$；否则 $\\varphi(x_0)=g(x_0)$。逐点描出即得 $\\varphi$ 的图像，称为 $f,g$ 的上包络。\n\n同理，若 $f(x_0)\\le g(x_0)$，则 $\\psi(x_0)=f(x_0)$；否则 $\\psi(x_0)=g(x_0)$，得到下包络。\n\n也可借助恒等式 $\\varphi=\\frac12(f+g+|f-g|)$、$\\psi=\\frac12(f+g-|f-g|)$：先作 $f-g$ 的图像，翻折得 $|f-g|$，再与 $f+g$ 作加减并除以 $2$。",
+      "detailedAnalysis": "$\\max$ 与 $\\min$ 是逐点运算，图像上是取上、下包络，而不是选择其中一个函数。易错点：把 $\\varphi$ 误认为 $f,g$ 中较大的那个函数（整段）；或忽略交点处两图像重合。",
+      "points": [
+        "上包络与下包络",
+        "逐点比较",
+        "绝对值表示"
+      ],
+      "pitfalls": [
+        "把 $\\varphi$ 误认为某一个函数",
+        "忽略交点处重合"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第7题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "解：对每个 $x_0$，比较 $f(x_0)$ 与 $g(x_0)$：若 $f(x_0)\\ge g(x_0)$，则 $\\varphi(x_0)=f(x_0)$；否则 $\\varphi(x_0)=g(x_0)$。逐点描出即得 $\\varphi$ 的图像，称为 $f,g$ 的上包络。",
+        "同理，若 $f(x_0)\\le g(x_0)$，则 $\\psi(x_0)=f(x_0)$；否则 $\\psi(x_0)=g(x_0)$，得到下包络。",
+        "也可借助恒等式 $\\varphi=\\frac12(f+g+|f-g|)$、$\\psi=\\frac12(f+g-|f-g|)$：先作 $f-g$ 的图像，翻折得 $|f-g|$，再与 $f+g$ 作加减并除以 $2$。"
+      ],
+      "pointKeys": [
+        "上包络与下包络",
+        "逐点比较",
+        "绝对值表示"
+      ]
+    },
+    {
+      "id": "MA-3526",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "增函数复合的传递不等式",
+      "question": "设 $f,g,h$ 为增函数，满足 $f(x)\\le g(x)\\le h(x)$，$x\\in\\mathbb{R}$。证明：$f(f(x))\\le g(g(x))\\le h(h(x))$。",
+      "answer": "结论成立。",
+      "standardSolution": "证明：由 $f$ 递增及 $f(x)\\le g(x)$，得 $f(f(x))\\le f(g(x))$；再由 $f\\le g$ 在点 $g(x)$ 处取值，得 $f(g(x))\\le g(g(x))$。故 $f(f(x))\\le g(g(x))$。\n\n同理由 $g$ 递增及 $g(x)\\le h(x)$，得 $g(g(x))\\le g(h(x))$；再由 $g\\le h$ 在点 $h(x)$ 处取值，得 $g(h(x))\\le h(h(x))$。故 $g(g(x))\\le h(h(x))$。\n\n综上，$f(f(x))\\le g(g(x))\\le h(h(x))$。$\\square$",
+      "detailedAnalysis": "证明需要两次使用单调性：先用 $f$ 递增把内层 $f(x)\\le g(x)$ 传为 $f(f(x))\\le f(g(x))$，再用点值不等式 $f(g(x))\\le g(g(x))$。易错点：误以为由 $f\\le g$ 可直接推出 $f\\circ f\\le g\\circ g$（少了单调性这一环），或把 $f(g(x))$ 与 $g(f(x))$ 混淆。",
+      "points": [
+        "单调性的传递",
+        "函数迭代",
+        "点值不等式"
+      ],
+      "pitfalls": [
+        "忽略单调性直接比较复合",
+        "$f(g(x))$ 与 $g(f(x))$ 混淆"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第8题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：由 $f$ 递增及 $f(x)\\le g(x)$，得 $f(f(x))\\le f(g(x))$；再由 $f\\le g$ 在点 $g(x)$ 处取值，得 $f(g(x))\\le g(g(x))$。故 $f(f(x))\\le g(g(x))$。",
+        "同理由 $g$ 递增及 $g(x)\\le h(x)$，得 $g(g(x))\\le g(h(x))$；再由 $g\\le h$ 在点 $h(x)$ 处取值，得 $g(h(x))\\le h(h(x))$。故 $g(g(x))\\le h(h(x))$。",
+        "综上，$f(f(x))\\le g(g(x))\\le h(h(x))$。$\\square$"
+      ],
+      "pointKeys": [
+        "单调性的传递",
+        "函数迭代",
+        "点值不等式"
+      ]
+    },
+    {
+      "id": "MA-3527",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "逐点最值保持单调性",
+      "question": "设 $f$ 和 $g$ 为区间 $(a,b)$ 上的增函数，证明第7题中定义的函数 $\\varphi(x)$ 和 $\\psi(x)$ 也都是 $(a,b)$ 上的增函数。",
+      "answer": "$\\varphi(x)=\\max\\{f(x),g(x)\\}$ 与 $\\psi(x)=\\min\\{f(x),g(x)\\}$ 都是 $(a,b)$ 上的增函数。",
+      "standardSolution": "证明：任取 $a<x_1<x_2<b$。由 $f,g$ 均为增函数，得 $f(x_1)\\le f(x_2)$，$g(x_1)\\le g(x_2)$。\n\n于是 $\\varphi(x_1)=\\max\\{f(x_1),g(x_1)\\}\\le\\max\\{f(x_2),g(x_2)\\}=\\varphi(x_2)$，故 $\\varphi$ 为增函数。\n\n同理 $\\psi(x_1)=\\min\\{f(x_1),g(x_1)\\}\\le\\min\\{f(x_2),g(x_2)\\}=\\psi(x_2)$，故 $\\psi$ 也是增函数。$\\square$",
+      "detailedAnalysis": "核心是 $\\max$、$\\min$ 的保序性：若 $u_1\\le u_2$、$v_1\\le v_2$，则 $\\max\\{u_1,v_1\\}\\le\\max\\{u_2,v_2\\}$，$\\min$ 同理。易错点：只对 $f$ 证明；或把“增函数”误作“严格增”，从而不敢用 $\\le$。",
+      "points": [
+        "$\\max/\\min$ 的保序性",
+        "单调性定义"
+      ],
+      "pitfalls": [
+        "只对一个函数证明",
+        "把增函数误作严格增"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第9题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：任取 $a<x_1<x_2<b$。由 $f,g$ 均为增函数，得 $f(x_1)\\le f(x_2)$，$g(x_1)\\le g(x_2)$。",
+        "于是 $\\varphi(x_1)=\\max\\{f(x_1),g(x_1)\\}\\le\\max\\{f(x_2),g(x_2)\\}=\\varphi(x_2)$，故 $\\varphi$ 为增函数。",
+        "同理 $\\psi(x_1)=\\min\\{f(x_1),g(x_1)\\}\\le\\min\\{f(x_2),g(x_2)\\}=\\psi(x_2)$，故 $\\psi$ 也是增函数。$\\square$"
+      ],
+      "pointKeys": [
+        "$\\max/\\min$ 的保序性",
+        "单调性定义"
+      ]
+    },
+    {
+      "id": "MA-3528",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "奇偶函数在对称区间上的单调性",
+      "question": "设 $f$ 为 $[-a,a]$ 上的奇（偶）函数。证明：若 $f$ 在 $[0,a]$ 上增，则 $f$ 在 $[-a,0]$ 上增（减）。",
+      "answer": "$f$ 为奇函数时，$f$ 在 $[-a,0]$ 上增；$f$ 为偶函数时，$f$ 在 $[-a,0]$ 上减。",
+      "standardSolution": "证明：设 $-a\\le x_1<x_2\\le0$，则 $0\\le -x_2<-x_1\\le a$。\n\n若 $f$ 为奇函数，由 $f$ 在 $[0,a]$ 上增得 $f(-x_2)\\le f(-x_1)$，即 $-f(x_2)\\le -f(x_1)$，故 $f(x_1)\\le f(x_2)$，所以 $f$ 在 $[-a,0]$ 上增。\n\n若 $f$ 为偶函数，则 $f(-x_2)=f(x_2)$，$f(-x_1)=f(x_1)$，由 $f(-x_2)\\le f(-x_1)$ 得 $f(x_2)\\le f(x_1)$，所以 $f$ 在 $[-a,0]$ 上减。$\\square$",
+      "detailedAnalysis": "用对称性把负区间上的自变量转到正区间：令 $u=-x$，则 $x$ 增大时 $u$ 减小。奇函数再取负号，偶函数不变号。易错点：奇函数情形符号处理错误，或把 $0\\le -x_2<-x_1$ 的方向写反。",
+      "points": [
+        "奇偶性",
+        "对称区间上的单调性",
+        "变量替换"
+      ],
+      "pitfalls": [
+        "奇函数符号处理错误",
+        "$-x_2<-x_1$ 方向写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第10题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设 $-a\\le x_1<x_2\\le0$，则 $0\\le -x_2<-x_1\\le a$。",
+        "若 $f$ 为奇函数，由 $f$ 在 $[0,a]$ 上增得 $f(-x_2)\\le f(-x_1)$，即 $-f(x_2)\\le -f(x_1)$，故 $f(x_1)\\le f(x_2)$，所以 $f$ 在 $[-a,0]$ 上增。",
+        "若 $f$ 为偶函数，则 $f(-x_2)=f(x_2)$，$f(-x_1)=f(x_1)$，由 $f(-x_2)\\le f(-x_1)$ 得 $f(x_2)\\le f(x_1)$，所以 $f$ 在 $[-a,0]$ 上减。$\\square$"
+      ],
+      "pointKeys": [
+        "奇偶性",
+        "对称区间上的单调性",
+        "变量替换"
+      ]
+    },
+    {
+      "id": "MA-3529",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "奇偶函数的和与积",
+      "question": "证明：(1) 两个奇函数之和为奇函数，其积为偶函数；(2) 两个偶函数之和与积都为偶函数；(3) 奇函数与偶函数之积为奇函数。",
+      "answer": "三个结论均成立（在公共定义域上，且公共定义域关于原点对称）。",
+      "standardSolution": "证明：设 $f,g$ 的定义域关于原点对称。\n\n(1) 若 $f,g$ 为奇函数，则 $(f+g)(-x)=f(-x)+g(-x)=-f(x)-g(x)=-(f+g)(x)$，故 $f+g$ 为奇函数；$(fg)(-x)=f(-x)g(-x)=(-f(x))(-g(x))=f(x)g(x)$，故 $fg$ 为偶函数。\n\n(2) 若 $f,g$ 为偶函数，则 $(f+g)(-x)=f(x)+g(x)=(f+g)(x)$，$(fg)(-x)=f(x)g(x)=(fg)(x)$，故和与积都是偶函数。\n\n(3) 若 $f$ 为奇函数、$g$ 为偶函数，则 $(fg)(-x)=f(-x)g(-x)=-f(x)g(x)=-(fg)(x)$，故 $fg$ 为奇函数。$\\square$",
+      "detailedAnalysis": "直接按奇偶性定义验证，注意先说明公共定义域关于原点对称。易错点：不说明定义域；两个奇函数之积的符号算错（负负得正）；把“奇×偶”误判为偶。",
+      "points": [
+        "奇偶性定义",
+        "函数四则运算",
+        "公共定义域"
+      ],
+      "pitfalls": [
+        "不说明公共定义域对称",
+        "奇函数之积的符号算错"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第11题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 1,
+      "solution": [
+        "证明：设 $f,g$ 的定义域关于原点对称。",
+        "(1) 若 $f,g$ 为奇函数，则 $(f+g)(-x)=f(-x)+g(-x)=-f(x)-g(x)=-(f+g)(x)$，故 $f+g$ 为奇函数；$(fg)(-x)=f(-x)g(-x)=(-f(x))(-g(x))=f(x)g(x)$，故 $fg$ 为偶函数。",
+        "(2) 若 $f,g$ 为偶函数，则 $(f+g)(-x)=f(x)+g(x)=(f+g)(x)$，$(fg)(-x)=f(x)g(x)=(fg)(x)$，故和与积都是偶函数。",
+        "(3) 若 $f$ 为奇函数、$g$ 为偶函数，则 $(fg)(-x)=f(-x)g(-x)=-f(x)g(x)=-(fg)(x)$，故 $fg$ 为奇函数。$\\square$"
+      ],
+      "pointKeys": [
+        "奇偶性定义",
+        "函数四则运算",
+        "公共定义域"
+      ]
+    },
+    {
+      "id": "MA-3530",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "有界函数和的确界不等式",
+      "question": "设 $f,g$ 为 $D$ 上的有界函数。证明：(1) $\\inf_{x\\in D}\\{f(x)+g(x)\\}\\le\\inf_{x\\in D}f(x)+\\sup_{x\\in D}g(x)$；(2) $\\sup_{x\\in D}f(x)+\\inf_{x\\in D}g(x)\\le\\sup_{x\\in D}\\{f(x)+g(x)\\}$。",
+      "answer": "两式均成立。",
+      "standardSolution": "证明：(1) 记 $a=\\inf_D f$，$b=\\sup_D g$。由上确界定义，对任意 $x\\in D$ 有 $g(x)\\le b$，故 $f(x)+g(x)\\le f(x)+b$。\n\n取序列 $x_n\\in D$ 使 $f(x_n)\\to a$（下确界的逼近性质）。则 $\\inf_D(f+g)\\le f(x_n)+g(x_n)\\le f(x_n)+b$，令 $n\\to\\infty$ 得 $\\inf_D(f+g)\\le a+b$。\n\n(2) 记 $c=\\sup_D f$，$d=\\inf_D g$。对任意 $x$ 有 $f(x)+g(x)\\ge f(x)+d$。取 $x_n$ 使 $f(x_n)\\to c$，则 $\\sup_D(f+g)\\ge f(x_n)+g(x_n)\\ge f(x_n)+d$，令 $n\\to\\infty$ 得 $\\sup_D(f+g)\\ge c+d$。$\\square$",
+      "detailedAnalysis": "用确界的逼近序列：存在 $x_n$ 使 $f(x_n)\\to\\inf f$。再利用 $g\\le\\sup g$ 或 $g\\ge\\inf g$ 放缩，最后取极限。易错点：方向取反；假设下确界一定被某点取到；或忘记说明 $f,g$ 有界保证极限有限。",
+      "points": [
+        "确界的逼近性质",
+        "不等式取极限",
+        "有界性"
+      ],
+      "pitfalls": [
+        "假设最值一定取到",
+        "放缩方向写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第12题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1) 记 $a=\\inf_D f$，$b=\\sup_D g$。由上确界定义，对任意 $x\\in D$ 有 $g(x)\\le b$，故 $f(x)+g(x)\\le f(x)+b$。",
+        "取序列 $x_n\\in D$ 使 $f(x_n)\\to a$（下确界的逼近性质）。则 $\\inf_D(f+g)\\le f(x_n)+g(x_n)\\le f(x_n)+b$，令 $n\\to\\infty$ 得 $\\inf_D(f+g)\\le a+b$。",
+        "(2) 记 $c=\\sup_D f$，$d=\\inf_D g$。对任意 $x$ 有 $f(x)+g(x)\\ge f(x)+d$。取 $x_n$ 使 $f(x_n)\\to c$，则 $\\sup_D(f+g)\\ge f(x_n)+g(x_n)\\ge f(x_n)+d$，令 $n\\to\\infty$ 得 $\\sup_D(f+g)\\ge c+d$。$\\square$"
+      ],
+      "pointKeys": [
+        "确界的逼近性质",
+        "不等式取极限",
+        "有界性"
+      ]
+    },
+    {
+      "id": "MA-3531",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "非负函数积的确界",
+      "question": "设 $f,g$ 为 $D$ 上的非负有界函数。证明：(1) $\\inf_{x\\in D}f(x)\\cdot\\inf_{x\\in D}g(x)\\le\\inf_{x\\in D}\\{f(x)g(x)\\}$；(2) $\\sup_{x\\in D}\\{f(x)g(x)\\}\\le\\sup_{x\\in D}f(x)\\cdot\\sup_{x\\in D}g(x)$。",
+      "answer": "两式均成立。",
+      "standardSolution": "证明：记 $a=\\inf_D f\\ge0$，$b=\\inf_D g\\ge0$，$A=\\sup_D f$，$B=\\sup_D g$。\n\n(1) 对任意 $x\\in D$，由 $f(x)\\ge a\\ge0$、$g(x)\\ge b\\ge0$ 得 $f(x)g(x)\\ge ab$。故 $ab$ 是 $fg$ 的下界，从而 $ab\\le\\inf_D(fg)$。\n\n(2) 对任意 $x\\in D$，由 $0\\le f(x)\\le A$、$0\\le g(x)\\le B$ 得 $f(x)g(x)\\le AB$。故 $AB$ 是 $fg$ 的上界，从而 $\\sup_D(fg)\\le AB$。$\\square$",
+      "detailedAnalysis": "非负性保证不等式相乘时方向不变。下界相乘得下界，上界相乘得上界。易错点：去掉非负条件仍套用（负数相乘会反向）；把 $\\inf$ 与 $\\sup$ 的方向写反。",
+      "points": [
+        "非负性保序",
+        "确界的界性",
+        "乘积不等式"
+      ],
+      "pitfalls": [
+        "忽略非负条件",
+        "$\\inf$ 与 $\\sup$ 方向写反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第13题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：记 $a=\\inf_D f\\ge0$，$b=\\inf_D g\\ge0$，$A=\\sup_D f$，$B=\\sup_D g$。",
+        "(1) 对任意 $x\\in D$，由 $f(x)\\ge a\\ge0$、$g(x)\\ge b\\ge0$ 得 $f(x)g(x)\\ge ab$。故 $ab$ 是 $fg$ 的下界，从而 $ab\\le\\inf_D(fg)$。",
+        "(2) 对任意 $x\\in D$，由 $0\\le f(x)\\le A$、$0\\le g(x)\\le B$ 得 $f(x)g(x)\\le AB$。故 $AB$ 是 $fg$ 的上界，从而 $\\sup_D(fg)\\le AB$。$\\square$"
+      ],
+      "pointKeys": [
+        "非负性保序",
+        "确界的界性",
+        "乘积不等式"
+      ]
+    },
+    {
+      "id": "MA-3532",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "周期函数在R上的有界性",
+      "question": "设 $f$ 为定义在 $\\mathbb{R}$ 上以 $h$ 为周期的函数，$a$ 为实数。证明：若 $f$ 在 $[a,a+h]$ 上有界，则 $f$ 在 $\\mathbb{R}$ 上有界。",
+      "answer": "结论成立。",
+      "standardSolution": "证明：设存在 $M>0$，使对一切 $x\\in[a,a+h]$ 有 $|f(x)|\\le M$。\n\n任取 $x\\in\\mathbb{R}$。区间族 $[a+nh,a+(n+1)h]$（$n\\in\\mathbb{Z}$）覆盖整个 $\\mathbb{R}$，故存在整数 $n$ 使 $x\\in[a+nh,a+(n+1)h]$，从而 $x-nh\\in[a,a+h]$。\n\n由 $h$ 为周期，$f(x)=f(x-nh)$，故 $|f(x)|=|f(x-nh)|\\le M$。由 $x$ 的任意性，$f$ 在 $\\mathbb{R}$ 上有界。$\\square$",
+      "detailedAnalysis": "用周期性把任意点平移整数个周期，落回已知有界的区间 $[a,a+h]$。易错点：只讨论 $x\\ge a$ 的情形；忽略 $n$ 可取负整数；误认为周期函数必有界（如 $\\tan x$ 在定义域内无界）。",
+      "points": [
+        "周期性",
+        "区间覆盖",
+        "有界性"
+      ],
+      "pitfalls": [
+        "只讨论 $x\\ge a$",
+        "忽略 $n$ 可为负整数"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第15题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设存在 $M>0$，使对一切 $x\\in[a,a+h]$ 有 $|f(x)|\\le M$。",
+        "任取 $x\\in\\mathbb{R}$。区间族 $[a+nh,a+(n+1)h]$（$n\\in\\mathbb{Z}$）覆盖整个 $\\mathbb{R}$，故存在整数 $n$ 使 $x\\in[a+nh,a+(n+1)h]$，从而 $x-nh\\in[a,a+h]$。",
+        "由 $h$ 为周期，$f(x)=f(x-nh)$，故 $|f(x)|=|f(x-nh)|\\le M$。由 $x$ 的任意性，$f$ 在 $\\mathbb{R}$ 上有界。$\\square$"
+      ],
+      "pointKeys": [
+        "周期性",
+        "区间覆盖",
+        "有界性"
+      ]
+    },
+    {
+      "id": "MA-3533",
+      "subject": "shufen",
+      "chapter": "第一章 实数集与函数",
+      "section": "第一章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "title": "函数振幅等于上确界减下确界",
+      "question": "设 $f$ 在区间 $I$ 上有界。记 $M=\\sup_{x\\in I}f(x)$，$m=\\inf_{x\\in I}f(x)$。证明：$\\sup_{x',x''\\in I}|f(x')-f(x'')|=M-m$。",
+      "answer": "$\\sup_{x',x''\\in I}|f(x')-f(x'')|=M-m$。",
+      "standardSolution": "证明：先证“$\\le$”。对任意 $x',x''\\in I$，有 $f(x')\\le M$，$f(x'')\\ge m$，故 $f(x')-f(x'')\\le M-m$；交换 $x',x''$ 得 $f(x'')-f(x')\\le M-m$。因此 $|f(x')-f(x'')|\\le M-m$，即 $M-m$ 是所论集合的上界。\n\n再证“$\\ge$”。任给 $\\varepsilon>0$，由确界定义，存在 $x'\\in I$ 使 $f(x')>M-\\frac\\varepsilon2$，存在 $x''\\in I$ 使 $f(x'')<m+\\frac\\varepsilon2$。于是 $f(x')-f(x'')>M-m-\\varepsilon$，故 $\\sup|f(x')-f(x'')|\\ge M-m-\\varepsilon$。\n\n由 $\\varepsilon>0$ 的任意性，$\\sup|f(x')-f(x'')|\\ge M-m$。结合上一步，等式成立。$\\square$",
+      "detailedAnalysis": "分两步：先用 $M,m$ 作上界，再用确界的逼近性构造接近 $M-m$ 的差。易错点：只证一半；默认 $M,m$ 是最大值、最小值（不一定取到）；忘记交换 $x',x''$ 才能得到绝对值。",
+      "points": [
+        "确界的逼近",
+        "绝对值上界",
+        "振幅"
+      ],
+      "pitfalls": [
+        "默认 $M,m$ 可取到",
+        "只证一个方向"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第一章 实数集与函数）· 第一章总练习题 第16题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第一章 实数集与函数",
+        "教材课后",
+        "第一章总练习题"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：先证“$\\le$”。对任意 $x',x''\\in I$，有 $f(x')\\le M$，$f(x'')\\ge m$，故 $f(x')-f(x'')\\le M-m$；交换 $x',x''$ 得 $f(x'')-f(x')\\le M-m$。因此 $|f(x')-f(x'')|\\le M-m$，即 $M-m$ 是所论集合的上界。",
+        "再证“$\\ge$”。任给 $\\varepsilon>0$，由确界定义，存在 $x'\\in I$ 使 $f(x')>M-\\frac\\varepsilon2$，存在 $x''\\in I$ 使 $f(x'')<m+\\frac\\varepsilon2$。于是 $f(x')-f(x'')>M-m-\\varepsilon$，故 $\\sup|f(x')-f(x'')|\\ge M-m-\\varepsilon$。",
+        "由 $\\varepsilon>0$ 的任意性，$\\sup|f(x')-f(x'')|\\ge M-m$。结合上一步，等式成立。$\\square$"
+      ],
+      "pointKeys": [
+        "确界的逼近",
+        "绝对值上界",
+        "振幅"
+      ]
+    },
+    {
+      "id": "MA-3534",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.1 数列极限概念",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "七个基本数列的极限与无穷小判定",
+      "question": "根据例2、例4和例5的结果求下列极限，并指出哪些是无穷小数列：(1)$\\lim_{n\\to\\infty}\\frac{1}{\\sqrt{n}}$；(2)$\\lim_{n\\to\\infty}\\sqrt[n]{3}$；(3)$\\lim_{n\\to\\infty}\\frac{1}{n^{3}}$；(4)$\\lim_{n\\to\\infty}\\frac{1}{3^{n}}$；(5)$\\lim_{n\\to\\infty}\\frac{1}{\\sqrt{2^{n}}}$；(6)$\\lim_{n\\to\\infty}\\sqrt[n]{10}$；(7)$\\lim_{n\\to\\infty}\\frac{1}{\\sqrt[n]{2}}$。",
+      "answer": "(1)$0$；(2)$1$；(3)$0$；(4)$0$；(5)$0$；(6)$1$；(7)$1$。其中(1)(3)(4)(5)是无穷小数列，(2)(6)(7)不是。",
+      "standardSolution": "解：本节例2给出$\\lim_{n\\to\\infty}\\frac{1}{n^{\\alpha}}=0$（$\\alpha>0$），例4给出$\\lim_{n\\to\\infty}q^{n}=0$（$|q|<1$），例5给出$\\lim_{n\\to\\infty}\\sqrt[n]{a}=1$（$a>0$）。以下逐式化归到这三个已知结果。\n(1)$\\frac{1}{\\sqrt{n}}=n^{-\\frac12}$，取$\\alpha=\\frac12>0$，得极限$0$；(2)$\\sqrt[n]{3}$是$a=3>0$的$n$次根，得极限$1$；(3)$\\frac{1}{n^{3}}=n^{-3}$，取$\\alpha=3>0$，得极限$0$；(4)$\\frac{1}{3^{n}}=\\left(\\frac13\\right)^{n}$，取$q=\\frac13$，$|q|<1$，得极限$0$。\n(5)$\\frac{1}{\\sqrt{2^{n}}}=2^{-\\frac n2}=\\left(\\frac{1}{\\sqrt2}\\right)^{n}$，取$q=\\frac{1}{\\sqrt2}$，$|q|<1$，得极限$0$；(6)$\\sqrt[n]{10}$取$a=10$，得极限$1$；(7)$\\frac{1}{\\sqrt[n]{2}}=\\left(\\sqrt[n]{2}\\right)^{-1}$，由$\\sqrt[n]{2}\\to1$及倒数运算得极限$1$。\n无穷小数列就是极限为$0$的数列。上面七个极限中等于$0$的是(1)(3)(4)(5)，所以它们是无穷小数列；(2)(6)(7)的极限为$1\\ne0$，不是无穷小数列。注意(7)虽然形如“分母的倒数”，但分母$\\sqrt[n]{2}\\to1$而不是$\\to\\infty$，故不能判为无穷小。",
+      "detailedAnalysis": "本题考查三个基本极限结论的直接调用，并借此澄清“无穷小数列”的判定标准：只看极限是否为$0$，不看形式。切入点是先把每一项化成$n^{-\\alpha}$、$q^{n}$或$\\sqrt[n]{a}$的标准形。三个已知结论分别是$\\lim n^{-\\alpha}=0$（$\\alpha>0$）、$\\lim q^{n}=0$（$|q|<1$）、$\\lim\\sqrt[n]{a}=1$（$a>0$）。易错点：把$\\sqrt[n]{3}$、$\\sqrt[n]{10}$当成$0$；把$\\frac{1}{\\sqrt[n]{2}}$当成$0$，实际上它趋于$1$，因为分母有界且趋于$1$。",
+      "points": [
+        "$\\lim n^{-\\alpha}=0$（$\\alpha>0$）",
+        "$\\lim q^{n}=0$（$|q|<1$）",
+        "$\\lim\\sqrt[n]{a}=1$（$a>0$）"
+      ],
+      "pitfalls": [
+        "把$\\sqrt[n]{3}\\to1$误判为$\\to0$",
+        "把$\\frac{1}{\\sqrt[n]{2}}\\to1$当成无穷小"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.1 第3题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.1",
+        "基本极限",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "解：本节例2给出$\\lim_{n\\to\\infty}\\frac{1}{n^{\\alpha}}=0$（$\\alpha>0$），例4给出$\\lim_{n\\to\\infty}q^{n}=0$（$|q|<1$），例5给出$\\lim_{n\\to\\infty}\\sqrt[n]{a}=1$（$a>0$）。以下逐式化归到这三个已知结果。",
+        "(1)$\\frac{1}{\\sqrt{n}}=n^{-\\frac12}$，取$\\alpha=\\frac12>0$，得极限$0$；(2)$\\sqrt[n]{3}$是$a=3>0$的$n$次根，得极限$1$；(3)$\\frac{1}{n^{3}}=n^{-3}$，取$\\alpha=3>0$，得极限$0$；(4)$\\frac{1}{3^{n}}=\\left(\\frac13\\right)^{n}$，取$q=\\frac13$，$|q|<1$，得极限$0$。",
+        "(5)$\\frac{1}{\\sqrt{2^{n}}}=2^{-\\frac n2}=\\left(\\frac{1}{\\sqrt2}\\right)^{n}$，取$q=\\frac{1}{\\sqrt2}$，$|q|<1$，得极限$0$；(6)$\\sqrt[n]{10}$取$a=10$，得极限$1$；(7)$\\frac{1}{\\sqrt[n]{2}}=\\left(\\sqrt[n]{2}\\right)^{-1}$，由$\\sqrt[n]{2}\\to1$及倒数运算得极限$1$。",
+        "无穷小数列就是极限为$0$的数列。上面七个极限中等于$0$的是(1)(3)(4)(5)，所以它们是无穷小数列；(2)(6)(7)的极限为$1\\ne0$，不是无穷小数列。注意(7)虽然形如“分母的倒数”，但分母$\\sqrt[n]{2}\\to1$而不是$\\to\\infty$，故不能判为无穷小。"
+      ],
+      "pointKeys": [
+        "$\\lim n^{-\\alpha}=0$（$\\alpha>0$）",
+        "$\\lim q^{n}=0$（$|q|<1$）",
+        "$\\lim\\sqrt[n]{a}=1$（$a>0$）"
+      ]
+    },
+    {
+      "id": "MA-3535",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.1 数列极限概念",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "数列平移后极限不变",
+      "question": "证明：若$\\lim_{n\\to\\infty}a_{n}=a$，则对任一正整数$k$，有$\\lim_{n\\to\\infty}a_{n+k}=a$。",
+      "answer": "结论成立，即去掉前$k$项不改变极限：$\\lim_{n\\to\\infty}a_{n+k}=a$。",
+      "standardSolution": "证明：任给$\\varepsilon>0$。由$\\lim_{n\\to\\infty}a_{n}=a$，存在正整数$N_{1}$，当$n>N_{1}$时$|a_{n}-a|<\\varepsilon$。\n取$N=N_{1}$。当$n>N$时，$n+k>n>N_{1}$，把定义中的$n$换成$n+k$即得$|a_{n+k}-a|<\\varepsilon$。由$\\varepsilon>0$的任意性，$\\lim_{n\\to\\infty}a_{n+k}=a$。\n另法（子列观点）：令$n_{j}=k+j$（$j=1,2,\\cdots$），则$n_{1}<n_{2}<\\cdots$是严格递增的正整数列，$\\{a_{n_{j}}\\}$即$\\{a_{k+1},a_{k+2},\\cdots\\}$，是$\\{a_{n}\\}$的子列。收敛数列的任一子列收敛于同一极限，故结论成立。",
+      "detailedAnalysis": "本题是ε-N定义的直接练习，考查“指标平移不改变极限”这一基本事实。切入点是注意$n>N$时$n+k>N$，所以同一个$N$可以直接搬用，不需要把$N$减去$k$（$N-k$可能为负，是常见错误）。第二种做法用子列的语言，把平移理解为取子列；两种写法都可以判分，但子列法要说明$n_{j}=k+j$严格递增。",
+      "points": [
+        "ε-N定义",
+        "平移等价于取子列"
+      ],
+      "pitfalls": [
+        "把$N$写成$N-k$而使$N$可能为负",
+        "忘记$k$是固定正整数，与$n$无关"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.1 第4题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.1",
+        "ε-N定义",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 1,
+      "solution": [
+        "证明：任给$\\varepsilon>0$。由$\\lim_{n\\to\\infty}a_{n}=a$，存在正整数$N_{1}$，当$n>N_{1}$时$|a_{n}-a|<\\varepsilon$。",
+        "取$N=N_{1}$。当$n>N$时，$n+k>n>N_{1}$，把定义中的$n$换成$n+k$即得$|a_{n+k}-a|<\\varepsilon$。由$\\varepsilon>0$的任意性，$\\lim_{n\\to\\infty}a_{n+k}=a$。",
+        "另法（子列观点）：令$n_{j}=k+j$（$j=1,2,\\cdots$），则$n_{1}<n_{2}<\\cdots$是严格递增的正整数列，$\\{a_{n_{j}}\\}$即$\\{a_{k+1},a_{k+2},\\cdots\\}$，是$\\{a_{n}\\}$的子列。收敛数列的任一子列收敛于同一极限，故结论成立。"
+      ],
+      "pointKeys": [
+        "ε-N定义",
+        "平移等价于取子列"
+      ]
+    },
+    {
+      "id": "MA-3536",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.1 数列极限概念",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "用定义1′否定极限与判定发散",
+      "question": "试用定义$1'$证明：(1)数列$\\left\\{\\frac{1}{n}\\right\\}$不以$1$为极限；(2)数列$\\left\\{n^{(-1)^{n}}\\right\\}$发散。",
+      "answer": "(1)取$\\varepsilon_{0}=\\frac12$，对任意$N$都有无穷多项落在$U(1;\\varepsilon_{0})$之外，故$\\left\\{\\frac{1}{n}\\right\\}$不以$1$为极限；(2)偶数项$2k\\to+\\infty$，奇数项$\\frac{1}{2k-1}\\to0$，两子列极限不同，故$\\left\\{n^{(-1)^{n}}\\right\\}$发散（且不是无穷大数列）。",
+      "standardSolution": "证明：(1)定义$1'$说：$\\lim_{n\\to\\infty}a_{n}=a$当且仅当对任给的$\\varepsilon>0$，数列中落在$U(a;\\varepsilon)$之外的项至多只有有限个。取$\\varepsilon_{0}=\\frac12$，则当$n\\ge2$时$\\left|\\frac1n-1\\right|=1-\\frac1n\\ge\\frac12$，即$\\frac1n\\notin U\\left(1;\\frac12\\right)$。这样的项有无穷多个，不满足定义$1'$，所以$\\left\\{\\frac1n\\right\\}$不以$1$为极限。\n(2)记$b_{n}=n^{(-1)^{n}}$。偶数项$b_{2k}=2k$，奇数项$b_{2k-1}=\\frac{1}{2k-1}$。\n若$\\{b_{n}\\}$收敛于某数$b$，取$\\varepsilon=1$，由定义$1'$，落在$U(b;1)$之外的项至多有限个。但$b_{2k}=2k>|b|+1$对一切充分大的$k$成立，这样的偶数项有无穷多个，全部落在$U(b;1)$之外，矛盾。故$\\{b_{n}\\}$发散。\n再说明它不是无穷大数列：$b_{2k-1}=\\frac{1}{2k-1}\\to0$，不满足“对任意$M>0$，当$n>N$时$|b_{n}|>M$”，故$\\{b_{n}\\}$发散但不发散于无穷大。",
+      "detailedAnalysis": "本题考查定义$1'$（“至多有限个项在邻域外”）的使用，以及发散与无穷大的区别。(1)的关键是找一个正的“坏ε”，使邻域外有无穷多项；这里$\\varepsilon_{0}=\\frac12$恰好把$n\\ge2$的全部项排除在外。(2)的关键是把符号$(-1)^{n}$拆成奇偶两类：偶数项$b_{2k}=2k$无界增长，足以用定义$1'$反证极限不存在。易错点：只计算偶数项就断言“极限是$+\\infty$”；实际上奇数项趋于$0$，所以数列无界但不发散于无穷大。",
+      "points": [
+        "定义$1'$的“至多有限个项在$U(a;\\varepsilon)$外”",
+        "奇偶子列行为不同",
+        "无界不等于发散于无穷大"
+      ],
+      "pitfalls": [
+        "只用部分项验证就断言收敛或发散",
+        "把无界数列一律当作无穷大数列"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.1 第5题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.1",
+        "定义1′",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：(1)定义$1'$说：$\\lim_{n\\to\\infty}a_{n}=a$当且仅当对任给的$\\varepsilon>0$，数列中落在$U(a;\\varepsilon)$之外的项至多只有有限个。取$\\varepsilon_{0}=\\frac12$，则当$n\\ge2$时$\\left|\\frac1n-1\\right|=1-\\frac1n\\ge\\frac12$，即$\\frac1n\\notin U\\left(1;\\frac12\\right)$。这样的项有无穷多个，不满足定义$1'$，所以$\\left\\{\\frac1n\\right\\}$不以$1$为极限。",
+        "(2)记$b_{n}=n^{(-1)^{n}}$。偶数项$b_{2k}=2k$，奇数项$b_{2k-1}=\\frac{1}{2k-1}$。",
+        "若$\\{b_{n}\\}$收敛于某数$b$，取$\\varepsilon=1$，由定义$1'$，落在$U(b;1)$之外的项至多有限个。但$b_{2k}=2k>|b|+1$对一切充分大的$k$成立，这样的偶数项有无穷多个，全部落在$U(b;1)$之外，矛盾。故$\\{b_{n}\\}$发散。",
+        "再说明它不是无穷大数列：$b_{2k-1}=\\frac{1}{2k-1}\\to0$，不满足“对任意$M>0$，当$n>N$时$|b_{n}|>M$”，故$\\{b_{n}\\}$发散但不发散于无穷大。"
+      ],
+      "pointKeys": [
+        "定义$1'$的“至多有限个项在$U(a;\\varepsilon)$外”",
+        "奇偶子列行为不同",
+        "无界不等于发散于无穷大"
+      ]
+    },
+    {
+      "id": "MA-3537",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.1 数列极限概念",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "定理2.1的证明及其应用",
+      "question": "证明定理2.1（数列$\\{a_{n}\\}$收敛于$a$的充要条件是$\\{a_{n}-a\\}$为无穷小数列），并应用它证明数列$\\left\\{1+\\frac{(-1)^{n}}{n}\\right\\}$的极限是$1$。",
+      "answer": "定理2.1成立（必要性与充分性分别由同一个ε-N定义给出）；又$\\left|\\left(1+\\frac{(-1)^{n}}{n}\\right)-1\\right|=\\frac{1}{n}\\to0$，故$\\{1+\\frac{(-1)^{n}}{n}\\}$是无穷小数列加常数$1$，极限为$1$。",
+      "standardSolution": "证明：必要性。设$\\lim_{n\\to\\infty}a_{n}=a$。任给$\\varepsilon>0$，存在正整数$N$，当$n>N$时$|a_{n}-a|<\\varepsilon$。注意$|(a_{n}-a)-0|=|a_{n}-a|$，故当$n>N$时$|(a_{n}-a)-0|<\\varepsilon$，即$\\lim_{n\\to\\infty}(a_{n}-a)=0$，$\\{a_{n}-a\\}$是无穷小数列。\n充分性。设$\\{a_{n}-a\\}$是无穷小数列，即$\\lim_{n\\to\\infty}(a_{n}-a)=0$。任给$\\varepsilon>0$，存在正整数$N$，当$n>N$时$|(a_{n}-a)-0|<\\varepsilon$，即$|a_{n}-a|<\\varepsilon$，按定义$\\lim_{n\\to\\infty}a_{n}=a$。\n应用。取$a_{n}=1+\\frac{(-1)^{n}}{n}$，$a=1$，则$a_{n}-a=\\frac{(-1)^{n}}{n}$。因为$\\left|\\frac{(-1)^{n}}{n}-0\\right|=\\frac{1}{n}$，而$\\lim_{n\\to\\infty}\\frac1n=0$（本节例2），所以$\\left\\{\\frac{(-1)^{n}}{n}\\right\\}$是无穷小数列。由定理2.1，$\\lim_{n\\to\\infty}\\left(1+\\frac{(-1)^{n}}{n}\\right)=1$。",
+      "detailedAnalysis": "本题考查“收敛$\\Leftrightarrow$差为无穷小”这一桥梁，它是后面极限四则运算的基础。必要性与充分性其实是同一不等式的两个方向：$|a_{n}-a|$与$|(a_{n}-a)-0|$完全一样，因此只需把定义照抄一遍。应用部分的关键是先算差$a_{n}-a$，再用夹逼或已知结果说明它是无穷小；这里$\\left|\\frac{(-1)^{n}}{n}\\right|=\\frac1n\\to0$。易错点：应用时忘记减去$a$，直接对$a_{n}$本身讨论；或把“$\\{|a_{n}-a|\\}$收敛于$0$”当作需要额外证明的结论。",
+      "points": [
+        "定理2.1：$a_{n}\\to a\\Leftrightarrow a_{n}-a\\to0$",
+        "无穷小数列的定义",
+        "用$\\frac{1}{n}\\to0$验证差为无穷小"
+      ],
+      "pitfalls": [
+        "充分性中把$|a_{n}-a|<\\varepsilon$误写成$|a_{n}-a|=0$",
+        "应用时漏算$a_{n}-a$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.1 第6题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.1",
+        "定理2.1",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：必要性。设$\\lim_{n\\to\\infty}a_{n}=a$。任给$\\varepsilon>0$，存在正整数$N$，当$n>N$时$|a_{n}-a|<\\varepsilon$。注意$|(a_{n}-a)-0|=|a_{n}-a|$，故当$n>N$时$|(a_{n}-a)-0|<\\varepsilon$，即$\\lim_{n\\to\\infty}(a_{n}-a)=0$，$\\{a_{n}-a\\}$是无穷小数列。",
+        "充分性。设$\\{a_{n}-a\\}$是无穷小数列，即$\\lim_{n\\to\\infty}(a_{n}-a)=0$。任给$\\varepsilon>0$，存在正整数$N$，当$n>N$时$|(a_{n}-a)-0|<\\varepsilon$，即$|a_{n}-a|<\\varepsilon$，按定义$\\lim_{n\\to\\infty}a_{n}=a$。",
+        "应用。取$a_{n}=1+\\frac{(-1)^{n}}{n}$，$a=1$，则$a_{n}-a=\\frac{(-1)^{n}}{n}$。因为$\\left|\\frac{(-1)^{n}}{n}-0\\right|=\\frac{1}{n}$，而$\\lim_{n\\to\\infty}\\frac1n=0$（本节例2），所以$\\left\\{\\frac{(-1)^{n}}{n}\\right\\}$是无穷小数列。由定理2.1，$\\lim_{n\\to\\infty}\\left(1+\\frac{(-1)^{n}}{n}\\right)=1$。"
+      ],
+      "pointKeys": [
+        "定理2.1：$a_{n}\\to a\\Leftrightarrow a_{n}-a\\to0$",
+        "无穷小数列的定义",
+        "用$\\frac{1}{n}\\to0$验证差为无穷小"
+      ]
+    },
+    {
+      "id": "MA-3538",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.1 数列极限概念",
+      "type": "subjective",
+      "category": "概念辨析题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "有界、无界与无穷大数列的判别",
+      "question": "在下列数列中哪些是有界数列、无界数列以及无穷大数列？(1)$\\left\\{[1+(-1)^{n}]\\sqrt{n}\\right\\}$；(2)$\\{\\sin n\\}$；(3)$\\left\\{\\frac{n^{2}}{n-\\sqrt{5}}\\right\\}$；(4)$\\left\\{2^{(-1)^{n}n}\\right\\}$。",
+      "answer": "有界数列只有(2)；无界数列是(1)(3)(4)；无穷大数列只有(3)（且为$+\\infty$）。",
+      "standardSolution": "解：(1)偶数项为$2\\sqrt{n}\\to+\\infty$，奇数项恒为$0$。故无界；但奇数项恒等于$0$，不可能满足“当$n>N$时$|a_{n}|>M$”，所以不是无穷大数列。\n(2)$|\\sin n|\\le1$，故有界；它也不趋于无穷大。\n(3)当$n\\ge3$时$n-\\sqrt5>0$，且$\\frac{n^{2}}{n-\\sqrt5}=n+\\sqrt5+\\frac{5}{n-\\sqrt5}$（由$n^{2}=(n-\\sqrt5)(n+\\sqrt5)+5$得到）。当$n\\to\\infty$时右端$\\to+\\infty$，故无界；又对任意$M>0$，当$n$充分大时$\\frac{n^{2}}{n-\\sqrt5}>M$，所以它是无穷大数列（非正常极限$+\\infty$）。\n(4)偶数项$2^{n}\\to+\\infty$，奇数项$2^{-n}\\to0$。故无界；但奇数项任意小，不满足无穷大的定义，故不是无穷大数列。",
+      "detailedAnalysis": "本题考查有界、无界、无穷大三个概念的分层关系：无穷大$\\Rightarrow$无界，反之不成立。判断的通用手段是分奇偶子列考察，因为$(-1)^{n}$型数列的奇偶项行为往往完全不同。切入点：(3)先做多项式除法拆出$n$的主部，再判断符号与增长；(1)(4)看偶数项是否无界、奇数项是否趋于$0$。易错点：把“无界”直接等同于“无穷大”——(1)(4)就是反例；另外(3)要先说明$n\\ge3$时分母为正，否则符号讨论会出错。",
+      "points": [
+        "无穷大$\\Rightarrow$无界，反之不然",
+        "分奇偶子列考察",
+        "$n^{2}=(n-\\sqrt5)(n+\\sqrt5)+5$的拆分"
+      ],
+      "pitfalls": [
+        "把无界数列都判为无穷大数列",
+        "忽略(1)的奇数项恒为$0$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.1 第7题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.1",
+        "无穷大数列",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "解：(1)偶数项为$2\\sqrt{n}\\to+\\infty$，奇数项恒为$0$。故无界；但奇数项恒等于$0$，不可能满足“当$n>N$时$|a_{n}|>M$”，所以不是无穷大数列。",
+        "(2)$|\\sin n|\\le1$，故有界；它也不趋于无穷大。",
+        "(3)当$n\\ge3$时$n-\\sqrt5>0$，且$\\frac{n^{2}}{n-\\sqrt5}=n+\\sqrt5+\\frac{5}{n-\\sqrt5}$（由$n^{2}=(n-\\sqrt5)(n+\\sqrt5)+5$得到）。当$n\\to\\infty$时右端$\\to+\\infty$，故无界；又对任意$M>0$，当$n$充分大时$\\frac{n^{2}}{n-\\sqrt5}>M$，所以它是无穷大数列（非正常极限$+\\infty$）。",
+        "(4)偶数项$2^{n}\\to+\\infty$，奇数项$2^{-n}\\to0$。故无界；但奇数项任意小，不满足无穷大的定义，故不是无穷大数列。"
+      ],
+      "pointKeys": [
+        "无穷大$\\Rightarrow$无界，反之不然",
+        "分奇偶子列考察",
+        "$n^{2}=(n-\\sqrt5)(n+\\sqrt5)+5$的拆分"
+      ]
+    },
+    {
+      "id": "MA-3539",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.1 数列极限概念",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "绝对值数列的极限与反向条件",
+      "question": "证明：若$\\lim_{n\\to\\infty}a_{n}=a$，则$\\lim_{n\\to\\infty}|a_{n}|=|a|$。当且仅当$a$为何值时反之也成立？",
+      "answer": "由$\\big||a_{n}|-|a|\\big|\\le|a_{n}-a|$得$\\lim_{n\\to\\infty}|a_{n}|=|a|$；反之成立的充要条件是$a=0$。",
+      "standardSolution": "证明：由反向三角不等式，对一切$n$有$\\big||a_{n}|-|a|\\big|\\le|a_{n}-a|$。任给$\\varepsilon>0$，由$\\lim_{n\\to\\infty}a_{n}=a$，存在正整数$N$，当$n>N$时$|a_{n}-a|<\\varepsilon$，从而$\\big||a_{n}|-|a|\\big|<\\varepsilon$。故$\\lim_{n\\to\\infty}|a_{n}|=|a|$。\n反之，当$a=0$时成立：若$\\lim_{n\\to\\infty}|a_{n}|=0$，则任给$\\varepsilon>0$，存在$N$，当$n>N$时$|a_{n}|=\\big||a_{n}|-0\\big|<\\varepsilon$，即$\\lim_{n\\to\\infty}a_{n}=0$。\n当$a\\ne0$时不成立：取常数列$a_{n}=-a$（$n=1,2,\\cdots$），则$|a_{n}|=|a|\\to|a|$，但$a_{n}\\to-a\\ne a$（因$a\\ne0$）。所以反之成立的充要条件是$a=0$。",
+      "detailedAnalysis": "本题考查绝对值与极限的相容性。正向只需反向三角不等式，把误差$|a_{n}-a|$直接控制住；反向的关键是看出$|a_{n}|\\to|a|$只保留“距离”，丢掉了符号信息，因此只有当$|a|=0$时符号信息无关紧要。反例取常数列$-a$最简洁：它的绝对值数列与$a_{n}\\equiv a$完全相同，但极限差一个符号。易错点：认为“$|a_{n}|\\to|a|$必推出$a_{n}\\to a$”；或者反例取成$(-1)^{n}a$却忘记验证它确实不收敛到$a$（当$a\\ne0$时它其实有两个子列极限$\\pm a$，仍然可用）。",
+      "points": [
+        "反向三角不等式$\\big||x|-|y|\\big|\\le|x-y|$",
+        "$a=0$时绝对值与本身互相控制",
+        "反例$a_{n}\\equiv-a$"
+      ],
+      "pitfalls": [
+        "误认为反之总成立",
+        "$a=0$的验证没有回到ε-N定义"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.1 第8题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.1",
+        "绝对值极限",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：由反向三角不等式，对一切$n$有$\\big||a_{n}|-|a|\\big|\\le|a_{n}-a|$。任给$\\varepsilon>0$，由$\\lim_{n\\to\\infty}a_{n}=a$，存在正整数$N$，当$n>N$时$|a_{n}-a|<\\varepsilon$，从而$\\big||a_{n}|-|a|\\big|<\\varepsilon$。故$\\lim_{n\\to\\infty}|a_{n}|=|a|$。",
+        "反之，当$a=0$时成立：若$\\lim_{n\\to\\infty}|a_{n}|=0$，则任给$\\varepsilon>0$，存在$N$，当$n>N$时$|a_{n}|=\\big||a_{n}|-0\\big|<\\varepsilon$，即$\\lim_{n\\to\\infty}a_{n}=0$。",
+        "当$a\\ne0$时不成立：取常数列$a_{n}=-a$（$n=1,2,\\cdots$），则$|a_{n}|=|a|\\to|a|$，但$a_{n}\\to-a\\ne a$（因$a\\ne0$）。所以反之成立的充要条件是$a=0$。"
+      ],
+      "pointKeys": [
+        "反向三角不等式$\\big||x|-|y|\\big|\\le|x-y|$",
+        "$a=0$时绝对值与本身互相控制",
+        "反例$a_{n}\\equiv-a$"
+      ]
+    },
+    {
+      "id": "MA-3540",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.1 数列极限概念",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "三个数列极限的ε-N证明",
+      "question": "按$\\varepsilon-N$定义证明：(1)$\\lim_{n\\to\\infty}(\\sqrt{n+1}-\\sqrt{n})=0$；(2)$\\lim_{n\\to\\infty}\\frac{1+2+3+\\cdots+n}{n^{3}}=0$；(3)$\\lim_{n\\to\\infty}a_{n}=1$，其中$a_{n}=\\begin{cases}\\frac{n-1}{n},&n\\text{为偶数},\\\\\\frac{\\sqrt{n^{2}+n}}{n},&n\\text{为奇数}.\\end{cases}$",
+      "answer": "三式均按定义成立，$N$可分别取$\\left[\\frac{1}{4\\varepsilon^{2}}\\right]$、$\\left[\\frac{1}{\\varepsilon}\\right]$、$\\left[\\frac{1}{\\varepsilon}\\right]$。",
+      "standardSolution": "证明：(1)有理化得$\\sqrt{n+1}-\\sqrt{n}=\\frac{1}{\\sqrt{n+1}+\\sqrt{n}}<\\frac{1}{2\\sqrt{n}}$。任给$\\varepsilon>0$，要使$\\frac{1}{2\\sqrt{n}}<\\varepsilon$，只需$n>\\frac{1}{4\\varepsilon^{2}}$。取$N=\\left[\\frac{1}{4\\varepsilon^{2}}\\right]$，当$n>N$时$0<\\sqrt{n+1}-\\sqrt{n}<\\frac{1}{2\\sqrt{n}}<\\varepsilon$，故极限为$0$。\n(2)由$1+2+\\cdots+n=\\frac{n(n+1)}{2}$，得$\\frac{1+2+\\cdots+n}{n^{3}}=\\frac{n+1}{2n^{2}}\\le\\frac{1}{n}$（$n\\ge1$）。任给$\\varepsilon>0$，取$N=\\left[\\frac{1}{\\varepsilon}\\right]$，当$n>N$时$0\\le\\frac{n+1}{2n^{2}}<\\varepsilon$，故极限为$0$。\n(3)$n$为偶数时$\\left|\\frac{n-1}{n}-1\\right|=\\frac1n$；$n$为奇数时$\\left|\\frac{\\sqrt{n^{2}+n}}{n}-1\\right|=\\frac{\\sqrt{n^{2}+n}-n}{n}=\\frac{1}{\\sqrt{n^{2}+n}+n}<\\frac{1}{2n}<\\frac1n$。故对一切$n$都有$|a_{n}-1|\\le\\frac1n$。任给$\\varepsilon>0$，取$N=\\left[\\frac{1}{\\varepsilon}\\right]$，当$n>N$时$|a_{n}-1|<\\varepsilon$，故$\\lim_{n\\to\\infty}a_{n}=1$。",
+      "detailedAnalysis": "本题是ε-N定义的三类典型技术：有理化、求和公式、分段统一估计。(1)的关键是分子有理化，把差化成$\\frac{1}{\\sqrt{n+1}+\\sqrt{n}}$，再放大为$\\frac{1}{2\\sqrt{n}}$；(2)先用等差数列求和把表达式化简为$\\frac{n+1}{2n^{2}}$，再放成$\\frac1n$；(3)要分别估计偶数项与奇数项，且必须给出对两类$n$都成立的同一个界$\\frac1n$——只对偶数项算出$N$是不够的。易错点：(1)直接把$\\sqrt{n+1}-\\sqrt{n}$平方放大，导致界不随$n$趋于$0$；(2)忘记说明$\\frac{n+1}{2n^{2}}\\le\\frac1n$。",
+      "points": [
+        "分子有理化",
+        "等差数列求和",
+        "分段数列取统一的界$\\frac1n$"
+      ],
+      "pitfalls": [
+        "(1)不用有理化而直接放缩失败",
+        "(3)只处理偶数项，漏掉奇数项的公共$N$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.1 第9题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.1",
+        "ε-N定义",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：(1)有理化得$\\sqrt{n+1}-\\sqrt{n}=\\frac{1}{\\sqrt{n+1}+\\sqrt{n}}<\\frac{1}{2\\sqrt{n}}$。任给$\\varepsilon>0$，要使$\\frac{1}{2\\sqrt{n}}<\\varepsilon$，只需$n>\\frac{1}{4\\varepsilon^{2}}$。取$N=\\left[\\frac{1}{4\\varepsilon^{2}}\\right]$，当$n>N$时$0<\\sqrt{n+1}-\\sqrt{n}<\\frac{1}{2\\sqrt{n}}<\\varepsilon$，故极限为$0$。",
+        "(2)由$1+2+\\cdots+n=\\frac{n(n+1)}{2}$，得$\\frac{1+2+\\cdots+n}{n^{3}}=\\frac{n+1}{2n^{2}}\\le\\frac{1}{n}$（$n\\ge1$）。任给$\\varepsilon>0$，取$N=\\left[\\frac{1}{\\varepsilon}\\right]$，当$n>N$时$0\\le\\frac{n+1}{2n^{2}}<\\varepsilon$，故极限为$0$。",
+        "(3)$n$为偶数时$\\left|\\frac{n-1}{n}-1\\right|=\\frac1n$；$n$为奇数时$\\left|\\frac{\\sqrt{n^{2}+n}}{n}-1\\right|=\\frac{\\sqrt{n^{2}+n}-n}{n}=\\frac{1}{\\sqrt{n^{2}+n}+n}<\\frac{1}{2n}<\\frac1n$。故对一切$n$都有$|a_{n}-1|\\le\\frac1n$。任给$\\varepsilon>0$，取$N=\\left[\\frac{1}{\\varepsilon}\\right]$，当$n>N$时$|a_{n}-1|<\\varepsilon$，故$\\lim_{n\\to\\infty}a_{n}=1$。"
+      ],
+      "pointKeys": [
+        "分子有理化",
+        "等差数列求和",
+        "分段数列取统一的界$\\frac1n$"
+      ]
+    },
+    {
+      "id": "MA-3541",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.1 数列极限概念",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "零极限与倒数无穷大的等价刻画",
+      "question": "设$a_{n}\\ne0$。证明：$\\lim_{n\\to\\infty}a_{n}=0$的充要条件是$\\lim_{n\\to\\infty}\\frac{1}{a_{n}}=\\infty$。",
+      "answer": "结论成立：$a_{n}\\to0$（$a_{n}\\ne0$）$\\Leftrightarrow$ $\\frac{1}{a_{n}}$发散于非正常极限$\\infty$。",
+      "standardSolution": "证明：必要性。设$\\lim_{n\\to\\infty}a_{n}=0$。任给$M>0$，取$\\varepsilon=\\frac{1}{M}>0$，存在正整数$N$，当$n>N$时$|a_{n}|<\\frac{1}{M}$。因$a_{n}\\ne0$，故$\\left|\\frac{1}{a_{n}}\\right|>M$。按非正常极限的定义，$\\lim_{n\\to\\infty}\\frac{1}{a_{n}}=\\infty$。\n充分性。设$\\lim_{n\\to\\infty}\\frac{1}{a_{n}}=\\infty$，即对任意$M>0$，存在$N$，当$n>N$时$\\left|\\frac{1}{a_{n}}\\right|>M$。任给$\\varepsilon>0$，取$M=\\frac{1}{\\varepsilon}$，则存在$N$，当$n>N$时$\\left|\\frac{1}{a_{n}}\\right|>\\frac{1}{\\varepsilon}$，于是$0<|a_{n}|<\\varepsilon$，即$\\lim_{n\\to\\infty}a_{n}=0$。\n综上，两个命题等价。其中$a_{n}\\ne0$保证了$\\frac{1}{a_{n}}$对一切$n$有意义，也使$|a_{n}|>0$，这正是非正常极限定义中“$>M$”所需的严格性。",
+      "detailedAnalysis": "本题考查非正常极限$\\infty$的定义与普通极限定义的换算。两个方向都是把$\\varepsilon$与$M$互换：证明$\\frac{1}{a_{n}}\\to\\infty$时取$\\varepsilon=\\frac1M$，证明$a_{n}\\to0$时取$M=\\frac1\\varepsilon$。切入点是先把两个定义并排写出来，看清各自量词的位置。易错点：忽略$a_{n}\\ne0$的作用（否则倒数无意义）；把$\\infty$与$+\\infty$混淆——这里$\\frac{1}{a_{n}}$的符号可以正负摆动，加绝对值后才能得到$\\infty$而不是$+\\infty$。",
+      "points": [
+        "非正常极限$\\infty$的$M$-$N$定义",
+        "$\\varepsilon$与$M$的换算$\\varepsilon=\\frac1M$",
+        "$a_{n}\\ne0$保证倒数有意义"
+      ],
+      "pitfalls": [
+        "忽略$a_{n}\\ne0$的条件",
+        "把$\\infty$与$+\\infty$混为一谈"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.1 第10题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.1",
+        "非正常极限",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 2,
+      "solution": [
+        "证明：必要性。设$\\lim_{n\\to\\infty}a_{n}=0$。任给$M>0$，取$\\varepsilon=\\frac{1}{M}>0$，存在正整数$N$，当$n>N$时$|a_{n}|<\\frac{1}{M}$。因$a_{n}\\ne0$，故$\\left|\\frac{1}{a_{n}}\\right|>M$。按非正常极限的定义，$\\lim_{n\\to\\infty}\\frac{1}{a_{n}}=\\infty$。",
+        "充分性。设$\\lim_{n\\to\\infty}\\frac{1}{a_{n}}=\\infty$，即对任意$M>0$，存在$N$，当$n>N$时$\\left|\\frac{1}{a_{n}}\\right|>M$。任给$\\varepsilon>0$，取$M=\\frac{1}{\\varepsilon}$，则存在$N$，当$n>N$时$\\left|\\frac{1}{a_{n}}\\right|>\\frac{1}{\\varepsilon}$，于是$0<|a_{n}|<\\varepsilon$，即$\\lim_{n\\to\\infty}a_{n}=0$。",
+        "综上，两个命题等价。其中$a_{n}\\ne0$保证了$\\frac{1}{a_{n}}$对一切$n$有意义，也使$|a_{n}|>0$，这正是非正常极限定义中“$>M$”所需的严格性。"
+      ],
+      "pointKeys": [
+        "非正常极限$\\infty$的$M$-$N$定义",
+        "$\\varepsilon$与$M$的换算$\\varepsilon=\\frac1M$",
+        "$a_{n}\\ne0$保证倒数有意义"
+      ]
+    },
+    {
+      "id": "MA-3542",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.2 收敛数列的性质",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "三类发散数列的子列判别",
+      "question": "证明以下数列发散：(1)$\\left\\{(-1)^{n}\\frac{n}{n+1}\\right\\}$；(2)$\\left\\{n^{(-1)^{n}}\\right\\}$；(3)$\\left\\{\\cos\\frac{n\\pi}{4}\\right\\}$。",
+      "answer": "三个数列都发散。(1)奇、偶子列分别收敛于$-1$与$1$；(2)偶数项$\\to+\\infty$、奇数项$\\to0$；(3)子列$\\cos\\frac{8k\\pi}{4}=1$与$\\cos\\frac{(8k+4)\\pi}{4}=-1$的极限不同。",
+      "standardSolution": "证明：(1)记$a_{n}=(-1)^{n}\\frac{n}{n+1}$。则$a_{2k}=\\frac{2k}{2k+1}\\to1$，$a_{2k-1}=-\\frac{2k-1}{2k}\\to-1$。若$\\{a_{n}\\}$收敛，则其任一子列收敛于同一极限，两个子列极限应相等，但$1\\ne-1$，矛盾。故$\\{a_{n}\\}$发散。\n(2)记$b_{n}=n^{(-1)^{n}}$。偶数项$b_{2k}=2k\\to+\\infty$，无界；奇数项$b_{2k-1}=\\frac{1}{2k-1}\\to0$。若$\\{b_{n}\\}$收敛于$b$，由子列收敛性$b=0$；但偶数项$2k\\to+\\infty$不可能收敛于$0$，矛盾。故$\\{b_{n}\\}$发散。\n(3)记$c_{n}=\\cos\\frac{n\\pi}{4}$。取$n=8k$，得$c_{8k}=\\cos2k\\pi=1$；取$n=8k+4$，得$c_{8k+4}=\\cos(2k\\pi+\\pi)=-1$。两个子列都收敛但极限不同（$1\\ne-1$），故$\\{c_{n}\\}$发散。",
+      "detailedAnalysis": "本题考查“子列判别法”：若一个数列收敛，则它的所有子列收敛于同一极限；因此只要找到两个极限不同的子列，就能断定原数列发散。切入点是根据通项结构挑选子列：(1)按奇偶分；(2)按奇偶分，同时说明无界；(3)利用$\\cos\\frac{n\\pi}{4}$以$8$为周期，取$n=8k$与$n=8k+4$得到$1$与$-1$。易错点：只算出一个子列的极限就下结论；或者(1)中把$(-1)^{n}\\frac{n}{n+1}$误当成“$(-1)^{n}$乘有界量故发散”而不作说明。",
+      "points": [
+        "子列判别法",
+        "奇偶子列",
+        "$\\cos\\frac{n\\pi}{4}$的周期性"
+      ],
+      "pitfalls": [
+        "只验证一个子列就判断发散",
+        "(3)没有取到使$\\cos$值不同的两类子列"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.2 第5题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.2",
+        "子列判别",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1)记$a_{n}=(-1)^{n}\\frac{n}{n+1}$。则$a_{2k}=\\frac{2k}{2k+1}\\to1$，$a_{2k-1}=-\\frac{2k-1}{2k}\\to-1$。若$\\{a_{n}\\}$收敛，则其任一子列收敛于同一极限，两个子列极限应相等，但$1\\ne-1$，矛盾。故$\\{a_{n}\\}$发散。",
+        "(2)记$b_{n}=n^{(-1)^{n}}$。偶数项$b_{2k}=2k\\to+\\infty$，无界；奇数项$b_{2k-1}=\\frac{1}{2k-1}\\to0$。若$\\{b_{n}\\}$收敛于$b$，由子列收敛性$b=0$；但偶数项$2k\\to+\\infty$不可能收敛于$0$，矛盾。故$\\{b_{n}\\}$发散。",
+        "(3)记$c_{n}=\\cos\\frac{n\\pi}{4}$。取$n=8k$，得$c_{8k}=\\cos2k\\pi=1$；取$n=8k+4$，得$c_{8k+4}=\\cos(2k\\pi+\\pi)=-1$。两个子列都收敛但极限不同（$1\\ne-1$），故$\\{c_{n}\\}$发散。"
+      ],
+      "pointKeys": [
+        "子列判别法",
+        "奇偶子列",
+        "$\\cos\\frac{n\\pi}{4}$的周期性"
+      ]
+    },
+    {
+      "id": "MA-3543",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.2 收敛数列的性质",
+      "type": "subjective",
+      "category": "反例与存在性题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "子列收敛能否推出原数列收敛",
+      "question": "判断以下结论是否成立（若成立，说明理由；若不成立，举出反例）：(1)若$\\{a_{2k-1}\\}$和$\\{a_{2k}\\}$都收敛，则$\\{a_{n}\\}$收敛；(2)若$\\{a_{3k-2}\\}$，$\\{a_{3k-1}\\}$和$\\{a_{3k}\\}$都收敛，且有相同极限，则$\\{a_{n}\\}$收敛。",
+      "answer": "(1)不成立，反例$a_{n}=(-1)^{n}$；(2)成立，三个子列覆盖全部项且极限相同，可用ε-N定义直接验证。",
+      "standardSolution": "解：(1)不成立。取$a_{n}=(-1)^{n}$，则$a_{2k-1}=-1\\to-1$，$a_{2k}=1\\to1$，两个子列都收敛，但$\\{a_{n}\\}$的两个子列极限不同，故$\\{a_{n}\\}$发散。可见“子列都收敛”必须加上“极限相同”才能推出原数列收敛。\n(2)成立。设三个子列的公共极限为$a$。任给$\\varepsilon>0$，存在正整数$K_{1},K_{2},K_{3}$，使得$k>K_{1}$时$|a_{3k-2}-a|<\\varepsilon$，$k>K_{2}$时$|a_{3k-1}-a|<\\varepsilon$，$k>K_{3}$时$|a_{3k}-a|<\\varepsilon$。\n取$N=\\max\\{3K_{1}-2,\\,3K_{2}-1,\\,3K_{3}\\}$。当$n>N$时，$n$必为$3k-2$、$3k-1$、$3k$三者之一：若$n=3k-2$，由$3k-2>3K_{1}-2$得$k>K_{1}$，故$|a_{n}-a|<\\varepsilon$；若$n=3k-1$，由$3k-1>3K_{2}-1$得$k>K_{2}$；若$n=3k$，由$3k>3K_{3}$得$k>K_{3}$。三种情形都有$|a_{n}-a|<\\varepsilon$，故$\\lim_{n\\to\\infty}a_{n}=a$。",
+      "detailedAnalysis": "本题考查子列与整体收敛的关系：子列覆盖全部项且极限相同才是充分条件。(1)是最经典的反例，说明“两个子列都收敛”不够，必须极限一致；(2)的证明关键是三类指标$3k-2,3k-1,3k$覆盖全体正整数，因此可以取三个阈值的最大者作为公共$N$。易错点：(1)误判为成立；(2)只说明“三类子列收敛”而不验证$n$的分解，或取$N$时漏掉某一类的偏移量。",
+      "points": [
+        "子列覆盖全部项",
+        "子列极限必须相同",
+        "公共$N$取三个阈值的最大者"
+      ],
+      "pitfalls": [
+        "(1)误判为成立",
+        "(2)取$N$时没有把三类指标统一起来"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.2 第6题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.2",
+        "子列与收敛",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：(1)不成立。取$a_{n}=(-1)^{n}$，则$a_{2k-1}=-1\\to-1$，$a_{2k}=1\\to1$，两个子列都收敛，但$\\{a_{n}\\}$的两个子列极限不同，故$\\{a_{n}\\}$发散。可见“子列都收敛”必须加上“极限相同”才能推出原数列收敛。",
+        "(2)成立。设三个子列的公共极限为$a$。任给$\\varepsilon>0$，存在正整数$K_{1},K_{2},K_{3}$，使得$k>K_{1}$时$|a_{3k-2}-a|<\\varepsilon$，$k>K_{2}$时$|a_{3k-1}-a|<\\varepsilon$，$k>K_{3}$时$|a_{3k}-a|<\\varepsilon$。",
+        "取$N=\\max\\{3K_{1}-2,\\,3K_{2}-1,\\,3K_{3}\\}$。当$n>N$时，$n$必为$3k-2$、$3k-1$、$3k$三者之一：若$n=3k-2$，由$3k-2>3K_{1}-2$得$k>K_{1}$，故$|a_{n}-a|<\\varepsilon$；若$n=3k-1$，由$3k-1>3K_{2}-1$得$k>K_{2}$；若$n=3k$，由$3k>3K_{3}$得$k>K_{3}$。三种情形都有$|a_{n}-a|<\\varepsilon$，故$\\lim_{n\\to\\infty}a_{n}=a$。"
+      ],
+      "pointKeys": [
+        "子列覆盖全部项",
+        "子列极限必须相同",
+        "公共$N$取三个阈值的最大者"
+      ]
+    },
+    {
+      "id": "MA-3544",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.2 收敛数列的性质",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "连乘积、阶乘和与幂差的四类极限",
+      "question": "求下列极限：(1)$\\lim_{n\\to\\infty}\\frac{1}{2}\\cdot\\frac{3}{4}\\cdot\\cdots\\cdot\\frac{2n-1}{2n}$；(2)$\\lim_{n\\to\\infty}\\frac{\\sum_{p=1}^{n}p!}{n!}$；(3)$\\lim_{n\\to\\infty}\\left((n+1)^{\\alpha}-n^{\\alpha}\\right)$，$0<\\alpha<1$；(4)$\\lim_{n\\to\\infty}(1+\\alpha)(1+\\alpha^{2})\\cdots(1+\\alpha^{2^{n}})$，$|\\alpha|<1$。",
+      "answer": "(1)$0$；(2)$1$；(3)$0$；(4)$\\frac{1}{1-\\alpha}$。",
+      "standardSolution": "解：(1)记$P_{n}=\\prod_{k=1}^{n}\\frac{2k-1}{2k}$，$Q_{n}=\\prod_{k=1}^{n}\\frac{2k}{2k+1}$。因$\\frac{2k-1}{2k}<\\frac{2k}{2k+1}$，故$P_{n}<Q_{n}$，从而$P_{n}^{2}<P_{n}Q_{n}$。而$P_{n}Q_{n}=\\prod_{k=1}^{n}\\frac{2k-1}{2k+1}=\\frac{1}{2n+1}$（中间项全部约去），所以$0<P_{n}<\\frac{1}{\\sqrt{2n+1}}\\to0$，由夹逼得$P_{n}\\to0$。\n(2)记$S_{n}=\\sum_{p=1}^{n}p!$。显然$S_{n}\\ge n!$，故$\\frac{S_{n}}{n!}\\ge1$。又当$p\\le n-2$时$p!\\le(n-2)!$，故$\\sum_{p=1}^{n-2}p!\\le(n-2)(n-2)!\\le(n-1)!$，于是$S_{n}\\le n!+2(n-1)!$，$\\frac{S_{n}}{n!}\\le1+\\frac{2}{n}\\to1$。由夹逼得极限为$1$。\n(3)对$f(x)=x^{\\alpha}$在$[n,n+1]$上用拉格朗日中值定理：$(n+1)^{\\alpha}-n^{\\alpha}=\\alpha\\xi^{\\alpha-1}$，其中$\\xi\\in(n,n+1)$。因$0<\\alpha<1$，$\\alpha-1<0$，故$0<\\alpha\\xi^{\\alpha-1}<\\alpha n^{\\alpha-1}\\to0$，由夹逼得极限为$0$。\n(4)用平方差连乘：$(1-\\alpha)\\prod_{k=0}^{n}(1+\\alpha^{2^{k}})=1-\\alpha^{2^{n+1}}$。因$|\\alpha|<1$，$\\alpha^{2^{n+1}}\\to0$（本节例4），故$\\prod_{k=0}^{n}(1+\\alpha^{2^{k}})=\\frac{1-\\alpha^{2^{n+1}}}{1-\\alpha}\\to\\frac{1}{1-\\alpha}$。",
+      "detailedAnalysis": "本题四个小问各用一种典型技巧：(1)配对夹逼——把$P_{n}$与互补的$Q_{n}$相乘得到可裂项的$\\frac{1}{2n+1}$；(2)阶乘求和夹逼——下界$1$，上界靠“除最大项外其余项之和不超过$2(n-1)!$”；(3)拉格朗日中值定理把幂差化为导数，注意$0<\\alpha<1$保证导数趋于$0$；(4)平方差恒等式$(1-\\alpha)(1+\\alpha)=1-\\alpha^{2}$逐层展开。易错点：(1)直接说“每项都小于$1$所以乘积趋于$0$”——这不成立，必须给出趋于$0$的界；(4)忘记先乘$(1-\\alpha)$，或忽略$\\alpha=0$时公式仍成立。",
+      "points": [
+        "配对夹逼$P_{n}Q_{n}=\\frac{1}{2n+1}$（平方差连乘）",
+        "阶乘和的上下界",
+        "拉格朗日中值定理处理幂差"
+      ],
+      "pitfalls": [
+        "(1)由“每项小于1”直接断言乘积趋于$0$",
+        "(4)不乘$(1-\\alpha)$而硬算"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.2 第7题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.2",
+        "夹逼与求和",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：(1)记$P_{n}=\\prod_{k=1}^{n}\\frac{2k-1}{2k}$，$Q_{n}=\\prod_{k=1}^{n}\\frac{2k}{2k+1}$。因$\\frac{2k-1}{2k}<\\frac{2k}{2k+1}$，故$P_{n}<Q_{n}$，从而$P_{n}^{2}<P_{n}Q_{n}$。而$P_{n}Q_{n}=\\prod_{k=1}^{n}\\frac{2k-1}{2k+1}=\\frac{1}{2n+1}$（中间项全部约去），所以$0<P_{n}<\\frac{1}{\\sqrt{2n+1}}\\to0$，由夹逼得$P_{n}\\to0$。",
+        "(2)记$S_{n}=\\sum_{p=1}^{n}p!$。显然$S_{n}\\ge n!$，故$\\frac{S_{n}}{n!}\\ge1$。又当$p\\le n-2$时$p!\\le(n-2)!$，故$\\sum_{p=1}^{n-2}p!\\le(n-2)(n-2)!\\le(n-1)!$，于是$S_{n}\\le n!+2(n-1)!$，$\\frac{S_{n}}{n!}\\le1+\\frac{2}{n}\\to1$。由夹逼得极限为$1$。",
+        "(3)对$f(x)=x^{\\alpha}$在$[n,n+1]$上用拉格朗日中值定理：$(n+1)^{\\alpha}-n^{\\alpha}=\\alpha\\xi^{\\alpha-1}$，其中$\\xi\\in(n,n+1)$。因$0<\\alpha<1$，$\\alpha-1<0$，故$0<\\alpha\\xi^{\\alpha-1}<\\alpha n^{\\alpha-1}\\to0$，由夹逼得极限为$0$。",
+        "(4)用平方差连乘：$(1-\\alpha)\\prod_{k=0}^{n}(1+\\alpha^{2^{k}})=1-\\alpha^{2^{n+1}}$。因$|\\alpha|<1$，$\\alpha^{2^{n+1}}\\to0$（本节例4），故$\\prod_{k=0}^{n}(1+\\alpha^{2^{k}})=\\frac{1-\\alpha^{2^{n+1}}}{1-\\alpha}\\to\\frac{1}{1-\\alpha}$。"
+      ],
+      "pointKeys": [
+        "配对夹逼$P_{n}Q_{n}=\\frac{1}{2n+1}$（平方差连乘）",
+        "阶乘和的上下界",
+        "拉格朗日中值定理处理幂差"
+      ]
+    },
+    {
+      "id": "MA-3545",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "概念辨析题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "先设极限存在再求解的错误辨析",
+      "question": "试问下面的解题方法是否正确：求$\\lim_{n\\to\\infty}2^{n}$。解：设$a_{n}=2^{n}$及$\\lim_{n\\to\\infty}a_{n}=a$。由于$a_{n}=2a_{n-1}$，两边取极限（$n\\to\\infty$）得$a=2a$，所以$a=0$。",
+      "answer": "不正确。设$\\lim_{n\\to\\infty}a_{n}=a$本身就以“极限存在”为前提，而$\\{2^{n}\\}$无界，$\\lim_{n\\to\\infty}2^{n}=+\\infty$，不存在有限极限；由$a=2a$推出$a=0$又与$a_{n}=2^{n}\\ge2$矛盾。",
+      "standardSolution": "解：这个方法不正确。第一步“设$\\lim_{n\\to\\infty}a_{n}=a$”就默认了极限存在，而本题的数列$\\{2^{n}\\}$单调递增且无上界，极限并不存在（它是发散于$+\\infty$的无穷大数列）。对一个发散的数列使用极限的运算法则，属于循环论证，得到的任何结论都不可信。\n按定义正面验证：对任意$M>0$，取$N=\\left[\\log_{2}M\\right]+1$，当$n>N$时$2^{n}>M$，故$\\lim_{n\\to\\infty}2^{n}=+\\infty$，没有有限极限。\n即使退一步接受$a=2a$，也只能得到$a=0$，但由$a_{n}=2^{n}\\ge2$及极限的保不等式性（若极限存在）应有$a\\ge2$，矛盾。这从另一侧面说明“极限存在”的假设不成立。",
+      "detailedAnalysis": "本题考查“取极限”这一运算的前提：只有当极限存在时才能对递推式两边取极限。切入点是指出$\\{2^{n}\\}$无界、极限为$+\\infty$，因而不存在有限极限$a$。第二层是逻辑检查：$a=2a$只说明“若极限存在则必为$0$”，而$0$与$a_{n}\\ge2$矛盾，恰好反证了极限不存在。易错点：把“解方程求出候选值”当作“证明了极限存在”，这是本章最典型的循环论证。",
+      "points": [
+        "取极限必须以极限存在为前提",
+        "用定义证明$\\lim 2^{n}=+\\infty$",
+        "保不等式性导出矛盾"
+      ],
+      "pitfalls": [
+        "循环论证：先假设收敛再算极限",
+        "把候选值$a=0$当作极限值"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第2题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "循环论证",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：这个方法不正确。第一步“设$\\lim_{n\\to\\infty}a_{n}=a$”就默认了极限存在，而本题的数列$\\{2^{n}\\}$单调递增且无上界，极限并不存在（它是发散于$+\\infty$的无穷大数列）。对一个发散的数列使用极限的运算法则，属于循环论证，得到的任何结论都不可信。",
+        "按定义正面验证：对任意$M>0$，取$N=\\left[\\log_{2}M\\right]+1$，当$n>N$时$2^{n}>M$，故$\\lim_{n\\to\\infty}2^{n}=+\\infty$，没有有限极限。",
+        "即使退一步接受$a=2a$，也只能得到$a=0$，但由$a_{n}=2^{n}\\ge2$及极限的保不等式性（若极限存在）应有$a\\ge2$，矛盾。这从另一侧面说明“极限存在”的假设不成立。"
+      ],
+      "pointKeys": [
+        "取极限必须以极限存在为前提",
+        "用定义证明$\\lim 2^{n}=+\\infty$",
+        "保不等式性导出矛盾"
+      ]
+    },
+    {
+      "id": "MA-3546",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "三个数列的存在性与极限值",
+      "question": "证明下列数列极限存在并求其值：(1)设$a_{1}=\\sqrt{2}$，$a_{n+1}=\\sqrt{2a_{n}}$，$n=1,2,\\cdots$；(2)设$a_{1}=\\sqrt{c}$（$c>0$），$a_{n+1}=\\sqrt{c+a_{n}}$，$n=1,2,\\cdots$；(3)$a_{n}=\\frac{c^{n}}{n!}$（$c>0$），$n=1,2,\\cdots$。",
+      "answer": "(1)$\\lim_{n\\to\\infty}a_{n}=2$；(2)$\\lim_{n\\to\\infty}a_{n}=\\frac{1+\\sqrt{1+4c}}{2}$；(3)$\\lim_{n\\to\\infty}a_{n}=0$。",
+      "standardSolution": "证明：(1)先证有界：$a_{1}=\\sqrt2<2$，若$a_{n}<2$，则$a_{n+1}=\\sqrt{2a_{n}}<\\sqrt{4}=2$，故对一切$n$有$a_{n}<2$。再证单调：$a_{n+1}^{2}-a_{n}^{2}=2a_{n}-a_{n}^{2}=a_{n}(2-a_{n})>0$，故$a_{n+1}>a_{n}$。由单调有界定理，$\\{a_{n}\\}$收敛，设极限为$A$。在$a_{n+1}=\\sqrt{2a_{n}}$两边取极限得$A=\\sqrt{2A}$，即$A^{2}=2A$，由$A>0$得$A=2$。\n(2)令$M=\\frac{1+\\sqrt{1+4c}}{2}>0$，则$M^{2}=M+c$。先证有界：$a_{1}=\\sqrt{c}<M$（因$M^{2}=M+c>c$），若$a_{n}<M$，则$a_{n+1}=\\sqrt{c+a_{n}}<\\sqrt{c+M}=M$，故$a_{n}<M$对一切$n$成立。再证单调：$a_{n+1}^{2}-a_{n}^{2}=c+a_{n}-a_{n}^{2}=-(a_{n}-M)(a_{n}-m)$，其中$m=\\frac{1-\\sqrt{1+4c}}{2}<0<a_{n}<M$，故$(a_{n}-M)<0$、$(a_{n}-m)>0$，乘积为正，即$a_{n+1}>a_{n}$。由单调有界定理，极限$A$存在，且$A=\\sqrt{c+A}$，即$A^{2}-A-c=0$，取正根$A=\\frac{1+\\sqrt{1+4c}}{2}$。\n(3)显然$a_{n}>0$。取正整数$N>2c$，则当$n\\ge N$时$\\frac{a_{n+1}}{a_{n}}=\\frac{c}{n+1}\\le\\frac{c}{N+1}<\\frac12$。于是对$n>N$有$0<a_{n}\\le a_{N}\\left(\\frac12\\right)^{n-N}\\to0$，由夹逼得$\\lim_{n\\to\\infty}a_{n}=0$。",
+      "detailedAnalysis": "本题是“单调有界定理+递推式取极限”的标准训练。(1)(2)的共同套路是：先用归纳法证明有界（上界取不动点），再用差平方或比值证单调，最后由单调有界定理保证极限存在，才允许在递推式中取极限解方程。(2)的不动点方程$A^{2}=A+c$有两个根，必须用$A\\ge0$舍去负根。(3)不是单调数列（先增后减），因此改用比值压缩：一旦$n>2c$，相邻项之比小于$\\frac12$，构成几何衰减。易错点：在未证明收敛时就设极限并解方程——那只是求候选值；以及(2)中把上界写成$\\sqrt{c}+\\cdots$导致归纳失败。",
+      "points": [
+        "单调有界定理",
+        "不动点方程与正根取舍",
+        "比值压缩到几何数列"
+      ],
+      "pitfalls": [
+        "未证收敛就先设极限",
+        "(2)舍根时没有说明$A>0$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第3题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "单调有界",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1)先证有界：$a_{1}=\\sqrt2<2$，若$a_{n}<2$，则$a_{n+1}=\\sqrt{2a_{n}}<\\sqrt{4}=2$，故对一切$n$有$a_{n}<2$。再证单调：$a_{n+1}^{2}-a_{n}^{2}=2a_{n}-a_{n}^{2}=a_{n}(2-a_{n})>0$，故$a_{n+1}>a_{n}$。由单调有界定理，$\\{a_{n}\\}$收敛，设极限为$A$。在$a_{n+1}=\\sqrt{2a_{n}}$两边取极限得$A=\\sqrt{2A}$，即$A^{2}=2A$，由$A>0$得$A=2$。",
+        "(2)令$M=\\frac{1+\\sqrt{1+4c}}{2}>0$，则$M^{2}=M+c$。先证有界：$a_{1}=\\sqrt{c}<M$（因$M^{2}=M+c>c$），若$a_{n}<M$，则$a_{n+1}=\\sqrt{c+a_{n}}<\\sqrt{c+M}=M$，故$a_{n}<M$对一切$n$成立。再证单调：$a_{n+1}^{2}-a_{n}^{2}=c+a_{n}-a_{n}^{2}=-(a_{n}-M)(a_{n}-m)$，其中$m=\\frac{1-\\sqrt{1+4c}}{2}<0<a_{n}<M$，故$(a_{n}-M)<0$、$(a_{n}-m)>0$，乘积为正，即$a_{n+1}>a_{n}$。由单调有界定理，极限$A$存在，且$A=\\sqrt{c+A}$，即$A^{2}-A-c=0$，取正根$A=\\frac{1+\\sqrt{1+4c}}{2}$。",
+        "(3)显然$a_{n}>0$。取正整数$N>2c$，则当$n\\ge N$时$\\frac{a_{n+1}}{a_{n}}=\\frac{c}{n+1}\\le\\frac{c}{N+1}<\\frac12$。于是对$n>N$有$0<a_{n}\\le a_{N}\\left(\\frac12\\right)^{n-N}\\to0$，由夹逼得$\\lim_{n\\to\\infty}a_{n}=0$。"
+      ],
+      "pointKeys": [
+        "单调有界定理",
+        "不动点方程与正根取舍",
+        "比值压缩到几何数列"
+      ]
+    },
+    {
+      "id": "MA-3547",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "由已知单调性推出另一数列递增",
+      "question": "利用$\\left\\{\\left(1+\\frac1n\\right)^{n}\\right\\}$为递增数列的结论，证明：$\\left\\{\\left(1+\\frac{1}{n+1}\\right)^{n}\\right\\}$为递增数列。",
+      "answer": "成立。因为$\\left(1+\\frac{1}{n+1}\\right)^{n}=\\left(1+\\frac{1}{n+1}\\right)^{n+1}\\cdot\\frac{n+1}{n+2}$，右端两个因子都随$n$递增。",
+      "standardSolution": "证明：记$u_{n}=\\left(1+\\frac1n\\right)^{n}$，由题设$\\{u_{n}\\}$递增。又记$b_{n}=\\left(1+\\frac{1}{n+1}\\right)^{n}$，则\n$$b_{n}=\\left(1+\\frac{1}{n+1}\\right)^{n+1}\\cdot\\left(1+\\frac{1}{n+1}\\right)^{-1}=u_{n+1}\\cdot\\frac{n+1}{n+2}.$$\n其中$\\{u_{n+1}\\}$是$\\{u_{n}\\}$去掉首项后的数列，仍随$n$递增；而$\\frac{n+1}{n+2}=1-\\frac{1}{n+2}$随$n$递增且恒为正。\n两个正项递增数列之积仍递增：设$0<x_{n}\\le x_{n+1}$，$0<y_{n}\\le y_{n+1}$，则$x_{n}y_{n}\\le x_{n+1}y_{n}\\le x_{n+1}y_{n+1}$。取$x_{n}=u_{n+1}$，$y_{n}=\\frac{n+1}{n+2}$即得$b_{n}\\le b_{n+1}$。故$\\left\\{\\left(1+\\frac{1}{n+1}\\right)^{n}\\right\\}$为递增数列。",
+      "detailedAnalysis": "本题考查单调性的“拆分—相乘”技巧。直接比较$b_{n}$与$b_{n+1}$时指数不同，难以通分；关键是把$b_{n}$写成$u_{n+1}$与$\\frac{n+1}{n+2}$的乘积，使两个因子各自的单调性都已知。切入点是注意到$\\left(1+\\frac{1}{n+1}\\right)^{n+1}=u_{n+1}$，多出来的一个因子正好是$\\left(1+\\frac{1}{n+1}\\right)^{-1}=\\frac{n+1}{n+2}$。易错点：误以为“$u_{n}$递增”直接蕴含“$u_{n}^{\\,n/(n+1)}$递增”；以及忘记说明两个因子都是正数（否则乘积的单调性不成立）。",
+      "points": [
+        "拆成$u_{n+1}\\cdot\\frac{n+1}{n+2}$",
+        "正项递增数列之积递增"
+      ],
+      "pitfalls": [
+        "直接比较不同指数的幂",
+        "忽略因子为正的前提"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第4题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "单调性",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：记$u_{n}=\\left(1+\\frac1n\\right)^{n}$，由题设$\\{u_{n}\\}$递增。又记$b_{n}=\\left(1+\\frac{1}{n+1}\\right)^{n}$，则",
+        "$$b_{n}=\\left(1+\\frac{1}{n+1}\\right)^{n+1}\\cdot\\left(1+\\frac{1}{n+1}\\right)^{-1}=u_{n+1}\\cdot\\frac{n+1}{n+2}.$$",
+        "其中$\\{u_{n+1}\\}$是$\\{u_{n}\\}$去掉首项后的数列，仍随$n$递增；而$\\frac{n+1}{n+2}=1-\\frac{1}{n+2}$随$n$递增且恒为正。",
+        "两个正项递增数列之积仍递增：设$0<x_{n}\\le x_{n+1}$，$0<y_{n}\\le y_{n+1}$，则$x_{n}y_{n}\\le x_{n+1}y_{n}\\le x_{n+1}y_{n+1}$。取$x_{n}=u_{n+1}$，$y_{n}=\\frac{n+1}{n+2}$即得$b_{n}\\le b_{n+1}$。故$\\left\\{\\left(1+\\frac{1}{n+1}\\right)^{n}\\right\\}$为递增数列。"
+      ],
+      "pointKeys": [
+        "拆成$u_{n+1}\\cdot\\frac{n+1}{n+2}$",
+        "正项递增数列之积递增"
+      ]
+    },
+    {
+      "id": "MA-3548",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "用柯西准则证明两类部分和收敛",
+      "question": "应用柯西收敛准则，证明以下数列$\\{a_{n}\\}$收敛：(1)$a_{n}=\\frac{\\sin 1}{2}+\\frac{\\sin 2}{2^{2}}+\\cdots+\\frac{\\sin n}{2^{n}}$；(2)$a_{n}=1+\\frac{1}{2^{2}}+\\frac{1}{3^{2}}+\\cdots+\\frac{1}{n^{2}}$。",
+      "answer": "两数列都满足柯西准则，因此都收敛：(1)$|a_{n+p}-a_{n}|<\\frac{1}{2^{n}}$；(2)$|a_{n+p}-a_{n}|<\\frac1n$，两者都可任意小且与$p$无关。",
+      "standardSolution": "证明：(1)对任意正整数$n,p$，\n$$|a_{n+p}-a_{n}|\\le\\sum_{k=n+1}^{n+p}\\frac{|\\sin k|}{2^{k}}\\le\\sum_{k=n+1}^{n+p}\\frac{1}{2^{k}}<\\frac{1}{2^{n}}.$$\n任给$\\varepsilon>0$，取$N=\\left[\\log_{2}\\frac{1}{\\varepsilon}\\right]+1$，当$n>N$时$\\frac{1}{2^{n}}<\\varepsilon$，于是对一切正整数$p$都有$|a_{n+p}-a_{n}|<\\varepsilon$。由柯西收敛准则，$\\{a_{n}\\}$收敛。\n(2)对任意$n,p$，\n$$|a_{n+p}-a_{n}|=\\sum_{k=n+1}^{n+p}\\frac{1}{k^{2}}\\le\\sum_{k=n+1}^{n+p}\\frac{1}{k(k-1)}=\\frac{1}{n}-\\frac{1}{n+p}<\\frac1n.$$\n任给$\\varepsilon>0$，取$N=\\left[\\frac1\\varepsilon\\right]$，当$n>N$时$|a_{n+p}-a_{n}|<\\varepsilon$对一切$p$成立。由柯西收敛准则，$\\{a_{n}\\}$收敛。\n两题中得到的界$\\frac{1}{2^{n}}$与$\\frac1n$都只依赖$n$、不依赖$p$，这正是柯西准则所要求的“一致”估计。",
+      "detailedAnalysis": "本题考查柯西收敛准则的使用：要证明“对任意$\\varepsilon>0$，存在$N$，当$m,n>N$时$|a_{m}-a_{n}|<\\varepsilon$”，通常取$m=n+p$，把差写成一段和并估计。切入点是选择可求和的放大：(1)用$|\\sin k|\\le1$化为等比级数；(2)用$\\frac{1}{k^{2}}\\le\\frac{1}{k(k-1)}$裂项相消。关键点是最终界必须与$p$无关，否则不能推出柯西列。易错点：只验证$|a_{n+1}-a_{n}|\\to0$——这不足以保证收敛（如调和数列）；以及(2)中把$\\frac{1}{k^{2}}$放成$\\frac{1}{k(k+1)}$后方向弄反。",
+      "points": [
+        "柯西收敛准则",
+        "等比级数估计",
+        "裂项$\\frac{1}{k^{2}}\\le\\frac{1}{k(k-1)}$且界与$p$无关"
+      ],
+      "pitfalls": [
+        "只验证相邻项之差趋于$0$",
+        "估计式中的界依赖$p$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第5题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "柯西准则",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1)对任意正整数$n,p$，",
+        "$$|a_{n+p}-a_{n}|\\le\\sum_{k=n+1}^{n+p}\\frac{|\\sin k|}{2^{k}}\\le\\sum_{k=n+1}^{n+p}\\frac{1}{2^{k}}<\\frac{1}{2^{n}}.$$",
+        "任给$\\varepsilon>0$，取$N=\\left[\\log_{2}\\frac{1}{\\varepsilon}\\right]+1$，当$n>N$时$\\frac{1}{2^{n}}<\\varepsilon$，于是对一切正整数$p$都有$|a_{n+p}-a_{n}|<\\varepsilon$。由柯西收敛准则，$\\{a_{n}\\}$收敛。",
+        "(2)对任意$n,p$，",
+        "$$|a_{n+p}-a_{n}|=\\sum_{k=n+1}^{n+p}\\frac{1}{k^{2}}\\le\\sum_{k=n+1}^{n+p}\\frac{1}{k(k-1)}=\\frac{1}{n}-\\frac{1}{n+p}<\\frac1n.$$",
+        "任给$\\varepsilon>0$，取$N=\\left[\\frac1\\varepsilon\\right]$，当$n>N$时$|a_{n+p}-a_{n}|<\\varepsilon$对一切$p$成立。由柯西收敛准则，$\\{a_{n}\\}$收敛。",
+        "两题中得到的界$\\frac{1}{2^{n}}$与$\\frac1n$都只依赖$n$、不依赖$p$，这正是柯西准则所要求的“一致”估计。"
+      ],
+      "pointKeys": [
+        "柯西收敛准则",
+        "等比级数估计",
+        "裂项$\\frac{1}{k^{2}}\\le\\frac{1}{k(k-1)}$且界与$p$无关"
+      ]
+    },
+    {
+      "id": "MA-3549",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "单调数列含收敛子列则收敛",
+      "question": "证明：若单调数列$\\{a_{n}\\}$含有一个收敛子列，则$\\{a_{n}\\}$收敛。",
+      "answer": "成立。以递增为例：子列收敛于$a$，则$a$是$\\{a_{n}\\}$的上界，由单调有界定理得$\\{a_{n}\\}$收敛，且极限等于$a$。",
+      "standardSolution": "证明：不妨设$\\{a_{n}\\}$递增（递减情形同理），并设其收敛子列$\\{a_{n_{k}}\\}$收敛于$a$。\n先证$a$是$\\{a_{n}\\}$的上界。任取正整数$n$，因$n_{k}\\to+\\infty$，可取$k$使$n_{k}\\ge n$；由递增性$a_{n}\\le a_{n_{k}}$。令$k\\to\\infty$，由$a_{n_{k}}\\to a$及保不等式性得$a_{n}\\le a$。故$\\{a_{n}\\}$有上界$a$。\n由单调有界定理，递增有上界的$\\{a_{n}\\}$收敛，设$\\lim_{n\\to\\infty}a_{n}=b$。收敛数列的任一子列收敛于同一极限，故$a_{n_{k}}\\to b$；又已知$a_{n_{k}}\\to a$，由极限的唯一性得$b=a$。所以$\\{a_{n}\\}$收敛且极限为$a$。",
+      "detailedAnalysis": "本题考查单调有界定理与子列性质的配合。思路是“子列极限给出上界”：对任意固定的$n$，总能在子列中取到下标不小于$n$的项，由单调性$a_{n}\\le a_{n_{k}}$，再令$k\\to\\infty$得到$a_{n}\\le a$。这一步把局部的子列信息转化为整体的有界性，是整个证明的核心。易错点：直接说“子列收敛所以原数列收敛”（一般不对，需要单调性）；以及递减情形照抄递增的论述而不改不等号方向。",
+      "points": [
+        "子列极限是上界",
+        "单调有界定理",
+        "极限唯一性"
+      ],
+      "pitfalls": [
+        "忽略必须先证有界",
+        "递减情形不等号方向照抄"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第6题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "单调有界",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：不妨设$\\{a_{n}\\}$递增（递减情形同理），并设其收敛子列$\\{a_{n_{k}}\\}$收敛于$a$。",
+        "先证$a$是$\\{a_{n}\\}$的上界。任取正整数$n$，因$n_{k}\\to+\\infty$，可取$k$使$n_{k}\\ge n$；由递增性$a_{n}\\le a_{n_{k}}$。令$k\\to\\infty$，由$a_{n_{k}}\\to a$及保不等式性得$a_{n}\\le a$。故$\\{a_{n}\\}$有上界$a$。",
+        "由单调有界定理，递增有上界的$\\{a_{n}\\}$收敛，设$\\lim_{n\\to\\infty}a_{n}=b$。收敛数列的任一子列收敛于同一极限，故$a_{n_{k}}\\to b$；又已知$a_{n_{k}}\\to a$，由极限的唯一性得$b=a$。所以$\\{a_{n}\\}$收敛且极限为$a$。"
+      ],
+      "pointKeys": [
+        "子列极限是上界",
+        "单调有界定理",
+        "极限唯一性"
+      ]
+    },
+    {
+      "id": "MA-3550",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "相邻项比值大于1时通项趋于零",
+      "question": "证明：若$a_{n}>0$，且$\\lim_{n\\to\\infty}\\frac{a_{n}}{a_{n+1}}=l>1$，则$\\lim_{n\\to\\infty}a_{n}=0$。",
+      "answer": "成立。取$q$满足$1<q<l$，则当$n>N$时$a_{n+1}<\\frac{a_{n}}{q}$，从而$0<a_{N+k}<\\frac{a_{N}}{q^{k}}\\to0$。",
+      "standardSolution": "证明：由$l>1$，取$q$使$1<q<l$。因$\\lim_{n\\to\\infty}\\frac{a_{n}}{a_{n+1}}=l>q$，存在正整数$N$，当$n>N$时$\\frac{a_{n}}{a_{n+1}}>q$，即$0<a_{n+1}<\\frac{a_{n}}{q}$。\n对$k=1,2,\\cdots$反复使用上式，得$0<a_{N+k}<\\frac{a_{N}}{q^{k}}$。因$q>1$，$\\frac{1}{q^{k}}\\to0$，故$\\frac{a_{N}}{q^{k}}\\to0$。\n由夹逼定理，$a_{N+k}\\to0$（$k\\to\\infty$）。改变数列的有限项不影响极限，故$\\lim_{n\\to\\infty}a_{n}=0$。",
+      "detailedAnalysis": "本题考查“比值检验”的思想：相邻项之比最终小于一个小于$1$的常数$\\frac1q$，就构成几何压缩。切入点是严格取$q$介于$1$与$l$之间——不能直接用$l$，因为$l$未必是整数比，也不能保证$\\frac{a_{n}}{a_{n+1}}>l$（极限可能从下方逼近）。易错点：把条件误读为$\\frac{a_{n+1}}{a_{n}}\\to l>1$（那将得到$+\\infty$）；以及忘记$a_{n}>0$，从而不能用夹逼。",
+      "points": [
+        "取$1<q<l$作压缩比",
+        "几何衰减$q^{-k}$",
+        "夹逼定理"
+      ],
+      "pitfalls": [
+        "直接用$l$作压缩比",
+        "把比值方向看反"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第7题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "比值判别",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：由$l>1$，取$q$使$1<q<l$。因$\\lim_{n\\to\\infty}\\frac{a_{n}}{a_{n+1}}=l>q$，存在正整数$N$，当$n>N$时$\\frac{a_{n}}{a_{n+1}}>q$，即$0<a_{n+1}<\\frac{a_{n}}{q}$。",
+        "对$k=1,2,\\cdots$反复使用上式，得$0<a_{N+k}<\\frac{a_{N}}{q^{k}}$。因$q>1$，$\\frac{1}{q^{k}}\\to0$，故$\\frac{a_{N}}{q^{k}}\\to0$。",
+        "由夹逼定理，$a_{N+k}\\to0$（$k\\to\\infty$）。改变数列的有限项不影响极限，故$\\lim_{n\\to\\infty}a_{n}=0$。"
+      ],
+      "pointKeys": [
+        "取$1<q<l$作压缩比",
+        "几何衰减$q^{-k}$",
+        "夹逼定理"
+      ]
+    },
+    {
+      "id": "MA-3551",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "单调有界数列的极限等于确界",
+      "question": "证明：若$\\{a_{n}\\}$为递增（递减）有界数列，则$\\lim_{n\\to\\infty}a_{n}=\\sup\\{a_{n}\\}$（$\\inf\\{a_{n}\\}$）。又问逆命题成立否？",
+      "answer": "结论成立；逆命题不成立：$a_{1}=1$，$a_{n}=1-\\frac{1}{2^{n-1}}$（$n\\ge2$）满足$\\lim_{n\\to\\infty}a_{n}=1=\\sup\\{a_{n}\\}$，但它不是递增数列。",
+      "standardSolution": "证明：设$\\{a_{n}\\}$递增有界，由确界原理，$A=\\sup\\{a_{n}\\}$存在。任给$\\varepsilon>0$，$A-\\varepsilon$不是$\\{a_{n}\\}$的上界，故存在正整数$N$使$a_{N}>A-\\varepsilon$。当$n>N$时，由递增性$a_{n}\\ge a_{N}>A-\\varepsilon$，又恒有$a_{n}\\le A$，于是$A-\\varepsilon<a_{n}\\le A$，即$|a_{n}-A|<\\varepsilon$。故$\\lim_{n\\to\\infty}a_{n}=A=\\sup\\{a_{n}\\}$。\n递减情形的证明相同：设$\\{a_{n}\\}$递减有界，$B=\\inf\\{a_{n}\\}$。任给$\\varepsilon>0$，$B+\\varepsilon$不是下界，存在$N$使$a_{N}<B+\\varepsilon$；当$n>N$时$B\\le a_{n}\\le a_{N}<B+\\varepsilon$，故$\\lim_{n\\to\\infty}a_{n}=B=\\inf\\{a_{n}\\}$。\n逆命题不成立。取$a_{1}=1$，$a_{n}=1-\\frac{1}{2^{n-1}}$（$n=2,3,\\cdots$），则$\\{a_{n}\\}$从第二项起严格递增且以$1$为上界，$\\sup\\{a_{n}\\}=1=\\lim_{n\\to\\infty}a_{n}$；但$a_{1}=1>a_{2}=\\frac12$，它不是递增数列。可见“收敛于上确界”不能反推“递增”。",
+      "detailedAnalysis": "本题考查确界与极限的关系，以及逆命题的辨析。正向证明的关键是确界的ε刻画：$A-\\varepsilon$不再是上界，于是能取到$a_{N}>A-\\varepsilon$，再由单调性把$N$之后的项全部夹在$(A-\\varepsilon,A]$中。逆向失败的原因是有穷多项可以“跳出”单调性而不影响极限与上确界，所以反例只需在前几项制造一次下降。易错点：认为“极限等于上确界”就等价于“递增”；以及递减情形忘记把上界换成下界。",
+      "points": [
+        "确界的ε刻画",
+        "单调有界定理",
+        "逆命题反例（首项跳出）"
+      ],
+      "pitfalls": [
+        "把逆命题当作成立",
+        "递减情形下界与上界写混"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第8题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "确界",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：设$\\{a_{n}\\}$递增有界，由确界原理，$A=\\sup\\{a_{n}\\}$存在。任给$\\varepsilon>0$，$A-\\varepsilon$不是$\\{a_{n}\\}$的上界，故存在正整数$N$使$a_{N}>A-\\varepsilon$。当$n>N$时，由递增性$a_{n}\\ge a_{N}>A-\\varepsilon$，又恒有$a_{n}\\le A$，于是$A-\\varepsilon<a_{n}\\le A$，即$|a_{n}-A|<\\varepsilon$。故$\\lim_{n\\to\\infty}a_{n}=A=\\sup\\{a_{n}\\}$。",
+        "递减情形的证明相同：设$\\{a_{n}\\}$递减有界，$B=\\inf\\{a_{n}\\}$。任给$\\varepsilon>0$，$B+\\varepsilon$不是下界，存在$N$使$a_{N}<B+\\varepsilon$；当$n>N$时$B\\le a_{n}\\le a_{N}<B+\\varepsilon$，故$\\lim_{n\\to\\infty}a_{n}=B=\\inf\\{a_{n}\\}$。",
+        "逆命题不成立。取$a_{1}=1$，$a_{n}=1-\\frac{1}{2^{n-1}}$（$n=2,3,\\cdots$），则$\\{a_{n}\\}$从第二项起严格递增且以$1$为上界，$\\sup\\{a_{n}\\}=1=\\lim_{n\\to\\infty}a_{n}$；但$a_{1}=1>a_{2}=\\frac12$，它不是递增数列。可见“收敛于上确界”不能反推“递增”。"
+      ],
+      "pointKeys": [
+        "确界的ε刻画",
+        "单调有界定理",
+        "逆命题反例（首项跳出）"
+      ]
+    },
+    {
+      "id": "MA-3552",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "用幂差不等式证明数列单调有界",
+      "question": "利用不等式$b^{n+1}-a^{n+1}>(n+1)a^{n}(b-a)$，$b>a>0$，证明：$\\left\\{\\left(1+\\frac1n\\right)^{n+1}\\right\\}$为递减数列，并由此推出$\\left\\{\\left(1+\\frac1n\\right)^{n}\\right\\}$为有界数列。",
+      "answer": "成立。取$a=1+\\frac1{n+1}$、$b=1+\\frac1n$可证$\\left(1+\\frac1n\\right)^{n+1}>\\left(1+\\frac1{n+1}\\right)^{n+2}$，故递减；又$1\\le\\left(1+\\frac1n\\right)^{n}<\\left(1+\\frac1n\\right)^{n+1}\\le4$，故有界。",
+      "standardSolution": "证明：记$x_{n}=\\left(1+\\frac1n\\right)^{n+1}$。在不等式中取$b=1+\\frac1n$，$a=1+\\frac1{n+1}$（此时$b>a>0$），指数取$n+1$，得\n$$b^{n+1}-a^{n+1}>(n+1)a^{n}(b-a).$$\n由$b-a=\\frac1n-\\frac1{n+1}=\\frac{1}{n(n+1)}$，得$(n+1)a^{n}(b-a)=a^{n}\\cdot\\frac1n$，故$b^{n+1}>a^{n+1}+\\frac{a^{n}}{n}=a^{n}\\left(a+\\frac1n\\right)$。\n再比较$a+\\frac1n$与$a^{2}$。由$a=1+\\frac{1}{n+1}$，\n$$a+\\frac1n-a^{2}=\\frac1{n+1}+\\frac1n-\\frac{2}{n+1}-\\frac{1}{(n+1)^{2}}=\\frac1n-\\frac1{n+1}-\\frac{1}{(n+1)^{2}}=\\frac{1}{n(n+1)^{2}}>0.$$\n故$a+\\frac1n>a^{2}$，从而$b^{n+1}>a^{n}\\cdot a^{2}=a^{n+2}$，即$x_{n}>x_{n+1}$。所以$\\left\\{\\left(1+\\frac1n\\right)^{n+1}\\right\\}$为递减数列。\n由此推出有界性：由$x_{n}$递减，$x_{n}\\le x_{1}=2^{2}=4$；又$\\left(1+\\frac1n\\right)^{n}<\\left(1+\\frac1n\\right)^{n+1}=x_{n}\\le4$，且$\\left(1+\\frac1n\\right)^{n}\\ge1$。故$1\\le\\left(1+\\frac1n\\right)^{n}\\le4$，即$\\left\\{\\left(1+\\frac1n\\right)^{n}\\right\\}$为有界数列。",
+      "detailedAnalysis": "本题考查如何用给定不等式证明单调性：关键是选对$a,b$与指数，使不等式两端恰好出现要比较的两个量。要证$x_{n}>x_{n+1}$，即$b^{n+1}>a^{n+2}$（其中$b=1+\\frac1n$，$a=1+\\frac1{n+1}$），于是把不等式写成$b^{n+1}>a^{n}\\left(a+\\frac1n\\right)$，再验证$a+\\frac1n>a^{2}$即可。这个“多出的一项恰好够再乘一个$a$”是本题的精巧之处。有界性部分用$x_{n}$递减给出上界$4$，再用$\\left(1+\\frac1n\\right)^{n}<x_{n}$夹住。易错点：把指数取成$n$（则得不到$x_{n+1}$）；以及忘记验证$a+\\frac1n>a^{2}$就断言结论。",
+      "points": [
+        "选$a=1+\\frac1{n+1}$，$b=1+\\frac1n$",
+        "验证$a+\\frac1n>a^{2}$",
+        "用$x_{n}\\le x_{1}=4$给出上界"
+      ],
+      "pitfalls": [
+        "指数取$n$而非$n+1$",
+        "跳过$a+\\frac1n>a^{2}$的验证"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第9题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "单调有界",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：记$x_{n}=\\left(1+\\frac1n\\right)^{n+1}$。在不等式中取$b=1+\\frac1n$，$a=1+\\frac1{n+1}$（此时$b>a>0$），指数取$n+1$，得",
+        "$$b^{n+1}-a^{n+1}>(n+1)a^{n}(b-a).$$",
+        "由$b-a=\\frac1n-\\frac1{n+1}=\\frac{1}{n(n+1)}$，得$(n+1)a^{n}(b-a)=a^{n}\\cdot\\frac1n$，故$b^{n+1}>a^{n+1}+\\frac{a^{n}}{n}=a^{n}\\left(a+\\frac1n\\right)$。",
+        "再比较$a+\\frac1n$与$a^{2}$。由$a=1+\\frac{1}{n+1}$，",
+        "$$a+\\frac1n-a^{2}=\\frac1{n+1}+\\frac1n-\\frac{2}{n+1}-\\frac{1}{(n+1)^{2}}=\\frac1n-\\frac1{n+1}-\\frac{1}{(n+1)^{2}}=\\frac{1}{n(n+1)^{2}}>0.$$",
+        "故$a+\\frac1n>a^{2}$，从而$b^{n+1}>a^{n}\\cdot a^{2}=a^{n+2}$，即$x_{n}>x_{n+1}$。所以$\\left\\{\\left(1+\\frac1n\\right)^{n+1}\\right\\}$为递减数列。",
+        "由此推出有界性：由$x_{n}$递减，$x_{n}\\le x_{1}=2^{2}=4$；又$\\left(1+\\frac1n\\right)^{n}<\\left(1+\\frac1n\\right)^{n+1}=x_{n}\\le4$，且$\\left(1+\\frac1n\\right)^{n}\\ge1$。故$1\\le\\left(1+\\frac1n\\right)^{n}\\le4$，即$\\left\\{\\left(1+\\frac1n\\right)^{n}\\right\\}$为有界数列。"
+      ],
+      "pointKeys": [
+        "选$a=1+\\frac1{n+1}$，$b=1+\\frac1n$",
+        "验证$a+\\frac1n>a^{2}$",
+        "用$x_{n}\\le x_{1}=4$给出上界"
+      ]
+    },
+    {
+      "id": "MA-3553",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "e与(1+1/n)^n的误差估计",
+      "question": "证明：$\\left|e-\\left(1+\\frac1n\\right)^{n}\\right|<\\frac3n$。提示：利用上题可知$e<\\left(1+\\frac1n\\right)^{n+1}$，又易证$\\left(1+\\frac1n\\right)^{n+1}<\\frac3n+\\left(1+\\frac1n\\right)^{n}$。",
+      "answer": "成立：$0<e-\\left(1+\\frac1n\\right)^{n}<\\left(1+\\frac1n\\right)^{n+1}-\\left(1+\\frac1n\\right)^{n}=\\frac1n\\left(1+\\frac1n\\right)^{n}<\\frac3n$。",
+      "standardSolution": "证明：由第9题，$x_{n}=\\left(1+\\frac1n\\right)^{n+1}$递减，而$\\left(1+\\frac1n\\right)^{n}\\to e$，故对每个$n$有$e<x_{n}$（否则取极限将破坏严格递减到$e$）。又$\\left(1+\\frac1n\\right)^{n}$递增且以$e$为极限，故$\\left(1+\\frac1n\\right)^{n}<e$。于是\n$$0<e-\\left(1+\\frac1n\\right)^{n}<x_{n}-\\left(1+\\frac1n\\right)^{n}=\\frac1n\\left(1+\\frac1n\\right)^{n}.$$\n下面估计$\\left(1+\\frac1n\\right)^{n}<3$。由二项式定理，\n$$\\left(1+\\frac1n\\right)^{n}=\\sum_{k=0}^{n}C_{n}^{k}\\frac{1}{n^{k}}\\le\\sum_{k=0}^{n}\\frac{1}{k!}.$$\n而当$k\\ge1$时$\\frac{1}{k!}\\le\\frac{1}{2^{k-1}}$（$k=1,2,3$直接验证，$k\\ge4$时$k!\\ge2^{k-1}$），故$\\sum_{k=0}^{n}\\frac{1}{k!}\\le1+\\sum_{k=1}^{n}\\frac{1}{2^{k-1}}<1+2=3$。\n代入得$\\left|e-\\left(1+\\frac1n\\right)^{n}\\right|=e-\\left(1+\\frac1n\\right)^{n}<\\frac1n\\left(1+\\frac1n\\right)^{n}<\\frac3n$。证毕。",
+      "detailedAnalysis": "本题考查用单调性确定$e$的位置，再做误差估计。第一层：由于$\\left(1+\\frac1n\\right)^{n}$递增趋于$e$、$x_{n}=\\left(1+\\frac1n\\right)^{n+1}$递减趋于$e$，可得$\\left(1+\\frac1n\\right)^{n}<e<x_{n}$，从而误差被$x_{n}-\\left(1+\\frac1n\\right)^{n}=\\frac1n\\left(1+\\frac1n\\right)^{n}$控制。第二层：用二项式展开与$\\frac{1}{k!}\\le\\frac{1}{2^{k-1}}$证明$\\left(1+\\frac1n\\right)^{n}<3$。易错点：绝对值不先去号（需先证$e$大于$\\left(1+\\frac1n\\right)^{n}$）；以及把上界写成$e$本身，那样只能得到$\\frac{e}{n}$而非$\\frac3n$。",
+      "points": [
+        "$e$夹在$\\left(1+\\frac1n\\right)^{n}$与$\\left(1+\\frac1n\\right)^{n+1}$之间",
+        "误差化为$\\frac1n\\left(1+\\frac1n\\right)^{n}$",
+        "二项式估计$\\left(1+\\frac1n\\right)^{n}<3$"
+      ],
+      "pitfalls": [
+        "不去绝对值符号就估计",
+        "用$e$作上界导致常数不是$3$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第10题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "误差估计",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：由第9题，$x_{n}=\\left(1+\\frac1n\\right)^{n+1}$递减，而$\\left(1+\\frac1n\\right)^{n}\\to e$，故对每个$n$有$e<x_{n}$（否则取极限将破坏严格递减到$e$）。又$\\left(1+\\frac1n\\right)^{n}$递增且以$e$为极限，故$\\left(1+\\frac1n\\right)^{n}<e$。于是",
+        "$$0<e-\\left(1+\\frac1n\\right)^{n}<x_{n}-\\left(1+\\frac1n\\right)^{n}=\\frac1n\\left(1+\\frac1n\\right)^{n}.$$",
+        "下面估计$\\left(1+\\frac1n\\right)^{n}<3$。由二项式定理，",
+        "$$\\left(1+\\frac1n\\right)^{n}=\\sum_{k=0}^{n}C_{n}^{k}\\frac{1}{n^{k}}\\le\\sum_{k=0}^{n}\\frac{1}{k!}.$$",
+        "而当$k\\ge1$时$\\frac{1}{k!}\\le\\frac{1}{2^{k-1}}$（$k=1,2,3$直接验证，$k\\ge4$时$k!\\ge2^{k-1}$），故$\\sum_{k=0}^{n}\\frac{1}{k!}\\le1+\\sum_{k=1}^{n}\\frac{1}{2^{k-1}}<1+2=3$。",
+        "代入得$\\left|e-\\left(1+\\frac1n\\right)^{n}\\right|=e-\\left(1+\\frac1n\\right)^{n}<\\frac1n\\left(1+\\frac1n\\right)^{n}<\\frac3n$。证毕。"
+      ],
+      "pointKeys": [
+        "$e$夹在$\\left(1+\\frac1n\\right)^{n}$与$\\left(1+\\frac1n\\right)^{n+1}$之间",
+        "误差化为$\\frac1n\\left(1+\\frac1n\\right)^{n}$",
+        "二项式估计$\\left(1+\\frac1n\\right)^{n}<3$"
+      ]
+    },
+    {
+      "id": "MA-3554",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "算术—几何平均数列的收敛性",
+      "question": "给定两正数$a_{1}$与$b_{1}$（$a_{1}>b_{1}$），作出其等差中项$a_{2}=\\frac{a_{1}+b_{1}}{2}$与等比中项$b_{2}=\\sqrt{a_{1}b_{1}}$，一般地令$a_{n+1}=\\frac{a_{n}+b_{n}}{2}$，$b_{n+1}=\\sqrt{a_{n}b_{n}}$，$n=1,2,\\cdots$。证明：$\\lim_{n\\to\\infty}a_{n}$与$\\lim_{n\\to\\infty}b_{n}$皆存在且相等。",
+      "answer": "两极限都存在且相等，公共值就是$a_{1}$与$b_{1}$的算术—几何平均（不必求出具体值）。",
+      "standardSolution": "证明：先用归纳法证明$a_{n}>b_{n}>0$。当$n=1$时由题设$a_{1}>b_{1}>0$。若$a_{n}>b_{n}>0$，则\n$$a_{n+1}-b_{n+1}=\\frac{a_{n}+b_{n}}{2}-\\sqrt{a_{n}b_{n}}=\\frac{(\\sqrt{a_{n}}-\\sqrt{b_{n}})^{2}}{2}\\ge0,$$\n且因$a_{n}\\ne b_{n}$，上式严格大于$0$，又$a_{n+1}>0$，故$a_{n+1}>b_{n+1}>0$。\n再证单调性：$a_{n+1}=\\frac{a_{n}+b_{n}}{2}<a_{n}$（因$b_{n}<a_{n}$），故$\\{a_{n}\\}$递减；$b_{n+1}=\\sqrt{a_{n}b_{n}}>b_{n}$（因$a_{n}>b_{n}$），故$\\{b_{n}\\}$递增。又$b_{1}<b_{n}<a_{n}<a_{1}$，两个数列都有界。\n由单调有界定理，$\\{a_{n}\\}$与$\\{b_{n}\\}$都收敛，设$\\lim_{n\\to\\infty}a_{n}=A$，$\\lim_{n\\to\\infty}b_{n}=B$。在$a_{n+1}=\\frac{a_{n}+b_{n}}{2}$两边取极限得$A=\\frac{A+B}{2}$，故$A=B$。所以两极限存在且相等。",
+      "detailedAnalysis": "本题考查均值不等式的迭代与单调有界定理。第一步用$\\frac{a+b}{2}\\ge\\sqrt{ab}$证明$a_{n+1}\\ge b_{n+1}$，这是整个结构的基础；第二步用这个不等式分别判断$a_{n}$递减、$b_{n}$递增；第三步用有界性保证收敛，最后对递推式取极限得到$A=B$。注意题目只要求证明存在且相等，不要求求出公共值（该值即算术—几何平均，没有初等闭式）。易错点：把$a_{n+1}-b_{n+1}\\ge0$写成$>0$却不说明$a_{n}\\ne b_{n}$；以及只证一个有界。",
+      "points": [
+        "$\\frac{a+b}{2}\\ge\\sqrt{ab}$",
+        "$a_{n}$递减、$b_{n}$递增",
+        "取极限得$A=B$"
+      ],
+      "pitfalls": [
+        "忽略严格不等号所需的$a_{n}\\ne b_{n}$",
+        "只证明一个数列有界"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第11题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "算术几何平均",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：先用归纳法证明$a_{n}>b_{n}>0$。当$n=1$时由题设$a_{1}>b_{1}>0$。若$a_{n}>b_{n}>0$，则",
+        "$$a_{n+1}-b_{n+1}=\\frac{a_{n}+b_{n}}{2}-\\sqrt{a_{n}b_{n}}=\\frac{(\\sqrt{a_{n}}-\\sqrt{b_{n}})^{2}}{2}\\ge0,$$",
+        "且因$a_{n}\\ne b_{n}$，上式严格大于$0$，又$a_{n+1}>0$，故$a_{n+1}>b_{n+1}>0$。",
+        "再证单调性：$a_{n+1}=\\frac{a_{n}+b_{n}}{2}<a_{n}$（因$b_{n}<a_{n}$），故$\\{a_{n}\\}$递减；$b_{n+1}=\\sqrt{a_{n}b_{n}}>b_{n}$（因$a_{n}>b_{n}$），故$\\{b_{n}\\}$递增。又$b_{1}<b_{n}<a_{n}<a_{1}$，两个数列都有界。",
+        "由单调有界定理，$\\{a_{n}\\}$与$\\{b_{n}\\}$都收敛，设$\\lim_{n\\to\\infty}a_{n}=A$，$\\lim_{n\\to\\infty}b_{n}=B$。在$a_{n+1}=\\frac{a_{n}+b_{n}}{2}$两边取极限得$A=\\frac{A+B}{2}$，故$A=B$。所以两极限存在且相等。"
+      ],
+      "pointKeys": [
+        "$\\frac{a+b}{2}\\ge\\sqrt{ab}$",
+        "$a_{n}$递减、$b_{n}$递增",
+        "取极限得$A=B$"
+      ]
+    },
+    {
+      "id": "MA-3555",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "§2.3 数列极限存在的条件",
+      "type": "subjective",
+      "category": "综合题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "上极限与下极限的四条基本性质",
+      "question": "设$\\{a_{n}\\}$为有界数列，记$\\overline{a}_{n}=\\sup\\{a_{n},a_{n+1},\\cdots\\}$，$\\underline{a}_{n}=\\inf\\{a_{n},a_{n+1},\\cdots\\}$。证明：(1)对任何正整数$n$，$\\overline{a}_{n}\\ge\\underline{a}_{n}$；(2)$\\{\\overline{a}_{n}\\}$为递减有界数列，$\\{\\underline{a}_{n}\\}$为递增有界数列，且对任何正整数$n,m$，有$\\overline{a}_{n}\\ge\\underline{a}_{m}$；(3)设$\\overline{a}$和$\\underline{a}$分别是$\\{\\overline{a}_{n}\\}$和$\\{\\underline{a}_{n}\\}$的极限，则$\\overline{a}\\ge\\underline{a}$；(4)$\\{a_{n}\\}$收敛的充要条件是$\\overline{a}=\\underline{a}$。",
+      "answer": "四条结论都成立；(4)中当$\\overline{a}=\\underline{a}$时，公共值就是$\\lim_{n\\to\\infty}a_{n}$。",
+      "standardSolution": "证明：(1)记$E_{n}=\\{a_{n},a_{n+1},\\cdots\\}$。由确界的定义，$\\inf E_{n}\\le\\sup E_{n}$，即$\\underline{a}_{n}\\le\\overline{a}_{n}$。\n(2)因$E_{n+1}\\subset E_{n}$，故$\\sup E_{n}\\ge\\sup E_{n+1}$，即$\\{\\overline{a}_{n}\\}$递减；同理$\\inf E_{n}\\le\\inf E_{n+1}$，即$\\{\\underline{a}_{n}\\}$递增。由$\\{a_{n}\\}$有界知$E_{n}$有界，故$\\{\\overline{a}_{n}\\}$、$\\{\\underline{a}_{n}\\}$都有界。对任意正整数$n,m$，取$N=\\max\\{n,m\\}$，则$E_{N}\\subset E_{n}\\cap E_{m}$，于是$\\overline{a}_{n}=\\sup E_{n}\\ge\\sup E_{N}\\ge\\inf E_{N}\\ge\\inf E_{m}=\\underline{a}_{m}$。\n(3)在(2)中已证对一切$n,m$有$\\overline{a}_{n}\\ge\\underline{a}_{m}$。固定$m$，令$n\\to\\infty$，由保不等式性得$\\overline{a}\\ge\\underline{a}_{m}$；再令$m\\to\\infty$得$\\overline{a}\\ge\\underline{a}$。\n(4)必要性：设$\\lim_{n\\to\\infty}a_{n}=a$。任给$\\varepsilon>0$，存在$N$，当$k>N$时$|a_{k}-a|<\\varepsilon$。于是当$n>N$时，对一切$k\\ge n$有$a-\\varepsilon<a_{k}<a+\\varepsilon$，故$a-\\varepsilon\\le\\underline{a}_{n}\\le\\overline{a}_{n}\\le a+\\varepsilon$。这说明$\\{\\overline{a}_{n}\\}$与$\\{\\underline{a}_{n}\\}$都收敛于$a$，即$\\overline{a}=\\underline{a}=a$。\n充分性：设$\\overline{a}=\\underline{a}=a$。任给$\\varepsilon>0$，存在$N$，当$n>N$时$|\\overline{a}_{n}-a|<\\varepsilon$且$|\\underline{a}_{n}-a|<\\varepsilon$。又$\\underline{a}_{n}\\le a_{n}\\le\\overline{a}_{n}$，故当$n>N$时$|a_{n}-a|<\\varepsilon$，即$\\lim_{n\\to\\infty}a_{n}=a$。",
+      "detailedAnalysis": "本题考查上、下极限的定义与基本性质，是本章概念性最强的一题。核心是把$\\overline{a}_{n}$、$\\underline{a}_{n}$看成集合$E_{n}=\\{a_{n},a_{n+1},\\cdots\\}$的确界，于是单调性来自$E_{n+1}\\subset E_{n}$，而$n,m$的任意比较来自取$N=\\max\\{n,m\\}$使$E_{N}\\subset E_{n}\\cap E_{m}$。(4)的两个方向都靠“确界把尾部所有项夹住”：必要性用$n>N$后所有$k\\ge n$的项都在$(a-\\varepsilon,a+\\varepsilon)$内；充分性直接用$\\underline{a}_{n}\\le a_{n}\\le\\overline{a}_{n}$夹逼。易错点：(2)中把$n,m$的大小关系写反；(4)充分性只用一个不等式而不夹住$a_{n}$。",
+      "points": [
+        "$E_{n+1}\\subset E_{n}$给出单调性",
+        "取$N=\\max\\{n,m\\}$比较任意两项",
+        "$\\underline{a}_{n}\\le a_{n}\\le\\overline{a}_{n}$夹逼"
+      ],
+      "pitfalls": [
+        "(2)中忽略$n,m$的对称性",
+        "(4)充分性未把$a_{n}$夹在两个确界之间"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 习题2.3 第12题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "习题2.3",
+        "上下极限",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：(1)记$E_{n}=\\{a_{n},a_{n+1},\\cdots\\}$。由确界的定义，$\\inf E_{n}\\le\\sup E_{n}$，即$\\underline{a}_{n}\\le\\overline{a}_{n}$。",
+        "(2)因$E_{n+1}\\subset E_{n}$，故$\\sup E_{n}\\ge\\sup E_{n+1}$，即$\\{\\overline{a}_{n}\\}$递减；同理$\\inf E_{n}\\le\\inf E_{n+1}$，即$\\{\\underline{a}_{n}\\}$递增。由$\\{a_{n}\\}$有界知$E_{n}$有界，故$\\{\\overline{a}_{n}\\}$、$\\{\\underline{a}_{n}\\}$都有界。对任意正整数$n,m$，取$N=\\max\\{n,m\\}$，则$E_{N}\\subset E_{n}\\cap E_{m}$，于是$\\overline{a}_{n}=\\sup E_{n}\\ge\\sup E_{N}\\ge\\inf E_{N}\\ge\\inf E_{m}=\\underline{a}_{m}$。",
+        "(3)在(2)中已证对一切$n,m$有$\\overline{a}_{n}\\ge\\underline{a}_{m}$。固定$m$，令$n\\to\\infty$，由保不等式性得$\\overline{a}\\ge\\underline{a}_{m}$；再令$m\\to\\infty$得$\\overline{a}\\ge\\underline{a}$。",
+        "(4)必要性：设$\\lim_{n\\to\\infty}a_{n}=a$。任给$\\varepsilon>0$，存在$N$，当$k>N$时$|a_{k}-a|<\\varepsilon$。于是当$n>N$时，对一切$k\\ge n$有$a-\\varepsilon<a_{k}<a+\\varepsilon$，故$a-\\varepsilon\\le\\underline{a}_{n}\\le\\overline{a}_{n}\\le a+\\varepsilon$。这说明$\\{\\overline{a}_{n}\\}$与$\\{\\underline{a}_{n}\\}$都收敛于$a$，即$\\overline{a}=\\underline{a}=a$。",
+        "充分性：设$\\overline{a}=\\underline{a}=a$。任给$\\varepsilon>0$，存在$N$，当$n>N$时$|\\overline{a}_{n}-a|<\\varepsilon$且$|\\underline{a}_{n}-a|<\\varepsilon$。又$\\underline{a}_{n}\\le a_{n}\\le\\overline{a}_{n}$，故当$n>N$时$|a_{n}-a|<\\varepsilon$，即$\\lim_{n\\to\\infty}a_{n}=a$。"
+      ],
+      "pointKeys": [
+        "$E_{n+1}\\subset E_{n}$给出单调性",
+        "取$N=\\max\\{n,m\\}$比较任意两项",
+        "$\\underline{a}_{n}\\le a_{n}\\le\\overline{a}_{n}$夹逼"
+      ]
+    },
+    {
+      "id": "MA-3556",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "第二章总练习题",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "根式、指数与二阶差分的极限",
+      "question": "求下列数列的极限：(1)$\\lim_{n\\to\\infty}\\sqrt[n]{n^{3}+3^{n}}$；(2)$\\lim_{n\\to\\infty}\\frac{n^{5}}{e^{n}}$；(3)$\\lim_{n\\to\\infty}\\left(\\sqrt{n+2}-2\\sqrt{n+1}+\\sqrt{n}\\right)$。",
+      "answer": "(1)$3$；(2)$0$；(3)$0$。",
+      "standardSolution": "解：(1)当$n\\ge4$时$n^{3}\\le3^{n}$（$4^{3}=64\\le81=3^{4}$，且此后$3^{n}$增长更快），故$3^{n}\\le n^{3}+3^{n}\\le2\\cdot3^{n}$，开$n$次方得$3\\le\\sqrt[n]{n^{3}+3^{n}}\\le3\\sqrt[n]{2}$。由$\\sqrt[n]{2}\\to1$及夹逼定理，极限为$3$。\n(2)由$e^{n}=\\sum_{k=0}^{\\infty}\\frac{n^{k}}{k!}\\ge\\frac{n^{6}}{6!}$，得$0<\\frac{n^{5}}{e^{n}}\\le\\frac{6!}{n}=\\frac{720}{n}\\to0$，故极限为$0$。\n(3)记$d_{n}=\\left(\\sqrt{n+2}-\\sqrt{n+1}\\right)-\\left(\\sqrt{n+1}-\\sqrt{n}\\right)$，则\n$$d_{n}=\\frac{1}{\\sqrt{n+2}+\\sqrt{n+1}}-\\frac{1}{\\sqrt{n+1}+\\sqrt{n}}=\\frac{\\sqrt{n}-\\sqrt{n+2}}{\\left(\\sqrt{n+2}+\\sqrt{n+1}\\right)\\left(\\sqrt{n+1}+\\sqrt{n}\\right)}.$$\n因$\\left|\\sqrt{n}-\\sqrt{n+2}\\right|=\\frac{2}{\\sqrt{n}+\\sqrt{n+2}}\\le\\frac{1}{\\sqrt{n}}$，而分母$\\ge(2\\sqrt{n})^{2}=4n$，故$|d_{n}|\\le\\frac{1}{4n^{\\frac32}}\\to0$。所以极限为$0$。",
+      "detailedAnalysis": "本题考查三种常用手段：夹逼、泰勒下界、有理化。(1)的关键是找到主项$3^{n}$，把$n^{3}$作为低阶项夹住，两边都化成$3$的倍数再开方；(2)用$e^{n}$的级数展开给出多项式下界，这是处理$\\frac{n^{k}}{e^{n}}$的标准做法；(3)是二阶差分，先拆成两个一阶差分之差，再统一通分，最后用$\\sqrt{n+2}-\\sqrt{n}$的估计控制分子。易错点：(1)直接写“$3^{n}$起主导作用”而不给夹逼；(2)用洛必达法则处理数列（数列不能求导）；(3)以为两项相减为$0$而不做估计。",
+      "points": [
+        "夹逼：$3^{n}\\le n^{3}+3^{n}\\le2\\cdot3^{n}$",
+        "$e^{n}\\ge\\frac{n^{6}}{6!}$",
+        "二阶差分有理化估计"
+      ],
+      "pitfalls": [
+        "(1)只写主项不作夹逼",
+        "(2)对数列用洛必达",
+        "(3)忽略差分是负的且趋于$0$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 第二章总练习题 第1题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "第二章总练习题",
+        "夹逼",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：(1)当$n\\ge4$时$n^{3}\\le3^{n}$（$4^{3}=64\\le81=3^{4}$，且此后$3^{n}$增长更快），故$3^{n}\\le n^{3}+3^{n}\\le2\\cdot3^{n}$，开$n$次方得$3\\le\\sqrt[n]{n^{3}+3^{n}}\\le3\\sqrt[n]{2}$。由$\\sqrt[n]{2}\\to1$及夹逼定理，极限为$3$。",
+        "(2)由$e^{n}=\\sum_{k=0}^{\\infty}\\frac{n^{k}}{k!}\\ge\\frac{n^{6}}{6!}$，得$0<\\frac{n^{5}}{e^{n}}\\le\\frac{6!}{n}=\\frac{720}{n}\\to0$，故极限为$0$。",
+        "(3)记$d_{n}=\\left(\\sqrt{n+2}-\\sqrt{n+1}\\right)-\\left(\\sqrt{n+1}-\\sqrt{n}\\right)$，则",
+        "$$d_{n}=\\frac{1}{\\sqrt{n+2}+\\sqrt{n+1}}-\\frac{1}{\\sqrt{n+1}+\\sqrt{n}}=\\frac{\\sqrt{n}-\\sqrt{n+2}}{\\left(\\sqrt{n+2}+\\sqrt{n+1}\\right)\\left(\\sqrt{n+1}+\\sqrt{n}\\right)}.$$",
+        "因$\\left|\\sqrt{n}-\\sqrt{n+2}\\right|=\\frac{2}{\\sqrt{n}+\\sqrt{n+2}}\\le\\frac{1}{\\sqrt{n}}$，而分母$\\ge(2\\sqrt{n})^{2}=4n$，故$|d_{n}|\\le\\frac{1}{4n^{\\frac32}}\\to0$。所以极限为$0$。"
+      ],
+      "pointKeys": [
+        "夹逼：$3^{n}\\le n^{3}+3^{n}\\le2\\cdot3^{n}$",
+        "$e^{n}\\ge\\frac{n^{6}}{6!}$",
+        "二阶差分有理化估计"
+      ]
+    },
+    {
+      "id": "MA-3557",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "第二章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "幂乘指数与对数的阶的估计",
+      "question": "证明：(1)$\\lim_{n\\to\\infty}n^{2}q^{n}=0$（$|q|<1$）；(2)$\\lim_{n\\to\\infty}\\frac{\\lg n}{n^{\\alpha}}=0$（$\\alpha\\ge1$）。",
+      "answer": "两式都成立：多项式增长被指数衰减压制，对数增长被任意正幂压制。",
+      "standardSolution": "证明：(1)设$b_{n}=n^{2}|q|^{n}\\ge0$。当$|q|=0$时显然$b_{n}=0$；以下设$0<|q|<1$。则\n$$\\frac{b_{n+1}}{b_{n}}=\\left(\\frac{n+1}{n}\\right)^{2}|q|\\to|q|<1.$$\n取$\\rho$使$|q|<\\rho<1$，则存在$N$，当$n>N$时$\\frac{b_{n+1}}{b_{n}}<\\rho$，从而$0\\le b_{n}\\le b_{N}\\rho^{\\,n-N}\\to0$（$\\rho<1$）。故$n^{2}q^{n}\\to0$。\n(2)先证$\\lg n\\le2\\sqrt{n}$（$n\\ge1$）。令$t=\\sqrt{n}\\ge1$，由$\\lg t\\le t-1$（$t\\ge1$）得\n$$\\lg n=2\\lg t\\le2(t-1)<2t=2\\sqrt{n}.$$\n于是当$\\alpha\\ge1$时$0\\le\\frac{\\lg n}{n^{\\alpha}}\\le\\frac{\\lg n}{n}\\le\\frac{2}{\\sqrt{n}}\\to0$，由夹逼得$\\lim_{n\\to\\infty}\\frac{\\lg n}{n^{\\alpha}}=0$。",
+      "detailedAnalysis": "本题考查“幂、指数、对数”三者增长速度的比较。(1)用比值判别：相邻项之比趋于$|q|<1$，于是从某项起被几何数列控制；(2)把对数放大成幂函数$\\lg n\\le2\\sqrt{n}$，再用$\\alpha\\ge1$把$n^{\\alpha}$缩小为$n$。切入点是先做“约化”：指数情形用比值，对数情形用初等不等式。易错点：(1)直接用$\\rho^{n}\\to0$而不说明$b_{n}$被几何数列控制；(2)把$\\lg n/n^{\\alpha}$与$\\ln n/n^{\\alpha}$的常数因子混为一谈（本题只需阶，常数无关）；以及忘记$\\alpha\\ge1$才能把分母缩到$n$。",
+      "points": [
+        "比值检验：$\\frac{b_{n+1}}{b_{n}}\\to|q|$",
+        "对数放大$\\lg n\\le2\\sqrt{n}$",
+        "$\\alpha\\ge1$时$n^{\\alpha}\\ge n$"
+      ],
+      "pitfalls": [
+        "(1)未说明几何控制就断言趋于$0$",
+        "(2)把分母放大成$n^{\\alpha}\\le n$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 第二章总练习题 第2题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "第二章总练习题",
+        "阶的比较",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：(1)设$b_{n}=n^{2}|q|^{n}\\ge0$。当$|q|=0$时显然$b_{n}=0$；以下设$0<|q|<1$。则",
+        "$$\\frac{b_{n+1}}{b_{n}}=\\left(\\frac{n+1}{n}\\right)^{2}|q|\\to|q|<1.$$",
+        "取$\\rho$使$|q|<\\rho<1$，则存在$N$，当$n>N$时$\\frac{b_{n+1}}{b_{n}}<\\rho$，从而$0\\le b_{n}\\le b_{N}\\rho^{\\,n-N}\\to0$（$\\rho<1$）。故$n^{2}q^{n}\\to0$。",
+        "(2)先证$\\lg n\\le2\\sqrt{n}$（$n\\ge1$）。令$t=\\sqrt{n}\\ge1$，由$\\lg t\\le t-1$（$t\\ge1$）得",
+        "$$\\lg n=2\\lg t\\le2(t-1)<2t=2\\sqrt{n}.$$",
+        "于是当$\\alpha\\ge1$时$0\\le\\frac{\\lg n}{n^{\\alpha}}\\le\\frac{\\lg n}{n}\\le\\frac{2}{\\sqrt{n}}\\to0$，由夹逼得$\\lim_{n\\to\\infty}\\frac{\\lg n}{n^{\\alpha}}=0$。"
+      ],
+      "pointKeys": [
+        "比值检验：$\\frac{b_{n+1}}{b_{n}}\\to|q|$",
+        "对数放大$\\lg n\\le2\\sqrt{n}$",
+        "$\\alpha\\ge1$时$n^{\\alpha}\\ge n$"
+      ]
+    },
+    {
+      "id": "MA-3558",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "第二章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "施托尔茨定理的证明",
+      "question": "（施托尔茨（Stolz）定理）设数列$\\{b_{n}\\}$严格递增且$\\lim_{n\\to\\infty}b_{n}=+\\infty$，$\\{a_{n}\\}$是任一数列且满足$\\lim_{n\\to\\infty}\\frac{a_{n}-a_{n-1}}{b_{n}-b_{n-1}}=a\\in\\mathbf{R}\\cup\\{+\\infty,-\\infty\\}$，证明：$\\lim_{n\\to\\infty}\\frac{a_{n}}{b_{n}}=a$。",
+      "answer": "定理成立：$a$为有限数时用ε-N估计，$a=+\\infty$与$a=-\\infty$时用线性下界（上界）分别处理。",
+      "standardSolution": "证明：先设$a$为有限数。任给$\\varepsilon>0$，存在正整数$N$，当$n>N$时\n$$\\left|\\frac{a_{n}-a_{n-1}}{b_{n}-b_{n-1}}-a\\right|<\\frac{\\varepsilon}{2}.$$\n因$b_{n}$严格递增，$b_{n}-b_{n-1}>0$，故对$n>N$有$\\left|(a_{n}-a_{n-1})-a(b_{n}-b_{n-1})\\right|<\\frac{\\varepsilon}{2}(b_{n}-b_{n-1})$。\n把$n>N$时的差逐项相加：$a_{n}-a_{N}=\\sum_{k=N+1}^{n}(a_{k}-a_{k-1})$，$b_{n}-b_{N}=\\sum_{k=N+1}^{n}(b_{k}-b_{k-1})$，于是\n$$\\left|a_{n}-a_{N}-a(b_{n}-b_{N})\\right|\\le\\frac{\\varepsilon}{2}\\sum_{k=N+1}^{n}(b_{k}-b_{k-1})=\\frac{\\varepsilon}{2}(b_{n}-b_{N}).$$\n两边除以$b_{n}>0$，得\n$$\\left|\\frac{a_{n}}{b_{n}}-a\\right|\\le\\frac{\\varepsilon}{2}\\cdot\\frac{b_{n}-b_{N}}{b_{n}}+\\frac{|a_{N}-ab_{N}|}{b_{n}}\\le\\frac{\\varepsilon}{2}+\\frac{|a_{N}-ab_{N}|}{b_{n}}.$$\n因$b_{n}\\to+\\infty$，存在$N'>N$，当$n>N'$时$\\frac{|a_{N}-ab_{N}|}{b_{n}}<\\frac{\\varepsilon}{2}$，故$\\left|\\frac{a_{n}}{b_{n}}-a\\right|<\\varepsilon$。\n再设$a=+\\infty$。任给$M>0$，存在$N$，当$n>N$时$\\frac{a_{n}-a_{n-1}}{b_{n}-b_{n-1}}>3M$，于是\n$$a_{n}-a_{N}=\\sum_{k=N+1}^{n}(a_{k}-a_{k-1})>3M\\sum_{k=N+1}^{n}(b_{k}-b_{k-1})=3M(b_{n}-b_{N}).$$\n故当$n>N$时$\\frac{a_{n}}{b_{n}}>3M\\left(1-\\frac{b_{N}}{b_{n}}\\right)+\\frac{a_{N}}{b_{n}}\\to3M$，于是存在$N'>N$，当$n>N'$时$\\frac{a_{n}}{b_{n}}>M$。所以$\\lim_{n\\to\\infty}\\frac{a_{n}}{b_{n}}=+\\infty$。\n最后设$a=-\\infty$。对数列$\\{-a_{n}\\}$用已证的$+\\infty$情形：$\\frac{(-a_{n})-(-a_{n-1})}{b_{n}-b_{n-1}}\\to+\\infty$，故$\\frac{-a_{n}}{b_{n}}\\to+\\infty$，即$\\frac{a_{n}}{b_{n}}\\to-\\infty$。定理证毕。",
+      "detailedAnalysis": "本题考查Stolz定理（离散型的洛必达法则）的完整证明。有限情形是核心：先把“差分之比接近$a$”写成$|(a_{n}-a_{n-1})-a(b_{n}-b_{n-1})|<\\frac{\\varepsilon}{2}(b_{n}-b_{n-1})$，再利用$b_{n}$严格递增把误差逐项累加成$\\frac{\\varepsilon}{2}(b_{n}-b_{N})$，除以$b_{n}$后误差被$\\frac{\\varepsilon}{2}$加一个趋于$0$的项控制。无穷情形不能照搬ε论证，要改成“比值大于$3M$”的线性下界：累加得$a_{n}>3M(b_{n}-b_{N})+a_{N}$，除以$b_{n}$后主项给出$3M$。易错点：忘记除以$b_{n}$后处理常数项$|a_{N}-ab_{N}|/b_{n}$；以及在$+\\infty$情形仍用ε而不用$M$。",
+      "points": [
+        "差分求和消去中间项",
+        "误差累加得上界$\\frac{\\varepsilon}{2}(b_{n}-b_{N})$",
+        "无穷情形改用$M$与线性下界"
+      ],
+      "pitfalls": [
+        "忘记处理$\\frac{|a_{N}-ab_{N}|}{b_{n}}$项",
+        "$a=+\\infty$时误用ε论证"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 第二章总练习题 第3题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "第二章总练习题",
+        "Stolz定理",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：先设$a$为有限数。任给$\\varepsilon>0$，存在正整数$N$，当$n>N$时",
+        "$$\\left|\\frac{a_{n}-a_{n-1}}{b_{n}-b_{n-1}}-a\\right|<\\frac{\\varepsilon}{2}.$$",
+        "因$b_{n}$严格递增，$b_{n}-b_{n-1}>0$，故对$n>N$有$\\left|(a_{n}-a_{n-1})-a(b_{n}-b_{n-1})\\right|<\\frac{\\varepsilon}{2}(b_{n}-b_{n-1})$。",
+        "把$n>N$时的差逐项相加：$a_{n}-a_{N}=\\sum_{k=N+1}^{n}(a_{k}-a_{k-1})$，$b_{n}-b_{N}=\\sum_{k=N+1}^{n}(b_{k}-b_{k-1})$，于是",
+        "$$\\left|a_{n}-a_{N}-a(b_{n}-b_{N})\\right|\\le\\frac{\\varepsilon}{2}\\sum_{k=N+1}^{n}(b_{k}-b_{k-1})=\\frac{\\varepsilon}{2}(b_{n}-b_{N}).$$",
+        "两边除以$b_{n}>0$，得",
+        "$$\\left|\\frac{a_{n}}{b_{n}}-a\\right|\\le\\frac{\\varepsilon}{2}\\cdot\\frac{b_{n}-b_{N}}{b_{n}}+\\frac{|a_{N}-ab_{N}|}{b_{n}}\\le\\frac{\\varepsilon}{2}+\\frac{|a_{N}-ab_{N}|}{b_{n}}.$$",
+        "因$b_{n}\\to+\\infty$，存在$N'>N$，当$n>N'$时$\\frac{|a_{N}-ab_{N}|}{b_{n}}<\\frac{\\varepsilon}{2}$，故$\\left|\\frac{a_{n}}{b_{n}}-a\\right|<\\varepsilon$。",
+        "再设$a=+\\infty$。任给$M>0$，存在$N$，当$n>N$时$\\frac{a_{n}-a_{n-1}}{b_{n}-b_{n-1}}>3M$，于是",
+        "$$a_{n}-a_{N}=\\sum_{k=N+1}^{n}(a_{k}-a_{k-1})>3M\\sum_{k=N+1}^{n}(b_{k}-b_{k-1})=3M(b_{n}-b_{N}).$$",
+        "故当$n>N$时$\\frac{a_{n}}{b_{n}}>3M\\left(1-\\frac{b_{N}}{b_{n}}\\right)+\\frac{a_{N}}{b_{n}}\\to3M$，于是存在$N'>N$，当$n>N'$时$\\frac{a_{n}}{b_{n}}>M$。所以$\\lim_{n\\to\\infty}\\frac{a_{n}}{b_{n}}=+\\infty$。",
+        "最后设$a=-\\infty$。对数列$\\{-a_{n}\\}$用已证的$+\\infty$情形：$\\frac{(-a_{n})-(-a_{n-1})}{b_{n}-b_{n-1}}\\to+\\infty$，故$\\frac{-a_{n}}{b_{n}}\\to+\\infty$，即$\\frac{a_{n}}{b_{n}}\\to-\\infty$。定理证毕。"
+      ],
+      "pointKeys": [
+        "差分求和消去中间项",
+        "误差累加得上界$\\frac{\\varepsilon}{2}(b_{n}-b_{N})$",
+        "无穷情形改用$M$与线性下界"
+      ]
+    },
+    {
+      "id": "MA-3559",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "第二章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "算术平均与几何平均的极限",
+      "question": "设$\\lim_{n\\to\\infty}a_{n}=a\\in\\mathbf{R}\\cup\\{+\\infty,-\\infty\\}$，运用施托尔茨定理证明：(1)$\\lim_{n\\to\\infty}\\frac{a_{1}+a_{2}+\\cdots+a_{n}}{n}=a$（又问由此等式能否反过来推出$\\lim_{n\\to\\infty}a_{n}=a$）；(2)若$a_{n}>0$（$n=1,2,\\cdots$），则$\\lim_{n\\to\\infty}\\sqrt[n]{a_{1}a_{2}\\cdots a_{n}}=a$。",
+      "answer": "(1)(2)均成立；(1)的逆不成立：$a_{n}=(-1)^{n}$时算术平均趋于$0$，但$\\{a_{n}\\}$发散。",
+      "standardSolution": "证明：(1)记$A_{n}=a_{1}+a_{2}+\\cdots+a_{n}$，$b_{n}=n$。则$\\{b_{n}\\}$严格递增且$b_{n}\\to+\\infty$，而\n$$\\frac{A_{n}-A_{n-1}}{b_{n}-b_{n-1}}=\\frac{a_{n}}{1}=a_{n}\\to a.$$\n由Stolz定理得$\\frac{A_{n}}{b_{n}}=\\frac{a_{1}+a_{2}+\\cdots+a_{n}}{n}\\to a$。\n逆命题不成立。取$a_{n}=(-1)^{n}$，则$A_{n}=0$（$n$为偶数）或$-1$（$n$为奇数），故$\\frac{A_{n}}{n}\\to0$；但$\\{a_{n}\\}$的两个子列极限为$1$与$-1$，发散。所以算术平均收敛推不出原数列收敛。\n(2)因$a_{n}>0$，可令$b_{n}=\\ln(a_{1}a_{2}\\cdots a_{n})=\\sum_{k=1}^{n}\\ln a_{k}$。对$\\{\\ln a_{n}\\}$用(1)的结论得$\\frac{b_{n}}{n}=\\frac{1}{n}\\sum_{k=1}^{n}\\ln a_{k}\\to\\ln a$（当$a=0$时为$-\\infty$，$a=+\\infty$时为$+\\infty$，结论按广义实数理解），即$\\ln\\sqrt[n]{a_{1}a_{2}\\cdots a_{n}}\\to\\ln a$。由指数函数的连续性（及$e^{-\\infty}=0$、$e^{+\\infty}=+\\infty$的约定）得$\\sqrt[n]{a_{1}a_{2}\\cdots a_{n}}\\to a$。",
+      "detailedAnalysis": "本题考查Stolz定理的两个经典推论：算术平均与几何平均都保持极限。(1)取$b_{n}=n$，差分之比恰为$a_{n}$，直接套用Stolz；(2)取对数把乘积化为和，对$\\{\\ln a_{n}\\}$用(1)，再取指数还原。关键在于(1)的逆不成立，反例$(-1)^{n}$说明平均会“抹平”振荡。(2)中必须$a_{n}>0$才能取对数；$a=0$或$+\\infty$时按广义实数处理。易错点：把(1)当成等价命题（复习时常错）；以及(2)中忘记说明指数还原的连续性。",
+      "points": [
+        "Stolz取$b_{n}=n$",
+        "平均收敛推不出原数列收敛（反例$(-1)^{n}$）",
+        "取对数化积为和"
+      ],
+      "pitfalls": [
+        "误认为(1)可逆",
+        "(2)忽略$a_{n}>0$与广义极限的处理"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 第二章总练习题 第4题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "第二章总练习题",
+        "Stolz定理",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：(1)记$A_{n}=a_{1}+a_{2}+\\cdots+a_{n}$，$b_{n}=n$。则$\\{b_{n}\\}$严格递增且$b_{n}\\to+\\infty$，而",
+        "$$\\frac{A_{n}-A_{n-1}}{b_{n}-b_{n-1}}=\\frac{a_{n}}{1}=a_{n}\\to a.$$",
+        "由Stolz定理得$\\frac{A_{n}}{b_{n}}=\\frac{a_{1}+a_{2}+\\cdots+a_{n}}{n}\\to a$。",
+        "逆命题不成立。取$a_{n}=(-1)^{n}$，则$A_{n}=0$（$n$为偶数）或$-1$（$n$为奇数），故$\\frac{A_{n}}{n}\\to0$；但$\\{a_{n}\\}$的两个子列极限为$1$与$-1$，发散。所以算术平均收敛推不出原数列收敛。",
+        "(2)因$a_{n}>0$，可令$b_{n}=\\ln(a_{1}a_{2}\\cdots a_{n})=\\sum_{k=1}^{n}\\ln a_{k}$。对$\\{\\ln a_{n}\\}$用(1)的结论得$\\frac{b_{n}}{n}=\\frac{1}{n}\\sum_{k=1}^{n}\\ln a_{k}\\to\\ln a$（当$a=0$时为$-\\infty$，$a=+\\infty$时为$+\\infty$，结论按广义实数理解），即$\\ln\\sqrt[n]{a_{1}a_{2}\\cdots a_{n}}\\to\\ln a$。由指数函数的连续性（及$e^{-\\infty}=0$、$e^{+\\infty}=+\\infty$的约定）得$\\sqrt[n]{a_{1}a_{2}\\cdots a_{n}}\\to a$。"
+      ],
+      "pointKeys": [
+        "Stolz取$b_{n}=n$",
+        "平均收敛推不出原数列收敛（反例$(-1)^{n}$）",
+        "取对数化积为和"
+      ]
+    },
+    {
+      "id": "MA-3560",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "第二章总练习题",
+      "type": "subjective",
+      "category": "计算题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "用平均极限公式求九个数列极限",
+      "question": "应用上题的结论证明下列各题：(1)$\\lim_{n\\to\\infty}\\frac{1+\\frac12+\\frac13+\\cdots+\\frac1n}{n}=0$；(2)$\\lim_{n\\to\\infty}\\sqrt[n]{a}=1$（$a>0$）；(3)$\\lim_{n\\to\\infty}\\sqrt[n]{n}=1$；(4)$\\lim_{n\\to\\infty}\\frac{1}{\\sqrt[n]{n!}}=0$；(5)$\\lim_{n\\to\\infty}\\frac{n}{\\sqrt[n]{n!}}=e$；(6)$\\lim_{n\\to\\infty}\\frac{1+\\sqrt2+\\sqrt3+\\cdots+\\sqrt n}{n}=1$；(7)若$\\lim_{n\\to\\infty}\\frac{b_{n+1}}{b_{n}}=a$（$b_{n}>0$），则$\\lim_{n\\to\\infty}\\sqrt[n]{b_{n}}=a$；(8)若$\\lim_{n\\to\\infty}(a_{n}-a_{n-1})=d$，则$\\lim_{n\\to\\infty}\\frac{a_{n}}{n}=d$；(9)$\\lim_{n\\to\\infty}\\frac{\\ln(n!)}{n}=+\\infty$。",
+      "answer": "九式都成立，各极限依次为$0$、$1$、$1$、$0$、$e$、$1$、$a$、$d$、$+\\infty$。",
+      "standardSolution": "解：先证(7)。由$b_{n}=b_{1}\\prod_{k=2}^{n}\\frac{b_{k}}{b_{k-1}}$，记$c_{k}=\\frac{b_{k}}{b_{k-1}}$（$k\\ge2$），则$c_{k}\\to a$。由第4题(2)（对$c_{2},\\cdots,c_{n}$这$n-1$项）得$\\left(\\prod_{k=2}^{n}c_{k}\\right)^{\\frac{1}{n-1}}\\to a$，又$b_{1}^{\\frac1n}\\to1$，$\\frac{n-1}{n}\\to1$，故\n$$\\sqrt[n]{b_{n}}=b_{1}^{\\frac1n}\\left[\\left(\\prod_{k=2}^{n}c_{k}\\right)^{\\frac{1}{n-1}}\\right]^{\\frac{n-1}{n}}\\to a.$$\n（$a=+\\infty$时同样成立。）\n(1)取$a_{n}=\\frac1n\\to0$，由第4题(1)得算术平均$\\to0$。(2)在(7)中取$b_{n}=a$（常数列），则$\\frac{b_{n+1}}{b_{n}}=1$，故$\\sqrt[n]{a}\\to1$。\n(3)在(7)中取$b_{n}=n$，则$\\frac{b_{n+1}}{b_{n}}=\\frac{n+1}{n}\\to1$，故$\\sqrt[n]{n}\\to1$。(4)在(7)中取$b_{n}=n!$，则$\\frac{b_{n+1}}{b_{n}}=n+1\\to+\\infty$，故$\\sqrt[n]{n!}\\to+\\infty$，从而$\\frac{1}{\\sqrt[n]{n!}}\\to0$。\n(5)取$b_{n}=\\frac{n^{n}}{n!}>0$，则$\\frac{b_{n+1}}{b_{n}}=\\frac{(n+1)^{n+1}}{(n+1)!}\\cdot\\frac{n!}{n^{n}}=\\left(1+\\frac1n\\right)^{n}\\to e$。由(7)得$\\sqrt[n]{\\frac{n^{n}}{n!}}=\\frac{n}{\\sqrt[n]{n!}}\\to e$。\n(6)取$a_{n}=\\sqrt n\\to1$，由第4题(1)得$\\frac{1+\\sqrt2+\\cdots+\\sqrt n}{n}\\to1$。\n(8)记$a_{0}=0$，$c_{n}=a_{n}-a_{n-1}\\to d$。由第4题(1)得$\\frac{c_{1}+c_{2}+\\cdots+c_{n}}{n}=\\frac{a_{n}}{n}\\to d$。\n(9)取$a_{n}=\\ln n\\to+\\infty$，由第4题(1)得$\\frac{\\ln1+\\ln2+\\cdots+\\ln n}{n}=\\frac{\\ln(n!)}{n}\\to+\\infty$。",
+      "detailedAnalysis": "本题考查第4题两个平均公式的灵活套用。策略是“把要求的值写成某个数列的平均或几何平均”：(1)(6)(8)(9)用算术平均，(2)(3)(4)(5)用几何平均，其中(7)是几何平均的比值判别，是(2)—(5)的统一工具。(5)的技巧是把$b_{n}$设为$\\frac{n^{n}}{n!}$，使比值恰为$\\left(1+\\frac1n\\right)^{n}\\to e$，从而$n/\\sqrt[n]{n!}\\to e$。易错点：(3)试图用算术平均（会得到$\\frac{n+1}{2}\\to\\infty$）；(5)直接对$n!$用(7)（得到$+\\infty$而不是$e$）；以及(7)中忘记$b_{1}^{1/n}\\to1$这个因子。",
+      "points": [
+        "比值判别(7)统一处理(2)—(5)",
+        "算术平均用于(1)(6)(8)(9)",
+        "(5)取$b_{n}=\\frac{n^{n}}{n!}$"
+      ],
+      "pitfalls": [
+        "(3)误用算术平均",
+        "(5)取错$b_{n}$"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 第二章总练习题 第5题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "第二章总练习题",
+        "平均极限",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "解：先证(7)。由$b_{n}=b_{1}\\prod_{k=2}^{n}\\frac{b_{k}}{b_{k-1}}$，记$c_{k}=\\frac{b_{k}}{b_{k-1}}$（$k\\ge2$），则$c_{k}\\to a$。由第4题(2)（对$c_{2},\\cdots,c_{n}$这$n-1$项）得$\\left(\\prod_{k=2}^{n}c_{k}\\right)^{\\frac{1}{n-1}}\\to a$，又$b_{1}^{\\frac1n}\\to1$，$\\frac{n-1}{n}\\to1$，故",
+        "$$\\sqrt[n]{b_{n}}=b_{1}^{\\frac1n}\\left[\\left(\\prod_{k=2}^{n}c_{k}\\right)^{\\frac{1}{n-1}}\\right]^{\\frac{n-1}{n}}\\to a.$$",
+        "（$a=+\\infty$时同样成立。）",
+        "(1)取$a_{n}=\\frac1n\\to0$，由第4题(1)得算术平均$\\to0$。(2)在(7)中取$b_{n}=a$（常数列），则$\\frac{b_{n+1}}{b_{n}}=1$，故$\\sqrt[n]{a}\\to1$。",
+        "(3)在(7)中取$b_{n}=n$，则$\\frac{b_{n+1}}{b_{n}}=\\frac{n+1}{n}\\to1$，故$\\sqrt[n]{n}\\to1$。(4)在(7)中取$b_{n}=n!$，则$\\frac{b_{n+1}}{b_{n}}=n+1\\to+\\infty$，故$\\sqrt[n]{n!}\\to+\\infty$，从而$\\frac{1}{\\sqrt[n]{n!}}\\to0$。",
+        "(5)取$b_{n}=\\frac{n^{n}}{n!}>0$，则$\\frac{b_{n+1}}{b_{n}}=\\frac{(n+1)^{n+1}}{(n+1)!}\\cdot\\frac{n!}{n^{n}}=\\left(1+\\frac1n\\right)^{n}\\to e$。由(7)得$\\sqrt[n]{\\frac{n^{n}}{n!}}=\\frac{n}{\\sqrt[n]{n!}}\\to e$。",
+        "(6)取$a_{n}=\\sqrt n\\to1$，由第4题(1)得$\\frac{1+\\sqrt2+\\cdots+\\sqrt n}{n}\\to1$。",
+        "(8)记$a_{0}=0$，$c_{n}=a_{n}-a_{n-1}\\to d$。由第4题(1)得$\\frac{c_{1}+c_{2}+\\cdots+c_{n}}{n}=\\frac{a_{n}}{n}\\to d$。",
+        "(9)取$a_{n}=\\ln n\\to+\\infty$，由第4题(1)得$\\frac{\\ln1+\\ln2+\\cdots+\\ln n}{n}=\\frac{\\ln(n!)}{n}\\to+\\infty$。"
+      ],
+      "pointKeys": [
+        "比值判别(7)统一处理(2)—(5)",
+        "算术平均用于(1)(6)(8)(9)",
+        "(5)取$b_{n}=\\frac{n^{n}}{n!}$"
+      ]
+    },
+    {
+      "id": "MA-3561",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "第二章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "单调反向数列之差的极限为零则极限相等",
+      "question": "证明：若$\\{a_{n}\\}$为递增数列，$\\{b_{n}\\}$为递减数列，且$\\lim_{n\\to\\infty}(a_{n}-b_{n})=0$，则$\\lim_{n\\to\\infty}a_{n}$与$\\lim_{n\\to\\infty}b_{n}$都存在且相等。",
+      "answer": "结论成立：两数列都存在有限极限且$\\lim_{n\\to\\infty}a_{n}=\\lim_{n\\to\\infty}b_{n}$。",
+      "standardSolution": "证明：由$\\lim_{n\\to\\infty}(a_{n}-b_{n})=0$知$\\{a_{n}-b_{n}\\}$收敛，从而有界，即存在$K>0$使$|a_{n}-b_{n}|\\le K$对一切$n$成立。于是$a_{n}-b_{n}\\le K$且$a_{n}-b_{n}\\ge-K$\n具体地：由$b_{n}\\ge b_{1}$（$b_{n}$递减）得$a_{n}-b_{1}\\le a_{n}-b_{n}\\le K$，故$a_{n}\\le b_{1}+K$，即$\\{a_{n}\\}$递增有上界；由$a_{n}\\ge a_{1}$（$a_{n}$递增）得$a_{1}-b_{n}\\le a_{n}-b_{n}\\le K$，故$b_{n}\\ge a_{1}-K$，即$\\{b_{n}\\}$递减有下界。由单调有界定理，$\\lim_{n\\to\\infty}a_{n}=A$与$\\lim_{n\\to\\infty}b_{n}=B$都存在且为有限数。\n在$a_{n}-b_{n}\\to0$两边取极限，由极限的四则运算得$A-B=0$，即$A=B$。故两极限都存在且相等。",
+      "detailedAnalysis": "本题考查“差有界 + 反向单调”推出两个极限存在。关键一步是把$|a_{n}-b_{n}|\\le K$与$a_{n}\\ge a_{1}$、$b_{n}\\ge b_{1}$（或$b_{n}\\le b_{1}$、$a_{n}\\le a_{1}$）结合，分别给$a_{n}$造出上界、给$b_{n}$造出下界。容易只得到一个数列有界。另一处易错是取极限时想当然：必须先由单调有界定理确认两个极限都存在且有限，才能对$a_{n}-b_{n}$用四则运算法则。",
+      "points": [
+        "差数列收敛必有界",
+        "$a_{n}\\le b_{1}+K$、$b_{n}\\ge a_{1}-K$",
+        "先证存在再取极限得$A=B$"
+      ],
+      "pitfalls": [
+        "只证明一个有界",
+        "未确认极限存在就对差取极限"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 第二章总练习题 第6题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "第二章总练习题",
+        "单调有界",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：由$\\lim_{n\\to\\infty}(a_{n}-b_{n})=0$知$\\{a_{n}-b_{n}\\}$收敛，从而有界，即存在$K>0$使$|a_{n}-b_{n}|\\le K$对一切$n$成立。于是$a_{n}-b_{n}\\le K$且$a_{n}-b_{n}\\ge-K$",
+        "具体地：由$b_{n}\\ge b_{1}$（$b_{n}$递减）得$a_{n}-b_{1}\\le a_{n}-b_{n}\\le K$，故$a_{n}\\le b_{1}+K$，即$\\{a_{n}\\}$递增有上界；由$a_{n}\\ge a_{1}$（$a_{n}$递增）得$a_{1}-b_{n}\\le a_{n}-b_{n}\\le K$，故$b_{n}\\ge a_{1}-K$，即$\\{b_{n}\\}$递减有下界。由单调有界定理，$\\lim_{n\\to\\infty}a_{n}=A$与$\\lim_{n\\to\\infty}b_{n}=B$都存在且为有限数。",
+        "在$a_{n}-b_{n}\\to0$两边取极限，由极限的四则运算得$A-B=0$，即$A=B$。故两极限都存在且相等。"
+      ],
+      "pointKeys": [
+        "差数列收敛必有界",
+        "$a_{n}\\le b_{1}+K$、$b_{n}\\ge a_{1}-K$",
+        "先证存在再取极限得$A=B$"
+      ]
+    },
+    {
+      "id": "MA-3562",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "第二章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "有界变差数列的收敛性",
+      "question": "设数列$\\{a_{n}\\}$满足：存在正数$M$，对一切$n$有$A_{n}=|a_{2}-a_{1}|+|a_{3}-a_{2}|+\\cdots+|a_{n+1}-a_{n}|\\le M$。证明：数列$\\{a_{n}\\}$与$\\{A_{n}\\}$都收敛。",
+      "answer": "两数列都收敛：$\\{A_{n}\\}$递增有上界$M$，$\\{a_{n}\\}$满足柯西收敛准则。",
+      "standardSolution": "证明：先看$\\{A_{n}\\}$。由定义$A_{n+1}-A_{n}=|a_{n+2}-a_{n+1}|\\ge0$，故$\\{A_{n}\\}$递增；又题设对一切$n$有$A_{n}\\le M$，即$\\{A_{n}\\}$有上界。由单调有界定理，$\\{A_{n}\\}$收敛，记$\\lim_{n\\to\\infty}A_{n}=A\\le M$。\n再证$\\{a_{n}\\}$收敛，用柯西收敛准则。设$m>n$，把$a_{m}-a_{n}$拆成相邻项之差的和并逐项取绝对值：\n$$|a_{m}-a_{n}|\\le\\sum_{k=n}^{m-1}|a_{k+1}-a_{k}|=A_{m-1}-A_{n-1}.$$\n（$A_{m-1}-A_{n-1}$正是$A_{n-1}$之后各段之和。）\n任给$\\varepsilon>0$。因$\\{A_{n}\\}$收敛，由柯西准则存在$N$，当$m-1>n-1\\ge N$时$|A_{m-1}-A_{n-1}|<\\varepsilon$。于是当$m>n>N$时$|a_{m}-a_{n}|\\le A_{m-1}-A_{n-1}<\\varepsilon$。由柯西收敛准则，$\\{a_{n}\\}$收敛。",
+      "detailedAnalysis": "本题把“部分和”的思想用在差分上：$A_{n}$是相邻差绝对值的部分和，因此递增；有上界即收敛。$\\{a_{n}\\}$的收敛性靠柯西准则，桥梁是不等式$|a_{m}-a_{n}|\\le\\sum_{k=n}^{m-1}|a_{k+1}-a_{k}|=A_{m-1}-A_{n-1}$——它把$\\{a_{n}\\}$的振幅控制到收敛数列$\\{A_{n}\\}$的尾部增量上。易错点：把右边写成$A_{m}-A_{n}$（多算了$|a_{m+1}-a_{m}|$那一项，虽不影响结论但下标不严）；以及忘记$\\{A_{n}\\}$收敛才有“尾部增量趋于$0$”。",
+      "points": [
+        "$A_{n}$递增有上界$M$",
+        "三角不等式$|a_{m}-a_{n}|\\le A_{m-1}-A_{n-1}$",
+        "柯西收敛准则"
+      ],
+      "pitfalls": [
+        "把右边写成$A_{m}-A_{n}$导致下标错位",
+        "未说明$A_{m-1}-A_{n-1}\\to0$的依据"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 第二章总练习题 第7题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "第二章总练习题",
+        "柯西准则",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：先看$\\{A_{n}\\}$。由定义$A_{n+1}-A_{n}=|a_{n+2}-a_{n+1}|\\ge0$，故$\\{A_{n}\\}$递增；又题设对一切$n$有$A_{n}\\le M$，即$\\{A_{n}\\}$有上界。由单调有界定理，$\\{A_{n}\\}$收敛，记$\\lim_{n\\to\\infty}A_{n}=A\\le M$。",
+        "再证$\\{a_{n}\\}$收敛，用柯西收敛准则。设$m>n$，把$a_{m}-a_{n}$拆成相邻项之差的和并逐项取绝对值：",
+        "$$|a_{m}-a_{n}|\\le\\sum_{k=n}^{m-1}|a_{k+1}-a_{k}|=A_{m-1}-A_{n-1}.$$",
+        "（$A_{m-1}-A_{n-1}$正是$A_{n-1}$之后各段之和。）",
+        "任给$\\varepsilon>0$。因$\\{A_{n}\\}$收敛，由柯西准则存在$N$，当$m-1>n-1\\ge N$时$|A_{m-1}-A_{n-1}|<\\varepsilon$。于是当$m>n>N$时$|a_{m}-a_{n}|\\le A_{m-1}-A_{n-1}<\\varepsilon$。由柯西收敛准则，$\\{a_{n}\\}$收敛。"
+      ],
+      "pointKeys": [
+        "$A_{n}$递增有上界$M$",
+        "三角不等式$|a_{m}-a_{n}|\\le A_{m-1}-A_{n-1}$",
+        "柯西收敛准则"
+      ]
+    },
+    {
+      "id": "MA-3563",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "第二章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "迭代法求平方根的收敛性",
+      "question": "设$a>0$，$\\sigma>0$，$a_{1}=\\frac12\\left(a+\\frac{\\sigma}{a}\\right)$，$a_{n+1}=\\frac12\\left(a_{n}+\\frac{\\sigma}{a_{n}}\\right)$，$n=1,2,\\cdots$。证明：数列$\\{a_{n}\\}$收敛，且其极限为$\\sqrt{\\sigma}$。",
+      "answer": "$\\{a_{n}\\}$收敛且$\\lim_{n\\to\\infty}a_{n}=\\sqrt{\\sigma}$（这是求$\\sqrt{\\sigma}$的牛顿迭代）。",
+      "standardSolution": "证明：先证$n\\ge2$时$a_{n}\\ge\\sqrt{\\sigma}$。由均值不等式，对$n\\ge1$有\n$$a_{n+1}=\\frac12\\left(a_{n}+\\frac{\\sigma}{a_{n}}\\right)\\ge\\sqrt{a_{n}\\cdot\\frac{\\sigma}{a_{n}}}=\\sqrt{\\sigma},$$\n故$a_{2},a_{3},\\cdots$都满足$a_{n}\\ge\\sqrt{\\sigma}$（注意$a_{1}$不一定满足）。\n再证从$a_{2}$起单调递减。当$n\\ge2$时$a_{n}\\ge\\sqrt{\\sigma}$，故$\\frac{\\sigma}{a_{n}}\\le a_{n}$，于是\n$$a_{n+1}-a_{n}=\\frac12\\left(\\frac{\\sigma}{a_{n}}-a_{n}\\right)=\\frac{\\sigma-a_{n}^{2}}{2a_{n}}\\le0,$$\n即$a_{n+1}\\le a_{n}$。所以$\\{a_{n}\\}_{n\\ge2}$递减且有下界$\\sqrt{\\sigma}$。\n由单调有界定理，$\\{a_{n}\\}$收敛，设$\\lim_{n\\to\\infty}a_{n}=A$。因$a_{n}\\ge\\sqrt{\\sigma}>0$，在递推式$a_{n+1}=\\frac12\\left(a_{n}+\\frac{\\sigma}{a_{n}}\\right)$两边取极限，由极限四则运算得\n$$A=\\frac12\\left(A+\\frac{\\sigma}{A}\\right)\\Longrightarrow2A^{2}=A^{2}+\\sigma\\Longrightarrow A^{2}=\\sigma.$$\n又$A\\ge\\sqrt{\\sigma}>0$，故$A=\\sqrt{\\sigma}$。",
+      "detailedAnalysis": "本题考查牛顿迭代证明收敛的标准三段式：均值不等式给下界、作差定单调、取极限解方程。均值不等式保证$a_{n}\\ge\\sqrt{\\sigma}$（$n\\ge2$），它同时提供有界性与单调性的符号依据：有了$a_{n}\\ge\\sqrt{\\sigma}$就有$\\frac{\\sigma}{a_{n}}\\le a_{n}$，从而$a_{n+1}\\le a_{n}$。取极限时因$A>0$才能除以$A$并舍去负根。易错点：忘记$a_{1}$可能小于$\\sqrt{\\sigma}$（如$a=1,\\sigma=4$时$a_{1}=2.5$可以，但$a=10,\\sigma=1$时$a_{1}=5.05>1$，而一般情形$a_{1}$由$a$决定）；以及解出$A^{2}=\\sigma$后不说明取正根。",
+      "points": [
+        "均值不等式$a_{n+1}\\ge\\sqrt{\\sigma}$",
+        "$a_{n+1}-a_{n}=\\frac{\\sigma-a_{n}^{2}}{2a_{n}}\\le0$",
+        "取极限得$A^{2}=\\sigma$并取正根"
+      ],
+      "pitfalls": [
+        "断言$a_{1}\\ge\\sqrt{\\sigma}$",
+        "解出$A^{2}=\\sigma$后不排除负根"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 第二章总练习题 第8题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "第二章总练习题",
+        "牛顿迭代",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "证明：先证$n\\ge2$时$a_{n}\\ge\\sqrt{\\sigma}$。由均值不等式，对$n\\ge1$有",
+        "$$a_{n+1}=\\frac12\\left(a_{n}+\\frac{\\sigma}{a_{n}}\\right)\\ge\\sqrt{a_{n}\\cdot\\frac{\\sigma}{a_{n}}}=\\sqrt{\\sigma},$$",
+        "故$a_{2},a_{3},\\cdots$都满足$a_{n}\\ge\\sqrt{\\sigma}$（注意$a_{1}$不一定满足）。",
+        "再证从$a_{2}$起单调递减。当$n\\ge2$时$a_{n}\\ge\\sqrt{\\sigma}$，故$\\frac{\\sigma}{a_{n}}\\le a_{n}$，于是",
+        "$$a_{n+1}-a_{n}=\\frac12\\left(\\frac{\\sigma}{a_{n}}-a_{n}\\right)=\\frac{\\sigma-a_{n}^{2}}{2a_{n}}\\le0,$$",
+        "即$a_{n+1}\\le a_{n}$。所以$\\{a_{n}\\}_{n\\ge2}$递减且有下界$\\sqrt{\\sigma}$。",
+        "由单调有界定理，$\\{a_{n}\\}$收敛，设$\\lim_{n\\to\\infty}a_{n}=A$。因$a_{n}\\ge\\sqrt{\\sigma}>0$，在递推式$a_{n+1}=\\frac12\\left(a_{n}+\\frac{\\sigma}{a_{n}}\\right)$两边取极限，由极限四则运算得",
+        "$$A=\\frac12\\left(A+\\frac{\\sigma}{A}\\right)\\Longrightarrow2A^{2}=A^{2}+\\sigma\\Longrightarrow A^{2}=\\sigma.$$",
+        "又$A\\ge\\sqrt{\\sigma}>0$，故$A=\\sqrt{\\sigma}$。"
+      ],
+      "pointKeys": [
+        "均值不等式$a_{n+1}\\ge\\sqrt{\\sigma}$",
+        "$a_{n+1}-a_{n}=\\frac{\\sigma-a_{n}^{2}}{2a_{n}}\\le0$",
+        "取极限得$A^{2}=\\sigma$并取正根"
+      ]
+    },
+    {
+      "id": "MA-3564",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "第二章总练习题",
+      "type": "subjective",
+      "category": "证明题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "算术平均与调和平均的公共极限",
+      "question": "设$a_{1}>b_{1}>0$，记$a_{n}=\\frac{a_{n-1}+b_{n-1}}{2}$，$b_{n}=\\frac{2a_{n-1}b_{n-1}}{a_{n-1}+b_{n-1}}$，$n=2,3,\\cdots$。证明：数列$\\{a_{n}\\}$与$\\{b_{n}\\}$的极限都存在且等于$\\sqrt{a_{1}b_{1}}$。",
+      "answer": "两极限都存在且$\\lim_{n\\to\\infty}a_{n}=\\lim_{n\\to\\infty}b_{n}=\\sqrt{a_{1}b_{1}}$。",
+      "standardSolution": "证明：先找不变量。由定义，对$n\\ge2$有\n$$a_{n}b_{n}=\\frac{a_{n-1}+b_{n-1}}{2}\\cdot\\frac{2a_{n-1}b_{n-1}}{a_{n-1}+b_{n-1}}=a_{n-1}b_{n-1},$$\n故由归纳法$a_{n}b_{n}=a_{1}b_{1}$对一切$n$成立。\n再证$a_{n}>b_{n}>0$。当$n=1$时由题设$a_{1}>b_{1}>0$。若$a_{n-1}>b_{n-1}>0$，则$a_{n}=\\frac{a_{n-1}+b_{n-1}}{2}>b_{n-1}>0$，且由均值不等式$a_{n}=\\frac{a_{n-1}+b_{n-1}}{2}\\ge\\sqrt{a_{n-1}b_{n-1}}$，而$b_{n}=\\frac{2a_{n-1}b_{n-1}}{a_{n-1}+b_{n-1}}\\le\\sqrt{a_{n-1}b_{n-1}}$（因为$\\frac{2xy}{x+y}\\le\\sqrt{xy}$等价于$4xy\\le(x+y)\\sqrt{xy}$，即$4\\sqrt{xy}\\le x+y$，由均值不等式成立），故$a_{n}\\ge\\sqrt{a_{n-1}b_{n-1}}\\ge b_{n}$，再由$a_{n-1}\\ne b_{n-1}$知不等号严格。\n单调性：$a_{n}=\\frac{a_{n-1}+b_{n-1}}{2}<a_{n-1}$（因$b_{n-1}<a_{n-1}$），故$\\{a_{n}\\}$递减；$b_{n}=\\frac{2a_{n-1}b_{n-1}}{a_{n-1}+b_{n-1}}>b_{n-1}$（因$a_{n-1}>b_{n-1}$），故$\\{b_{n}\\}$递增。又$b_{1}<b_{n}<a_{n}<a_{1}$，两数列都有界，由单调有界定理都收敛。\n设$\\lim_{n\\to\\infty}a_{n}=A$，$\\lim_{n\\to\\infty}b_{n}=B$。在$a_{n}=\\frac{a_{n-1}+b_{n-1}}{2}$中取极限得$A=\\frac{A+B}{2}$，故$A=B$。再由不变量$a_{n}b_{n}=a_{1}b_{1}$取极限得$AB=a_{1}b_{1}$，即$A^{2}=a_{1}b_{1}$；因$A>0$，故$A=B=\\sqrt{a_{1}b_{1}}$。",
+      "detailedAnalysis": "本题的题眼是不变量：$a_{n}b_{n}=a_{1}b_{1}$恒成立，它把“两数列极限相等”升级为“极限可求”。整题结构是：不变量→$a_{n}>b_{n}$→$a_{n}$递减、$b_{n}$递增→有界收敛→取极限$A=B$→用不变量定值。$a_{n}\\ge\\sqrt{a_{n-1}b_{n-1}}\\ge b_{n}$可由均值不等式与$\\frac{2xy}{x+y}\\le\\sqrt{xy}$分别得到。易错点：忘记乘积极限存在需要两数列都收敛；以及$AB=a_{1}b_{1}$与$A=B$联立时忘记$A>0$而多留一个负根。",
+      "points": [
+        "不变量$a_{n}b_{n}=a_{1}b_{1}$",
+        "$a_{n}$递减、$b_{n}$递增且有界",
+        "$A=B$与$AB=a_{1}b_{1}$联立"
+      ],
+      "pitfalls": [
+        "忽略不变量导致无法定值",
+        "忘记$A>0$舍去负根"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 第二章总练习题 第9题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "第二章总练习题",
+        "不变量",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 4,
+      "solution": [
+        "证明：先找不变量。由定义，对$n\\ge2$有",
+        "$$a_{n}b_{n}=\\frac{a_{n-1}+b_{n-1}}{2}\\cdot\\frac{2a_{n-1}b_{n-1}}{a_{n-1}+b_{n-1}}=a_{n-1}b_{n-1},$$",
+        "故由归纳法$a_{n}b_{n}=a_{1}b_{1}$对一切$n$成立。",
+        "再证$a_{n}>b_{n}>0$。当$n=1$时由题设$a_{1}>b_{1}>0$。若$a_{n-1}>b_{n-1}>0$，则$a_{n}=\\frac{a_{n-1}+b_{n-1}}{2}>b_{n-1}>0$，且由均值不等式$a_{n}=\\frac{a_{n-1}+b_{n-1}}{2}\\ge\\sqrt{a_{n-1}b_{n-1}}$，而$b_{n}=\\frac{2a_{n-1}b_{n-1}}{a_{n-1}+b_{n-1}}\\le\\sqrt{a_{n-1}b_{n-1}}$（因为$\\frac{2xy}{x+y}\\le\\sqrt{xy}$等价于$4xy\\le(x+y)\\sqrt{xy}$，即$4\\sqrt{xy}\\le x+y$，由均值不等式成立），故$a_{n}\\ge\\sqrt{a_{n-1}b_{n-1}}\\ge b_{n}$，再由$a_{n-1}\\ne b_{n-1}$知不等号严格。",
+        "单调性：$a_{n}=\\frac{a_{n-1}+b_{n-1}}{2}<a_{n-1}$（因$b_{n-1}<a_{n-1}$），故$\\{a_{n}\\}$递减；$b_{n}=\\frac{2a_{n-1}b_{n-1}}{a_{n-1}+b_{n-1}}>b_{n-1}$（因$a_{n-1}>b_{n-1}$），故$\\{b_{n}\\}$递增。又$b_{1}<b_{n}<a_{n}<a_{1}$，两数列都有界，由单调有界定理都收敛。",
+        "设$\\lim_{n\\to\\infty}a_{n}=A$，$\\lim_{n\\to\\infty}b_{n}=B$。在$a_{n}=\\frac{a_{n-1}+b_{n-1}}{2}$中取极限得$A=\\frac{A+B}{2}$，故$A=B$。再由不变量$a_{n}b_{n}=a_{1}b_{1}$取极限得$AB=a_{1}b_{1}$，即$A^{2}=a_{1}b_{1}$；因$A>0$，故$A=B=\\sqrt{a_{1}b_{1}}$。"
+      ],
+      "pointKeys": [
+        "不变量$a_{n}b_{n}=a_{1}b_{1}$",
+        "$a_{n}$递减、$b_{n}$递增且有界",
+        "$A=B$与$AB=a_{1}b_{1}$联立"
+      ]
+    },
+    {
+      "id": "MA-3565",
+      "subject": "shufen",
+      "chapter": "第二章 数列极限",
+      "section": "第二章总练习题",
+      "type": "subjective",
+      "category": "反例与存在性题",
+      "templateId": "",
+      "templateTitle": "",
+      "title": "用柯西准则判定数列发散",
+      "question": "按柯西收敛准则叙述数列$\\{a_{n}\\}$发散的充要条件，并用它证明下列数列$\\{a_{n}\\}$是发散的：(1)$a_{n}=(-1)^{n}n$；(2)$a_{n}=\\sin\\frac{n\\pi}{2}$；(3)$a_{n}=1+\\frac12+\\cdots+\\frac1n$。",
+      "answer": "充要条件：存在$\\varepsilon_{0}>0$，使对任何正整数$N$，总存在$m,n>N$满足$|a_{m}-a_{n}|\\ge\\varepsilon_{0}$。三个数列都发散：(1)取$\\varepsilon_{0}=1$，$m=2k$，$n=2k-1$；(2)取$\\varepsilon_{0}=1$，$m=4k+1$，$n=4k+3$；(3)取$\\varepsilon_{0}=\\frac12$，$m=2n$。",
+      "standardSolution": "解：柯西收敛准则说$\\{a_{n}\\}$收敛当且仅当：任给$\\varepsilon>0$，存在正整数$N$，当$m,n>N$时$|a_{m}-a_{n}|<\\varepsilon$。把它否定即得发散的充要条件：**存在**$\\varepsilon_{0}>0$，使对**任何**正整数$N$，总**存在**$m,n>N$，满足$|a_{m}-a_{n}|\\ge\\varepsilon_{0}$。\n(1)取$\\varepsilon_{0}=1$。对任何$N$，取$k>N$，令$m=2k$，$n=2k-1$，则$m,n>N$且\n$$|a_{m}-a_{n}|=|2k-(-(2k-1))|=4k-1\\ge1=\\varepsilon_{0}.$$\n故$\\{(-1)^{n}n\\}$发散。\n(2)取$\\varepsilon_{0}=1$。因$\\sin\\frac{n\\pi}{2}$的取值按$1,0,-1,0$循环，对任何$N$，取$k>N$，令$m=4k+1$，$n=4k+3$，则$a_{m}=\\sin\\frac{(4k+1)\\pi}{2}=1$，$a_{n}=\\sin\\frac{(4k+3)\\pi}{2}=-1$，于是\n$$|a_{m}-a_{n}|=2\\ge1=\\varepsilon_{0}.$$\n故$\\left\\{\\sin\\frac{n\\pi}{2}\\right\\}$发散。\n(3)取$\\varepsilon_{0}=\\frac12$。对任何$N$，取$n>N$，令$m=2n$，则$m>n>N$且\n$$|a_{m}-a_{n}|=\\frac{1}{n+1}+\\frac{1}{n+2}+\\cdots+\\frac{1}{2n}\\ge\\frac{n}{2n}=\\frac12=\\varepsilon_{0}.$$\n故$\\left\\{1+\\frac12+\\cdots+\\frac1n\\right\\}$发散。",
+      "detailedAnalysis": "本题考查柯西准则的否定形式，是“证明发散”的统一工具。否定时三个量词要一起翻转：$\\forall\\varepsilon\\exists N\\forall m,n$的否定是$\\exists\\varepsilon_{0}\\forall N\\exists m,n$。三小题的共同技巧是“取尾部一段，让这一段的和（或差）有一个与$N$无关的正下界”：(1)相邻异号项之差随$k$增大；(2)周期为$4$，隔两项取值恒为$1$与$-1$；(3)调和级数尾部$n$项每项$\\ge\\frac{1}{2n}$。易错点：把$\\varepsilon_{0}$取得依赖$N$（那就无效）；(3)中把区间取成$n+1$到$2n$却只数了$n-1$项导致下界算错。",
+      "points": [
+        "柯西准则的否定（量词翻转）",
+        "取尾部两项使差有正下界",
+        "调和级数尾部$\\ge\\frac12$"
+      ],
+      "pitfalls": [
+        "$\\varepsilon_{0}$依赖$N$",
+        "(3)中项数数错"
+      ],
+      "options": [],
+      "correct": "",
+      "source": "教材课后习题（第二章 数列极限）· 第二章总练习题 第10题",
+      "examOrigin": "教材课后习题",
+      "tags": [
+        "第二章 数列极限",
+        "教材课后",
+        "第二章总练习题",
+        "柯西准则",
+        "极限"
+      ],
+      "relatedEntries": [],
+      "difficulty": 3,
+      "solution": [
+        "解：柯西收敛准则说$\\{a_{n}\\}$收敛当且仅当：任给$\\varepsilon>0$，存在正整数$N$，当$m,n>N$时$|a_{m}-a_{n}|<\\varepsilon$。把它否定即得发散的充要条件：**存在**$\\varepsilon_{0}>0$，使对**任何**正整数$N$，总**存在**$m,n>N$，满足$|a_{m}-a_{n}|\\ge\\varepsilon_{0}$。",
+        "(1)取$\\varepsilon_{0}=1$。对任何$N$，取$k>N$，令$m=2k$，$n=2k-1$，则$m,n>N$且",
+        "$$|a_{m}-a_{n}|=|2k-(-(2k-1))|=4k-1\\ge1=\\varepsilon_{0}.$$",
+        "故$\\{(-1)^{n}n\\}$发散。",
+        "(2)取$\\varepsilon_{0}=1$。因$\\sin\\frac{n\\pi}{2}$的取值按$1,0,-1,0$循环，对任何$N$，取$k>N$，令$m=4k+1$，$n=4k+3$，则$a_{m}=\\sin\\frac{(4k+1)\\pi}{2}=1$，$a_{n}=\\sin\\frac{(4k+3)\\pi}{2}=-1$，于是",
+        "$$|a_{m}-a_{n}|=2\\ge1=\\varepsilon_{0}.$$",
+        "故$\\left\\{\\sin\\frac{n\\pi}{2}\\right\\}$发散。",
+        "(3)取$\\varepsilon_{0}=\\frac12$。对任何$N$，取$n>N$，令$m=2n$，则$m>n>N$且",
+        "$$|a_{m}-a_{n}|=\\frac{1}{n+1}+\\frac{1}{n+2}+\\cdots+\\frac{1}{2n}\\ge\\frac{n}{2n}=\\frac12=\\varepsilon_{0}.$$",
+        "故$\\left\\{1+\\frac12+\\cdots+\\frac1n\\right\\}$发散。"
+      ],
+      "pointKeys": [
+        "柯西准则的否定（量词翻转）",
+        "取尾部两项使差有正下界",
+        "调和级数尾部$\\ge\\frac12$"
+      ]
     }
   ]
 }
