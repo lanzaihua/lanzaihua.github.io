@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.21-9d95291b";</script>
+<script>window.__BUILD_ID__="2026.11.21-91aac930";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -10237,6 +10237,27 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .home-subject { padding-top: 11px !important; padding-bottom: 11px !important; }
 }
 
+/* 2026-11-21: tall inline formulas followed by Chinese punctuation align to the
+   text middle instead of sitting on the baseline at the bottom of the matrix. */
+.math-tail.has-tall {
+  vertical-align: middle !important;
+}
+.math-tail.has-tall > .math-inline-scroll {
+  vertical-align: middle !important;
+}
+
+/* Inline text-style fractions shrink to 0.7em in MathML, which reads as fuzzy
+   digits next to 15px body text. Keep them legible but still compact. */
+.math-inline-scroll:not(.is-wide) mfrac > mrow,
+.math-inline-scroll:not(.is-wide) mfrac > mi,
+.math-inline-scroll:not(.is-wide) mfrac > mn,
+.math-inline-scroll:not(.is-wide) mfrac > mo {
+  font-size: 0.92em !important;
+}
+.math-inline-scroll:not(.is-wide) mfrac > mstyle {
+  font-size: 0.92em !important;
+}
+
 </style>
 </head>
 <body>
@@ -16707,13 +16728,13 @@ function normalizeCjkStrong(src) {
 }
 
 /**
- * 行内公式排版：\dfrac / \displaystyle 会把分数线拉到展示尺寸，
- * 在 13–14px 的正文里撑高行盒，导致公式上下留白、句子被拆行。
- * 只有真正的块级公式保留展示尺寸；行内一律压成紧凑的 \frac。
+ * 行内公式排版：作者写 \dfrac 就是希望分式保持可读的展示尺寸，
+ * 不能悄悄降成 scriptstyle（分子分母会缩到正文的 0.7 倍，数字看起来发虚）。
+ * 只移除裸 \displaystyle 和 \limits / \nolimits，避免运算符上下限把整行撑得过高；
+ * 真正的上下限（积分、求和）仍保留，由 has-tall 负责行盒与基线。
  */
 function compactInlineMath(tex) {
   return String(tex == null ? '' : tex)
-    .replace(/\\dfrac(?![A-Za-z])/g, '\\frac')
     .replace(/\\displaystyle(?![A-Za-z])/g, '')
     .replace(/\\limits(?![A-Za-z])/g, '')
     .replace(/\\nolimits(?![A-Za-z])/g, '');
@@ -16835,7 +16856,10 @@ function renderMarkdown(src) {
   // 行内公式与紧跟的中文标点绑成不可拆分的尾串，避免“公式在行末、逗号掉到下一行”。
   // 只包裹紧邻的单个公式；禁止跨过其它 span 去吞掉整段文字，否则整句会变成
   // 一个 inline-block 的 math-tail，既不能换行，又会压到相邻卡片上。
-  html = html.replace(/(<span class="math-inline-scroll[^"]*">(?:(?!<\/?span\b)[\s\S])*?<\/span>)([，。；：、])/g, '<span class="math-tail">$1$2</span>');
+  html = html.replace(/(<span class="math-inline-scroll[^"]*">(?:(?!<\/?span\b)[\s\S])*?<\/span>)([，。；：、])/g, function (m, math, punct) {
+    var tall = /has-(?:matrix|tall)/.test(math) ? ' has-tall' : '';
+    return '<span class="math-tail' + tall + '">' + math + punct + '</span>';
+  });
   html = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
   // 属性清洗已由 sanitizeMarkdownHtml 按 DOM 完成；这里不能再跑 on* 正则，
   // 否则会把正文里的 &lt;img ... onerror=...&gt; 文字当成属性删掉。
@@ -24428,8 +24452,8 @@ var UPDATE_LOG = [
   "date": "2026-11-21",
   "title": "题库扩充与3.3",
   "historyTitle": "题库扩充与3.3",
-  "summary": "题库扩至 9875 题并完成 Warm Academic 3.3 质量升级：首页改用真实复习队列，题库与模板统一内置/自建口径，备份显示时间与完整性，通知支持分类，AI 请求状态可见。153 项测试通过。",
-  "notifySummary": "题库扩至 9875 题并完成 3.3 升级：首页用真实复习队列，资源统一内置/自建口径，备份与通知更清楚，AI 状态可见；153 项测试通过。",
+  "summary": "题库扩至 9875 题并完成 Warm Academic 3.3 质量升级：首页改用真实复习队列，题库与模板统一内置/自建口径，备份显示时间与完整性，通知支持分类，AI 请求状态可见；行内分式字号与高公式尾串基线同步修正。153 项测试通过。",
+  "notifySummary": "题库扩至 9875 题并完成 3.3 升级：首页用真实复习队列，资源统一内置/自建口径，备份与通知更清楚，AI 状态可见；行内分式字号与高公式尾串对齐同步修正。153 项测试通过。",
   "notifyItems": [
     {
       "group": "首页队列",
@@ -24450,6 +24474,10 @@ var UPDATE_LOG = [
     {
       "group": "AI 状态",
       "text": "AI 请求新增运行状态：请求中、最近请求成功、请求超时、上次请求失败，设置页的在线 AI 服务标签直接显示；失败只影响当前请求，错题、手动编辑与本地复习计划照常可用，错误文案不含密钥或上游正文。"
+    },
+    {
+      "group": "公式字号",
+      "text": "行内分式的字号从 MathML 默认的 0.7 倍调到 0.92 倍，作者写的 dfrac 不再被降成 frac；矩阵、分段函数等高公式与紧跟标点组成的尾串改用 middle 对齐，正文不再吊在公式底部。qa:formulas 新增分式字号和高公式尾串两项检查。"
     },
     {
       "group": "防复发",
@@ -24492,6 +24520,10 @@ var UPDATE_LOG = [
     {
       "group": "视觉精修",
       "text": "首页统计卡增加「内置 / 自建导入」副标签，四科入口显示可用模板与题库；统计页在手机上四张卡两列排布，副标签不挤压主数字；通知筛选在 360–1440 宽度下不横向溢出。"
+    },
+    {
+      "group": "公式字号",
+      "text": "行内分式的字号从 MathML 默认的 0.7 倍调到 0.92 倍，作者写的 dfrac 不再被降成 frac；矩阵、分段函数等高公式与紧跟标点组成的尾串改用 middle 对齐，正文不再吊在公式底部。qa:formulas 新增分式字号和高公式尾串两项检查。"
     },
     {
       "group": "防复发",

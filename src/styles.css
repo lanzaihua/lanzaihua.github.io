@@ -10213,3 +10213,24 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .home-workbench .hw-recent-item { padding: 6px 0 !important; min-height: 34px !important; }
   .home-subject { padding-top: 11px !important; padding-bottom: 11px !important; }
 }
+
+/* 2026-11-21: tall inline formulas followed by Chinese punctuation align to the
+   text middle instead of sitting on the baseline at the bottom of the matrix. */
+.math-tail.has-tall {
+  vertical-align: middle !important;
+}
+.math-tail.has-tall > .math-inline-scroll {
+  vertical-align: middle !important;
+}
+
+/* Inline text-style fractions shrink to 0.7em in MathML, which reads as fuzzy
+   digits next to 15px body text. Keep them legible but still compact. */
+.math-inline-scroll:not(.is-wide) mfrac > mrow,
+.math-inline-scroll:not(.is-wide) mfrac > mi,
+.math-inline-scroll:not(.is-wide) mfrac > mn,
+.math-inline-scroll:not(.is-wide) mfrac > mo {
+  font-size: 0.92em !important;
+}
+.math-inline-scroll:not(.is-wide) mfrac > mstyle {
+  font-size: 0.92em !important;
+}

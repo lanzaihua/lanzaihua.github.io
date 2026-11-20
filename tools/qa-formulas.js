@@ -11,7 +11,7 @@ const seed = {
       summary: 'Matrix $\\begin{pmatrix}0&1\\\\0&0\\end{pmatrix}$ and rank $r(A)$',
       points: ['Rank $r(A)$', 'Eigenvalue $\\lambda$'],
       chapter: '第三章 线性方程组', templateId: '', stars: 2, status: 'unmastered',
-      blocks: [{ title: '题目', md: 'Find $n$-th power of $2\\times 2$ matrix' }],
+      blocks: [{ title: '题目', md: 'Find $n$-th power of $2\\times 2$ matrix, and compare $\\frac{x_n-x_1}{n}$ with $\\dfrac{1}{2}$.' }],
       variants: [], review: { d1: false, d3: false, d7: false, d15: false, d30: false },
       source: '智能录入 · /advanced-algebra'
     }],
@@ -76,6 +76,21 @@ function collect(page, scope) {
       if (wrap.classList.contains('has-tall') && getComputedStyle(wrap).display === 'inline') {
         bad.push('has-tall formula is not inline-block');
       }
+      // 行内分式不能缩到正文的 0.7 倍：数字会发虚，和中文对不齐。
+      const mfrac = wrap.querySelector('mfrac');
+      if (mfrac && mfrac.children[0]) {
+        const outerSize = parseFloat(getComputedStyle(wrap).fontSize) || 0;
+        const numSize = parseFloat(getComputedStyle(mfrac.children[0]).fontSize) || 0;
+        if (outerSize && numSize / outerSize < 0.8) bad.push('fraction glyph too small: ' + numSize + '/' + outerSize);
+      }
+    });
+    // 高公式与紧跟的中文标点绑成的 math-tail，必须与正文垂直居中，不能吊在基线底部。
+    root.querySelectorAll('.math-tail').forEach(function (tail) {
+      const tall = tail.querySelector('.has-tall,.has-matrix');
+      if (!tall) return;
+      const cs = getComputedStyle(tail);
+      if (cs.verticalAlign !== 'middle') bad.push('tall math-tail not middle: ' + cs.verticalAlign);
+      if (!tail.classList.contains('has-tall')) bad.push('tall math-tail unmarked');
     });
     return { bad: Array.from(new Set(bad)).slice(0, 8), broken, width: document.documentElement.scrollWidth - document.documentElement.clientWidth };
   }, scope || '');

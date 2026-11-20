@@ -1075,7 +1075,7 @@ test('inline fractions keep text baseline and option labels hang without splitti
   const {document}=parseHTML('<!doctype html><html><body></body></html>');
   const r=runtime();r.ctx.document=document;r.ctx.window.marked=r.ctx.marked=require('../src/vendor/marked.umd.js');
   vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
-  assert.equal(r.ctx.compactInlineMath('\\dfrac{dy}{dx}'),'\\frac{dy}{dx}','行内分式必须降为 frac，避免撑高整行');
+  assert.equal(r.ctx.compactInlineMath('\\dfrac{dy}{dx}'),'\\dfrac{dy}{dx}','作者写的 dfrac 不能被悄悄降成 0.7 倍小字');
   assert.equal(r.ctx.compactInlineMath('\\displaystyle \\sum_{i=1}^n a_i'),' \\sum_{i=1}^n a_i','行内公式不应强制 displaystyle');
   const options=r.ctx.formatOptionParagraphs('<p>A．<span>x</span></p><p>B. y</p>');
   assert.match(options,/class="md-option"/,'选项段落需要独立排版容器');
@@ -1083,8 +1083,12 @@ test('inline fractions keep text baseline and option labels hang without splitti
   assert.match(options,/class="md-option-text"/,'选项正文需要独立容器');
   const math=r.ctx.renderMarkdown('导数定义：$\\dfrac{dy}{dx}$，也是微商。');
   assert.match(math,/math-tail/,'公式与紧跟的中文标点必须绑定，不能把标点甩到下一行');
-  assert.equal(math.includes('displaystyle="true"'),false,math);
-  assert.equal(math.includes('\\dfrac'),false,math);
+  assert.equal(math.includes('displaystyle="true"'),true,math);
+  assert.match(math,/<mfrac>/,math);
+  assert.match(read('src/styles.css'),/\.math-inline-scroll:not\(\.is-wide\) mfrac > mrow[\s\S]*?font-size:\s*0\.92em/, '行内分式字号必须大于 MathML 默认的 0.7 倍');
+  const matrixTail=r.ctx.renderMarkdown('行列式 $\\begin{vmatrix}1&0\\\\0&1\\end{vmatrix}$，与文字同一行。');
+  assert.match(matrixTail,/class="math-tail has-tall"/,'高矩阵与标点的尾串必须标记 has-tall');
+  assert.match(read('src/styles.css'),/\.math-tail\.has-tall\s*\{[^}]*vertical-align:\s*middle/,'高公式尾串必须与正文垂直居中');
   const multi=document.createElement('div');
   multi.innerHTML=r.ctx.renderMarkdown('错题题干的 $A．/B．$ 选项改为 flex，公式 $min-width:0$，长题干自然换行。');
   const tails=[...multi.querySelectorAll('.math-tail')];
@@ -1230,7 +1234,8 @@ test('exam title keeps dates whole and knowledge excerpts never cut a formula',(
   vm.runInContext(read('src/vendor/temml.min.js'),r.ctx);r.ctx.window.temml=r.ctx.temml;r.run('10-markdown.js');
   const cases=String.raw`设 $f(x)=\begin{cases}1,&x>0\\0,&x\le0\end{cases}$；`;
   const html=r.ctx.renderMarkdown(cases);
-  assert.match(html,/class="math-tail"/);
+  assert.match(html,/class="math-tail has-tall"/);
+  assert.match(html,/has-matrix/);
   // 表格单元格带列名，手机端才能堆叠成卡片。
   const table=r.ctx.renderMarkdown('| 题型 | 方法 |\n| --- | --- |\n| 逆序数 | 直接算 |');
   assert.match(table,/has-col-labels/);

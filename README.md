@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.21-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.21--9d95291b-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.21--91aac930-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -153,9 +153,9 @@
 
 ### 2026-11-21 · 题库扩充与3.3
 
-**10 项 · 10 组**
+**11 项 · 11 组**
 
-题库扩至 9875 题并完成 Warm Academic 3.3 质量升级：首页改用真实复习队列，题库与模板统一内置/自建口径，备份显示时间与完整性，通知支持分类，AI 请求状态可见。153 项测试通过。
+题库扩至 9875 题并完成 Warm Academic 3.3 质量升级：首页改用真实复习队列，题库与模板统一内置/自建口径，备份显示时间与完整性，通知支持分类，AI 请求状态可见；行内分式字号与高公式尾串基线同步修正。153 项测试通过。
 
 | 分组 | 本次更新 |
 |---|---|
@@ -168,6 +168,7 @@
 | **通知分类** | 通知中心按学习提醒、操作记录、系统通知筛选，列表与未读计数仍按真实记录计算。 |
 | **AI 状态** | 请求中、成功、超时与失败在设置页可见；失败不影响错题、手动编辑和本地复习计划。 |
 | **视觉精修** | 首页与统计卡增加资源副标签，手机两列排布；通知筛选在 360–1440 不横向溢出。 |
+| **公式字号** | 行内分式从 MathML 默认的 0.7 倍调到 0.92 倍，\dfrac 不再降级；高矩阵与标点尾串垂直居中；qa:formulas 增两项检查。 |
 | **防复发** | qa:polish 检查首页队列、手机顺序、统计口径与通知分类；单元测试覆盖队列、资源清单、通知与 AI 状态。 |
 
 <img src="assets/v2/20261121-changelog.png" alt="网页内题库扩充与 3.3 升级更新记录" width="820">
