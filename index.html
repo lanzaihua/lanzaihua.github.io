@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>四科错题本</title>
-<script>window.__BUILD_ID__="2026.11.21-f8e08ec1";</script>
+<script>window.__BUILD_ID__="2026.11.21-0d0fb0da";</script>
   <meta name="application-name" content="四科错题本">
 <meta name="description" content="高等代数、数学分析、解析几何、西方经济学四科错题本合一的在线复习台：掌握标记、考研同型题库、AI 智能录入、期末复习、随时编辑。">
 <meta name="theme-color" content="#f4f1e9">
@@ -9124,11 +9124,11 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   .home-kicker { order: 0; }
   .home-title { order: 0; }
   .home-welcome-note { order: 0; }
-  .home-subjects-head { order: 1; margin-top: 6px !important; }
-  .home-subjects { order: 2; }
-  .home-notes-entry { order: 3; }
-  .home-final-entry { order: 4; }
-  .home-workbench { order: 5; margin-top: 10px !important; }
+  .home-workbench { order: 1; margin-top: 6px !important; margin-bottom: 12px !important; }
+  .home-subjects-head { order: 2; margin-top: 12px !important; }
+  .home-subjects { order: 3; }
+  .home-notes-entry { order: 4; }
+  .home-final-entry { order: 5; }
   .home-features { order: 6; }
 }
 
@@ -10213,6 +10213,18 @@ table.data tbody tr:hover { background: var(--wa3-tint); }
   font-size: 10px;
   letter-spacing: .04em;
 }
+
+/* Warm Academic 3.3 · 首页队列、统计口径、通知分类 */
+.stat-sub{display:block;margin-top:5px;font-size:9.5px;line-height:1.35;color:var(--muted);letter-spacing:.01em}
+.hw-progress-name{display:inline-flex;align-items:center;gap:6px;min-width:0}
+.hw-due{font-style:normal;font-size:9px;line-height:1;padding:2px 5px;border-radius:999px;background:var(--accent-soft,rgba(184,92,56,.10));color:var(--accent,#b85c38);white-space:nowrap}
+.hw-due.is-overdue{background:rgba(163,61,61,.10);color:#a33d3d}
+.notif-filters{display:flex;gap:6px;padding:10px 18px 0;overflow-x:auto;scrollbar-width:none}
+.notif-filters::-webkit-scrollbar{display:none}
+.notif-filter{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;min-height:30px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);font-size:11px;cursor:pointer}
+.notif-filter span{font-size:9.5px;opacity:.75}
+.notif-filter.is-on{background:var(--accent-soft,rgba(184,92,56,.10));border-color:rgba(184,92,56,.28);color:var(--accent,#b85c38)}
+@media(max-width:760px){.notif-filters{padding:8px 14px 0}.notif-filter{min-height:34px;padding:0 11px;font-size:11.5px}}
 
 </style>
 </head>
@@ -16849,6 +16861,64 @@ function bankOf(id) {
   });
   return list;
 }
+
+// 统一“内置 + 自建/导入 = 可用”的资源口径，供首页、统计、设置共用。
+function uniqueById(list) {
+  var seen = {};
+  var out = [];
+  var duplicates = 0;
+  (Array.isArray(list) ? list : []).forEach(function (item) {
+    if (!item || typeof item !== 'object') return;
+    var id = String(item.id || '');
+    if (id && seen[id]) { duplicates++; return; }
+    if (id) seen[id] = true;
+    out.push(item);
+  });
+  return { items: out, duplicates: duplicates };
+}
+function libraryInventory() {
+  var out = {
+    builtInBank: 0, builtInTemplates: 0, userBank: 0, userTemplates: 0,
+    totalBank: 0, totalTemplates: 0, duplicateBank: 0, duplicateTemplates: 0,
+    bySubject: {}
+  };
+  SUBJECTS.forEach(function (s) {
+    var baseItems = ((BANKS[s.id] && BANKS[s.id].items) || []);
+    var userItems = ((state.userBank && state.userBank[s.id]) || []);
+    var baseTpl = (subjectOf(s.id).templates || []);
+    var userTpl = ((state.userTemplates && state.userTemplates[s.id]) || []);
+    var baseBank = uniqueById(baseItems);
+    var userBankAll = uniqueById(userItems);
+    var baseIds = {};
+    baseBank.items.forEach(function (it) { baseIds[String(it.id)] = true; });
+    var userBankEff = userBankAll.items.filter(function (it) { return !baseIds[String(it.id)]; });
+    var baseTplU = uniqueById(baseTpl);
+    var userTplAll = uniqueById(userTpl);
+    var baseTplIds = {};
+    baseTplU.items.forEach(function (it) { baseTplIds[String(it.id)] = true; });
+    var userTplEff = userTplAll.items.filter(function (it) { return !baseTplIds[String(it.id)]; });
+    var row = {
+      builtInBank: baseBank.items.length,
+      builtInTemplates: baseTplU.items.length,
+      userBank: userBankEff.length,
+      userTemplates: userTplEff.length,
+      totalBank: baseBank.items.length + userBankEff.length,
+      totalTemplates: baseTplU.items.length + userTplEff.length,
+      duplicateBank: baseBank.duplicates + userBankAll.duplicates,
+      duplicateTemplates: baseTplU.duplicates + userTplAll.duplicates
+    };
+    out.bySubject[s.id] = row;
+    out.builtInBank += row.builtInBank;
+    out.builtInTemplates += row.builtInTemplates;
+    out.userBank += row.userBank;
+    out.userTemplates += row.userTemplates;
+    out.totalBank += row.totalBank;
+    out.totalTemplates += row.totalTemplates;
+    out.duplicateBank += row.duplicateBank;
+    out.duplicateTemplates += row.duplicateTemplates;
+  });
+  return out;
+}
 function currentSubject() { return subjectOf(state.activeSubject); }
 function templateById(subjectId, tid) {
   var list = templatesOf(subjectId);
@@ -17264,7 +17334,17 @@ function homeWorkbenchData() {
     totals.unmastered += r.st.unmastered;
     totals.bank += r.st.bank;
   });
+  var inv = typeof libraryInventory === 'function' ? libraryInventory() : null;
+  if (inv) {
+    totals.bank = inv.totalBank;
+    totals.templates = inv.totalTemplates;
+    totals.userBank = inv.userBank;
+    totals.userTemplates = inv.userTemplates;
+  }
   totals.pct = totals.total ? Math.round((totals.mastered / totals.total) * 100) : 0;
+  var queue = typeof reviewQueueStats === 'function'
+    ? reviewQueueStats()
+    : { dueToday: 0, overdue: 0, completedToday: 0, remaining: 0, progress: 0, bySubject: {}, firstDue: null };
   var recent = [];
   SUBJECTS.forEach(function (s) {
     entriesOf(s.id).forEach(function (e) {
@@ -17272,7 +17352,7 @@ function homeWorkbenchData() {
     });
   });
   recent.sort(function (a, b) { return b.at.localeCompare(a.at); });
-  return { rows: rows, totals: totals, recent: recent.slice(0, 3) };
+  return { rows: rows, totals: totals, recent: recent.slice(0, 3), queue: queue, inventory: inv };
 }
 
 function renderHomeWorkbench() {
@@ -17284,25 +17364,49 @@ function renderHomeWorkbench() {
   var focusHref = '#/' + focus.subject.id + '/entries';
   var focusTitle = '';
   var focusNote = '';
+  var focusNoteHtml = '';
   var focusAction = '去错题本';
+  var q = d.queue || { dueToday: 0, overdue: 0, completedToday: 0, remaining: 0, progress: 0, firstDue: null };
+  var due = q.firstDue;
+  var dueSubject = null;
+  var dueEntry = null;
+  if (due) {
+    dueSubject = SUBJ_BY_ID[due.subjectId] || focus.subject;
+    dueEntry = findEntry(due.subjectId, due.entryId);
+  }
   if (!t.total) {
     focusTitle = '先建立今天的手感';
     focusNote = '从标准题库挑 10 道题，做完把不会的加入错题本；今天只做一点也算开始。';
     focusHref = '#/' + focus.subject.id + '/bank';
     focusAction = '去题库挑题';
-  } else if (t.unmastered > 0) {
-    focusTitle = focus.subject.name + '还有 ' + focus.st.unmastered + ' 道未掌握';
-    focusNote = '按节点从 1 / 3 / 7 天起步，再逐步拉长到 D1800；先合上答案独立写一遍，再对照标准解答。';
+  } else if (due && q.overdue > 0) {
+    focusTitle = '先补 ' + q.overdue + ' 道逾期复习';
+    focusNoteHtml = esc('第一道在' + dueSubject.name + ' · ') + renderInline(entryTitle(dueEntry || {})) + esc('；今天另有 ' + q.dueToday + ' 道到期。');
+    focusHref = '#/' + dueSubject.id + '/entries';
+    focusAction = '开始今日复习';
+  } else if (due) {
+    focusTitle = '今天有 ' + q.dueToday + ' 道到期复习';
+    focusNoteHtml = esc('第一道在' + dueSubject.name + ' · ') + renderInline(entryTitle(dueEntry || {})) + esc('；做完按 D1 / D3 / D7 继续解锁。');
+    focusHref = '#/' + dueSubject.id + '/entries';
+    focusAction = '开始今日复习';
+  } else if (q.completedToday > 0) {
+    focusTitle = '今天的复习已经完成';
+    focusNote = '今天已完成 ' + q.completedToday + ' 道；可以再挑一道新题，或做一组限时模拟卷保持手感。';
+    focusHref = '#/' + focus.subject.id + '/bank';
+    focusAction = '去题库';
   } else {
-    focusTitle = '四科错题都已掌握';
-    focusNote = '做一组限时模拟卷保持手感，或者从题库挑新题扩到错题本。';
-    focusHref = '#/final';
-    focusAction = '去模拟考';
+    focusTitle = '今天没有到期复习';
+    focusNote = '错题按 D1 / D3 / D7 自动解锁；现在可以记一道新错题，或从题库挑新题扩到错题本。';
+    focusHref = '#/' + focus.subject.id + '/bank';
+    focusAction = '去题库';
   }
+  var focusButton = due
+    ? '<button class="btn btn-xs" data-act="jump-entry" data-id="' + attr(due.entryId) + '" type="button">' + esc(focusAction) + '</button>'
+    : '<a class="btn btn-xs" href="' + attr(focusHref) + '">' + esc(focusAction) + '</a>';
   var progress = d.rows.map(function (r) {
     var pct = r.st.total ? r.st.pct : 0;
     return '<div class="hw-progress-row" style="--subj:var(--' + attr(r.subject.id) + ')">' +
-      '<span>' + esc(r.subject.short || r.subject.name) + '</span>' +
+      '<span class="hw-progress-name">' + esc(r.subject.short || r.subject.name) + '</span>' +
       '<i><em style="width:' + pct + '%"></em></i>' +
       '<b>' + (r.st.total ? pct + '%' : '—') + '</b>' +
     '</div>';
@@ -17323,15 +17427,14 @@ function renderHomeWorkbench() {
   host.innerHTML =
     '<div class="hw-topbar"><span>STUDY DESK · 今日工作台</span><p>四科进度、最近记录和复习节奏都在这一页；不用翻页，<span class="hw-nobreak">先决定今天做哪一件。</span></p></div>' +
     '<div class="hw-top">' +
-      '<div class="hw-metric"><span>错题总数</span><b>' + t.total + '</b><small>四科合计</small></div>' +
-      '<div class="hw-metric"><span>待复习</span><b>' + t.unmastered + '</b><small>尚未掌握</small></div>' +
-      '<div class="hw-metric"><span>已掌握</span><b>' + t.mastered + '</b><small>独立做对</small></div>' +
-      '<div class="hw-metric"><span>完成度</span><b>' + t.pct + '%</b><small>已掌握 / 错题</small></div>' +
+      '<div class="hw-metric"><span>今日待复习</span><b>' + q.remaining + '</b><small>按复习队列</small></div>' +
+      '<div class="hw-metric"><span>今日已完成</span><b>' + q.completedToday + '</b><small>已打卡节点</small></div>' +
+      '<div class="hw-metric"><span>逾期</span><b>' + q.overdue + '</b><small>优先补齐</small></div>' +
+      '<div class="hw-metric"><span>今日完成度</span><b>' + q.progress + '%</b><small>已完成 / 今日队列</small></div>' +
       '<div class="hw-focus">' +
         '<span class="hw-label">TODAY · 今日建议</span>' +
         '<b>' + esc(focusTitle) + '</b>' +
-        '<p>' + esc(focusNote) + '</p>' +
-        '<a class="btn btn-xs" href="' + attr(focusHref) + '">' + esc(focusAction) + '</a>' +
+        '<p>' + (focusNoteHtml || esc(focusNote)) + '</p>' + focusButton +
       '</div>' +
     '</div>' +
     '<div class="hw-bottom">' +
@@ -17398,16 +17501,20 @@ function renderHome() {
   }
   var wrap = qs('#homeSubjects');
   if (!wrap) return;
+  var inv = typeof libraryInventory === 'function' ? libraryInventory() : null;
   wrap.innerHTML = SUBJECTS.map(function (s, i) {
     var st = statsFor(s.id);
-    var n = bankOf(s.id).length;
+    var iv = inv && inv.bySubject ? inv.bySubject[s.id] : null;
+    var n = iv ? iv.totalBank : bankOf(s.id).length;
+    var tplN = iv ? iv.totalTemplates : templatesOf(s.id).length;
+    var ownN = iv ? (iv.userBank + iv.userTemplates) : 0;
     var count = st.total ? st.total + ' 道错题' : '0 道错题';
     return '<a class="home-subject" href="#/' + attr(subjectRouteId(s.id)) + '/entries" style="--subj:var(--' + attr(s.id) + ');--subj-ink:var(--' + attr(s.id) + '-ink)">' +
       '<span class="hs-index">' + pad(i + 1, 2) + '</span>' +
       '<span class="hs-main"><span class="hs-name">' + esc(s.name) + '</span>' +
       '<span class="hs-desc">' + esc(homeSubjectNote(s.id)) + '</span></span>' +
       '<span class="hs-side"><span class="hs-count">' + esc(count) + '</span>' +
-      '<span class="hs-meta">' + templatesOf(s.id).length + ' 模板 · ' + n + ' 题库</span></span>' +
+      '<span class="hs-meta">' + tplN + ' 模板 · ' + n + ' 题库' + (ownN ? ' · 自建 ' + ownN : '') + '</span></span>' +
       '<span class="hs-arrow" aria-hidden="true">→</span>' +
     '</a>';
   }).join('');
@@ -17773,9 +17880,10 @@ function viewOverview(subjectId) {
   return hero + stats + body + '<div class="grid-2" style="margin-top:22px">' + recentPanel + sideInfoPanel(s, st) + '</div>';
 }
 
-function statCard(num, label, cls) {
+function statCard(num, label, cls, sub) {
   return '<div class="stat"><span class="num ' + (cls || '') + '">' + num + '</span>' +
-    '<span class="lbl">' + label + '</span></div>';
+    '<span class="lbl">' + label + '</span>' +
+    (sub ? '<span class="stat-sub">' + esc(sub) + '</span>' : '') + '</div>';
 }
 
 function sideInfoPanel(s, st) {
@@ -17991,6 +18099,18 @@ function statsTotals(rows) {
     out.templates += r.st.templates;
     out.notes += r.st.notes || 0;
   });
+  var inv = typeof libraryInventory === 'function' ? libraryInventory() : null;
+  if (inv) {
+    out.bank = inv.totalBank;
+    out.templates = inv.totalTemplates;
+    out.bankBuiltIn = inv.builtInBank;
+    out.bankUser = inv.userBank;
+    out.templatesBuiltIn = inv.builtInTemplates;
+    out.templatesUser = inv.userTemplates;
+    out.duplicateBank = inv.duplicateBank;
+    out.duplicateTemplates = inv.duplicateTemplates;
+  }
+  out.queue = typeof reviewQueueStats === 'function' ? reviewQueueStats() : { dueToday: 0, overdue: 0, completedToday: 0, remaining: 0, progress: 0, bySubject: {} };
   out.pct = out.total ? Math.round((out.mastered / out.total) * 100) : 0;
   var since = Date.now() - 30 * 86400000;
   statsAllEntries().forEach(function (row) {
@@ -18155,11 +18275,12 @@ function viewStats() {
     '</div>' +
   '</section>';
 
+  var queue = totals.queue || { dueToday: 0, overdue: 0, completedToday: 0, remaining: 0, progress: 0 };
   var metrics = '<section class="stats-metrics" aria-label="学习总量">' +
-    statCard(totals.bank, '题库总量', '') +
-    statCard(totals.templates, '题型模板', '') +
-    statCard(totals.reviews30, '近 30 天复习', 'mastered') +
-    statCard(examCount, '已交模拟考', '') +
+    statCard(totals.bank, '可用题库', '', '内置 ' + (totals.bankBuiltIn || 0) + ' · 自建/导入 ' + (totals.bankUser || 0)) +
+    statCard(totals.templates, '可用模板', '', '内置 ' + (totals.templatesBuiltIn || 0) + ' · 自建/导入 ' + (totals.templatesUser || 0)) +
+    statCard(queue.remaining, '今日待复习', 'mastered', queue.overdue ? '逾期 ' + queue.overdue + ' 道' : '今日到期 ' + queue.dueToday + ' 道') +
+    statCard(examCount, '已交模拟考', '', '近 30 天复习 ' + totals.reviews30 + ' 次') +
   '</section>';
 
   return hero + metrics +
@@ -18171,6 +18292,89 @@ function viewStats() {
       '<section class="panel stats-panel stats-panel-wide"><div class="panel-head"><h2 class="panel-title">模拟考成绩</h2><span class="panel-sub">最近 6 次已交卷</span></div><div class="panel-body">' + statsExamHtml(exams) + '</div></section>' +
     '</div>' +
     '<p class="stats-footnote">统计范围：本机浏览器（IndexedDB）中的错题、复习打卡、题库与模拟考记录。导出备份再导入不会重复计数。</p>';
+}
+
+// 真实复习队列：按“第一未打卡节点”判断到期与逾期。
+function reviewQueueStats(nowMs) {
+  var now = nowMs == null ? Date.now() : Number(nowMs);
+  var today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+  var start = today.getTime();
+  var end = start + 86400000;
+  var out = {
+    dueToday: 0, overdue: 0, completedToday: 0, remaining: 0, progress: 0,
+    bySubject: {}, firstDue: null
+  };
+  SUBJECTS.forEach(function (s) {
+    out.bySubject[s.id] = { dueToday: 0, overdue: 0, completedToday: 0, remaining: 0 };
+  });
+  SUBJECTS.forEach(function (s) {
+    var bucket = out.bySubject[s.id];
+    entriesOf(s.id).forEach(function (e) {
+      if (!e || typeof e !== 'object') return;
+      var keys = reviewPlanKeys(e);
+      var next = '';
+      for (var i = 0; i < keys.length; i++) {
+        if (!(e.review && e.review[keys[i]])) { next = keys[i]; break; }
+      }
+      if (next) {
+        var at = reviewDayAvailableAt(e, next);
+        if (at != null && at < end) {
+          if (at < start) { out.overdue++; bucket.overdue++; }
+          else { out.dueToday++; bucket.dueToday++; }
+          if (!out.firstDue || at < out.firstDue.at) {
+            out.firstDue = { subjectId: s.id, entryId: e.id, day: next, at: at };
+          }
+        }
+      }
+      var done = e.reviewAt && typeof e.reviewAt === 'object' ? e.reviewAt : null;
+      if (done) {
+        Object.keys(done).forEach(function (k) {
+          var d = new Date(done[k]);
+          if (!isNaN(d.getTime()) && d.getTime() >= start && d.getTime() < end) {
+            out.completedToday++;
+            bucket.completedToday++;
+          }
+        });
+      }
+    });
+    bucket.remaining = bucket.dueToday + bucket.overdue;
+  });
+  out.remaining = out.dueToday + out.overdue;
+  var base = out.completedToday + out.remaining;
+  out.progress = base ? Math.round((out.completedToday / base) * 100) : 0;
+  return out;
+}
+
+// 只报告、不修改数据；设置页与导入前用来判断结构是否完整。
+function dataIntegrityReport() {
+  var issues = [];
+  var ids = {};
+  var total = 0;
+  SUBJECTS.forEach(function (s) {
+    entriesOf(s.id).forEach(function (e) {
+      if (!e || typeof e !== 'object') { issues.push(s.name + '：存在空条目'); return; }
+      total++;
+      if (!e.id) issues.push(s.name + '：条目缺少编号');
+      else {
+        var key = s.id + '|' + e.id;
+        if (ids[key]) issues.push(s.name + '：编号重复 ' + e.id);
+        ids[key] = true;
+      }
+      if (!e.summary && !(e.points && e.points.length)) issues.push((e.id || s.name) + '：缺少标题');
+      if (e.reviewAt && typeof e.reviewAt === 'object') {
+        Object.keys(e.reviewAt).forEach(function (k) {
+          if (isNaN(new Date(e.reviewAt[k]).getTime())) issues.push((e.id || s.name) + '：复习时间无效 ' + k);
+        });
+      }
+    });
+  });
+  if (typeof libraryInventory === 'function') {
+    var inv = libraryInventory();
+    if (inv.duplicateBank) issues.push('题库有 ' + inv.duplicateBank + ' 个重复 ID');
+    if (inv.duplicateTemplates) issues.push('模板有 ' + inv.duplicateTemplates + ' 个重复 ID');
+  }
+  return { ok: issues.length === 0, count: issues.length, issues: issues.slice(0, 20), entries: total };
 }
 
 /* ---- 20-entries.js ---- */
@@ -19835,7 +20039,7 @@ function openSettings() {
     '</div>' +
 languageRow +
 '<div class="settings-section"><div class="settings-section-head"><span class="settings-section-title">AI与智能录入</span><span class="settings-section-note">AI</span></div>' +
-    '<div class="setting-row ai-config-row"><div class="ai-config-head"><div><div class="st">在线 AI 服务</div><div class="sd">支持 OpenAI、DeepSeek、Google Gemini、Anthropic、xAI Grok、通义千问、Moonshot Kimi、DeepSeek Harness 等厂商接口。API Key 加密后只保存在本机浏览器（IndexedDB），不写入错题数据；纯静态页需要接口允许浏览器跨域。</div></div><span class="chip ' + (aiReadyNow ? 'chip-ok' : '') + '">' + (aiReadyNow ? '已配置' : '未配置') + '</span></div>' +
+    '<div class="setting-row ai-config-row"><div class="ai-config-head"><div><div class="st">在线 AI 服务</div><div class="sd">支持 OpenAI、DeepSeek、Google Gemini、Anthropic、xAI Grok、通义千问、Moonshot Kimi、DeepSeek Harness 等厂商接口。API Key 加密后只保存在本机浏览器（IndexedDB），不写入错题数据；纯静态页需要接口允许浏览器跨域。</div></div><span class="chip ' + (aiReadyNow ? 'chip-ok' : '') + '">' + (aiReadyNow ? (typeof aiRuntimeLabel === 'function' ? aiRuntimeLabel() : '已配置') : '未配置') + '</span></div>' +
       '<div class="ai-config-grid">' +
         '<label class="field full"><span>协议</span>' +
           '<div class="model-combo protocol-combo">' +
@@ -19878,9 +20082,11 @@ languageRow +
       '<span class="chip">' + (sync.available ? 'ONLINE' : 'LOCAL') + '</span></div>' +
     '<div class="setting-row"><div><div class="st">本机容量</div><div class="sd" id="storageCapacityText">' + esc(typeof storageCapacityLabel === 'function' ? storageCapacityLabel() : 'IndexedDB 主存储') + '</div></div>' +
       '<button class="btn btn-xs" data-act="request-persist" type="button">申请持久化</button></div>' +
-    '<div class="setting-row"><div><div class="st">数据备份</div><div class="sd">导出为 JSON，可导入到另一台设备；不依赖服务器</div></div>' +
+    '<div class="setting-row"><div><div class="st">数据备份</div><div class="sd">' + esc(backupStatusText()) + '</div></div>' +
       '<div class="multi-actions"><button class="btn btn-xs" data-act="export-state" type="button">导出</button>' +
       '<button class="btn btn-xs" data-act="import-state" type="button">导入</button></div></div>' +
+    '<div class="setting-row"><div><div class="st">数据完整性</div><div class="sd">检查条目编号、必填字段、题库与模板重复 ID；异常只提示，不会自动删除你的数据</div></div>' +
+      '<span class="chip ' + (typeof dataIntegrityReport === 'function' && dataIntegrityReport().ok ? 'chip-ok' : '') + '">' + (typeof dataIntegrityReport === 'function' ? (dataIntegrityReport().ok ? '正常' : dataIntegrityReport().count + ' 项待查') : '未检查') + '</span></div>' +
     '<div class="setting-row"><div><div class="st">恢复初始数据</div><div class="sd">清空本机改动，回到空白错题本；模板与题库保留</div></div>' +
       '<button class="btn btn-xs btn-danger" data-act="reset-state" type="button">恢复</button></div>' +
     '</div>' +
@@ -19980,6 +20186,20 @@ function backupSafeState() {
   return copy;
 }
 
+function backupStatusText() {
+  var at = state.prefs && state.prefs.lastBackupAt;
+  var mb = 0;
+  try { mb = Math.round(JSON.stringify(state).length / 1024 / 1024 * 10) / 10; } catch (e) { mb = 0; }
+  var integrity = '';
+  if (typeof dataIntegrityReport === 'function') {
+    var rep = dataIntegrityReport();
+    integrity = rep.ok ? '结构完整' : (rep.count + ' 个待检查项');
+  }
+  return (at ? '上次备份 ' + timeAgo(at) : '还没有导出过备份') +
+    ' · 当前约 ' + mb + ' MB' + (integrity ? ' · ' + integrity : '') +
+    '；导出会剔除 API Key';
+}
+
 function backupSafeLibraries(libs) {
   var copy = deepClone(libs);
   // Libraries are content, not configuration: never strip nested `key` fields.
@@ -20008,6 +20228,9 @@ async function exportState() {
       await i18nTranslateMany(strings);
     }
   }
+  state.prefs = state.prefs || {};
+  state.prefs.lastBackupAt = nowIso();
+  markDirty();
   var payload = {
     app: 'sanke-cuotiben',
     version: 4,
@@ -23061,6 +23284,30 @@ var DSH_API_URL = 'https://api.deepseek.com/anthropic/v1/messages';
 var DSH_MODEL = 'deepseek-flash';
 var DSH_TIMEOUT_MS = 240000;
 var SKILL_PACKS_STATE = { data: null, promise: null };
+var AI_RUNTIME_STATE = { phase: 'idle', message: '', at: '' };
+
+function aiRuntimeSet(phase, message) {
+  AI_RUNTIME_STATE = { phase: phase || 'idle', message: String(message || ''), at: nowIso() };
+}
+
+function aiRuntimeSnapshot() {
+  return {
+    phase: AI_RUNTIME_STATE.phase,
+    message: AI_RUNTIME_STATE.message,
+    at: AI_RUNTIME_STATE.at,
+    configured: typeof aiConfigReady === 'function' ? aiConfigReady() : false
+  };
+}
+
+function aiRuntimeLabel() {
+  if (typeof aiConfigReady === 'function' && !aiConfigReady()) return '未配置';
+  var p = AI_RUNTIME_STATE.phase;
+  if (p === 'requesting') return '请求中';
+  if (p === 'success') return '最近请求成功';
+  if (p === 'timeout') return '请求超时';
+  if (p === 'failed') return '上次请求失败';
+  return '已配置';
+}
 
 function dshToken() { return (typeof aiKeyCacheValue === 'function') ? aiKeyCacheValue() : ''; }
 function setDshToken(v) { /* 44-ai-config 以不可导出的 AES-GCM 密钥把 Key 存进 IndexedDB */ }
@@ -23448,6 +23695,7 @@ async function postAiJson(cfg, payload, timeoutMs, signal, opts) {
   }
   var stream = opts.stream !== false;
   if (stream) payload = Object.assign({}, payload, { stream: true });
+  aiRuntimeSet('requesting', '请求中 · ' + (cfg.model || ''));
   try {
     var res = await fetch(aiEndpoint(cfg), {
       method: 'POST',
@@ -23462,7 +23710,11 @@ async function postAiJson(cfg, payload, timeoutMs, signal, opts) {
     }
     if (!stream || !res.body || !/text\/event-stream/i.test(ctype)) {
       var raw = await res.text();
-      try { return JSON.parse(raw); } catch (e) {
+      try {
+        var parsed = JSON.parse(raw);
+        aiRuntimeSet('success', '已返回 · ' + (cfg.model || ''));
+        return parsed;
+      } catch (e) {
         var pe = new Error('模型返回了无法解析的内容');
         pe.code = 'PARSE_ERROR';
         throw pe;
@@ -23494,7 +23746,12 @@ async function postAiJson(cfg, payload, timeoutMs, signal, opts) {
       ee.code = 'EMPTY_RESPONSE';
       throw ee;
     }
+    aiRuntimeSet('success', '已返回 · ' + (cfg.model || ''));
     return { __streamed: true, text: state.text, model: state.model, usage: state.usage, stopReason: state.stopReason };
+  } catch (e) {
+    aiRuntimeSet(e && e.code === 'ABORT' ? 'timeout' : 'failed',
+      e && e.code === 'ABORT' ? '请求超时，基础功能不受影响' : '请求失败，基础功能不受影响');
+    throw e;
   } finally {
     clearTimeout(timer);
   }
@@ -24158,44 +24415,76 @@ var __BUILD_DAY = __BUILD_DAY_MATCH ? __BUILD_DAY_MATCH[1] + '-' + __BUILD_DAY_M
 var UPDATE_LOG = [
 {
   "date": "2026-11-21",
-  "title": "题库扩充与竞赛录入",
-  "historyTitle": "题库扩充与竞赛录入",
-  "summary": "解析几何按技能补入 42 道，西方经济学 160 道教材题改用真实题干并新增 105 道考研真题，全国大学生数学竞赛 77 道经 OCR 入库；题库增至 9875 题（2075 / 3571 / 1241 / 2988），查重、严格 QA、LaTeX 与全库渲染均 0 问题，148 项测试通过。",
-  "notifySummary": "题库扩到 9875 题：解析几何补 42 道、西经 160 道教材题改为真题并新增 105 道考研真题、数学竞赛 77 道入库；查重与渲染 0 问题，148 项测试通过。",
+  "title": "题库扩充与3.3",
+  "historyTitle": "题库扩充与3.3",
+  "summary": "题库扩至 9875 题并完成 Warm Academic 3.3 质量升级：首页改用真实复习队列，题库与模板统一内置/自建口径，备份显示时间与完整性，通知支持分类，AI 请求状态可见。153 项测试通过。",
+  "notifySummary": "题库扩至 9875 题并完成 3.3 升级：首页用真实复习队列，资源统一内置/自建口径，备份与通知更清楚，AI 状态可见；153 项测试通过。",
   "notifyItems": [
     {
-      "group": "解析几何补全",
-      "text": "从解析几何 skill 的 325 道章末习题中筛出 26 道未收录题，并把第一章复习与测试的 8 道选择、8 道填空并入题库，编号连续且不重复；解析几何由 1199 增至 1241。选项统一为 key/text，多空填空按综合题收录，题干与解答回查教材小节。"
+      "group": "首页队列",
+      "text": "首页今日工作台改用真实复习队列：今日待复习、今日已完成、逾期和完成度按每条错题的下一个未打卡节点计算，焦点直接跳到最早到期的一条；手机端把工作台排在科目列表之前，不再用错题总数冒充今日任务。"
     },
     {
-      "group": "西经真题",
-      "text": "把 160 道教材课后题的模板壳替换为《西方经济学》第二版课后习题的真实题干、标准解答、详细解析、要点与易错点；再从配套题库录入 105 道考研真题。西方经济学由 2883 增至 2988，模板壳与真实题不再并存。"
+      "group": "数据口径",
+      "text": "新增统一资源清单：内置题库 9875、内置模板 118，自建/导入资源按唯一 ID 计入可用总量；首页、统计和设置共用同一口径，重复 ID 只提示不删除，统计页四张卡改为可用题库、可用模板、今日待复习与已交模拟考。"
     },
     {
-      "group": "竞赛录入",
-      "text": "全国大学生数学竞赛第 1–12 届汇总、第 13 届初赛与补赛、第 15–17 届 A/B 类共 8 份扫描件按 200dpi OCR，去重后录入 77 道：高等代数 29 道、数学分析 48 道，高等代数与数学分析各自连续编号；来源逐条标注届次与 A/B 卷，跨卷重复题只留一条。"
+      "group": "数据安全",
+      "text": "导出备份后记录上次备份时间，设置页显示备份状态、当前数据规模与结构完整性；完整性检查覆盖条目编号、必填字段、复习时间及题库/模板重复 ID。API Key 仍以 AES-GCM 加密保存在 IndexedDB，备份与提示都不含明文。"
+    },
+    {
+      "group": "通知分类",
+      "text": "通知中心新增全部、学习提醒、操作记录、系统通知四类筛选与各自计数；列表、未读徽标和全选仍按真实记录计算，分类只过滤显示，不删除也不合并重要操作记录。"
+    },
+    {
+      "group": "AI 状态",
+      "text": "AI 请求新增运行状态：请求中、最近请求成功、请求超时、上次请求失败，设置页的在线 AI 服务标签直接显示；失败只影响当前请求，错题、手动编辑与本地复习计划照常可用，错误文案不含密钥或上游正文。"
     },
     {
       "group": "防复发",
-      "text": "题库基线锁与严格 QA 覆盖到 9875：id 唯一、归一化题干无重复、客观题四选项、主观题解答以「解：/证明：」开头；全库 LaTeX 与渲染审计、四科公式门禁同步执行。可计算题经过 sympy 或数值复核，证明题记录人工复核要点；148 项回归与 CI 全部门禁通过。"
+      "text": "qa:polish 新增首页复习队列指标、手机工作台顺序、统计页可用资源口径和通知四分类检查；新增 reviewQueueStats、libraryInventory、通知分类与 AI 状态的单元测试，153 项回归全部通过。"
     }
   ],
   "items": [
     {
       "group": "解析几何补全",
-      "text": "从解析几何 skill 的 325 道章末习题中筛出 26 道未收录题，并把第一章复习与测试的 8 道选择、8 道填空并入题库，编号连续且不重复；解析几何由 1199 增至 1241。选项统一为 key/text，多空填空按综合题收录，题干与解答回查教材小节。"
+      "text": "从解析几何 skill 的 325 道章末习题中筛出 26 道未收录题，并把第一章复习与测试的 8 道选择、8 道填空并入题库；解析几何由 1199 增至 1241，选项统一、题干与解答回查教材小节。"
     },
     {
       "group": "西经真题",
-      "text": "把 160 道教材课后题的模板壳替换为《西方经济学》第二版课后习题的真实题干、标准解答、详细解析、要点与易错点；再从配套题库录入 105 道考研真题。西方经济学由 2883 增至 2988，模板壳与真实题不再并存。"
+      "text": "把 160 道教材课后题的模板壳替换为《西方经济学》第二版课后习题的真实题干、标准解答、详细解析、要点与易错点；再从配套题库录入 105 道考研真题，西方经济学由 2883 增至 2988。"
     },
     {
       "group": "竞赛录入",
-      "text": "全国大学生数学竞赛第 1–12 届汇总、第 13 届初赛与补赛、第 15–17 届 A/B 类共 8 份扫描件按 200dpi OCR，去重后录入 77 道：高等代数 29 道、数学分析 48 道，高等代数与数学分析各自连续编号；来源逐条标注届次与 A/B 卷，跨卷重复题只留一条。"
+      "text": "全国大学生数学竞赛第 1–12 届汇总、第 13 届初赛与补赛、第 15–17 届 A/B 类共 8 份扫描件按 200dpi OCR，去重后录入 77 道：高等代数 29 道、数学分析 48 道，来源逐条标注届次与 A/B 卷。"
+    },
+    {
+      "group": "首页队列",
+      "text": "首页今日工作台改用真实复习队列：今日待复习、今日已完成、逾期和完成度按每条错题的下一个未打卡节点计算，焦点直接跳到最早到期的一条；手机端把工作台排在科目列表之前，不再用错题总数冒充今日任务。"
+    },
+    {
+      "group": "数据口径",
+      "text": "新增统一资源清单：内置题库 9875、内置模板 118，自建/导入资源按唯一 ID 计入可用总量；首页、统计和设置共用同一口径，重复 ID 只提示不删除，统计页四张卡改为可用题库、可用模板、今日待复习与已交模拟考。"
+    },
+    {
+      "group": "数据安全",
+      "text": "导出备份后记录上次备份时间，设置页显示备份状态、当前数据规模与结构完整性；完整性检查覆盖条目编号、必填字段、复习时间及题库/模板重复 ID。API Key 仍以 AES-GCM 加密保存在 IndexedDB，备份与提示都不含明文。"
+    },
+    {
+      "group": "通知分类",
+      "text": "通知中心新增全部、学习提醒、操作记录、系统通知四类筛选与各自计数；列表、未读徽标和全选仍按真实记录计算，分类只过滤显示，不删除也不合并重要操作记录。"
+    },
+    {
+      "group": "AI 状态",
+      "text": "AI 请求新增运行状态：请求中、最近请求成功、请求超时、上次请求失败，设置页的在线 AI 服务标签直接显示；失败只影响当前请求，错题、手动编辑与本地复习计划照常可用，错误文案不含密钥或上游正文。"
+    },
+    {
+      "group": "视觉精修",
+      "text": "首页统计卡增加「内置 / 自建导入」副标签，四科入口显示可用模板与题库；统计页在手机上四张卡两列排布，副标签不挤压主数字；通知筛选在 360–1440 宽度下不横向溢出。"
     },
     {
       "group": "防复发",
-      "text": "题库基线锁与严格 QA 覆盖到 9875：id 唯一、归一化题干无重复、客观题四选项、主观题解答以「解：/证明：」开头；全库 LaTeX 与渲染审计、四科公式门禁同步执行。可计算题经过 sympy 或数值复核，证明题记录人工复核要点；148 项回归与 CI 全部门禁通过。"
+      "text": "qa:polish 新增首页复习队列指标、手机工作台顺序、统计页可用资源口径和通知四分类检查；新增 reviewQueueStats、libraryInventory、通知分类与 AI 状态的单元测试，153 项回归全部通过。"
     }
   ]
 },
@@ -33045,6 +33334,37 @@ function i18nCacheForBackup() {
    ========================================================= */
 var NOTIF_MAX = 50;
 var NOTIF_KIND_LABEL = { update: '更新', review: '复习', tip: '提示', warn: '提醒' };
+var NOTIF_CATEGORY_LABEL = { all: '全部', learning: '学习提醒', operation: '操作记录', system: '系统通知' };
+var NOTIF_CATEGORY_ORDER = ['all', 'learning', 'operation', 'system'];
+
+function notifCategory(n) {
+  var kind = n && n.kind;
+  if (kind === 'update') return 'system';
+  if (kind === 'review') return 'learning';
+  if (kind === 'warn') return /复习|到期|逾期|掌握|打卡/.test(String((n && (n.title || '')) + (n && n.body) || '')) ? 'learning' : 'system';
+  return 'operation';
+}
+
+function notifFilteredItems(items) {
+  var filter = (ui && ui.notifFilter) || 'all';
+  if (!filter || filter === 'all') return items;
+  return (items || []).filter(function (n) { return notifCategory(n) === filter; });
+}
+
+function notifCategoryCounts(items) {
+  var counts = { all: (items || []).length, learning: 0, operation: 0, system: 0 };
+  (items || []).forEach(function (n) { counts[notifCategory(n)]++; });
+  return counts;
+}
+
+function notifFiltersHtml(items) {
+  var counts = notifCategoryCounts(items);
+  var active = (ui && ui.notifFilter) || 'all';
+  return NOTIF_CATEGORY_ORDER.map(function (key) {
+    return '<button class="notif-filter' + (active === key ? ' is-on' : '') + '" data-act="notif-filter" data-filter="' + key + '" type="button" aria-pressed="' + (active === key) + '">' +
+      NOTIF_CATEGORY_LABEL[key] + '<span>' + (counts[key] || 0) + '</span></button>';
+  }).join('');
+}
 var notifToastLast = '';
 var notifToastAt = 0;
 var notifMirrorSuppressed = false;
@@ -33228,18 +33548,21 @@ function notificationItemHtml(n) {
 function renderNotifications() {
   var list = qs('#notifList');
   if (!list) return;
-  var items = Array.isArray(state.notifications) ? state.notifications : [];
+  var allItems = Array.isArray(state.notifications) ? state.notifications : [];
+  var items = notifFilteredItems(allItems);
+  var filterHost = qs('#notifFilters');
+  if (filterHost) filterHost.innerHTML = notifFiltersHtml(allItems);
   var countEl = qs('#notifCount');
-  if (countEl) countEl.textContent = items.length ? items.length + ' 条 · ' + notifUnreadCount() + ' 未读' : '';
+  if (countEl) countEl.textContent = allItems.length ? allItems.length + ' 条 · ' + notifUnreadCount() + ' 未读' : '';
   var all = qs('#notifSelectAll');
-  var selectedCount = items.filter(function (n) { return ui.notifSelected && ui.notifSelected[n.id]; }).length;
+  var selectedCount = allItems.filter(function (n) { return ui.notifSelected && ui.notifSelected[n.id]; }).length;
   if (all) {
-    all.checked = items.length > 0 && selectedCount === items.length;
-    all.indeterminate = selectedCount > 0 && selectedCount < items.length;
+    all.checked = items.length > 0 && items.every(function (n) { return ui.notifSelected && ui.notifSelected[n.id]; });
+    all.indeterminate = selectedCount > 0 && !all.checked;
     all.disabled = items.length === 0;
   }
   qsa('.notif-tool').forEach(function (btn) {
-    btn.disabled = items.length === 0;
+    btn.disabled = allItems.length === 0;
   });
   var del = qs('[data-act="notif-delete-selected"]');
   var markAll = qs('[data-act="notif-mark-all-read"]');
@@ -33248,8 +33571,13 @@ function renderNotifications() {
     markAll.title = markAll.disabled ? '没有未读通知' : '把全部未读通知标为已读';
   }
   if (del) del.disabled = selectedCount === 0;
-  if (!items.length) {
+  if (!allItems.length) {
     list.innerHTML = '<div class="notif-empty"><span class="notif-empty-mark" aria-hidden="true">○</span><p class="notif-empty-title">还没有通知</p><p class="notif-empty-text">网页更新、复习提醒和提示会出现在这里。</p></div>';
+    renderNotificationBadge();
+    return;
+  }
+  if (!items.length) {
+    list.innerHTML = '<div class="notif-empty"><span class="notif-empty-mark" aria-hidden="true">○</span><p class="notif-empty-title">这个分类还没有通知</p><p class="notif-empty-text">切换到「全部」查看其他分类，或等下一次操作后再来。</p></div>';
     renderNotificationBadge();
     return;
   }
@@ -39896,6 +40224,11 @@ function handleAction(act, el) {
     }
     case 'open-notifications': if (typeof openNotifications === 'function') openNotifications(); break;
     case 'close-notifications': if (typeof closeNotifications === 'function') closeNotifications(); break;
+    case 'notif-filter': {
+      ui.notifFilter = el.getAttribute('data-filter') || 'all';
+      if (typeof renderNotifications === 'function') renderNotifications();
+      break;
+    }
     case 'notif-expand': {
       var nid = el.getAttribute('data-id');
       ui.notifOpen = ui.notifOpen || {};
@@ -40279,6 +40612,7 @@ boot();
       <button class="notif-tool" data-act="notif-delete-selected" type="button">删除选中</button>
       <button class="notif-tool" data-act="notif-mark-all-read" type="button" aria-label="把全部未读通知标为已读">一键已读</button>
     </div>
+    <div class="notif-filters" id="notifFilters" role="tablist" aria-label="通知分类"></div>
     <div class="notif-list" id="notifList"></div>
   </section>
 </div>

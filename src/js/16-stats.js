@@ -69,6 +69,18 @@ function statsTotals(rows) {
     out.templates += r.st.templates;
     out.notes += r.st.notes || 0;
   });
+  var inv = typeof libraryInventory === 'function' ? libraryInventory() : null;
+  if (inv) {
+    out.bank = inv.totalBank;
+    out.templates = inv.totalTemplates;
+    out.bankBuiltIn = inv.builtInBank;
+    out.bankUser = inv.userBank;
+    out.templatesBuiltIn = inv.builtInTemplates;
+    out.templatesUser = inv.userTemplates;
+    out.duplicateBank = inv.duplicateBank;
+    out.duplicateTemplates = inv.duplicateTemplates;
+  }
+  out.queue = typeof reviewQueueStats === 'function' ? reviewQueueStats() : { dueToday: 0, overdue: 0, completedToday: 0, remaining: 0, progress: 0, bySubject: {} };
   out.pct = out.total ? Math.round((out.mastered / out.total) * 100) : 0;
   var since = Date.now() - 30 * 86400000;
   statsAllEntries().forEach(function (row) {
@@ -233,11 +245,12 @@ function viewStats() {
     '</div>' +
   '</section>';
 
+  var queue = totals.queue || { dueToday: 0, overdue: 0, completedToday: 0, remaining: 0, progress: 0 };
   var metrics = '<section class="stats-metrics" aria-label="学习总量">' +
-    statCard(totals.bank, '题库总量', '') +
-    statCard(totals.templates, '题型模板', '') +
-    statCard(totals.reviews30, '近 30 天复习', 'mastered') +
-    statCard(examCount, '已交模拟考', '') +
+    statCard(totals.bank, '可用题库', '', '内置 ' + (totals.bankBuiltIn || 0) + ' · 自建/导入 ' + (totals.bankUser || 0)) +
+    statCard(totals.templates, '可用模板', '', '内置 ' + (totals.templatesBuiltIn || 0) + ' · 自建/导入 ' + (totals.templatesUser || 0)) +
+    statCard(queue.remaining, '今日待复习', 'mastered', queue.overdue ? '逾期 ' + queue.overdue + ' 道' : '今日到期 ' + queue.dueToday + ' 道') +
+    statCard(examCount, '已交模拟考', '', '近 30 天复习 ' + totals.reviews30 + ' 次') +
   '</section>';
 
   return hero + metrics +
@@ -249,4 +262,87 @@ function viewStats() {
       '<section class="panel stats-panel stats-panel-wide"><div class="panel-head"><h2 class="panel-title">模拟考成绩</h2><span class="panel-sub">最近 6 次已交卷</span></div><div class="panel-body">' + statsExamHtml(exams) + '</div></section>' +
     '</div>' +
     '<p class="stats-footnote">统计范围：本机浏览器（IndexedDB）中的错题、复习打卡、题库与模拟考记录。导出备份再导入不会重复计数。</p>';
+}
+
+// 真实复习队列：按“第一未打卡节点”判断到期与逾期。
+function reviewQueueStats(nowMs) {
+  var now = nowMs == null ? Date.now() : Number(nowMs);
+  var today = new Date(now);
+  today.setHours(0, 0, 0, 0);
+  var start = today.getTime();
+  var end = start + 86400000;
+  var out = {
+    dueToday: 0, overdue: 0, completedToday: 0, remaining: 0, progress: 0,
+    bySubject: {}, firstDue: null
+  };
+  SUBJECTS.forEach(function (s) {
+    out.bySubject[s.id] = { dueToday: 0, overdue: 0, completedToday: 0, remaining: 0 };
+  });
+  SUBJECTS.forEach(function (s) {
+    var bucket = out.bySubject[s.id];
+    entriesOf(s.id).forEach(function (e) {
+      if (!e || typeof e !== 'object') return;
+      var keys = reviewPlanKeys(e);
+      var next = '';
+      for (var i = 0; i < keys.length; i++) {
+        if (!(e.review && e.review[keys[i]])) { next = keys[i]; break; }
+      }
+      if (next) {
+        var at = reviewDayAvailableAt(e, next);
+        if (at != null && at < end) {
+          if (at < start) { out.overdue++; bucket.overdue++; }
+          else { out.dueToday++; bucket.dueToday++; }
+          if (!out.firstDue || at < out.firstDue.at) {
+            out.firstDue = { subjectId: s.id, entryId: e.id, day: next, at: at };
+          }
+        }
+      }
+      var done = e.reviewAt && typeof e.reviewAt === 'object' ? e.reviewAt : null;
+      if (done) {
+        Object.keys(done).forEach(function (k) {
+          var d = new Date(done[k]);
+          if (!isNaN(d.getTime()) && d.getTime() >= start && d.getTime() < end) {
+            out.completedToday++;
+            bucket.completedToday++;
+          }
+        });
+      }
+    });
+    bucket.remaining = bucket.dueToday + bucket.overdue;
+  });
+  out.remaining = out.dueToday + out.overdue;
+  var base = out.completedToday + out.remaining;
+  out.progress = base ? Math.round((out.completedToday / base) * 100) : 0;
+  return out;
+}
+
+// 只报告、不修改数据；设置页与导入前用来判断结构是否完整。
+function dataIntegrityReport() {
+  var issues = [];
+  var ids = {};
+  var total = 0;
+  SUBJECTS.forEach(function (s) {
+    entriesOf(s.id).forEach(function (e) {
+      if (!e || typeof e !== 'object') { issues.push(s.name + '：存在空条目'); return; }
+      total++;
+      if (!e.id) issues.push(s.name + '：条目缺少编号');
+      else {
+        var key = s.id + '|' + e.id;
+        if (ids[key]) issues.push(s.name + '：编号重复 ' + e.id);
+        ids[key] = true;
+      }
+      if (!e.summary && !(e.points && e.points.length)) issues.push((e.id || s.name) + '：缺少标题');
+      if (e.reviewAt && typeof e.reviewAt === 'object') {
+        Object.keys(e.reviewAt).forEach(function (k) {
+          if (isNaN(new Date(e.reviewAt[k]).getTime())) issues.push((e.id || s.name) + '：复习时间无效 ' + k);
+        });
+      }
+    });
+  });
+  if (typeof libraryInventory === 'function') {
+    var inv = libraryInventory();
+    if (inv.duplicateBank) issues.push('题库有 ' + inv.duplicateBank + ' 个重复 ID');
+    if (inv.duplicateTemplates) issues.push('模板有 ' + inv.duplicateTemplates + ' 个重复 ID');
+  }
+  return { ok: issues.length === 0, count: issues.length, issues: issues.slice(0, 20), entries: total };
 }

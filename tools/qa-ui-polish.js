@@ -228,7 +228,11 @@ async function reading(page, width, failures) {
       uniform,
       titleWeight,
       dot: getComputedStyle(document.querySelector('.home-features span:not(:last-child)'), '::after').content,
-      footGap: Math.round(foot.getBoundingClientRect().top - feat.getBoundingClientRect().bottom)
+      footGap: Math.round(foot.getBoundingClientRect().top - feat.getBoundingClientRect().bottom),
+      metrics: [...document.querySelectorAll('.hw-metric span')].map((x) => x.textContent.trim()),
+      focus: (document.querySelector('.hw-focus') || {}).innerText || '',
+      workbenchTop: (document.querySelector('.home-workbench') || {}).getBoundingClientRect ? document.querySelector('.home-workbench').getBoundingClientRect().top : 0,
+      subjectsTop: (document.querySelector('.home-subjects-head') || {}).getBoundingClientRect ? document.querySelector('.home-subjects-head').getBoundingClientRect().top : 0
     };
   });
   if (!home) { push(failures, width, '首页缺工作台或页脚'); return; }
@@ -240,6 +244,22 @@ async function reading(page, width, failures) {
   if (home.lastLine < 80) push(failures, width, '首页说明末行过短 ' + home.lastLine.toFixed(1) + 'px');
   if (home.dot && home.dot !== 'none' && home.dot !== 'normal' && home.dot !== '\"\"') push(failures, width, '首页功能条仍有重复分隔点');
   if (home.footGap < 24 || home.footGap > 52) push(failures, width, '首页功能条与页脚间距异常 ' + home.footGap + 'px');
+  if (!home.metrics.includes('今日待复习') || !home.metrics.includes('逾期')) push(failures, width, '首页今日工作台没有使用复习队列指标：' + home.metrics.join(','));
+  if (home.metrics.includes('错题总数')) push(failures, width, '首页仍用错题总数冒充今日任务');
+  if (width <= 700 && home.workbenchTop > home.subjectsTop) push(failures, width, '手机首页把今日工作台排在科目列表之后');
+
+  await page.click('[data-act="open-notifications"]');
+  await page.waitForTimeout(180);
+  const notif = await page.evaluate(() => {
+    const panel = document.querySelector('.notif-panel');
+    return {
+      filters: [...document.querySelectorAll('.notif-filter')].map((x) => x.textContent.replace(/\s+/g, ' ').trim()),
+      overflow: panel ? panel.scrollWidth - panel.clientWidth : 0
+    };
+  });
+  if (notif.filters.length !== 4 || !notif.filters[0].includes('全部')) push(failures, width, '通知中心缺少四个分类筛选：' + notif.filters.join('|'));
+  if (notif.overflow > 1) push(failures, width, '通知中心横向溢出 ' + notif.overflow + 'px');
+  await page.click('.notif-close').catch(() => {});
 
   await visit(page, '#/gaodai/guide', width, failures, '规范');
   const tiles = await page.evaluate(() => [...document.querySelectorAll('.guide-facts b')].map((b) => b.textContent.trim()));
@@ -250,6 +270,8 @@ async function reading(page, width, failures) {
   await visit(page, '#/gaodai/stats', width, failures, '统计');
   const lede = await page.evaluate(() => (document.querySelector('.folio-lede') || {}).textContent || '');
   if (!lede.includes('最近 30 天') || lede.includes('最近两周')) push(failures, width, '统计说明的时间口径与「近 30 天」不一致');
+  const statCards = await page.evaluate(() => [...document.querySelectorAll('.stat')].map((x) => x.innerText.replace(/\s+/g, ' ').trim()));
+  if (!statCards.some((x) => x.includes('可用题库')) || !statCards.some((x) => x.includes('今日待复习'))) push(failures, width, '统计页没有统一的可用题库/今日待复习口径：' + statCards.join('|'));
 
   await visit(page, '#/final', width, failures, '期末复习');
   const plan = await page.evaluate(() => {

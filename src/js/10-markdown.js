@@ -816,6 +816,64 @@ function bankOf(id) {
   });
   return list;
 }
+
+// 统一“内置 + 自建/导入 = 可用”的资源口径，供首页、统计、设置共用。
+function uniqueById(list) {
+  var seen = {};
+  var out = [];
+  var duplicates = 0;
+  (Array.isArray(list) ? list : []).forEach(function (item) {
+    if (!item || typeof item !== 'object') return;
+    var id = String(item.id || '');
+    if (id && seen[id]) { duplicates++; return; }
+    if (id) seen[id] = true;
+    out.push(item);
+  });
+  return { items: out, duplicates: duplicates };
+}
+function libraryInventory() {
+  var out = {
+    builtInBank: 0, builtInTemplates: 0, userBank: 0, userTemplates: 0,
+    totalBank: 0, totalTemplates: 0, duplicateBank: 0, duplicateTemplates: 0,
+    bySubject: {}
+  };
+  SUBJECTS.forEach(function (s) {
+    var baseItems = ((BANKS[s.id] && BANKS[s.id].items) || []);
+    var userItems = ((state.userBank && state.userBank[s.id]) || []);
+    var baseTpl = (subjectOf(s.id).templates || []);
+    var userTpl = ((state.userTemplates && state.userTemplates[s.id]) || []);
+    var baseBank = uniqueById(baseItems);
+    var userBankAll = uniqueById(userItems);
+    var baseIds = {};
+    baseBank.items.forEach(function (it) { baseIds[String(it.id)] = true; });
+    var userBankEff = userBankAll.items.filter(function (it) { return !baseIds[String(it.id)]; });
+    var baseTplU = uniqueById(baseTpl);
+    var userTplAll = uniqueById(userTpl);
+    var baseTplIds = {};
+    baseTplU.items.forEach(function (it) { baseTplIds[String(it.id)] = true; });
+    var userTplEff = userTplAll.items.filter(function (it) { return !baseTplIds[String(it.id)]; });
+    var row = {
+      builtInBank: baseBank.items.length,
+      builtInTemplates: baseTplU.items.length,
+      userBank: userBankEff.length,
+      userTemplates: userTplEff.length,
+      totalBank: baseBank.items.length + userBankEff.length,
+      totalTemplates: baseTplU.items.length + userTplEff.length,
+      duplicateBank: baseBank.duplicates + userBankAll.duplicates,
+      duplicateTemplates: baseTplU.duplicates + userTplAll.duplicates
+    };
+    out.bySubject[s.id] = row;
+    out.builtInBank += row.builtInBank;
+    out.builtInTemplates += row.builtInTemplates;
+    out.userBank += row.userBank;
+    out.userTemplates += row.userTemplates;
+    out.totalBank += row.totalBank;
+    out.totalTemplates += row.totalTemplates;
+    out.duplicateBank += row.duplicateBank;
+    out.duplicateTemplates += row.duplicateTemplates;
+  });
+  return out;
+}
 function currentSubject() { return subjectOf(state.activeSubject); }
 function templateById(subjectId, tid) {
   var list = templatesOf(subjectId);

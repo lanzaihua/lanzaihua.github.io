@@ -9,7 +9,7 @@
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/SOURCE-MIT-C2410C?style=for-the-badge&labelColor=7C2D12" alt="Source MIT"></a>
 <a href="https://lanzaihua.github.io/"><img src="https://img.shields.io/badge/LIVE-ONLINE-B91C1C?style=for-the-badge&labelColor=7F1D1D" alt="Live"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io/releases"><img src="https://img.shields.io/badge/RELEASE-v2026.11.21-15803D?style=for-the-badge&labelColor=14532D" alt="Release"></a>
-<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.21--f8e08ec1-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
+<a href="#更新记录"><img src="https://img.shields.io/badge/VERSION-2026.11.21--0d0fb0da-1D4ED8?style=for-the-badge&labelColor=1E3A8A" alt="Version"></a>
 <a href="#隐私与限制"><img src="https://img.shields.io/badge/DATA-local%20first-B45309?style=for-the-badge&labelColor=78350F" alt="Local first"></a>
 <a href="#技术说明"><img src="https://img.shields.io/badge/MODE-single%20%2B%20split-6D28D9?style=for-the-badge&labelColor=4C1D95" alt="Single file"></a>
 <a href="https://github.com/lanzaihua/lanzaihua.github.io"><img src="https://img.shields.io/badge/HOST-GitHub%20Pages-A21CAF?style=for-the-badge&labelColor=701A75" alt="GitHub Pages"></a>
@@ -151,20 +151,26 @@
 
 ## 更新记录
 
-### 2026-11-21 · 题库扩充与竞赛录入
+### 2026-11-21 · 题库扩充与3.3
 
-**4 项 · 4 组**
+**10 项 · 10 组**
 
-解析几何按技能补入 42 道，西方经济学 160 道教材题改用真实题干并新增 105 道考研真题，全国大学生数学竞赛 77 道经 OCR 入库；题库增至 9875 题（2075 / 3571 / 1241 / 2988），查重、严格 QA、LaTeX 与全库渲染均 0 问题，148 项测试通过。
+题库扩至 9875 题并完成 Warm Academic 3.3 质量升级：首页改用真实复习队列，题库与模板统一内置/自建口径，备份显示时间与完整性，通知支持分类，AI 请求状态可见。153 项测试通过。
 
 | 分组 | 本次更新 |
 |---|---|
-| **解析几何补全** | 从解析几何 skill 的 325 道章末习题中筛出 26 道未收录题，并把第一章复习与测试的 8 道选择、8 道填空并入题库，编号连续且不重复；解析几何由 1199 增至 1241。选项统一为 key/text，多空填空按综合题收录，题干与解答回查教材小节。 |
-| **西经真题** | 把 160 道教材课后题的模板壳替换为《西方经济学》第二版课后习题的真实题干、标准解答、详细解析、要点与易错点；再从配套题库录入 105 道考研真题。西方经济学由 2883 增至 2988，模板壳与真实题不再并存。 |
-| **竞赛录入** | 全国大学生数学竞赛第 1–12 届汇总、第 13 届初赛与补赛、第 15–17 届 A/B 类共 8 份扫描件按 200dpi OCR，去重后录入 77 道：高等代数 29 道、数学分析 48 道，高等代数与数学分析各自连续编号；来源逐条标注届次与 A/B 卷，跨卷重复题只留一条。 |
-| **防复发** | 题库基线锁与严格 QA 覆盖到 9875：id 唯一、归一化题干无重复、客观题四选项、主观题解答以「解：/证明：」开头；全库 LaTeX 与渲染审计、四科公式门禁同步执行。可计算题经过 sympy 或数值复核，证明题记录人工复核要点；148 项回归与 CI 全部门禁通过。 |
+| **解析几何补全** | 补入 42 道解析几何题，编号连续、选项统一，题干与解答回查教材小节。 |
+| **西经真题** | 160 道教材课后题替换为真实题干与解析，另录 105 道考研真题，模板壳与真题不再并存。 |
+| **竞赛录入** | 8 份竞赛扫描件 OCR 去重后录入 77 道，高等代数 29 道、数学分析 48 道，逐条标注届次与 A/B 卷。 |
+| **首页队列** | 今日待复习、已完成、逾期与完成度改按真实复习节点计算，焦点直接跳到最早到期的一道；手机端工作台排在科目列表前。 |
+| **数据口径** | 新增统一资源清单，首页、统计与设置共用内置/自建/导入口径；重复 ID 只提示不删除。 |
+| **数据安全** | 备份记录时间、规模与结构完整性；条目编号、必填字段、复习时间和资源重复 ID 都可检查。 |
+| **通知分类** | 通知中心按学习提醒、操作记录、系统通知筛选，列表与未读计数仍按真实记录计算。 |
+| **AI 状态** | 请求中、成功、超时与失败在设置页可见；失败不影响错题、手动编辑和本地复习计划。 |
+| **视觉精修** | 首页与统计卡增加资源副标签，手机两列排布；通知筛选在 360–1440 不横向溢出。 |
+| **防复发** | qa:polish 检查首页队列、手机顺序、统计口径与通知分类；单元测试覆盖队列、资源清单、通知与 AI 状态。 |
 
-<img src="assets/v2/20261121-changelog.png" alt="网页内题库扩充与竞赛录入更新记录" width="820">
+<img src="assets/v2/20261121-changelog.png" alt="网页内题库扩充与 3.3 升级更新记录" width="820">
 
 <details>
 <summary>历史更新 · 2026-11-19 及更早 · 28 个版本</summary>
@@ -1012,7 +1018,7 @@ AI 排程完成后按钮改为「AI 已排程」，不再和「恢复本地排�
 | `src/styles.css` · `src/index.template.html` | 全站样式与页面模板 |
 | `build.js` · `server.js` · `skills.js` | 构建、局域网同步服务与技能索引 |
 | `tools/` | 题库 QA、站点一致性、构建/技能包校验、8 视口交互与性能测试、发布与源码打包脚本 |
-| `tests/` | 148 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底与接口安全 |
+| `tests/` | 153 项回归测试，覆盖数据保护、公式渲染、通知、进度、界面、模拟考、存储降级、题库拆包、IndexedDB 回退、深链兜底、复习队列与接口安全 |
 
 仓库内的 `src/` 不含 `src/data/` 题库数据，单独克隆仓库不能直接构建单文件网页；完整构建请先解压 `source.zip`。
 

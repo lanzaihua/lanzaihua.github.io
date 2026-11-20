@@ -440,7 +440,7 @@ function openSettings() {
     '</div>' +
 languageRow +
 '<div class="settings-section"><div class="settings-section-head"><span class="settings-section-title">AI与智能录入</span><span class="settings-section-note">AI</span></div>' +
-    '<div class="setting-row ai-config-row"><div class="ai-config-head"><div><div class="st">在线 AI 服务</div><div class="sd">支持 OpenAI、DeepSeek、Google Gemini、Anthropic、xAI Grok、通义千问、Moonshot Kimi、DeepSeek Harness 等厂商接口。API Key 加密后只保存在本机浏览器（IndexedDB），不写入错题数据；纯静态页需要接口允许浏览器跨域。</div></div><span class="chip ' + (aiReadyNow ? 'chip-ok' : '') + '">' + (aiReadyNow ? '已配置' : '未配置') + '</span></div>' +
+    '<div class="setting-row ai-config-row"><div class="ai-config-head"><div><div class="st">在线 AI 服务</div><div class="sd">支持 OpenAI、DeepSeek、Google Gemini、Anthropic、xAI Grok、通义千问、Moonshot Kimi、DeepSeek Harness 等厂商接口。API Key 加密后只保存在本机浏览器（IndexedDB），不写入错题数据；纯静态页需要接口允许浏览器跨域。</div></div><span class="chip ' + (aiReadyNow ? 'chip-ok' : '') + '">' + (aiReadyNow ? (typeof aiRuntimeLabel === 'function' ? aiRuntimeLabel() : '已配置') : '未配置') + '</span></div>' +
       '<div class="ai-config-grid">' +
         '<label class="field full"><span>协议</span>' +
           '<div class="model-combo protocol-combo">' +
@@ -483,9 +483,11 @@ languageRow +
       '<span class="chip">' + (sync.available ? 'ONLINE' : 'LOCAL') + '</span></div>' +
     '<div class="setting-row"><div><div class="st">本机容量</div><div class="sd" id="storageCapacityText">' + esc(typeof storageCapacityLabel === 'function' ? storageCapacityLabel() : 'IndexedDB 主存储') + '</div></div>' +
       '<button class="btn btn-xs" data-act="request-persist" type="button">申请持久化</button></div>' +
-    '<div class="setting-row"><div><div class="st">数据备份</div><div class="sd">导出为 JSON，可导入到另一台设备；不依赖服务器</div></div>' +
+    '<div class="setting-row"><div><div class="st">数据备份</div><div class="sd">' + esc(backupStatusText()) + '</div></div>' +
       '<div class="multi-actions"><button class="btn btn-xs" data-act="export-state" type="button">导出</button>' +
       '<button class="btn btn-xs" data-act="import-state" type="button">导入</button></div></div>' +
+    '<div class="setting-row"><div><div class="st">数据完整性</div><div class="sd">检查条目编号、必填字段、题库与模板重复 ID；异常只提示，不会自动删除你的数据</div></div>' +
+      '<span class="chip ' + (typeof dataIntegrityReport === 'function' && dataIntegrityReport().ok ? 'chip-ok' : '') + '">' + (typeof dataIntegrityReport === 'function' ? (dataIntegrityReport().ok ? '正常' : dataIntegrityReport().count + ' 项待查') : '未检查') + '</span></div>' +
     '<div class="setting-row"><div><div class="st">恢复初始数据</div><div class="sd">清空本机改动，回到空白错题本；模板与题库保留</div></div>' +
       '<button class="btn btn-xs btn-danger" data-act="reset-state" type="button">恢复</button></div>' +
     '</div>' +
@@ -585,6 +587,20 @@ function backupSafeState() {
   return copy;
 }
 
+function backupStatusText() {
+  var at = state.prefs && state.prefs.lastBackupAt;
+  var mb = 0;
+  try { mb = Math.round(JSON.stringify(state).length / 1024 / 1024 * 10) / 10; } catch (e) { mb = 0; }
+  var integrity = '';
+  if (typeof dataIntegrityReport === 'function') {
+    var rep = dataIntegrityReport();
+    integrity = rep.ok ? '结构完整' : (rep.count + ' 个待检查项');
+  }
+  return (at ? '上次备份 ' + timeAgo(at) : '还没有导出过备份') +
+    ' · 当前约 ' + mb + ' MB' + (integrity ? ' · ' + integrity : '') +
+    '；导出会剔除 API Key';
+}
+
 function backupSafeLibraries(libs) {
   var copy = deepClone(libs);
   // Libraries are content, not configuration: never strip nested `key` fields.
@@ -613,6 +629,9 @@ async function exportState() {
       await i18nTranslateMany(strings);
     }
   }
+  state.prefs = state.prefs || {};
+  state.prefs.lastBackupAt = nowIso();
+  markDirty();
   var payload = {
     app: 'sanke-cuotiben',
     version: 4,

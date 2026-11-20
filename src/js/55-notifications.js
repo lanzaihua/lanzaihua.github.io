@@ -3,6 +3,37 @@
    ========================================================= */
 var NOTIF_MAX = 50;
 var NOTIF_KIND_LABEL = { update: '更新', review: '复习', tip: '提示', warn: '提醒' };
+var NOTIF_CATEGORY_LABEL = { all: '全部', learning: '学习提醒', operation: '操作记录', system: '系统通知' };
+var NOTIF_CATEGORY_ORDER = ['all', 'learning', 'operation', 'system'];
+
+function notifCategory(n) {
+  var kind = n && n.kind;
+  if (kind === 'update') return 'system';
+  if (kind === 'review') return 'learning';
+  if (kind === 'warn') return /复习|到期|逾期|掌握|打卡/.test(String((n && (n.title || '')) + (n && n.body) || '')) ? 'learning' : 'system';
+  return 'operation';
+}
+
+function notifFilteredItems(items) {
+  var filter = (ui && ui.notifFilter) || 'all';
+  if (!filter || filter === 'all') return items;
+  return (items || []).filter(function (n) { return notifCategory(n) === filter; });
+}
+
+function notifCategoryCounts(items) {
+  var counts = { all: (items || []).length, learning: 0, operation: 0, system: 0 };
+  (items || []).forEach(function (n) { counts[notifCategory(n)]++; });
+  return counts;
+}
+
+function notifFiltersHtml(items) {
+  var counts = notifCategoryCounts(items);
+  var active = (ui && ui.notifFilter) || 'all';
+  return NOTIF_CATEGORY_ORDER.map(function (key) {
+    return '<button class="notif-filter' + (active === key ? ' is-on' : '') + '" data-act="notif-filter" data-filter="' + key + '" type="button" aria-pressed="' + (active === key) + '">' +
+      NOTIF_CATEGORY_LABEL[key] + '<span>' + (counts[key] || 0) + '</span></button>';
+  }).join('');
+}
 var notifToastLast = '';
 var notifToastAt = 0;
 var notifMirrorSuppressed = false;
@@ -186,18 +217,21 @@ function notificationItemHtml(n) {
 function renderNotifications() {
   var list = qs('#notifList');
   if (!list) return;
-  var items = Array.isArray(state.notifications) ? state.notifications : [];
+  var allItems = Array.isArray(state.notifications) ? state.notifications : [];
+  var items = notifFilteredItems(allItems);
+  var filterHost = qs('#notifFilters');
+  if (filterHost) filterHost.innerHTML = notifFiltersHtml(allItems);
   var countEl = qs('#notifCount');
-  if (countEl) countEl.textContent = items.length ? items.length + ' 条 · ' + notifUnreadCount() + ' 未读' : '';
+  if (countEl) countEl.textContent = allItems.length ? allItems.length + ' 条 · ' + notifUnreadCount() + ' 未读' : '';
   var all = qs('#notifSelectAll');
-  var selectedCount = items.filter(function (n) { return ui.notifSelected && ui.notifSelected[n.id]; }).length;
+  var selectedCount = allItems.filter(function (n) { return ui.notifSelected && ui.notifSelected[n.id]; }).length;
   if (all) {
-    all.checked = items.length > 0 && selectedCount === items.length;
-    all.indeterminate = selectedCount > 0 && selectedCount < items.length;
+    all.checked = items.length > 0 && items.every(function (n) { return ui.notifSelected && ui.notifSelected[n.id]; });
+    all.indeterminate = selectedCount > 0 && !all.checked;
     all.disabled = items.length === 0;
   }
   qsa('.notif-tool').forEach(function (btn) {
-    btn.disabled = items.length === 0;
+    btn.disabled = allItems.length === 0;
   });
   var del = qs('[data-act="notif-delete-selected"]');
   var markAll = qs('[data-act="notif-mark-all-read"]');
@@ -206,8 +240,13 @@ function renderNotifications() {
     markAll.title = markAll.disabled ? '没有未读通知' : '把全部未读通知标为已读';
   }
   if (del) del.disabled = selectedCount === 0;
-  if (!items.length) {
+  if (!allItems.length) {
     list.innerHTML = '<div class="notif-empty"><span class="notif-empty-mark" aria-hidden="true">○</span><p class="notif-empty-title">还没有通知</p><p class="notif-empty-text">网页更新、复习提醒和提示会出现在这里。</p></div>';
+    renderNotificationBadge();
+    return;
+  }
+  if (!items.length) {
+    list.innerHTML = '<div class="notif-empty"><span class="notif-empty-mark" aria-hidden="true">○</span><p class="notif-empty-title">这个分类还没有通知</p><p class="notif-empty-text">切换到「全部」查看其他分类，或等下一次操作后再来。</p></div>';
     renderNotificationBadge();
     return;
   }

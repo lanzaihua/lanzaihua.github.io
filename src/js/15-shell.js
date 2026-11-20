@@ -108,7 +108,17 @@ function homeWorkbenchData() {
     totals.unmastered += r.st.unmastered;
     totals.bank += r.st.bank;
   });
+  var inv = typeof libraryInventory === 'function' ? libraryInventory() : null;
+  if (inv) {
+    totals.bank = inv.totalBank;
+    totals.templates = inv.totalTemplates;
+    totals.userBank = inv.userBank;
+    totals.userTemplates = inv.userTemplates;
+  }
   totals.pct = totals.total ? Math.round((totals.mastered / totals.total) * 100) : 0;
+  var queue = typeof reviewQueueStats === 'function'
+    ? reviewQueueStats()
+    : { dueToday: 0, overdue: 0, completedToday: 0, remaining: 0, progress: 0, bySubject: {}, firstDue: null };
   var recent = [];
   SUBJECTS.forEach(function (s) {
     entriesOf(s.id).forEach(function (e) {
@@ -116,7 +126,7 @@ function homeWorkbenchData() {
     });
   });
   recent.sort(function (a, b) { return b.at.localeCompare(a.at); });
-  return { rows: rows, totals: totals, recent: recent.slice(0, 3) };
+  return { rows: rows, totals: totals, recent: recent.slice(0, 3), queue: queue, inventory: inv };
 }
 
 function renderHomeWorkbench() {
@@ -128,25 +138,49 @@ function renderHomeWorkbench() {
   var focusHref = '#/' + focus.subject.id + '/entries';
   var focusTitle = '';
   var focusNote = '';
+  var focusNoteHtml = '';
   var focusAction = '去错题本';
+  var q = d.queue || { dueToday: 0, overdue: 0, completedToday: 0, remaining: 0, progress: 0, firstDue: null };
+  var due = q.firstDue;
+  var dueSubject = null;
+  var dueEntry = null;
+  if (due) {
+    dueSubject = SUBJ_BY_ID[due.subjectId] || focus.subject;
+    dueEntry = findEntry(due.subjectId, due.entryId);
+  }
   if (!t.total) {
     focusTitle = '先建立今天的手感';
     focusNote = '从标准题库挑 10 道题，做完把不会的加入错题本；今天只做一点也算开始。';
     focusHref = '#/' + focus.subject.id + '/bank';
     focusAction = '去题库挑题';
-  } else if (t.unmastered > 0) {
-    focusTitle = focus.subject.name + '还有 ' + focus.st.unmastered + ' 道未掌握';
-    focusNote = '按节点从 1 / 3 / 7 天起步，再逐步拉长到 D1800；先合上答案独立写一遍，再对照标准解答。';
+  } else if (due && q.overdue > 0) {
+    focusTitle = '先补 ' + q.overdue + ' 道逾期复习';
+    focusNoteHtml = esc('第一道在' + dueSubject.name + ' · ') + renderInline(entryTitle(dueEntry || {})) + esc('；今天另有 ' + q.dueToday + ' 道到期。');
+    focusHref = '#/' + dueSubject.id + '/entries';
+    focusAction = '开始今日复习';
+  } else if (due) {
+    focusTitle = '今天有 ' + q.dueToday + ' 道到期复习';
+    focusNoteHtml = esc('第一道在' + dueSubject.name + ' · ') + renderInline(entryTitle(dueEntry || {})) + esc('；做完按 D1 / D3 / D7 继续解锁。');
+    focusHref = '#/' + dueSubject.id + '/entries';
+    focusAction = '开始今日复习';
+  } else if (q.completedToday > 0) {
+    focusTitle = '今天的复习已经完成';
+    focusNote = '今天已完成 ' + q.completedToday + ' 道；可以再挑一道新题，或做一组限时模拟卷保持手感。';
+    focusHref = '#/' + focus.subject.id + '/bank';
+    focusAction = '去题库';
   } else {
-    focusTitle = '四科错题都已掌握';
-    focusNote = '做一组限时模拟卷保持手感，或者从题库挑新题扩到错题本。';
-    focusHref = '#/final';
-    focusAction = '去模拟考';
+    focusTitle = '今天没有到期复习';
+    focusNote = '错题按 D1 / D3 / D7 自动解锁；现在可以记一道新错题，或从题库挑新题扩到错题本。';
+    focusHref = '#/' + focus.subject.id + '/bank';
+    focusAction = '去题库';
   }
+  var focusButton = due
+    ? '<button class="btn btn-xs" data-act="jump-entry" data-id="' + attr(due.entryId) + '" type="button">' + esc(focusAction) + '</button>'
+    : '<a class="btn btn-xs" href="' + attr(focusHref) + '">' + esc(focusAction) + '</a>';
   var progress = d.rows.map(function (r) {
     var pct = r.st.total ? r.st.pct : 0;
     return '<div class="hw-progress-row" style="--subj:var(--' + attr(r.subject.id) + ')">' +
-      '<span>' + esc(r.subject.short || r.subject.name) + '</span>' +
+      '<span class="hw-progress-name">' + esc(r.subject.short || r.subject.name) + '</span>' +
       '<i><em style="width:' + pct + '%"></em></i>' +
       '<b>' + (r.st.total ? pct + '%' : '—') + '</b>' +
     '</div>';
@@ -167,15 +201,14 @@ function renderHomeWorkbench() {
   host.innerHTML =
     '<div class="hw-topbar"><span>STUDY DESK · 今日工作台</span><p>四科进度、最近记录和复习节奏都在这一页；不用翻页，<span class="hw-nobreak">先决定今天做哪一件。</span></p></div>' +
     '<div class="hw-top">' +
-      '<div class="hw-metric"><span>错题总数</span><b>' + t.total + '</b><small>四科合计</small></div>' +
-      '<div class="hw-metric"><span>待复习</span><b>' + t.unmastered + '</b><small>尚未掌握</small></div>' +
-      '<div class="hw-metric"><span>已掌握</span><b>' + t.mastered + '</b><small>独立做对</small></div>' +
-      '<div class="hw-metric"><span>完成度</span><b>' + t.pct + '%</b><small>已掌握 / 错题</small></div>' +
+      '<div class="hw-metric"><span>今日待复习</span><b>' + q.remaining + '</b><small>按复习队列</small></div>' +
+      '<div class="hw-metric"><span>今日已完成</span><b>' + q.completedToday + '</b><small>已打卡节点</small></div>' +
+      '<div class="hw-metric"><span>逾期</span><b>' + q.overdue + '</b><small>优先补齐</small></div>' +
+      '<div class="hw-metric"><span>今日完成度</span><b>' + q.progress + '%</b><small>已完成 / 今日队列</small></div>' +
       '<div class="hw-focus">' +
         '<span class="hw-label">TODAY · 今日建议</span>' +
         '<b>' + esc(focusTitle) + '</b>' +
-        '<p>' + esc(focusNote) + '</p>' +
-        '<a class="btn btn-xs" href="' + attr(focusHref) + '">' + esc(focusAction) + '</a>' +
+        '<p>' + (focusNoteHtml || esc(focusNote)) + '</p>' + focusButton +
       '</div>' +
     '</div>' +
     '<div class="hw-bottom">' +
@@ -242,16 +275,20 @@ function renderHome() {
   }
   var wrap = qs('#homeSubjects');
   if (!wrap) return;
+  var inv = typeof libraryInventory === 'function' ? libraryInventory() : null;
   wrap.innerHTML = SUBJECTS.map(function (s, i) {
     var st = statsFor(s.id);
-    var n = bankOf(s.id).length;
+    var iv = inv && inv.bySubject ? inv.bySubject[s.id] : null;
+    var n = iv ? iv.totalBank : bankOf(s.id).length;
+    var tplN = iv ? iv.totalTemplates : templatesOf(s.id).length;
+    var ownN = iv ? (iv.userBank + iv.userTemplates) : 0;
     var count = st.total ? st.total + ' 道错题' : '0 道错题';
     return '<a class="home-subject" href="#/' + attr(subjectRouteId(s.id)) + '/entries" style="--subj:var(--' + attr(s.id) + ');--subj-ink:var(--' + attr(s.id) + '-ink)">' +
       '<span class="hs-index">' + pad(i + 1, 2) + '</span>' +
       '<span class="hs-main"><span class="hs-name">' + esc(s.name) + '</span>' +
       '<span class="hs-desc">' + esc(homeSubjectNote(s.id)) + '</span></span>' +
       '<span class="hs-side"><span class="hs-count">' + esc(count) + '</span>' +
-      '<span class="hs-meta">' + templatesOf(s.id).length + ' 模板 · ' + n + ' 题库</span></span>' +
+      '<span class="hs-meta">' + tplN + ' 模板 · ' + n + ' 题库' + (ownN ? ' · 自建 ' + ownN : '') + '</span></span>' +
       '<span class="hs-arrow" aria-hidden="true">→</span>' +
     '</a>';
   }).join('');
@@ -617,9 +654,10 @@ function viewOverview(subjectId) {
   return hero + stats + body + '<div class="grid-2" style="margin-top:22px">' + recentPanel + sideInfoPanel(s, st) + '</div>';
 }
 
-function statCard(num, label, cls) {
+function statCard(num, label, cls, sub) {
   return '<div class="stat"><span class="num ' + (cls || '') + '">' + num + '</span>' +
-    '<span class="lbl">' + label + '</span></div>';
+    '<span class="lbl">' + label + '</span>' +
+    (sub ? '<span class="stat-sub">' + esc(sub) + '</span>' : '') + '</div>';
 }
 
 function sideInfoPanel(s, st) {

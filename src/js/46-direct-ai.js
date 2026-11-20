@@ -7,6 +7,30 @@ var DSH_API_URL = 'https://api.deepseek.com/anthropic/v1/messages';
 var DSH_MODEL = 'deepseek-flash';
 var DSH_TIMEOUT_MS = 240000;
 var SKILL_PACKS_STATE = { data: null, promise: null };
+var AI_RUNTIME_STATE = { phase: 'idle', message: '', at: '' };
+
+function aiRuntimeSet(phase, message) {
+  AI_RUNTIME_STATE = { phase: phase || 'idle', message: String(message || ''), at: nowIso() };
+}
+
+function aiRuntimeSnapshot() {
+  return {
+    phase: AI_RUNTIME_STATE.phase,
+    message: AI_RUNTIME_STATE.message,
+    at: AI_RUNTIME_STATE.at,
+    configured: typeof aiConfigReady === 'function' ? aiConfigReady() : false
+  };
+}
+
+function aiRuntimeLabel() {
+  if (typeof aiConfigReady === 'function' && !aiConfigReady()) return '未配置';
+  var p = AI_RUNTIME_STATE.phase;
+  if (p === 'requesting') return '请求中';
+  if (p === 'success') return '最近请求成功';
+  if (p === 'timeout') return '请求超时';
+  if (p === 'failed') return '上次请求失败';
+  return '已配置';
+}
 
 function dshToken() { return (typeof aiKeyCacheValue === 'function') ? aiKeyCacheValue() : ''; }
 function setDshToken(v) { /* 44-ai-config 以不可导出的 AES-GCM 密钥把 Key 存进 IndexedDB */ }
@@ -394,6 +418,7 @@ async function postAiJson(cfg, payload, timeoutMs, signal, opts) {
   }
   var stream = opts.stream !== false;
   if (stream) payload = Object.assign({}, payload, { stream: true });
+  aiRuntimeSet('requesting', '请求中 · ' + (cfg.model || ''));
   try {
     var res = await fetch(aiEndpoint(cfg), {
       method: 'POST',
@@ -408,7 +433,11 @@ async function postAiJson(cfg, payload, timeoutMs, signal, opts) {
     }
     if (!stream || !res.body || !/text\/event-stream/i.test(ctype)) {
       var raw = await res.text();
-      try { return JSON.parse(raw); } catch (e) {
+      try {
+        var parsed = JSON.parse(raw);
+        aiRuntimeSet('success', '已返回 · ' + (cfg.model || ''));
+        return parsed;
+      } catch (e) {
         var pe = new Error('模型返回了无法解析的内容');
         pe.code = 'PARSE_ERROR';
         throw pe;
@@ -440,7 +469,12 @@ async function postAiJson(cfg, payload, timeoutMs, signal, opts) {
       ee.code = 'EMPTY_RESPONSE';
       throw ee;
     }
+    aiRuntimeSet('success', '已返回 · ' + (cfg.model || ''));
     return { __streamed: true, text: state.text, model: state.model, usage: state.usage, stopReason: state.stopReason };
+  } catch (e) {
+    aiRuntimeSet(e && e.code === 'ABORT' ? 'timeout' : 'failed',
+      e && e.code === 'ABORT' ? '请求超时，基础功能不受影响' : '请求失败，基础功能不受影响');
+    throw e;
   } finally {
     clearTimeout(timer);
   }

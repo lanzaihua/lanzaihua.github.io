@@ -615,6 +615,11 @@ function handleAction(act, el) {
     }
     case 'open-notifications': if (typeof openNotifications === 'function') openNotifications(); break;
     case 'close-notifications': if (typeof closeNotifications === 'function') closeNotifications(); break;
+    case 'notif-filter': {
+      ui.notifFilter = el.getAttribute('data-filter') || 'all';
+      if (typeof renderNotifications === 'function') renderNotifications();
+      break;
+    }
     case 'notif-expand': {
       var nid = el.getAttribute('data-id');
       ui.notifOpen = ui.notifOpen || {};
