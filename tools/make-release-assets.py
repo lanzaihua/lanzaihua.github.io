@@ -5,7 +5,7 @@ os.makedirs(out, exist_ok=True)
 source = os.path.join(out, 'source.zip')
 # 完整源码必须来自 HEAD 的全部 tracked 文件，避免漏掉 skills.js / assets / 根静态文件。
 subprocess.run(['git', '-C', root, 'archive', '--format=zip', '-o', source, 'HEAD'], check=True)
-static = os.path.join(out, 'sike-cuotiben-static-v2026.11.21.zip')
+static = os.path.join(out, 'sike-cuotiben-static-v2026.11.22.zip')
 files = ['index.html', '404.html', 'favicon.svg', 'manifest.webmanifest', 'robots.txt', 'sitemap.xml', 'sw.js', 'skills.js', '_headers', '.nojekyll']
 with zipfile.ZipFile(static, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
     for f in files:

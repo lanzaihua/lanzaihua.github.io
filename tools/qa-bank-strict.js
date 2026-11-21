@@ -20,7 +20,7 @@ for (const f of FILES) {
 function fail(id, msg) { issues.push(id + ' · ' + msg); }
 // 1. global shape
 if (baseItems.length < 8350) fail('GLOBAL', '基础题库 ' + baseItems.length + ' < 8350');
-if (all.length < 11921) fail('GLOBAL', '题库总数 ' + all.length + ' < 11921');
+if (all.length < 13423) fail('GLOBAL', '题库总数 ' + all.length + ' < 13423');
 if (all.filter(q => q.examOrigin === '教材课后习题').length < 1873) fail('GLOBAL', '教材课后题 ' + all.filter(q => q.examOrigin === '教材课后习题').length + ' < 1873');
 if (all.filter(q => q.examOrigin === '习题集').length < 926) fail('GLOBAL', '习题集题 ' + all.filter(q => q.examOrigin === '习题集').length + ' < 926');
 const chapters = new Set(all.map(q => q.subject + '|' + q.chapter));

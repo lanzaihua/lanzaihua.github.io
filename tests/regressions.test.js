@@ -888,7 +888,7 @@ test('bank totals include reviewed textbook and question-bank additions',()=>{
   const files={algebra:'bank-algebra',analysis:'bank-analysis',geometry:'bank-geometry',western:'bank-western'};
   const totals={};
   for(const [k,f] of Object.entries(files)){const d=JSON.parse(read('src/data/'+f+'.json'));totals[k]=d.items.length;}
-  assert.deepEqual(totals,{algebra:2258,analysis:5434,geometry:1241,western:2988});
+  assert.deepEqual(totals,{algebra:2258,analysis:6936,geometry:1241,western:2988});
   for(const f of ['bank-algebra','bank-analysis']){
     const d=JSON.parse(read('src/data/'+f+'.json'));
     for(const q of d.items.filter(x=>['GA-TX048','GA-TX049','GA-TX050','MA-TX070','MA-TX071','MA-TX072'].includes(x.id))){
@@ -948,11 +948,11 @@ test('README puts source details after technical notes and before feedback, with
   const at=['## 技术说明','## 源码、构建与开源','## 反馈'].map(h=>md.indexOf(h));
   assert.ok(at[0]>=0&&at[0]<at[1]&&at[1]<at[2],'README section order');
   assert.ok(md.includes('1873 道教材课后'),'教材课后 current count');
-  assert.ok(md.includes('1698 道习题集'),'习题集 current count');
-  assert.ok(md.includes('11921'),'bank total');
-  assert.ok(md.includes('154 项回归测试'),'current test count');
+  assert.ok(md.includes('3200 道习题集'),'习题集 current count');
+  assert.ok(md.includes('13423'),'bank total');
+  assert.ok(md.includes('155 项回归测试'),'current test count');
   assert.ok(!md.includes('126 项回归测试')&&!md.includes('92 项回归测试')&&!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
-  assert.ok(md.includes('v2026.11.21 Release'),'current release link');
+  assert.ok(md.includes('v2026.11.22 Release'),'current release link');
   assert.equal(/\bv?\d{4}\.\d{2}\.\d{2}\.\d+\b/.test(md),false,'README must not keep dotted release versions');
   const badgeColors = [...md.matchAll(/img\.shields\.io\/badge\/[^"]+?-([0-9A-F]{6})\?/g)].map((m) => m[1]);
   assert.equal(badgeColors.length, 9, 'README has nine badges');
@@ -961,7 +961,7 @@ test('README puts source details after technical notes and before feedback, with
   const detailsAt=md.indexOf('<details>',updateAt);
   assert.ok(updateAt>=0&&detailsAt>updateAt,'README history must be folded');
   assert.equal((md.slice(updateAt,detailsAt).match(/^### \d{4}-\d{2}-\d{2}/gm)||[]).length,1,'README only expands the latest update');
-  assert.ok(md.slice(detailsAt,detailsAt+120).includes('2026-11-19 及更早'),'README history fold starts at 11-17');
+  assert.ok(md.slice(detailsAt,detailsAt+120).includes('2026-11-21 及更早'),'README history fold starts at 11-17');
   const build=(read('index.html').match(/__BUILD_ID__="([^"]+)"/)||[])[1];
   assert.ok(build,'root build id');
   assert.ok(md.includes('VERSION-'+build.replace('-','--')),'build badge matches root index');

@@ -13,8 +13,8 @@ function add(cond, msg) { if (cond) problems.push(msg); }
 const banks = ['bank-algebra.json', 'bank-analysis.json', 'bank-geometry.json', 'bank-western.json']
   .map((f) => JSON.parse(read(path.join(SRC, 'data', f))));
 const totals = banks.map((b) => (b.items || []).length);
-add(totals[0] < 2258 || totals[1] < 5434 || totals[2] < 1241 || totals[3] < 2988, '四科题库计数低于下限：' + totals.join(' / '));
-add(totals.reduce((a, b) => a + b, 0) < 11921, '题库总数低于 11921');
+add(totals[0] < 2258 || totals[1] < 6936 || totals[2] < 1241 || totals[3] < 2988, '四科题库计数低于下限：' + totals.join(' / '));
+add(totals.reduce((a, b) => a + b, 0) < 13423, '题库总数低于 13423');
 
 const jsFiles = fs.readdirSync(path.join(SRC, 'js')).filter((f) => /\.js$/.test(f));
 const js = jsFiles.map((f) => read(path.join(SRC, 'js', f))).join('\n');
@@ -85,8 +85,8 @@ add(!dates.includes('2026-11-03'), '缺少 2026-11-03 更新记录');
 add(!dates.includes('2026-11-15'), '缺少 2026-11-15 更新记录');
 add(dates.filter((d) => d <= '2026-11-16').length !== 25, '2026-11-16 及更早的历史版本不是 25 个');
 add(/解几题库[^\n]*900/.test(changelog.slice(changelog.indexOf('2026-11-05'), changelog.indexOf('2026-11-04'))), '最新更新仍含解析几何 900 旧计数');
-add(!changelog.includes("title: '题库方案'"), '11-03 未改为题库方案，可能与 11-04 重建冲突');
-add(!changelog.includes("title: '题库与界面'"), '缺少 11-04 题库重建记录');
+add(!/["\']title["\']:\s*["\']题库方案["\']/.test(changelog), '11-03 未改为题库方案，可能与 11-04 重建冲突');
+add(!/["\']title["\']:\s*["\']题库与界面["\']/.test(changelog), '缺少 11-04 题库重建记录');
 logs.forEach((b) => {
   const items = Array.isArray(b.items) ? b.items : [];
   const groups = new Set(items.map((it) => it.group).filter(Boolean));

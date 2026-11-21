@@ -28,7 +28,7 @@ const jsFiles = fs.readdirSync(jsDir).filter(function (f) { return /\.js$/.test(
 const REQUIRED_CHANGELOG_DATES = ['2026-11-05','2026-11-04','2026-11-03','2026-11-02','2026-11-01','2026-10-31','2026-10-30','2026-10-29','2026-10-28','2026-10-27','2026-10-26','2026-10-25','2026-10-24','2026-10-23'];
 const changelogSource = read(path.join(SRC, 'js', '48-changelog.js'));
 const missingDates = REQUIRED_CHANGELOG_DATES.filter(function (d) {
-  return changelogSource.indexOf("date: '" + d + "'") < 0;
+  return changelogSource.indexOf("date: '" + d + "'") < 0 && changelogSource.indexOf('"date": "' + d + '"') < 0;
 });
 if (missingDates.length) {
   throw new Error('更新记录缺少历史日期: ' + missingDates.join(', '));
@@ -36,7 +36,8 @@ if (missingDates.length) {
 // 更新记录标题硬限制：所有版本标题最多 10 个字符，避免历史记录被截断。
 const UPDATE_TITLE_MAX = 10;
 const longTitles = [];
-changelogSource.replace(/^\s{4}(title|historyTitle):\s*'([^']*)',/gm, function (all, key, value) {
+changelogSource.replace(/^\s{4}(?:"(title|historyTitle)"|(title|historyTitle)):\s*['"]([^'"]*)['"],?/gm, function (all, k1, k2, value) {
+  var key = k1 || k2;
   if (Array.from(value).length > UPDATE_TITLE_MAX) longTitles.push(key + ': ' + value);
   return all;
 });
@@ -223,7 +224,7 @@ if (randomExamSource.indexOf("String(q.answer || '').trim()") < 0) throw new Err
 if (randomExamSource.indexOf('finalExamEnsureStandardTypes') < 0) throw new Error('59-exam.js 缺少标准题库题型保障');
 if (randomExamSource.indexOf('choiceTarget') < 0 || randomExamSource.indexOf('fillTarget') < 0) throw new Error('59-exam.js 缺少标准题库客观题/填空题配额');
 const coverageErrors = []; const seenBankQuestions = Object.create(null);
-const CALC_BANK_TOTAL = 11921;
+const CALC_BANK_TOTAL = 13423;
 const bankTotal = Object.keys(banks).reduce(function (n, k) { return n + (banks[k].items || []).length; }, 0);
 const QUESTION_CATEGORIES = ['计算题', '应用题', '综合题', '概念辨析题', '证明题', '公式填空题', '反例与存在性题', '分类讨论题', '误差分析题', '多解比较题'];
 const CATEGORY_TARGETS = { '计算题':1075, '应用题':675, '综合题':825, '概念辨析题':875, '证明题':825, '公式填空题':850, '反例与存在性题':750, '分类讨论题':825, '误差分析题':725, '多解比较题':825 };
