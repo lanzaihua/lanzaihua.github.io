@@ -11,32 +11,23 @@ function norm(s) {
 }
 
 test('math analysis textbook exercises stay in the bank', function () {
-  assert.equal(bank.length, 4252);
-  assert.equal(bank.filter(q => q.examOrigin === '教材课后习题').length, 753);
+  assert.equal(bank.length, 4491);
+  assert.equal(bank.filter(q => q.examOrigin === '教材课后习题').length, 992);
   const chapters = {
-    '第一章 实数集与函数': 35,
-    '第二章 数列极限': 32,
-    '第三章 函数极限': 44,
-    '第四章 函数的连续性': 38,
-    '第五章 导数和微分': 49,
-    '第六章 微分中值定理及其应用': 69,
-    '第七章 实数的完备性': 21,
-    '第八章 不定积分': 18,
-    '第九章 定积分': 62,
-    '第十章 定积分的应用': 44,
-    '第十一章 反常积分': 30,
-    '第十二章 数项级数': 46,
-    '第十三章 函数列与函数项级数': 32,
-    '第十四章 幂级数': 24,
-    '第十五章 傅里叶级数': 28,
-    '第十六章 多元函数的极限与连续': 42,
-    '第十七章 多元函数微分学': 67
+    '第一章 实数集与函数': 35, '第二章 数列极限': 32, '第三章 函数极限': 44,
+    '第四章 函数的连续性': 38, '第五章 导数和微分': 49, '第六章 微分中值定理及其应用': 69,
+    '第七章 实数的完备性': 21, '第八章 不定积分': 18, '第九章 定积分': 62,
+    '第十章 定积分的应用': 44, '第十一章 反常积分': 30, '第十二章 数项级数': 46,
+    '第十三章 函数列与函数项级数': 32, '第十四章 幂级数': 24, '第十五章 傅里叶级数': 28,
+    '第十六章 多元函数的极限与连续': 42, '第十七章 多元函数微分学': 67,
+    '第十八章 隐函数定理及其应用': 51, '第十九章 含参量积分': 31, '第二十章 曲线积分': 13,
+    '第二十一章 重积分': 77, '第二十二章 曲面积分': 29, '第二十三章 向量函数微分学': 38
   };
   const fresh = bank.filter(q => {
     const m = /^MA-(\d+)$/.exec(q.id);
-    return m && Number(m[1]) >= 3499 && Number(m[1]) <= 4180;
+    return m && Number(m[1]) >= 3499 && Number(m[1]) <= 4419;
   });
-  assert.equal(fresh.length, 681);
+  assert.equal(fresh.length, 920);
   for (const [chapter, minimum] of Object.entries(chapters)) {
     const list = fresh.filter(q => q.chapter === chapter);
     assert.ok(list.length >= minimum, chapter + ' expected at least ' + minimum + ', got ' + list.length);

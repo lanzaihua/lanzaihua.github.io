@@ -888,7 +888,7 @@ test('bank totals include reviewed textbook and question-bank additions',()=>{
   const files={algebra:'bank-algebra',analysis:'bank-analysis',geometry:'bank-geometry',western:'bank-western'};
   const totals={};
   for(const [k,f] of Object.entries(files)){const d=JSON.parse(read('src/data/'+f+'.json'));totals[k]=d.items.length;}
-  assert.deepEqual(totals,{algebra:2075,analysis:4252,geometry:1241,western:2988});
+  assert.deepEqual(totals,{algebra:2232,analysis:4491,geometry:1241,western:2988});
   for(const f of ['bank-algebra','bank-analysis']){
     const d=JSON.parse(read('src/data/'+f+'.json'));
     for(const q of d.items.filter(x=>['GA-TX048','GA-TX049','GA-TX050','MA-TX070','MA-TX071','MA-TX072'].includes(x.id))){
@@ -947,9 +947,9 @@ test('README puts source details after technical notes and before feedback, with
   const md=read('README.md');
   const at=['## 技术说明','## 源码、构建与开源','## 反馈'].map(h=>md.indexOf(h));
   assert.ok(at[0]>=0&&at[0]<at[1]&&at[1]<at[2],'README section order');
-  assert.ok(md.includes('1608 道教材课后'),'教材课后 current count');
-  assert.ok(md.includes('598 道习题集'),'习题集 current count');
-  assert.ok(md.includes('10556'),'bank total');
+  assert.ok(md.includes('1847 道教材课后'),'教材课后 current count');
+  assert.ok(md.includes('755 道习题集'),'习题集 current count');
+  assert.ok(md.includes('10952'),'bank total');
   assert.ok(md.includes('154 项回归测试'),'current test count');
   assert.ok(!md.includes('126 项回归测试')&&!md.includes('92 项回归测试')&&!md.includes('86 项回归测试')&&!md.includes('81 项回归测试')&&!md.includes('67 项回归测试'),'stale test count');
   assert.ok(md.includes('v2026.11.21 Release'),'current release link');

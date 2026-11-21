@@ -22,31 +22,33 @@ def api(path, method='GET', data=None, ctype='application/json'):
     with urllib.request.urlopen(req, timeout=300) as r:
         raw = r.read()
         return json.loads(raw.decode('utf-8')) if raw else {}
-body = r'''## 四科错题本 v2026.11.21 · 题库扩充与教材补录
+body = r'''## 四科错题本 v2026.11.21 · 题库补录与导出修复
 
-**12 项 · 12 组**
+**14 项 · 14 组**
 
-题库扩至 10556 题：补入数学分析教材第 1–17 章 614 道课后题，并完成 3.3 的队列、口径、备份、通知与公式收口。154 项测试通过。
+题库扩至 10952 题：补入数学分析教材第 18–23 章 239 道、习题精选精解 157 道，并完成 3.3 的队列、口径、备份、通知与公式收口。154 项测试通过。
 
 ### 本轮更新
 - 解析几何补全：补入 42 道，解析几何由 1199 增至 1241。
 - 西经真题：160 道教材题改为真实题干，并新增 105 道考研真题，西方经济学由 2883 增至 2988。
 - 竞赛录入：全国大学生数学竞赛 8 份扫描件 OCR 后录入 77 道，高等代数 29 道、数学分析 48 道。
-- 教材补录：数学分析教材第 1–17 章课后题按 OCR 与页图逐题核对，补入 614 道；重复、图缺或公式无法还原的题目逐条记入清单。
+- 教材补录：数学分析教材第 1–23 章课后题按 OCR 与页图逐题核对，累计补入 920 道（本批完成第 18–23 章 239 道）；重复、图缺或公式无法还原的题目逐条记入清单。
 - 首页队列：今日待复习、今日已完成、逾期、今日完成度改为按复习节点计算，焦点跳最早到期错题；手机端工作台排在科目之前。
-- 数据口径：新增统一资源清单，内置题库 10556、内置模板 118，自建与导入按唯一 ID 计入可用总量；首页、统计、设置共用同一口径。
+- 数据口径：新增统一资源清单，内置题库 10952、内置模板 118，自建与导入按唯一 ID 计入可用总量；首页、统计、设置共用同一口径。
 - 数据安全：导出后记录上次备份时间，设置页显示备份状态、当前大小与结构完整性；重复 ID 只提示不删除。
 - 通知分类：全部、学习提醒、操作记录、系统通知四类筛选与真实计数。
 - AI 状态：请求中、最近成功、超时、失败在设置页可见；失败只影响当前请求。
 - 视觉精修：首页统计卡与四科入口副标签，统计页四卡两列，通知筛选 360–1440 不溢出。
 - 公式字号：行内分式从 MathML 默认 0.7 倍调到 0.92 倍，dfrac 不再降级；矩阵与标点尾串垂直居中；qa:formulas 增两项检查。
+- 习题补录：《高等代数习题精选精解》第 1–10 章继续补录 157 道未入库且题面可还原的题，选择题保留四选项与答案，主观题补标准解答与详细解析。
+- 导出修复：DOCX 导出修复 xi、zeta、eta、kappa、chi 与 geqslant/leqslant 映射，Word 与 WPS 重导出 7 页逐页检查，不再残留英文命令。
 - 防复发：qa:polish 新增首页复习队列、手机顺序、统计口径、通知四分类检查；154 项回归与 CI 全部门禁通过。
 
 ### 验证
-- 回归测试 154 项通过；严格题库 QA 10556 唯一、problems 0 / warnings 0；教材课后 1608、习题集 598。
-- 全库渲染审计 10556 题 0 失败；115242 字段数学语言审计 0；574 点记忆/考场用法审计 0 失败。
+- 回归测试 154 项通过；严格题库 QA 10952 唯一、problems 0 / warnings 0；教材课后 1847、习题集 755。
+- 全库渲染审计 10952 题 0 失败；数学语言审计 0；574 点记忆/考场用法审计 0 失败。
 - 公式、模拟卷、筛选、期末复习、搜索、8 视口浏览器、无障碍、性能、拆包、尺寸与发布一致性门禁通过。
-- BUILD_ID 2026.11.21-a52946c3；GitHub Pages 与 Release 以同一提交构建。
+- BUILD_ID 2026.11.21-9306417d；GitHub Pages 与 Release 以同一提交构建。
 
 完整记录见仓库 docs/VERIFICATION.md、docs/audit/WARM-ACADEMIC-3.3-AUDIT.md 与 docs/reports/。'''
 try:
@@ -54,7 +56,7 @@ try:
 except urllib.error.HTTPError as e:
     if e.code != 404:
         raise
-    rel = api('/releases', method='POST', data={'tag_name': TAG, 'name': '四科错题本 v2026.11.21 · 题库扩充与教材补录', 'body': body, 'draft': False, 'prerelease': False})
+    rel = api('/releases', method='POST', data={'tag_name': TAG, 'name': '四科错题本 v2026.11.21 · 题库补录与导出修复', 'body': body, 'draft': False, 'prerelease': False})
     print('created release', rel['id'])
 for a in rel.get('assets', []):
     if a['name'] in ('source.zip', 'SHA256SUMS', STATIC):
@@ -66,5 +68,5 @@ for name in ['source.zip', STATIC, 'SHA256SUMS']:
     with urllib.request.urlopen(req, timeout=600) as r:
         a = json.loads(r.read().decode('utf-8'))
     print('uploaded', a['name'], a['size'])
-api('/releases/%d' % rel['id'], method='PATCH', data={'body': body, 'name': '四科错题本 v2026.11.21 · 题库扩充与教材补录', 'target_commitish': 'main'})
+api('/releases/%d' % rel['id'], method='PATCH', data={'body': body, 'name': '四科错题本 v2026.11.21 · 题库补录与导出修复', 'target_commitish': 'main'})
 print('body updated')

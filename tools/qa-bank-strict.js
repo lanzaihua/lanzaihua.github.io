@@ -20,9 +20,9 @@ for (const f of FILES) {
 function fail(id, msg) { issues.push(id + ' · ' + msg); }
 // 1. global shape
 if (baseItems.length < 8350) fail('GLOBAL', '基础题库 ' + baseItems.length + ' < 8350');
-if (all.length < 10556) fail('GLOBAL', '题库总数 ' + all.length + ' < 10556');
-if (all.filter(q => q.examOrigin === '教材课后习题').length < 1608) fail('GLOBAL', '教材课后题 ' + all.filter(q => q.examOrigin === '教材课后习题').length + ' < 1608');
-if (all.filter(q => q.examOrigin === '习题集').length < 598) fail('GLOBAL', '习题集题 ' + all.filter(q => q.examOrigin === '习题集').length + ' < 598');
+if (all.length < 10952) fail('GLOBAL', '题库总数 ' + all.length + ' < 10952');
+if (all.filter(q => q.examOrigin === '教材课后习题').length < 1847) fail('GLOBAL', '教材课后题 ' + all.filter(q => q.examOrigin === '教材课后习题').length + ' < 1847');
+if (all.filter(q => q.examOrigin === '习题集').length < 755) fail('GLOBAL', '习题集题 ' + all.filter(q => q.examOrigin === '习题集').length + ' < 755');
 const chapters = new Set(all.map(q => q.subject + '|' + q.chapter));
 if (chapters.size !== 55) fail('GLOBAL', 'chapters ' + chapters.size + ' != 55');
 // 2. exact buckets and category counts
