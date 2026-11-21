@@ -11,7 +11,7 @@ function norm(s) {
 }
 
 test('math analysis textbook exercises stay in the bank', function () {
-  assert.equal(bank.length, 4662);
+  assert.equal(bank.length, 5434);
   assert.equal(bank.filter(q => q.examOrigin === '教材课后习题').length, 992);
   const chapters = {
     '第一章 实数集与函数': 35, '第二章 数列极限': 32, '第三章 函数极限': 44,
