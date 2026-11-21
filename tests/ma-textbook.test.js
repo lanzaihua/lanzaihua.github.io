@@ -10,23 +10,42 @@ function norm(s) {
   return String(s || '').replace(/\s+/g, '').replace(/\$/g, '').replace(/[，。；：]/g, '');
 }
 
-test('math analysis textbook chapter 1-2 exercises stay in the bank', function () {
-  assert.equal(bank.length, 3638);
-  assert.equal(bank.filter(q => q.examOrigin === '教材课后习题').length, 139);
-  const ch1 = bank.filter(q => q.chapter === '第一章 实数集与函数' && q.examOrigin === '教材课后习题');
-  const ch2 = bank.filter(q => q.chapter === '第二章 数列极限' && q.examOrigin === '教材课后习题');
-  assert.ok(ch1.length >= 43, 'chapter 1 textbook questions');
-  assert.ok(ch2.length >= 41, 'chapter 2 textbook questions');
+test('math analysis textbook exercises stay in the bank', function () {
+  assert.equal(bank.length, 4252);
+  assert.equal(bank.filter(q => q.examOrigin === '教材课后习题').length, 753);
+  const chapters = {
+    '第一章 实数集与函数': 35,
+    '第二章 数列极限': 32,
+    '第三章 函数极限': 44,
+    '第四章 函数的连续性': 38,
+    '第五章 导数和微分': 49,
+    '第六章 微分中值定理及其应用': 69,
+    '第七章 实数的完备性': 21,
+    '第八章 不定积分': 18,
+    '第九章 定积分': 62,
+    '第十章 定积分的应用': 44,
+    '第十一章 反常积分': 30,
+    '第十二章 数项级数': 46,
+    '第十三章 函数列与函数项级数': 32,
+    '第十四章 幂级数': 24,
+    '第十五章 傅里叶级数': 28,
+    '第十六章 多元函数的极限与连续': 42,
+    '第十七章 多元函数微分学': 67
+  };
   const fresh = bank.filter(q => {
     const m = /^MA-(\d+)$/.exec(q.id);
-    return m && Number(m[1]) >= 3499 && Number(m[1]) <= 3565;
+    return m && Number(m[1]) >= 3499 && Number(m[1]) <= 4180;
   });
-  assert.equal(fresh.length, 67);
+  assert.equal(fresh.length, 681);
+  for (const [chapter, minimum] of Object.entries(chapters)) {
+    const list = fresh.filter(q => q.chapter === chapter);
+    assert.ok(list.length >= minimum, chapter + ' expected at least ' + minimum + ', got ' + list.length);
+  }
   const seen = new Set();
   for (const q of fresh) {
     assert.equal(q.subject, 'shufen');
     assert.equal(q.examOrigin, '教材课后习题');
-    assert.match(q.source, /^教材课后习题（第[一二]章/);
+    assert.match(q.source, /^教材课后习题（第/);
     assert.match(q.standardSolution, /^(解|证明|答)：/);
     assert.ok(q.answer && q.answer !== '等式成立。');
     assert.ok(Array.isArray(q.solution) && q.solution.length >= 1);

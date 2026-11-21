@@ -3,7 +3,7 @@ import json, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 BANK = os.path.join(ROOT, 'src/data/bank-analysis.json')
 OUT_DIR = os.path.join(ROOT, 'tools/ingest/out')
-FILES = ['ma-text-ch01.json', 'ma-text-ch02.json']
+FILES = ['ma-text-ch%02d.json' % i for i in range(1, 24)]
 
 def norm(s):
     s = str(s or '')
@@ -44,7 +44,7 @@ def main():
             q.setdefault('tags', [])
             if q.get('chapter') not in q['tags']:
                 q['tags'].insert(0, q.get('chapter', ''))
-            q['solution'] = [line for line in str(q.get('standardSolution', '')).split('\n') if line.strip()] or [q.get('standardSolution', '')]
+            q['solution'] = [seg.strip() for seg in re.split(r'\n{2,}', str(q.get('standardSolution', '')).strip()) if seg.strip()] or [q.get('standardSolution', '')]
             q.setdefault('pointKeys', q.get('points', []))
             items.append(q)
             seen.add(key)
