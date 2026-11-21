@@ -27,7 +27,7 @@
 
 - npm test：154/154；npm run check 通过。
 - qa:polish、qa:resume、qa:search、qa:final、qa:formulas、qa:paper、qa:filters、qa:responsive、qa:pages、qa:a11y、qa:perf 全部 0 failures。
-- 构建号 2026.11.21-9306417d；根 index.html、dist、dist-pages 与导出静态页一致；verify:build/pages/skills 与 qa:size 通过。
+- 构建号 2026.11.21-95fc8923；根 index.html、dist、dist-pages 与导出静态页一致；verify:build/pages/skills 与 qa:size 通过。
 - 浏览器探针：首页指标为复习队列；统计卡显示 10556/118 与今日待复习；通知四类筛选；页面无 pageerror。
 
 ## 四、提交

@@ -111,8 +111,8 @@ def audit(data_dir: Path, strict_difficulty: bool):
     if len(textbook) < 927:
         problems.append(("GLOBAL", f"教材课后题 {len(textbook)} < 927"))
     exercise = [item for item in all_items if item.get("examOrigin") == "习题集"]
-    if len(exercise) < 755:
-        problems.append(("GLOBAL", f"习题集题 {len(exercise)} < 755"))
+    if len(exercise) < 926:
+        problems.append(("GLOBAL", f"习题集题 {len(exercise)} < 926"))
 
     chapter_keys = {item.get("subject") + "|" + item.get("chapter") for item in all_items}
     if len(chapter_keys) != 55:
